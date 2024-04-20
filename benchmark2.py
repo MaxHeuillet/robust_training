@@ -40,7 +40,6 @@ ngpus = int( torch.cuda.device_count() )
 
 device = 'cuda'
 
-
 mean_cifar10 = (0.4914, 0.4822, 0.4465)
 std_cifar10 = (0.2023, 0.1994, 0.2010)
 
