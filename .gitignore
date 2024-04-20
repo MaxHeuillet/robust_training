@@ -1,0 +1,5 @@
+.venv/
+data/
+state_dicts/
+__pycache__/
+models/__pycache__/
