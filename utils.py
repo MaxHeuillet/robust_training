@@ -5,6 +5,14 @@ import torch.optim as optim
 from models import resnet
 import dill
 
+
+from autoattack import AutoAttack
+
+import torch
+import torch.nn.functional as F
+import time
+
+
 # Attack types
 
 def fgsm(model, X, y, epsilon=0.1):
@@ -138,14 +146,70 @@ def compute_clean_accuracy(model, test_loader, device='cuda'):
     accuracy = 100 * correct / total
     return accuracy
 
-from autoattack import AutoAttack
 
-def compute_robust_accuracy(model, test_loader, epsilon, norm='Linf', device='cuda'):
+def sign(grad):
+    grad_sign = torch.sign(grad)
+    return grad_sign
+
+def clamp(X, l, u, cuda=True):
+    device = 'cuda' if cuda else 'cpu'
+    if not isinstance(l, torch.Tensor):
+        l = torch.tensor([l], device=device, dtype=torch.float32)
+    if not isinstance(u, torch.Tensor):
+        u = torch.tensor([u], device=device, dtype=torch.float32)
+    return torch.max(torch.min(X, u), l)
+
+def attack_pgd_restart(model, X, y, eps, alpha, attack_iters, n_restarts, rs=True, verbose=False,
+                       linf_proj=True, l2_proj=False, l2_grad_update=False, cuda=True):
+    device = 'cuda' if cuda else 'cpu'
+    max_loss = torch.zeros(y.shape[0], device=device)
+    max_delta = torch.zeros_like(X, device=device)
+    for i_restart in range(n_restarts):
+        delta = torch.zeros_like(X, device=device)
+        if attack_iters == 0:
+            return delta.detach()
+        if rs:
+            delta.uniform_(-eps, eps)
+
+        delta.requires_grad = True
+        for _ in range(attack_iters):
+            output = model(X + delta)
+            loss = F.cross_entropy(output, y)
+            loss.backward()
+            grad = delta.grad.detach()
+            if not l2_grad_update:
+                delta.data = delta + alpha * sign(grad)
+            else:
+                delta.data = delta + alpha * grad / (grad.pow(2).sum([1, 2, 3], keepdim=True).sqrt())
+
+            delta.data = clamp(X + delta.data, 0, 1, cuda) - X
+            if linf_proj:
+                delta.data = clamp(delta.data, -eps, eps, cuda)
+            if l2_proj:
+                delta_norms = delta.data.pow(2).sum([1, 2, 3], keepdim=True).sqrt()
+                delta.data = eps * delta.data / torch.max(eps * torch.ones_like(delta_norms), delta_norms)
+            delta.grad.zero_()
+
+        with torch.no_grad():
+            output = model(X + delta)
+            all_loss = F.cross_entropy(output, y, reduction='none')
+            max_delta[all_loss >= max_loss] = delta.detach()[all_loss >= max_loss]
+            max_loss = torch.max(max_loss, all_loss)
+            if verbose:
+                print('Restart #{}: best loss {:.3f}'.format(i_restart, max_loss.mean()))
+                
+    max_delta = clamp(X + max_delta, 0, 1, cuda) - X
+    return max_delta
+
+def compute_AA_accuracy(model, test_loader, device='cuda'):
 
     model.eval()
 
     def forward_pass(x):
         return model(x)
+    
+    norm = 'Linf'
+    epsilon = 8/255
     
     adversary = AutoAttack(forward_pass, norm=norm, eps=epsilon, version='standard')
     
@@ -153,14 +217,57 @@ def compute_robust_accuracy(model, test_loader, epsilon, norm='Linf', device='cu
     total = 0
     
     for images, labels in test_loader:
+
+        start_time = time.time()
+
         images, labels = images.to(device), labels.to(device)
-        x_adv = adversary.run_standard_evaluation(images, labels, bs=images.size(0))
+
+        x_adv = adversary.run_standard_evaluation(images, labels, bs= test_loader.batch_size )
         
         # Evaluate the model on adversarial examples
         outputs = model(x_adv)
         _, predicted = torch.max(outputs.data, 1)
         total += labels.size(0)
         correct += (predicted == labels).sum().item()
+
+        end_time = time.time()
+        print(f"Time taken for batch: {end_time - start_time:.4f} seconds")
+    
+    robust_accuracy = 100 * correct / total
+    return robust_accuracy
+
+
+def compute_PGD_accuracy(model, test_loader, device='cuda'):
+
+    model.eval()
+    
+    correct = 0
+    total = 0
+
+    epsilon = 8/255
+    n_restarts = 1
+    attack_iters = 50
+    alpha = epsilon/4
+    
+    for images, labels in test_loader:
+
+        start_time = time.time()
+
+        images, labels = images.to(device), labels.to(device)
+
+        delta = attack_pgd_restart(model, images, labels, epsilon, alpha, attack_iters, n_restarts, rs=True, verbose=False,
+               linf_proj=True, l2_proj=False, l2_grad_update=False, cuda=True)
+        
+        x_adv = images + delta
+        
+        # Evaluate the model on adversarial examples
+        outputs = model(x_adv)
+        _, predicted = torch.max(outputs.data, 1)
+        total += labels.size(0)
+        correct += (predicted == labels).sum().item()
+
+        end_time = time.time()
+        print(f"Time taken for batch: {end_time - start_time:.4f} seconds")
     
     robust_accuracy = 100 * correct / total
     return robust_accuracy

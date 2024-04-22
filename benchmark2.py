@@ -20,9 +20,9 @@ os.environ["MKL_NUM_THREADS"] = "1"
 os.environ["NUMEXPR_NUM_THREADS"] = "1" 
 os.environ["OMP_NUM_THREADS"] = "1" 
 
-# parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser()
 
-# parser.add_argument("--horizon", required=True, help="horizon of each realization of the experiment")
+parser.add_argument("--eval_type", required=True, help="wether to compute clean accuracy, PGD robustness or AA robustness")
 # parser.add_argument("--n_folds", required=True, help="number of folds")
 # parser.add_argument("--model", required=True, help="model")
 # parser.add_argument("--case", required=True, help="case")
@@ -30,7 +30,7 @@ os.environ["OMP_NUM_THREADS"] = "1"
 # parser.add_argument("--approach", required=True, help="algorithme")
 # parser.add_argument("--id", required=True, help="algorithme")
 
-# args = parser.parse_args()
+args = parser.parse_args()
 
 ncpus = int ( os.environ.get('SLURM_CPUS_PER_TASK', default=1) )
 ngpus = int( torch.cuda.device_count() )
@@ -56,8 +56,16 @@ test_loader = DataLoader(test_dataset, batch_size=1000, shuffle=False)
 # model = LeNet().to(device)
 model = models.resnet.resnet50(pretrained=True, progress=True, device="cuda").to('cuda')
 
-accuracy = utils.compute_clean_accuracy(model, test_loader)
-print(f'The clean accuracy of the model on the test set is {accuracy}%')
+
+if args.eval_type == 'clean':
+    accuracy = utils.compute_clean_accuracy(model, test_loader)
+    print(f'The clean accuracy of the model on the test set is {accuracy}%')
+elif args.eval_type == 'PGD':
+    accuracy = utils.compute_PGD_accuracy(model, test_loader, device='cuda')
+    print(f'The PGD accuracy of the model on the test set is {accuracy}%')
+elif args.eval_type == 'AA':
+    accuracy = utils.compute_AA_accuracy(model, test_loader, device='cuda')
+    print(f'The AA accuracy of the model on the test set is {accuracy}%')
 
 # epsilon = 8/255
 # accuracy = utils.compute_robust_accuracy(model, test_loader, epsilon, norm='Linf', device='cuda')
