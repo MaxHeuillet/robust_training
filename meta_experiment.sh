@@ -8,5 +8,3 @@ for eval_type in "${eval_types[@]}"; do
     sbatch --export=ALL,EVAL_TYPE=$eval_type ./experiment.sh     
 
     done
-    
-done
