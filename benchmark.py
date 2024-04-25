@@ -62,6 +62,22 @@ sys.stdout.flush()
 
 ##############################################
 
+print('begin the evaluation experiment')
+sys.stdout.flush()
+
+test_dataset = datasets.CIFAR10(root='./data', train=False, transform=transform)
+test_loader = DataLoader(test_dataset, batch_size=1000, shuffle=False)
+
+accuracy = utils.compute_clean_accuracy(model, test_loader)
+print(f'The clean accuracy of the model on the test set is {accuracy}%')
+sys.stdout.flush()
+
+accuracy = utils.compute_PGD_accuracy(model, test_loader, device='cuda')
+print(f'The PGD accuracy of the model on the test set is {accuracy}%')
+sys.stdout.flush()
+
+##############################################
+
 ######## add Lora parametrizations to the model:
 import torch.nn.utils.parametrize as parametrize
 import lora 
@@ -175,18 +191,17 @@ sys.stdout.flush()
 ##############################################
 
 print('begin the evaluation experiment')
+sys.stdout.flush()
 
 test_dataset = datasets.CIFAR10(root='./data', train=False, transform=transform)
-test_loader = DataLoader(test_dataset, batch_size=128, shuffle=False)
+test_loader = DataLoader(test_dataset, batch_size=1000, shuffle=False)
 
-sys.stdout.flush()
 accuracy = utils.compute_clean_accuracy(model, test_loader)
 print(f'The clean accuracy of the model on the test set is {accuracy}%')
-
 sys.stdout.flush()
+
 accuracy = utils.compute_PGD_accuracy(model, test_loader, device='cuda')
 print(f'The PGD accuracy of the model on the test set is {accuracy}%')
-
 sys.stdout.flush()
 
 #if args.eval_type == 'clean':

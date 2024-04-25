@@ -231,7 +231,7 @@ def compute_AA_accuracy(model, test_loader, device='cuda'):
         correct += (predicted == labels).sum().item()
 
         end_time = time.time()
-        print(f"Time taken for batch: {end_time - start_time:.4f} seconds")
+        # print(f"Time taken for batch: {end_time - start_time:.4f} seconds")
     
     robust_accuracy = 100 * correct / total
     return robust_accuracy
@@ -267,7 +267,7 @@ def compute_PGD_accuracy(model, test_loader, device='cuda'):
         correct += (predicted == labels).sum().item()
 
         end_time = time.time()
-        print(f"Time taken for batch: {end_time - start_time:.4f} seconds")
+        # print(f"Time taken for batch: {end_time - start_time:.4f} seconds")
     
     robust_accuracy = 100 * correct / total
     return robust_accuracy
