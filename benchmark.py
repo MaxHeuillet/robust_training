@@ -25,12 +25,6 @@ os.environ["OMP_NUM_THREADS"] = "1"
 parser = argparse.ArgumentParser()
 
 parser.add_argument("--eval_type", required=True, help="wether to compute clean accuracy, PGD robustness or AA robustness")
-# parser.add_argument("--n_folds", required=True, help="number of folds")
-# parser.add_argument("--model", required=True, help="model")
-# parser.add_argument("--case", required=True, help="case")
-# parser.add_argument("--context_type", required=True, help="context type")
-# parser.add_argument("--approach", required=True, help="algorithme")
-# parser.add_argument("--id", required=True, help="algorithme")
 
 args = parser.parse_args()
 
@@ -40,9 +34,8 @@ ngpus = int( torch.cuda.device_count() )
 
 ############################# INITIATE THE EXPERIMENT:
 
-device = 'cuda'
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# model = LeNet().to(device)
 model = models.resnet.resnet50(pretrained=True, progress=True, device="cuda").to('cuda')
 print('model loaded successfully')
 sys.stdout.flush()
@@ -51,6 +44,13 @@ sys.stdout.flush()
 
 print('begin the evaluation experiment')
 sys.stdout.flush()
+
+mean_cifar10 = (0.4914, 0.4822, 0.4465)
+std_cifar10 = (0.2471, 0.2435, 0.2616)
+
+transform = transforms.Compose([
+    transforms.ToTensor(),
+    transforms.Normalize(mean_cifar10, std_cifar10)  ])
 
 test_dataset = datasets.CIFAR10(root='./data', train=False, transform=transform)
 test_loader = DataLoader(test_dataset, batch_size=1000, shuffle=False)
@@ -102,15 +102,6 @@ sys.stdout.flush()
 import active
 import torch.optim as optim
 from torch import nn
-
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-mean_cifar10 = (0.4914, 0.4822, 0.4465)
-std_cifar10 = (0.2471, 0.2435, 0.2616)
-
-transform = transforms.Compose([
-    transforms.ToTensor(),
-    transforms.Normalize(mean_cifar10, std_cifar10)  ])
 
 pool_dataset = datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
 pool_loader = DataLoader(pool_dataset, batch_size=128, shuffle=True)
