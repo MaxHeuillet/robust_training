@@ -129,6 +129,10 @@ for i in range(n_rounds):
     
     if args.active_strategy == 'uncertainty':
         query_indices = active.uncertainty_sampling(model, pool_loader, round_size)
+    elif args.active_strategy == 'entropy':
+        query_indices = active.entropy_sampling(model, pool_loader, n_instances=10)
+    elif args.active_strategy == 'margin':
+        query_indices = active.margin_sampling(model, pool_loader, n_instances=10)
     elif args.active_strategy == 'random':
         query_indices = active.random_sampling(model, pool_loader, n_instances=10)
     else:
