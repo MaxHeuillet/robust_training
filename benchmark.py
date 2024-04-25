@@ -14,6 +14,15 @@ import utils
 
 import sys
 
+import torch.nn.utils.parametrize as parametrize
+import lora 
+
+from torch.utils.data import Subset
+import trades
+import active
+import torch.optim as optim
+from torch import nn
+
 ###################################
 # Experiments
 ###################################
@@ -25,12 +34,12 @@ os.environ["OMP_NUM_THREADS"] = "1"
 parser = argparse.ArgumentParser()
 
 parser.add_argument("--eval_type", required=True, help="wether to compute clean accuracy, PGD robustness or AA robustness")
+parser.add_argument("--n_rounds", required=True, help="nb of active learning rounds")
+parser.add_argument("--nb_epochs", required=True, help="nb of Lora epochs")
+parser.add_argument("--round_size", required=True, help="wether to compute clean accuracy, PGD robustness or AA robustness")
+
 
 args = parser.parse_args()
-
-ncpus = int ( os.environ.get('SLURM_CPUS_PER_TASK', default=1) )
-ngpus = int( torch.cuda.device_count() )
-# print('ncpus', ncpus,'ngpus', ngpus)
 
 ############################# INITIATE THE EXPERIMENT:
 
@@ -42,7 +51,7 @@ sys.stdout.flush()
 
 ##############################################
 
-print('begin the evaluation experiment')
+print('begin the evaluation experiment with {} // {} // {} '.format(args.n_rounds,args.round_size,args.nb_epochs) )
 sys.stdout.flush()
 
 mean_cifar10 = (0.4914, 0.4822, 0.4465)
@@ -66,8 +75,6 @@ sys.stdout.flush()
 ##############################################
 
 ######## add Lora parametrizations to the model:
-import torch.nn.utils.parametrize as parametrize
-import lora 
 
 layers = [ model.conv1, model.layer1[0].conv1, model.layer1[0].conv2, model.layer1[0].conv3,
                 model.layer2[0].conv1, model.layer2[0].conv2, model.layer2[0].conv3,
@@ -99,29 +106,21 @@ sys.stdout.flush()
 
 ######## configuration of the experiment:
 
-import active
-import torch.optim as optim
-from torch import nn
-
 pool_dataset = datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
 pool_loader = DataLoader(pool_dataset, batch_size=128, shuffle=True)
 
 adapt_dataset = active.EmptyDataset()
 pool_indices = list( range(len(pool_loader.dataset ) ) ) 
-n_queries = 6
-active_batch_size = 100
 
 
 ############# execution of the experiment:
-from torch.utils.data import Subset
-import trades
 
-for i in range(n_queries):
+for i in range(args.n_rounds):
 
     print( 'iteration {}'.format(i) )
     
     pool_loader = DataLoader( Subset(pool_dataset, pool_indices), batch_size=1000, shuffle=False)
-    query_indices = active.uncertainty_sampling(model, pool_loader, active_batch_size)
+    query_indices = active.uncertainty_sampling(model, pool_loader, args.round_size)
 
     global_query_indices = [ pool_indices[idx] for idx in query_indices]
 
@@ -137,9 +136,12 @@ for i in range(n_queries):
     print('start training process')
     sys.stdout.flush()
 
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+    # optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+    optimizer = torch.optim.SGD( model.parameters(),lr=1e-2,
+                                 weight_decay=1e-2, momentum=0.9, nesterov=True, )
+
     adapt_loader = DataLoader(adapt_dataset, batch_size=128, shuffle=True)
-    for _ in range(10):
+    for _ in range(args.nb_epochs):
         print('epoch {}'.format(_) )
         sys.stdout.flush()
         model.train()
@@ -156,14 +158,14 @@ for i in range(n_queries):
 
 print('start saving model')
 sys.stdout.flush()
-torch.save(model.state_dict(), './models/experiment.pth')
+torch.save(model.state_dict(), './models/experiment_{}_{}_{}.pth'.format(args.n_rounds,args.round_size,args.nb_epochs) )
 print('finished saving model')
 sys.stdout.flush()
 
 
 ##############################################
 
-print('begin the evaluation experiment')
+print('begin the evaluation experiment with {} // {} // {} '.format(args.n_rounds,args.round_size,args.nb_epochs) )
 sys.stdout.flush()
 
 test_dataset = datasets.CIFAR10(root='./data', train=False, transform=transform)
