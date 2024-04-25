@@ -31,5 +31,5 @@ source /home/mheuill/projects/def-adurand/mheuill/MYENV3/bin/activate
 
 echo 'HZ: start python3 ./experiment.py ..at '; date
 
-python3 ./benchmark.py --eval_type ${EVAL_TYPE}  > stdout_$SLURM_JOB_ID 2>stderr_$SLURM_JOB_ID
+python3 ./benchmark.py --eval_type ${EVAL_TYPE} --n_rounds ${NROUNDS} --nb_epochs ${NBEPOCHS} --round_size ${RSIZE}  > stdout_$SLURM_JOB_ID 2>stderr_$SLURM_JOB_ID
 
