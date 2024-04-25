@@ -109,11 +109,8 @@ transform = transforms.Compose([
     transforms.ToTensor(),
     transforms.Normalize(mean_cifar10, std_cifar10)  ])
 
-train_dataset = datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
-pool_dataset = datasets.CIFAR10(root='./data', train=False, transform=transform)
-
-train_loader = DataLoader(train_dataset, batch_size=128, shuffle=True)
-pool_loader = DataLoader(test_dataset, batch_size=128, shuffle=False)
+pool_dataset = datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
+pool_loader = DataLoader(train_dataset, batch_size=128, shuffle=True)
 
 # Initialize model, optimizer, and loss function
 model = models.resnet.resnet50(pretrained=True, progress=True, device="cuda").to('cuda')
@@ -158,7 +155,7 @@ for i in range(n_queries):
         print('epoch {}'.format(_) )
         sys.stdout.flush()
         model.train()
-        for batch_idx, (data, target) in enumerate(train_loader):
+        for batch_idx, (data, target) in enumerate(adapt_loader):
             data, target = data.to(device), target.to(device)
             optimizer.zero_grad()
             loss = trades.trades_loss(model=model, x_natural=data, y=target, optimizer=optimizer,)
@@ -178,6 +175,9 @@ sys.stdout.flush()
 ##############################################
 
 print('begin the evaluation experiment')
+
+test_dataset = datasets.CIFAR10(root='./data', train=False, transform=transform)
+test_loader = DataLoader(test_dataset, batch_size=128, shuffle=False)
 
 sys.stdout.flush()
 accuracy = utils.compute_clean_accuracy(model, test_loader)
