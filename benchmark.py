@@ -151,11 +151,11 @@ for i in range(n_rounds):
         model.train()
 
         # Check if epoch_counter is at a milestone to reduce learning rate
-        if epoch_counter == 30 or epoch_counter == 50:
-            current_lr = optimizer.param_groups[0]['lr']
-            new_lr = current_lr * 0.1
-            utils.update_learning_rate(optimizer, new_lr)
-            print("Reduced learning rate to {}".format(new_lr))
+        # if epoch_counter == 30 or epoch_counter == 50:
+        #     current_lr = optimizer.param_groups[0]['lr']
+        #     new_lr = current_lr * 0.1
+        #     utils.update_learning_rate(optimizer, new_lr)
+        #     print("Reduced learning rate to {}".format(new_lr))
 
         for batch_idx, (data, target) in enumerate(adapt_loader):
             data, target = data.to(device), target.to(device)
