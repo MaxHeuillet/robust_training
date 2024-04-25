@@ -156,6 +156,7 @@ for i in range(n_queries):
     adapt_loader = DataLoader(adapt_dataset, batch_size=128, shuffle=True)
     for _ in range(10):
         print('epoch {}'.format(_) )
+        sys.stdout.flush()
         model.train()
         for batch_idx, (data, target) in enumerate(train_loader):
             data, target = data.to(device), target.to(device)
@@ -165,8 +166,7 @@ for i in range(n_queries):
             loss.backward()
             optimizer.step()
         print('epoch finished')
-
-    sys.stdout.flush()
+        sys.stdout.flush()
 
 print('start saving model')
 sys.stdout.flush()
