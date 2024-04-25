@@ -44,6 +44,48 @@ def uncertainty_sampling(model, loader, n_instances=10):
     return [all_indices[i] for i in uncertainty_indices]
 
 
+def margin_sampling(model, loader, n_instances=10):
+    device = 'cuda'
+    model.eval()
+    all_indices = list(range(len(loader.dataset)))
+    uncertainties = []
+    
+    with torch.no_grad():
+        for images, _ in loader:
+            images = images.to(device)
+            outputs = torch.softmax(model(images), dim=1)
+            # Sort the outputs to get the top two
+            top_probs, _ = outputs.topk(2, dim=1, largest=True, sorted=True)
+            # Calculate the margin (difference between the top two probabilities)
+            margin = top_probs[:, 0] - top_probs[:, 1]
+            uncertainties.extend(margin.tolist())
+    
+    # Select the indices of the top uncertain instances (smallest margin)
+    uncertainty_indices = np.argsort(uncertainties)[:n_instances]
+
+    return [all_indices[i] for i in uncertainty_indices]
+
+
+# Modified uncertainty sampling function to use classification entropy
+def entropy_sampling(model, loader, n_instances=10):
+    device = 'cuda'
+    model.eval()
+    all_indices = list(range(len(loader.dataset)))
+    uncertainties = []
+    
+    with torch.no_grad():
+        for images, _ in loader:
+            images = images.to(device)
+            outputs = torch.softmax(model(images), dim=1)
+            # Calculate the entropy
+            entropy = -torch.sum(outputs * torch.log(outputs + 1e-12), dim=1)  # Adding a small epsilon to avoid log(0)
+            uncertainties.extend(entropy.tolist())
+    
+    # Select the indices of the top uncertain instances (highest entropy)
+    uncertainty_indices = np.argsort(uncertainties)[-n_instances:]
+
+    return [all_indices[i] for i in uncertainty_indices]
+
 # Random sampling function
 def random_sampling(model, loader, n_instances=10):
     # List of all dataset indices
