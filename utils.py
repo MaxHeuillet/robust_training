@@ -271,3 +271,8 @@ def compute_PGD_accuracy(model, test_loader, device='cuda'):
     
     robust_accuracy = 100 * correct / total
     return robust_accuracy
+
+
+def update_learning_rate(optimizer, lr):
+    for param_group in optimizer.param_groups:
+        param_group['lr'] = lr
