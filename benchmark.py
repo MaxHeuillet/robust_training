@@ -37,6 +37,7 @@ parser.add_argument("--eval_type", required=True, help="wether to compute clean 
 parser.add_argument("--n_rounds", required=True, help="nb of active learning rounds")
 parser.add_argument("--nb_epochs", required=True, help="nb of Lora epochs")
 parser.add_argument("--round_size", required=True, help="wether to compute clean accuracy, PGD robustness or AA robustness")
+parser.add_argument("--active_strategy", required=True, help="which observation strategy to choose")
 
 args = parser.parse_args()
 
@@ -54,7 +55,7 @@ sys.stdout.flush()
 
 ##############################################
 
-print('begin the evaluation experiment with {} // {} // {} '.format(args.n_rounds,args.round_size,args.nb_epochs) )
+print('begin the evaluation experiment with {} // {} // {} // {} '.format(args.active_strategy, args.n_rounds,args.round_size,args.nb_epochs) )
 sys.stdout.flush()
 
 mean_cifar10 = (0.4914, 0.4822, 0.4465)
@@ -125,7 +126,13 @@ for i in range(n_rounds):
     print( 'iteration {}'.format(i) )
     
     pool_loader = DataLoader( Subset(pool_dataset, pool_indices), batch_size=1000, shuffle=False)
-    query_indices = active.uncertainty_sampling(model, pool_loader, round_size)
+    
+    if args.active_strategy == 'uncertainty':
+        query_indices = active.uncertainty_sampling(model, pool_loader, round_size)
+    elif args.active_strategy == 'random':
+        query_indices = active.random_sampling(model, pool_loader, n_instances=10)
+    else:
+        print('error')
 
     global_query_indices = [ pool_indices[idx] for idx in query_indices]
 
@@ -171,14 +178,14 @@ for i in range(n_rounds):
 
 print('start saving model')
 sys.stdout.flush()
-torch.save(model.state_dict(), './models/experiment_{}_{}_{}.pth'.format(args.n_rounds,args.round_size,args.nb_epochs) )
+torch.save(model.state_dict(), './models/experiment_{}_{}_{}_{}.pth'.format(args.active_strategy, args.n_rounds,args.round_size,args.nb_epochs) )
 print('finished saving model')
 sys.stdout.flush()
 
 
 ##############################################
 
-print('begin the evaluation experiment with {} // {} // {} '.format(args.n_rounds,args.round_size,args.nb_epochs) )
+print('begin the evaluation experiment with {} // {} // {} // {} '.format(args.active_strategy, args.n_rounds,args.round_size,args.nb_epochs) )
 sys.stdout.flush()
 
 test_dataset = datasets.CIFAR10(root='./data', train=False, transform=transform)
