@@ -12,6 +12,8 @@ from torch.optim.lr_scheduler import StepLR
 import models 
 import utils
 
+import sys
+
 ###################################
 # Experiments
 ###################################
@@ -55,6 +57,8 @@ test_loader = DataLoader(test_dataset, batch_size=1000, shuffle=False)
 
 # model = LeNet().to(device)
 model = models.resnet.resnet50(pretrained=True, progress=True, device="cuda").to('cuda')
+print('model loaded successfully')
+sys.stdout.flush()
 
 ##############################################
 
@@ -72,6 +76,8 @@ for conv_layer in layers:
     lora_param = lora.layer_parametrization(conv_layer, device="cuda", rank=10, lora_alpha=1)
     parametrize.register_parametrization(conv_layer, 'weight', lora_param)
 
+sys.stdout.flush()
+
 ######## remove gradient tracking on main weights and put gradient tracking on lora matrices:
 
 for name, param in model.named_parameters():
@@ -85,6 +91,8 @@ for layer in layers:
 for name, param in model.named_parameters():
    if param.requires_grad:
         print(f"Parameter: {name}, Shape: {param.size()}")
+
+sys.stdout.flush()
 
 ######## configuration of the experiment:
 
@@ -142,6 +150,7 @@ for i in range(n_queries):
 
     ################# Update the ResNet through low rank matrices:
     print('start training process')
+    sys.stdout.flush()
 
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
     adapt_loader = DataLoader(adapt_dataset, batch_size=128, shuffle=True)
@@ -155,19 +164,30 @@ for i in range(n_queries):
             print(loss)
             loss.backward()
             optimizer.step()
+        print('epoch finished')
 
+    sys.stdout.flush()
+
+print('start saving model')
+sys.stdout.flush()
 torch.save(model.state_dict(), './models/experiment.pth')
+print('finished saving model')
+sys.stdout.flush()
+
 
 ##############################################
 
 print('begin the evaluation experiment')
 
-
+sys.stdout.flush()
 accuracy = utils.compute_clean_accuracy(model, test_loader)
 print(f'The clean accuracy of the model on the test set is {accuracy}%')
 
+sys.stdout.flush()
 accuracy = utils.compute_PGD_accuracy(model, test_loader, device='cuda')
 print(f'The PGD accuracy of the model on the test set is {accuracy}%')
+
+sys.stdout.flush()
 
 #if args.eval_type == 'clean':
 #elif args.eval_type == 'PGD':
