@@ -42,19 +42,6 @@ ngpus = int( torch.cuda.device_count() )
 
 device = 'cuda'
 
-mean_cifar10 = (0.4914, 0.4822, 0.4465)
-std_cifar10 = (0.2023, 0.1994, 0.2010)
-
-transform = transforms.Compose([
-            transforms.ToTensor(),
-            transforms.Normalize(mean_cifar10, std_cifar10)  ])
-
-train_dataset = datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
-test_dataset = datasets.CIFAR10(root='./data', train=False, transform=transform)
-
-train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
-test_loader = DataLoader(test_dataset, batch_size=1000, shuffle=False)
-
 # model = LeNet().to(device)
 model = models.resnet.resnet50(pretrained=True, progress=True, device="cuda").to('cuda')
 print('model loaded successfully')
@@ -126,15 +113,9 @@ transform = transforms.Compose([
     transforms.Normalize(mean_cifar10, std_cifar10)  ])
 
 pool_dataset = datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
-pool_loader = DataLoader(train_dataset, batch_size=128, shuffle=True)
-
-# Initialize model, optimizer, and loss function
-model = models.resnet.resnet50(pretrained=True, progress=True, device="cuda").to('cuda')
-optimizer = optim.Adam(model.parameters(), lr=0.001)
-criterion = nn.CrossEntropyLoss()
+pool_loader = DataLoader(pool_dataset, batch_size=128, shuffle=True)
 
 adapt_dataset = active.EmptyDataset()
-
 pool_indices = list( range(len(pool_loader.dataset ) ) ) 
 n_queries = 6
 active_batch_size = 100
@@ -174,7 +155,8 @@ for i in range(n_queries):
         for batch_idx, (data, target) in enumerate(adapt_loader):
             data, target = data.to(device), target.to(device)
             optimizer.zero_grad()
-            loss = trades.trades_loss(model=model, x_natural=data, y=target, optimizer=optimizer,)
+            # loss = trades.trades_loss(model=model, x_natural=data, y=target, optimizer=optimizer,)
+            loss = nn.CrossEntropyLoss()( model(data) ,target)
             print(loss)
             loss.backward()
             optimizer.step()
