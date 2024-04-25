@@ -118,6 +118,7 @@ pool_indices = list( range(len(pool_loader.dataset ) ) )
 
 ############# execution of the experiment:
 
+epoch_counter = 0
 
 for i in range(n_rounds):
 
@@ -141,14 +142,21 @@ for i in range(n_rounds):
     sys.stdout.flush()
 
     # optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
-    optimizer = torch.optim.SGD( model.parameters(),lr=1e-2,
-                                 weight_decay=1e-2, momentum=0.9, nesterov=True, )
+    optimizer = torch.optim.SGD( model.parameters(),lr=0.001, weight_decay=0.0001, momentum=0.1, nesterov=True, )
 
     adapt_loader = DataLoader(adapt_dataset, batch_size=128, shuffle=True)
     for _ in range(nb_epochs):
         print('epoch {}'.format(_) )
         sys.stdout.flush()
         model.train()
+
+        # Check if epoch_counter is at a milestone to reduce learning rate
+        if epoch_counter == 30 or epoch_counter == 50:
+            current_lr = optimizer.param_groups[0]['lr']
+            new_lr = current_lr * 0.1
+            utils.update_learning_rate(optimizer, new_lr)
+            print("Reduced learning rate to {}".format(new_lr))
+
         for batch_idx, (data, target) in enumerate(adapt_loader):
             data, target = data.to(device), target.to(device)
             optimizer.zero_grad()
@@ -159,6 +167,7 @@ for i in range(n_rounds):
             optimizer.step()
         print('epoch finished')
         sys.stdout.flush()
+        epoch_counter +=1
 
 print('start saving model')
 sys.stdout.flush()
