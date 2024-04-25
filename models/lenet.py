@@ -1,3 +1,6 @@
+import pytorch
+import torch.nn as nn
+
 # Define the LeNet architecture with modern practices
 class LeNet(nn.Module):
     def __init__(self):
