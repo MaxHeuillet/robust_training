@@ -1,7 +1,7 @@
 import torch
 import numpy as np
 from torch.utils.data import Dataset
-
+import random
 
 
 # Define an Empty Dataset
@@ -42,3 +42,14 @@ def uncertainty_sampling(model, loader, n_instances=10):
     uncertainty_indices = np.argsort(uncertainties)[-n_instances:]
 
     return [all_indices[i] for i in uncertainty_indices]
+
+
+# Random sampling function
+def random_sampling(model, loader, n_instances=10):
+    # List of all dataset indices
+    all_indices = list(range(len(loader.dataset)))
+    
+    # Randomly select 'n_instances' indices
+    random_indices = random.sample(all_indices, n_instances)
+    
+    return random_indices
