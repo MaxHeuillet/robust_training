@@ -38,9 +38,11 @@ parser.add_argument("--n_rounds", required=True, help="nb of active learning rou
 parser.add_argument("--nb_epochs", required=True, help="nb of Lora epochs")
 parser.add_argument("--round_size", required=True, help="wether to compute clean accuracy, PGD robustness or AA robustness")
 
-
-
 args = parser.parse_args()
+
+n_rounds = int(args.n_rounds)
+round_size = int(args.round_size)
+nb_epochs = int(args.nb_epochs)
 
 ############################# INITIATE THE EXPERIMENT:
 
@@ -116,12 +118,13 @@ pool_indices = list( range(len(pool_loader.dataset ) ) )
 
 ############# execution of the experiment:
 
-for i in range(args.n_rounds):
+
+for i in range(n_rounds):
 
     print( 'iteration {}'.format(i) )
     
     pool_loader = DataLoader( Subset(pool_dataset, pool_indices), batch_size=1000, shuffle=False)
-    query_indices = active.uncertainty_sampling(model, pool_loader, args.round_size)
+    query_indices = active.uncertainty_sampling(model, pool_loader, round_size)
 
     global_query_indices = [ pool_indices[idx] for idx in query_indices]
 
@@ -142,7 +145,7 @@ for i in range(args.n_rounds):
                                  weight_decay=1e-2, momentum=0.9, nesterov=True, )
 
     adapt_loader = DataLoader(adapt_dataset, batch_size=128, shuffle=True)
-    for _ in range(args.nb_epochs):
+    for _ in range(nb_epochs):
         print('epoch {}'.format(_) )
         sys.stdout.flush()
         model.train()
