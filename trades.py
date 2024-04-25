@@ -55,8 +55,7 @@ def trades_loss(model,
             # optimize
             optimizer_delta.zero_grad()
             with torch.enable_grad():
-                loss = (-1) * criterion_kl(F.log_softmax(model(adv), dim=1),
-                                           F.softmax(model(x_natural), dim=1))
+                loss = (-1) * criterion_kl(F.log_softmax(model(adv), dim=1),  F.softmax(model(x_natural), dim=1))
             loss.backward()
             # renorming gradient
             grad_norms = delta.grad.view(batch_size, -1).norm(p=2, dim=1)
@@ -81,7 +80,6 @@ def trades_loss(model,
     # calculate robust loss
     logits = model(x_natural)
     loss_natural = F.cross_entropy(logits, y)
-    loss_robust = (1.0 / batch_size) * criterion_kl(F.log_softmax(model(x_adv), dim=1),
-                                                    F.softmax(model(x_natural), dim=1))
+    loss_robust = (1.0 / batch_size) * criterion_kl(F.log_softmax(model(x_adv), dim=1), F.softmax(model(x_natural), dim=1))
     loss = loss_natural + beta * loss_robust
     return loss

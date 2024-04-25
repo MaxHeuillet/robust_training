@@ -142,7 +142,7 @@ for i in range(n_rounds):
     sys.stdout.flush()
 
     # optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
-    optimizer = torch.optim.SGD( model.parameters(),lr=0.001, weight_decay=0.0001, momentum=0.1, nesterov=True, )
+    optimizer = torch.optim.SGD( model.parameters(),lr=0.001, weight_decay=0.0001, momentum=0.9, nesterov=True, )
 
     adapt_loader = DataLoader(adapt_dataset, batch_size=128, shuffle=True)
     for _ in range(nb_epochs):
@@ -160,8 +160,8 @@ for i in range(n_rounds):
         for batch_idx, (data, target) in enumerate(adapt_loader):
             data, target = data.to(device), target.to(device)
             optimizer.zero_grad()
-            # loss = trades.trades_loss(model=model, x_natural=data, y=target, optimizer=optimizer,)
-            loss = nn.CrossEntropyLoss()( model(data) ,target)
+            loss = trades.trades_loss(model=model, x_natural=data, y=target, optimizer=optimizer,)
+            # loss = nn.CrossEntropyLoss()( model(data) ,target)
             print(loss)
             loss.backward()
             optimizer.step()
