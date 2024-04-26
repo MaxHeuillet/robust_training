@@ -109,7 +109,7 @@ def attack_sampling(model, loader):
     alpha = epsilon/4
     
     for i, (images, labels) in enumerate(loader):
-        model.trail()
+        model.train()
         images = images.to(device)
         labels = labels.to(device)
         # Apply the attack to the images
