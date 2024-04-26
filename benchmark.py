@@ -136,7 +136,7 @@ for i in range(n_rounds):
     elif args.active_strategy == 'random':
         query_indices = active.random_sampling(model, pool_loader, round_size)
     elif args.active_strategy == 'attack':
-        query_indices = active.attack_sampling(model, pool_loader)
+        query_indices = active.attack_sampling(model, pool_loader, round_size)
     else:
         print('error')
 

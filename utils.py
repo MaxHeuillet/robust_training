@@ -245,7 +245,7 @@ def compute_PGD_accuracy(model, test_loader, device='cuda'):
     total = 0
 
     epsilon = 8/255
-    n_restarts = 1
+    n_restarts = 10
     attack_iters = 50
     alpha = epsilon/4
     

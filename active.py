@@ -98,14 +98,14 @@ def random_sampling(model, loader, n_instances=10):
     return random_indices
 
 
-def attack_sampling(model, loader):
+def attack_sampling(model, loader, n_instances=10):
     device = 'cuda'
     
     all_indices = []
     successful_attack_indices = []
     epsilon = 8/255
-    n_restarts = 1
-    attack_iters = 50
+    n_restarts = 2
+    attack_iters = 10
     alpha = epsilon/4
     
     for i, (images, labels) in enumerate(loader):
@@ -127,5 +127,7 @@ def attack_sampling(model, loader):
         # Store indices of successfully attacked observations
         batch_indices = [idx for idx, success in zip(range(i * loader.batch_size, i * loader.batch_size + len(labels)), attack_success) if success]
         successful_attack_indices.extend(batch_indices)
+
+    result = random.sample(successful_attack_indices, n_instances)
     
-    return successful_attack_indices
+    return result
