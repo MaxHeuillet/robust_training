@@ -2,6 +2,7 @@ import torch
 import numpy as np
 from torch.utils.data import Dataset
 import random
+import utils
 
 
 # Define an Empty Dataset
@@ -95,3 +96,35 @@ def random_sampling(model, loader, n_instances=10):
     random_indices = random.sample(all_indices, n_instances)
     
     return random_indices
+
+
+def attack_sampling(model, loader, attack_function):
+    device = 'cuda'
+    model.eval()
+    all_indices = []
+    successful_attack_indices = []
+    epsilon = 8/255
+    n_restarts = 1
+    attack_iters = 50
+    alpha = epsilon/4
+    
+    with torch.no_grad():
+        for i, (images, labels) in enumerate(loader):
+            images = images.to(device)
+            labels = labels.to(device)
+            # Apply the attack to the images
+
+            delta = utils.attack_pgd_restart(model, images, labels, epsilon, alpha, attack_iters, n_restarts, rs=True, verbose=False,
+               linf_proj=True, l2_proj=False, l2_grad_update=False, cuda=True)
+        
+            x_adv = images + delta
+
+            outputs = model( x_adv )
+            _, predicted_labels = torch.max(outputs, dim=1)
+            # Compare predictions with the true labels
+            attack_success = predicted_labels != labels
+            # Store indices of successfully attacked observations
+            batch_indices = [idx for idx, success in zip(range(i * loader.batch_size, i * loader.batch_size + len(labels)), attack_success) if success]
+            successful_attack_indices.extend(batch_indices)
+    
+    return successful_attack_indices
