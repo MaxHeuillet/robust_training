@@ -98,7 +98,7 @@ def random_sampling(model, loader, n_instances=10):
     return random_indices
 
 
-def attack_sampling(model, loader, attack_function):
+def attack_sampling(model, loader):
     device = 'cuda'
     model.eval()
     all_indices = []
