@@ -14,6 +14,6 @@ sbatch --export=ALL,EVAL_TYPE='clean',NROUNDS=6,NBEPOCHS=10,RSIZE=1000,ASTRAT='a
 
 # sbatch --export=ALL,EVAL_TYPE='clean',NROUNDS=1,NBEPOCHS=60,RSIZE=6000,ASTRAT='random' ./experiment.sh
 # sbatch --export=ALL,EVAL_TYPE='clean',NROUNDS=1,NBEPOCHS=60,RSIZE=6000,ASTRAT='uncertainty' ./experiment.sh
-# sbatch --export=ALL,EVAL_TYPE='clean',NROUNDS=1,NBEPOCHS=60,RSIZE=6000,ASTRAT='margin' ./experiment.sh
+sbatch --export=ALL,EVAL_TYPE='clean',NROUNDS=1,NBEPOCHS=60,RSIZE=6000,ASTRAT='margin' ./experiment.sh
 # sbatch --export=ALL,EVAL_TYPE='clean',NROUNDS=1,NBEPOCHS=60,RSIZE=6000,ASTRAT='entropy' ./experiment.sh
 sbatch --export=ALL,EVAL_TYPE='clean',NROUNDS=1,NBEPOCHS=60,RSIZE=6000,ASTRAT='attack' ./experiment.sh
