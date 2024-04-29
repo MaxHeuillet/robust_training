@@ -48,3 +48,16 @@ def layer_parametrization(layer, device, rank = 10, lora_alpha = 1):
   
   return LoRA(features_in, features_out, rank = rank, alpha = lora_alpha, device = device)
      
+
+def set_lora_gradients(model, layers):
+  for name, param in model.named_parameters():
+    if 'mat' not in name:
+      print(f'Freezing non-LoRA parameter {name}')
+      param.requires_grad = False
+  
+  for layer in layers:
+    layer.parametrizations["weight"][0].requires_grad = True
+  
+  for name, param in model.named_parameters():
+    if param.requires_grad:
+      print(f"Parameter: {name}, Shape: {param.size()}")
