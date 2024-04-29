@@ -186,7 +186,7 @@ for i in range(n_rounds):
             optimizer.zero_grad()
             loss = trades.trades_loss(model=model, x_natural=data, y=target, optimizer=optimizer,)
             # loss = nn.CrossEntropyLoss()( model(data) ,target)
-            print(loss)
+            # print(loss)
             loss.backward()
             optimizer.step()
         print('epoch finished')
