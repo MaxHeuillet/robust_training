@@ -42,6 +42,7 @@ parser.add_argument("--size", required=True, help="wether to compute clean accur
 parser.add_argument("--active_strategy", required=True, help="which observation strategy to choose")
 parser.add_argument("--seed", required=True, help="the random seed")
 parser.add_argument("--data", required=True, help="the data used for the experiment")
+parser.add_argument("--model", required=True, help="the model used for the experiment")
 
 args = parser.parse_args()
 
