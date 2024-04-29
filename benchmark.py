@@ -36,7 +36,6 @@ os.environ["OMP_NUM_THREADS"] = "1"
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument("--eval_type", required=True, help="wether to compute clean accuracy, PGD robustness or AA robustness")
 parser.add_argument("--n_rounds", required=True, help="nb of active learning rounds")
 parser.add_argument("--nb_epochs", required=True, help="nb of Lora epochs")
 parser.add_argument("--size", required=True, help="wether to compute clean accuracy, PGD robustness or AA robustness")
