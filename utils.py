@@ -17,6 +17,38 @@ import numpy as np
 import os
 
 
+def get_indices_for_round(L, n, current_round):
+    """
+    Returns the list of indices for the specified round.
+    
+    Args:
+    L (int): Total number of indices.
+    n (int): Total number of rounds.
+    current_round (int): The current round (1-based index).
+    
+    Returns:
+    list: The indices for the current round.
+    """
+
+    current_round = current_round+1
+    base_chunk_size = L // n  # Basic size of each chunk
+    remainder = L % n  # Remaining indices after equally dividing
+
+    # Calculate the start index for the current round
+    if current_round <= remainder:
+        start_index = (base_chunk_size + 1) * (current_round - 1)
+    else:
+        start_index = (base_chunk_size + 1) * remainder + base_chunk_size * (current_round - remainder - 1)
+
+    # Calculate the end index for the current round
+    if current_round <= remainder:
+        end_index = start_index + base_chunk_size + 1
+    else:
+        end_index = start_index + base_chunk_size
+
+    # Return the slice of indices corresponding to the current round
+    return list(range(start_index, end_index))
+
 def add_data(query_indices, pool_indices, pool_dataset, adapt_dataset):
     global_query_indices = [ pool_indices[idx] for idx in query_indices]
 

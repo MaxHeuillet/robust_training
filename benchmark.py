@@ -39,7 +39,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--eval_type", required=True, help="wether to compute clean accuracy, PGD robustness or AA robustness")
 parser.add_argument("--n_rounds", required=True, help="nb of active learning rounds")
 parser.add_argument("--nb_epochs", required=True, help="nb of Lora epochs")
-parser.add_argument("--round_size", required=True, help="wether to compute clean accuracy, PGD robustness or AA robustness")
+parser.add_argument("--size", required=True, help="wether to compute clean accuracy, PGD robustness or AA robustness")
 parser.add_argument("--active_strategy", required=True, help="which observation strategy to choose")
 parser.add_argument("--seed", required=True, help="the random seed")
 parser.add_argument("--data", required=True, help="the data used for the experiment")
@@ -50,12 +50,12 @@ args = parser.parse_args()
 result = {}
 
 n_rounds = int(args.n_rounds)
-round_size = int(args.round_size)
+size = int(args.size)
 nb_epochs = int(args.nb_epochs)
 seed = int(args.seed)
 
 result['n_rounds'] = n_rounds
-result['round_size'] = round_size
+result['size'] = size
 result['nb_epochs'] = nb_epochs
 result['seed'] = seed
 result['data'] = args.data
@@ -151,6 +151,7 @@ pool_indices = list( range(len(pool_loader.dataset ) ) )
 ############# execution of the experiment:
 
 epoch_counter = 0
+round_size = size / n_rounds
 
 for i in range(n_rounds):
 
@@ -218,14 +219,14 @@ print('total amount of data used: {}'.format( len(adapt_loader)  )  )
 
 print('start saving model')
 sys.stdout.flush()
-torch.save(model.state_dict(), './models/experiment_{}_{}_{}_{}.pth'.format(args.active_strategy, args.n_rounds,args.round_size,args.nb_epochs) )
+torch.save(model.state_dict(), './models/experiment_{}_{}_{}_{}.pth'.format(args.active_strategy, args.n_rounds,args.size,args.nb_epochs) )
 print('finished saving model')
 sys.stdout.flush()
 
 
 ##############################################
 
-print('begin the evaluation experiment with {} // {} // {} // {} '.format(args.active_strategy, args.n_rounds,args.round_size,args.nb_epochs) )
+print('begin the evaluation experiment with {} // {} // {} // {} '.format(args.active_strategy, args.n_rounds,args.size,args.nb_epochs) )
 sys.stdout.flush()
 
 accuracy = utils.compute_clean_accuracy(model, test_loader)
@@ -242,7 +243,7 @@ result['final_PGD_accuracy'] = accuracy
 
 print(result)
 print('finished')
-with gzip.open( './results/{}_{}_{}_{}_{}_{}.pkl.gz'.format(args.data, args.model, n_rounds, round_size, nb_epochs, seed) ,'ab') as f:
+with gzip.open( './results/{}_{}_{}_{}_{}_{}.pkl.gz'.format(args.data, args.model, n_rounds, size, nb_epochs, seed) ,'ab') as f:
         pkl.dump(result,f)
 print('saved')
 
