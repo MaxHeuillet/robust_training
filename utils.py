@@ -12,6 +12,40 @@ import torch
 import torch.nn.functional as F
 import time
 
+import random
+import numpy as np
+import os
+
+
+def add_data(query_indices, pool_indices, pool_dataset, adapt_dataset):
+    global_query_indices = [ pool_indices[idx] for idx in query_indices]
+
+    for idx in global_query_indices:
+        image, label = pool_dataset[idx]
+        adapt_dataset.add_data( [image], [label] )
+    
+    return [idx for idx in pool_indices if idx not in global_query_indices]
+    
+
+
+def set_seeds(seed):
+    """
+    Set the seed for reproducibility in all used libraries.
+    
+    Args:
+    seed (int): The seed number to set.
+    """
+    # Setting the seed for various Python, Numpy and PyTorch operations
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)  # if you are using multi-GPU.
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+    
+    # Setting the seed for the OS
+    os.environ['PYTHONHASHSEED'] = str(seed)
 
 # Attack types
 
