@@ -8,7 +8,7 @@
 
 seeds=$1
 model='resnet50'
-data='cifar10'
+data='CIFAR10'
 
 for ((id=0; id<$seeds; id+=1)); do
 
