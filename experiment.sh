@@ -12,9 +12,6 @@
 #SBATCH --mail-user=maxime.heuillet.1@ulaval.ca
 #SBATCH --mail-type=ALL
 
-
-echo 'EVAL_TYPE' ${EVAL_TYPE} 
-
 module --force purge
 module load StdEnv/2020
 module load python/3.10
@@ -31,5 +28,5 @@ source /home/mheuill/projects/def-adurand/mheuill/MYENV3/bin/activate
 
 echo 'HZ: start python3 ./experiment.py ..at '; date
 
-python3 ./benchmark.py --seed ${SEED} --eval_type ${EVAL_TYPE} --n_rounds ${NROUNDS} --nb_epochs ${NBEPOCHS} --round_size ${RSIZE} --active_strategy ${ASTRAT}  > stdout_$SLURM_JOB_ID 2>stderr_$SLURM_JOB_ID
+python3 ./benchmark.py --data ${data} --model ${MODEL} --seed ${SEED} --n_rounds ${NROUNDS} --nb_epochs ${NBEPOCHS} --round_size ${RSIZE} --active_strategy ${ASTRAT}  > stdout_$SLURM_JOB_ID 2>stderr_$SLURM_JOB_ID
 
