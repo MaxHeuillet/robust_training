@@ -124,31 +124,43 @@ epoch_counter = 0
 for i in range(n_rounds):
 
     print( 'iteration {}'.format(i) )
+
+    if args.active_strategy != 'full':
     
-    pool_loader = DataLoader( Subset(pool_dataset, pool_indices), batch_size=1000, shuffle=False)
-    
-    if args.active_strategy == 'uncertainty':
-        query_indices = active.uncertainty_sampling(model, pool_loader, round_size)
-    elif args.active_strategy == 'entropy':
-        query_indices = active.entropy_sampling(model, pool_loader, round_size)
-    elif args.active_strategy == 'margin':
-        query_indices = active.margin_sampling(model, pool_loader, round_size)
-    elif args.active_strategy == 'random':
-        query_indices = active.random_sampling(model, pool_loader, round_size)
-    elif args.active_strategy == 'attack':
-        query_indices = active.attack_sampling(model, pool_loader, round_size)
+        pool_loader = DataLoader( Subset(pool_dataset, pool_indices), batch_size=1000, shuffle=False)
+        
+        if args.active_strategy == 'uncertainty':
+            query_indices = active.uncertainty_sampling(model, pool_loader, round_size)
+        elif args.active_strategy == 'entropy':
+            query_indices = active.entropy_sampling(model, pool_loader, round_size)
+        elif args.active_strategy == 'margin':
+            query_indices = active.margin_sampling(model, pool_loader, round_size)
+        elif args.active_strategy == 'random':
+            query_indices = active.random_sampling(model, pool_loader, round_size)
+        elif args.active_strategy == 'attack':
+            query_indices = active.attack_sampling(model, pool_loader, round_size)
+        else:
+            print('error')
+
+        global_query_indices = [ pool_indices[idx] for idx in query_indices]
+
+        for idx in global_query_indices:
+            image, label = pool_dataset[idx]
+            adapt_dataset.add_data( [image], [label] )
+
+        # Remove queried instances from the pool
+        pool_indices = [idx for idx in pool_indices if idx not in global_query_indices]
+        print( len(pool_indices) )
+
+        adapt_loader = DataLoader(adapt_dataset, batch_size=128, shuffle=True)
+
+    elif args.active_strategy == 'full':
+
+        adapt_loader = DataLoader(pool_dataset, batch_size=128, shuffle=True)
+
     else:
         print('error')
-
-    global_query_indices = [ pool_indices[idx] for idx in query_indices]
-
-    for idx in global_query_indices:
-        image, label = pool_dataset[idx]
-        adapt_dataset.add_data( [image], [label] )
-
-    # Remove queried instances from the pool
-    pool_indices = [idx for idx in pool_indices if idx not in global_query_indices]
-    print( len(pool_indices) )
+    
 
     ################# Update the ResNet through low rank matrices:
     print('start training process')
@@ -157,7 +169,6 @@ for i in range(n_rounds):
     # optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
     optimizer = torch.optim.SGD( model.parameters(),lr=0.001, weight_decay=0.0001, momentum=0.9, nesterov=True, )
 
-    adapt_loader = DataLoader(adapt_dataset, batch_size=128, shuffle=True)
     for _ in range(nb_epochs):
         print('epoch {}'.format(_) )
         sys.stdout.flush()
