@@ -77,7 +77,7 @@ sys.stdout.flush()
 
 ##############################################
 
-print('begin the evaluation experiment with {} // {} // {} // {} '.format(args.active_strategy, args.n_rounds,args.round_size,args.nb_epochs) )
+print('begin the evaluation experiment with {} // {} // {} // {} '.format(args.active_strategy, args.n_rounds,args.size,args.nb_epochs) )
 sys.stdout.flush()
 
 if args.data == 'CIFAR10':
