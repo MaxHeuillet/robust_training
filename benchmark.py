@@ -54,6 +54,7 @@ size = int(args.size)
 nb_epochs = int(args.nb_epochs)
 seed = int(args.seed)
 
+result['active_strategy'] = n_rounds
 result['n_rounds'] = n_rounds
 result['size'] = size
 result['nb_epochs'] = nb_epochs
@@ -125,17 +126,7 @@ sys.stdout.flush()
 
 ######## remove gradient tracking on main weights and put gradient tracking on lora matrices:
 
-for name, param in model.named_parameters():
-    if 'mat' not in name:
-        print(f'Freezing non-LoRA parameter {name}')
-        param.requires_grad = False
-
-for layer in layers:
-  layer.parametrizations["weight"][0].requires_grad = True
-
-for name, param in model.named_parameters():
-   if param.requires_grad:
-        print(f"Parameter: {name}, Shape: {param.size()}")
+lora.set_lora_gradients(model, layers)
 
 sys.stdout.flush()
 
@@ -149,9 +140,9 @@ pool_indices = list( range(len(pool_loader.dataset ) ) )
 
 
 ############# execution of the experiment:
-
+import math
 epoch_counter = 0
-round_size = size / n_rounds
+round_size = math.ceil(size / n_rounds)
 
 for i in range(n_rounds):
 
@@ -176,7 +167,7 @@ for i in range(n_rounds):
         pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
     elif args.active_strategy == 'full':
         query_indices = utils.get_indices_for_round( len(pool_loader.dataset), n_rounds, i)
-        pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
+        _ = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
     else:
         print('error')
 
@@ -196,12 +187,12 @@ for i in range(n_rounds):
         sys.stdout.flush()
         model.train()
 
-        # Check if epoch_counter is at a milestone to reduce learning rate
-        # if epoch_counter == 30 or epoch_counter == 50:
-        #     current_lr = optimizer.param_groups[0]['lr']
-        #     new_lr = current_lr * 0.1
-        #     utils.update_learning_rate(optimizer, new_lr)
-        #     print("Reduced learning rate to {}".format(new_lr))
+        #Check if epoch_counter is at a milestone to reduce learning rate
+        if epoch_counter == 30 or epoch_counter == 50:
+            current_lr = optimizer.param_groups[0]['lr']
+            new_lr = current_lr * 0.1
+            utils.update_learning_rate(optimizer, new_lr)
+            print("Reduced learning rate to {}".format(new_lr))
 
         for batch_idx, (data, target) in enumerate(adapt_loader):
             data, target = data.to(device), target.to(device)
@@ -243,7 +234,7 @@ result['final_PGD_accuracy'] = accuracy
 
 print(result)
 print('finished')
-with gzip.open( './results/{}_{}_{}_{}_{}_{}.pkl.gz'.format(args.data, args.model, n_rounds, size, nb_epochs, seed) ,'ab') as f:
+with gzip.open( './results/{}_{}_{}_{}_{}_{}_{}.pkl.gz'.format(args.data, args.model, args.active_strategy, n_rounds, size, nb_epochs, seed) ,'ab') as f:
         pkl.dump(result,f)
 print('saved')
 

@@ -6,27 +6,30 @@
 #     sbatch --export=ALL,EVAL_TYPE=$eval_type,NROUNDS=$nrounds,NBEPOCHS=$nbepochs,RSIZE=$rsize,ASTRAT=$astrat ./experiment.sh     
 #     done
 
+
 seeds=$1
+
 model='resnet50'
 data='CIFAR10'
 
-for ((id=0; id<$seeds; id+=1)); do
-
+# First set of experiments
+for ((id=0; id<$seeds; id++)); do
     sbatch --export=ALL,NROUNDS=6,NBEPOCHS=10,SIZE=0,ASTRAT='full',MODEL=$model,DATA=$data,SEED=$id ./experiment.sh
-
-    # sbatch --export=ALL,NROUNDS=6,NBEPOCHS=10,SIZE=$2,ASTRAT='random',SEED=$id ./experiment.sh
-    # sbatch --export=ALL,NROUNDS=6,NBEPOCHS=10,SIZE=$2,ASTRAT='uncertainty',SEED=$id ./experiment.sh
-    # sbatch --export=ALL,NROUNDS=6,NBEPOCHS=10,SIZE=$2,ASTRAT='margin',SEED=$id ./experiment.sh
-    # sbatch --export=ALL,NROUNDS=6,NBEPOCHS=10,SIZE=$2,ASTRAT='entropy',SEED=$id ./experiment.sh
-    # sbatch --export=ALL,NROUNDS=6,NBEPOCHS=10,SIZE=$2,ASTRAT='attack',SEED=$id ./experiment.sh
-
     sbatch --export=ALL,NROUNDS=1,NBEPOCHS=60,SIZE=0,ASTRAT='full',MODEL=$model,DATA=$data,SEED=$id ./experiment.sh
+done
 
-    # sbatch --export=ALL,NROUNDS=1,NBEPOCHS=60,SIZE=$2,ASTRAT='random',SEED=$id ./experiment.sh
-    # sbatch --export=ALL,NROUNDS=1,NBEPOCHS=60,SIZE=$2,ASTRAT='uncertainty',SEED=$id ./experiment.sh
-    # sbatch --export=ALL,NROUNDS=1,NBEPOCHS=60,SIZE=$2,ASTRAT='margin',SEED=$id ./experiment.sh
-    # sbatch --export=ALL,NROUNDS=1,NBEPOCHS=60,SIZE=$2,ASTRAT='entropy',SEED=$id ./experiment.sh
-    # sbatch --export=ALL,NROUNDS=1,NBEPOCHS=60,SIZE=$2,ASTRAT='attack',SEED=$id ./experiment.sh
+sizes=(500 1500 2500 5000 7500 10000 12500 25000 37500)
+strategies=('random' 'uncertainty' 'margin' 'entropy' 'attack')
 
+# Second set of experiments
+for size in "${sizes[@]}"; do
+    for strategy in "${strategies[@]}"; do
+        for ((id=0; id<$seeds; id++)); do
+            sbatch --export=ALL,NROUNDS=6,NBEPOCHS=10,SIZE=$size,ASTRAT=$strategy,SEED=$id ./experiment.sh
+            sbatch --export=ALL,NROUNDS=1,NBEPOCHS=60,SIZE=$size,ASTRAT=$strategy,SEED=$id ./experiment.sh
+        done
     done
+done
+
+
 
