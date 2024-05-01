@@ -208,11 +208,11 @@ for i in range(n_rounds):
 
 print('total amount of data used: {}'.format( len(adapt_loader)  )  )
 
-print('start saving model')
-sys.stdout.flush()
-torch.save(model.state_dict(), './models/experiment_{}_{}_{}_{}.pth'.format(args.active_strategy, args.n_rounds,args.size,args.nb_epochs) )
-print('finished saving model')
-sys.stdout.flush()
+# print('start saving model')
+# sys.stdout.flush()
+# torch.save(model.state_dict(), './models/experiment_{}_{}_{}_{}.pth'.format(args.active_strategy, args.n_rounds,args.size,args.nb_epochs) )
+# print('finished saving model')
+# sys.stdout.flush()
 
 
 ##############################################
@@ -234,7 +234,7 @@ result['final_PGD_accuracy'] = accuracy
 
 print(result)
 print('finished')
-with gzip.open( './results/{}_{}_{}_{}_{}_{}_{}.pkl.gz'.format(args.data, args.model, args.active_strategy, n_rounds, size, nb_epochs, seed) ,'ab') as f:
+with gzip.open( './results/{}_{}_{}_{}_{}_{}_{}_{}.pkl.gz'.format(args.loss, args.data, args.model, args.active_strategy, n_rounds, size, nb_epochs, seed) ,'ab') as f:
         pkl.dump(result,f)
 print('saved')
 
