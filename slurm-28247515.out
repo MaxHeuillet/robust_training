@@ -1,4 +1,0 @@
-EVAL_TYPE clean
-HZ: start python3 ./experiment.py ..at 
-Thu 25 Apr 2024 09:15:04 PM EDT
-slurmstepd: error: *** JOB 28247515 ON ng20601 CANCELLED AT 2024-04-26T01:30:31 DUE TO TIME LIMIT ***

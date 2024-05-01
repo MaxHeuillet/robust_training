@@ -15,6 +15,7 @@ import time
 import random
 import numpy as np
 import os
+import trades
 
 
 def get_indices_for_round(L, n, current_round):
@@ -150,6 +151,20 @@ def epoch_fast_AT(loader, model, device, opt=None,):
         total_err += (yp.max(dim=1)[1] != y).sum().item()
         total_loss += loss.item() * X.shape[0]
         
+    return total_err / len(loader.dataset), total_loss / len(loader.dataset)
+
+def epoch_TRADES(loader, model,device, opt=None,):
+    total_loss, total_err = 0.,0.
+    for X,y in loader:
+        X,y = X.to(device), y.to(device)
+        logits, loss = trades.trades_loss(model=model, x_natural=X, y=y, optimizer=opt,)
+        if opt:
+            opt.zero_grad()
+            loss.backward()
+            opt.step()
+        
+        total_err += (logits.max(dim=1)[1] != y).sum().item()
+        total_loss += loss.item() * X.shape[0]
     return total_err / len(loader.dataset), total_loss / len(loader.dataset)
 
 def epoch_free_AT(loader, model, device, opt=None,):

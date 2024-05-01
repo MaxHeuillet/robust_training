@@ -11,12 +11,13 @@ seeds=$1
 
 model='resnet50'
 data='CIFAR10'
+loss='FAT'
 
 # First set of experiments
-# for ((id=0; id<$seeds; id++)); do
-#     sbatch --export=ALL,NROUNDS=6,NBEPOCHS=10,SIZE=0,ASTRAT='full',MODEL=$model,DATA=$data,SEED=$id ./experiment.sh
-#     sbatch --export=ALL,NROUNDS=1,NBEPOCHS=60,SIZE=0,ASTRAT='full',MODEL=$model,DATA=$data,SEED=$id ./experiment.sh
-# done
+for ((id=0; id<$seeds; id++)); do
+    sbatch --export=ALL,LOSS=$loss,NROUNDS=6,NBEPOCHS=10,SIZE=50000,ASTRAT='full',MODEL=$model,DATA=$data,SEED=$id ./experiment.sh
+    sbatch --export=ALL,LOSS=$loss,NROUNDS=1,NBEPOCHS=60,SIZE=50000,ASTRAT='full',MODEL=$model,DATA=$data,SEED=$id ./experiment.sh
+done
 
 sizes=(500 1500 2500 5000 7500 10000 12500 25000 37500)
 strategies=('random' 'uncertainty' 'margin' 'entropy' 'attack')
@@ -25,8 +26,8 @@ strategies=('random' 'uncertainty' 'margin' 'entropy' 'attack')
 for size in "${sizes[@]}"; do
     for strategy in "${strategies[@]}"; do
         for ((id=0; id<$seeds; id++)); do
-            sbatch --export=ALL,NROUNDS=6,NBEPOCHS=10,SIZE=$size,ASTRAT=$strategy,DATA=$data,MODEL=$model,SEED=$id ./experiment.sh
-            sbatch --export=ALL,NROUNDS=1,NBEPOCHS=60,SIZE=$size,ASTRAT=$strategy,DATA=$data,MODEL=$model,SEED=$id ./experiment.sh
+            sbatch --export=ALL,LOSS=$loss,NROUNDS=6,NBEPOCHS=10,SIZE=$size,ASTRAT=$strategy,DATA=$data,MODEL=$model,SEED=$id ./experiment.sh
+            sbatch --export=ALL,LOSS=$loss,NROUNDS=1,NBEPOCHS=60,SIZE=$size,ASTRAT=$strategy,DATA=$data,MODEL=$model,SEED=$id ./experiment.sh
         done
     done
 done

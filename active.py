@@ -92,9 +92,13 @@ def random_sampling(model, loader, n_instances=10):
     # List of all dataset indices
     all_indices = list(range(len(loader.dataset)))
     
+    # Check if the requested number of instances is greater than the dataset size
+    if n_instances > len(all_indices):
+        print(f"Requested number of instances ({n_instances}) exceeds the dataset size ({len(all_indices)}). Returning all available indices.")
+        return all_indices
+    
     # Randomly select 'n_instances' indices
     random_indices = random.sample(all_indices, n_instances)
-    
     return random_indices
 
 
