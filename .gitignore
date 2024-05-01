@@ -5,6 +5,11 @@ models/__pycache__/
 
 # Ignore everything in the state_dicts folder
 state_dicts/*
+models/*
 
 # Except for resnet50.pt
 !state_dicts/resnet50.pt
+
+slurm-*
+stdout*
+stderr*

@@ -43,6 +43,7 @@ parser.add_argument("--active_strategy", required=True, help="which observation 
 parser.add_argument("--seed", required=True, help="the random seed")
 parser.add_argument("--data", required=True, help="the data used for the experiment")
 parser.add_argument("--model", required=True, help="the model used for the experiment")
+parser.add_argument("--loss", required=True, help="the loss used to induce robustness")
 
 args = parser.parse_args()
 
@@ -194,15 +195,14 @@ for i in range(n_rounds):
             utils.update_learning_rate(optimizer, new_lr)
             print("Reduced learning rate to {}".format(new_lr))
 
-        for batch_idx, (data, target) in enumerate(adapt_loader):
-            data, target = data.to(device), target.to(device)
-            optimizer.zero_grad()
-            loss = trades.trades_loss(model=model, x_natural=data, y=target, optimizer=optimizer,)
-            # loss = nn.CrossEntropyLoss()( model(data) ,target)
-            # print(loss)
-            loss.backward()
-            optimizer.step()
-        print('epoch finished')
+        if args.loss == 'AT':
+            err, loss = utils.epoch_AT_vanilla(adapt_loader, model, optimizer)
+        elif args.loss == 'FAT':
+            err, loss = utils.epoch_fast_AT(adapt_loader, model, optimizer)
+        elif args.loss == 'TRADES':
+            err, loss = utils.epoch_TRADES(adapt_loader, model, optimizer)
+
+        print('epoch finished {} - {}'.format(err, loss) )
         sys.stdout.flush()
         epoch_counter +=1
 
