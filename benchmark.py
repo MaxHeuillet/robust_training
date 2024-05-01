@@ -196,11 +196,11 @@ for i in range(n_rounds):
             print("Reduced learning rate to {}".format(new_lr))
 
         if args.loss == 'AT':
-            err, loss = utils.epoch_AT_vanilla(adapt_loader, model, optimizer)
+            err, loss = utils.epoch_AT_vanilla(adapt_loader, model, device, optimizer)
         elif args.loss == 'FAT':
-            err, loss = utils.epoch_fast_AT(adapt_loader, model, optimizer)
+            err, loss = utils.epoch_fast_AT(adapt_loader, model, device, optimizer)
         elif args.loss == 'TRADES':
-            err, loss = utils.epoch_TRADES(adapt_loader, model, optimizer)
+            err, loss = utils.epoch_TRADES(adapt_loader, model, device, optimizer)
 
         print('epoch finished {} - {}'.format(err, loss) )
         sys.stdout.flush()
