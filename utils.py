@@ -80,15 +80,6 @@ def set_seeds(seed):
     # Setting the seed for the OS
     os.environ['PYTHONHASHSEED'] = str(seed)
 
-# Attack types
-
-def fgsm(model, X, y, epsilon=0.1):
-    """ Construct FGSM adversarial examples on the examples X"""
-    delta = torch.zeros_like(X, requires_grad=True)
-    loss = nn.CrossEntropyLoss()(model(X + delta), y)
-    loss.backward()
-    return epsilon * delta.grad.detach().sign()
-
 def pgd_linf(model, X, y, epsilon=0.1, alpha=0.01, num_iter=10, randomize=False):
     """ Construct FGSM adversarial examples on the examples X"""
     if randomize:
@@ -135,12 +126,19 @@ def epoch_AT_vanilla(loader, model,device, opt=None,):
         total_loss += loss.item() * X.shape[0]
     return total_err / len(loader.dataset), total_loss / len(loader.dataset)
 
-
 def epoch_fast_AT(loader, model, device, opt=None,):
     total_loss, total_err = 0.,0.
+
+    epsilon = 8/255
+    alpha = 1.25 * epsilon
     for X,y in loader:
         X,y = X.to(device), y.to(device)
-        delta = fgsm(model, X, y, epsilon=0.1) #pgd_linf(model, X, y)
+
+        delta = torch.empty_like(X, requires_grad=True).uniform_(-epsilon, epsilon)
+        loss = nn.CrossEntropyLoss()(model(X + delta), y)
+        loss.backward()
+        delta = delta + alpha * delta.grad.detach().sign()
+
         yp = model( X + delta )
         loss = nn.CrossEntropyLoss()( yp, y )
         if opt:
