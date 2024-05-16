@@ -1,3 +1,5 @@
+
+
 import torch
 import torch.nn as nn
 import os
@@ -298,3 +300,5 @@ def resnet50(pretrained=False, progress=True, device="cpu", **kwargs):
     return _resnet(
         "resnet50", Bottleneck, [3, 4, 6, 3], pretrained, progress, device, **kwargs
     )
+
+

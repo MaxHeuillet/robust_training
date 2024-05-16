@@ -11,7 +11,7 @@ seeds=$1
 
 model='resnet50'
 data='CIFAR10'
-loss='FAT'
+loss='TRADES'
 
 # First set of experiments
 for ((id=0; id<$seeds; id++)); do

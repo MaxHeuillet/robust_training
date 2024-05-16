@@ -136,9 +136,10 @@ def epoch_fast_AT(loader, model, device, opt=None,):
 
         delta = torch.empty_like(X).uniform_(-epsilon, epsilon).detach()
         delta.requires_grad = True
-        loss = nn.CrossEntropyLoss()(model(X + delta), y)
+        loss = nn.CrossEntropyLoss()( model(X + delta), y)
         loss.backward()
         delta = delta + alpha * delta.grad.detach().sign()
+        delta = torch.clamp(delta, -epsilon, epsilon)
 
         yp = model( X + delta )
         loss = nn.CrossEntropyLoss()( yp, y )
