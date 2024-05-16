@@ -24,27 +24,6 @@ class EmptyDataset(Dataset):
         self.data.extend(new_data)
         self.targets.extend(new_targets)
 
-
-# Uncertainty sampling function
-def uncertainty_sampling(model, loader, n_instances=10):
-    device = 'cuda'
-    model.eval()
-    all_indices = list( range(len(loader.dataset)) )
-    uncertainties = []
-    
-    with torch.no_grad():
-        for images, _ in loader:
-            images = images.to(device)
-            outputs = torch.softmax( model(images), dim=1)
-            uncertainty = 1 - torch.max(outputs, dim=1)[0]
-            uncertainties.extend( uncertainty.tolist() )
-    
-    # Select the indices of the top uncertain instances
-    uncertainty_indices = np.argsort(uncertainties)[-n_instances:]
-
-    return [all_indices[i] for i in uncertainty_indices]
-
-
 def margin_sampling(model, loader, n_instances=10):
     device = 'cuda'
     model.eval()
@@ -102,6 +81,25 @@ def random_sampling(model, loader, n_instances=10):
     return random_indices
 
 
+# Uncertainty sampling function
+def uncertainty_sampling(model, loader, n_instances=10):
+    device = 'cuda'
+    model.eval()
+    all_indices = list( range(len(loader.dataset)) )
+    uncertainties = []
+    
+    with torch.no_grad():
+        for images, _ in loader:
+            images = images.to(device)
+            outputs = torch.softmax( model(images), dim=1)
+            uncertainty = 1 - torch.max(outputs, dim=1)[0]
+            uncertainties.extend( uncertainty.tolist() )
+    
+    # Select the indices of the top uncertain instances
+    uncertainty_indices = np.argsort(uncertainties)[-n_instances:]
+
+    return [all_indices[i] for i in uncertainty_indices]
+
 def attack_sampling(model, loader, n_instances=10):
     device = 'cuda'
     
@@ -135,3 +133,45 @@ def attack_sampling(model, loader, n_instances=10):
     result = random.sample(successful_attack_indices, n_instances)
     
     return result
+
+
+def attack_uncertainty_sampling(model, loader, n_instances=10):
+    device = 'cuda'
+    
+    result = []
+    epsilon = 8/255
+    n_restarts = 2
+    attack_iters = 10
+    alpha = epsilon/4
+    
+    for images, labels in loader:
+        model.train()
+        print(labels.shape)
+        images = images.to(device)
+        labels = labels.to(device)
+
+        delta = utils.attack_pgd_restart(model, images, labels, epsilon, alpha, attack_iters, n_restarts, rs=True, verbose=False,
+                    linf_proj=True, l2_proj=False, l2_grad_update=False, cuda=True)
+        
+        x_adv = images + delta
+
+        model.eval()
+
+        outputs = torch.softmax( model(images), dim=1)
+        uncertainties = 1 - torch.max(outputs, dim=1)[0]
+
+        outputs = model( x_adv )
+        _, predicted_labels = torch.max(outputs, dim=1)
+        attack_success = predicted_labels != labels
+
+        merge = torch.vstack( [uncertainties, attack_success] )
+        print(uncertainties.shape, attack_success.shape, merge.shape)
+        
+        result.append(merge)
+
+    result = torch.hstack(result).T
+    result = result[ result[:, 1] == 1]
+    val, idx = result[:, 0].sort(descending=True)
+    indices = idx[:n_instances]
+    
+    return indices

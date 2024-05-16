@@ -14,6 +14,79 @@ def l2_norm(x):
     return squared_l2_norm(x).sqrt()
 
 
+
+def eval_test_nat(model, test_loader, device, advFlag=None,natural_mode=None):
+    # torch.manual_seed(1)
+    model.eval()
+    acc = 0.
+    print(natural_mode)
+    for images, labels in test_loader:
+         images = images.to(device)
+         labels = labels.to(device)
+         with torch.no_grad():
+            if natural_mode is not None:
+                output = model.eval()(images,bn_name=natural_mode,thread=advFlag)
+            else:
+                output = model.eval()(images)
+            acc += (output.max(1)[1] == labels).float().sum()
+    print(acc, len(test_loader.dataset))
+    return acc.item() / len(test_loader.dataset)
+
+def trades_loss_autolora(model, x_natural, y, optimizer, step_size=2/255, epsilon=8/255, perturb_steps=10, beta=6.0, distance='l_inf', LAMBDA1=0, LAMBDA2=0):
+    batch_size = len(x_natural)
+    # define KL-loss
+    criterion_kl = nn.KLDivLoss(size_average=False)
+    model.eval()
+
+    # generate adversarial example
+    x_adv = x_natural.detach() + 0.001 * torch.randn(x_natural.shape).cuda().detach()
+    if distance == 'l_inf':
+        for _ in range(perturb_steps):
+            x_adv.requires_grad_()
+            with torch.enable_grad():
+                model.eval()
+                loss_kl = F.cross_entropy(model(x_adv, thread=None), y)
+            grad = torch.autograd.grad(loss_kl, [x_adv])[0]
+            x_adv = x_adv.detach() + step_size * torch.sign(grad.detach())
+            x_adv = torch.min(torch.max(x_adv, x_natural -
+                              epsilon), x_natural + epsilon)
+            x_adv = torch.clamp(x_adv, 0.0, 1.0)
+    else:
+        assert False
+
+    x_adv = Variable(torch.clamp(x_adv, 0.0, 1.0), requires_grad=False)
+
+    # zero gradient
+    model.zero_grad()
+    optimizer.zero_grad()
+    model.train()
+    # calculate robust loss
+    for n,p in model.named_parameters():
+        if 'fc' in n:
+            p.requires_grad = True
+        elif 'lora' in n:
+            p.requires_grad = True
+        else:
+            p.requires_grad = False
+    nat_output = model(x_natural, thread='nat')
+
+    for n,p in model.named_parameters():
+        if 'lora' in n:
+            p.requires_grad = False
+        else:
+            p.requires_grad = True
+    adv_output= model(x_adv, thread=None)
+
+    for n,p in model.named_parameters():
+        p.requires_grad = True
+
+    loss = LAMBDA1 * F.cross_entropy(nat_output, y) \
+        + (1 - LAMBDA1) * F.cross_entropy(adv_output, y) \
+        + LAMBDA2 *  (1.0 / batch_size) * criterion_kl(F.log_softmax(adv_output, dim=1), F.softmax(nat_output, dim=1))
+    
+    return loss
+
+
 def trades_loss(model,
                 x_natural,
                 y,

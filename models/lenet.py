@@ -1,11 +1,11 @@
-import pytorch
+import torch
 import torch.nn as nn
 
 # Define the LeNet architecture with modern practices
 class LeNet(nn.Module):
     def __init__(self):
         super(LeNet, self).__init__()
-        self.conv1 = nn.Conv2d(1, 6, kernel_size=5, padding=2)
+        self.conv1 = nn.Conv2d(3, 6, kernel_size=5, padding=2)
         self.act1 = nn.ReLU()
         self.pool1 = nn.MaxPool2d(kernel_size=2)
         self.conv2 = nn.Conv2d(6, 16, kernel_size=5)

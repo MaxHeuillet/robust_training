@@ -55,7 +55,7 @@ size = int(args.size)
 nb_epochs = int(args.nb_epochs)
 seed = int(args.seed)
 
-result['active_strategy'] = n_rounds
+result['active_strategy'] = args.active_strategy
 result['n_rounds'] = n_rounds
 result['size'] = size
 result['nb_epochs'] = nb_epochs
@@ -139,7 +139,6 @@ pool_loader = DataLoader(pool_dataset, batch_size=128, shuffle=True)
 adapt_dataset = active.EmptyDataset()
 pool_indices = list( range(len(pool_loader.dataset ) ) ) 
 
-
 ############# execution of the experiment:
 import math
 epoch_counter = 0
@@ -169,6 +168,9 @@ for i in range(n_rounds):
     elif args.active_strategy == 'full':
         query_indices = utils.get_indices_for_round( len(pool_loader.dataset), n_rounds, i)
         _ = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
+    elif args.active_strategy == 'attack_uncertainty':
+        query_indices = utils.attack_uncertainty_sampling(model, pool_loader, round_size)
+        pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
     else:
         print('error')
 
