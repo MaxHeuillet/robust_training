@@ -20,7 +20,7 @@ for ((id=0; id<$seeds; id++)); do
 done
 
 sizes=(500 2500 5000 7500 10000 12500 25000 37500)
-strategies=('random' 'uncertainty' 'margin' 'entropy' 'attack')
+strategies=('attack_uncertainty' 'random' 'uncertainty' 'margin' 'entropy' 'attack')
 
 # Second set of experiments
 for size in "${sizes[@]}"; do
