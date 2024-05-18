@@ -145,8 +145,9 @@ def attack_uncertainty_sampling(model, loader, n_instances=10):
     alpha = epsilon/4
     
     for images, labels in loader:
+
         model.train()
-        print(labels.shape)
+
         images = images.to(device)
         labels = labels.to(device)
 
@@ -162,10 +163,10 @@ def attack_uncertainty_sampling(model, loader, n_instances=10):
 
         outputs = model( x_adv )
         _, predicted_labels = torch.max(outputs, dim=1)
-        attack_success = predicted_labels != labels
+        attack_success = (predicted_labels != labels)
 
         merge = torch.vstack( [uncertainties, attack_success] )
-        print(uncertainties.shape, attack_success.shape, merge.shape)
+        merge = merge.detach().cpu()
         
         result.append(merge)
 
