@@ -169,7 +169,7 @@ for i in range(n_rounds):
         query_indices = utils.get_indices_for_round( len(pool_loader.dataset), n_rounds, i)
         _ = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
     elif args.active_strategy == 'attack_uncertainty':
-        query_indices = utils.attack_uncertainty_sampling(model, pool_loader, round_size)
+        query_indices = active.attack_uncertainty_sampling(model, pool_loader, round_size)
         pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
     else:
         print('error')
