@@ -4,10 +4,10 @@
 
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=15
-#SBATCH --gpus-per-node=1
+#SBATCH --gpus-per-node=4
 
 #SBATCH --mem-per-cpu=4000M
-#SBATCH --time=03:00:00
+#SBATCH --time=00:30:00
 
 #SBATCH --mail-user=maxime.heuillet.1@ulaval.ca
 #SBATCH --mail-type=ALL
@@ -29,5 +29,5 @@ source /home/mheuill/scratch/MYENV3/bin/activate
 
 echo 'HZ: start python3 ./experiment.py ..at '; date
 
-python3 ./benchmark.py --loss ${LOSS} --data ${DATA} --model ${MODEL} --seed ${SEED} --n_rounds ${NROUNDS} --nb_epochs ${NBEPOCHS} --size ${SIZE} --active_strategy ${ASTRAT}  > stdout_$SLURM_JOB_ID 2>stderr_$SLURM_JOB_ID
+python3 ./distributed_training.py > stdout_$SLURM_JOB_ID 2>stderr_$SLURM_JOB_ID
 
