@@ -19,7 +19,7 @@ for ((id=0; id<$seeds; id++)); do
     sbatch --export=ALL,LOSS=$loss,NROUNDS=1,NBEPOCHS=60,SIZE=50000,ASTRAT='full',MODEL=$model,DATA=$data,SEED=$id ./experiment.sh
 done
 
-sizes=(500 2500 5000 7500 10000 12500 25000 37500)
+sizes=( 37500) #500 2500 5000 7500 10000 12500 25000
 strategies=('attack_uncertainty' ) #'random' 'uncertainty' 'margin' 'entropy' 'attack'
 
 # Second set of experiments
