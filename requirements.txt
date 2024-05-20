@@ -23,5 +23,5 @@ loralib
 #git+https://github.com/fra31/auto-attack#egg=auto-attack
 #pip install git+https://github.com/RobustBench/robustbench.git
 robustness
-transformers
-datasets
+# transformers
+# datasets
