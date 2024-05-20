@@ -18,7 +18,7 @@ module load python/3.10
 module load scipy-stack
 # module load gurobi
 
-source /home/mheuill/scratch/MYENV3/bin/activate
+source /home/mheuill/scratch/MYENV4/bin/activate
 # source /home/mheuill/projects/def-adurand/mheuill/MYENV3/bin/activate
 # source /home/mheuill/projects/def-adurand/mheuill/ENV_nogurobi/bin/activate
 # source /home/mheuill/projects/def-adurand/mheuill/Gurobi_Py310/bin/activate
