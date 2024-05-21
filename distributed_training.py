@@ -47,7 +47,7 @@ def inference(rank, world_size):
 
     # Load model
     model = resnet50().cuda(rank)
-    model = nn.parallel.DistributedDataParallel(model, device_ids=[rank])
+    model = DDP(model, device_ids=[rank])
     model.eval()
 
     predictions = []
