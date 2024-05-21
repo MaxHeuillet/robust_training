@@ -29,5 +29,9 @@ source /home/mheuill/scratch/MYENV4/bin/activate
 
 echo 'HZ: start python3 ./experiment.py ..at '; date
 
+# Automatically get the IP address
+export MASTER_ADDR=$(hostname -I | awk '{print $1}')
+
+
 python3 ./distributed_training.py > stdout_$SLURM_JOB_ID 2>stderr_$SLURM_JOB_ID
 
