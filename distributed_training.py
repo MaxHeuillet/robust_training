@@ -18,29 +18,37 @@ import os
 
 def setup(rank, world_size):
     # Initialize the distributed environment.
+
+    print('set up the master adress and port')
     os.environ['MASTER_ADDR'] = 'localhost'
     os.environ['MASTER_PORT'] = '12355'
 
     # Set up the local GPU for this process
     torch.cuda.set_device(rank)
     dist.init_process_group("nccl", rank=rank, world_size=world_size)
+    print('init process group ok')
 
 def cleanup():
     dist.destroy_process_group()
 
 def train(rank, world_size):
 
-    
 
     setup(rank, world_size)
 
+    print('load dataset')
     dataset = load_dataset("imagenet-1k", cache_dir='/home/mheuill/scratch')
+
+    print('load sampler')
     sampler = DistributedSampler(dataset, num_replicas=world_size, rank=rank)
+
+    print('load dataloader')
     dataloader = DataLoader(dataset, batch_size=1024, sampler=sampler, num_workers=4)
 
     # Model, Loss, and Optimizer
     model = resnet50().cuda(rank)
     model = DDP(model, device_ids=[rank])
+    print('load model')
 
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=0.001)
@@ -48,6 +56,7 @@ def train(rank, world_size):
     # Training Loop
     for epoch in range(1):  # number of epochs
 
+        print( 'epoch {}'.format(epoch) )
         sampler.set_epoch(epoch)
 
         for i, (inputs, targets) in enumerate(dataloader):
