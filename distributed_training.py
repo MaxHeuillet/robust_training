@@ -31,6 +31,52 @@ def setup(rank, world_size):
 def cleanup():
     dist.destroy_process_group()
 
+
+def inference(rank, world_size):
+    setup(rank, world_size)
+
+    print('load dataset')
+    dataset = load_dataset("imagenet-1k", cache_dir='/home/mheuill/scratch')
+    test_dataset = dataset['test']  # Select the test split
+
+    print('load sampler')
+    sampler = DistributedSampler(test_dataset, num_replicas=world_size, rank=rank, shuffle=False)
+
+    print('load dataloader')
+    dataloader = DataLoader(test_dataset, batch_size=1024, sampler=sampler, num_workers=4)
+
+    # Load model
+    model = resnet50().cuda(rank)
+    model = nn.parallel.DistributedDataParallel(model, device_ids=[rank])
+    model.eval()
+
+    predictions = []
+    time = 0
+    with torch.no_grad():
+        for inputs, _ in dataloader:
+            inputs = inputs.cuda(rank)
+            outputs = model(inputs)
+            predictions.append(outputs)
+
+            time +=1
+            
+            if time % 10 == 0:
+                print( "time {}".format(time) )
+
+
+
+    # Gather all predictions to the process 0
+    predictions = torch.cat(predictions, dim=0)
+    gather_list = [torch.zeros_like(predictions) for _ in range(world_size)]
+    dist.all_gather(gather_list, predictions)
+
+    if rank == 0:
+        # Concatenate all predictions on rank 0
+        all_predictions = torch.cat(gather_list, dim=0)
+        print(all_predictions.shape)  # This will show the total number of predictions
+
+    cleanup()
+
 def train(rank, world_size):
 
 
@@ -38,6 +84,7 @@ def train(rank, world_size):
 
     print('load dataset')
     dataset = load_dataset("imagenet-1k", cache_dir='/home/mheuill/scratch')
+    dataset = dataset['train'] 
 
     print('load sampler')
     sampler = DistributedSampler(dataset, num_replicas=world_size, rank=rank)
@@ -76,4 +123,5 @@ def train(rank, world_size):
 
 if __name__ == "__main__":
     world_size = 4
-    torch.multiprocessing.spawn(train, args=(world_size,), nprocs=world_size)
+    torch.multiprocessing.spawn(inference, args=(world_size,), nprocs=world_size)
+    # torch.multiprocessing.spawn(train, args=(world_size,), nprocs=world_size)
