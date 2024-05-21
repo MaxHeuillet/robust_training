@@ -12,6 +12,10 @@ from transformers import AutoImageProcessor, ResNetModel
 import torch
 from datasets import load_dataset
 
+import os
+
+
+
 def setup(rank, world_size):
     # Initialize the distributed environment.
     dist.init_process_group("nccl", rank=rank, world_size=world_size)
