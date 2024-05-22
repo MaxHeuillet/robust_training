@@ -48,8 +48,6 @@ class CustomImageDataset(Dataset):
         return image, label
 
 
-
-
 def setup(rank, world_size):
     # Initialize the distributed environment.
 
@@ -91,6 +89,7 @@ def inference(rank, world_size):
 
     # Load model
     model = ResNetModel.from_pretrained('/home/mheuill/scratch/resnet-50', local_files_only=True) #resnet50().cuda(rank)
+    model = model.cuda(rank)
     model = DDP(model, device_ids=[rank])
     model.eval()
 
