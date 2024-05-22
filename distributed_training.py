@@ -34,8 +34,8 @@ class CustomImageDataset(Dataset):
         image = Image.open(io.BytesIO(item['image'])).convert("RGB")
 
         # Apply the transformation
-        if self.transform:
-            image = self.transform(image=image)['pixel_values'][0]
+        # if self.transform:
+        image = self.transform(image=image)['pixel_values'][0]
 
         # Labels can be handled here if needed
         label = item.get('label', torch.tensor(-1))  # Dummy label handling
@@ -81,7 +81,7 @@ def inference(rank, world_size):
     sampler = DistributedSampler(custom_dataset, num_replicas=world_size, rank=rank, shuffle=False)
 
     print('load dataloader')
-    dataloader = DataLoader(test_dataset, batch_size=1024, sampler=sampler, num_workers=4)
+    dataloader = DataLoader(custom_dataset, batch_size=1024, sampler=sampler, num_workers=4)
 
     # Load model
     model = ResNetModel.from_pretrained('/home/mheuill/scratch/resnet-50', local_files_only=True) #resnet50().cuda(rank)
