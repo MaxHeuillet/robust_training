@@ -78,7 +78,7 @@ def inference(rank, world_size):
     test_dataset = dataset['test']  # Select the test split
 
     print('initialize image processor')
-    image_processor = AutoImageProcessor.from_pretrained("/home/mheuill/scratch/resnet-50")
+    image_processor = AutoImageProcessor.from_pretrained("/home/mheuill/scratch/resnet-50", local_files_only=True)
 
     print('create custom dataset')
     custom_dataset = CustomImageDataset(test_dataset, transform=image_processor)
