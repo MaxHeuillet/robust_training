@@ -57,6 +57,10 @@ def setup(rank, world_size):
     os.environ['MASTER_ADDR'] = 'localhost'
     os.environ['MASTER_PORT'] = '12355'
 
+    # Set environment variables for offline usage of Hugging Face libraries
+    os.environ['HF_DATASETS_OFFLINE'] = '1'
+    os.environ['TRANSFORMERS_OFFLINE'] = '1'
+
     # Set up the local GPU for this process
     torch.cuda.set_device(rank)
     dist.init_process_group("nccl", rank=rank, world_size=world_size)
@@ -74,7 +78,7 @@ def inference(rank, world_size):
     test_dataset = dataset['test']  # Select the test split
 
     print('initialize image processor')
-    image_processor = AutoImageProcessor.from_pretrained("microsoft/resnet-50")
+    image_processor = AutoImageProcessor.from_pretrained("/home/mheuill/scratch/resnet-50")
 
     print('create custom dataset')
     custom_dataset = CustomImageDataset(test_dataset, transform=image_processor)
@@ -86,7 +90,7 @@ def inference(rank, world_size):
     dataloader = DataLoader(test_dataset, batch_size=1024, sampler=sampler, num_workers=4)
 
     # Load model
-    model = resnet50().cuda(rank)
+    model = ResNetModel.from_pretrained('/home/mheuill/scratch/resnet-50', local_files_only=True) #resnet50().cuda(rank)
     model = DDP(model, device_ids=[rank])
     model.eval()
 
