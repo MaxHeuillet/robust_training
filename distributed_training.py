@@ -15,6 +15,40 @@ from datasets import load_dataset
 import os
 
 
+from torch.utils.data import Dataset
+from transformers import AutoImageProcessor
+from PIL import Image
+import torch
+
+class CustomImageDataset(Dataset):
+    def __init__(self, hf_dataset, transform=None):
+        """
+        Args:
+            hf_dataset: Hugging Face dataset split.
+            transform: The image processor from transformers.
+        """
+        self.hf_dataset = hf_dataset
+        self.transform = transform
+
+    def __len__(self):
+        return len(self.hf_dataset)
+
+    def __getitem__(self, idx):
+        # Get the image and label from the Hugging Face dataset
+        item = self.hf_dataset[idx]
+        image = Image.open(io.BytesIO(item['image'])).convert("RGB")
+
+        # Apply the transformation
+        if self.transform:
+            image = self.transform(image=image, return_tensors="pt")['pixel_values'].squeeze(0)
+
+        # Labels can be handled here if needed
+        label = item.get('label', torch.tensor(-1))  # Dummy label handling
+
+        return image, label
+
+
+
 
 def setup(rank, world_size):
     # Initialize the distributed environment.
@@ -39,8 +73,14 @@ def inference(rank, world_size):
     dataset = load_dataset("imagenet-1k", cache_dir='/home/mheuill/scratch')
     test_dataset = dataset['test']  # Select the test split
 
+    print('initialize image processor')
+    image_processor = AutoImageProcessor.from_pretrained("microsoft/resnet-50")
+
+    print('create custom dataset')
+    custom_dataset = CustomImageDataset(test_dataset, transform=image_processor)
+
     print('load sampler')
-    sampler = DistributedSampler(test_dataset, num_replicas=world_size, rank=rank, shuffle=False)
+    sampler = DistributedSampler(custom_dataset, num_replicas=world_size, rank=rank, shuffle=False)
 
     print('load dataloader')
     dataloader = DataLoader(test_dataset, batch_size=1024, sampler=sampler, num_workers=4)
@@ -62,8 +102,6 @@ def inference(rank, world_size):
             
             if time % 10 == 0:
                 print( "time {}".format(time) )
-
-
 
     # Gather all predictions to the process 0
     predictions = torch.cat(predictions, dim=0)
