@@ -13,7 +13,7 @@ import torch
 from datasets import load_dataset
 
 import os
-
+import io
 
 from torch.utils.data import Dataset
 from transformers import AutoImageProcessor
@@ -22,11 +22,6 @@ import torch
 
 class CustomImageDataset(Dataset):
     def __init__(self, hf_dataset, transform=None):
-        """
-        Args:
-            hf_dataset: Hugging Face dataset split.
-            transform: The image processor from transformers.
-        """
         self.hf_dataset = hf_dataset
         self.transform = transform
 
@@ -40,12 +35,13 @@ class CustomImageDataset(Dataset):
 
         # Apply the transformation
         if self.transform:
-            image = self.transform(image=image, return_tensors="pt")['pixel_values'].squeeze(0)
+            image = self.transform(image=image)['pixel_values'][0]
 
         # Labels can be handled here if needed
         label = item.get('label', torch.tensor(-1))  # Dummy label handling
 
         return image, label
+
 
 
 def setup(rank, world_size):
