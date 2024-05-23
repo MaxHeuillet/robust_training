@@ -42,7 +42,7 @@ class CustomImageDataset(Dataset):
         #image = self.transform(images=image)['pixel_values'] #[0]
 
         # Labels can be handled here if needed
-        label = item.get('label', torch.tensor(-1))  # Dummy label handling
+        label = item['label']  # Dummy label handling
 
         return image, label
 
