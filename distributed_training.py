@@ -32,7 +32,7 @@ class CustomImageDataset(Dataset):
         # Get the image and label from the Hugging Face dataset
         item = self.hf_dataset[idx]
         image = item['image']
-        print(image.shape)
+        # print(image.shape)
         # Check if the image needs to be opened from a bytes-like object
         if not isinstance(image, Image.Image):
             image = Image.open(io.BytesIO(image)).convert("RGB")
