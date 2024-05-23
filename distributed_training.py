@@ -31,13 +31,15 @@ class CustomImageDataset(Dataset):
     def __getitem__(self, idx):
         # Get the image and label from the Hugging Face dataset
         item = self.hf_dataset[idx]
+        image = item['image']
 
+        # Check if the image needs to be opened from a bytes-like object
         if not isinstance(image, Image.Image):
             image = Image.open(io.BytesIO(image)).convert("RGB")
 
         # Apply the transformation
-        # if self.transform:
-        image = self.transform(image=image)['pixel_values'][0]
+        if self.transform:
+            image = self.transform(image=image)['pixel_values'][0]
 
         # Labels can be handled here if needed
         label = item.get('label', torch.tensor(-1))  # Dummy label handling
