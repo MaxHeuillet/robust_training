@@ -21,8 +21,8 @@ from PIL import Image
 import torch
 
 class CustomImageDataset(Dataset):
-    def __init__(self, hf_dataset, transform=None):
-        self.transformed_dataset = transform(hf_dataset)
+    def __init__(self, hf_dataset):
+        self.hf_dataset = hf_dataset
         
     def __len__(self):
         return len(self.hf_dataset)
@@ -73,11 +73,13 @@ def inference(rank, world_size):
 
     print('load dataset')
     dataset = load_dataset("imagenet-1k", cache_dir='/home/mheuill/scratch')
-    test_dataset = dataset['test']  # Select the test split
+    
 
     print('initialize image processor')
     image_processor = AutoImageProcessor.from_pretrained("/home/mheuill/scratch/resnet-50", local_files_only=True)
 
+    dataset = image_processor(dataset)
+    test_dataset = dataset['test']  # Select the test split
     print('create custom dataset')
     custom_dataset = CustomImageDataset(test_dataset, transform=image_processor)
 
