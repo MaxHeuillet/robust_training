@@ -39,7 +39,7 @@ class CustomImageDataset(Dataset):
 
         # Apply the transformation
         if self.transform:
-            image = self.transform(image=image)['pixel_values'][0]
+            image = self.transform(images=image)['pixel_values'][0]
 
         # Labels can be handled here if needed
         label = item.get('label', torch.tensor(-1))  # Dummy label handling
