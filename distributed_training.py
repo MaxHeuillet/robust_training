@@ -21,29 +21,18 @@ from PIL import Image
 import torch
 
 class CustomImageDataset(Dataset):
-    def __init__(self, hf_dataset):
+    def __init__(self, hf_dataset, transform=None):
         self.hf_dataset = hf_dataset
-        
+        self.transform = transform
+
     def __len__(self):
         return len(self.hf_dataset)
 
     def __getitem__(self, idx):
-        # Get the image and label from the Hugging Face dataset
-        item = self.transformed_dataset[idx]
-        image = item['image']
-        # print(image.shape)
-        # Check if the image needs to be opened from a bytes-like object
-        # if not isinstance(image, Image.Image):
-        #     image = Image.open(io.BytesIO(image)).convert("RGB")
-
-        # print(image.shape)
-        # Apply the transformation
-        # if self.transform:
-        #image = self.transform(images=image)['pixel_values'] #[0]
-
-        # Labels can be handled here if needed
-        label = item['label']  # Dummy label handling
-
+        image = self.hf_dataset[idx]['image']
+        label = self.hf_dataset[idx]['label']
+        if self.transform:
+            image = self.transform(image)
         return image, label
 
 
@@ -74,20 +63,27 @@ def inference(rank, world_size):
     print('load dataset')
     dataset = load_dataset("imagenet-1k", cache_dir='/home/mheuill/scratch')
     
-
     print('initialize image processor')
-    image_processor = AutoImageProcessor.from_pretrained("/home/mheuill/scratch/resnet-50", local_files_only=True)
+    # image_processor = AutoImageProcessor.from_pretrained("/home/mheuill/scratch/resnet-50", local_files_only=True)
+    # dataset = image_processor(dataset)
 
-    dataset = image_processor(dataset)
-    test_dataset = dataset['test']  # Select the test split
     print('create custom dataset')
-    custom_dataset = CustomImageDataset(test_dataset, transform=image_processor)
 
-    print('load sampler')
-    sampler = DistributedSampler(custom_dataset, num_replicas=world_size, rank=rank, shuffle=False)
+    # Define your transformations
+    transform = transforms.Compose([
+        transforms.Resize(256),  # Resize so the shortest side is 256 pixels
+        transforms.CenterCrop(224),  # Crop the center 224x224 pixels
+        transforms.ToTensor(),  # Convert image to tensor
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+    ])
+
+    # Instantiate the custom dataset
+    dataset = CustomImageDataset(dataset['test'], transform=transform)
+
+    sampler = DistributedSampler(dataset, num_replicas=world_size, rank=rank, shuffle=False)
 
     print('load dataloader')
-    dataloader = DataLoader(custom_dataset, batch_size=1024, sampler=sampler, num_workers=4)
+    dataloader = DataLoader(dataset, batch_size=1024, sampler=sampler, num_workers=4)
 
     # Load model
     model = ResNetModel.from_pretrained('/home/mheuill/scratch/resnet-50', local_files_only=True) #resnet50().cuda(rank)
