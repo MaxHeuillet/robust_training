@@ -22,15 +22,14 @@ import torch
 
 class CustomImageDataset(Dataset):
     def __init__(self, hf_dataset, transform=None):
-        self.hf_dataset = hf_dataset
-        self.transform = transform
-
+        self.transformed_dataset = transform(hf_dataset)
+        
     def __len__(self):
         return len(self.hf_dataset)
 
     def __getitem__(self, idx):
         # Get the image and label from the Hugging Face dataset
-        item = self.hf_dataset[idx]
+        item = self.transformed_dataset[idx]
         image = item['image']
         # print(image.shape)
         # Check if the image needs to be opened from a bytes-like object
@@ -40,7 +39,7 @@ class CustomImageDataset(Dataset):
         # print(image.shape)
         # Apply the transformation
         # if self.transform:
-        image = self.transform(images=image)['pixel_values'] #[0]
+        #image = self.transform(images=image)['pixel_values'] #[0]
 
         # Labels can be handled here if needed
         label = item.get('label', torch.tensor(-1))  # Dummy label handling
