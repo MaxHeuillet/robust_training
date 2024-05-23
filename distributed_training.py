@@ -31,7 +31,9 @@ class CustomImageDataset(Dataset):
     def __getitem__(self, idx):
         # Get the image and label from the Hugging Face dataset
         item = self.hf_dataset[idx]
-        image = Image.open(io.BytesIO(item['image'])).convert("RGB")
+
+        if not isinstance(image, Image.Image):
+            image = Image.open(io.BytesIO(image)).convert("RGB")
 
         # Apply the transformation
         # if self.transform:
