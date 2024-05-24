@@ -29,7 +29,19 @@ class CustomImageDataset(Dataset):
         return len(self.hf_dataset)
 
     def __getitem__(self, idx):
-        image = self.hf_dataset[idx]['image']
+        # Here 'image' is likely a PIL image; you can check by adding print(type(image)) if unsure
+        image_data = self.hf_dataset[idx]['image']
+        
+        # If the images are being loaded as PIL Images, apply the transform
+        # Make sure that the image is opened correctly if it's not already a PIL Image
+        if isinstance(image_data, bytes):
+            image = Image.open(io.BytesIO(image_data))
+        else:
+            image = image_data
+        
+        if self.transform:
+            image = self.transform(image)
+
         label = self.hf_dataset[idx]['label']
         return image, label
 
