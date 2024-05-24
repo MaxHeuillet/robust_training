@@ -178,6 +178,8 @@ def train(rank, world_size):
     cleanup()
 
 if __name__ == "__main__":
-    world_size = 4
+    print('begin experiment')
+    world_size = 1
+    
     torch.multiprocessing.spawn(inference, args=(world_size,), nprocs=world_size)
     # torch.multiprocessing.spawn(train, args=(world_size,), nprocs=world_size)
