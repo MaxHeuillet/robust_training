@@ -31,8 +31,6 @@ class CustomImageDataset(Dataset):
     def __getitem__(self, idx):
         image = self.hf_dataset[idx]['image']
         label = self.hf_dataset[idx]['label']
-        if self.transform:
-            image = self.transform(image)
         return image, label
 
 
@@ -74,7 +72,7 @@ def inference(rank, world_size):
         transforms.Resize(256),  # Resize so the shortest side is 256 pixels
         transforms.CenterCrop(224),  # Crop the center 224x224 pixels
         transforms.ToTensor(),  # Convert image to tensor
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        #transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ])
 
     # Instantiate the custom dataset
@@ -93,16 +91,19 @@ def inference(rank, world_size):
 
     predictions = []
     time = 0
+    print('start the loop')
     with torch.no_grad():
         for inputs, _ in dataloader:
             inputs = inputs.cuda(rank)
-            outputs = model(inputs)
-            predictions.append(outputs)
+            # outputs = model(inputs)
+            # predictions.append(outputs)
 
             time +=1
             
-            if time % 10 == 0:
+            if time > 10:
+                print(inputs.shape)
                 print( "time {}".format(time) )
+                break
 
     # Gather all predictions to the process 0
     predictions = torch.cat(predictions, dim=0)
@@ -124,6 +125,8 @@ def train(rank, world_size):
     print('load dataset')
     dataset = load_dataset("imagenet-1k", cache_dir='/home/mheuill/scratch')
     dataset = dataset['train'] 
+
+    print(dataset['train'][0]['image'])
 
     print('load sampler')
     sampler = DistributedSampler(dataset, num_replicas=world_size, rank=rank)
