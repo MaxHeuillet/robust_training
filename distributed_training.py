@@ -81,6 +81,10 @@ def cleanup():
    dist.destroy_process_group()
 
 
+def to_rgb(x):
+    return x.convert("RGB")
+
+
 def inference(rank, world_size):
     print('inference', world_size, rank)
     setup(world_size, rank)
@@ -95,12 +99,12 @@ def inference(rank, world_size):
     print('create custom dataset')
     # print(dataset['train'][0]['image'])
 
-    # Define your transformations
+
     transform = transforms.Compose([
-        transforms.Lambda(lambda x: x.convert("RGB") ),
-        transforms.Resize(256),  # Resize so the shortest side is 256 pixels
-        transforms.CenterCrop(224),  # Crop the center 224x224 pixels
-        transforms.ToTensor(),  # Convert image to tensor
+        transforms.Lambda(to_rgb),
+        transforms.Resize(256),
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ])
 
@@ -265,7 +269,7 @@ class Experiment:
 
             print( 'iteration {}'.format(i) )
 
-            pool_loader = DataLoader( Subset(pool_dataset, pool_indices), batch_size=1000, shuffle=False)
+            pool_loader = DataLoader( Subset(pool_dataset, pool_indices), batch_size=1000, shuffle=False, num_workers=self.world_size)
                 
             if self.active_strategy == 'uncertainty':
                 query_indices = active.uncertainty_sampling(model, pool_loader, round_size)

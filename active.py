@@ -68,6 +68,7 @@ def entropy_sampling(model, loader, n_instances=10):
 
 # Random sampling function
 def random_sampling(model, loader, n_instances=10):
+
     # List of all dataset indices
     all_indices = list(range(len(loader.dataset)))
     
@@ -83,6 +84,7 @@ def random_sampling(model, loader, n_instances=10):
 
 # Uncertainty sampling function
 def uncertainty_sampling(model, loader, n_instances=10):
+    
     device = 'cuda'
     model.eval()
     all_indices = list( range(len(loader.dataset)) )
