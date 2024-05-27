@@ -82,7 +82,7 @@ def cleanup():
 
 
 def inference(world_size, rank):
-    print(rank, world_size)
+    print('inference', world_size, rank)
     setup(world_size, rank)
 
     print('load dataset')
