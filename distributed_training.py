@@ -24,6 +24,14 @@ import torch
 import torch.nn.utils.parametrize as parametrize
 import lora 
 
+import active
+import math
+
+from torch.utils.data import Subset
+import trades
+import utils
+import sys
+
 class CustomImageDataset(Dataset):
     def __init__(self, hf_dataset, transform=None):
         self.hf_dataset = hf_dataset
@@ -56,6 +64,7 @@ class CustomImageDataset(Dataset):
 
 def setup(world_size, rank):
   #Initialize the distributed environment.
+  print('rank {rank}')
   print('set up the master adress and port')
   os.environ['MASTER_ADDR'] = 'localhost'
   os.environ['MASTER_PORT'] = '12355'
@@ -77,59 +86,59 @@ def inference(world_size, rank):
     setup(world_size, rank)
 
     print('load dataset')
-    dataset = load_dataset("imagenet-1k", cache_dir='/home/mheuill/scratch',)
+    # dataset = load_dataset("imagenet-1k", cache_dir='/home/mheuill/scratch',)
     
-    print('initialize image processor')
-    # image_processor = AutoImageProcessor.from_pretrained("/home/mheuill/scratch/resnet-50", local_files_only=True)
-    # dataset = image_processor(dataset)
+    # print('initialize image processor')
+    # # image_processor = AutoImageProcessor.from_pretrained("/home/mheuill/scratch/resnet-50", local_files_only=True)
+    # # dataset = image_processor(dataset)
 
-    print('create custom dataset')
-    # print(dataset['train'][0]['image'])
+    # print('create custom dataset')
+    # # print(dataset['train'][0]['image'])
 
-    # Define your transformations
-    transform = transforms.Compose([
-        transforms.Lambda(lambda x: x.convert("RGB") ),
-        transforms.Resize(256),  # Resize so the shortest side is 256 pixels
-        transforms.CenterCrop(224),  # Crop the center 224x224 pixels
-        transforms.ToTensor(),  # Convert image to tensor
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-    ])
+    # # Define your transformations
+    # transform = transforms.Compose([
+    #     transforms.Lambda(lambda x: x.convert("RGB") ),
+    #     transforms.Resize(256),  # Resize so the shortest side is 256 pixels
+    #     transforms.CenterCrop(224),  # Crop the center 224x224 pixels
+    #     transforms.ToTensor(),  # Convert image to tensor
+    #     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+    # ])
 
-    # Instantiate the custom dataset
-    dataset = CustomImageDataset(dataset['test'], transform=transform)
+    # # Instantiate the custom dataset
+    # dataset = CustomImageDataset(dataset['test'], transform=transform)
 
-    sampler = DistributedSampler(dataset, num_replicas=world_size, rank=rank, shuffle=False)
+    # sampler = DistributedSampler(dataset, num_replicas=world_size, rank=rank, shuffle=False)
 
-    print('load dataloader')
-    dataloader = DataLoader(dataset, batch_size=1024, sampler=sampler, num_workers=4)
+    # print('load dataloader')
+    # dataloader = DataLoader(dataset, batch_size=1024, sampler=sampler, num_workers=4)
 
-    # Load model
-    model = ResNetModel.from_pretrained('/home/mheuill/scratch/resnet-50', local_files_only=True) #resnet50().cuda(rank)
-    model = model.cuda(rank)
-    model = DDP(model, device_ids=[rank])
+    # # Load model
+    # model = ResNetModel.from_pretrained('/home/mheuill/scratch/resnet-50', local_files_only=True) #resnet50().cuda(rank)
+    # model = model.cuda(rank)
+    # model = DDP(model, device_ids=[rank])
     
-    model.eval()
+    # model.eval()
 
-    predictions = []
-    time = 0
-    print('start the loop')
-    with torch.no_grad():
-        for inputs, _ in dataloader:
-            inputs = inputs.cuda(rank)
-            outputs = model(inputs).last_hidden_state
-            predictions.append(outputs)
+    # predictions = []
+    # time = 0
+    # print('start the loop')
+    # with torch.no_grad():
+    #     for inputs, _ in dataloader:
+    #         inputs = inputs.cuda(rank)
+    #         outputs = model(inputs).last_hidden_state
+    #         predictions.append(outputs)
 
-            time +=1
+    #         time +=1
             
-    # Gather all predictions to the process 0
-    predictions = torch.cat(predictions, dim=0)
-    gather_list = [torch.zeros_like(predictions) for _ in range(world_size)]
-    dist.all_gather(gather_list, predictions)
+    # # Gather all predictions to the process 0
+    # predictions = torch.cat(predictions, dim=0)
+    # gather_list = [torch.zeros_like(predictions) for _ in range(world_size)]
+    # dist.all_gather(gather_list, predictions)
 
-    if rank == 0:
-        # Concatenate all predictions on rank 0
-        all_predictions = torch.cat(gather_list, dim=0)
-        print(all_predictions.shape)  # This will show the total number of predictions
+    # if rank == 0:
+    #     # Concatenate all predictions on rank 0
+    #     all_predictions = torch.cat(gather_list, dim=0)
+    #     print(all_predictions.shape)  # This will show the total number of predictions
 
     cleanup()
 
@@ -139,7 +148,7 @@ from torch.utils.data import DataLoader
 
 class Experiment:
 
-    def __init__(self, n_rounds, size, nb_epochs, seed, active_strategy, data, model):
+    def __init__(self, n_rounds, size, nb_epochs, seed, active_strategy, data, model, world_size):
 
         self.n_rounds = n_rounds
         self.size = size
@@ -148,6 +157,8 @@ class Experiment:
         self.active_strategy = active_strategy
         self.data = data
         self.model = model
+
+        self.world_size = world_size
 
     def load_model(self,rank):
         if self.model == 'resnet50' and self.data == 'CIFAR10':
@@ -178,18 +189,18 @@ class Experiment:
     def load_data(self,rank):
 
         if self.data == 'CIFAR10':
-            mean_cifar10 = (0.4914, 0.4822, 0.4465)
-            std_cifar10 = (0.2471, 0.2435, 0.2616)
 
             transform = transforms.Compose([
                 transforms.ToTensor(),
-                transforms.Normalize(mean_cifar10, std_cifar10)  ])
+                transforms.Normalize( mean=(0.4914, 0.4822, 0.4465), std=(0.2471, 0.2435, 0.2616) )  ])
+
+            pool_dataset = datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
 
             test_dataset = datasets.CIFAR10(root='./data', train=False, transform=transform)
-            test_loader = DataLoader(test_dataset, batch_size=1000, shuffle=False)
+            
 
         elif self.data == 'Imagenet-1k':
-            dataset = load_dataset("imagenet-1k", cache_dir='/home/mheuill/scratch',)
+
             transform = transforms.Compose([
             transforms.Lambda(lambda x: x.convert("RGB") ),
             transforms.Resize(256),  # Resize so the shortest side is 256 pixels
@@ -197,17 +208,28 @@ class Experiment:
             transforms.ToTensor(),  # Convert image to tensor
             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),  ])
 
-            # Instantiate the custom dataset
-            dataset = CustomImageDataset(dataset['test'], transform=transform)
+            dataset = load_dataset("imagenet-1k", cache_dir='/home/mheuill/scratch',)
 
-            sampler = DistributedSampler(dataset, num_replicas=world_size, rank=rank, shuffle=False)
+            pool_dataset = CustomImageDataset(dataset['train'], transform=transform)
+        
+            test_dataset = CustomImageDataset(dataset['test'], transform=transform)
 
             print('load dataloader')
-            dataloader = DataLoader(dataset, batch_size=1024, sampler=sampler, num_workers=4)
-
+            
 
         else:
             print('undefined data')
+
+        pool_sampler = DistributedSampler(pool_dataset, num_replicas=world_size, rank=rank, shuffle=False)
+        pool_loader = DataLoader(dataset, batch_size=1024, sampler=pool_sampler, num_workers=self.world_size)
+        pool_indices = list( range(len(pool_loader.dataset ) ) )
+
+        test_sampler = DistributedSampler(test_dataset, num_replicas=world_size, rank=rank, shuffle=False)
+        test_loader = DataLoader(test_dataset, batch_size=1024, sampler=test_sampler, num_workers=self.world_size)
+
+        return pool_dataset, pool_sampler, pool_loader, pool_indices, test_loader
+
+
 
     def launch_experiment(self, world_size, rank ):
         result = {}
@@ -219,13 +241,82 @@ class Experiment:
         result['data'] = self.data
         result['model'] = self.model
 
-        data = self.load_model(rank)
+        pool_dataset, pool_sampler, pool_loader, pool_indices, test_loader = self.load_data(rank)
 
         model = self.load_model(rank)
 
         self.add_lora(model)
 
-        
+        adapt_dataset = active.EmptyDataset()
+
+        epoch_counter = 0
+        round_size = math.ceil(self.size / self.n_rounds)
+
+        for i in range(self.n_rounds):
+
+            print( 'iteration {}'.format(i) )
+
+            pool_loader = DataLoader( Subset(pool_dataset, pool_indices), batch_size=1000, shuffle=False)
+                
+            if self.active_strategy == 'uncertainty':
+                query_indices = active.uncertainty_sampling(model, pool_loader, round_size)
+                pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
+            elif self.active_strategy == 'entropy':
+                query_indices = active.entropy_sampling(model, pool_loader, round_size)
+                pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
+            elif self.active_strategy == 'margin':
+                query_indices = active.margin_sampling(model, pool_loader, round_size)
+                pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
+            elif self.active_strategy == 'random':
+                query_indices = active.random_sampling(model, pool_loader, round_size)
+                pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
+            elif self.active_strategy == 'full':
+                query_indices = utils.get_indices_for_round( len(pool_loader.dataset), self.n_rounds, i)
+                _ = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
+            # elif args.active_strategy == 'attack':
+            #     query_indices = active.attack_sampling(model, pool_loader, round_size)
+            #     pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
+            # elif args.active_strategy == 'attack_uncertainty':
+            #     query_indices = active.attack_uncertainty_sampling(model, pool_loader, round_size)
+            #     pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
+            else:
+                print('error')
+
+            adapt_loader = DataLoader(adapt_dataset, batch_size=128, shuffle=True)
+
+            ################# Update the ResNet through low rank matrices:
+            print('start training process')
+            sys.stdout.flush()
+
+            # optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+            optimizer = torch.optim.SGD( model.parameters(),lr=0.001, weight_decay=0.0001, momentum=0.9, nesterov=True, )
+
+            for _ in range(self.nb_epochs):
+                print('epoch {}'.format(_) )
+                sys.stdout.flush()
+                model.train()
+
+                #Check if epoch_counter is at a milestone to reduce learning rate
+                if epoch_counter == 30 or epoch_counter == 50:
+                    current_lr = optimizer.param_groups[0]['lr']
+                    new_lr = current_lr * 0.1
+                    utils.update_learning_rate(optimizer, new_lr)
+                    print("Reduced learning rate to {}".format(new_lr))
+
+                # if args.loss == 'AT':
+                #     err, loss = utils.epoch_AT_vanilla(adapt_loader, model, device, optimizer)
+                # elif args.loss == 'FAT':
+                #     err, loss = utils.epoch_fast_AT(adapt_loader, model, device, optimizer)
+                # elif args.loss == 'TRADES':
+                err, loss = utils.epoch_TRADES(adapt_loader, model, device, optimizer)
+
+                print('epoch finished {} - {}'.format(err, loss) )
+                sys.stdout.flush()
+                epoch_counter +=1
+
+        print('total amount of data used: {}'.format( len(adapt_loader)  )  )
+
+
 
 
 
