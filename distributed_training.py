@@ -81,7 +81,7 @@ def cleanup():
    dist.destroy_process_group()
 
 
-def inference(world_size, rank):
+def inference(rank, world_size):
     print('inference', world_size, rank)
     setup(world_size, rank)
 
