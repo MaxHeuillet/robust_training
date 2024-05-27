@@ -130,6 +130,7 @@ def inference(world_size, rank):
 
 if __name__ == "__main__":
     print('begin experiment')
+    print(torch.cuda.device_count())
     world_size = 4  
     torch.multiprocessing.spawn(inference, args=(world_size,), nprocs=world_size)
     
