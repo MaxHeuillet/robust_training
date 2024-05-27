@@ -134,12 +134,14 @@ sys.stdout.flush()
 
 pool_dataset = datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
 pool_loader = DataLoader(pool_dataset, batch_size=128, shuffle=True)
+pool_indices = list( range(len(pool_loader.dataset ) ) ) 
 
 adapt_dataset = active.EmptyDataset()
-pool_indices = list( range(len(pool_loader.dataset ) ) ) 
+
 
 ############# execution of the experiment:
 import math
+
 epoch_counter = 0
 round_size = math.ceil(size / n_rounds)
 
