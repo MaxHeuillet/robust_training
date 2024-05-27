@@ -69,7 +69,8 @@ def cleanup():
 
 
 def inference(world_size, rank):
-    #setup(rank, world_size)
+    print(rank, world_size)
+    setup(rank, world_size)
 
     print('load dataset')
     dataset = load_dataset("imagenet-1k", cache_dir='/home/mheuill/scratch',)
