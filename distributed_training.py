@@ -86,59 +86,59 @@ def inference(rank, world_size):
     setup(world_size, rank)
 
     print('load dataset')
-    # dataset = load_dataset("imagenet-1k", cache_dir='/home/mheuill/scratch',)
+    dataset = load_dataset("imagenet-1k", cache_dir='/home/mheuill/scratch',)
     
-    # print('initialize image processor')
-    # # image_processor = AutoImageProcessor.from_pretrained("/home/mheuill/scratch/resnet-50", local_files_only=True)
-    # # dataset = image_processor(dataset)
+    print('initialize image processor')
+    # image_processor = AutoImageProcessor.from_pretrained("/home/mheuill/scratch/resnet-50", local_files_only=True)
+    # dataset = image_processor(dataset)
 
-    # print('create custom dataset')
-    # # print(dataset['train'][0]['image'])
+    print('create custom dataset')
+    # print(dataset['train'][0]['image'])
 
-    # # Define your transformations
-    # transform = transforms.Compose([
-    #     transforms.Lambda(lambda x: x.convert("RGB") ),
-    #     transforms.Resize(256),  # Resize so the shortest side is 256 pixels
-    #     transforms.CenterCrop(224),  # Crop the center 224x224 pixels
-    #     transforms.ToTensor(),  # Convert image to tensor
-    #     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-    # ])
+    # Define your transformations
+    transform = transforms.Compose([
+        transforms.Lambda(lambda x: x.convert("RGB") ),
+        transforms.Resize(256),  # Resize so the shortest side is 256 pixels
+        transforms.CenterCrop(224),  # Crop the center 224x224 pixels
+        transforms.ToTensor(),  # Convert image to tensor
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+    ])
 
-    # # Instantiate the custom dataset
-    # dataset = CustomImageDataset(dataset['test'], transform=transform)
+    # Instantiate the custom dataset
+    dataset = CustomImageDataset(dataset['test'], transform=transform)
 
-    # sampler = DistributedSampler(dataset, num_replicas=world_size, rank=rank, shuffle=False)
+    sampler = DistributedSampler(dataset, num_replicas=world_size, rank=rank, shuffle=False)
 
-    # print('load dataloader')
-    # dataloader = DataLoader(dataset, batch_size=1024, sampler=sampler, num_workers=4)
+    print('load dataloader')
+    dataloader = DataLoader(dataset, batch_size=1024, sampler=sampler, num_workers=world_size)
 
-    # # Load model
-    # model = ResNetModel.from_pretrained('/home/mheuill/scratch/resnet-50', local_files_only=True) #resnet50().cuda(rank)
-    # model = model.cuda(rank)
-    # model = DDP(model, device_ids=[rank])
+    # Load model
+    model = ResNetModel.from_pretrained('/home/mheuill/scratch/resnet-50', local_files_only=True) #resnet50().cuda(rank)
+    model = model.cuda(rank)
+    model = DDP(model, device_ids=[rank])
     
-    # model.eval()
+    model.eval()
 
-    # predictions = []
-    # time = 0
-    # print('start the loop')
-    # with torch.no_grad():
-    #     for inputs, _ in dataloader:
-    #         inputs = inputs.cuda(rank)
-    #         outputs = model(inputs).last_hidden_state
-    #         predictions.append(outputs)
+    predictions = []
+    time = 0
+    print('start the loop')
+    with torch.no_grad():
+        for inputs, _ in dataloader:
+            inputs = inputs.cuda(rank)
+            outputs = model(inputs).last_hidden_state
+            predictions.append(outputs)
 
-    #         time +=1
+            time +=1
             
-    # # Gather all predictions to the process 0
-    # predictions = torch.cat(predictions, dim=0)
-    # gather_list = [torch.zeros_like(predictions) for _ in range(world_size)]
-    # dist.all_gather(gather_list, predictions)
+    # Gather all predictions to the process 0
+    predictions = torch.cat(predictions, dim=0)
+    gather_list = [torch.zeros_like(predictions) for _ in range(world_size)]
+    dist.all_gather(gather_list, predictions)
 
-    # if rank == 0:
-    #     # Concatenate all predictions on rank 0
-    #     all_predictions = torch.cat(gather_list, dim=0)
-    #     print(all_predictions.shape)  # This will show the total number of predictions
+    if rank == 0:
+        # Concatenate all predictions on rank 0
+        all_predictions = torch.cat(gather_list, dim=0)
+        print(all_predictions.shape)  # This will show the total number of predictions
 
     cleanup()
 
