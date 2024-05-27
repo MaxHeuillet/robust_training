@@ -64,7 +64,7 @@ class CustomImageDataset(Dataset):
 
 def setup(world_size, rank):
   #Initialize the distributed environment.
-  print( 'rank {}'.format(rank) )
+  print( ' world size {}, rank {}'.format(world_size,rank) )
   print('set up the master adress and port')
   os.environ['MASTER_ADDR'] = 'localhost'
   os.environ['MASTER_PORT'] = '12355'
@@ -141,6 +141,15 @@ def inference(world_size, rank):
     #     print(all_predictions.shape)  # This will show the total number of predictions
 
     cleanup()
+
+if __name__ == "__main__":
+    print('begin experiment')
+    print(torch.cuda.device_count())
+    world_size = 4  
+    torch.multiprocessing.spawn(inference, args=(world_size,), nprocs=world_size)
+    
+    
+    
 
 import models
 from torchvision import datasets, transforms
@@ -323,14 +332,7 @@ class Experiment:
 
 
 
-if __name__ == "__main__":
-    print('begin experiment')
-    print(torch.cuda.device_count())
-    world_size = 4  
-    torch.multiprocessing.spawn(inference, args=(world_size,), nprocs=world_size)
-    
-    
-    
+
     
     
     
