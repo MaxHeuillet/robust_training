@@ -26,6 +26,8 @@ from torch import nn
 import pickle as pkl
 import gzip
 
+
+
 ###################################
 # Experiments
 ###################################
@@ -46,7 +48,6 @@ parser.add_argument("--model", required=True, help="the model used for the exper
 parser.add_argument("--loss", required=True, help="the loss used to induce robustness")
 
 args = parser.parse_args()
-
 
 result = {}
 
@@ -124,8 +125,6 @@ for conv_layer in layers:
     parametrize.register_parametrization(conv_layer, 'weight', lora_param)
 
 sys.stdout.flush()
-
-######## remove gradient tracking on main weights and put gradient tracking on lora matrices:
 
 lora.set_lora_gradients(model, layers)
 

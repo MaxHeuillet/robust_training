@@ -20,6 +20,10 @@ from transformers import AutoImageProcessor
 from PIL import Image
 import torch
 
+
+import torch.nn.utils.parametrize as parametrize
+import lora 
+
 class CustomImageDataset(Dataset):
     def __init__(self, hf_dataset, transform=None):
         self.hf_dataset = hf_dataset
@@ -103,6 +107,7 @@ def inference(world_size, rank):
     model = ResNetModel.from_pretrained('/home/mheuill/scratch/resnet-50', local_files_only=True) #resnet50().cuda(rank)
     model = model.cuda(rank)
     model = DDP(model, device_ids=[rank])
+    
     model.eval()
 
     predictions = []
@@ -127,6 +132,105 @@ def inference(world_size, rank):
         print(all_predictions.shape)  # This will show the total number of predictions
 
     cleanup()
+
+import models
+from torchvision import datasets, transforms
+from torch.utils.data import DataLoader
+
+class Experiment:
+
+    def __init__(self, n_rounds, size, nb_epochs, seed, active_strategy, data, model):
+
+        self.n_rounds = n_rounds
+        self.size = size
+        self.nb_epochs = nb_epochs
+        self.seed = seed
+        self.active_strategy = active_strategy
+        self.data = data
+        self.model = model
+
+    def load_model(self,rank):
+        if self.model == 'resnet50' and self.data == 'CIFAR10':
+            model = models.resnet.resnet50(pretrained=True, progress=True, device="cuda").to('cuda')
+
+        elif self.model == 'resnet50' and self.data == 'Imagenet-1k':
+            # Load model
+            model = models.resnet50(pretrained=True)
+            model = model.cuda(rank)
+            model = DDP(model, device_ids=[rank])
+            print('model undefined')
+        return model
+    
+    def add_lora(self, model):
+
+        layers = [ model.conv1, model.layer1[0].conv1, model.layer1[0].conv2, model.layer1[0].conv3,
+                model.layer2[0].conv1, model.layer2[0].conv2, model.layer2[0].conv3,
+                model.layer3[0].conv1, model.layer3[0].conv2, model.layer3[0].conv3,
+                model.layer4[0].conv1, model.layer4[0].conv2, model.layer4[0].conv3, model.fc ]
+
+        for conv_layer in layers:
+            lora_param = lora.layer_parametrization(conv_layer, device="cuda", rank=10, lora_alpha=1)
+            parametrize.register_parametrization(conv_layer, 'weight', lora_param)
+
+        lora.set_lora_gradients(model, layers)
+        
+    
+    def load_data(self,rank):
+
+        if self.data == 'CIFAR10':
+            mean_cifar10 = (0.4914, 0.4822, 0.4465)
+            std_cifar10 = (0.2471, 0.2435, 0.2616)
+
+            transform = transforms.Compose([
+                transforms.ToTensor(),
+                transforms.Normalize(mean_cifar10, std_cifar10)  ])
+
+            test_dataset = datasets.CIFAR10(root='./data', train=False, transform=transform)
+            test_loader = DataLoader(test_dataset, batch_size=1000, shuffle=False)
+
+        elif self.data == 'Imagenet-1k':
+            dataset = load_dataset("imagenet-1k", cache_dir='/home/mheuill/scratch',)
+            transform = transforms.Compose([
+            transforms.Lambda(lambda x: x.convert("RGB") ),
+            transforms.Resize(256),  # Resize so the shortest side is 256 pixels
+            transforms.CenterCrop(224),  # Crop the center 224x224 pixels
+            transforms.ToTensor(),  # Convert image to tensor
+            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),  ])
+
+            # Instantiate the custom dataset
+            dataset = CustomImageDataset(dataset['test'], transform=transform)
+
+            sampler = DistributedSampler(dataset, num_replicas=world_size, rank=rank, shuffle=False)
+
+            print('load dataloader')
+            dataloader = DataLoader(dataset, batch_size=1024, sampler=sampler, num_workers=4)
+
+
+        else:
+            print('undefined data')
+
+    def launch_experiment(self, world_size, rank ):
+        result = {}
+        result['active_strategy'] = self.active_strategy
+        result['n_rounds'] = self.n_rounds
+        result['size'] = self.size
+        result['nb_epochs'] = self.nb_epochs
+        result['seed'] = self.seed
+        result['data'] = self.data
+        result['model'] = self.model
+
+        data = self.load_model(rank)
+
+        model = self.load_model(rank)
+
+        self.add_lora(model)
+
+        
+
+
+
+
+
 
 if __name__ == "__main__":
     print('begin experiment')
