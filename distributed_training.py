@@ -64,7 +64,7 @@ class CustomImageDataset(Dataset):
 
 def setup(world_size, rank):
   #Initialize the distributed environment.
-  print('rank {rank}')
+  print( 'rank {}'.format(rank) )
   print('set up the master adress and port')
   os.environ['MASTER_ADDR'] = 'localhost'
   os.environ['MASTER_PORT'] = '12355'
