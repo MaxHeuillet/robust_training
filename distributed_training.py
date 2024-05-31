@@ -138,7 +138,7 @@ def inference(rank, world_size):
         for inputs, _ in dataloader:
             inputs = inputs.cuda(rank)
             outputs = model(inputs) #.last_hidden_state
-            predictions.append( outputs.cpu() )
+            predictions.append( outputs )
 
             time +=1
             
@@ -149,7 +149,7 @@ def inference(rank, world_size):
 
     if rank == 0:
         # Concatenate all predictions on rank 0
-        all_predictions = torch.cat(gather_list, dim=0)
+        all_predictions = torch.cat(gather_list, dim=0).cpu()
         print(all_predictions.shape)  # This will show the total number of predictions
 
     print('clean up')
@@ -188,7 +188,9 @@ class Experiment:
 
         elif self.model == 'resnet50' and self.data == 'Imagenet-1k':
             # Load model
-            model = models.resnet50(pretrained=True)
+            model = models.resnet50().to("cuda")
+            # Load the state dictionary from the file
+            state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
             model = model.cuda(rank)
             model = DDP(model, device_ids=[rank])
             print('model undefined')
@@ -254,6 +256,7 @@ class Experiment:
 
 
     def launch_experiment(self, world_size, rank ):
+
         result = {}
         result['active_strategy'] = self.active_strategy
         result['n_rounds'] = self.n_rounds
@@ -268,6 +271,10 @@ class Experiment:
         model = self.load_model(rank)
 
         self.add_lora(model)
+
+        # optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+        optimizer = torch.optim.SGD( model.parameters(),lr=0.001, weight_decay=0.0001, momentum=0.9, nesterov=True, )
+
 
         adapt_dataset = active.EmptyDataset()
 
@@ -309,9 +316,6 @@ class Experiment:
             ################# Update the ResNet through low rank matrices:
             print('start training process')
             sys.stdout.flush()
-
-            # optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
-            optimizer = torch.optim.SGD( model.parameters(),lr=0.001, weight_decay=0.0001, momentum=0.9, nesterov=True, )
 
             for _ in range(self.nb_epochs):
                 print('epoch {}'.format(_) )
