@@ -203,6 +203,7 @@ class Experiment:
             model = models.resnet50()
             state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
             model.load_state_dict(state_dict)
+            model.to('cuda')
 
         return model
     
@@ -257,6 +258,20 @@ class Experiment:
         # test_loader = DataLoader(test_dataset, batch_size=1024, sampler=test_sampler, num_workers=self.world_size)
 
         return pool_dataset, test_dataset
+    
+    def text_evaluation(self, rank, test_dataset):
+
+        setup(self.world_size, rank)
+
+        sampler = DistributedSampler(test_dataset, num_replicas=self.world_size, rank=rank, shuffle=False)
+        loader = DataLoader(test_dataset, batch_size=1024, sampler=sampler, num_workers=self.world_size)
+
+        model.to(rank)
+        model = DDP(model, device_ids=[rank])
+
+
+
+
     
     # Uncertainty sampling function
     def uncertainty_sampling(self, rank, pool_dataset, N):
@@ -330,11 +345,16 @@ class Experiment:
                                                         args=(world_size, pool_dataset, round_size),
                                                         nprocs=world_size, join=True)
                 selected_indices =  selected_indices[0] 
+
             
                 print(selected_indices)
             
             else:
                 print('error')
+
+            
+
+            
 
 if __name__ == "__main__":
     n_rounds = 1
