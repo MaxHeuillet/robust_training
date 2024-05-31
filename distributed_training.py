@@ -162,6 +162,9 @@ def inference(rank, world_size):
     cleanup()
 
 
+def to_rgb(x):
+    return x.convert("RGB")
+
 class Experiment:
 
     def __init__(self, n_rounds, size, nb_epochs, seed, active_strategy, data, model, world_size):
@@ -236,11 +239,12 @@ class Experiment:
         elif self.data == 'Imagenet-1k':
 
             transform = transforms.Compose([
-            transforms.Lambda(lambda x: x.convert("RGB") ),
-            transforms.Resize(256),  # Resize so the shortest side is 256 pixels
-            transforms.CenterCrop(224),  # Crop the center 224x224 pixels
-            transforms.ToTensor(),  # Convert image to tensor
-            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),  ])
+                transforms.Lambda(to_rgb),
+                transforms.Resize(256),
+                transforms.CenterCrop(224),
+                transforms.ToTensor(),
+                transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+            ])
 
             dataset = load_dataset("imagenet-1k", cache_dir='/home/mheuill/scratch',)
 
