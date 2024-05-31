@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-from models import resnet
+from models_local import resnet
 import dill
 
 

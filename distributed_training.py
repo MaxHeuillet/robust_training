@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.distributed as dist
 import torch.optim as optim
 from torch.utils.data import DataLoader, DistributedSampler
-from torchvision.models import resnet50
+# from torchvision.models import resnet50
 from torchvision.datasets import ImageNet
 from torchvision import transforms
 from torch.nn.parallel import DistributedDataParallel as DDP
@@ -159,7 +159,7 @@ if __name__ == "__main__":
     
     
 
-import models
+import models_local
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 
@@ -179,7 +179,7 @@ class Experiment:
 
     def load_model(self,rank):
         if self.model == 'resnet50' and self.data == 'CIFAR10':
-            model = models.resnet.resnet50(pretrained=True, progress=True, device="cuda").to('cuda')
+            model = models_local.resnet.resnet50(pretrained=True, progress=True, device="cuda").to('cuda')
 
         elif self.model == 'resnet50' and self.data == 'Imagenet-1k':
             # Load model
