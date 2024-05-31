@@ -119,7 +119,12 @@ def inference(rank, world_size):
     dataloader = DataLoader(dataset, batch_size=1024, sampler=sampler, num_workers=world_size)
 
     # Load model
-    model = models.resnet50(pretrained=True).to("cuda")
+    model = models.resnet50().to("cuda")
+    # Load the state dictionary from the file
+    state_dict = torch.load('resnet50_state_dict.pth')
+
+    # Apply the state dictionary to the model
+    model.load_state_dict(state_dict)
     # model = ResNetModel.from_pretrained('/home/mheuill/scratch/resnet-50', local_files_only=True) #resnet50().cuda(rank)
     model = model.cuda(rank)
     model = DDP(model, device_ids=[rank])
