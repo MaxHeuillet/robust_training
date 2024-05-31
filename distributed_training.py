@@ -347,7 +347,7 @@ if __name__ == "__main__":
     world_size = torch.cuda.device_count()
     evaluator = Experiment(n_rounds, size, nb_epochs, seed, active_strategy, data, model, world_size)
     print('begin experiment')
-    evaluator.lauch_experiment()
+    evaluator.launch_experiment()
 
 
 
