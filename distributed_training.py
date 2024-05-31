@@ -121,7 +121,7 @@ def inference(rank, world_size):
     # Load model
     model = models.resnet50().to("cuda")
     # Load the state dictionary from the file
-    state_dict = torch.load('resnet50_state_dict.pth')
+    state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
 
     # Apply the state dictionary to the model
     model.load_state_dict(state_dict)
