@@ -9,6 +9,7 @@ models/*
 
 # Except for resnet50.pt
 !state_dicts/resnet50.pt
+!state_dicts/resnet50_imagenet1k.pt
 
 slurm-*
 stdout*
