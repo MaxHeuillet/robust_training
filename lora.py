@@ -8,7 +8,7 @@ from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 from torch.optim.lr_scheduler import StepLR
 
-import models 
+import models_local 
 import utils
 
 import math

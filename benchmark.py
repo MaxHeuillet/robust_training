@@ -9,7 +9,7 @@ from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 from torch.optim.lr_scheduler import StepLR
 
-import models 
+import models_local 
 import utils
 
 import sys
@@ -71,7 +71,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 utils.set_seeds(seed)
 
 if args.model == 'resnet50':
-    model = models.resnet.resnet50(pretrained=True, progress=True, device="cuda").to('cuda')
+    model = models_local.resnet.resnet50(pretrained=True, progress=True, device="cuda").to('cuda')
 else:
     print('model undefined')
 
