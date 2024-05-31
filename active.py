@@ -83,11 +83,32 @@ def random_sampling(model, loader, n_instances=10):
 
 
 # Uncertainty sampling function
-def uncertainty_sampling(model, loader, n_instances=10):
+def uncertainty_sampling(model, loader, n_selections=10):
+
+    predictions = []
+    print('start the loop')
+    with torch.no_grad():
+        for inputs, _ in loader:
+            inputs = inputs.cuda(rank)
+            outputs = model(inputs) 
+            predictions.append( outputs )
+
+    print('Gather all predictions to the process 0')
+    predictions = torch.cat(predictions, dim=0)
+    gather_list = [torch.zeros_like(predictions) for _ in range(world_size)]
+    dist.all_gather(gather_list, predictions)
+
+    if rank == 0:
+        # Concatenate all predictions on rank 0
+        all_predictions = torch.cat(gather_list, dim=0).cpu()
+        print(all_predictions.shape)  # This will show the total number of predictions
+
+    print('clean up')
+    cleanup()
     
     device = 'cuda'
     model.eval()
-    all_indices = list( range(len(loader.dataset)) )
+    #all_indices = list( range(len(loader.dataset)) )
     uncertainties = []
     
     with torch.no_grad():
@@ -98,7 +119,7 @@ def uncertainty_sampling(model, loader, n_instances=10):
             uncertainties.extend( uncertainty.tolist() )
     
     # Select the indices of the top uncertain instances
-    uncertainty_indices = np.argsort(uncertainties)[-n_instances:]
+    uncertainty_indices = np.argsort(uncertainties)[-n_selections:]
 
     return [all_indices[i] for i in uncertainty_indices]
 

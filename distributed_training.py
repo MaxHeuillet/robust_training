@@ -34,6 +34,11 @@ import trades
 import utils
 import sys
 
+import models_local
+from torchvision import datasets, transforms
+from torch.utils.data import DataLoader
+
+
 class CustomImageDataset(Dataset):
     def __init__(self, hf_dataset, transform=None):
         self.hf_dataset = hf_dataset
@@ -122,9 +127,8 @@ def inference(rank, world_size):
     model = models.resnet50().to("cuda")
     # Load the state dictionary from the file
     state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
-
-    # Apply the state dictionary to the model
     model.load_state_dict(state_dict)
+
     # model = ResNetModel.from_pretrained('/home/mheuill/scratch/resnet-50', local_files_only=True) #resnet50().cuda(rank)
     model = model.cuda(rank)
     model = DDP(model, device_ids=[rank])
@@ -147,26 +151,16 @@ def inference(rank, world_size):
     gather_list = [torch.zeros_like(predictions) for _ in range(world_size)]
     dist.all_gather(gather_list, predictions)
 
+
     if rank == 0:
         # Concatenate all predictions on rank 0
         all_predictions = torch.cat(gather_list, dim=0).cpu()
         print(all_predictions.shape)  # This will show the total number of predictions
+        return all_predictions
 
     print('clean up')
     cleanup()
 
-if __name__ == "__main__":
-    print('begin experiment')
-    print(torch.cuda.device_count())
-    world_size = 4  
-    torch.multiprocessing.spawn(inference, args=(world_size,), nprocs=world_size)
-    
-    
-    
-
-import models_local
-from torchvision import datasets, transforms
-from torch.utils.data import DataLoader
 
 class Experiment:
 
@@ -182,18 +176,16 @@ class Experiment:
 
         self.world_size = world_size
 
-    def load_model(self,rank):
+    def load_model(self,):
         if self.model == 'resnet50' and self.data == 'CIFAR10':
             model = models_local.resnet.resnet50(pretrained=True, progress=True, device="cuda").to('cuda')
 
         elif self.model == 'resnet50' and self.data == 'Imagenet-1k':
             # Load model
-            model = models.resnet50().to("cuda")
-            # Load the state dictionary from the file
+            model = models.resnet50()
             state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
-            model = model.cuda(rank)
-            model = DDP(model, device_ids=[rank])
-            print('model undefined')
+            model.load_state_dict(state_dict)
+
         return model
     
     def add_lora(self, model):
@@ -246,13 +238,40 @@ class Experiment:
 
         pool_sampler = DistributedSampler(pool_dataset, num_replicas=world_size, rank=rank, shuffle=False)
         pool_loader = DataLoader(dataset, batch_size=1024, sampler=pool_sampler, num_workers=self.world_size)
-        pool_indices = list( range(len(pool_loader.dataset ) ) )
 
         test_sampler = DistributedSampler(test_dataset, num_replicas=world_size, rank=rank, shuffle=False)
         test_loader = DataLoader(test_dataset, batch_size=1024, sampler=test_sampler, num_workers=self.world_size)
 
-        return pool_dataset, pool_sampler, pool_loader, pool_indices, test_loader
+        return pool_dataset, pool_sampler, pool_loader, test_loader
+    
+    # Uncertainty sampling function
+    def uncertainty_sampling(self, rank, loader, N):
 
+        model.to(rank)
+        model = DDP(model, device_ids=[rank])
+        
+        predictions = []
+        print('start the loop')
+        with torch.no_grad():
+            for inputs, _ in loader:
+                inputs = inputs.cuda(rank)
+                outputs = model(inputs) 
+                predictions.append( outputs )
+
+        print('Gather all predictions to the process 0')
+        predictions = torch.cat(predictions, dim=0)
+        gather_list = [ torch.zeros_like(predictions) for _ in range(world_size)]
+        
+        top_n_indices = None
+        if rank == 0:
+            all_predictions = torch.cat(gather_list, dim=0)
+            outputs = torch.softmax(all_predictions, dim=1)
+            uncertainty = 1 - torch.max(outputs, dim=1)[0]
+            _, top_n_indices = torch.topk(uncertainty, N, largest=True)
+
+        print('clean up')
+        cleanup()
+        return top_n_indices
 
 
     def launch_experiment(self, world_size, rank ):
@@ -266,7 +285,7 @@ class Experiment:
         result['data'] = self.data
         result['model'] = self.model
 
-        pool_dataset, pool_sampler, pool_loader, pool_indices, test_loader = self.load_data(rank)
+        pool_dataset, pool_sampler, pool_loader, test_loader = self.load_data(rank)
 
         model = self.load_model(rank)
 
@@ -275,72 +294,101 @@ class Experiment:
         # optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
         optimizer = torch.optim.SGD( model.parameters(),lr=0.001, weight_decay=0.0001, momentum=0.9, nesterov=True, )
 
-
         adapt_dataset = active.EmptyDataset()
 
         epoch_counter = 0
         round_size = math.ceil(self.size / self.n_rounds)
 
+        total_indices = list( range(len(pool_loader.dataset ) ) )
+        collected_indices = []
+
         for i in range(self.n_rounds):
 
             print( 'iteration {}'.format(i) )
 
-            pool_loader = DataLoader( Subset(pool_dataset, pool_indices), batch_size=1000, shuffle=False, num_workers=self.world_size)
-                
+            # pool_loader = DataLoader( Subset(pool_dataset, pool_indices), batch_size=1000, shuffle=False, num_workers=self.world_size)
+            
             if self.active_strategy == 'uncertainty':
-                query_indices = active.uncertainty_sampling(model, pool_loader, round_size)
-                pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
-            elif self.active_strategy == 'entropy':
-                query_indices = active.entropy_sampling(model, pool_loader, round_size)
-                pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
-            elif self.active_strategy == 'margin':
-                query_indices = active.margin_sampling(model, pool_loader, round_size)
-                pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
-            elif self.active_strategy == 'random':
-                query_indices = active.random_sampling(model, pool_loader, round_size)
-                pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
-            elif self.active_strategy == 'full':
-                query_indices = utils.get_indices_for_round( len(pool_loader.dataset), self.n_rounds, i)
-                _ = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
+                selected_indices = torch.multiprocessing.spawn(self.uncertainty_sampling, 
+                                                        args=(world_size, pool_loader, round_size),
+                                                        nprocs=world_size, join=True)
+                selected_indices =  selected_indices[0] 
+            
+                print(selected_indices)
+            
+            else:
+                print('error')
+
+if __name__ == "__main__":
+    n_rounds = 1
+    size = 10000
+    nb_epochs = 1
+    seed = 0
+    active_strategy = 'uncertainty'
+    data = 'Imagenet-1k'
+    model = 'resnet50'
+    world_size = torch.cuda.device_count()
+    Experiment(n_rounds, size, nb_epochs, seed, active_strategy, data, model, world_size)
+    print('begin experiment')
+
+
+
+    # torch.multiprocessing.spawn(inference, args=(world_size,), nprocs=world_size)
+    
+    
+            
+            #pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
+            # elif self.active_strategy == 'entropy':
+            #     query_indices = active.entropy_sampling(model, pool_loader, round_size)
+            #     pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
+            # elif self.active_strategy == 'margin':
+            #     query_indices = active.margin_sampling(model, pool_loader, round_size)
+            #     pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
+            # elif self.active_strategy == 'random':
+            #     query_indices = active.random_sampling(model, pool_loader, round_size)
+            #     pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
+            # elif self.active_strategy == 'full':
+            #     query_indices = utils.get_indices_for_round( len(pool_loader.dataset), self.n_rounds, i)
+            #     _ = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
             # elif args.active_strategy == 'attack':
             #     query_indices = active.attack_sampling(model, pool_loader, round_size)
             #     pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
             # elif args.active_strategy == 'attack_uncertainty':
             #     query_indices = active.attack_uncertainty_sampling(model, pool_loader, round_size)
             #     pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
-            else:
-                print('error')
 
-            adapt_loader = DataLoader(adapt_dataset, batch_size=128, shuffle=True)
 
             ################# Update the ResNet through low rank matrices:
-            print('start training process')
-            sys.stdout.flush()
 
-            for _ in range(self.nb_epochs):
-                print('epoch {}'.format(_) )
-                sys.stdout.flush()
-                model.train()
+        #     adapt_loader = DataLoader(adapt_dataset, batch_size=128, shuffle=True)
 
-                #Check if epoch_counter is at a milestone to reduce learning rate
-                if epoch_counter == 30 or epoch_counter == 50:
-                    current_lr = optimizer.param_groups[0]['lr']
-                    new_lr = current_lr * 0.1
-                    utils.update_learning_rate(optimizer, new_lr)
-                    print("Reduced learning rate to {}".format(new_lr))
+        #     print('start training process')
+        #     sys.stdout.flush()
 
-                # if args.loss == 'AT':
-                #     err, loss = utils.epoch_AT_vanilla(adapt_loader, model, device, optimizer)
-                # elif args.loss == 'FAT':
-                #     err, loss = utils.epoch_fast_AT(adapt_loader, model, device, optimizer)
-                # elif args.loss == 'TRADES':
-                err, loss = utils.epoch_TRADES(adapt_loader, model, device, optimizer)
+        #     for _ in range(self.nb_epochs):
+        #         print('epoch {}'.format(_) )
+        #         sys.stdout.flush()
+        #         model.train()
 
-                print('epoch finished {} - {}'.format(err, loss) )
-                sys.stdout.flush()
-                epoch_counter +=1
+        #         #Check if epoch_counter is at a milestone to reduce learning rate
+        #         if epoch_counter == 30 or epoch_counter == 50:
+        #             current_lr = optimizer.param_groups[0]['lr']
+        #             new_lr = current_lr * 0.1
+        #             utils.update_learning_rate(optimizer, new_lr)
+        #             print("Reduced learning rate to {}".format(new_lr))
 
-        print('total amount of data used: {}'.format( len(adapt_loader)  )  )
+        #         # if args.loss == 'AT':
+        #         #     err, loss = utils.epoch_AT_vanilla(adapt_loader, model, device, optimizer)
+        #         # elif args.loss == 'FAT':
+        #         #     err, loss = utils.epoch_fast_AT(adapt_loader, model, device, optimizer)
+        #         # elif args.loss == 'TRADES':
+        #         err, loss = utils.epoch_TRADES(adapt_loader, model, device, optimizer)
+
+        #         print('epoch finished {} - {}'.format(err, loss) )
+        #         sys.stdout.flush()
+        #         epoch_counter +=1
+
+        # print('total amount of data used: {}'.format( len(adapt_loader)  )  )
 
 
 
