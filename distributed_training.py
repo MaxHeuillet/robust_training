@@ -176,6 +176,24 @@ class Experiment:
 
         self.world_size = world_size
 
+    def setup(world_size, rank):
+        #Initialize the distributed environment.
+        print( ' world size {}, rank {}'.format(world_size,rank) )
+        print('set up the master adress and port')
+        os.environ['MASTER_ADDR'] = 'localhost'
+        os.environ['MASTER_PORT'] = '12355'
+        #Set environment variables for offline usage of Hugging Face libraries
+        os.environ['HF_DATASETS_OFFLINE'] = '1'
+        os.environ['TRANSFORMERS_OFFLINE'] = '1'
+        
+        #Set up the local GPU for this process
+        torch.cuda.set_device(rank)
+        dist.init_process_group("nccl", rank=rank, world_size=world_size)
+        print('init process group ok')
+
+    def cleanup():
+        dist.destroy_process_group()
+
     def load_model(self,):
         if self.model == 'resnet50' and self.data == 'CIFAR10':
             model = models_local.resnet.resnet50(pretrained=True, progress=True, device="cuda").to('cuda')
@@ -202,7 +220,7 @@ class Experiment:
         lora.set_lora_gradients(model, layers)
         
     
-    def load_data(self,rank):
+    def load_data(self,):
 
         if self.data == 'CIFAR10':
 
@@ -214,7 +232,6 @@ class Experiment:
 
             test_dataset = datasets.CIFAR10(root='./data', train=False, transform=transform)
             
-
         elif self.data == 'Imagenet-1k':
 
             transform = transforms.Compose([
@@ -232,20 +249,22 @@ class Experiment:
 
             print('load dataloader')
             
-
         else:
             print('undefined data')
 
-        pool_sampler = DistributedSampler(pool_dataset, num_replicas=world_size, rank=rank, shuffle=False)
-        pool_loader = DataLoader(dataset, batch_size=1024, sampler=pool_sampler, num_workers=self.world_size)
+        
+        # test_sampler = DistributedSampler(test_dataset, num_replicas=world_size, rank=rank, shuffle=False)
+        # test_loader = DataLoader(test_dataset, batch_size=1024, sampler=test_sampler, num_workers=self.world_size)
 
-        test_sampler = DistributedSampler(test_dataset, num_replicas=world_size, rank=rank, shuffle=False)
-        test_loader = DataLoader(test_dataset, batch_size=1024, sampler=test_sampler, num_workers=self.world_size)
-
-        return pool_dataset, pool_sampler, pool_loader, test_loader
+        return pool_dataset, test_dataset
     
     # Uncertainty sampling function
-    def uncertainty_sampling(self, rank, loader, N):
+    def uncertainty_sampling(self, rank, pool_dataset, N):
+
+        setup(self.world_size, rank)
+
+        sampler = DistributedSampler(pool_dataset, num_replicas=self.world_size, rank=rank, shuffle=False)
+        loader = DataLoader(pool_dataset, batch_size=1024, sampler=sampler, num_workers=self.world_size)
 
         model.to(rank)
         model = DDP(model, device_ids=[rank])
@@ -274,7 +293,7 @@ class Experiment:
         return top_n_indices
 
 
-    def launch_experiment(self, world_size, rank ):
+    def launch_experiment(self,  ):
 
         result = {}
         result['active_strategy'] = self.active_strategy
@@ -285,21 +304,19 @@ class Experiment:
         result['data'] = self.data
         result['model'] = self.model
 
-        pool_dataset, pool_sampler, pool_loader, test_loader = self.load_data(rank)
+        pool_dataset, test_dataset = self.load_data()
 
-        model = self.load_model(rank)
+        model = self.load_model()
 
         self.add_lora(model)
 
         # optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
         optimizer = torch.optim.SGD( model.parameters(),lr=0.001, weight_decay=0.0001, momentum=0.9, nesterov=True, )
 
-        adapt_dataset = active.EmptyDataset()
-
         epoch_counter = 0
         round_size = math.ceil(self.size / self.n_rounds)
 
-        total_indices = list( range(len(pool_loader.dataset ) ) )
+        total_indices = list( range( len( pool_dataset ) ) )
         collected_indices = []
 
         for i in range(self.n_rounds):
@@ -310,7 +327,7 @@ class Experiment:
             
             if self.active_strategy == 'uncertainty':
                 selected_indices = torch.multiprocessing.spawn(self.uncertainty_sampling, 
-                                                        args=(world_size, pool_loader, round_size),
+                                                        args=(world_size, pool_dataset, round_size),
                                                         nprocs=world_size, join=True)
                 selected_indices =  selected_indices[0] 
             
@@ -328,8 +345,9 @@ if __name__ == "__main__":
     data = 'Imagenet-1k'
     model = 'resnet50'
     world_size = torch.cuda.device_count()
-    Experiment(n_rounds, size, nb_epochs, seed, active_strategy, data, model, world_size)
+    evaluator = Experiment(n_rounds, size, nb_epochs, seed, active_strategy, data, model, world_size)
     print('begin experiment')
+    evaluator.lauch_experiment()
 
 
 
