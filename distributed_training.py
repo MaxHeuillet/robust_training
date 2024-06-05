@@ -356,7 +356,7 @@ class Experiment:
         pool_dataset, test_dataset = self.load_data()
 
         model = self.load_model()
-        self.state_dict = model.state_dict
+        state_dict = model.state_dict()
         
         # clean_acc = torch.multiprocessing.spawn(self.evaluation, args=(world_size, test_dataset),
         #                                                 nprocs=world_size, join=True)
@@ -381,7 +381,7 @@ class Experiment:
             
             if self.active_strategy == 'uncertainty':
                 selected_indices = torch.multiprocessing.spawn(self.uncertainty_sampling, 
-                                                        args=(world_size, self.state_dict, pool_dataset, round_size),
+                                                        args=(world_size, state_dict, pool_dataset, round_size),
                                                         nprocs=world_size, join=True)
                 selected_indices =  selected_indices[0] 
 
