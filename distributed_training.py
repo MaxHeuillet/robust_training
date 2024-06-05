@@ -38,6 +38,8 @@ import models_local
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 
+import torch.distributed as dist
+
 
 class CustomImageDataset(Dataset):
     def __init__(self, hf_dataset, transform=None):
@@ -112,8 +114,7 @@ def inference(rank, world_size):
         transforms.Resize(256),
         transforms.CenterCrop(224),
         transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-    ])
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]), ])
 
     # Instantiate the custom dataset
     dataset = CustomImageDataset(dataset['test'], transform=transform)
@@ -263,7 +264,7 @@ class Experiment:
 
         return pool_dataset, test_dataset
     
-    def text_evaluation(self, rank, test_dataset):
+    def evaluation(self, rank, test_dataset):
 
         setup(self.world_size, rank)
 
@@ -272,10 +273,34 @@ class Experiment:
 
         model.to(rank)
         model = DDP(model, device_ids=[rank])
+        model.eval()
 
+        correct = 0
+        total = 0
 
+        print('start the loop')
+        with torch.no_grad():
+            for inputs, labels in loader:
+                inputs = inputs.cuda(rank)
+                outputs = model(inputs) 
+                _, predicted = torch.max(outputs.data, 1)
+                total += labels.size(0)
+                correct += (predicted == labels).sum().item()
 
+        # Tensorize the correct and total for reduction
+        correct_tensor = torch.tensor(correct).cuda(rank)
+        total_tensor = torch.tensor(total).cuda(rank)
 
+        # Use dist.all_reduce to sum the values across all processes
+        dist.all_reduce(correct_tensor, op=dist.ReduceOp.SUM)
+        dist.all_reduce(total_tensor, op=dist.ReduceOp.SUM)
+
+        accuracy = None
+        if rank == 0:
+            # Compute accuracy only on the rank 0 process
+            accuracy = correct_tensor.item() / total_tensor.item()
+            print(f"Accuracy: {accuracy}")
+        return accuracy
     
     # Uncertainty sampling function
     def uncertainty_sampling(self, rank, pool_dataset, N):
