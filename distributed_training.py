@@ -18,9 +18,9 @@ import os
 import io
 
 from torch.utils.data import Dataset
-from transformers import AutoImageProcessor
+
 from PIL import Image
-import torch
+
 
 
 import torch.nn.utils.parametrize as parametrize
@@ -200,17 +200,20 @@ class Experiment:
 
     def load_model(self,):
         if self.model == 'resnet50' and self.data == 'CIFAR10':
+            # TODO
             model = models_local.resnet.resnet50(pretrained=True, progress=True, device="cuda").to('cuda')
 
         elif self.model == 'resnet50' and self.data == 'Imagenet-1k':
-            # Load model
             model = models.resnet50()
             state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
             model.load_state_dict(state_dict)
             model.to('cuda')
 
+        lora.add_lora(model)
+
         return model
     
+
     def add_lora(self, model):
 
         layers = [ model.conv1, model.layer1[0].conv1, model.layer1[0].conv2, model.layer1[0].conv3,
@@ -303,13 +306,15 @@ class Experiment:
         return accuracy
     
 
-    def uncertainty_sampling(self, rank, model, pool_dataset, N):
+    def uncertainty_sampling(self, rank, state_dict, pool_dataset, N):
 
         setup(self.world_size, rank)
 
         sampler = DistributedSampler(pool_dataset, num_replicas=self.world_size, rank=rank, shuffle=False)
         loader = DataLoader(pool_dataset, batch_size=1024, sampler=sampler, num_workers=self.world_size)
 
+        model = self.load_model()
+        model.load_state_dict(state_dict)
         model.to(rank)
         model = DDP(model, device_ids=[rank])
         
@@ -351,9 +356,8 @@ class Experiment:
         pool_dataset, test_dataset = self.load_data()
 
         model = self.load_model()
-
-        self.add_lora(model)
-
+        self.state_dict = model.state_dict
+        
         # clean_acc = torch.multiprocessing.spawn(self.evaluation, args=(world_size, test_dataset),
         #                                                 nprocs=world_size, join=True)
         
@@ -361,7 +365,7 @@ class Experiment:
         
 
         # optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
-        optimizer = torch.optim.SGD( model.parameters(),lr=0.001, weight_decay=0.0001, momentum=0.9, nesterov=True, )
+        #optimizer = torch.optim.SGD( model.parameters(),lr=0.001, weight_decay=0.0001, momentum=0.9, nesterov=True, )
 
         epoch_counter = 0
         round_size = math.ceil(self.size / self.n_rounds)
@@ -377,7 +381,7 @@ class Experiment:
             
             if self.active_strategy == 'uncertainty':
                 selected_indices = torch.multiprocessing.spawn(self.uncertainty_sampling, 
-                                                        args=(world_size, model, pool_dataset, round_size),
+                                                        args=(world_size, self.state_dict, pool_dataset, round_size),
                                                         nprocs=world_size, join=True)
                 selected_indices =  selected_indices[0] 
 
