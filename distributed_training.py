@@ -249,7 +249,7 @@ class Experiment:
 
             dataset = load_dataset("imagenet-1k", cache_dir='/home/mheuill/scratch',)
 
-            pool_dataset = CustomImageDataset(dataset['train'], transform=transform)
+            pool_dataset = CustomImageDataset(dataset['test'], transform=transform)
         
             test_dataset = CustomImageDataset(dataset['test'], transform=transform)
 
@@ -302,8 +302,8 @@ class Experiment:
             print(f"Accuracy: {accuracy}")
         return accuracy
     
-    # Uncertainty sampling function
-    def uncertainty_sampling(self, rank, pool_dataset, N):
+
+    def uncertainty_sampling(self, rank, model, pool_dataset, N):
 
         setup(self.world_size, rank)
 
@@ -354,6 +354,12 @@ class Experiment:
 
         self.add_lora(model)
 
+        # clean_acc = torch.multiprocessing.spawn(self.evaluation, args=(world_size, test_dataset),
+        #                                                 nprocs=world_size, join=True)
+        
+        # print('clean_acc', clean_acc)
+        
+
         # optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
         optimizer = torch.optim.SGD( model.parameters(),lr=0.001, weight_decay=0.0001, momentum=0.9, nesterov=True, )
 
@@ -371,7 +377,7 @@ class Experiment:
             
             if self.active_strategy == 'uncertainty':
                 selected_indices = torch.multiprocessing.spawn(self.uncertainty_sampling, 
-                                                        args=(world_size, pool_dataset, round_size),
+                                                        args=(world_size, model, pool_dataset, round_size),
                                                         nprocs=world_size, join=True)
                 selected_indices =  selected_indices[0] 
 
