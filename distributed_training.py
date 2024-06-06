@@ -384,7 +384,7 @@ class Experiment:
             if self.active_strategy == 'uncertainty':
                 arg = (state_dict, pool_dataset, round_size)
                 selected_indices = torch.multiprocessing.spawn(self.uncertainty_sampling,
-                                               args=arg,
+                                               args=(arg,),
                                                nprocs=world_size, join=True)
                 selected_indices =  selected_indices[0] 
 
