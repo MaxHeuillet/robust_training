@@ -330,7 +330,7 @@ class Experiment:
 
         print('Gather all predictions to the process 0')
         predictions = torch.cat(predictions, dim=0)
-        gather_list = [ torch.zeros_like(predictions) for _ in range(world_size)]
+        gather_list = [ torch.zeros_like(predictions) for _ in range(self.world_size)]
         
         top_n_indices = None
         if rank == 0:
@@ -385,7 +385,7 @@ class Experiment:
                 arg = (state_dict, pool_dataset, round_size)
                 selected_indices = torch.multiprocessing.spawn(self.uncertainty_sampling,
                                                args=(arg,),
-                                               nprocs=world_size, join=True)
+                                               nprocs=self.world_size, join=True)
                 selected_indices =  selected_indices[0] 
 
             
