@@ -386,6 +386,7 @@ class Experiment:
                 selected_indices = torch.multiprocessing.spawn(self.uncertainty_sampling,
                                                args=(arg,),
                                                nprocs=self.world_size, join=True)
+                print(selected_indices)
                 selected_indices =  selected_indices[0] 
 
             
