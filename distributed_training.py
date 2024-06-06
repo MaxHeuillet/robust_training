@@ -306,7 +306,9 @@ class Experiment:
         return accuracy
     
 
-    def uncertainty_sampling(self, rank, state_dict, pool_dataset, N):
+    def uncertainty_sampling(self, rank, args):
+
+        state_dict, pool_dataset, N = args
 
         setup(self.world_size, rank)
 
@@ -380,9 +382,9 @@ class Experiment:
             # pool_loader = DataLoader( Subset(pool_dataset, pool_indices), batch_size=1000, shuffle=False, num_workers=self.world_size)
             
             if self.active_strategy == 'uncertainty':
-                selected_indices = torch.multiprocessing.spawn(self.uncertainty_sampling, 
-                                                        args=(world_size, state_dict, pool_dataset, round_size),
-                                                        nprocs=world_size, join=True)
+                selected_indices = torch.multiprocessing.spawn(self.uncertainty_sampling,
+                                               args=(state_dict, pool_dataset, round_size),
+                                               nprocs=world_size, join=True)
                 selected_indices =  selected_indices[0] 
 
             
