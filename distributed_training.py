@@ -334,14 +334,20 @@ class Experiment:
         
         if rank == 0:
             all_predictions = torch.cat(gather_list, dim=0)
+            print(all_predictions)
+            print(all_predictions.shape)
             outputs = torch.softmax(all_predictions, dim=1)
             uncertainty = 1 - torch.max(outputs, dim=1)[0]
+            print(uncertainty)
+            print(uncertainty.shape)
             _, top_n_indices_sub = torch.topk(uncertainty, N, largest=True)
+            print(top_n_indices_sub)
+            print(top_n_indices_sub.shape)
             top_n_indices.copy_(top_n_indices_sub)
 
         print('clean up')
         cleanup()
-        return top_n_indices
+
 
 
     def launch_experiment(self,  ):
