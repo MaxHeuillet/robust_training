@@ -382,8 +382,9 @@ class Experiment:
             # pool_loader = DataLoader( Subset(pool_dataset, pool_indices), batch_size=1000, shuffle=False, num_workers=self.world_size)
             
             if self.active_strategy == 'uncertainty':
+                arg = (state_dict, pool_dataset, round_size)
                 selected_indices = torch.multiprocessing.spawn(self.uncertainty_sampling,
-                                               args=(state_dict, pool_dataset, round_size),
+                                               args=arg,
                                                nprocs=world_size, join=True)
                 selected_indices =  selected_indices[0] 
 
