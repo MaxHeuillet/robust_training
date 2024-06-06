@@ -308,7 +308,7 @@ class Experiment:
 
     def uncertainty_sampling(self, rank, args):
 
-        state_dict, pool_dataset, N = args
+        state_dict, pool_dataset, N, top_n_indices = args
 
         setup(self.world_size, rank)
 
@@ -332,12 +332,12 @@ class Experiment:
         predictions = torch.cat(predictions, dim=0)
         gather_list = [ torch.zeros_like(predictions) for _ in range(self.world_size)]
         
-        top_n_indices = None
         if rank == 0:
             all_predictions = torch.cat(gather_list, dim=0)
             outputs = torch.softmax(all_predictions, dim=1)
             uncertainty = 1 - torch.max(outputs, dim=1)[0]
-            _, top_n_indices = torch.topk(uncertainty, N, largest=True)
+            _, top_n_indices_sub = torch.topk(uncertainty, N, largest=True)
+            top_n_indices.copy_(top_n_indices_sub)
 
         print('clean up')
         cleanup()
@@ -382,15 +382,15 @@ class Experiment:
             # pool_loader = DataLoader( Subset(pool_dataset, pool_indices), batch_size=1000, shuffle=False, num_workers=self.world_size)
             
             if self.active_strategy == 'uncertainty':
-                arg = (state_dict, pool_dataset, round_size)
-                selected_indices = torch.multiprocessing.spawn(self.uncertainty_sampling,
+                top_n_indices = torch.zeros(round_size, dtype=torch.long)  # Placeholder for the indices, shared memory
+                top_n_indices.share_memory_()
+                arg = (state_dict, pool_dataset, round_size, top_n_indices)
+                torch.multiprocessing.spawn(self.uncertainty_sampling,
                                                args=(arg,),
                                                nprocs=self.world_size, join=True)
-                print(selected_indices)
-                selected_indices =  selected_indices[0] 
-
-            
-                print(selected_indices)
+                print(top_n_indices)
+                #selected_indices =  selected_indices[0] 
+                #print(selected_indices)
             
             else:
                 print('error')
