@@ -254,7 +254,7 @@ class Experiment:
 
             pool_dataset = CustomImageDataset(dataset['train'], transform=transform)
         
-            test_dataset = CustomImageDataset(dataset['validation'], transform=transform)
+            test_dataset = CustomImageDataset(dataset['test'], transform=transform)
 
             print('load dataloader')
 
@@ -272,7 +272,7 @@ class Experiment:
 
             pool_dataset = CustomImageDataset(dataset['train'], transform=transform)
         
-            test_dataset = CustomImageDataset(dataset['test'], transform=transform)
+            test_dataset = CustomImageDataset(dataset['validation'], transform=transform)
 
             print('load dataloader')
             
