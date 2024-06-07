@@ -268,9 +268,9 @@ class Experiment:
                 transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
             ])
 
-            dataset = load_dataset("imagenet-1k", cache_dir='/home/mheuill/scratch',)
+            dataset = load_dataset("frgfm/imagenette", "full_size", cache_dir='/home/mheuill/scratch')
 
-            pool_dataset = CustomImageDataset(dataset['test'], transform=transform)
+            pool_dataset = CustomImageDataset(dataset['train'], transform=transform)
         
             test_dataset = CustomImageDataset(dataset['test'], transform=transform)
 
@@ -430,7 +430,7 @@ if __name__ == "__main__":
     nb_epochs = 1
     seed = 0
     active_strategy = 'uncertainty'
-    data = 'Imagenet-1k'
+    data = 'Imagenette'
     model = 'resnet50'
     world_size = torch.cuda.device_count()
     evaluator = Experiment(n_rounds, size, nb_epochs, seed, active_strategy, data, model, world_size)
