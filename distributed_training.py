@@ -252,9 +252,9 @@ class Experiment:
 
             dataset = load_dataset("imagenet-1k", cache_dir='/home/mheuill/scratch',)
 
-            pool_dataset = CustomImageDataset(dataset['test'], transform=transform)
+            pool_dataset = CustomImageDataset(dataset['train'], transform=transform)
         
-            test_dataset = CustomImageDataset(dataset['test'], transform=transform)
+            test_dataset = CustomImageDataset(dataset['validation'], transform=transform)
 
             print('load dataloader')
 
