@@ -9,7 +9,4 @@ print('download CIFAR10')
 # datasets.CIFAR10(root='./data', train=False,  download=True)
 
 
-from datasets import load_dataset
-
-# Load the Imagenette dataset
-dataset = load_dataset("frgfm/imagenette", "full_size", cache_dir='/home/mheuill/scratch')
+from datasets import load_dataset ; dataset = load_dataset("frgfm/imagenette", "full_size", cache_dir='/home/mheuill/scratch')
