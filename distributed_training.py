@@ -426,7 +426,7 @@ class Experiment:
 
 if __name__ == "__main__":
     n_rounds = 1
-    size = 10000
+    size = 100
     nb_epochs = 1
     seed = 0
     active_strategy = 'uncertainty'
