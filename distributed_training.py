@@ -203,7 +203,7 @@ class Experiment:
             # TODO
             model = models_local.resnet.resnet50(pretrained=True, progress=True, device="cuda").to('cuda')
 
-        elif self.model == 'resnet50' and self.data == 'Imagenet-1k':
+        elif self.model == 'resnet50' and self.data in ['Imagenet-1k' , 'Imagenette']:
             model = models.resnet50()
             state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
             model.load_state_dict(state_dict)
