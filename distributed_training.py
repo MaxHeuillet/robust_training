@@ -337,7 +337,7 @@ class Experiment:
         result['active_strategy'] = self.active_strategy
         result['n_rounds'] = self.n_rounds
         result['size'] = self.size
-        result['nb_epochs'] = self.nb_epochs
+        result['nb_epochs'] = self.epochs
         result['seed'] = self.seed
         result['data'] = self.data
         result['model'] = self.model
