@@ -5,7 +5,6 @@ torchvision
 torchaudio
 pandas
 matplotlib
-#gurobipy
 #cuda-python
 multiprocess
 #multiprocessing
@@ -20,8 +19,7 @@ tqdm
 ipywidgets
 jupyter
 loralib
-#git+https://github.com/fra31/auto-attack
-#pip install git+https://github.com/RobustBench/robustbench.git
-robustness
-# transformers
-# datasets
+
+#robustness
+transformers
+datasets

@@ -94,85 +94,13 @@ def to_rgb(x):
     return x.convert("RGB")
 
 
-def inference(rank, world_size):
-    print('inference', world_size, rank)
-    setup(world_size, rank)
-
-    print('load dataset')
-    dataset = load_dataset("imagenet-1k", cache_dir='/home/mheuill/scratch',)
-    
-    print('initialize image processor')
-    # image_processor = AutoImageProcessor.from_pretrained("/home/mheuill/scratch/resnet-50", local_files_only=True)
-    # dataset = image_processor(dataset)
-
-    print('create custom dataset')
-    # print(dataset['train'][0]['image'])
-
-
-    transform = transforms.Compose([
-        transforms.Lambda(to_rgb),
-        transforms.Resize(256),
-        transforms.CenterCrop(224),
-        transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]), ])
-
-    # Instantiate the custom dataset
-    dataset = CustomImageDataset(dataset['test'], transform=transform)
-
-    sampler = DistributedSampler(dataset, num_replicas=world_size, rank=rank, shuffle=False)
-
-    print('load dataloader')
-    dataloader = DataLoader(dataset, batch_size=1024, sampler=sampler, num_workers=world_size)
-
-    # Load model
-    model = models.resnet50().to("cuda")
-    # Load the state dictionary from the file
-    state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
-    model.load_state_dict(state_dict)
-
-    # model = ResNetModel.from_pretrained('/home/mheuill/scratch/resnet-50', local_files_only=True) #resnet50().cuda(rank)
-    model = model.cuda(rank)
-    model = DDP(model, device_ids=[rank])
-    
-    model.eval()
-
-    predictions = []
-    time = 0
-    print('start the loop')
-    with torch.no_grad():
-        for inputs, _ in dataloader:
-            inputs = inputs.cuda(rank)
-            outputs = model(inputs) #.last_hidden_state
-            predictions.append( outputs )
-
-            time +=1
-            
-    print('Gather all predictions to the process 0')
-    predictions = torch.cat(predictions, dim=0)
-    gather_list = [torch.zeros_like(predictions) for _ in range(world_size)]
-    dist.all_gather(gather_list, predictions)
-
-
-    if rank == 0:
-        # Concatenate all predictions on rank 0
-        all_predictions = torch.cat(gather_list, dim=0).cpu()
-        print(all_predictions.shape)  # This will show the total number of predictions
-        return all_predictions
-
-    print('clean up')
-    cleanup()
-
-
-def to_rgb(x):
-    return x.convert("RGB")
-
 class Experiment:
 
     def __init__(self, n_rounds, size, nb_epochs, seed, active_strategy, data, model, world_size):
 
         self.n_rounds = n_rounds
         self.size = size
-        self.nb_epochs = nb_epochs
+        self.epochs = nb_epochs
         self.seed = seed
         self.active_strategy = active_strategy
         self.data = data
@@ -285,7 +213,9 @@ class Experiment:
 
         return pool_dataset, test_dataset
     
-    def evaluation(self, rank, test_dataset):
+    def evaluation(self, rank, args):
+
+        state_dict, test_dataset = args
 
         setup(self.world_size, rank)
 
@@ -316,7 +246,6 @@ class Experiment:
         dist.all_reduce(correct_tensor, op=dist.ReduceOp.SUM)
         dist.all_reduce(total_tensor, op=dist.ReduceOp.SUM)
 
-        accuracy = None
         if rank == 0:
             # Compute accuracy only on the rank 0 process
             accuracy = correct_tensor.item() / total_tensor.item()
@@ -352,7 +281,6 @@ class Experiment:
         gather_list = [ torch.zeros_like(predictions) for _ in range(self.world_size)]
         dist.all_gather(gather_list, predictions)
         
-        
         if rank == 0:
             all_predictions = torch.cat(gather_list, dim=0)
             print(all_predictions)
@@ -369,6 +297,38 @@ class Experiment:
         print('clean up')
         cleanup()
 
+    def update(self,rank, args):
+
+        state_dict, pool_dataset = args
+
+        setup(self.world_size, rank)
+
+        sampler = DistributedSampler(pool_dataset, num_replicas=self.world_size, rank=rank, shuffle=False)
+        loader = DataLoader(pool_dataset, batch_size=1024, sampler=sampler, num_workers=self.world_size)
+
+        model = self.load_model()
+        model.load_state_dict(state_dict)
+        model.to(rank)
+        model = DDP(model, device_ids=[rank])
+        
+        criterion = nn.CrossEntropyLoss()
+        # optimizer = optim.SGD(model.parameters(), lr=0.01)
+        # optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+        optimizer = torch.optim.SGD( model.parameters(),lr=0.001, weight_decay=0.0001, momentum=0.9, nesterov=True, )
+
+        for epoch in range(self.epochs):
+            sampler.set_epoch(epoch)
+            for data, target in loader:
+                data, target = data.to(rank), target.to(rank)
+                optimizer.zero_grad()
+                output = model(data)
+                loss = criterion(output, target)
+                loss.backward()
+                optimizer.step()
+            print(f'Rank {rank}, Epoch {epoch}, Loss {loss.item()}')
+
+        print('clean up')
+        cleanup()
 
 
     def launch_experiment(self,  ):
@@ -382,20 +342,20 @@ class Experiment:
         result['data'] = self.data
         result['model'] = self.model
 
+        utils.set_seeds(self.seed)
+
         pool_dataset, test_dataset = self.load_data()
 
         model = self.load_model()
         state_dict = model.state_dict()
         
-        # clean_acc = torch.multiprocessing.spawn(self.evaluation, args=(world_size, test_dataset),
-        #                                                 nprocs=world_size, join=True)
+        arg = (state_dict, test_dataset)
+        clean_acc = torch.multiprocessing.spawn(self.evaluation, 
+                                                args=(arg,),
+                                                nprocs=world_size, join=True)
         
-        # print('clean_acc', clean_acc)
+        print('clean_acc', clean_acc)
         
-
-        # optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
-        #optimizer = torch.optim.SGD( model.parameters(),lr=0.001, weight_decay=0.0001, momentum=0.9, nesterov=True, )
-
         epoch_counter = 0
         round_size = math.ceil(self.size / self.n_rounds)
 
@@ -418,14 +378,12 @@ class Experiment:
                 # for i in top_n_indices:
                 #     print(i)
                 #selected_indices =  selected_indices[0] 
-                #print(selected_indices)
+                print(top_n_indices)
             
             else:
                 print('error')
 
-            
-
-            
+                        
 
 if __name__ == "__main__":
     n_rounds = 1
@@ -443,9 +401,7 @@ if __name__ == "__main__":
 
 
     # torch.multiprocessing.spawn(inference, args=(world_size,), nprocs=world_size)
-    
-    
-            
+
             #pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
             # elif self.active_strategy == 'entropy':
             #     query_indices = active.entropy_sampling(model, pool_loader, round_size)
@@ -498,19 +454,6 @@ if __name__ == "__main__":
         #         epoch_counter +=1
 
         # print('total amount of data used: {}'.format( len(adapt_loader)  )  )
-
-
-
-
-
-
-
-
-
-    
-    
-    
-    
     
 #torch.multiprocessing.spawn(train, args=(world_size,), nprocs=world_size)
 # Gather all predictions to the process 0
@@ -553,4 +496,72 @@ if __name__ == "__main__":
 #             optimizer.step()
 #             if i % 10 == 0:
 #                 print(f"Rank {rank}, Epoch {epoch}, Batch {i}, Loss {loss.item()}")
+#     cleanup()
+
+# def inference(rank, world_size):
+#     print('inference', world_size, rank)
+#     setup(world_size, rank)
+
+#     print('load dataset')
+#     dataset = load_dataset("imagenet-1k", cache_dir='/home/mheuill/scratch',)
+    
+#     print('initialize image processor')
+#     # image_processor = AutoImageProcessor.from_pretrained("/home/mheuill/scratch/resnet-50", local_files_only=True)
+#     # dataset = image_processor(dataset)
+
+#     print('create custom dataset')
+#     # print(dataset['train'][0]['image'])
+
+
+#     transform = transforms.Compose([
+#         transforms.Lambda(to_rgb),
+#         transforms.Resize(256),
+#         transforms.CenterCrop(224),
+#         transforms.ToTensor(),
+#         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]), ])
+
+#     # Instantiate the custom dataset
+#     dataset = CustomImageDataset(dataset['test'], transform=transform)
+
+#     sampler = DistributedSampler(dataset, num_replicas=world_size, rank=rank, shuffle=False)
+
+#     print('load dataloader')
+#     dataloader = DataLoader(dataset, batch_size=1024, sampler=sampler, num_workers=world_size)
+
+#     # Load model
+#     model = models.resnet50().to("cuda")
+#     # Load the state dictionary from the file
+#     state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
+#     model.load_state_dict(state_dict)
+
+#     # model = ResNetModel.from_pretrained('/home/mheuill/scratch/resnet-50', local_files_only=True) #resnet50().cuda(rank)
+#     model = model.cuda(rank)
+#     model = DDP(model, device_ids=[rank])
+    
+#     model.eval()
+
+#     predictions = []
+#     time = 0
+#     print('start the loop')
+#     with torch.no_grad():
+#         for inputs, _ in dataloader:
+#             inputs = inputs.cuda(rank)
+#             outputs = model(inputs) #.last_hidden_state
+#             predictions.append( outputs )
+
+#             time +=1
+            
+#     print('Gather all predictions to the process 0')
+#     predictions = torch.cat(predictions, dim=0)
+#     gather_list = [torch.zeros_like(predictions) for _ in range(world_size)]
+#     dist.all_gather(gather_list, predictions)
+
+
+#     if rank == 0:
+#         # Concatenate all predictions on rank 0
+#         all_predictions = torch.cat(gather_list, dim=0).cpu()
+#         print(all_predictions.shape)  # This will show the total number of predictions
+#         return all_predictions
+
+#     print('clean up')
 #     cleanup()
