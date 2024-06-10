@@ -215,7 +215,7 @@ class Experiment:
     
     def evaluation(self, rank, args):
 
-        state_dict, test_dataset = args
+        state_dict, test_dataset, accuracy_tensor = args
 
         setup(self.world_size, rank)
 
@@ -239,7 +239,7 @@ class Experiment:
                 total += labels.size(0)
                 correct += (predicted == labels).sum().item()
 
-        # Tensorize the correct and total for reduction
+         # Tensorize the correct and total for reduction
         correct_tensor = torch.tensor(correct).cuda(rank)
         total_tensor = torch.tensor(total).cuda(rank)
 
@@ -247,11 +247,8 @@ class Experiment:
         dist.all_reduce(correct_tensor, op=dist.ReduceOp.SUM)
         dist.all_reduce(total_tensor, op=dist.ReduceOp.SUM)
 
-        # Compute accuracy on all ranks and ensure it is available before returning
-        accuracy = correct_tensor.item() / total_tensor.item() if total_tensor.item() > 0 else 0
-        if rank == 0:
-            print(f"Accuracy: {accuracy}")
-        return accuracy
+        # Compute accuracy and store it in the shared tensor
+        accuracy_tensor[rank] = correct_tensor.item() / total_tensor.item()
 
     
 
@@ -351,9 +348,11 @@ class Experiment:
         model = self.load_model()
         state_dict = model.state_dict()
         
-        arg = (state_dict, test_dataset)
-        results = torch.multiprocessing.spawn(self.evaluation, args=(arg,), nprocs=world_size, join=True)
-        clean_acc = results[0]
+        accuracy_tensor = torch.zeros(world_size, dtype=torch.float)  # Placeholder for the accuracy, shared memory
+        accuracy_tensor.share_memory_()  # 
+        arg = (state_dict, test_dataset, accuracy_tensor)
+        torch.multiprocessing.spawn(self.evaluation, args=(arg,), nprocs=world_size, join=True)
+        clean_acc = accuracy_tensor[0]
         
         print('clean_acc', clean_acc)
         
