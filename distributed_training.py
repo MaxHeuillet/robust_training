@@ -41,6 +41,7 @@ from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 
 import torch.distributed as dist
+from torchvision.transforms.functional import InterpolationMode
 
 
 class CustomImageDataset(Dataset):
@@ -180,6 +181,14 @@ class Experiment:
             #     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
             # ])
 
+            transform = transforms.Compose([
+                transforms.Lambda(to_rgb),
+                transforms.Resize(232, interpolation=InterpolationMode.BILINEAR),  # Resize the image to 232x232
+                transforms.CenterCrop(224),  # Crop the center of the image to make it 224x224
+                transforms.ToTensor(),  # Convert the image to a tensor
+                transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # Normalize the tensor
+            ])
+
             dataset = load_dataset("imagenet-1k", cache_dir='/home/mheuill/scratch',)
 
             pool_dataset = CustomImageDataset(dataset['train'], transform= ResNet50_Weights.DEFAULT.transforms() )
@@ -190,14 +199,13 @@ class Experiment:
 
         elif self.data == 'Imagenette':
 
-            # transform = transforms.Compose([
-            #     transforms.Lambda(to_rgb),
-            #     transforms.Resize(256),
-            #     transforms.CenterCrop(224),
-            #     transforms.ToTensor(),
-            #     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-            # ])
-            # Load the default pre-trained weights
+            transform = transforms.Compose([
+                transforms.Lambda(to_rgb),
+                transforms.Resize(232, interpolation=InterpolationMode.BILINEAR),  # Resize the image to 232x232
+                transforms.CenterCrop(224),  # Crop the center of the image to make it 224x224
+                transforms.ToTensor(),  # Convert the image to a tensor
+                transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # Normalize the tensor
+            ])
 
 
             dataset = load_dataset("frgfm/imagenette", "full_size", cache_dir='/home/mheuill/scratch')
