@@ -38,7 +38,7 @@ class LoRA(nn.Module):
         return W + torch.matmul(self.mat_B, self.mat_A).view(W.shape) * self.scale
 
 def layer_parametrization(layer, device, rank = 10, lora_alpha = 1):
-  print( layer.weight.shape, type(layer) )
+  # print( layer.weight.shape, type(layer) )
   if isinstance(layer, nn.Linear):
     features_in, features_out = layer.weight.shape
   elif isinstance(layer, nn.Conv2d):
