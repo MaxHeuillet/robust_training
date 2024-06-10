@@ -233,9 +233,10 @@ class Experiment:
         print('start the loop')
         with torch.no_grad():
             for inputs, labels in loader:
+                labels = labels.cuda(rank)
                 inputs = inputs.cuda(rank)
                 outputs = model(inputs) 
-                _, predicted = torch.max(outputs.data, 1)
+                _, predicted = torch.max(outputs.data, 1).cuda(rank)
                 total += labels.size(0)
                 correct += (predicted == labels).sum().item()
 
