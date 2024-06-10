@@ -350,7 +350,8 @@ class Experiment:
         predictions = torch.cat(predictions, dim=0)
 
         gather_list = [ torch.zeros_like(predictions) for _ in range(self.world_size)]
-        gather_list[rank] = predictions
+        dist.all_gather(gather_list, predictions)
+        
         
         if rank == 0:
             all_predictions = torch.cat(gather_list, dim=0)
