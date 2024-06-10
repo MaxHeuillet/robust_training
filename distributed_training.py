@@ -348,7 +348,9 @@ class Experiment:
 
         print('Gather all predictions to the process 0')
         predictions = torch.cat(predictions, dim=0)
+
         gather_list = [ torch.zeros_like(predictions) for _ in range(self.world_size)]
+        gather_list[rank] = predictions
         
         if rank == 0:
             all_predictions = torch.cat(gather_list, dim=0)
