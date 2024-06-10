@@ -21,6 +21,8 @@ from torch.utils.data import Dataset
 
 from PIL import Image
 
+from torchvision.models import resnet50, ResNet50_Weights
+
 
 
 import torch.nn.utils.parametrize as parametrize
@@ -170,37 +172,39 @@ class Experiment:
             
         elif self.data == 'Imagenet-1k':
 
-            transform = transforms.Compose([
-                transforms.Lambda(to_rgb),
-                transforms.Resize(256),
-                transforms.CenterCrop(224),
-                transforms.ToTensor(),
-                transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-            ])
+            # transform = transforms.Compose([
+            #     transforms.Lambda(to_rgb),
+            #     transforms.Resize(256),
+            #     transforms.CenterCrop(224),
+            #     transforms.ToTensor(),
+            #     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+            # ])
 
             dataset = load_dataset("imagenet-1k", cache_dir='/home/mheuill/scratch',)
 
-            pool_dataset = CustomImageDataset(dataset['train'], transform=transform)
+            pool_dataset = CustomImageDataset(dataset['train'], transform= ResNet50_Weights.DEFAULT.transforms() )
         
-            test_dataset = CustomImageDataset(dataset['test'], transform=transform)
+            test_dataset = CustomImageDataset(dataset['test'], transform= ResNet50_Weights.DEFAULT.transforms() ) 
 
             print('load dataloader')
 
         elif self.data == 'Imagenette':
 
-            transform = transforms.Compose([
-                transforms.Lambda(to_rgb),
-                transforms.Resize(256),
-                transforms.CenterCrop(224),
-                transforms.ToTensor(),
-                transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-            ])
+            # transform = transforms.Compose([
+            #     transforms.Lambda(to_rgb),
+            #     transforms.Resize(256),
+            #     transforms.CenterCrop(224),
+            #     transforms.ToTensor(),
+            #     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+            # ])
+            # Load the default pre-trained weights
+
 
             dataset = load_dataset("frgfm/imagenette", "full_size", cache_dir='/home/mheuill/scratch')
 
-            pool_dataset = CustomImageDataset(dataset['train'], transform=transform)
+            pool_dataset = CustomImageDataset(dataset['train'], transform= ResNet50_Weights.DEFAULT.transforms() )
         
-            test_dataset = CustomImageDataset(dataset['validation'], transform=transform)
+            test_dataset = CustomImageDataset(dataset['validation'], transform= ResNet50_Weights.DEFAULT.transforms() )
 
             print('load dataloader')
             
@@ -251,50 +255,49 @@ class Experiment:
         accuracy_tensor[rank] = correct_tensor.item() / total_tensor.item()
 
     
-
     def uncertainty_sampling(self, rank, args):
-
         state_dict, pool_dataset, N, top_n_indices = args
 
         setup(self.world_size, rank)
 
         sampler = DistributedSampler(pool_dataset, num_replicas=self.world_size, rank=rank, shuffle=False)
-        loader = DataLoader(pool_dataset, batch_size=1024, sampler=sampler, num_workers=self.world_size)
+        loader = DataLoader(pool_dataset, batch_size=1024, sampler=sampler, num_workers=self.world_size, shuffle=False)
 
         model = self.load_model()
         model.load_state_dict(state_dict)
         model.to(rank)
         model = DDP(model, device_ids=[rank])
-        
+
         predictions = []
-        print('start the loop')
+        indices_list = []
         with torch.no_grad():
-            for inputs, _ in loader:
+            for inputs, _, indices in loader:
                 inputs = inputs.cuda(rank)
                 outputs = model(inputs) 
-                predictions.append( outputs )
+                predictions.append(outputs)
+                indices_list.append(indices)
 
-        print('Gather all predictions to the process 0')
         predictions = torch.cat(predictions, dim=0)
+        indices = torch.cat(indices_list, dim=0)
 
-        gather_list = [ torch.zeros_like(predictions) for _ in range(self.world_size)]
+        gather_list = [torch.zeros_like(predictions) for _ in range(self.world_size)]
+        index_gather_list = [torch.zeros_like(indices) for _ in range(self.world_size)]
+
         dist.all_gather(gather_list, predictions)
-        
+        dist.all_gather(index_gather_list, indices)
+
         if rank == 0:
             all_predictions = torch.cat(gather_list, dim=0)
-            print(all_predictions)
-            print(all_predictions.shape)
+            all_indices = torch.cat(index_gather_list, dim=0)
             outputs = torch.softmax(all_predictions, dim=1)
             uncertainty = 1 - torch.max(outputs, dim=1)[0]
-            print(uncertainty)
-            print(uncertainty.shape)
-            _, top_n_indices_sub = torch.topk(uncertainty, N, largest=True)
-            print(top_n_indices_sub)
-            print(top_n_indices_sub.shape)
-            top_n_indices.copy_(top_n_indices_sub)
+            _, sorted_indices = torch.sort(all_indices)
+            sorted_uncertainty = uncertainty[sorted_indices]
+            _, top_n_indices_sub = torch.topk(sorted_uncertainty, N, largest=True)
+            top_n_indices.copy_(all_indices[sorted_indices][top_n_indices_sub])
 
-        print('clean up')
         cleanup()
+
 
     def update(self,rank, args):
 
