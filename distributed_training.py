@@ -230,7 +230,6 @@ class Experiment:
         correct = 0
         total = 0
 
-        print('start the loop')
         with torch.no_grad():
             for inputs, labels in loader:
                 labels = labels.cuda(rank)
@@ -248,11 +247,12 @@ class Experiment:
         dist.all_reduce(correct_tensor, op=dist.ReduceOp.SUM)
         dist.all_reduce(total_tensor, op=dist.ReduceOp.SUM)
 
+        # Compute accuracy on all ranks and ensure it is available before returning
+        accuracy = correct_tensor.item() / total_tensor.item() if total_tensor.item() > 0 else 0
         if rank == 0:
-            # Compute accuracy only on the rank 0 process
-            accuracy = correct_tensor.item() / total_tensor.item()
             print(f"Accuracy: {accuracy}")
         return accuracy
+
     
 
     def uncertainty_sampling(self, rank, args):
@@ -352,9 +352,8 @@ class Experiment:
         state_dict = model.state_dict()
         
         arg = (state_dict, test_dataset)
-        clean_acc = torch.multiprocessing.spawn(self.evaluation, 
-                                                args=(arg,),
-                                                nprocs=world_size, join=True)
+        results = torch.multiprocessing.spawn(self.evaluation, args=(arg,), nprocs=world_size, join=True)
+        clean_acc = results[0]
         
         print('clean_acc', clean_acc)
         
