@@ -236,7 +236,7 @@ class Experiment:
                 labels = labels.cuda(rank)
                 inputs = inputs.cuda(rank)
                 outputs = model(inputs) 
-                _, predicted = torch.max(outputs.data, 1).cuda(rank)
+                _, predicted = torch.max(outputs.data, 1)
                 total += labels.size(0)
                 correct += (predicted == labels).sum().item()
 
