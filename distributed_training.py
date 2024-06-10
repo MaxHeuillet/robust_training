@@ -191,9 +191,9 @@ class Experiment:
 
             dataset = load_dataset("imagenet-1k", cache_dir='/home/mheuill/scratch',)
 
-            pool_dataset = CustomImageDataset(dataset['train'], transform= ResNet50_Weights.DEFAULT.transforms() )
+            pool_dataset = CustomImageDataset(dataset['train'], transform= transform )
         
-            test_dataset = CustomImageDataset(dataset['test'], transform= ResNet50_Weights.DEFAULT.transforms() ) 
+            test_dataset = CustomImageDataset(dataset['test'], transform= transform ) 
 
             print('load dataloader')
 
@@ -210,9 +210,9 @@ class Experiment:
 
             dataset = load_dataset("frgfm/imagenette", "full_size", cache_dir='/home/mheuill/scratch')
 
-            pool_dataset = CustomImageDataset(dataset['train'], transform= ResNet50_Weights.DEFAULT.transforms() )
+            pool_dataset = CustomImageDataset(dataset['train'], transform= transform )
         
-            test_dataset = CustomImageDataset(dataset['validation'], transform= ResNet50_Weights.DEFAULT.transforms() )
+            test_dataset = CustomImageDataset(dataset['validation'], transform= transform )
 
             print('load dataloader')
             
