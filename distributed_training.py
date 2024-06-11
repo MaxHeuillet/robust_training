@@ -385,7 +385,7 @@ class Experiment:
         # torch.multiprocessing.spawn(self.evaluation, args=(arg,), nprocs=world_size, join=True)
         # clean_acc = accuracy_tensor[0]
         
-        print('clean_acc', clean_acc)
+        # print('clean_acc', clean_acc)
         
         epoch_counter = 0
         round_size = math.ceil(self.size / self.n_rounds)
