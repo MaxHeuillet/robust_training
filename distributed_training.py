@@ -382,8 +382,8 @@ class Experiment:
         accuracy_tensor = torch.zeros(world_size, dtype=torch.float)  # Placeholder for the accuracy, shared memory
         accuracy_tensor.share_memory_()  # 
         arg = (state_dict, test_dataset, accuracy_tensor)
-        torch.multiprocessing.spawn(self.evaluation, args=(arg,), nprocs=world_size, join=True)
-        clean_acc = accuracy_tensor[0]
+        # torch.multiprocessing.spawn(self.evaluation, args=(arg,), nprocs=world_size, join=True)
+        # clean_acc = accuracy_tensor[0]
         
         print('clean_acc', clean_acc)
         
