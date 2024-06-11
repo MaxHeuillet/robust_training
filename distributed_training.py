@@ -420,7 +420,7 @@ if __name__ == "__main__":
     n_rounds = 1
     size = 100
     nb_epochs = 1
-    seed = 2
+    seed = 3
     active_strategy = 'uncertainty'
     data = 'Imagenette'
     model = 'resnet50'
