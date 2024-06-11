@@ -314,6 +314,8 @@ class Experiment:
         if rank == 0:
             all_predictions = torch.cat(gather_list, dim=0)
             all_indices = torch.cat(index_gather_list, dim=0)
+            print(all_predictions)
+            print(all_indices)
             outputs = torch.softmax(all_predictions, dim=1)
             uncertainty = 1 - torch.max(outputs, dim=1)[0]
             # Direct indexing instead of sorting
