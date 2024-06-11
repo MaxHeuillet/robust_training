@@ -245,7 +245,7 @@ class Experiment:
         total = 0
 
         with torch.no_grad():
-            for inputs,_, labels in loader:
+            for inputs,labels, _ in loader:
                 labels = labels.cuda(rank)
                 inputs = inputs.cuda(rank)
                 outputs = model(inputs) 
