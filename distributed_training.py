@@ -239,7 +239,9 @@ class Experiment:
         model = self.load_model()
         model.load_state_dict(state_dict)
         model.to(rank)
+        model.eval()  # Ensure the model is in evaluation mode
         model = DDP(model, device_ids=[rank])
+        
 
         correct = 0
         total = 0
@@ -282,6 +284,7 @@ class Experiment:
         model = self.load_model()
         model.load_state_dict(state_dict)
         model.to(rank)
+        model.eval()  # Ensure the model is in evaluation mode
         model = DDP(model, device_ids=[rank])
 
         predictions = []
@@ -307,12 +310,12 @@ class Experiment:
             all_indices = torch.cat(index_gather_list, dim=0)
             outputs = torch.softmax(all_predictions, dim=1)
             uncertainty = 1 - torch.max(outputs, dim=1)[0]
-            _, sorted_indices = torch.sort(all_indices)
-            sorted_uncertainty = uncertainty[sorted_indices]
-            _, top_n_indices_sub = torch.topk(sorted_uncertainty, N, largest=True)
-            top_n_indices.copy_(all_indices[sorted_indices][top_n_indices_sub])
+            # Direct indexing instead of sorting
+            _, top_n_indices_sub = torch.topk(uncertainty, N, largest=True)
+            top_n_indices.copy_(all_indices[top_n_indices_sub])
 
         cleanup()
+
 
 
     def update(self,rank, args):
