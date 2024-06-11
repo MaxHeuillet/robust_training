@@ -1,6 +1,7 @@
 python -m venv MYENV4
 source env/bin/activate
 
+module load arrow
 
 pip install -r requirements.txt
 pip install git+https://github.com/fra31/auto-attack
