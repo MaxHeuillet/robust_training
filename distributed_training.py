@@ -299,11 +299,17 @@ class Experiment:
         predictions = torch.cat(predictions, dim=0)
         indices = torch.cat(indices_list, dim=0)
 
+ 
         gather_list = [torch.zeros_like(predictions) for _ in range(self.world_size)]
         index_gather_list = [torch.zeros_like(indices) for _ in range(self.world_size)]
+        print(gather_list)
+        print(index_gather_list)
 
         dist.all_gather(gather_list, predictions)
         dist.all_gather(index_gather_list, indices)
+
+        print(gather_list)
+        print(index_gather_list)
 
         if rank == 0:
             all_predictions = torch.cat(gather_list, dim=0)
