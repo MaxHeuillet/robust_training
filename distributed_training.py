@@ -308,6 +308,8 @@ class Experiment:
         dist.all_gather(gather_list, predictions)
         dist.all_gather(index_gather_list, indices)
 
+        dist.barrier()  # Synchronization point
+
         if rank == 0:
             print(gather_list)
             print(index_gather_list)
