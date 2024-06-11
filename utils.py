@@ -17,6 +17,8 @@ import numpy as np
 import os
 import trades
 
+from transformers import set_seed as hf_set_seed  # Hugging Face specific seed setter
+
 
 def get_indices_for_round(L, n, current_round):
     """
@@ -76,7 +78,7 @@ def set_seeds(seed):
     torch.cuda.manual_seed_all(seed)  # if you are using multi-GPU.
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
-    
+    hf_set_seed(seed)
     
     # Setting the seed for the OS
     os.environ['PYTHONHASHSEED'] = str(seed)
