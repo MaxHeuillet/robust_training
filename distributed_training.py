@@ -141,7 +141,7 @@ class Experiment:
             model.load_state_dict(state_dict)
             model.to('cuda')
 
-        self.add_lora(model)
+        #self.add_lora(model)
 
         return model
     
