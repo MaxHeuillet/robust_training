@@ -284,7 +284,7 @@ class Experiment:
                 inputs = inputs.cuda(rank)
                 outputs = model(inputs) 
                 predictions.append(outputs)
-                indices_list.append(indices)
+                indices_list.append( indices.cuda(rank) )
 
         predictions = torch.cat(predictions, dim=0)
         indices = torch.cat(indices_list, dim=0)
