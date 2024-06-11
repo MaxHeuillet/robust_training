@@ -190,7 +190,8 @@ class Experiment:
                 transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # Normalize the tensor
             ])
 
-            dataset = load_dataset("imagenet-1k", cache_dir='/home/mheuill/scratch',)
+            # dataset = load_dataset("imagenet-1k", cache_dir='/home/mheuill/scratch',)
+            dataset = load_from_disk('/home/mheuill/scratch/imagenet-1k')
 
             pool_dataset = CustomImageDataset(dataset['train'], transform= transform )
         
@@ -384,10 +385,10 @@ class Experiment:
         accuracy_tensor = torch.zeros(world_size, dtype=torch.float)  # Placeholder for the accuracy, shared memory
         accuracy_tensor.share_memory_()  # 
         arg = (state_dict, test_dataset, accuracy_tensor)
-        # torch.multiprocessing.spawn(self.evaluation, args=(arg,), nprocs=world_size, join=True)
-        # clean_acc = accuracy_tensor[0]
+        torch.multiprocessing.spawn(self.evaluation, args=(arg,), nprocs=world_size, join=True)
+        clean_acc = accuracy_tensor[0]
         
-        # print('clean_acc', clean_acc)
+        print('clean_acc', clean_acc)
         
         epoch_counter = 0
         round_size = math.ceil(self.size / self.n_rounds)
