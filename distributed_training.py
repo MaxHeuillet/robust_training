@@ -10,7 +10,7 @@ from torch.nn.parallel import DistributedDataParallel as DDP
 
 from transformers import AutoImageProcessor, ResNetModel
 import torch
-from datasets import load_dataset
+from datasets import load_dataset, load_from_disk
 
 import torchvision.models as models
 
@@ -209,7 +209,8 @@ class Experiment:
             ])
 
 
-            dataset = load_dataset("frgfm/imagenette", "full_size", cache_dir='/home/mheuill/scratch')
+            # dataset = load_dataset("frgfm/imagenette", "full_size", cache_dir='/home/mheuill/scratch')
+            dataset = load_from_disk('/home/mheuill/scratch/imagenette')
 
             pool_dataset = CustomImageDataset(dataset['train'], transform= transform )
         
@@ -256,12 +257,18 @@ class Experiment:
         correct_tensor = torch.tensor(correct).cuda(rank)
         total_tensor = torch.tensor(total).cuda(rank)
 
+        print(correct_tensor, total_tensor)
+
         # Use dist.all_reduce to sum the values across all processes
         dist.all_reduce(correct_tensor, op=dist.ReduceOp.SUM)
         dist.all_reduce(total_tensor, op=dist.ReduceOp.SUM)
 
+        print(correct_tensor, total_tensor)
+
         # Compute accuracy and store it in the shared tensor
         accuracy_tensor[rank] = correct_tensor.item() / total_tensor.item()
+
+        print(accuracy_tensor)
 
     
     def uncertainty_sampling(self, rank, args):
