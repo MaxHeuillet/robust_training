@@ -51,6 +51,7 @@ class CustomImageDataset(Dataset):
 
     def __len__(self):
         return len(self.hf_dataset)
+    
 
     def __getitem__(self, idx):
         # Here 'image' is likely a PIL image; you can check by adding print(type(image)) if unsure
@@ -70,7 +71,7 @@ class CustomImageDataset(Dataset):
 
         #print(image_data, image_data)
         label = self.hf_dataset[idx]['label']
-        return image, label
+        return image, label, idx
 
 
 
@@ -243,7 +244,7 @@ class Experiment:
         total = 0
 
         with torch.no_grad():
-            for inputs, labels in loader:
+            for inputs,_, labels in loader:
                 labels = labels.cuda(rank)
                 inputs = inputs.cuda(rank)
                 outputs = model(inputs) 
