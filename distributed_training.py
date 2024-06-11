@@ -255,7 +255,9 @@ class Experiment:
                 total += labels.size(0)
                 correct += (predicted == labels).sum().item()
 
-         # Tensorize the correct and total for reduction
+        
+        
+        # Tensorize the correct and total for reduction
         correct_tensor = torch.tensor(correct).cuda(rank)
         total_tensor = torch.tensor(total).cuda(rank)
 
@@ -422,7 +424,7 @@ if __name__ == "__main__":
     nb_epochs = 1
     seed = 3
     active_strategy = 'uncertainty'
-    data = 'Imagenette'
+    data = 'Imagenet-1k'
     model = 'resnet50'
     world_size = torch.cuda.device_count()
     evaluator = Experiment(n_rounds, size, nb_epochs, seed, active_strategy, data, model, world_size)
