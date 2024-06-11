@@ -308,8 +308,8 @@ class Experiment:
         dist.all_gather(gather_list, predictions)
         dist.all_gather(index_gather_list, indices)
 
-        print(gather_list)
-        print(index_gather_list)
+        print(gather_list.shape)
+        print(index_gather_list.shape)
 
         if rank == 0:
             all_predictions = torch.cat(gather_list, dim=0)
