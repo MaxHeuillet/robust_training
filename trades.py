@@ -104,17 +104,21 @@ def trades_loss(model,
     # generate adversarial example
     x_adv = x_natural.detach() + 0.001 * torch.randn(x_natural.shape, device=x_natural.device).detach()
 
+    print(x_natural)
+    print(x_adv)
+
     if distance == 'l_inf':
         for _ in range(perturb_steps):
             x_adv.requires_grad_()
+            print(x_adv)
             with torch.enable_grad():
                 loss_kl = criterion_kl( F.log_softmax(model(x_adv), dim=1), F.softmax(model(x_natural), dim=1))
                 print('loss_kl',loss_kl)
 
-            loss_kl.backward()
-            grad = x_adv.grad  # Access gradients after backward if needed elsewhere
+            # loss_kl.backward()
+            # grad = x_adv.grad  # Access gradients after backward if needed elsewhere
 
-            #grad = torch.autograd.grad(loss_kl, [x_adv])[0]
+            grad = torch.autograd.grad(loss_kl, [x_adv])[0]
             x_adv = x_adv.detach() + step_size * torch.sign(grad.detach())
             x_adv = torch.min(torch.max(x_adv, x_natural - epsilon), x_natural + epsilon)
             x_adv = torch.clamp(x_adv, 0.0, 1.0)
