@@ -345,7 +345,7 @@ class Experiment:
         model = DDP(model, device_ids=[rank])
         model.train()
         
-        # criterion = nn.CrossEntropyLoss()
+        criterion = nn.CrossEntropyLoss()
         # optimizer = optim.SGD(model.parameters(), lr=0.01)
         # optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
         optimizer = torch.optim.SGD( model.parameters(),lr=0.001, weight_decay=0.0001, momentum=0.9, nesterov=True, )
@@ -356,13 +356,14 @@ class Experiment:
             for data, target, _ in loader:
                 data, target = data.to(rank), target.to(rank)
                 optimizer.zero_grad()
-                logits, loss = trades.trades_loss(model=model, x_natural=data, y=target, optimizer=optimizer,)
+                loss = criterion(data,target)
+                #logits, loss = trades.trades_loss(model=model, x_natural=data, y=target, optimizer=optimizer,)
                 loss.backward()
                 optimizer.step()
-                total_err += (logits.max(dim=1)[1] != target).sum().item()
-                total_loss += loss.item() * data.shape[0]
+                #total_err += (logits.max(dim=1)[1] != target).sum().item()
+                #total_loss += loss.item() * data.shape[0]
             
-            print(f'Rank {rank}, Epoch {epoch}, Error {total_err / len(loader.dataset)}, Loss {total_loss / len(loader.dataset)}')
+            print(f'Rank {rank}, Epoch {epoch}, ') #Error {total_err / len(loader.dataset)}, Loss {total_loss / len(loader.dataset)}
 
         print('clean up')
         cleanup()
