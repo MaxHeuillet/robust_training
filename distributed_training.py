@@ -214,7 +214,7 @@ class Experiment:
             # dataset = load_dataset("frgfm/imagenette", "full_size", cache_dir='/home/mheuill/scratch')
             dataset = load_from_disk('/home/mheuill/scratch/imagenette')
 
-            print(dataset[0])
+            print(dataset['train'][0])
 
             pool_dataset = CustomImageDataset(dataset['train'], transform= transform )
         
