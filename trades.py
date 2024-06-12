@@ -110,7 +110,11 @@ def trades_loss(model,
             with torch.enable_grad():
                 loss_kl = criterion_kl( F.log_softmax(model(x_adv), dim=1), F.softmax(model(x_natural), dim=1))
                 print('loss_kl',loss_kl)
-            grad = torch.autograd.grad(loss_kl, [x_adv])[0]
+
+            loss_kl.backward()
+            grad = x_adv.grad  # Access gradients after backward if needed elsewhere
+
+            #grad = torch.autograd.grad(loss_kl, [x_adv])[0]
             x_adv = x_adv.detach() + step_size * torch.sign(grad.detach())
             x_adv = torch.min(torch.max(x_adv, x_natural - epsilon), x_natural + epsilon)
             x_adv = torch.clamp(x_adv, 0.0, 1.0)
