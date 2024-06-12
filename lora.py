@@ -35,7 +35,7 @@ class LoRA(nn.Module):
         self.scale = alpha / rank
 
     def forward(self, W):
-        print('test')
+        print('test', self.mat_B, self.mat_A, self.scale)
         return W + torch.matmul(self.mat_B, self.mat_A).view(W.shape) * self.scale
 
 def layer_parametrization(layer, device, rank = 10, lora_alpha = 1):
