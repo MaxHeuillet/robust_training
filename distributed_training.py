@@ -171,6 +171,8 @@ class Experiment:
             pool_dataset = datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
 
             test_dataset = datasets.CIFAR10(root='./data', train=False, transform=transform)
+
+            print(pool_dataset[0])
             
         elif self.data == 'Imagenet-1k':
 
