@@ -342,6 +342,7 @@ class Experiment:
         model = self.load_model()
         model.load_state_dict(state_dict)
         model.to(rank)
+        model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(model)
         model = DDP(model, device_ids=[rank])
         model.train()
         
