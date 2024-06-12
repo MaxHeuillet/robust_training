@@ -24,7 +24,6 @@ import torch
 from functools import partial
 import torch.nn.utils.parametrize as parametrize
 
-
 class LoRA(nn.Module):
     def __init__(self, features_in, features_out, rank=1, alpha=1, device='cuda'):
         super().__init__()
@@ -35,7 +34,6 @@ class LoRA(nn.Module):
         self.scale = alpha / rank
 
     def forward(self, W):
-        print('test', self.mat_B, self.mat_A, self.scale)
         return W + torch.matmul(self.mat_B, self.mat_A).view(W.shape) * self.scale
 
 def layer_parametrization(layer, device, rank = 10, lora_alpha = 1):
