@@ -218,6 +218,8 @@ class Experiment:
         
             test_dataset = CustomImageDataset(dataset['validation'], transform= transform )
 
+            print(pool_dataset[0])
+
             print('load dataloader')
             
         else:
