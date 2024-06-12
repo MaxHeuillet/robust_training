@@ -141,7 +141,7 @@ class Experiment:
             model.load_state_dict(state_dict)
             model.to('cuda')
 
-        #self.add_lora(model)
+        self.add_lora(model)
 
         return model
     
@@ -246,7 +246,6 @@ class Experiment:
         model.eval()  # Ensure the model is in evaluation mode
         model = DDP(model, device_ids=[rank])
         
-
         correct = 0
         total = 0
 
@@ -259,8 +258,6 @@ class Experiment:
                 total += labels.size(0)
                 correct += (predicted == labels).sum().item()
 
-        
-        
         # Tensorize the correct and total for reduction
         correct_tensor = torch.tensor(correct).cuda(rank)
         total_tensor = torch.tensor(total).cuda(rank)
