@@ -347,7 +347,6 @@ class Experiment:
         # optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
         optimizer = torch.optim.SGD( model.parameters(),lr=0.001, weight_decay=0.0001, momentum=0.9, nesterov=True, )
         
-
         for epoch in range(self.epochs):
             total_loss, total_err = 0.,0.
             sampler.set_epoch(epoch)
@@ -357,8 +356,8 @@ class Experiment:
                 logits, loss = trades.trades_loss(model=model, x_natural=data, y=target, optimizer=optimizer,)
                 loss.backward()
                 optimizer.step()
-                total_err += (logits.max(dim=1)[1] != y).sum().item()
-                total_loss += loss.item() * X.shape[0]
+                total_err += (logits.max(dim=1)[1] != target).sum().item()
+                total_loss += loss.item() * data.shape[0]
             
             print(f'Rank {rank}, Epoch {epoch}, Error {total_err / len(loader.dataset)}, Loss {total_loss / len(loader.dataset)}')
 
@@ -415,8 +414,12 @@ class Experiment:
             else:
                 print('error')
 
-
             subset_dataset = Subset(pool_dataset, collected_indices)
+            arg = (state_dict, subset_dataset)
+            torch.multiprocessing.spawn(self.update,
+                                    args=(arg,),
+                                    nprocs=self.world_size, join=True)
+
 
             #DataLoader( Subset(pool_dataset, collected_indices), batch_size=512, shuffle=False, num_workers=self.world_size)
             
