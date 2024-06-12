@@ -354,7 +354,9 @@ class Experiment:
             total_loss, total_err = 0.,0.
             sampler.set_epoch(epoch)
             for data, target, _ in loader:
+
                 data, target = data.to(rank), target.to(rank)
+                print(data.shape, target.shape)
                 optimizer.zero_grad()
                 loss = criterion(data,target)
                 #logits, loss = trades.trades_loss(model=model, x_natural=data, y=target, optimizer=optimizer,)
