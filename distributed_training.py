@@ -209,7 +209,6 @@ class Experiment:
                 transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # Normalize the tensor
             ])
 
-
             # dataset = load_dataset("frgfm/imagenette", "full_size", cache_dir='/home/mheuill/scratch')
             dataset = load_from_disk('/home/mheuill/scratch/imagenette')
 
@@ -425,7 +424,7 @@ if __name__ == "__main__":
     nb_epochs = 1
     seed = 3
     active_strategy = 'uncertainty'
-    data = 'Imagenet-1k'
+    data = 'Imagenette'
     model = 'resnet50'
     world_size = torch.cuda.device_count()
     evaluator = Experiment(n_rounds, size, nb_epochs, seed, active_strategy, data, model, world_size)
