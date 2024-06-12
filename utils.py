@@ -156,7 +156,7 @@ def epoch_fast_AT(loader, model, device, opt=None,):
         
     return total_err / len(loader.dataset), total_loss / len(loader.dataset)
 
-def epoch_TRADES(loader, model,device, opt=None,):
+def epoch_TRADES(loader, model, device, opt=None,):
     total_loss, total_err = 0.,0.
     for X,y in loader:
         X,y = X.to(device), y.to(device)

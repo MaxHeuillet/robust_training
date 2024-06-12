@@ -328,36 +328,39 @@ class Experiment:
         cleanup()
 
 
-
     def update(self,rank, args):
 
-        state_dict, pool_dataset = args
+        state_dict, subset_dataset = args
 
         setup(self.world_size, rank)
 
-        sampler = DistributedSampler(pool_dataset, num_replicas=self.world_size, rank=rank, shuffle=False)
-        loader = DataLoader(pool_dataset, batch_size=512, sampler=sampler, num_workers=self.world_size)
+        sampler = DistributedSampler(subset_dataset, num_replicas=self.world_size, rank=rank, shuffle=False)
+        loader = DataLoader(subset_dataset, batch_size=512, sampler=sampler, num_workers=self.world_size)
 
         model = self.load_model()
         model.load_state_dict(state_dict)
         model.to(rank)
         model = DDP(model, device_ids=[rank])
         
-        criterion = nn.CrossEntropyLoss()
+        #criterion = nn.CrossEntropyLoss()
         # optimizer = optim.SGD(model.parameters(), lr=0.01)
         # optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
         optimizer = torch.optim.SGD( model.parameters(),lr=0.001, weight_decay=0.0001, momentum=0.9, nesterov=True, )
+        
 
         for epoch in range(self.epochs):
+            total_loss, total_err = 0.,0.
             sampler.set_epoch(epoch)
-            for data, target in loader:
+            for data, target, _ in loader:
                 data, target = data.to(rank), target.to(rank)
                 optimizer.zero_grad()
-                output = model(data)
-                loss = criterion(output, target)
+                logits, loss = trades.trades_loss(model=model, x_natural=data, y=target, optimizer=optimizer,)
                 loss.backward()
                 optimizer.step()
-            print(f'Rank {rank}, Epoch {epoch}, Loss {loss.item()}')
+                total_err += (logits.max(dim=1)[1] != y).sum().item()
+                total_loss += loss.item() * X.shape[0]
+            
+            print(f'Rank {rank}, Epoch {epoch}, Error {total_err / len(loader.dataset)}, Loss {total_loss / len(loader.dataset)}')
 
         print('clean up')
         cleanup()
@@ -399,8 +402,6 @@ class Experiment:
 
             print( 'iteration {}'.format(i) )
 
-            # pool_loader = DataLoader( Subset(pool_dataset, pool_indices), batch_size=1000, shuffle=False, num_workers=self.world_size)
-            
             if self.active_strategy == 'uncertainty':
                 top_n_indices = torch.zeros(round_size, dtype=torch.long)  # Placeholder for the indices, shared memory
                 top_n_indices.share_memory_()
@@ -408,13 +409,22 @@ class Experiment:
                 torch.multiprocessing.spawn(self.uncertainty_sampling,
                                                args=(arg,),
                                                nprocs=self.world_size, join=True)
-                # for i in top_n_indices:
-                #     print(i)
-                #selected_indices =  selected_indices[0] 
-                print(top_n_indices)
+
+                collected_indices.extend( top_n_indices.tolist() )
             
             else:
                 print('error')
+
+
+            subset_dataset = Subset(pool_dataset, collected_indices)
+
+            #DataLoader( Subset(pool_dataset, collected_indices), batch_size=512, shuffle=False, num_workers=self.world_size)
+            
+
+        
+
+
+            
 
                         
 
