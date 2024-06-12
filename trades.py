@@ -48,8 +48,7 @@ def trades_loss_autolora(model, x_natural, y, optimizer, step_size=2/255, epsilo
                 loss_kl = F.cross_entropy(model(x_adv, thread=None), y)
             grad = torch.autograd.grad(loss_kl, [x_adv])[0]
             x_adv = x_adv.detach() + step_size * torch.sign(grad.detach())
-            x_adv = torch.min(torch.max(x_adv, x_natural -
-                              epsilon), x_natural + epsilon)
+            x_adv = torch.min(torch.max(x_adv, x_natural - epsilon), x_natural + epsilon)
             x_adv = torch.clamp(x_adv, 0.0, 1.0)
     else:
         assert False

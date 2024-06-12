@@ -330,6 +330,8 @@ class Experiment:
 
     def update(self,rank, args):
 
+        torch.autograd.set_detect_anomaly(True)
+
         state_dict, subset_dataset = args
 
         setup(self.world_size, rank)
@@ -341,8 +343,9 @@ class Experiment:
         model.load_state_dict(state_dict)
         model.to(rank)
         model = DDP(model, device_ids=[rank])
+        model.train()
         
-        #criterion = nn.CrossEntropyLoss()
+        # criterion = nn.CrossEntropyLoss()
         # optimizer = optim.SGD(model.parameters(), lr=0.01)
         # optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
         optimizer = torch.optim.SGD( model.parameters(),lr=0.001, weight_decay=0.0001, momentum=0.9, nesterov=True, )
@@ -413,6 +416,8 @@ class Experiment:
             
             else:
                 print('error')
+
+            print('start update')
 
             subset_dataset = Subset(pool_dataset, collected_indices)
             arg = (state_dict, subset_dataset)
