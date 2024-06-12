@@ -214,8 +214,6 @@ class Experiment:
             # dataset = load_dataset("frgfm/imagenette", "full_size", cache_dir='/home/mheuill/scratch')
             dataset = load_from_disk('/home/mheuill/scratch/imagenette')
 
-            print(dataset['train'][0])
-
             pool_dataset = CustomImageDataset(dataset['train'], transform= transform )
         
             test_dataset = CustomImageDataset(dataset['validation'], transform= transform )
@@ -287,7 +285,7 @@ class Experiment:
         setup(self.world_size, rank)
 
         sampler = DistributedSampler(pool_dataset, num_replicas=self.world_size, rank=rank, shuffle=False)
-        loader = DataLoader(pool_dataset, batch_size=1024, sampler=sampler, num_workers=self.world_size, shuffle=False)
+        loader = DataLoader(pool_dataset, batch_size=512, sampler=sampler, num_workers=self.world_size, shuffle=False)
 
         model = self.load_model()
         model.load_state_dict(state_dict)
@@ -307,7 +305,6 @@ class Experiment:
         predictions = torch.cat(predictions, dim=0)
         indices = torch.cat(indices_list, dim=0)
 
- 
         gather_list = [torch.zeros_like(predictions) for _ in range(self.world_size)]
         index_gather_list = [torch.zeros_like(indices) for _ in range(self.world_size)]
         # print(gather_list)
@@ -342,7 +339,7 @@ class Experiment:
         setup(self.world_size, rank)
 
         sampler = DistributedSampler(pool_dataset, num_replicas=self.world_size, rank=rank, shuffle=False)
-        loader = DataLoader(pool_dataset, batch_size=1024, sampler=sampler, num_workers=self.world_size)
+        loader = DataLoader(pool_dataset, batch_size=512, sampler=sampler, num_workers=self.world_size)
 
         model = self.load_model()
         model.load_state_dict(state_dict)
