@@ -109,7 +109,8 @@ def trades_loss(model,
 
     if distance == 'l_inf':
         for _ in range(perturb_steps):
-            x_adv.requires_grad_()
+            # x_adv.requires_grad_()
+            x_adv = x_adv.clone().requires_grad_()
             print(x_adv)
             with torch.enable_grad():
                 loss_kl = criterion_kl( F.log_softmax(model(x_adv), dim=1), F.softmax(model(x_natural), dim=1))
@@ -122,6 +123,22 @@ def trades_loss(model,
             x_adv = x_adv.detach() + step_size * torch.sign(grad.detach())
             x_adv = torch.min(torch.max(x_adv, x_natural - epsilon), x_natural + epsilon)
             x_adv = torch.clamp(x_adv, 0.0, 1.0)
+
+    else:
+        x_adv = torch.clamp(x_adv, 0.0, 1.0)
+    model.train()
+
+    x_adv = Variable(torch.clamp(x_adv, 0.0, 1.0), requires_grad=False)
+    # zero gradient
+    optimizer.zero_grad()
+    # calculate robust loss
+    logits = model(x_natural)
+    loss_natural = F.cross_entropy(logits, y)
+    loss_robust = (1.0 / batch_size) * criterion_kl(F.log_softmax(model(x_adv), dim=1), F.softmax(model(x_natural), dim=1))
+    loss = loss_natural + beta * loss_robust
+    return logits, loss
+
+
 
     # elif distance == 'l_2':
     #     delta = 0.001 * torch.randn(x_natural.shape, device=x_natural.device).detach()
@@ -151,16 +168,3 @@ def trades_loss(model,
     #         delta.data.clamp_(0, 1).sub_(x_natural)
     #         delta.data.renorm_(p=2, dim=0, maxnorm=epsilon)
     #     x_adv = Variable(x_natural + delta, requires_grad=False)
-    else:
-        x_adv = torch.clamp(x_adv, 0.0, 1.0)
-    model.train()
-
-    x_adv = Variable(torch.clamp(x_adv, 0.0, 1.0), requires_grad=False)
-    # zero gradient
-    optimizer.zero_grad()
-    # calculate robust loss
-    logits = model(x_natural)
-    loss_natural = F.cross_entropy(logits, y)
-    loss_robust = (1.0 / batch_size) * criterion_kl(F.log_softmax(model(x_adv), dim=1), F.softmax(model(x_natural), dim=1))
-    loss = loss_natural + beta * loss_robust
-    return logits, loss
