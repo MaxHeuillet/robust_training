@@ -328,24 +328,24 @@ class Experiment:
         cleanup()
 
 
-    def update(self, args): #rank
+    def update(self, rank, args): #rank
 
         # torch.autograd.set_detect_anomaly(True)
         # torch.backends.cudnn.benchmark = False
-        rank = 'cuda'
+        # rank = 'cuda'
 
         state_dict, subset_dataset = args
 
-        #setup(self.world_size, rank)
+        setup(self.world_size, rank)
 
-        #sampler = DistributedSampler(subset_dataset, num_replicas=self.world_size, rank=rank, shuffle=False)
+        sampler = DistributedSampler(subset_dataset, num_replicas=self.world_size, rank=rank, shuffle=False)
         loader = DataLoader(subset_dataset, batch_size=32, ) #sampler=sampler, num_workers=self.world_size
 
         model = self.load_model()
         model.load_state_dict(state_dict)
         model.to(rank)
         # model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(model)
-        # model = DDP(model, device_ids=[rank])
+        model = DDP(model, device_ids=[rank])
         model.train()
         
         criterion = nn.CrossEntropyLoss()
@@ -355,7 +355,7 @@ class Experiment:
         
         for epoch in range(self.epochs):
             total_loss, total_err = 0.,0.
-            # sampler.set_epoch(epoch)
+            sampler.set_epoch(epoch)
             for data, target, _ in loader:
 
                 data, target = data.to(rank), target.to(rank)
@@ -428,12 +428,11 @@ class Experiment:
 
             subset_dataset = Subset(pool_dataset, collected_indices)
             
+            # self.update(arg)
             arg = (state_dict, subset_dataset)
-            self.update(arg)
-
-            # torch.multiprocessing.spawn(self.update,
-            #                         args=(arg,),
-            #                         nprocs=self.world_size, join=True)
+            torch.multiprocessing.spawn(self.update,
+                                    args=(arg,),
+                                    nprocs=self.world_size, join=True)
 
 
             #DataLoader( Subset(pool_dataset, collected_indices), batch_size=512, shuffle=False, num_workers=self.world_size)
