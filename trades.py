@@ -110,13 +110,13 @@ def trades_loss(model,
     if distance == 'l_inf':
         x_adv = x_natural.detach() + 0.001 * torch.randn(x_natural.shape, device=x_natural.device).detach()
         for _ in range(perturb_steps):
-            x_adv = x_adv.clone().requires_grad_()
+            x_adv = x_adv.requires_grad_()
             with torch.enable_grad():
                 loss_kl = criterion_kl(F.log_softmax(model(x_adv), dim=1), F.softmax(model(x_natural), dim=1))
 
             grad = torch.autograd.grad(loss_kl, [x_adv])[0]
             x_adv = x_adv.detach() + step_size * torch.sign(grad.detach())
-            x_adv = torch.min(torch.max(x_adv, x_natural - epsilon), x_natural + epsilon).clone().detach()
+            x_adv = torch.min(torch.max(x_adv, x_natural - epsilon), x_natural + epsilon).detach()
             x_adv = torch.clamp(x_adv, 0.0, 1.0)
     else:
         x_adv = torch.clamp(x_adv, 0.0, 1.0).detach()
