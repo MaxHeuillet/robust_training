@@ -359,11 +359,11 @@ class Experiment:
             for data, target, _ in loader:
 
                 data, target = data.to(rank), target.to(rank)
-                print(data.shape, target.shape)
+                # print(data.shape, target.shape)
                 optimizer.zero_grad()
-                logits = model(data)
-                loss = criterion(logits,target)
-                # logits, loss = trades.trades_loss(model=model, x_natural=data, y=target, optimizer=optimizer,)
+                # logits = model(data)
+                # loss = criterion(logits,target)
+                logits, loss = trades.trades_loss(model=model, x_natural=data, y=target, optimizer=optimizer,)
                 print('loss', loss)
                 loss.backward()
                 optimizer.step()
