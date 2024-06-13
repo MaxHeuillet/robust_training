@@ -331,6 +331,7 @@ class Experiment:
     def update(self, args): #rank
 
         torch.autograd.set_detect_anomaly(True)
+        torch.backends.cudnn.benchmark = False
         rank = 'cuda'
 
         state_dict, subset_dataset = args
