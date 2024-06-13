@@ -363,6 +363,7 @@ class Experiment:
                 logits = model(data)
                 # loss = criterion(logits,target)
                 logits, loss = trades.trades_loss(model=model, x_natural=data, y=target, optimizer=optimizer,)
+                print('loss', loss)
                 loss.backward()
                 optimizer.step()
                 #total_err += (logits.max(dim=1)[1] != target).sum().item()
