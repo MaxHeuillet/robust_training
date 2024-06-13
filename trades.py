@@ -112,7 +112,7 @@ def trades_loss(model,
         for _ in range(perturb_steps):
             x_adv = x_adv.requires_grad_()
             with torch.enable_grad():
-                loss_kl = criterion_kl(F.log_softmax(model(x_adv), dim=1), F.softmax(model(x_natural), dim=1))
+                loss_kl = criterion_kl(F.log_softmax( model(x_adv), dim=1), F.softmax( model(x_natural), dim=1))
 
             grad = torch.autograd.grad(loss_kl, [x_adv])[0]
             
