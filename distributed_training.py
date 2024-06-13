@@ -428,13 +428,13 @@ class Experiment:
 
             subset_dataset = Subset(pool_dataset, collected_indices)
             
-            arg = (state_dict, subset_dataset)
-            self.update(arg)
-
             # arg = (state_dict, subset_dataset)
-            # torch.multiprocessing.spawn(self.update,
-            #                         args=(arg,),
-            #                         nprocs=self.world_size, join=True)
+            # self.update(arg)
+
+            arg = (state_dict, subset_dataset)
+            torch.multiprocessing.spawn(self.update,
+                                    args=(arg,),
+                                    nprocs=self.world_size, join=True)
 
 
             #DataLoader( Subset(pool_dataset, collected_indices), batch_size=512, shuffle=False, num_workers=self.world_size)
