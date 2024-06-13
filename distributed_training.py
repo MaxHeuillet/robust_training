@@ -242,9 +242,12 @@ class Experiment:
 
         model = self.load_model()
         model.load_state_dict(state_dict)
+        model = nn.SyncBatchNorm.convert_sync_batchnorm(model)
         model.to(rank)
         model.eval()  # Ensure the model is in evaluation mode
         model = DDP(model, device_ids=[rank], broadcast_buffers=False)
+
+        model = nn.SyncBatchNorm.convert_sync_batchnorm(model)
         
         correct = 0
         total = 0
