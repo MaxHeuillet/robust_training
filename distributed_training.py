@@ -338,7 +338,7 @@ class Experiment:
         #setup(self.world_size, rank)
 
         #sampler = DistributedSampler(subset_dataset, num_replicas=self.world_size, rank=rank, shuffle=False)
-        loader = DataLoader(subset_dataset, batch_size=112, ) #sampler=sampler, num_workers=self.world_size
+        loader = DataLoader(subset_dataset, batch_size=32, ) #sampler=sampler, num_workers=self.world_size
 
         model = self.load_model()
         model.load_state_dict(state_dict)
