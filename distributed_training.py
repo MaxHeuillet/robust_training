@@ -244,7 +244,7 @@ class Experiment:
         model.load_state_dict(state_dict)
         model.to(rank)
         model.eval()  # Ensure the model is in evaluation mode
-        model = DDP(model, device_ids=[rank])
+        model = DDP(model, device_ids=[rank], broadcast_buffers=False)
         
         correct = 0
         total = 0
