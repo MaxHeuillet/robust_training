@@ -331,6 +331,7 @@ class Experiment:
     def update(self, args): #rank
 
         torch.autograd.set_detect_anomaly(True)
+        rank = 'cuda:0'
 
         state_dict, subset_dataset = args
 
@@ -427,7 +428,7 @@ class Experiment:
             
             arg = (state_dict, subset_dataset)
             self.update(arg)
-            
+
             # torch.multiprocessing.spawn(self.update,
             #                         args=(arg,),
             #                         nprocs=self.world_size, join=True)
