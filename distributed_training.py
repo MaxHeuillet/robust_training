@@ -366,7 +366,7 @@ class Experiment:
         setup(self.world_size, rank)
 
         sampler = DistributedSampler(subset_dataset, num_replicas=self.world_size, rank=rank, shuffle=False)
-        loader = DataLoader(subset_dataset, batch_size=32, sampler=sampler, num_workers=self.world_size) #
+        loader = DataLoader(subset_dataset, batch_size=512, sampler=sampler, num_workers=self.world_size) #
 
         model = self.load_model()
         model.load_state_dict(state_dict)
@@ -421,12 +421,12 @@ class Experiment:
         model = self.load_model()
         state_dict = model.state_dict()
         
-        # accuracy_tensor = torch.zeros(world_size, dtype=torch.float)  # Placeholder for the accuracy, shared memory
-        # accuracy_tensor.share_memory_()  # 
-        # arg = (state_dict, test_dataset, accuracy_tensor)
-        # torch.multiprocessing.spawn(self.evaluation, args=(arg,), nprocs=world_size, join=True)
-        # clean_acc = accuracy_tensor[0]
-        # print('clean_acc', clean_acc)
+        accuracy_tensor = torch.zeros(world_size, dtype=torch.float)  # Placeholder for the accuracy, shared memory
+        accuracy_tensor.share_memory_()  # 
+        arg = (state_dict, test_dataset, accuracy_tensor)
+        torch.multiprocessing.spawn(self.evaluation, args=(arg,), nprocs=world_size, join=True)
+        clean_acc = accuracy_tensor[0]
+        print('clean_acc', clean_acc)
         
 
         round_size = math.ceil(self.size / self.n_rounds)
@@ -458,12 +458,19 @@ class Experiment:
             arg = (state_dict, subset_dataset)
             torch.multiprocessing.spawn(self.update,  args=(arg,),  nprocs=self.world_size, join=True)
 
+        accuracy_tensor = torch.zeros(world_size, dtype=torch.float)  # Placeholder for the accuracy, shared memory
+        accuracy_tensor.share_memory_()  # 
+        arg = (state_dict, test_dataset, accuracy_tensor)
+        torch.multiprocessing.spawn(self.evaluation, args=(arg,), nprocs=world_size, join=True)
+        clean_acc = accuracy_tensor[0]
+        print('clean_acc', clean_acc)
+
                         
 
 if __name__ == "__main__":
     n_rounds = 1
     size = 100
-    nb_epochs = 1
+    nb_epochs = 50
     seed = 3
     active_strategy = 'uncertainty'
     data = 'Imagenette'
