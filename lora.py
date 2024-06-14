@@ -37,17 +37,19 @@ class LoRA(nn.Module):
         return W + torch.matmul(self.mat_B, self.mat_A).view(W.shape) * self.scale
 
 def layer_parametrization(layer, device, rank = 10, lora_alpha = 1):
-  # print( layer.weight.shape, type(layer) )
+  
   if isinstance(layer, nn.Linear):
     features_in, features_out = layer.weight.shape
   elif isinstance(layer, nn.Conv2d):
      features_out, features_in = layer.weight.view(layer.weight.shape[0], -1).shape
   else:
      print('error')
+     print("you need to add here all the layer times and their input_dim and output_dim")
   return LoRA(features_in, features_out, rank = rank, alpha = lora_alpha, device = device)
      
 
 def set_lora_gradients(model, layers):
+  # this is to freeze the main parameters of the model and put gradient tracking on the lora matrices
   for name, param in model.named_parameters():
     if 'mat' not in name:
       # print(f'Freezing non-LoRA parameter {name}')

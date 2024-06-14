@@ -100,7 +100,6 @@ def to_rgb(x):
     return x.convert("RGB")
 
 
-
 class CustomResNet50(nn.Module):
     def __init__(self):
         super(CustomResNet50, self).__init__()
