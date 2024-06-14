@@ -57,9 +57,8 @@ def update(rank, args):
         setup(world_size, rank)
 
         sampler = DistributedSampler(dataset, num_replicas=world_size, rank=rank, shuffle=False)
-        loader = DataLoader(dataset, batch_size=32, sampler=sampler, num_workers=world_size) 
+        loader = DataLoader(dataset, batch_size=16, sampler=sampler, num_workers=world_size) 
 
-        
         model = CustomResNet50()
         model = nn.SyncBatchNorm.convert_sync_batchnorm(model)
         # model = resnet50()
