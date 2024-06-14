@@ -239,6 +239,8 @@ class Experiment:
 
         return pool_dataset, test_dataset
     
+
+    
     def evaluation(self, rank, args):
 
         state_dict, test_dataset, accuracy_tensor = args
@@ -257,12 +259,26 @@ class Experiment:
         correct = 0
         total = 0
 
+        imagenette_to_imagenet = {
+                0: 0,    # n01440764
+                1: 6,    # n02102040
+                2: 7,    # n02979186
+                3: 97,   # n03028079
+                4: 99,   # n03394916
+                5: 123,  # n03417042
+                6: 128,  # n03425413
+                7: 207,  # n03445777
+                8: 300,  # n03888257
+                9: 318   # n04251144
+}
+
         with torch.no_grad():
             for inputs,labels, _ in loader:
                 labels = labels.cuda(rank)
                 inputs = inputs.cuda(rank)
                 outputs = model(inputs) 
                 _, predicted = torch.max(outputs.data, 1)
+                predicted = predicted.cpu().apply_(lambda x: imagenette_to_imagenet[x])
                 total += labels.size(0)
                 correct += (predicted == labels).sum().item()
 
