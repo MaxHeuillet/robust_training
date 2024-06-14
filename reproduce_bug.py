@@ -9,16 +9,20 @@ from torch.autograd import Variable
 import torch.distributed as dist
 import torch.nn.functional as F
 
+
 class CustomDataset(Dataset):
-    def __init__(self, data):
+    def __init__(self, data, labels):
         self.data = data
+        self.labels = labels
 
     def __len__(self):
         return len(self.data)
 
     def __getitem__(self, idx):
         sample = self.data[idx]
-        return sample
+        label = self.labels[idx]
+
+        return sample, label
 
 
 def update(rank, args): 
@@ -37,12 +41,12 @@ def update(rank, args):
 
         optimizer = torch.optim.SGD( model.parameters(),lr=0.001, weight_decay=0.0001, momentum=0.9, nesterov=True, )
         
+        print('start epochs')
         epochs = 5
         for epoch in range(epochs):
             total_loss, total_err = 0.,0.
             sampler.set_epoch(epoch)
             for data, target in loader:
-
                 data, target = data.to(rank), target.to(rank)
                 optimizer.zero_grad()
                 logits, loss = trades_loss(model=model, x_natural=data, y=target, optimizer=optimizer,)
@@ -101,6 +105,8 @@ def setup(world_size, rank):
 
 def cleanup():
     dist.destroy_process_group()
+
+
 
 world_size = 4
 data = [torch.rand(3, 250, 250) for _ in range(100)]
