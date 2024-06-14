@@ -27,7 +27,7 @@ class CustomDataset(Dataset):
 
 def update(rank, args): 
 
-        dataset = args
+        dataset, world_size = args
 
         setup(world_size, rank)
 
@@ -112,5 +112,5 @@ if __name__ == '__main__':
     data = [torch.rand(3, 250, 250) for _ in range(100)]
     labels = torch.randint(0, 10, (100,))
     dataset = CustomDataset(data, labels)
-    arg = (dataset)
+    arg = (dataset, world_size)
     torch.multiprocessing.spawn(update, args=(arg,), nprocs=world_size, join=True)
