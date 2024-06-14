@@ -113,23 +113,22 @@ def to_rgb(x):
     return x.convert("RGB")
 
 
-class CustomResNet50(nn.Module):
-    def __init__(self):
-        super(CustomResNet50, self).__init__()
+# class CustomResNet50(nn.Module):
+#     def __init__(self):
+#         super(CustomResNet50, self).__init__()
         
-        self.model = resnet.ResNet(resnet.Bottleneck, [3, 4, 6, 3], )
-        state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
-        self.model.load_state_dict(state_dict)
+#         self.model = resnet.ResNet(resnet.Bottleneck, [3, 4, 6, 3], )
+#         state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
+#         self.model.load_state_dict(state_dict)
+#         self.model.train()
 
-        self.model.train()
-
-    def forward(self, x_natural, x_adv=None):
-        if x_adv is not None:
-            logits_nat = self.model(x_natural)
-            logits_adv = self.model(x_adv)
-            return logits_nat, logits_adv
-        else:
-            return self.model(x_natural)
+#     def forward(self, x_natural, x_adv=None):
+#         if x_adv is not None:
+#             logits_nat = self.model(x_natural)
+#             logits_adv = self.model(x_adv)
+#             return logits_nat, logits_adv
+#         else:
+#             return self.model(x_natural)
 
 class Experiment:
 
@@ -170,7 +169,11 @@ class Experiment:
 
         elif self.model == 'resnet50' and self.data in ['Imagenet-1k' , 'Imagenette']:
 
-            model = CustomResNet50()
+            # model = CustomResNet50()
+            self.model = resnet.ResNet(resnet.Bottleneck, [3, 4, 6, 3], )
+            state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
+            self.model.load_state_dict(state_dict)
+            self.model.train()
 
         self.add_lora(model)
 
