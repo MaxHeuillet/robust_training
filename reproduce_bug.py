@@ -48,6 +48,10 @@ def update(rank, args):
         model = DDP(model, device_ids=[rank])
         model.train()
 
+        for layer in model.modules():
+            if isinstance(layer, nn.BatchNorm2d):
+                layer.track_running_stats = False  # Example setting
+
         optimizer = torch.optim.SGD( model.parameters(),lr=0.001, weight_decay=0.0001, momentum=0.9, nesterov=True, )
         
         print('start epochs')
