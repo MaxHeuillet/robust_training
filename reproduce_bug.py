@@ -9,6 +9,8 @@ from torch.autograd import Variable
 import torch.distributed as dist
 import torch.nn.functional as F
 
+import models_local
+
 
 class CustomDataset(Dataset):
     def __init__(self, data, labels):
@@ -34,9 +36,13 @@ def update(rank, args):
         sampler = DistributedSampler(dataset, num_replicas=world_size, rank=rank, shuffle=False)
         loader = DataLoader(dataset, batch_size=32, sampler=sampler, num_workers=world_size) 
 
-        model = resnet50()
+        model = models_local.resnet.ResNet(models_local.resnet.Bottleneck, [3, 4, 6, 3], )
         state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
         model.load_state_dict(state_dict)
+
+        # model = resnet50()
+        # state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
+        # model.load_state_dict(state_dict)
         model.to(rank)
         model = DDP(model, device_ids=[rank])
         model.train()
