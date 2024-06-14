@@ -129,11 +129,12 @@ def trades_loss(model,
     # zero gradient
     optimizer.zero_grad()
     # calculate robust loss
-    logits = model(x_natural)
-    loss_natural = F.cross_entropy(logits, y)
-    loss_robust = (1.0 / batch_size) * criterion_kl(F.log_softmax(model(x_adv), dim=1), F.softmax(model(x_natural), dim=1))
+    logits_nat, logits_adv = model(x_natural, x_adv)
+    loss_natural = F.cross_entropy(logits_nat, y)
+    loss_robust = (1.0 / batch_size) * criterion_kl(F.log_softmax(logits_adv, dim=1), F.softmax(logits_nat, dim=1))
     loss = loss_natural + beta * loss_robust
-    return logits, loss
+
+    return logits_nat, loss
 
 
 

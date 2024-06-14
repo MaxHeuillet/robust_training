@@ -157,7 +157,6 @@ class Experiment:
 
         elif self.model == 'resnet50' and self.data in ['Imagenet-1k' , 'Imagenette']:
 
-
             model = CustomResNet50()
 
         #self.add_lora(model)
@@ -228,8 +227,6 @@ class Experiment:
             pool_dataset = CustomImageDataset(dataset['train'], transform= transform )
         
             test_dataset = CustomImageDataset(dataset['validation'], transform= transform )
-
-            
 
             print('load dataloader')
             
@@ -360,7 +357,7 @@ class Experiment:
         model = DDP(model, device_ids=[rank])
         model.train()
         
-        criterion = nn.CrossEntropyLoss()
+        # criterion = nn.CrossEntropyLoss()
         # optimizer = optim.SGD(model.parameters(), lr=0.01)
         # optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
         optimizer = torch.optim.SGD( model.parameters(),lr=0.001, weight_decay=0.0001, momentum=0.9, nesterov=True, )
