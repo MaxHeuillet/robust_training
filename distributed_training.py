@@ -45,6 +45,8 @@ from torchvision.transforms.functional import InterpolationMode
 
 from models_local import resnet
 
+import torch.multiprocessing as mp
+
 
 class CustomImageDataset(Dataset):
     def __init__(self, hf_dataset, transform=None):
@@ -359,7 +361,7 @@ class Experiment:
         # torch.autograd.set_detect_anomaly(True)
         # torch.backends.cudnn.benchmark = False
         # rank = 'cuda'
-        torch.autograd.set_detect_anomaly(True)
+        # torch.autograd.set_detect_anomaly(True)
 
         state_dict, subset_dataset = args
 
@@ -398,6 +400,10 @@ class Experiment:
                 #total_loss += loss.item() * data.shape[0]
             
             print(f'Rank {rank}, Epoch {epoch}, ') #Error {total_err / len(loader.dataset)}, Loss {total_loss / len(loader.dataset)}
+
+        # Save the state_dict
+        if rank == 0:
+            torch.save(model.state_dict(), "./state_dicts/resnet50_imagenet1k_lora.pt")
 
         print('clean up')
         cleanup()
@@ -457,6 +463,9 @@ class Experiment:
 
             arg = (state_dict, subset_dataset)
             torch.multiprocessing.spawn(self.update,  args=(arg,),  nprocs=self.world_size, join=True)
+
+            # Load the updated state_dict
+            state_dict = torch.load("./state_dicts/resnet50_imagenet1k_lora.pt")
 
         accuracy_tensor = torch.zeros(world_size, dtype=torch.float)  # Placeholder for the accuracy, shared memory
         accuracy_tensor.share_memory_()  # 
