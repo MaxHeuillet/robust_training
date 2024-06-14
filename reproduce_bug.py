@@ -35,12 +35,17 @@ class CustomResNet50(nn.Module):
         self.model.load_state_dict(state_dict)
 
         self.model.train()
-        for layer in self.model.modules():
-            if isinstance(layer, nn.BatchNorm2d):
-                layer.track_running_stats = False  # Example setting
+        # for layer in self.model.modules():
+        #     if isinstance(layer, nn.BatchNorm2d):
+        #         layer.track_running_stats = False  # Example setting
 
-    def forward(self, x):
-        return self.model(x)
+    def forward(self, x_natural, x_adv=None):
+        if x_adv is not None:
+            logits_nat = self.model(x_natural)
+            logits_adv = self.model(x_adv)
+            return logits_nat, logits_adv
+        else:
+            return self.model(x_natural)
 
 model = CustomResNet50().cuda()
 
@@ -99,7 +104,9 @@ def trades_loss(model, x_natural, y,optimizer,step_size=0.003,epsilon=0.031,pert
         for _ in range(perturb_steps):
             x_adv = x_adv.requires_grad_()
             with torch.enable_grad():
-                loss_kl = criterion_kl(F.log_softmax( model(x_adv), dim=1), F.softmax( model(x_natural), dim=1))
+                logits_nat, logits_adv = model(x_natural, x_adv)
+                loss_kl = criterion_kl(F.log_softmax(logits_adv, dim=1), F.softmax(logits_nat, dim=1))
+                # loss_kl = criterion_kl(F.log_softmax( model(x_adv), dim=1), F.softmax( model(x_natural), dim=1))
 
             grad = torch.autograd.grad(loss_kl, [x_adv])[0]
             
