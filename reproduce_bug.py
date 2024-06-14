@@ -27,7 +27,8 @@ class CustomDataset(Dataset):
         return sample, label
 
 
-def update(rank, args): 
+def update(rank, args):
+        torch.autograd.set_detect_anomaly(True) 
 
         dataset, world_size = args
 
