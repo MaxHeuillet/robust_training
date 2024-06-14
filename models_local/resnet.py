@@ -142,7 +142,7 @@ class ResNet(nn.Module):
     def forward(self, x_natural, x_adv=None):
         if x_adv is not None:
             logits_nat = self._forward_impl(x_natural) #self.model(x_natural)
-            logits_adv = self._forward_impl(x_natural) #self.model(x_adv)
+            logits_adv = self._forward_impl(x_adv) #self.model(x_adv)
             return logits_nat, logits_adv
         else:
             return self._forward_impl(x_natural) #self.model(x_natural)
