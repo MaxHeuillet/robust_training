@@ -145,7 +145,8 @@ def cleanup():
 if __name__ == '__main__':
 
     world_size = 4
-    data = [torch.rand(3, 250, 250) for _ in range(100)]
+    size = 100
+    data = [torch.rand(3, size, size) for _ in range(100)]
     labels = torch.randint(0, 10, (100,))
     dataset = CustomDataset(data, labels)
     arg = (dataset, world_size)
