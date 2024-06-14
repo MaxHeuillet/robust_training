@@ -106,11 +106,11 @@ def setup(world_size, rank):
 def cleanup():
     dist.destroy_process_group()
 
+if __name__ == '__main__':
 
-
-world_size = 4
-data = [torch.rand(3, 250, 250) for _ in range(100)]
-labels = torch.randint(0, 10, (100,))
-dataset = CustomDataset(data, labels)
-arg = (dataset)
-torch.multiprocessing.spawn(update, args=(arg,), nprocs=world_size, join=True)
+    world_size = 4
+    data = [torch.rand(3, 250, 250) for _ in range(100)]
+    labels = torch.randint(0, 10, (100,))
+    dataset = CustomDataset(data, labels)
+    arg = (dataset)
+    torch.multiprocessing.spawn(update, args=(arg,), nprocs=world_size, join=True)
