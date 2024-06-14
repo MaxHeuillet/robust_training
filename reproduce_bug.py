@@ -26,6 +26,23 @@ class CustomDataset(Dataset):
 
         return sample, label
 
+class CustomResNet50(nn.Module):
+    def __init__(self):
+        super(CustomResNet50, self).__init__()
+        
+        self.model = resnet.ResNet(resnet.Bottleneck, [3, 4, 6, 3], )
+        state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
+        self.model.load_state_dict(state_dict)
+
+        self.model.train()
+        for layer in self.model.modules():
+            if isinstance(layer, nn.BatchNorm2d):
+                layer.track_running_stats = False  # Example setting
+
+    def forward(self, x):
+        return self.model(x)
+
+model = CustomResNet50().cuda()
 
 def update(rank, args):
         torch.autograd.set_detect_anomaly(True) 
@@ -37,14 +54,13 @@ def update(rank, args):
         sampler = DistributedSampler(dataset, num_replicas=world_size, rank=rank, shuffle=False)
         loader = DataLoader(dataset, batch_size=32, sampler=sampler, num_workers=world_size) 
 
-        model = resnet.ResNet(resnet.Bottleneck, [3, 4, 6, 3], )
-        state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
-        model.load_state_dict(state_dict)
-
+        
+        model = CustomResNet50()
         # model = resnet50()
         # state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
         # model.load_state_dict(state_dict)
         model.to(rank)
+        # nn.DataParallel(model)
         model = DDP(model, device_ids=[rank])
         model.train()
 
