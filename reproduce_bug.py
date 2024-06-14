@@ -56,6 +56,7 @@ def update(rank, args):
 
         
         model = CustomResNet50()
+        model = nn.SyncBatchNorm.convert_sync_batchnorm(model)
         # model = resnet50()
         # state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
         # model.load_state_dict(state_dict)
