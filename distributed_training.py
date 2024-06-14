@@ -50,17 +50,18 @@ class CustomImageDataset(Dataset):
     def __init__(self, hf_dataset, transform=None):
         self.hf_dataset = hf_dataset
         self.transform = transform
+
         self.imagenette_to_imagenet = {
                 0: 0,    # n01440764
-                1: 6,    # n02102040
-                2: 7,    # n02979186
-                3: 97,   # n03028079
-                4: 99,   # n03394916
-                5: 123,  # n03417042
-                6: 128,  # n03425413
-                7: 207,  # n03445777
-                8: 300,  # n03888257
-                9: 318   # n04251144 
+                1: 217,    # n02102040
+                2: 491,    # n02979186
+                3: 491,   # n03028079
+                4: 497,   # n03394916
+                5: 566,  # n03417042
+                6: 569,  # n03425413
+                7: 571,  # n03445777
+                8: 574,  # n03888257
+                9: 701   # n04251144 
                 }
 
     def __len__(self):
