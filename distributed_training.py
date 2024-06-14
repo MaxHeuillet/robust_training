@@ -170,10 +170,9 @@ class Experiment:
         elif self.model == 'resnet50' and self.data in ['Imagenet-1k' , 'Imagenette']:
 
             # model = CustomResNet50()
-            self.model = resnet.ResNet(resnet.Bottleneck, [3, 4, 6, 3], )
+            model = resnet.ResNet(resnet.Bottleneck, [3, 4, 6, 3], )
             state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
-            self.model.load_state_dict(state_dict)
-            self.model.train()
+            model.load_state_dict(state_dict)
 
         self.add_lora(model)
 
