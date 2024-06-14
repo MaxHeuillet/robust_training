@@ -43,6 +43,8 @@ from torch.utils.data import DataLoader
 import torch.distributed as dist
 from torchvision.transforms.functional import InterpolationMode
 
+from models_local import resnet
+
 
 class CustomImageDataset(Dataset):
     def __init__(self, hf_dataset, transform=None):
@@ -98,6 +100,25 @@ def to_rgb(x):
     return x.convert("RGB")
 
 
+
+class CustomResNet50(nn.Module):
+    def __init__(self):
+        super(CustomResNet50, self).__init__()
+        
+        self.model = resnet.ResNet(resnet.Bottleneck, [3, 4, 6, 3], )
+        state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
+        self.model.load_state_dict(state_dict)
+
+        self.model.train()
+
+    def forward(self, x_natural, x_adv=None):
+        if x_adv is not None:
+            logits_nat = self.model(x_natural)
+            logits_adv = self.model(x_adv)
+            return logits_nat, logits_adv
+        else:
+            return self.model(x_natural)
+
 class Experiment:
 
     def __init__(self, n_rounds, size, nb_epochs, seed, active_strategy, data, model, world_size):
@@ -136,10 +157,9 @@ class Experiment:
             model = models_local.resnet.resnet50(pretrained=True, progress=True, device="cuda").to('cuda')
 
         elif self.model == 'resnet50' and self.data in ['Imagenet-1k' , 'Imagenette']:
-            model = models.resnet50()
-            state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
-            model.load_state_dict(state_dict)
-            model.to('cuda')
+
+
+            model = CustomResNet50()
 
         #self.add_lora(model)
 
@@ -176,14 +196,6 @@ class Experiment:
             
         elif self.data == 'Imagenet-1k':
 
-            # transform = transforms.Compose([
-            #     transforms.Lambda(to_rgb),
-            #     transforms.Resize(256),
-            #     transforms.CenterCrop(224),
-            #     transforms.ToTensor(),
-            #     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-            # ])
-
             transform = transforms.Compose([
                 transforms.Lambda(to_rgb),
                 transforms.Resize(232, interpolation=InterpolationMode.BILINEAR),  # Resize the image to 232x232
@@ -205,10 +217,10 @@ class Experiment:
 
             transform = transforms.Compose([
                 transforms.Lambda(to_rgb),
-                transforms.Resize(232, interpolation=InterpolationMode.BILINEAR),  # Resize the image to 232x232
-                transforms.CenterCrop(224),  # Crop the center of the image to make it 224x224
-                transforms.ToTensor(),  # Convert the image to a tensor
-                transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # Normalize the tensor
+                transforms.Resize(232, interpolation=InterpolationMode.BILINEAR),  
+                transforms.CenterCrop(224),  
+                transforms.ToTensor(), 
+                transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  
             ])
 
             # dataset = load_dataset("frgfm/imagenette", "full_size", cache_dir='/home/mheuill/scratch')
@@ -242,12 +254,9 @@ class Experiment:
 
         model = self.load_model()
         model.load_state_dict(state_dict)
-        model = nn.SyncBatchNorm.convert_sync_batchnorm(model)
         model.to(rank)
         model.eval()  # Ensure the model is in evaluation mode
         model = DDP(model, device_ids=[rank], broadcast_buffers=False)
-
-        model = nn.SyncBatchNorm.convert_sync_batchnorm(model)
         
         correct = 0
         total = 0
@@ -442,13 +451,6 @@ class Experiment:
 
 
             #DataLoader( Subset(pool_dataset, collected_indices), batch_size=512, shuffle=False, num_workers=self.world_size)
-            
-
-        
-
-
-            
-
                         
 
 if __name__ == "__main__":

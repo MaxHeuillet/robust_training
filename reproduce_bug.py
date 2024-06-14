@@ -35,9 +35,6 @@ class CustomResNet50(nn.Module):
         self.model.load_state_dict(state_dict)
 
         self.model.train()
-        # for layer in self.model.modules():
-        #     if isinstance(layer, nn.BatchNorm2d):
-        #         layer.track_running_stats = False  # Example setting
 
     def forward(self, x_natural, x_adv=None):
         if x_adv is not None:
@@ -46,8 +43,6 @@ class CustomResNet50(nn.Module):
             return logits_nat, logits_adv
         else:
             return self.model(x_natural)
-
-model = CustomResNet50().cuda()
 
 def update(rank, args):
         torch.autograd.set_detect_anomaly(True) 
