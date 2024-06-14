@@ -173,6 +173,7 @@ class Experiment:
             model = resnet.ResNet(resnet.Bottleneck, [3, 4, 6, 3], )
             state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
             model.load_state_dict(state_dict)
+            model.to('cuda')
 
         self.add_lora(model)
 
