@@ -172,7 +172,7 @@ class Experiment:
 
             model = CustomResNet50()
 
-        #self.add_lora(model)
+        self.add_lora(model)
 
         return model
     
