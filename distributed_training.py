@@ -465,7 +465,15 @@ class Experiment:
             torch.multiprocessing.spawn(self.update,  args=(arg,),  nprocs=self.world_size, join=True)
 
             # Load the updated state_dict
-            state_dict = torch.load("./state_dicts/resnet50_imagenet1k_lora.pt")
+            # state_dict = torch.load("./state_dicts/resnet50_imagenet1k_lora.pt")
+            temp_state_dict = torch.load("path_to_state_dict.pt")
+            state_dict = {}
+            for key, value in state_dict.items():
+                if key.startswith("module."):
+                    state_dict[key[7:]] = value  # remove 'module.' prefix
+                else:
+                    state_dict[key] = value
+            # model.load_state_dict(new_state_dict)
 
         accuracy_tensor = torch.zeros(world_size, dtype=torch.float)  # Placeholder for the accuracy, shared memory
         accuracy_tensor.share_memory_()  # 
@@ -479,7 +487,7 @@ class Experiment:
 if __name__ == "__main__":
     n_rounds = 1
     size = 100
-    nb_epochs = 50
+    nb_epochs = 2
     seed = 3
     active_strategy = 'uncertainty'
     data = 'Imagenette'
