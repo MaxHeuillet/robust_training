@@ -355,6 +355,18 @@ class Experiment:
 
         cleanup()
 
+    def save_state_dict_without_module(self, model, filepath):
+        state_dict = model.state_dict()
+        new_state_dict = {}
+        
+        for key, value in state_dict.items():
+            if key.startswith("module."):
+                new_state_dict[key[7:]] = value  # remove 'module.' prefix
+            else:
+                new_state_dict[key] = value
+
+        torch.save(new_state_dict, filepath)
+
 
     def update(self, rank, args): #
 
@@ -403,10 +415,13 @@ class Experiment:
 
         # Save the state_dict
         if rank == 0:
-            torch.save(model.state_dict(), "./state_dicts/resnet50_imagenet1k_lora.pt")
+            self.save_state_dict_without_module(model, "./state_dicts/resnet50_imagenet1k_lora.pt")
+            # torch.save(model.state_dict(), "./state_dicts/resnet50_imagenet1k_lora.pt")
 
         print('clean up')
         cleanup()
+
+
 
 
     def launch_experiment(self,  ):
