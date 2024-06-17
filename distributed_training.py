@@ -413,6 +413,7 @@ class Experiment:
             
             print(f'Rank {rank}, Epoch {epoch}, ') #Error {total_err / len(loader.dataset)}, Loss {total_loss / len(loader.dataset)}
 
+        dist.barrier()  # Synchronization point
         # Save the state_dict
         if rank == 0:
             self.save_state_dict_without_module(model, "./state_dicts/resnet50_imagenet1k_lora.pt")
