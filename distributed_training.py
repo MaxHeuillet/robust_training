@@ -416,8 +416,8 @@ class Experiment:
         dist.barrier()  # Synchronization point
         # Save the state_dict
         if rank == 0:
-            self.save_state_dict_without_module(model, "./state_dicts/resnet50_imagenet1k_lora.pt")
-            # torch.save(model.state_dict(), "./state_dicts/resnet50_imagenet1k_lora.pt")
+            # self.save_state_dict_without_module(model, "./state_dicts/resnet50_imagenet1k_lora.pt")
+            torch.save(model.state_dict(), "./state_dicts/resnet50_imagenet1k_lora.pt")
 
         print('clean up')
         cleanup()
@@ -484,7 +484,7 @@ class Experiment:
             # state_dict = torch.load("./state_dicts/resnet50_imagenet1k_lora.pt")
             temp_state_dict = torch.load("./state_dicts/resnet50_imagenet1k_lora.pt")
             state_dict = {}
-            for key, value in state_dict.items():
+            for key, value in temp_state_dict.items():
                 if key.startswith("module."):
                     state_dict[key[7:]] = value  # remove 'module.' prefix
                 else:
