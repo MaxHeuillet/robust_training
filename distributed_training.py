@@ -466,7 +466,7 @@ class Experiment:
 
             # Load the updated state_dict
             # state_dict = torch.load("./state_dicts/resnet50_imagenet1k_lora.pt")
-            temp_state_dict = torch.load("path_to_state_dict.pt")
+            temp_state_dict = torch.load("./state_dicts/resnet50_imagenet1k_lora.pt")
             state_dict = {}
             for key, value in state_dict.items():
                 if key.startswith("module."):
