@@ -189,7 +189,7 @@ class Experiment:
                 transforms.ToTensor(),
                 transforms.Normalize( mean=(0.4914, 0.4822, 0.4465), std=(0.2471, 0.2435, 0.2616) )  ])
 
-            pool_dataset = datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
+            pool_dataset = datasets.CIFAR10(root='./data', train=True, transform=transform)
 
             test_dataset = datasets.CIFAR10(root='./data', train=False, transform=transform)
 
@@ -247,7 +247,7 @@ class Experiment:
         setup(self.world_size, rank)
 
         sampler = DistributedSampler(test_dataset, num_replicas=self.world_size, rank=rank, shuffle=False)
-        loader = DataLoader(test_dataset, batch_size=1024, sampler=sampler, num_workers=self.world_size)
+        
 
         model = self.load_model()
         model.load_state_dict(state_dict)
@@ -256,8 +256,10 @@ class Experiment:
         model = DDP(model, device_ids=[rank], broadcast_buffers=False)
 
         if type=='clean_accuracy':
+            loader = DataLoader(test_dataset, batch_size=1024, sampler=sampler, num_workers=self.world_size)
             correct, total = utils.compute_clean_accuracy(model, loader, rank)
         elif type == 'pgd_accuracy':
+            loader = DataLoader(test_dataset, batch_size=512, sampler=sampler, num_workers=self.world_size)
             correct, total = utils.compute_PGD_accuracy(model, loader, rank)
         else:
             print('error')
