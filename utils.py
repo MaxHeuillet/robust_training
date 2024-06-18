@@ -231,12 +231,12 @@ def sign(grad):
     grad_sign = torch.sign(grad)
     return grad_sign
 
-def clamp(X, l, u, cuda=True):
-    device = 'cuda' if cuda else 'cpu'
+def clamp(X, l, u, dev):
+    
     if not isinstance(l, torch.Tensor):
-        l = torch.tensor([l], device=device, dtype=torch.float32)
+        l = torch.tensor([l], device=dev, dtype=torch.float32)
     if not isinstance(u, torch.Tensor):
-        u = torch.tensor([u], device=device, dtype=torch.float32)
+        u = torch.tensor([u], device=dev, dtype=torch.float32)
     return torch.max(torch.min(X, u), l)
 
 def attack_pgd_restart(model, X, y, eps, alpha, attack_iters, n_restarts, rs=True, verbose=False,
@@ -282,7 +282,7 @@ def attack_pgd_restart(model, X, y, eps, alpha, attack_iters, n_restarts, rs=Tru
     max_delta = clamp(X + max_delta, 0, 1, device) - X
     return max_delta
 
-def compute_PGD_accuracy(model, test_loader, device='cuda'):
+def compute_PGD_accuracy(model, test_loader, dev='cuda'):
     
     correct = 0
     total = 0
@@ -296,10 +296,10 @@ def compute_PGD_accuracy(model, test_loader, device='cuda'):
 
         # start_time = time.time()
 
-        images, labels = images.to(device), labels.to(device)
+        images, labels = images.to(dev), labels.to(dev)
 
         delta = attack_pgd_restart(model, images, labels, epsilon, alpha, attack_iters, n_restarts, rs=True, verbose=False,
-               linf_proj=True, l2_proj=False, l2_grad_update=False, device=device)
+               linf_proj=True, l2_proj=False, l2_grad_update=False, device=dev)
         
         x_adv = images + delta
         
