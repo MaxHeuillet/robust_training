@@ -115,23 +115,6 @@ def to_rgb(x):
     return x.convert("RGB")
 
 
-# class CustomResNet50(nn.Module):
-#     def __init__(self):
-#         super(CustomResNet50, self).__init__()
-        
-#         self.model = resnet.ResNet(resnet.Bottleneck, [3, 4, 6, 3], )
-#         state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
-#         self.model.load_state_dict(state_dict)
-#         self.model.train()
-
-#     def forward(self, x_natural, x_adv=None):
-#         if x_adv is not None:
-#             logits_nat = self.model(x_natural)
-#             logits_adv = self.model(x_adv)
-#             return logits_nat, logits_adv
-#         else:
-#             return self.model(x_natural)
-
 class Experiment:
 
     def __init__(self, n_rounds, size, nb_epochs, seed, active_strategy, data, model, world_size):
@@ -261,7 +244,7 @@ class Experiment:
     
     def evaluation(self, rank, args):
 
-        state_dict, test_dataset, accuracy_tensor = args
+        state_dict, test_dataset, accuracy_tensor, type = args
 
         setup(self.world_size, rank)
 
@@ -273,23 +256,28 @@ class Experiment:
         model.to(rank)
         model.eval()  # Ensure the model is in evaluation mode
         model = DDP(model, device_ids=[rank], broadcast_buffers=False)
-        
-        correct = 0
-        total = 0
 
-        with torch.no_grad():
-            for inputs,labels, _ in loader:
-                labels = labels.cuda(rank)
-                inputs = inputs.cuda(rank)
-                outputs = model(inputs) 
-                _, predicted = torch.max(outputs.data, 1)
-                total += labels.size(0)
-                correct += (predicted == labels).sum().item()
+        if type=='clean_accuracy':
+            correct, total = utils.compute_clean_accuracy(model, loader, rank)
+        elif type == 'pgd_accuracy':
+            correct, total = utils.compute_PGD_accuracy(model, loader, rank)
+        else:
+            print('error')
+        
+        # correct = 0
+        # total = 0
+        # with torch.no_grad():
+        #     for inputs,labels, _ in loader:
+        #         labels = labels.cuda(rank)
+        #         inputs = inputs.cuda(rank)
+        #         outputs = model(inputs) 
+        #         _, predicted = torch.max(outputs.data, 1)
+        #         total += labels.size(0)
+        #         correct += (predicted == labels).sum().item()
 
         # Tensorize the correct and total for reduction
         correct_tensor = torch.tensor(correct).cuda(rank)
         total_tensor = torch.tensor(total).cuda(rank)
-
         print(correct_tensor, total_tensor)
 
         # Use dist.all_reduce to sum the values across all processes
@@ -355,18 +343,6 @@ class Experiment:
 
         cleanup()
 
-    def save_state_dict_without_module(self, model, filepath):
-        state_dict = model.state_dict()
-        new_state_dict = {}
-        
-        for key, value in state_dict.items():
-            if key.startswith("module."):
-                new_state_dict[key[7:]] = value  # remove 'module.' prefix
-            else:
-                new_state_dict[key] = value
-
-        torch.save(new_state_dict, filepath)
-
 
     def update(self, rank, args): #
 
@@ -385,11 +361,9 @@ class Experiment:
         model = self.load_model()
         model.load_state_dict(state_dict)
         model.to(rank)
-        # model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(model)
         model = DDP(model, device_ids=[rank])
         model.train()
         
-        # criterion = nn.CrossEntropyLoss()
         # optimizer = optim.SGD(model.parameters(), lr=0.01)
         # optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
         optimizer = torch.optim.SGD( model.parameters(),lr=0.001, weight_decay=0.0001, momentum=0.9, nesterov=True, )
@@ -445,7 +419,7 @@ class Experiment:
         
         accuracy_tensor = torch.zeros(world_size, dtype=torch.float)  # Placeholder for the accuracy, shared memory
         accuracy_tensor.share_memory_()  # 
-        arg = (state_dict, test_dataset, accuracy_tensor)
+        arg = (state_dict, test_dataset, accuracy_tensor, 'clean_accuracy')
         torch.multiprocessing.spawn(self.evaluation, args=(arg,), nprocs=world_size, join=True)
         clean_acc = accuracy_tensor[0]
         print('clean_acc', clean_acc)
@@ -493,10 +467,17 @@ class Experiment:
 
         accuracy_tensor = torch.zeros(world_size, dtype=torch.float)  # Placeholder for the accuracy, shared memory
         accuracy_tensor.share_memory_()  # 
-        arg = (state_dict, test_dataset, accuracy_tensor)
+        arg = (state_dict, test_dataset, accuracy_tensor, 'clean_accuracy')
         torch.multiprocessing.spawn(self.evaluation, args=(arg,), nprocs=world_size, join=True)
         clean_acc = accuracy_tensor[0]
         print('clean_acc', clean_acc)
+
+        accuracy_tensor = torch.zeros(world_size, dtype=torch.float)  # Placeholder for the accuracy, shared memory
+        accuracy_tensor.share_memory_()  # 
+        arg = (state_dict, test_dataset, accuracy_tensor, 'pgd_accuracy')
+        torch.multiprocessing.spawn(self.evaluation, args=(arg,), nprocs=world_size, join=True)
+        pgd_acc = accuracy_tensor[0]
+        print('pgd_acc', pgd_acc)
 
                         
 
