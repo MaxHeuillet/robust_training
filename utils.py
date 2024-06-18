@@ -218,7 +218,7 @@ def compute_clean_accuracy(model, test_loader, device='cuda'):
     correct = 0
     total = 0
     with torch.no_grad():  # No need to track gradients for testing
-        for images, labels in test_loader:
+        for images, labels, _ in test_loader:
             images, labels = images.to(device), labels.to(device)
             outputs = model(images)
             _, predicted = torch.max(outputs.data, 1)
@@ -292,7 +292,7 @@ def compute_PGD_accuracy(model, test_loader, device='cuda'):
     attack_iters = 50
     alpha = epsilon/4
     
-    for images, labels in test_loader:
+    for images, labels, _ in test_loader:
 
         # start_time = time.time()
 
