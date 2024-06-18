@@ -236,10 +236,6 @@ class Experiment:
         else:
             print('undefined data')
 
-        
-        # test_sampler = DistributedSampler(test_dataset, num_replicas=world_size, rank=rank, shuffle=False)
-        # test_loader = DataLoader(test_dataset, batch_size=1024, sampler=test_sampler, num_workers=self.world_size)
-
         return pool_dataset, test_dataset
     
 
@@ -251,7 +247,7 @@ class Experiment:
         setup(self.world_size, rank)
 
         sampler = DistributedSampler(test_dataset, num_replicas=self.world_size, rank=rank, shuffle=False)
-        loader = DataLoader(test_dataset, batch_size=64, sampler=sampler, num_workers=self.world_size)
+        loader = DataLoader(test_dataset, batch_size=1024, sampler=sampler, num_workers=self.world_size)
 
         model = self.load_model()
         model.load_state_dict(state_dict)
@@ -289,7 +285,7 @@ class Experiment:
         setup(self.world_size, rank)
 
         sampler = DistributedSampler(pool_dataset, num_replicas=self.world_size, rank=rank, shuffle=False)
-        loader = DataLoader(pool_dataset, batch_size=512, sampler=sampler, num_workers=self.world_size, shuffle=False)
+        loader = DataLoader(pool_dataset, batch_size=1024, sampler=sampler, num_workers=self.world_size, shuffle=False)
 
         model = self.load_model()
         model.load_state_dict(state_dict)
@@ -334,15 +330,14 @@ class Experiment:
 
         cleanup()
 
-
-    def update(self, rank, args): #
+    def update(self, rank, args): 
 
         state_dict, subset_dataset = args
 
         setup(self.world_size, rank)
 
         sampler = DistributedSampler(subset_dataset, num_replicas=self.world_size, rank=rank, shuffle=False)
-        loader = DataLoader(subset_dataset, batch_size=512, sampler=sampler, num_workers=self.world_size) #
+        loader = DataLoader(subset_dataset, batch_size=1024, sampler=sampler, num_workers=self.world_size) #
 
         model = self.load_model()
         model.load_state_dict(state_dict)
@@ -391,8 +386,6 @@ class Experiment:
         result['data'] = self.data
         result['model'] = self.model
 
-        utils.set_seeds(self.seed)
-
         pool_dataset, test_dataset = self.load_data()
 
         model = self.load_model()
@@ -404,11 +397,11 @@ class Experiment:
         torch.multiprocessing.spawn(self.evaluation, args=(arg,), nprocs=world_size, join=True)
         clean_acc = accuracy_tensor[0]
         print('clean_acc', clean_acc)
-        result['init_clean_accuracy'] = clean_acc
+        result['init_clean_accuracy'] = clean_acc.item()
         
-
-        round_size = math.ceil(self.size / self.n_rounds)
-
+        card =  math.ceil( len( pool_dataset ) * self.size/100 )
+        result['card'] = card
+        round_size = math.ceil( card / self.n_rounds )
         total_indices = list( range( len( pool_dataset ) ) )
         collected_indices = []
 
@@ -453,7 +446,7 @@ class Experiment:
         torch.multiprocessing.spawn(self.evaluation, args=(arg,), nprocs=world_size, join=True)
         clean_acc = accuracy_tensor[0]
         print('clean_acc', clean_acc)
-        result['final_clean_accuracy'] = clean_acc
+        result['final_clean_accuracy'] = clean_acc.item()
 
         accuracy_tensor = torch.zeros(world_size, dtype=torch.float)  # Placeholder for the accuracy, shared memory
         accuracy_tensor.share_memory_()  # 
@@ -461,7 +454,7 @@ class Experiment:
         torch.multiprocessing.spawn(self.evaluation, args=(arg,), nprocs=world_size, join=True)
         pgd_acc = accuracy_tensor[0]
         print('pgd_acc', pgd_acc)
-        result['final_PGD_accuracy'] = pgd_acc
+        result['final_PGD_accuracy'] = pgd_acc.item()
 
         print(result)
         print('finished')
@@ -469,17 +462,17 @@ class Experiment:
                 pkl.dump(result,f)
         print('saved')
 
-                        
 
 if __name__ == "__main__":
     n_rounds = 1
-    size = 100
+    size = 1
     nb_epochs = 2
     seed = 3
     active_strategy = 'uncertainty'
     data = 'Imagenette'
     model = 'resnet50'
     world_size = torch.cuda.device_count()
+    utils.set_seeds(seed)
     evaluator = Experiment(n_rounds, size, nb_epochs, seed, active_strategy, data, model, world_size)
     print('begin experiment')
     evaluator.launch_experiment()
