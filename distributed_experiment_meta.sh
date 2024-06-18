@@ -26,7 +26,7 @@ for size in "${sizes[@]}"; do
     for strategy in "${strategies[@]}"; do
         for ((id=0; id<$seeds; id++)); do
             #sbatch --export=ALL,LOSS=$loss,NROUNDS=6,NBEPOCHS=10,SIZE=$size,ASTRAT=$strategy,DATA=$data,MODEL=$model,SEED=$id ./experiment.sh
-            sbatch --export=ALL,LOSS=$loss,NROUNDS=1,NBEPOCHS=60,SIZE=$size,ASTRAT=$strategy,DATA=$data,MODEL=$model,SEED=$id ./experiment.sh
+            sbatch --export=ALL,LOSS=$loss,NROUNDS=1,NBEPOCHS=60,SIZE=$size,ASTRAT=$strategy,DATA=$data,MODEL=$model,SEED=$id ./distributed_experiment.sh
         done
     done
 done
