@@ -259,7 +259,7 @@ class Experiment:
             loader = DataLoader(test_dataset, batch_size=1024, sampler=sampler, num_workers=self.world_size)
             correct, total = utils.compute_clean_accuracy(model, loader, rank)
         elif type == 'pgd_accuracy':
-            loader = DataLoader(test_dataset, batch_size=512, sampler=sampler, num_workers=self.world_size)
+            loader = DataLoader(test_dataset, batch_size=256, sampler=sampler, num_workers=self.world_size)
             correct, total = utils.compute_PGD_accuracy(model, loader, rank)
         else:
             print('error')
