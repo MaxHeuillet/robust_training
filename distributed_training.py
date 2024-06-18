@@ -23,7 +23,9 @@ from PIL import Image
 
 from torchvision.models import resnet50, ResNet50_Weights
 
+import gzip
 
+import pickle as pkl
 
 import torch.nn.utils.parametrize as parametrize
 import lora 
@@ -263,17 +265,6 @@ class Experiment:
             correct, total = utils.compute_PGD_accuracy(model, loader, rank)
         else:
             print('error')
-        
-        # correct = 0
-        # total = 0
-        # with torch.no_grad():
-        #     for inputs,labels, _ in loader:
-        #         labels = labels.cuda(rank)
-        #         inputs = inputs.cuda(rank)
-        #         outputs = model(inputs) 
-        #         _, predicted = torch.max(outputs.data, 1)
-        #         total += labels.size(0)
-        #         correct += (predicted == labels).sum().item()
 
         # Tensorize the correct and total for reduction
         correct_tensor = torch.tensor(correct).cuda(rank)
@@ -346,11 +337,6 @@ class Experiment:
 
     def update(self, rank, args): #
 
-        # torch.autograd.set_detect_anomaly(True)
-        # torch.backends.cudnn.benchmark = False
-        # rank = 'cuda'
-        # torch.autograd.set_detect_anomaly(True)
-
         state_dict, subset_dataset = args
 
         setup(self.world_size, rank)
@@ -388,16 +374,11 @@ class Experiment:
             print(f'Rank {rank}, Epoch {epoch}, ') #Error {total_err / len(loader.dataset)}, Loss {total_loss / len(loader.dataset)}
 
         dist.barrier()  # Synchronization point
-        # Save the state_dict
         if rank == 0:
-            # self.save_state_dict_without_module(model, "./state_dicts/resnet50_imagenet1k_lora.pt")
-            torch.save(model.state_dict(), "./state_dicts/resnet50_imagenet1k_lora.pt")
+            torch.save(model.state_dict(), "./state_dicts/{}_{}_{}_{}_{}_{}_{}.pt".format(self.data, self.model, self.active_strategy, self.n_rounds, self.size, self.epochs, self.seed) )
 
         print('clean up')
         cleanup()
-
-
-
 
     def launch_experiment(self,  ):
 
@@ -423,6 +404,7 @@ class Experiment:
         torch.multiprocessing.spawn(self.evaluation, args=(arg,), nprocs=world_size, join=True)
         clean_acc = accuracy_tensor[0]
         print('clean_acc', clean_acc)
+        result['init_clean_accuracy'] = clean_acc
         
 
         round_size = math.ceil(self.size / self.n_rounds)
@@ -456,7 +438,7 @@ class Experiment:
 
             # Load the updated state_dict
             # state_dict = torch.load("./state_dicts/resnet50_imagenet1k_lora.pt")
-            temp_state_dict = torch.load("./state_dicts/resnet50_imagenet1k_lora.pt")
+            temp_state_dict = torch.load("./state_dicts/{}_{}_{}_{}_{}_{}_{}.pt".format(self.data, self.model, self.active_strategy, self.n_rounds, self.size, self.epochs, self.seed) )
             state_dict = {}
             for key, value in temp_state_dict.items():
                 if key.startswith("module."):
@@ -471,6 +453,7 @@ class Experiment:
         torch.multiprocessing.spawn(self.evaluation, args=(arg,), nprocs=world_size, join=True)
         clean_acc = accuracy_tensor[0]
         print('clean_acc', clean_acc)
+        result['final_clean_accuracy'] = clean_acc
 
         accuracy_tensor = torch.zeros(world_size, dtype=torch.float)  # Placeholder for the accuracy, shared memory
         accuracy_tensor.share_memory_()  # 
@@ -478,6 +461,13 @@ class Experiment:
         torch.multiprocessing.spawn(self.evaluation, args=(arg,), nprocs=world_size, join=True)
         pgd_acc = accuracy_tensor[0]
         print('pgd_acc', pgd_acc)
+        result['final_PGD_accuracy'] = pgd_acc
+
+        print(result)
+        print('finished')
+        with gzip.open( './results/{}_{}_{}_{}_{}_{}_{}.pkl.gz'.format(self.data, self.model, self.active_strategy, n_rounds, size, nb_epochs, seed) ,'ab') as f:
+                pkl.dump(result,f)
+        print('saved')
 
                         
 
