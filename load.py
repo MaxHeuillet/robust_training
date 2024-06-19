@@ -59,8 +59,8 @@ def to_rgb(x):
     return x.convert("RGB")
 
 
-if __name__ == "__main__":
-    transform = transforms.Compose([
+# if __name__ == "__main__":
+transform = transforms.Compose([
                     transforms.Lambda(to_rgb),
                     transforms.Resize(232, interpolation=InterpolationMode.BILINEAR),  # Resize the image to 232x232
                     transforms.CenterCrop(224),  # Crop the center of the image to make it 224x224
@@ -68,12 +68,12 @@ if __name__ == "__main__":
                     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # Normalize the tensor
                 ])
 
-    print('load train')
+print('load train')
     # dataset = load_dataset("imagenet-1k", cache_dir='/home/mheuill/scratch',)
-    train_folder = datasets.ImageFolder('$SLURM_TMPDIR/data/imagenet/train')
-    print('load test')
-    test_folder = datasets.ImageFolder('$SLURM_TMPDIR/data/imagenet/test')
-    print('load custom train')
-    pool_dataset = CustomImageDataset(train_folder, transform= transform )
-    print('load custom test')        
-    test_dataset = CustomImageDataset(test_folder, transform= transform ) 
+train_folder = datasets.ImageFolder('$SLURM_TMPDIR/data/imagenet/train')
+print('load test')
+test_folder = datasets.ImageFolder('$SLURM_TMPDIR/data/imagenet/test')
+print('load custom train')
+pool_dataset = CustomImageDataset(train_folder, transform= transform )
+print('load custom test')        
+test_dataset = CustomImageDataset(test_folder, transform= transform ) 
