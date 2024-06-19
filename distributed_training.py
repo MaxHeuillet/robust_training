@@ -77,7 +77,10 @@ class CustomImageDataset(Dataset):
         return len(self.hf_dataset)
     
     def get_item_imagenet(self,idx):
-        image,label = self.hf_dataset[idx]
+        try:
+            image,label = self.hf_dataset[idx]
+        except:
+            return self.__getitem__((idx + 1) % self.__len__())
         return image,label
 
     def get_item_imagenette(self,idx):
