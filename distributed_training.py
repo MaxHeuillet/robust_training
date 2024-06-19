@@ -38,14 +38,13 @@ import trades
 import utils
 import sys
 
-import models_local
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 
 import torch.distributed as dist
 from torchvision.transforms.functional import InterpolationMode
 
-from models_local import resnet
+from models_local import resnet_imagenet, resnet_cifar10
 
 import torch.multiprocessing as mp
 
@@ -92,7 +91,6 @@ class CustomImageDataset(Dataset):
         image = self.hf_dataset[idx]['image']
         label = self.imagenette_to_imagenet[ self.hf_dataset[idx]['label'] ]
         return image, label
-
     
     def __getitem__(self, idx):
         if self.data == 'Imagenet1k':
@@ -101,9 +99,7 @@ class CustomImageDataset(Dataset):
             image_data,label = self.get_item_imagenette(idx)
         else:
             print('error')
-        
-        # If the images are being loaded as PIL Images, apply the transform
-        # Make sure that the image is opened correctly if it's not already a PIL Image
+
         if isinstance(image_data, bytes):
             image = Image.open(io.BytesIO(image_data))
         else:
@@ -176,13 +172,14 @@ class Experiment:
 
     def load_model(self,):
         if self.model == 'resnet50' and self.data == 'CIFAR10':
-            # TODO
-            model = models_local.resnet.resnet50(pretrained=True, progress=True, device="cuda").to('cuda')
+            model = resnet_cifar10.ResNet(resnet_cifar10.Bottleneck, [3, 4, 6, 3] )
+            state_dict = torch.load('./state_dicts/resnet50.pt')
+            model.load_state_dict(state_dict)
 
         elif self.model == 'resnet50' and self.data in ['Imagenet1k' , 'Imagenette']:
 
             # model = CustomResNet50()
-            model = resnet.ResNet(resnet.Bottleneck, [3, 4, 6, 3], )
+            model = resnet_imagenet.ResNet(resnet_imagenet.Bottleneck, [3, 4, 6, 3], )
             state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
             model.load_state_dict(state_dict)
             model.to('cuda')
@@ -215,10 +212,9 @@ class Experiment:
                 transforms.Normalize( mean=(0.4914, 0.4822, 0.4465), std=(0.2471, 0.2435, 0.2616) )  ])
 
             pool_dataset = datasets.CIFAR10(root='./data', train=True, transform=transform)
-
             test_dataset = datasets.CIFAR10(root='./data', train=False, transform=transform)
 
-            print(pool_dataset[0])
+            print('load dataloader')
             
         elif self.data == 'Imagenet1k':
 
@@ -328,29 +324,24 @@ class Experiment:
                 indices_list.append( indices.cuda(rank) )
 
         predictions = torch.cat(predictions, dim=0)
+        outputs = torch.softmax(predictions, dim=1)
+        uncertainty = 1 - torch.max(outputs, dim=1)[0]
+        gather_list = [torch.zeros_like(uncertainty) for _ in range(self.world_size)]
+        
         indices = torch.cat(indices_list, dim=0)
-
-        gather_list = [torch.zeros_like(predictions) for _ in range(self.world_size)]
         index_gather_list = [torch.zeros_like(indices) for _ in range(self.world_size)]
-        # print(gather_list)
-        # print(index_gather_list)
 
-        dist.all_gather(gather_list, predictions)
+        dist.all_gather(gather_list, uncertainty)
         dist.all_gather(index_gather_list, indices)
 
         dist.barrier()  # Synchronization point
 
         if rank == 0:
-            print(gather_list)
-            print(index_gather_list)
-            all_predictions = torch.cat(gather_list, dim=0)
+            all_uncertainties = torch.cat(gather_list, dim=0)
             all_indices = torch.cat(index_gather_list, dim=0)
-            print(all_predictions)
-            print(all_indices)
-            outputs = torch.softmax(all_predictions, dim=1)
-            uncertainty = 1 - torch.max(outputs, dim=1)[0]
+            
             # Direct indexing instead of sorting
-            _, top_n_indices_sub = torch.topk(uncertainty, N, largest=True)
+            _, top_n_indices_sub = torch.topk(all_uncertainties, N, largest=True)
             top_n_indices.copy_(all_indices[top_n_indices_sub])
 
         cleanup()
