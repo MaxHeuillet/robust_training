@@ -33,12 +33,23 @@ class CustomImageDataset(Dataset):
     def __len__(self):
         return len(self.hf_dataset)
     
+    def get_item_imagenet(self,idx):
+        image,label = self.hf_dataset[idx]
+        return image,label
 
+    def get_item_imagenette(self,idx):
+        image = self.hf_dataset[idx]['image']
+        label = self.imagenette_to_imagenet[ self.hf_dataset[idx]['label'] ]
+        return image, label
+
+    
     def __getitem__(self, idx):
-        print(self.hf_dataset[idx])
-        # Here 'image' is likely a PIL image; you can check by adding print(type(image)) if unsure
-        image_data = self.hf_dataset[idx]['image']
-        #print(image_data)
+        if self.data == 'Imagenet1k':
+            image_data,label = self.get_item_imagenet(idx)
+        elif self.data == 'Imagenette':
+            image_data,label = self.get_item_imagenette(idx)
+        else:
+            print('error')
         
         # If the images are being loaded as PIL Images, apply the transform
         # Make sure that the image is opened correctly if it's not already a PIL Image
@@ -52,7 +63,7 @@ class CustomImageDataset(Dataset):
             image = self.transform(image)
 
         #print(image_data, image_data)
-        label = self.imagenette_to_imagenet[ self.hf_dataset[idx]['label'] ]
+        
         return image, label, idx
 
 
