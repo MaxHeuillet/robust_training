@@ -24,6 +24,7 @@ module load arrow
 source /home/mheuill/scratch/MYENV4/bin/activate
 
 if [ "${DATA}" = "Imagenet1k" ]; then
+
     mkdir -p $SLURM_TMPDIR/data
     tar xf ~/scratch/imagenet.tar.gz -C $SLURM_TMPDIR/data
 fi

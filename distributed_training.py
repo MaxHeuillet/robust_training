@@ -55,6 +55,10 @@ class CustomImageDataset(Dataset):
         self.hf_dataset = hf_dataset
         self.transform = transform
 
+        # if self.dataset == 'CIFAR10':
+        # elif self.dataset == 'Imagenette':
+        # elif self.dataset == 'Imagenet1k':
+
         self.imagenette_to_imagenet = {
                 0: 0,    # n01440764
                 1: 217,    # n02102040
@@ -154,7 +158,7 @@ class Experiment:
             # TODO
             model = models_local.resnet.resnet50(pretrained=True, progress=True, device="cuda").to('cuda')
 
-        elif self.model == 'resnet50' and self.data in ['Imagenet-1k' , 'Imagenette']:
+        elif self.model == 'resnet50' and self.data in ['Imagenet1k' , 'Imagenette']:
 
             # model = CustomResNet50()
             model = resnet.ResNet(resnet.Bottleneck, [3, 4, 6, 3], )
@@ -195,7 +199,7 @@ class Experiment:
 
             print(pool_dataset[0])
             
-        elif self.data == 'Imagenet-1k':
+        elif self.data == 'Imagenet1k':
 
             transform = transforms.Compose([
                 transforms.Lambda(to_rgb),
@@ -206,11 +210,12 @@ class Experiment:
             ])
 
             # dataset = load_dataset("imagenet-1k", cache_dir='/home/mheuill/scratch',)
-            dataset = load_from_disk('/home/mheuill/scratch/imagenet-1k')
+            train_folder = datasets.ImageFolder('$SLURM_TMPDIR/data/imagenet/train')
+            test_folder = datasets.ImageFolder('$SLURM_TMPDIR/data/imagenet/test')
 
-            pool_dataset = CustomImageDataset(dataset['train'], transform= transform )
+            pool_dataset = CustomImageDataset(train_folder, transform= transform )
         
-            test_dataset = CustomImageDataset(dataset['test'], transform= transform ) 
+            test_dataset = CustomImageDataset(test_folder, transform= transform ) 
 
             print('load dataloader')
 
