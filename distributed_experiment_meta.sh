@@ -18,8 +18,8 @@ data='Imagenet1k' #'CIFAR10'
 #     sbatch --export=ALL,LOSS=$loss,NROUNDS=1,NBEPOCHS=60,SIZE=50000,ASTRAT='full',MODEL=$model,DATA=$data,SEED=$id ./experiment.sh
 # done
 
-sizes=( 0.01 ) #500 2500 5000 7500 10000 12500 25000
-strategies=('uncertainty') # 'attack_uncertainty' 'random' 'margin' 'entropy' 'attack'
+sizes=( 1 2.5 10 ) #500 2500 5000 7500 10000 12500 25000
+strategies=('random' 'uncertainty' ) # 'attack_uncertainty' 'random' 'margin' 'entropy' 'attack'
 
 # Second set of experiments
 for size in "${sizes[@]}"; do

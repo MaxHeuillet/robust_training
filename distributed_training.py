@@ -46,6 +46,8 @@ from torchvision.transforms.functional import InterpolationMode
 
 from models_local import resnet_imagenet, resnet_cifar10
 
+import random
+
 # import torch.multiprocessing as mp
 
 
@@ -338,12 +340,26 @@ class Experiment:
         if rank == 0:
             all_uncertainties = torch.cat(gather_list, dim=0)
             all_indices = torch.cat(index_gather_list, dim=0)
-            
-            # Direct indexing instead of sorting
             _, top_n_indices_sub = torch.topk(all_uncertainties, N, largest=True)
             top_n_indices.copy_(all_indices[top_n_indices_sub])
 
         cleanup()
+
+    def random_sampling(self, args):
+        pool_dataset, N = args
+
+        # List of all dataset indices
+        all_indices = list( range( len(pool_dataset) ) )
+        
+        # Check if the requested number of instances is greater than the dataset size
+        if N > len(all_indices):
+            print(f"Requested number of instances ({N}) exceeds the dataset size ({len(all_indices)}). Returning all available indices.")
+            return all_indices
+        
+        # Randomly select 'n_instances' indices
+        random_indices = random.sample(all_indices, N)
+        return random_indices
+
 
     def update(self, rank, args): 
 
@@ -430,7 +446,9 @@ class Experiment:
                 arg = (state_dict, pool_dataset, round_size, top_n_indices)
                 torch.multiprocessing.spawn(self.uncertainty_sampling, args=(arg,), nprocs=self.world_size, join=True)
                 collected_indices.extend( top_n_indices.tolist() )
-            
+            elif self.active_strategy == 'random':
+                n_indices = self.random_sampling()
+                collected_indices.extend( n_indices )            
             else:
                 print('error')
             print(len(collected_indices))
@@ -478,76 +496,81 @@ class Experiment:
         print('saved')
 
 
-if __name__ == "__main__":
-    n_rounds = 1
-    size = 0.01
-    nb_epochs = 2
-    seed = 3
-    active_strategy = 'uncertainty'
-    data = 'Imagenet1k'
-    model = 'resnet50'
-    world_size = torch.cuda.device_count()
-    utils.set_seeds(seed)
-    evaluator = Experiment(n_rounds, size, nb_epochs, seed, active_strategy, data, model, world_size)
-    print('begin experiment')
-    evaluator.launch_experiment()
+# if __name__ == "__main__":
+import argparse
+
+
+parser = argparse.ArgumentParser()
+
+parser.add_argument("--n_rounds", required=True, help="nb of active learning rounds")
+parser.add_argument("--nb_epochs", required=True, help="nb of Lora epochs")
+parser.add_argument("--size", required=True, help="wether to compute clean accuracy, PGD robustness or AA robustness")
+parser.add_argument("--active_strategy", required=True, help="which observation strategy to choose")
+parser.add_argument("--seed", required=True, help="the random seed")
+parser.add_argument("--data", required=True, help="the data used for the experiment")
+parser.add_argument("--model", required=True, help="the model used for the experiment")
+
+args = parser.parse_args()
+
+n_rounds = int(args.n_rounds)
+size = int(args.size)
+nb_epochs = int(args.nb_epochs)
+seed = int(args.seed)
+active_strategy = args.active_strategy
+data = args.data
+model = args.model
+world_size = torch.cuda.device_count()
+utils.set_seeds(seed)
+evaluator = Experiment(n_rounds, size, nb_epochs, seed, active_strategy, data, model, world_size)
+print('begin experiment')
+evaluator.launch_experiment()
 
 
 
-    # torch.multiprocessing.spawn(inference, args=(world_size,), nprocs=world_size)
-
-            #pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
-            # elif self.active_strategy == 'entropy':
-            #     query_indices = active.entropy_sampling(model, pool_loader, round_size)
-            #     pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
-            # elif self.active_strategy == 'margin':
-            #     query_indices = active.margin_sampling(model, pool_loader, round_size)
-            #     pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
-            # elif self.active_strategy == 'random':
-            #     query_indices = active.random_sampling(model, pool_loader, round_size)
-            #     pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
-            # elif self.active_strategy == 'full':
-            #     query_indices = utils.get_indices_for_round( len(pool_loader.dataset), self.n_rounds, i)
-            #     _ = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
-            # elif args.active_strategy == 'attack':
-            #     query_indices = active.attack_sampling(model, pool_loader, round_size)
-            #     pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
-            # elif args.active_strategy == 'attack_uncertainty':
-            #     query_indices = active.attack_uncertainty_sampling(model, pool_loader, round_size)
-            #     pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
-
-
-            ################# Update the ResNet through low rank matrices:
-
-        #     adapt_loader = DataLoader(adapt_dataset, batch_size=128, shuffle=True)
-
-        #     print('start training process')
-        #     sys.stdout.flush()
-
-        #     for _ in range(self.nb_epochs):
-        #         print('epoch {}'.format(_) )
-        #         sys.stdout.flush()
-        #         model.train()
-
-        #         #Check if epoch_counter is at a milestone to reduce learning rate
-        #         if epoch_counter == 30 or epoch_counter == 50:
-        #             current_lr = optimizer.param_groups[0]['lr']
-        #             new_lr = current_lr * 0.1
-        #             utils.update_learning_rate(optimizer, new_lr)
-        #             print("Reduced learning rate to {}".format(new_lr))
-
-        #         # if args.loss == 'AT':
-        #         #     err, loss = utils.epoch_AT_vanilla(adapt_loader, model, device, optimizer)
-        #         # elif args.loss == 'FAT':
-        #         #     err, loss = utils.epoch_fast_AT(adapt_loader, model, device, optimizer)
-        #         # elif args.loss == 'TRADES':
-        #         err, loss = utils.epoch_TRADES(adapt_loader, model, device, optimizer)
-
-        #         print('epoch finished {} - {}'.format(err, loss) )
-        #         sys.stdout.flush()
-        #         epoch_counter +=1
-
-        # print('total amount of data used: {}'.format( len(adapt_loader)  )  )
+# torch.multiprocessing.spawn(inference, args=(world_size,), nprocs=world_size)
+#pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
+# elif self.active_strategy == 'entropy':
+#     query_indices = active.entropy_sampling(model, pool_loader, round_size)
+#     pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
+# elif self.active_strategy == 'margin':
+#     query_indices = active.margin_sampling(model, pool_loader, round_size)
+#     pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
+# elif self.active_strategy == 'random':
+#     query_indices = active.random_sampling(model, pool_loader, round_size)
+#     pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
+# elif self.active_strategy == 'full':
+#     query_indices = utils.get_indices_for_round( len(pool_loader.dataset), self.n_rounds, i)
+#     _ = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
+# elif args.active_strategy == 'attack':
+#     query_indices = active.attack_sampling(model, pool_loader, round_size)
+#     pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
+# elif args.active_strategy == 'attack_uncertainty':
+#     query_indices = active.attack_uncertainty_sampling(model, pool_loader, round_size)
+#     pool_indices = utils.add_data(query_indices, pool_indices, pool_dataset, adapt_dataset)
+################# Update the ResNet through low rank matrices:
+#     adapt_loader = DataLoader(adapt_dataset, batch_size=128, shuffle=True)
+#     print('start training process')
+#     sys.stdout.flush()
+#     for _ in range(self.nb_epochs):
+#         print('epoch {}'.format(_) )
+#         sys.stdout.flush()
+#         model.train()
+#         #Check if epoch_counter is at a milestone to reduce learning rate
+#         if epoch_counter == 30 or epoch_counter == 50:
+#             current_lr = optimizer.param_groups[0]['lr']
+#             new_lr = current_lr * 0.1
+#             utils.update_learning_rate(optimizer, new_lr)
+#             print("Reduced learning rate to {}".format(new_lr))
+#         # if args.loss == 'AT':
+#         #     err, loss = utils.epoch_AT_vanilla(adapt_loader, model, device, optimizer)
+#         # elif args.loss == 'FAT':
+#         #     err, loss = utils.epoch_fast_AT(adapt_loader, model, device, optimizer)
+#         # elif args.loss == 'TRADES':
+#         err, loss = utils.epoch_TRADES(adapt_loader, model, device, optimizer)
+#         print('epoch finished {} - {}'.format(err, loss) )
+#         sys.stdout.flush()
+#         epoch_counter +=1
+# print('total amount of data used: {}'.format( len(adapt_loader)  )  )
     
 #torch.multiprocessing.spawn(train, args=(world_size,), nprocs=world_size)
 # Gather all predictions to the process 0
