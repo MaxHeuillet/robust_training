@@ -1,18 +1,18 @@
 import torch
-import torch.nn as nn
+# import torch.nn as nn
 import torch.distributed as dist
-import torch.optim as optim
+# import torch.optim as optim
 from torch.utils.data import DataLoader, DistributedSampler
 # from torchvision.models import resnet50
-from torchvision.datasets import ImageNet
+# from torchvision.datasets import ImageNet
 from torchvision import transforms
 from torch.nn.parallel import DistributedDataParallel as DDP
 
-from transformers import AutoImageProcessor, ResNetModel
+# from transformers import AutoImageProcessor, ResNetModel
 import torch
 from datasets import load_dataset, load_from_disk
 
-import torchvision.models as models
+# import torchvision.models as models
 
 import os
 import io
@@ -21,7 +21,7 @@ from torch.utils.data import Dataset
 
 from PIL import Image
 
-from torchvision.models import resnet50, ResNet50_Weights
+# from torchvision.models import resnet50, ResNet50_Weights
 
 import gzip
 
@@ -30,13 +30,13 @@ import pickle as pkl
 import torch.nn.utils.parametrize as parametrize
 import lora 
 
-import active
+# import active
 import math
 
 from torch.utils.data import Subset
 import trades
 import utils
-import sys
+# import sys
 
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
@@ -46,7 +46,7 @@ from torchvision.transforms.functional import InterpolationMode
 
 from models_local import resnet_imagenet, resnet_cifar10
 
-import torch.multiprocessing as mp
+# import torch.multiprocessing as mp
 
 
 class CustomImageDataset(Dataset):
