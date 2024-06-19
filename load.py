@@ -9,7 +9,8 @@ from torchvision.transforms.functional import InterpolationMode
 
 
 class CustomImageDataset(Dataset):
-    def __init__(self, hf_dataset, transform=None):
+    def __init__(self, data, hf_dataset, transform=None):
+        self.data = data
         self.hf_dataset = hf_dataset
         self.transform = transform
 
@@ -88,6 +89,6 @@ val_folder = datasets.ImageFolder(os.path.join(os.environ['SLURM_TMPDIR'], 'data
 # print('load custom train')
 # pool_dataset = CustomImageDataset(train_folder, transform= transform )
 print('load custom test')        
-val_dataset = CustomImageDataset(val_folder, transform= transform) 
+val_dataset = CustomImageDataset('Imagenet1k',val_folder, transform= transform) 
 
 print(val_dataset[0])
