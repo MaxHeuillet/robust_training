@@ -35,6 +35,7 @@ class CustomImageDataset(Dataset):
     
 
     def __getitem__(self, idx):
+        print(self.hf_dataset[idx])
         # Here 'image' is likely a PIL image; you can check by adding print(type(image)) if unsure
         image_data = self.hf_dataset[idx]['image']
         #print(image_data)
@@ -76,6 +77,6 @@ val_folder = datasets.ImageFolder(os.path.join(os.environ['SLURM_TMPDIR'], 'data
 # print('load custom train')
 # pool_dataset = CustomImageDataset(train_folder, transform= transform )
 print('load custom test')        
-val_dataset = CustomImageDataset(val_folder, transform= transform ) 
+val_dataset = CustomImageDataset(val_folder, transform= transform) 
 
 print(val_dataset[0])
