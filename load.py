@@ -81,13 +81,12 @@ transform = transforms.Compose([
                     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # Normalize the tensor
                 ])
 
-# print('load train')
-#     # dataset = load_dataset("imagenet-1k", cache_dir='/home/mheuill/scratch',)
-# train_folder = datasets.ImageFolder(os.path.join(os.environ['SLURM_TMPDIR'], 'data/imagenet/train'))
+print('load train')
+train_folder = datasets.ImageFolder(os.path.join(os.environ['SLURM_TMPDIR'], 'data/imagenet/train'))
 print('load test')
 val_folder = datasets.ImageFolder(os.path.join(os.environ['SLURM_TMPDIR'], 'data/imagenet/val'))
-# print('load custom train')
-# pool_dataset = CustomImageDataset(train_folder, transform= transform )
+print('load custom train')
+pool_dataset = CustomImageDataset(train_folder, transform= transform )
 print('load custom test')        
 val_dataset = CustomImageDataset('Imagenet1k',val_folder, transform= transform) 
 
