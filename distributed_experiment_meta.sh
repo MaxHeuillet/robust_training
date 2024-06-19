@@ -10,7 +10,7 @@
 seeds=$1
 
 model='resnet50'
-data='Imagenet1k' #'CIFAR10'
+data='CIFAR10' #'Imagenet1k' 
 
 # First set of experiments
 # for ((id=0; id<$seeds; id++)); do
