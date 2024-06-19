@@ -26,8 +26,6 @@ from torch import nn
 import pickle as pkl
 import gzip
 
-
-
 ###################################
 # Experiments
 ###################################
