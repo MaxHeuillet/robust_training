@@ -86,8 +86,8 @@ train_folder = datasets.ImageFolder(os.path.join(os.environ['SLURM_TMPDIR'], 'da
 print('load test')
 val_folder = datasets.ImageFolder(os.path.join(os.environ['SLURM_TMPDIR'], 'data/imagenet/val'))
 print('load custom train')
-pool_dataset = CustomImageDataset(train_folder, transform= transform )
+pool_dataset = CustomImageDataset('Imagenet1k', train_folder, transform= transform )
 print('load custom test')        
-val_dataset = CustomImageDataset('Imagenet1k',val_folder, transform= transform) 
+val_dataset = CustomImageDataset('Imagenet1k', val_folder, transform= transform) 
 
 print(val_dataset[0])
