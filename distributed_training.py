@@ -173,7 +173,7 @@ class Experiment:
     def load_model(self,):
         if self.model == 'resnet50' and self.data == 'CIFAR10':
             model = resnet_cifar10.ResNet(resnet_cifar10.Bottleneck, [3, 4, 6, 3] )
-            state_dict = torch.load('./state_dicts/resnet50.pt')
+            state_dict = torch.load('./state_dicts/resnet50_cifar10.pt')
             model.load_state_dict(state_dict)
 
         elif self.model == 'resnet50' and self.data in ['Imagenet1k' , 'Imagenette']:
@@ -267,7 +267,6 @@ class Experiment:
 
         sampler = DistributedSampler(test_dataset, num_replicas=self.world_size, rank=rank, shuffle=False)
         
-
         model = self.load_model()
         model.load_state_dict(state_dict)
         model.to(rank)
@@ -481,7 +480,7 @@ class Experiment:
 
 if __name__ == "__main__":
     n_rounds = 1
-    size = 0.1
+    size = 0.01
     nb_epochs = 2
     seed = 3
     active_strategy = 'uncertainty'
