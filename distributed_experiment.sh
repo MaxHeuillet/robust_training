@@ -14,12 +14,12 @@
 
 
 
-module --force purge
+#module --force purge
 module load StdEnv/2020
 module load python/3.10
 module load scipy-stack
 
-source /home/mheuill/scratch/MYENV4/bin/activate
+source ~/scratch/MYENV4/bin/activate
 
 module load arrow
 
@@ -33,7 +33,7 @@ if [ "${DATA}" = "Imagenet1k" ]; then
     echo 'imagenet unzipped';
 fi
 
-echo 'HZ: start python3 ./experiment.py ..at '; date
+echo 'HZ: start python3 ./distributed_training.py ..at '; date
 
 
 python3 ./distributed_training.py > stdout_$SLURM_JOB_ID 2>stderr_$SLURM_JOB_ID
