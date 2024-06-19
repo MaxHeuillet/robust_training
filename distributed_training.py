@@ -158,7 +158,12 @@ class Experiment:
             self.batch_size_update = 64
             self.batch_size_pgdacc = 64
             self.batch_size_cleanacc = 512
-        if os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'narval':
+        elif os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'narval':
+            self.batch_size_uncertainty = 1024
+            self.batch_size_update = 1024
+            self.batch_size_pgdacc = 1024
+            self.batch_size_cleanacc = 1024
+        elif os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'cedar':
             self.batch_size_uncertainty = 1024
             self.batch_size_update = 1024
             self.batch_size_pgdacc = 1024
