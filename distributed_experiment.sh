@@ -18,10 +18,10 @@ module --force purge
 module load StdEnv/2020
 module load python/3.10
 module load scipy-stack
-module load arrow
-
 
 source /home/mheuill/scratch/MYENV4/bin/activate
+
+module load arrow
 
 if [ "${DATA}" = "Imagenet1k" ]; then
 
