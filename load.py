@@ -1,3 +1,4 @@
+
 from torch.utils.data import Dataset
 from PIL import Image
 import os
@@ -67,10 +68,12 @@ if __name__ == "__main__":
                     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # Normalize the tensor
                 ])
 
+    print('load train')
     # dataset = load_dataset("imagenet-1k", cache_dir='/home/mheuill/scratch',)
     train_folder = datasets.ImageFolder('$SLURM_TMPDIR/data/imagenet/train')
+    print('load test')
     test_folder = datasets.ImageFolder('$SLURM_TMPDIR/data/imagenet/test')
-
+    print('load custom train')
     pool_dataset = CustomImageDataset(train_folder, transform= transform )
-            
+    print('load custom test')        
     test_dataset = CustomImageDataset(test_folder, transform= transform ) 
