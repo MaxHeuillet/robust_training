@@ -25,8 +25,12 @@ source /home/mheuill/scratch/MYENV4/bin/activate
 
 if [ "${DATA}" = "Imagenet1k" ]; then
 
+    echo 'unzip imagenet';
+
     mkdir -p $SLURM_TMPDIR/data
     tar xf ~/scratch/imagenet.tar.gz -C $SLURM_TMPDIR/data
+
+    echo 'imagenet unzipped';
 fi
 
 echo 'HZ: start python3 ./experiment.py ..at '; date
