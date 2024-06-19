@@ -76,12 +76,17 @@ class CustomImageDataset(Dataset):
     def __len__(self):
         return len(self.hf_dataset)
     
-    def get_item_imagenet(self,idx):
+    def get_item_imagenet(self, idx):
         try:
-            image,label = self.hf_dataset[idx]
-        except:
-            return self.__getitem__((idx + 1) % self.__len__())
-        return image,label
+            data = self.hf_dataset[idx]
+            if isinstance(data, tuple) and len(data) == 2:
+                return data  # Unpack directly if data is correctly formatted
+            else:
+                raise ValueError(f"Unexpected data format at index {idx}: {data}")
+        except Exception as e:
+            next_idx = (idx + 1) % self.__len__()
+            print(f"Error with index {idx}: {e}. Trying next index {next_idx}")
+            return self.get_item_imagenet(next_idx)
 
     def get_item_imagenette(self,idx):
         image = self.hf_dataset[idx]['image']
