@@ -153,6 +153,19 @@ class Experiment:
         self.model = model
 
         self.world_size = world_size
+        if os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'beluga':
+            self.batch_size_uncertainty = 512
+            self.batch_size_update = 64
+            self.batch_size_pgdacc = 64
+            self.batch_size_cleanacc = 512
+        if os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'narval':
+            self.batch_size_uncertainty = 1024
+            self.batch_size_update = 1024
+            self.batch_size_pgdacc = 1024
+            self.batch_size_cleanacc = 1024
+        else:
+            print('error')
+
 
     def setup(world_size, rank):
         #Initialize the distributed environment.
@@ -276,10 +289,10 @@ class Experiment:
         model = DDP(model, device_ids=[rank], broadcast_buffers=False)
 
         if type=='clean_accuracy':
-            loader = DataLoader(test_dataset, batch_size=512, sampler=sampler, num_workers=self.world_size)
+            loader = DataLoader(test_dataset, batch_size=self.batch_size_cleanacc, sampler=sampler, num_workers=self.world_size)
             correct, total = utils.compute_clean_accuracy(model, loader, rank)
         elif type == 'pgd_accuracy':
-            loader = DataLoader(test_dataset, batch_size=512, sampler=sampler, num_workers=self.world_size)
+            loader = DataLoader(test_dataset, batch_size=self.batch_size_pgdacc, sampler=sampler, num_workers=self.world_size)
             correct, total = utils.compute_PGD_accuracy(model, loader, rank)
         else:
             print('error')
@@ -307,7 +320,7 @@ class Experiment:
         setup(self.world_size, rank)
 
         sampler = DistributedSampler(pool_dataset, num_replicas=self.world_size, rank=rank, shuffle=False)
-        loader = DataLoader(pool_dataset, batch_size=512, sampler=sampler, num_workers=self.world_size, shuffle=False)
+        loader = DataLoader(pool_dataset, batch_size=self.batch_size_uncertainty, sampler=sampler, num_workers=self.world_size, shuffle=False)
 
         model = self.load_model()
         model.load_state_dict(state_dict)
@@ -368,7 +381,7 @@ class Experiment:
         setup(self.world_size, rank)
 
         sampler = DistributedSampler(subset_dataset, num_replicas=self.world_size, rank=rank, shuffle=False)
-        loader = DataLoader(subset_dataset, batch_size=64, sampler=sampler, num_workers=self.world_size) #
+        loader = DataLoader(subset_dataset, batch_size=self.batch_size_update, sampler=sampler, num_workers=self.world_size) #
 
         model = self.load_model()
         model.load_state_dict(state_dict)

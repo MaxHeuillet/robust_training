@@ -3,7 +3,7 @@
 seeds=$1
 
 model='resnet50'
-data='CIFAR10' #'Imagenet1k' 
+data='Imagenet1k' #'CIFAR10'
 
 
 sizes=( 1 2.5 10 ) 
