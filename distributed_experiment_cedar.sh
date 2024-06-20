@@ -19,6 +19,7 @@ module load arrow
 
 source ~/scratch/MYENV4/bin/activate
 pip install  -r requirements.txt
+pip install git+https://github.com/fra31/auto-attack
 
 
 pip list
