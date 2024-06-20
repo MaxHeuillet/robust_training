@@ -94,12 +94,18 @@ class CustomImageDataset(Dataset):
         label = self.imagenette_to_imagenet[ self.hf_dataset[idx]['label'] ]
         return image, label
     
+    def get_item_cifar10(self,idx):
+        image, label = self.hf_dataset[idx]
+        return image, label
+    
     def __getitem__(self, idx):
         if self.data == 'Imagenet1k':
             image_data,label = self.get_item_imagenet(idx)
         elif self.data == 'Imagenette':
             image_data,label = self.get_item_imagenette(idx)
-        else:
+        elif self.data == 'CIFAR10':
+            image_data,label = self.get_item_cifar10(idx)
+        else:    
             print('error')
 
         if isinstance(image_data, bytes):
@@ -164,10 +170,10 @@ class Experiment:
             self.batch_size_pgdacc = 1024
             self.batch_size_cleanacc = 1024
         elif os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'cedar':
-            self.batch_size_uncertainty = 1024
-            self.batch_size_update = 1024
-            self.batch_size_pgdacc = 1024
-            self.batch_size_cleanacc = 1024
+            self.batch_size_uncertainty = 512
+            self.batch_size_update = 128
+            self.batch_size_pgdacc = 128
+            self.batch_size_cleanacc = 512
         else:
             print('error')
 
@@ -232,8 +238,11 @@ class Experiment:
                 transforms.ToTensor(),
                 transforms.Normalize( mean=(0.4914, 0.4822, 0.4465), std=(0.2471, 0.2435, 0.2616) )  ])
 
-            pool_dataset = datasets.CIFAR10(root='~/scratch/data', train=True, transform=transform)
-            test_dataset = datasets.CIFAR10(root='~/scratch/data', train=False, transform=transform)
+            train_folder = datasets.CIFAR10(root='~/scratch/data', train=True, transform=transform)
+            test_folder = datasets.CIFAR10(root='~/scratch/data', train=False, transform=transform)
+
+            pool_dataset = CustomImageDataset('CIFAR10', train_folder, transform= transform ) 
+            test_dataset = CustomImageDataset('CIFAR10', test_folder, transform= transform) 
 
             print('load dataloader')
             
