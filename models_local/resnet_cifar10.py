@@ -241,7 +241,7 @@ class ResNet(nn.Module):
 
         return nn.Sequential(*layers)
 
-    def forward(self, x):
+    def _forward_impl(self, x):
         x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu(x)
@@ -257,6 +257,15 @@ class ResNet(nn.Module):
         x = self.fc(x)
 
         return x
+
+    def forward(self, x_natural, x_adv=None):
+        if x_adv is not None:
+            logits_nat = self._forward_impl(x_natural)
+            logits_adv = self._forward_impl(x_adv)
+            return logits_nat, logits_adv
+        else:
+            return self._forward_impl(x_natural)
+
 
 
 def _resnet(arch, block, layers, pretrained, progress, device, **kwargs):
