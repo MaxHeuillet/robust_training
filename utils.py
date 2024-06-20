@@ -6,7 +6,7 @@ import torch.optim as optim
 import dill
 
 
-from autoattack import AutoAttack
+# from autoattack import AutoAttack
 
 import torch
 import torch.nn.functional as F
@@ -314,40 +314,40 @@ def compute_PGD_accuracy(model, test_loader, dev='cuda'):
 
     return correct, total
 
-def compute_AA_accuracy(model, test_loader, device='cuda'):
+# def compute_AA_accuracy(model, test_loader, device='cuda'):
 
-    model.eval()
+#     model.eval()
 
-    def forward_pass(x):
-        return model(x)
+#     def forward_pass(x):
+#         return model(x)
     
-    norm = 'Linf'
-    epsilon = 8/255
+#     norm = 'Linf'
+#     epsilon = 8/255
     
-    adversary = AutoAttack(forward_pass, norm=norm, eps=epsilon, version='standard')
+#     adversary = AutoAttack(forward_pass, norm=norm, eps=epsilon, version='standard')
     
-    correct = 0
-    total = 0
+#     correct = 0
+#     total = 0
     
-    for images, labels in test_loader:
+#     for images, labels in test_loader:
 
-        start_time = time.time()
+#         start_time = time.time()
 
-        images, labels = images.to(device), labels.to(device)
+#         images, labels = images.to(device), labels.to(device)
 
-        x_adv = adversary.run_standard_evaluation(images, labels, bs= test_loader.batch_size )
+#         x_adv = adversary.run_standard_evaluation(images, labels, bs= test_loader.batch_size )
         
-        # Evaluate the model on adversarial examples
-        outputs = model(x_adv)
-        _, predicted = torch.max(outputs.data, 1)
-        total += labels.size(0)
-        correct += (predicted == labels).sum().item()
+#         # Evaluate the model on adversarial examples
+#         outputs = model(x_adv)
+#         _, predicted = torch.max(outputs.data, 1)
+#         total += labels.size(0)
+#         correct += (predicted == labels).sum().item()
 
-        end_time = time.time()
-        # print(f"Time taken for batch: {end_time - start_time:.4f} seconds")
+#         end_time = time.time()
+#         # print(f"Time taken for batch: {end_time - start_time:.4f} seconds")
     
-    robust_accuracy = 100 * correct / total
-    return robust_accuracy
+#     robust_accuracy = 100 * correct / total
+#     return robust_accuracy
 
 
 
