@@ -13,7 +13,7 @@ import torch
 from datasets import load_dataset, load_from_disk
 
 # import torchvision.models as models
-
+import argparse
 import os
 import io
 
@@ -515,34 +515,32 @@ class Experiment:
         print('saved')
 
 
-# if __name__ == "__main__":
-import argparse
+if __name__ == "__main__":
 
+    parser = argparse.ArgumentParser()
 
-parser = argparse.ArgumentParser()
+    parser.add_argument("--n_rounds", required=True, help="nb of active learning rounds")
+    parser.add_argument("--nb_epochs", required=True, help="nb of Lora epochs")
+    parser.add_argument("--size", required=True, help="wether to compute clean accuracy, PGD robustness or AA robustness")
+    parser.add_argument("--active_strategy", required=True, help="which observation strategy to choose")
+    parser.add_argument("--seed", required=True, help="the random seed")
+    parser.add_argument("--data", required=True, help="the data used for the experiment")
+    parser.add_argument("--model", required=True, help="the model used for the experiment")
 
-parser.add_argument("--n_rounds", required=True, help="nb of active learning rounds")
-parser.add_argument("--nb_epochs", required=True, help="nb of Lora epochs")
-parser.add_argument("--size", required=True, help="wether to compute clean accuracy, PGD robustness or AA robustness")
-parser.add_argument("--active_strategy", required=True, help="which observation strategy to choose")
-parser.add_argument("--seed", required=True, help="the random seed")
-parser.add_argument("--data", required=True, help="the data used for the experiment")
-parser.add_argument("--model", required=True, help="the model used for the experiment")
+    args = parser.parse_args()
 
-args = parser.parse_args()
-
-n_rounds = int(args.n_rounds)
-size = float(args.size)
-nb_epochs = int(args.nb_epochs)
-seed = int(args.seed)
-active_strategy = args.active_strategy
-data = args.data
-model = args.model
-world_size = torch.cuda.device_count()
-utils.set_seeds(seed)
-evaluator = Experiment(n_rounds, size, nb_epochs, seed, active_strategy, data, model, world_size)
-print('begin experiment')
-evaluator.launch_experiment()
+    n_rounds = int(args.n_rounds)
+    size = float(args.size)
+    nb_epochs = int(args.nb_epochs)
+    seed = int(args.seed)
+    active_strategy = args.active_strategy
+    data = args.data
+    model = args.model
+    world_size = torch.cuda.device_count()
+    utils.set_seeds(seed)
+    evaluator = Experiment(n_rounds, size, nb_epochs, seed, active_strategy, data, model, world_size)
+    print('begin experiment')
+    evaluator.launch_experiment()
 
 
 
