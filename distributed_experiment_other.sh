@@ -16,13 +16,15 @@ module load scipy-stack
 module load arrow
 
 source ~/scratch/MYENV4/bin/activate
+pip install  -r requirements.txt
+
 
 pip list
 
-if [ "\${DATA}" = "Imagenet1k" ]; then
+if [ "${DATA}" = "Imagenet1k" ]; then
     echo 'unzip imagenet'
-    mkdir -p \$SLURM_TMPDIR/data
-    tar xf ~/scratch/imagenet.tar.gz -C \$SLURM_TMPDIR/data
+    mkdir -p $SLURM_TMPDIR/data
+    tar xf ~/scratch/imagenet.tar.gz -C $SLURM_TMPDIR/data
     echo 'imagenet unzipped'
 fi
 
