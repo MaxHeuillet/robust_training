@@ -6,7 +6,7 @@ model='resnet50'
 data=$2 #'Imagenet1k' #'CIFAR10'
 
 
-sizes=( 1 2.5 10 ) 
+sizes=( 1 2.5 10 25 50 75 100 ) 
 strategies=('random' 'uncertainty' ) # 'attack_uncertainty' 'random' 'margin' 'entropy' 'attack'
 
 # Second set of experiments
