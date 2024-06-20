@@ -475,7 +475,8 @@ class Experiment:
                 torch.multiprocessing.spawn(self.uncertainty_sampling, args=(arg,), nprocs=self.world_size, join=True)
                 collected_indices.extend( top_n_indices.tolist() )
             elif self.active_strategy == 'random':
-                n_indices = self.random_sampling()
+                arg = (pool_dataset, round_size)
+                n_indices = self.random_sampling(arg)
                 collected_indices.extend( n_indices )            
             else:
                 print('error')
