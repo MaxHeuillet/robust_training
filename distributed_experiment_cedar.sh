@@ -20,7 +20,7 @@ module load arrow
 source ~/scratch/MYENV4/bin/activate
 pip install  -r requirements.txt
 
-
+nvidia-smi
 
 pip list
 
