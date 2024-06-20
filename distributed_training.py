@@ -195,6 +195,7 @@ class Experiment:
             model = resnet_cifar10.ResNet(resnet_cifar10.Bottleneck, [3, 4, 6, 3] )
             state_dict = torch.load('./state_dicts/resnet50_cifar10.pt')
             model.load_state_dict(state_dict)
+            model.to('cuda')
 
         elif self.model == 'resnet50' and self.data in ['Imagenet1k' , 'Imagenette']:
 
