@@ -531,7 +531,7 @@ parser.add_argument("--model", required=True, help="the model used for the exper
 args = parser.parse_args()
 
 n_rounds = int(args.n_rounds)
-size = int(args.size)
+size = float(args.size)
 nb_epochs = int(args.nb_epochs)
 seed = int(args.seed)
 active_strategy = args.active_strategy

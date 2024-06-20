@@ -39,6 +39,14 @@ fi
 
 echo 'HZ: start python3 ./distributed_training.py ..at '; date
 
+echo "DATA = ${DATA}"
+echo "MODEL = ${MODEL}"
+echo "SEED = ${SEED}"
+echo "NROUNDS = ${NROUNDS}"
+echo "NBEPOCHS = ${NBEPOCHS}"
+echo "SIZE = ${SIZE}"
+echo "ACTIVE_STRATEGY = ${ASTRAT}"
+
 python3 ./distributed_training.py --data \${DATA} --model \${MODEL} --seed \${SEED} --n_rounds \${NROUNDS} --nb_epochs \${NBEPOCHS} --size \${SIZE} --active_strategy \${ASTRAT} > stdout_\$SLURM_JOB_ID 2>stderr_\$SLURM_JOB_ID
 EOF
 
