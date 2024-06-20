@@ -1,20 +1,11 @@
 #!/bin/bash
 
-# Generate the SBATCH directives based on cluster
-if [ "$SLURM_CLUSTER_NAME" = "cedar" ]; then
-    GPU_RESOURCE="--gres=gpu:v100-32gb:4"
-else
-    GPU_RESOURCE="--gres=gpu:4"
-fi
 
-# Create the job script with the determined GPU resource
-cat <<EOF > job_script.sh
-#!/bin/bash
 #SBATCH --account=def-adurand
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=10
 #SBATCH --gpus-per-node=4
-$GPU_RESOURCE
+#SBATCH --gres=gpu:4
 #SBATCH --mem-per-cpu=4000M
 #SBATCH --time=03:00:00
 #SBATCH --mail-user=maxime.heuillet.1@ulaval.ca
@@ -48,9 +39,3 @@ echo "SIZE = ${SIZE}"
 echo "ACTIVE_STRATEGY = ${ASTRAT}"
 
 python3 ./distributed_training.py --data \${DATA} --model \${MODEL} --seed \${SEED} --n_rounds \${NROUNDS} --nb_epochs \${NBEPOCHS} --size \${SIZE} --active_strategy \${ASTRAT} > stdout_\$SLURM_JOB_ID 2>stderr_\$SLURM_JOB_ID
-EOF
-
-# Submit the job script
-sbatch job_script.sh
-
-

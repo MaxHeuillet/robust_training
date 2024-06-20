@@ -13,7 +13,14 @@ strategies=('random' 'uncertainty' ) # 'attack_uncertainty' 'random' 'margin' 'e
 for size in "${sizes[@]}"; do
     for strategy in "${strategies[@]}"; do
         for ((id=0; id<$seeds; id++)); do
-            sbatch --export=ALL,NROUNDS=1,NBEPOCHS=60,SIZE=$size,ASTRAT=$strategy,DATA=$data,MODEL=$model,SEED=$id ./distributed_experiment.sh
+            if [ "$SLURM_CLUSTER_NAME" = "cedar" ]; then
+                sbatch --export=ALL,NROUNDS=1,NBEPOCHS=60,SIZE=$size,ASTRAT=$strategy,DATA=$data,MODEL=$model,SEED=$id ./distributed_experiment_cedar.sh
+
+            else
+                sbatch --export=ALL,NROUNDS=1,NBEPOCHS=60,SIZE=$size,ASTRAT=$strategy,DATA=$data,MODEL=$model,SEED=$id ./distributed_experiment_other.sh
+            fi
+
+        
         done
     done
 done
