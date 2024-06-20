@@ -4,7 +4,6 @@
 #SBATCH --account=def-adurand
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=10
-#SBATCH --gpus-per-node=4
 #SBATCH --gres=gpu:v100l:4
 #SBATCH --mem-per-cpu=4000M
 #SBATCH --time=03:00:00
