@@ -238,8 +238,8 @@ class Experiment:
                 transforms.ToTensor(),
                 transforms.Normalize( mean=(0.4914, 0.4822, 0.4465), std=(0.2471, 0.2435, 0.2616) )  ])
 
-            train_folder = datasets.CIFAR10(root='~/scratch/data', train=True, transform=transform)
-            test_folder = datasets.CIFAR10(root='~/scratch/data', train=False, transform=transform)
+            train_folder = datasets.CIFAR10(root='~/scratch/data', train=True)
+            test_folder = datasets.CIFAR10(root='~/scratch/data', train=False)
 
             pool_dataset = CustomImageDataset('CIFAR10', train_folder, transform= transform ) 
             test_dataset = CustomImageDataset('CIFAR10', test_folder, transform= transform) 
