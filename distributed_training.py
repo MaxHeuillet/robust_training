@@ -343,6 +343,7 @@ class Experiment:
         model.eval()  # Ensure the model is in evaluation mode
         model = DDP(model, device_ids=[rank])
 
+        print('do the predictions')
         predictions = []
         indices_list = []
         with torch.no_grad():
@@ -351,7 +352,7 @@ class Experiment:
                 outputs = model(inputs) 
                 predictions.append(outputs)
                 indices_list.append( indices.cuda(rank) )
-
+        print('prepare the predictions')
         predictions = torch.cat(predictions, dim=0)
         outputs = torch.softmax(predictions, dim=1)
         uncertainty = 1 - torch.max(outputs, dim=1)[0]
@@ -359,6 +360,7 @@ class Experiment:
         
         indices = torch.cat(indices_list, dim=0)
         index_gather_list = [torch.zeros_like(indices) for _ in range(self.world_size)]
+        print('gather the predictions')
 
         dist.all_gather(gather_list, uncertainty)
         dist.all_gather(index_gather_list, indices)
