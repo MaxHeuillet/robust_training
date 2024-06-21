@@ -48,6 +48,8 @@ from models_local import resnet_imagenet, resnet_cifar10
 
 import random
 
+import sys
+
 # import torch.multiprocessing as mp
 
 
@@ -540,6 +542,8 @@ if __name__ == "__main__":
     parser.add_argument("--model", required=True, help="the model used for the experiment")
 
     args = parser.parse_args()
+
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, write_through=True)
 
     n_rounds = int(args.n_rounds)
     size = float(args.size)
