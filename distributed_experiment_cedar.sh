@@ -30,7 +30,7 @@ if [ "${DATA}" = "Imagenet1k" ]; then
     echo 'imagenet unzipped'
 fi
 
-echo 'HZ: start python3 ./distributed_training.py ..at '; date
+echo 'HZ: start python3 ./distributed_experiment1.py ..at '; date
 
 echo "DATA = ${DATA}"
 echo "MODEL = ${MODEL}"
