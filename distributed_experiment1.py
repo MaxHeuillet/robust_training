@@ -7,6 +7,7 @@ from torch.utils.data import DataLoader, DistributedSampler
 # from torchvision.datasets import ImageNet
 from torchvision import transforms
 from torch.nn.parallel import DistributedDataParallel as DDP
+from torch.cuda.amp import autocast, GradScaler
 
 # from transformers import AutoImageProcessor, ResNetModel
 import torch
@@ -174,7 +175,7 @@ class Experiment:
         elif os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'cedar':
             self.batch_size_uncertainty = 1024
             self.batch_size_update = 64
-            self.batch_size_pgdacc = 1024
+            self.batch_size_pgdacc = 512
             self.batch_size_cleanacc = 1024
         else:
             print('error')
@@ -369,6 +370,7 @@ class Experiment:
         
         # optimizer = optim.SGD(model.parameters(), lr=0.01)
         # optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+        scaler = GradScaler()
         optimizer = torch.optim.SGD( model.parameters(),lr=0.001, weight_decay=0.0001, momentum=0.9, nesterov=True, )
         
         for epoch in range(self.epochs):
@@ -381,10 +383,16 @@ class Experiment:
                 optimizer.zero_grad()
                 # logits = model(data)
                 # loss = criterion(logits,target)
-                logits, loss = trades.trades_loss(model=model, x_natural=data, y=target, optimizer=optimizer,)
+                with autocast():
+                    logits, loss = trades.trades_loss(model=model, x_natural=data, y=target, optimizer=optimizer,)
+
                 print('loss', loss)
-                loss.backward()
-                optimizer.step()
+                scaler.scale(loss).backward()
+                scaler.step(optimizer)
+                scaler.update()
+                
+                # loss.backward()
+                # optimizer.step()
                 #total_err += (logits.max(dim=1)[1] != target).sum().item()
                 #total_loss += loss.item() * data.shape[0]
             
