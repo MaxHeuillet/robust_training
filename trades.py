@@ -109,14 +109,21 @@ def trades_loss(model,
 
     if distance == 'l_inf':
         print('init x_adv')
-        x_adv = x_natural.detach() + 0.001 * torch.randn(x_natural.shape, device=x_natural.device).detach()
         for _ in range(perturb_steps):
+            print(f' GPU Memory Allocated: {torch.cuda.memory_allocated()} bytes')
+            print(f' GPU Memory Cached: {torch.cuda.memory_reserved()} bytes')
+
             x_adv = x_adv.requires_grad_()
             with torch.enable_grad():
                 print('infer')
                 logits_nat, logits_adv = model(x_natural, x_adv)
                 print('kl loss')
                 loss_kl = criterion_kl(F.log_softmax(logits_adv, dim=1), F.softmax(logits_nat, dim=1))
+
+            print(f' GPU Memory Allocated: {torch.cuda.memory_allocated()} bytes')
+            print(f' GPU Memory Cached: {torch.cuda.memory_reserved()} bytes')
+
+            print( )
             print('gradient compute')
             grad = torch.autograd.grad(loss_kl, [x_adv])[0]
             print('other operations')
