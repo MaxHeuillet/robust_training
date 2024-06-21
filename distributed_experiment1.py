@@ -614,6 +614,7 @@ if __name__ == "__main__":
     parser.add_argument("--seed", required=True, help="the random seed")
     parser.add_argument("--data", required=True, help="the data used for the experiment")
     parser.add_argument("--model", required=True, help="the model used for the experiment")
+    parser.add_argument("--task", required = True, help="the task")
 
     args = parser.parse_args()
 
@@ -630,11 +631,12 @@ if __name__ == "__main__":
     utils.set_seeds(seed)
     evaluator = Experiment(n_rounds, size, nb_epochs, seed, active_strategy, data, model, world_size)
 
-    # print('begin experiment')
-    # evaluator.launch_experiment()
-
-    print('begin experiment')
-    evaluator.launch_evaluation()
+    if args.task == "train":
+        print('begin experiment')
+        evaluator.launch_experiment()
+    else:
+        print('begin experiment')
+        evaluator.launch_evaluation()
 
 
 
