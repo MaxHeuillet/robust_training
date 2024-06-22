@@ -175,7 +175,7 @@ class Experiment:
         elif os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'cedar':
             self.batch_size_uncertainty = 1024
             self.batch_size_update = 64
-            self.batch_size_pgdacc = 256
+            self.batch_size_pgdacc = 128
             self.batch_size_cleanacc = 1024
         else:
             print('error')
@@ -562,37 +562,37 @@ class Experiment:
         card =  math.ceil( len( pool_dataset ) * self.size/100 )
         result['card'] = card
 
-        try: 
-            temp_state_dict = torch.load("./state_dicts/{}_{}_{}_{}_{}_{}_{}.pt".format(self.data, self.model, self.active_strategy, self.n_rounds, self.size, self.epochs, self.seed) )
-            state_dict = {}
-            for key, value in temp_state_dict.items():
-                if key.startswith("module."):
-                    state_dict[key[7:]] = value  # remove 'module.' prefix
-                else:
-                    state_dict[key] = value
+        # try: 
+        temp_state_dict = torch.load("./state_dicts/{}_{}_{}_{}_{}_{}_{}.pt".format(self.data, self.model, self.active_strategy, self.n_rounds, self.size, self.epochs, self.seed) )
+        state_dict = {}
+        for key, value in temp_state_dict.items():
+            if key.startswith("module."):
+                state_dict[key[7:]] = value  # remove 'module.' prefix
+            else:
+                state_dict[key] = value
             # model.load_state_dict(new_state_dict)
 
-            accuracy_tensor = torch.zeros(world_size, dtype=torch.float)  # Placeholder for the accuracy, shared memory
-            accuracy_tensor.share_memory_()  
-            arg = (state_dict, test_dataset, accuracy_tensor, 'clean_accuracy')
-            torch.multiprocessing.spawn(self.evaluation, args=(arg,), nprocs=world_size, join=True)
-            clean_acc = accuracy_tensor[0]
-            print('clean_acc', clean_acc)
-            result['final_clean_accuracy'] = clean_acc.item()
+        accuracy_tensor = torch.zeros(world_size, dtype=torch.float)  # Placeholder for the accuracy, shared memory
+        accuracy_tensor.share_memory_()  
+        arg = (state_dict, test_dataset, accuracy_tensor, 'clean_accuracy')
+        torch.multiprocessing.spawn(self.evaluation, args=(arg,), nprocs=world_size, join=True)
+        clean_acc = accuracy_tensor[0]
+        print('clean_acc', clean_acc)
+        result['final_clean_accuracy'] = clean_acc.item()
 
-            accuracy_tensor = torch.zeros(world_size, dtype=torch.float)  # Placeholder for the accuracy, shared memory
-            accuracy_tensor.share_memory_()  
-            arg = (state_dict, test_dataset, accuracy_tensor, 'pgd_accuracy')
-            torch.multiprocessing.spawn(self.evaluation, args=(arg,), nprocs=world_size, join=True)
-            pgd_acc = accuracy_tensor[0]
-            print('pgd_acc', pgd_acc)
-            result['final_PGD_accuracy'] = pgd_acc.item()
+        accuracy_tensor = torch.zeros(world_size, dtype=torch.float)  # Placeholder for the accuracy, shared memory
+        accuracy_tensor.share_memory_()  
+        arg = (state_dict, test_dataset, accuracy_tensor, 'pgd_accuracy')
+        torch.multiprocessing.spawn(self.evaluation, args=(arg,), nprocs=world_size, join=True)
+        pgd_acc = accuracy_tensor[0]
+        print('pgd_acc', pgd_acc)
+        result['final_PGD_accuracy'] = pgd_acc.item()
 
             
-        except:
-            result['final_clean_accuracy'] = None
-            result['final_PGD_accuracy'] = None
-            print('model state dict not found')
+        # except:
+        # result['final_clean_accuracy'] = None
+        #     result['final_PGD_accuracy'] = None
+        #     print('model state dict not found')
 
         
         print(result)
