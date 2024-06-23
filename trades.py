@@ -108,25 +108,25 @@ def trades_loss(model,
     # print(x_adv)
 
     if distance == 'l_inf':
-        print('init x_adv')
+        # print('init x_adv')
         for _ in range(perturb_steps):
-            print(f' GPU Memory Allocated: {torch.cuda.memory_allocated()} bytes')
-            print(f' GPU Memory Cached: {torch.cuda.memory_reserved()} bytes')
+            # print(f' GPU Memory Allocated: {torch.cuda.memory_allocated()} bytes')
+            # print(f' GPU Memory Cached: {torch.cuda.memory_reserved()} bytes')
 
             x_adv = x_adv.requires_grad_()
             with torch.enable_grad():
-                print('infer')
+                #print('infer')
                 logits_nat, logits_adv = model(x_natural, x_adv)
-                print('kl loss')
+                #print('kl loss')
                 loss_kl = criterion_kl(F.log_softmax(logits_adv, dim=1), F.softmax(logits_nat, dim=1))
 
-            print(f' GPU Memory Allocated: {torch.cuda.memory_allocated()} bytes')
-            print(f' GPU Memory Cached: {torch.cuda.memory_reserved()} bytes')
+            # print(f' GPU Memory Allocated: {torch.cuda.memory_allocated()} bytes')
+            # print(f' GPU Memory Cached: {torch.cuda.memory_reserved()} bytes')
 
-            print( )
-            print('gradient compute')
+            # print( )
+            # print('gradient compute')
             grad = torch.autograd.grad(loss_kl, [x_adv])[0]
-            print('other operations')
+            # print('other operations')
             x_adv = x_adv.detach() + step_size * torch.sign(grad.detach())
             x_adv = torch.min(torch.max(x_adv, x_natural - epsilon), x_natural + epsilon).detach()
             x_adv = torch.clamp(x_adv, 0.0, 1.0)
