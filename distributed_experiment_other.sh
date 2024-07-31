@@ -5,7 +5,7 @@
 #SBATCH --cpus-per-task=10
 #SBATCH --gpus-per-node=4
 #SBATCH --mem-per-cpu=4000M
-#SBATCH --time=03:00:00
+#SBATCH --time=12:00:00
 #SBATCH --mail-user=maxime.heuillet.1@ulaval.ca
 #SBATCH --mail-type=ALL
 
@@ -40,5 +40,6 @@ echo "ACTIVE_STRATEGY = ${ASTRAT}"
 echo "TASK = ${TASK}"
 echo "LOSS = ${LOSS}"
 echo "SCHED = ${SCHED}"
+echo "LR = ${LR}"
 
-python3 ./distributed_experiment1.py --loss ${LOSS} --sched ${SCHED} --task ${TASK} --data ${DATA} --model ${MODEL} --seed ${SEED} --n_rounds ${NROUNDS} --nb_epochs ${NBEPOCHS} --size ${SIZE} --active_strategy ${ASTRAT} > stdout_$SLURM_JOB_ID 2>stderr_$SLURM_JOB_ID
+python3 ./distributed_experiment1.py --lr ${LR} --loss ${LOSS} --sched ${SCHED} --task ${TASK} --data ${DATA} --model ${MODEL} --seed ${SEED} --n_rounds ${NROUNDS} --nb_epochs ${NBEPOCHS} --size ${SIZE} --active_strategy ${ASTRAT} > stdout_$SLURM_JOB_ID 2>stderr_$SLURM_JOB_ID
