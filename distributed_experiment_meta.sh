@@ -4,7 +4,8 @@ seeds=$1
 
 model='resnet50'
 data=$2 #'Imagenet1k' #'CIFAR10'
-task=$3
+task=$3 #'train' 'evaluation'
+loss=$4 #'TRADES' 'Madry'
 
 
 sizes=( 1 2.5 10 25 50 75 100 ) 

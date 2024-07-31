@@ -130,6 +130,9 @@ def epoch_AT_vanilla(loader, model,device, opt=None,):
     return total_err / len(loader.dataset), total_loss / len(loader.dataset)
 
 def epoch_fast_AT(loader, model, device, opt=None,):
+
+    ## fast adversarial training 
+    
     total_loss, total_err = 0.,0.
 
     epsilon = 8/255
@@ -171,6 +174,8 @@ def epoch_TRADES(loader, model, device, opt=None,):
     return total_err / len(loader.dataset), total_loss / len(loader.dataset)
 
 def epoch_free_AT(loader, model, device, opt=None,):
+
+    ## adversarial training for free
 
     num_repeats=10
     epsilon=0.1
