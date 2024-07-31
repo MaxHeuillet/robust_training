@@ -182,10 +182,10 @@ class Experiment:
             self.batch_size_cleanacc = 1024
 
         elif os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'beluga' and self.loss == 'Madry':
-            self.batch_size_uncertainty = 512
-            self.batch_size_update = 512
-            self.batch_size_pgdacc = 512
-            self.batch_size_cleanacc = 512
+            self.batch_size_uncertainty = 1024
+            self.batch_size_update = 1024
+            self.batch_size_pgdacc = 1024
+            self.batch_size_cleanacc = 1024
         elif os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'narval' and self.loss == 'Madry':
             self.batch_size_uncertainty = 1024
             self.batch_size_update = 1024
