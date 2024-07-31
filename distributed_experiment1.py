@@ -8,6 +8,7 @@ from torch.utils.data import DataLoader, DistributedSampler
 from torchvision import transforms
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.cuda.amp import autocast, GradScaler
+from torch.optim.lr_scheduler import CosineAnnealingLR
 
 # from transformers import AutoImageProcessor, ResNetModel
 import torch
@@ -151,7 +152,7 @@ def to_rgb(x):
 
 class Experiment:
 
-    def __init__(self, loss, n_rounds, size, nb_epochs, seed, active_strategy, data, model, world_size):
+    def __init__(self, loss, sched, n_rounds, size, nb_epochs, seed, active_strategy, data, model, world_size):
 
         self.n_rounds = n_rounds
         self.size = size
@@ -161,6 +162,7 @@ class Experiment:
         self.data = data
         self.model = model
         self.loss = loss
+        self.sched = sched
 
         self.world_size = world_size
         if os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'beluga' and self.loss == 'TRADES':
@@ -220,8 +222,6 @@ class Experiment:
             model.to('cuda')
 
         elif self.model == 'resnet50' and self.data in ['Imagenet1k' , 'Imagenette']:
-
-            # model = CustomResNet50()
             model = resnet_imagenet.ResNet(resnet_imagenet.Bottleneck, [3, 4, 6, 3], )
             state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
             model.load_state_dict(state_dict)
@@ -380,15 +380,15 @@ class Experiment:
         model.to(rank)
         model = DDP(model, device_ids=[rank])
         model.train()
-        
-        # optimizer = optim.SGD(model.parameters(), lr=0.01)
-        # optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+
         scaler = GradScaler()
         optimizer = torch.optim.SGD( model.parameters(),lr=0.001, weight_decay=0.0001, momentum=0.9, nesterov=True, )
+        scheduler = CosineAnnealingLR(optimizer, T_max=10)
         
         for epoch in range(self.epochs):
-            total_loss, total_err = 0.,0.
+
             sampler.set_epoch(epoch)
+
             for data, target, _ in loader:
 
                 data, target = data.to(rank), target.to(rank)
@@ -409,12 +409,15 @@ class Experiment:
                 scaler.scale(loss).backward()
                 scaler.step(optimizer)
                 scaler.update()
+            
+            if self.sched == 'sched':
+                scheduler.step()
                 
             print(f'Rank {rank}, Epoch {epoch}, ') 
 
         dist.barrier()  # Synchronization point
         if rank == 0:
-            torch.save(model.state_dict(), "./state_dicts/{}_{}_{}_{}_{}_{}_{}_{}.pt".format(self.loss, self.data, self.model, self.active_strategy, self.n_rounds, self.size, self.epochs, self.seed) )
+            torch.save(model.state_dict(), "./state_dicts/{}_{}_{}_{}_{}_{}_{}_{}_{}.pt".format(self.loss, self.sched, self.data, self.model, self.active_strategy, self.n_rounds, self.size, self.epochs, self.seed) )
 
         print('clean up')
         cleanup()
@@ -462,15 +465,11 @@ class Experiment:
 
             subset_dataset = Subset(pool_dataset, collected_indices)
             
-            # arg = (state_dict, subset_dataset)
-            # self.update(arg)
-
             arg = (state_dict, subset_dataset)
             torch.multiprocessing.spawn(self.update,  args=(arg,),  nprocs=self.world_size, join=True)
 
             # Load the updated state_dict
-            # state_dict = torch.load("./state_dicts/resnet50_imagenet1k_lora.pt")
-            temp_state_dict = torch.load("./state_dicts/{}_{}_{}_{}_{}_{}_{}_{}.pt".format(self.loss,self.data, self.model, self.active_strategy, self.n_rounds, self.size, self.epochs, self.seed) )
+            temp_state_dict = torch.load("./state_dicts/{}_{}_{}_{}_{}_{}_{}_{}_{}.pt".format(self.loss, self.sched, self.data, self.model, self.active_strategy, self.n_rounds, self.size, self.epochs, self.seed) )
             state_dict = {}
             for key, value in temp_state_dict.items():
                 if key.startswith("module."):
@@ -480,7 +479,7 @@ class Experiment:
 
         print(result)
         print('finished')
-        with gzip.open( './results/{}_{}_{}_{}_{}_{}_{}_{}.pkl.gz'.format(self.loss, self.data, self.model, self.active_strategy, n_rounds, size, nb_epochs, seed) ,'wb') as f:
+        with gzip.open( './results/{}_{}_{}_{}_{}_{}_{}_{}_{}.pkl.gz'.format(self.loss, self.sched, self.data, self.model, self.active_strategy, n_rounds, size, nb_epochs, seed) ,'wb') as f:
                 pkl.dump(result,f)
         print('saved')
 
@@ -541,7 +540,7 @@ class Experiment:
         state_dict = model.state_dict()
         
         accuracy_tensor = torch.zeros(world_size, dtype=torch.float)  # Placeholder for the accuracy, shared memory
-        accuracy_tensor.share_memory_()  # 
+        accuracy_tensor.share_memory_()  
         arg = (state_dict, test_dataset, accuracy_tensor, 'clean_accuracy')
         torch.multiprocessing.spawn(self.evaluation, args=(arg,), nprocs=world_size, join=True)
         clean_acc = accuracy_tensor[0]
@@ -552,7 +551,7 @@ class Experiment:
         result['card'] = card
 
         # try: 
-        temp_state_dict = torch.load("./state_dicts/{}_{}_{}_{}_{}_{}_{}_{}.pt".format(self.loss,self.data, self.model, self.active_strategy, self.n_rounds, self.size, self.epochs, self.seed) )
+        temp_state_dict = torch.load("./state_dicts/{}_{}_{}_{}_{}_{}_{}_{}_{}.pt".format(self.loss, self.sched, self.data, self.model, self.active_strategy, self.n_rounds, self.size, self.epochs, self.seed) )
         state_dict = {}
         for key, value in temp_state_dict.items():
             if key.startswith("module."):
@@ -579,7 +578,7 @@ class Experiment:
         
         print(result)
         print('finished')
-        with gzip.open( './results/{}_{}_{}_{}_{}_{}_{}_{}.pkl.gz'.format(self.loss, self.data, self.model, self.active_strategy, n_rounds, size, nb_epochs, seed) ,'ab') as f:
+        with gzip.open( './results/{}_{}_{}_{}_{}_{}_{}_{}_{}.pkl.gz'.format(self.loss, self.sched, self.data, self.model, self.active_strategy, n_rounds, size, nb_epochs, seed) ,'ab') as f:
             pkl.dump(result,f)
         print('saved')
 
@@ -598,6 +597,7 @@ if __name__ == "__main__":
     parser.add_argument("--model", required=True, help="the model used for the experiment")
     parser.add_argument("--task", required = True, help="the task")
     parser.add_argument("--loss", required = True, help="the loss")
+    parser.add_argument("--sched", required = True, help="the scheduler")
 
     args = parser.parse_args()
 
@@ -611,10 +611,11 @@ if __name__ == "__main__":
     data = args.data
     model = args.model
     loss = args.loss
+    sched = args.sched
     world_size = torch.cuda.device_count()
     utils.set_seeds(seed)
 
-    evaluator = Experiment(loss, n_rounds, size, nb_epochs, seed, active_strategy, data, model, world_size)
+    evaluator = Experiment(loss, sched, n_rounds, size, nb_epochs, seed, active_strategy, data, model, world_size)
 
     if args.task == "train":
         print('begin experiment')
