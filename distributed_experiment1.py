@@ -50,7 +50,7 @@ from models_local import resnet_imagenet, resnet_cifar10
 import random
 
 import sys
-
+import torch.nn as nn
 # import torch.multiprocessing as mp
 
 
@@ -189,7 +189,7 @@ class Experiment:
             self.batch_size_update = 1024
             self.batch_size_pgdacc = 1024
             self.batch_size_cleanacc = 1024
-            
+
         else:
             print('error')
 
@@ -400,7 +400,9 @@ class Experiment:
                         logits, loss = trades.trades_loss(model=model, x_natural=data, y=target, optimizer=optimizer,)
                 elif self.loss == 'Madry':
                     with autocast():
-                        err, loss = utils.epoch_AT_vanilla(loader, model, rank, opt=None,)
+                        delta = utils.pgd_linf(model, data, target)
+                        yp = model( data + delta )
+                        loss = nn.CrossEntropyLoss()( yp, target )
                 else:
                     print('error unspecified loss')
 
