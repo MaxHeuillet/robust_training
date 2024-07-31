@@ -4,7 +4,7 @@ import gzip
 from torchvision import datasets
 
 
-from datasets import load_dataset 
+# from datasets import load_dataset 
 
 # print('load')
 # dataset = load_dataset("frgfm/imagenette", "full_size", cache_dir='/home/mheuill/scratch')
