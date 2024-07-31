@@ -39,5 +39,6 @@ echo "SIZE = ${SIZE}"
 echo "ACTIVE_STRATEGY = ${ASTRAT}"
 echo "TASK = ${TASK}"
 echo "LOSS = ${LOSS}"
+echo "SCHED = ${SCHED}"
 
-python3 ./distributed_experiment1.py --loss ${LOSS} --task ${TASK} --data ${DATA} --model ${MODEL} --seed ${SEED} --n_rounds ${NROUNDS} --nb_epochs ${NBEPOCHS} --size ${SIZE} --active_strategy ${ASTRAT} > stdout_$SLURM_JOB_ID 2>stderr_$SLURM_JOB_ID
+python3 ./distributed_experiment1.py --loss ${LOSS} --sched ${SCHED} --task ${TASK} --data ${DATA} --model ${MODEL} --seed ${SEED} --n_rounds ${NROUNDS} --nb_epochs ${NBEPOCHS} --size ${SIZE} --active_strategy ${ASTRAT} > stdout_$SLURM_JOB_ID 2>stderr_$SLURM_JOB_ID
