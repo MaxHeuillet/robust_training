@@ -442,7 +442,6 @@ class Experiment:
         result['loss'] = self.loss
         result['sched'] = self.sched
 
-
         pool_dataset, _ = self.load_data()
 
         model = self.load_model()
