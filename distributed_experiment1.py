@@ -187,11 +187,17 @@ class Experiment:
             self.batch_size_update = 512
             self.batch_size_pgdacc = 512
             self.batch_size_cleanacc = 512
+        elif os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'cedar' and self.loss == 'Madry':
+            self.batch_size_uncertainty = 512
+            self.batch_size_update = 512
+            self.batch_size_pgdacc = 512
+            self.batch_size_cleanacc = 512
         elif os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'narval' and self.loss == 'Madry':
             self.batch_size_uncertainty = 1024
             self.batch_size_update = 1024
             self.batch_size_pgdacc = 1024
             self.batch_size_cleanacc = 1024
+
 
         else:
             print('error')
@@ -433,6 +439,9 @@ class Experiment:
         result['seed'] = self.seed
         result['data'] = self.data
         result['model'] = self.model
+        result['loss'] = self.loss
+        result['sched'] = self.sched
+
 
         pool_dataset, _ = self.load_data()
 
