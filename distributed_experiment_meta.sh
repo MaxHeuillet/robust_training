@@ -6,7 +6,7 @@ model='resnet50'
 data=$2 #'Imagenet1k' #'CIFAR10'
 task=$3 #'train' 'evaluation'
 loss=$4 #'TRADES' 'Madry'
-sched=$4 #'sched' 'nosched'
+sched=$5 #'sched' 'nosched'
 
 lrs=(0.01 0.001)
 sizes=( 5 10 25 ) 
