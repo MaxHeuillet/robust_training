@@ -429,7 +429,7 @@ class Experiment:
         print('clean up')
         cleanup()
 
-    def launch_experiment(self,  ):
+    def launch_training(self,  ):
 
         result = {}
         result['active_strategy'] = self.active_strategy
@@ -535,14 +535,11 @@ class Experiment:
 
     def launch_evaluation(self,  ):
 
-        result = {}
-        result['active_strategy'] = self.active_strategy
-        result['n_rounds'] = self.n_rounds
-        result['size'] = self.size
-        result['nb_epochs'] = self.epochs
-        result['seed'] = self.seed
-        result['data'] = self.data
-        result['model'] = self.model
+        
+        # Load the file
+        file_name = './results/{}_{}_{}_{}_{}_{}_{}_{}_{}_{}.pkl.gz'.format(self.loss, self.lr, self.sched, self.data, self.model, self.active_strategy, n_rounds, size, nb_epochs, seed)
+        with gzip.open(file_name, 'rb') as f:
+            result = pkl.load(f)
 
         pool_dataset, test_dataset = self.load_data()
 
@@ -588,7 +585,7 @@ class Experiment:
         
         print(result)
         print('finished')
-        with gzip.open( './results/{}_{}_{}_{}_{}_{}_{}_{}_{}_{}.pkl.gz'.format(self.loss, self.lr, self.sched, self.data, self.model, self.active_strategy, n_rounds, size, nb_epochs, seed) ,'ab') as f:
+        with gzip.open( './results/{}_{}_{}_{}_{}_{}_{}_{}_{}_{}.pkl.gz'.format(self.loss, self.lr, self.sched, self.data, self.model, self.active_strategy, n_rounds, size, nb_epochs, seed) ,'wb') as f:
             pkl.dump(result,f)
         print('saved')
 
@@ -630,8 +627,8 @@ if __name__ == "__main__":
     evaluator = Experiment(loss, lr, sched, n_rounds, size, nb_epochs, seed, active_strategy, data, model, world_size)
 
     if args.task == "train":
-        print('begin experiment')
-        evaluator.launch_experiment()
+        print('begin training')
+        evaluator.launch_training()
     else:
         print('begin evaluation')
         evaluator.launch_evaluation()
