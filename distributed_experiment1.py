@@ -124,6 +124,9 @@ class CustomImageDataset(Dataset):
         #print(image_data, image_data)
         
         return image, label, idx
+    
+def to_rgb(x):
+    return x.convert("RGB")
 
 
 
@@ -146,11 +149,8 @@ def cleanup():
    dist.destroy_process_group()
 
 
-def to_rgb(x):
-    return x.convert("RGB")
 
-
-class Experiment:
+class BaseExperiment:
 
     def __init__(self, loss, lr, sched, n_rounds, size, nb_epochs, seed, active_strategy, data, model, world_size):
 
@@ -197,7 +197,6 @@ class Experiment:
             self.batch_size_update = 1024
             self.batch_size_pgdacc = 1024
             self.batch_size_cleanacc = 1024
-
 
         else:
             print('error')
@@ -623,11 +622,11 @@ if __name__ == "__main__":
     world_size = torch.cuda.device_count()
     utils.set_seeds(seed)
 
-    evaluator = Experiment(loss, lr, sched, n_rounds, size, nb_epochs, seed, active_strategy, data, model, world_size)
+    experiment = BaseExperiment(loss, lr, sched, n_rounds, size, nb_epochs, seed, active_strategy, data, model, world_size)
 
     if args.task == "train":
         print('begin training')
-        evaluator.launch_training()
+        experiment.launch_training()
     else:
         print('begin evaluation')
-        evaluator.launch_evaluation()
+        experiment.launch_evaluation()
