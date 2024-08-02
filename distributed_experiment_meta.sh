@@ -8,7 +8,7 @@ task=$3 #'train' 'evaluation'
 loss=$4 #'TRADES' 'Madry'
 sched=$5 #'sched' 'nosched'
 
-lrs=( 0.0001  )  # 0.01 0.001
+lrs=( 0.00001  )  # 0.01 0.001 0.0001
 sizes=( 5 10 25 ) 
 strategies=('random' 'uncertainty' ) # 'attack_uncertainty' 'random' 'margin' 'entropy' 'attack'
 
