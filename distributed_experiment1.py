@@ -370,7 +370,8 @@ class BaseExperiment:
         setup(self.world_size, rank)
 
         if rank == 0:
-            wandb.init(project="{}_{}_{}_{}_{}_{}_{}_{}_{}_{}".format(self.loss, self.lr, self.sched, self.data, self.model, self.active_strategy, n_rounds, size, nb_epochs, seed) )
+            run_name = "{}_{}_{}_{}_{}_{}_{}_{}_{}_{}".format(self.loss, self.lr, self.sched, self.data, self.model, self.active_strategy, self.n_rounds, self.size, self.epochs, self.seed)
+            wandb.init(project='robust_training', name=run_name )
 
         sampler = DistributedSampler(subset_dataset, num_replicas=self.world_size, rank=rank, shuffle=False)
         loader = DataLoader(subset_dataset, batch_size=self.batch_size_update, sampler=sampler, num_workers=self.world_size) #
@@ -636,7 +637,9 @@ if __name__ == "__main__":
 
     if args.task == "train":
         print('begin training')
-        wandb.init("{}_{}_{}_{}_{}_{}_{}_{}_{}_{}".format(loss, lr, sched, data, model, active_strategy, n_rounds, size, nb_epochs, seed) )
+        run_name = "{}_{}_{}_{}_{}_{}_{}_{}_{}_{}".format(loss, lr, sched, data, model, active_strategy, n_rounds, size, nb_epochs, seed)
+        wandb.init(project='robust_training', name=run_name )
+
         experiment.launch_training()
     else:
         print('begin evaluation')
