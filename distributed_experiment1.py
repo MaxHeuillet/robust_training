@@ -54,6 +54,8 @@ import sys
 import torch.nn as nn
 # import torch.multiprocessing as mp
 
+import wandb
+import time
 
 class CustomImageDataset(Dataset):
     def __init__(self, data, hf_dataset, transform=None):
@@ -148,6 +150,14 @@ def setup(world_size, rank):
 def cleanup():
    dist.destroy_process_group()
 
+def compute_gradient_norms(model):
+    total_norm = 0
+    for p in model.parameters():
+        if p.grad is not None:
+            param_norm = p.grad.data.norm(2)
+            total_norm += param_norm.item() ** 2
+    total_norm = total_norm ** 0.5
+    return total_norm
 
 
 class BaseExperiment:
@@ -200,25 +210,6 @@ class BaseExperiment:
 
         else:
             print('error')
-
-
-    def setup(world_size, rank):
-        #Initialize the distributed environment.
-        print( ' world size {}, rank {}'.format(world_size,rank) )
-        print('set up the master adress and port')
-        os.environ['MASTER_ADDR'] = 'localhost'
-        os.environ['MASTER_PORT'] = '12355'
-        #Set environment variables for offline usage of Hugging Face libraries
-        os.environ['HF_DATASETS_OFFLINE'] = '1'
-        os.environ['TRANSFORMERS_OFFLINE'] = '1'
-        
-        #Set up the local GPU for this process
-        torch.cuda.set_device(rank)
-        dist.init_process_group("nccl", rank=rank, world_size=world_size)
-        print('init process group ok')
-
-    def cleanup():
-        dist.destroy_process_group()
 
     def load_model(self,):
         if self.model == 'resnet50' and self.data == 'CIFAR10':
@@ -378,6 +369,9 @@ class BaseExperiment:
 
         setup(self.world_size, rank)
 
+        if rank == 0:
+            wandb.init(project="{}_{}_{}_{}_{}_{}_{}_{}_{}_{}".format(self.loss, self.lr, self.sched, self.data, self.model, self.active_strategy, n_rounds, size, nb_epochs, seed) )
+
         sampler = DistributedSampler(subset_dataset, num_replicas=self.world_size, rank=rank, shuffle=False)
         loader = DataLoader(subset_dataset, batch_size=self.batch_size_update, sampler=sampler, num_workers=self.world_size) #
 
@@ -385,15 +379,16 @@ class BaseExperiment:
         model.load_state_dict(state_dict)
         model.to(rank)
         model = DDP(model, device_ids=[rank])
-        model.train()
+        
 
         scaler = GradScaler()
         optimizer = torch.optim.SGD( model.parameters(),lr=self.lr, weight_decay=0.0001, momentum=0.9, nesterov=True, )
         scheduler = CosineAnnealingLR(optimizer, T_max=10)
         
         for epoch in range(self.epochs):
-
+            model.train()
             sampler.set_epoch(epoch)
+            epoch_start_time = time.time()  # Start time of the epoch
 
             for data, target, _ in loader:
 
@@ -415,15 +410,30 @@ class BaseExperiment:
                 scaler.scale(loss).backward()
                 scaler.step(optimizer)
                 scaler.update()
+
+            
             
             if self.sched == 'sched':
                 scheduler.step()
+
+            if rank == 0:
+
+                # Compute gradient norms
+                gradient_norm = compute_gradient_norms(model)
+                
+                # Elapsed time for the epoch
+                epoch_elapsed_time = time.time() - epoch_start_time
+                # Log metrics only from the main process
+                current_lr = optimizer.param_groups[0]['lr']
+                wandb.log({"epoch": epoch, "loss": loss, "lr":current_lr, 'gradient_norm':gradient_norm,'epoch_time':epoch_elapsed_time  })
                 
             print(f'Rank {rank}, Epoch {epoch}, ') 
 
         dist.barrier()  # Synchronization point
         if rank == 0:
             torch.save(model.state_dict(), "./state_dicts/{}_{}_{}_{}_{}_{}_{}_{}_{}_{}.pt".format(self.loss, self.lr, self.sched, self.data, self.model, self.active_strategy, self.n_rounds, self.size, self.epochs, self.seed) )
+
+            wandb.finish()
 
         print('clean up')
         cleanup()
@@ -626,6 +636,7 @@ if __name__ == "__main__":
 
     if args.task == "train":
         print('begin training')
+        wandb.init("{}_{}_{}_{}_{}_{}_{}_{}_{}_{}".format(loss, lr, sched, data, model, active_strategy, n_rounds, size, nb_epochs, seed) )
         experiment.launch_training()
     else:
         print('begin evaluation')
