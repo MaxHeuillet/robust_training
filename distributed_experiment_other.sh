@@ -14,6 +14,7 @@ module load StdEnv/2023
 module load python/3.10
 module load scipy-stack
 module load arrow
+module load httpproxy
 
 source ~/scratch/MYENV4/bin/activate
 pip install  -r requirements.txt
