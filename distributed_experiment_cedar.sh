@@ -20,9 +20,9 @@ module load httpproxy
 source ~/scratch/MYENV4/bin/activate
 pip install  -r requirements.txt
 
-nvidia-smi
-
-pip list
+wandb login --relogin <<EOF
+12c5bc9e9809f53b1150856be2ae3614c88e4639
+EOF
 
 if [ "${DATA}" = "Imagenet1k" ]; then
     echo 'unzip imagenet'
