@@ -161,23 +161,10 @@ def compute_gradient_norms(model):
     total_norm = total_norm ** 0.5
     return total_norm
 
-def get_job_id():
-    # Command to submit your job script
-    sbatch_command = ["sbatch", "your_job_script.sh"]
-
-    # Run the sbatch command and capture the output
-    result = subprocess.run(sbatch_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-    print(result)
-
-    output = result.stdout.strip()
-    job_id = output.split()[-1]
-
-    return job_id
-
 
 class BaseExperiment:
 
-    def __init__(self, conf, world_size):
+    def __init__(self, conf, world_size, jobid):
 
         self.conf = conf
 
@@ -196,6 +183,8 @@ class BaseExperiment:
         self.config_name = "{}_{}_{}_{}_{}_{}_{}_{}_{}_{}".format(self.loss, self.lr, self.sched, self.data, self.model, self.active_strategy, self.n_rounds, self.size, self.epochs, self.seed)
 
         self.world_size = world_size
+        self.jobid = jobid
+
         if os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'beluga' and self.loss == 'TRADES':
             self.batch_size_uncertainty = 512
             self.batch_size_update = 64
@@ -390,7 +379,7 @@ class BaseExperiment:
         setup(self.world_size, rank)
 
         if rank == 0:
-            wandb.init(project='robust_training', name=get_job_id(), config = self.conf, mode="offline" )
+            wandb.init(project='robust_training', name=self.jobid , config = self.conf, mode="offline" )
 
         sampler = DistributedSampler(subset_dataset, num_replicas=self.world_size, rank=rank, shuffle=False)
         loader = DataLoader(subset_dataset, batch_size=self.batch_size_update, sampler=sampler, num_workers=self.world_size) #
@@ -616,11 +605,13 @@ if __name__ == "__main__":
     parser.add_argument("--loss", required = True, help="the loss")
     parser.add_argument("--sched", required = True, help="the scheduler")
     parser.add_argument("--lr", required = True, help="the learning rate")
+    parser.add_argument("--slurm_job_id", required = True, help="the jobid")
 
     args = parser.parse_args()
 
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, write_through=True)
 
+    jobid = args.slurm_job_id
     n_rounds = int(args.n_rounds)
     size = float(args.size)
     nb_epochs = int(args.nb_epochs)
@@ -647,7 +638,7 @@ if __name__ == "__main__":
         "model": model,
         }
 
-    experiment = BaseExperiment(conf, world_size)
+    experiment = BaseExperiment(conf, world_size, jobid)
 
     if args.task == "train":
         print('begin training')
