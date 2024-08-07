@@ -167,6 +167,7 @@ def get_job_id():
 
     # Run the sbatch command and capture the output
     result = subprocess.run(sbatch_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    print(result)
 
     output = result.stdout.strip()
     job_id = output.split()[-1]
@@ -389,7 +390,7 @@ class BaseExperiment:
         setup(self.world_size, rank)
 
         if rank == 0:
-            wandb.init(project='robust_training', name=get_job_id(), config = self.conf )
+            wandb.init(project='robust_training', name=get_job_id(), config = self.conf, mode="offline" )
 
         sampler = DistributedSampler(subset_dataset, num_replicas=self.world_size, rank=rank, shuffle=False)
         loader = DataLoader(subset_dataset, batch_size=self.batch_size_update, sampler=sampler, num_workers=self.world_size) #
@@ -650,8 +651,6 @@ if __name__ == "__main__":
 
     if args.task == "train":
         print('begin training')
-        
-        wandb.init(project='robust_training', config=conf )
 
         experiment.launch_training()
     else:
