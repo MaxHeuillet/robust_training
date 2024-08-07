@@ -20,10 +20,11 @@ source ~/scratch/MYENV4/bin/activate
 pip install  -r requirements.txt
 
 
-wandb login --relogin <<EOF
-12c5bc9e9809f53b1150856be2ae3614c88e4639
-EOF
+# wandb login --relogin <<EOF
+# 12c5bc9e9809f53b1150856be2ae3614c88e4639
+# EOF
 
+wandb offline
 
 if [ "${DATA}" = "Imagenet1k" ]; then
     echo 'unzip imagenet'
