@@ -54,10 +54,11 @@ import sys
 import torch.nn as nn
 # import torch.multiprocessing as mp
 
-import wandb
+# import wandb
 import time
 
 import subprocess
+from comet_ml import Experiment
 
 class CustomImageDataset(Dataset):
     def __init__(self, data, hf_dataset, transform=None):
@@ -184,6 +185,15 @@ class BaseExperiment:
 
         self.world_size = world_size
         self.jobid = jobid
+
+        self.exp_logger = Experiment(
+            api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
+            project_name="robust_training",
+            workspace="maxheuillet",  # your Comet username
+        )
+
+        self.exp_logger.log_parameters(self.conf)
+
 
         if os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'beluga' and self.loss == 'TRADES':
             self.batch_size_uncertainty = 512
@@ -434,7 +444,13 @@ class BaseExperiment:
                 epoch_elapsed_time = time.time() - epoch_start_time
                 # Log metrics only from the main process
                 current_lr = optimizer.param_groups[0]['lr']
-                wandb.log({"epoch": epoch, "loss": loss, "lr":current_lr, 'gradient_norm':gradient_norm,'epoch_time':epoch_elapsed_time  })
+
+                # Log each metric for the current epoch
+                self.exp_logger.log_metric("epoch", epoch, epoch=epoch)
+                self.exp_logger.log_metric("loss", loss, epoch=epoch)
+                self.exp_logger.log_metric("lr", current_lr, epoch=epoch)
+                self.exp_logger.log_metric("gradient_norm", gradient_norm, epoch=epoch)
+                self.exp_logger.log_metric("epoch_time", epoch_elapsed_time, epoch=epoch)
                 
             print(f'Rank {rank}, Epoch {epoch}, ') 
 
@@ -640,9 +656,10 @@ if __name__ == "__main__":
 
     experiment = BaseExperiment(conf, world_size, jobid)
 
+
+
     if args.task == "train":
         print('begin training')
-
         experiment.launch_training()
     else:
         print('begin evaluation')
