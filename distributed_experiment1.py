@@ -179,7 +179,7 @@ class BaseExperiment:
         self.active_strategy = conf['active_strategy']
         self.data = conf['dataset']
         self.model = conf['model']
-        self.loss = conf['loss']
+        self.loss = conf['loss_function']
         self.sched = conf['scheduler']
         self.lr = conf['learning_rate']
 
@@ -645,7 +645,7 @@ if __name__ == "__main__":
     utils.set_seeds(seed)
 
     conf={
-        "loss":loss,
+        "loss_function":loss,
         "learning_rate": lr,
         "scheduler":sched,
         "rounds":n_rounds,
