@@ -57,6 +57,8 @@ import torch.nn as nn
 import wandb
 import time
 
+import subprocess
+
 class CustomImageDataset(Dataset):
     def __init__(self, data, hf_dataset, transform=None):
         self.data = data
@@ -159,21 +161,38 @@ def compute_gradient_norms(model):
     total_norm = total_norm ** 0.5
     return total_norm
 
+def get_job_id():
+    # Command to submit your job script
+    sbatch_command = ["sbatch", "your_job_script.sh"]
+
+    # Run the sbatch command and capture the output
+    result = subprocess.run(sbatch_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+
+    output = result.stdout.strip()
+    job_id = output.split()[-1]
+
+    return job_id
+
 
 class BaseExperiment:
 
-    def __init__(self, loss, lr, sched, n_rounds, size, nb_epochs, seed, active_strategy, data, model, world_size):
+    def __init__(self, conf, world_size):
 
-        self.n_rounds = n_rounds
-        self.size = size
-        self.epochs = nb_epochs
-        self.seed = seed
-        self.active_strategy = active_strategy
-        self.data = data
-        self.model = model
-        self.loss = loss
-        self.sched = sched
-        self.lr = lr
+        self.conf = conf
+
+
+        self.n_rounds = conf['rounds']
+        self.size = conf['size']
+        self.epochs = conf['epochs']
+        self.seed = conf['seed']
+        self.active_strategy = conf['active_strategy']
+        self.data = conf['dataset']
+        self.model = conf['model']
+        self.loss = conf['loss']
+        self.sched = conf['scheduler']
+        self.lr = conf['learning_rate']
+
+        self.config_name = "{}_{}_{}_{}_{}_{}_{}_{}_{}_{}".format(self.loss, self.lr, self.sched, self.data, self.model, self.active_strategy, self.n_rounds, self.size, self.epochs, self.seed)
 
         self.world_size = world_size
         if os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'beluga' and self.loss == 'TRADES':
@@ -369,6 +388,9 @@ class BaseExperiment:
 
         setup(self.world_size, rank)
 
+        if rank == 0:
+            wandb.init(project='robust_training', name=get_job_id(), config = self.conf )
+
         sampler = DistributedSampler(subset_dataset, num_replicas=self.world_size, rank=rank, shuffle=False)
         loader = DataLoader(subset_dataset, batch_size=self.batch_size_update, sampler=sampler, num_workers=self.world_size) #
 
@@ -428,7 +450,7 @@ class BaseExperiment:
 
         dist.barrier()  # Synchronization point
         if rank == 0:
-            torch.save(model.state_dict(), "./state_dicts/{}_{}_{}_{}_{}_{}_{}_{}_{}_{}.pt".format(self.loss, self.lr, self.sched, self.data, self.model, self.active_strategy, self.n_rounds, self.size, self.epochs, self.seed) )
+            torch.save(model.state_dict(), "./state_dicts/{}.pt".format(self.config_name) )
 
             wandb.finish()
 
@@ -437,17 +459,6 @@ class BaseExperiment:
 
 
     def launch_training(self,  ):
-
-        result = {}
-        result['active_strategy'] = self.active_strategy
-        result['n_rounds'] = self.n_rounds
-        result['size'] = self.size
-        result['nb_epochs'] = self.epochs
-        result['seed'] = self.seed
-        result['data'] = self.data
-        result['model'] = self.model
-        result['loss'] = self.loss
-        result['sched'] = self.sched
 
         pool_dataset, _ = self.load_data()
 
@@ -485,7 +496,7 @@ class BaseExperiment:
             torch.multiprocessing.spawn(self.update,  args=(arg,),  nprocs=self.world_size, join=True)
 
             # Load the updated state_dict
-            temp_state_dict = torch.load("./state_dicts/{}_{}_{}_{}_{}_{}_{}_{}_{}_{}.pt".format(self.loss, self.lr, self.sched, self.data, self.model, self.active_strategy, self.n_rounds, self.size, self.epochs, self.seed) )
+            temp_state_dict = torch.load( "./state_dicts/{}.pt".format(self.config_name) )
             state_dict = {}
             for key, value in temp_state_dict.items():
                 if key.startswith("module."):
@@ -493,11 +504,7 @@ class BaseExperiment:
                 else:
                     state_dict[key] = value
 
-        print(result)
         print('finished')
-        with gzip.open( './results/{}_{}_{}_{}_{}_{}_{}_{}_{}_{}.pkl.gz'.format(self.loss, self.lr, self.sched, self.data, self.model, self.active_strategy, n_rounds, size, nb_epochs, seed) ,'wb') as f:
-                pkl.dump(result,f)
-        print('saved')
 
 
     def evaluation(self, rank, args):
@@ -541,11 +548,7 @@ class BaseExperiment:
 
     def launch_evaluation(self,  ):
 
-        
-        # Load the file
-        file_name = './results/{}_{}_{}_{}_{}_{}_{}_{}_{}_{}.pkl.gz'.format(self.loss, self.lr, self.sched, self.data, self.model, self.active_strategy, n_rounds, size, nb_epochs, seed)
-        with gzip.open(file_name, 'rb') as f:
-            result = pkl.load(f)
+        result = self.conf.copy()
 
         pool_dataset, test_dataset = self.load_data()
 
@@ -591,7 +594,7 @@ class BaseExperiment:
         
         print(result)
         print('finished')
-        with gzip.open( './results/{}_{}_{}_{}_{}_{}_{}_{}_{}_{}.pkl.gz'.format(self.loss, self.lr, self.sched, self.data, self.model, self.active_strategy, n_rounds, size, nb_epochs, seed) ,'wb') as f:
+        with gzip.open( './results/{}.pkl.gz'.format(self.config_name) ,'wb') as f:
             pkl.dump(result,f)
         print('saved')
 
@@ -634,15 +637,16 @@ if __name__ == "__main__":
         "loss":loss,
         "learning_rate": lr,
         "scheduler":sched,
-        "model": model,
-        "dataset": data,
-        "epochs": nb_epochs,
         "rounds":n_rounds,
         "size":size,
-        "seed":seed
+        "epochs": nb_epochs,
+        "seed":seed,
+        "active_strategy":active_strategy,
+        "dataset": data,
+        "model": model,
         }
 
-    experiment = BaseExperiment(loss, lr, sched, n_rounds, size, nb_epochs, seed, active_strategy, data, model, world_size)
+    experiment = BaseExperiment(conf, world_size)
 
     if args.task == "train":
         print('begin training')
