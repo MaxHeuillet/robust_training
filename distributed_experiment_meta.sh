@@ -18,9 +18,9 @@ for size in "${sizes[@]}"; do
         for lr in "${lrs[@]}"; do
             for ((id=0; id<$seeds; id++)); do
                 if [ "$CC_CLUSTER" = "cedar" ]; then
-                    sbatch --export=ALL,NROUNDS=1,NBEPOCHS=60,TASK=$task,SIZE=$size,ASTRAT=$strategy,DATA=$data,MODEL=$model,SEED=$id,LOSS=$loss,SCHED=$sched,LR=$lr ./distributed_experiment_cedar.sh
+                    sbatch --export=ALL,NROUNDS=1,NBEPOCHS=5,TASK=$task,SIZE=$size,ASTRAT=$strategy,DATA=$data,MODEL=$model,SEED=$id,LOSS=$loss,SCHED=$sched,LR=$lr ./distributed_experiment_cedar.sh
                 else
-                    sbatch --export=ALL,NROUNDS=1,NBEPOCHS=60,TASK=$task,SIZE=$size,ASTRAT=$strategy,DATA=$data,MODEL=$model,SEED=$id,LOSS=$loss,SCHED=$sched,LR=$lr ./distributed_experiment_other.sh
+                    sbatch --export=ALL,NROUNDS=1,NBEPOCHS=5,TASK=$task,SIZE=$size,ASTRAT=$strategy,DATA=$data,MODEL=$model,SEED=$id,LOSS=$loss,SCHED=$sched,LR=$lr ./distributed_experiment_other.sh
                 fi
             done
         done
