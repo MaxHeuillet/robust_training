@@ -20,9 +20,9 @@ module load httpproxy
 source ~/scratch/MYENV4/bin/activate
 pip install  -r requirements.txt
 
-wandb login --relogin <<EOF
-12c5bc9e9809f53b1150856be2ae3614c88e4639
-EOF
+# wandb login --relogin <<EOF
+# 12c5bc9e9809f53b1150856be2ae3614c88e4639
+# EOF
 
 if [ "${DATA}" = "Imagenet1k" ]; then
     echo 'unzip imagenet'
@@ -48,4 +48,4 @@ echo "LR = ${LR}"
 python3 ./distributed_experiment1.py --lr ${LR} --loss ${LOSS} --sched ${SCHED} --task ${TASK} --data ${DATA} --model ${MODEL} --seed ${SEED} --n_rounds ${NROUNDS} --nb_epochs ${NBEPOCHS} --size ${SIZE} --active_strategy ${ASTRAT} --slurm_job_id ${SLURM_JOB_ID} > stdout_$SLURM_JOB_ID 2>stderr_$SLURM_JOB_ID
 
 
-wandb sync wandb/offline-run-*
+# wandb sync wandb/offline-run-*
