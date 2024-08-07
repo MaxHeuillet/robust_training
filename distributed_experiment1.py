@@ -648,5 +648,3 @@ if __name__ == "__main__":
         print('begin evaluation')
         experiment.launch_evaluation()
 
-    # Quit the script
-    quit()
