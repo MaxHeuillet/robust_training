@@ -1,3 +1,5 @@
+from comet_ml import Experiment
+
 import torch
 # import torch.nn as nn
 import torch.distributed as dist
@@ -58,7 +60,7 @@ import torch.nn as nn
 import time
 
 import subprocess
-from comet_ml import Experiment
+
 
 class CustomImageDataset(Dataset):
     def __init__(self, data, hf_dataset, transform=None):
@@ -388,8 +390,8 @@ class BaseExperiment:
 
         setup(self.world_size, rank)
 
-        if rank == 0:
-            wandb.init(project='robust_training', name=self.jobid , config = self.conf, mode="offline" )
+        # if rank == 0:
+        #     wandb.init(project='robust_training', name=self.jobid , config = self.conf, mode="offline" )
 
         sampler = DistributedSampler(subset_dataset, num_replicas=self.world_size, rank=rank, shuffle=False)
         loader = DataLoader(subset_dataset, batch_size=self.batch_size_update, sampler=sampler, num_workers=self.world_size) #
@@ -458,7 +460,8 @@ class BaseExperiment:
         if rank == 0:
             torch.save(model.state_dict(), "./state_dicts/{}.pt".format(self.config_name) )
 
-            wandb.finish()
+            # wandb.finish()
+            self.exp_logger.end()
 
         print('clean up')
         cleanup()
