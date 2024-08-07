@@ -388,6 +388,7 @@ class BaseExperiment:
                 project_name="robust_training",
                 workspace="maxheuillet",  # your Comet username
             )
+            self.exp_logger.set_name(self.jobid)
 
             self.exp_logger.log_parameters(self.conf)
         #     wandb.init(project='robust_training', name=self.jobid , config = self.conf, mode="offline" )
