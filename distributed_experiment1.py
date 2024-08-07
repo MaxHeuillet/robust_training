@@ -188,14 +188,6 @@ class BaseExperiment:
         self.world_size = world_size
         self.jobid = jobid
 
-        self.exp_logger = Experiment(
-            api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
-            project_name="robust_training",
-            workspace="maxheuillet",  # your Comet username
-        )
-
-        self.exp_logger.log_parameters(self.conf)
-
 
         if os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'beluga' and self.loss == 'TRADES':
             self.batch_size_uncertainty = 512
@@ -390,7 +382,14 @@ class BaseExperiment:
 
         setup(self.world_size, rank)
 
-        # if rank == 0:
+        if rank == 0:
+            self.exp_logger = Experiment(
+                api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
+                project_name="robust_training",
+                workspace="maxheuillet",  # your Comet username
+            )
+
+            self.exp_logger.log_parameters(self.conf)
         #     wandb.init(project='robust_training', name=self.jobid , config = self.conf, mode="offline" )
 
         sampler = DistributedSampler(subset_dataset, num_replicas=self.world_size, rank=rank, shuffle=False)
