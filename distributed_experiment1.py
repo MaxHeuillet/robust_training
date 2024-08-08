@@ -7,7 +7,7 @@ import torch.distributed as dist
 from torch.utils.data import DataLoader, DistributedSampler
 # from torchvision.models import resnet50
 # from torchvision.datasets import ImageNet
-from torchvision import transforms
+
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.cuda.amp import autocast, GradScaler
 from torch.optim.lr_scheduler import CosineAnnealingLR

@@ -27,3 +27,9 @@ datasets
 
 wandb
 comet_ml
+
+#pip install -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ submodlib
+
+pip install torchdatasets
+
+logging
