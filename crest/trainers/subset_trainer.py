@@ -1,25 +1,24 @@
 # a trainer class that inherits from BaseTrainer and only trains on a subset of the data selected at the beginning of every epoch
-from .base_trainer import *
+from crest.trainers.base_trainer import *
 from torch.utils.data import Subset, DataLoader
-from datasets import SubsetGenerator
+from datasets.subset import SubsetGenerator
 
 class SubsetTrainer(BaseTrainer):
-    def __init__(
-        self, 
-        args: argparse.Namespace,
-        model: nn.Module,
-        train_dataset: IndexedDataset,
-        val_loader: DataLoader,
-        train_weights: torch.Tensor = None,
-    ):
-        super().__init__(args, model, train_dataset, val_loader, train_weights)
+
+    def __init__(self, args, model: nn.Module, train_dataset, val_loader: DataLoader, train_weights: torch.Tensor = None, ):
+
+        super().__init__(args, model, train_dataset, val_loader, train_weights,)
+
         self.train_target = np.array(self.train_dataset.dataset.targets)
+
         self.subset_generator = SubsetGenerator(greedy=(args.selection_method!="rand"), smtk=args.smtk)
 
         self.num_selection = 0
 
     def _update_train_loader_and_weights(self):
+
         self.args.logger.info("Updating train loader and weights with subset of size {}".format(len(self.subset)))
+
         self.train_loader = DataLoader(
             Subset(self.train_dataset, self.subset),
             batch_size=self.args.batch_size,
@@ -27,6 +26,7 @@ class SubsetTrainer(BaseTrainer):
             num_workers=self.args.num_workers,
             pin_memory=True
         )
+
         self.train_val_loader = DataLoader(
             self.train_dataset,
             batch_size=self.args.batch_size,
@@ -78,9 +78,9 @@ class SubsetTrainer(BaseTrainer):
                 )
             )
 
-        if self.args.cache_dataset and self.args.clean_cache_iteration:
-            self.train_dataset.clean()
-            self._update_train_loader_and_weights()
+        # if self.args.cache_dataset and self.args.clean_cache_iteration:
+        #     self.train_dataset.clean()
+        #     self._update_train_loader_and_weights()
 
     def _get_train_output(self):
         """
@@ -108,12 +108,12 @@ class SubsetTrainer(BaseTrainer):
         """
         self.num_selection += 1
 
-        if self.args.use_wandb:
-            wandb.log({"epoch": epoch, "training_step": training_step, "num_selection": self.num_selection})
+        # if self.args.use_wandb:
+        #     wandb.log({"epoch": epoch, "training_step": training_step, "num_selection": self.num_selection})
 
-        if self.args.cache_dataset:
-            self.train_dataset.clean()
-            self.train_dataset.cache()
+        # if self.args.cache_dataset:
+        #     self.train_dataset.clean()
+        #     self.train_dataset.cache()
         pass
 
     def _get_num_selection(self):

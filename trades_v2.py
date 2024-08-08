@@ -14,7 +14,7 @@ def l2_norm(x):
     return squared_l2_norm(x).sqrt()
 
 
-def trades_loss(model,
+def trades_loss_v2(model,
                 x_natural,
                 y,
                 optimizer,
@@ -23,9 +23,7 @@ def trades_loss(model,
                 perturb_steps=10,
                 beta=1.0,
                 distance='l_inf'):
-    
-    # define KL-loss
-    # criterion_kl = nn.KLDivLoss(size_average=False)
+
     criterion_kl = nn.KLDivLoss(reduction='sum')
     model.eval()
     batch_size = len(x_natural)
@@ -44,16 +42,17 @@ def trades_loss(model,
             x_adv = x_adv.requires_grad_()
             with torch.enable_grad():
                 #print('infer')
-                logits_nat, logits_adv = model(x_natural, x_adv)
+                logits_adv = model(x_adv)
                 #print('kl loss')
-                loss_kl = criterion_kl( F.log_softmax(logits_adv, dim=1), F.softmax(logits_nat, dim=1) )
+                loss = F.cross_entropy( logits_adv, y)
+                # loss_kl = criterion_kl( F.log_softmax(logits_adv, dim=1), F.softmax(logits_nat, dim=1) )
 
             # print(f' GPU Memory Allocated: {torch.cuda.memory_allocated()} bytes')
             # print(f' GPU Memory Cached: {torch.cuda.memory_reserved()} bytes')
 
             # print( )
             # print('gradient compute')
-            grad = torch.autograd.grad(loss_kl, [x_adv])[0]
+            grad = torch.autograd.grad(loss, [x_adv])[0]
             # print('other operations')
             x_adv = x_adv.detach() + step_size * torch.sign(grad.detach())
             x_adv = torch.min(torch.max(x_adv, x_natural - epsilon), x_natural + epsilon).detach()

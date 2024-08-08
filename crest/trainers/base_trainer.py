@@ -8,9 +8,10 @@ import torch.nn as nn
 from tqdm import tqdm
 
 import wandb
-from datasets import IndexedDataset
-from utils import GradualWarmupScheduler
 
+# from indexeddataset import IndexedDataset
+from warmupscheduler import GradualWarmupScheduler
+# import torchdatasets as td
 
 class AverageMeter:
     """Computes and stores the average and current value"""
@@ -38,9 +39,9 @@ class AverageMeter:
 class BaseTrainer:
     def __init__(
         self, 
-        args: argparse.Namespace,
+        args,
         model: nn.Module,
-        train_dataset: IndexedDataset,
+        train_dataset,
         val_loader: torch.utils.data.DataLoader,
         train_weights: torch.Tensor = None,
     ):
@@ -56,13 +57,15 @@ class BaseTrainer:
         self.args = args
         self.model = model
 
-        # if more than one GPU is available, use DataParallel
-        if torch.cuda.device_count() > 1:
-            print(f"Using {torch.cuda.device_count()} GPUs")
-            self.model = nn.DataParallel(self.model)
+        # # if more than one GPU is available, use DataParallel
+        # if torch.cuda.device_count() > 1:
+        #     print(f"Using {torch.cuda.device_count()} GPUs")
+        #     self.model = nn.DataParallel(self.model)
+
         self.model = self.model.to(self.args.device)
 
         self.train_dataset = train_dataset
+        
         self.train_loader = torch.utils.data.DataLoader(
             self.train_dataset,
             batch_size=self.args.batch_size,
@@ -70,7 +73,9 @@ class BaseTrainer:
             num_workers=self.args.num_workers,
             pin_memory=True
         )
+
         self.val_loader = val_loader
+
         if train_weights is not None:
             self.train_weights = train_weights
         else:
@@ -118,19 +123,20 @@ class BaseTrainer:
             self._load_checkpoint(self.args.resume_from_epoch)
 
         for epoch in range(self.args.resume_from_epoch, self.args.epochs):
+
             self._train_epoch(epoch)
             self._val_epoch(epoch)
 
             self._log_epoch(epoch)
 
-            if self.args.use_wandb:
-                wandb.log(
-                    {
-                        "epoch": epoch,
-                        "val_loss": self.val_loss,
-                        "val_acc": self.val_acc,
-                        "lr": self.optimizer.param_groups[0]["lr"],
-                    })
+            # if self.args.use_wandb:
+            #     wandb.log(
+            #         {
+            #             "epoch": epoch,
+            #             "val_loss": self.val_loss,
+            #             "val_acc": self.val_acc,
+            #             "lr": self.optimizer.param_groups[0]["lr"],
+            #         })
                 
             self.lr_scheduler.step()
 
@@ -224,9 +230,9 @@ class BaseTrainer:
 
     def _save_checkpoint(self, epoch=None):
         if epoch is not None:
-            save_path = self.args.save_dir + "/model_epoch_{}.pt".format(epoch)
+            save_path = self.args.statedict_dir + "/model_epoch_{}.pt".format(epoch)
         else:
-            save_path = self.args.save_dir + "/model_final.pt"
+            save_path = self.args.statedict_dir + "/model_final.pt"
         torch.save(
             {
                 "model_state_dict": self.model.state_dict(),
@@ -239,10 +245,10 @@ class BaseTrainer:
                 }, 
             save_path)
         
-        self.args.logger.info("Checkpoint saved to {}".format(save_path))
+        # self.args.logger.info("Checkpoint saved to {}".format(save_path))
         
     def _load_checkpoint(self, epoch):
-        save_path = self.args.save_dir + "/model_epoch_{}.pt".format(epoch)
+        save_path = self.args.statedict_dir + "/model_epoch_{}.pt".format(epoch)
         checkpoint = torch.load(save_path)
         self.model.load_state_dict(checkpoint["model_state_dict"])
         self.optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
@@ -252,7 +258,7 @@ class BaseTrainer:
         self.val_acc = checkpoint["val_acc"]
         self.args = checkpoint["args"]
 
-        self.args.logger.info("Checkpoint loaded from {}".format(save_path))
+        # self.args.logger.info("Checkpoint loaded from {}".format(save_path))
 
 
     def _log_epoch(self, epoch):

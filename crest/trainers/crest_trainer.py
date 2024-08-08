@@ -1,26 +1,23 @@
-from utils import Adahessian
+import adahessian
 
-from .subset_trainer import *
+from crest.trainers.subset_trainer import *
 
 
 class CRESTTrainer(SubsetTrainer):
-    def __init__(
-        self, 
-        args: argparse.Namespace,
-        model: nn.Module,
-        train_dataset: IndexedDataset,
-        val_loader: DataLoader,
-        train_weights: torch.Tensor = None,
-    ):
-        super().__init__(args, model, train_dataset, val_loader, train_weights)
+
+    def __init__(self, args,model: nn.Module, train_dataset, val_loader: DataLoader, train_weights: torch.Tensor = None, ):
+        
+        super().__init__(args, model, train_dataset, val_loader, train_weights, )
+
         self.train_indices = np.arange(len(self.train_dataset))
+
         self.steps_per_epoch = np.ceil(int(len(self.train_dataset) * self.args.train_frac) / self.args.batch_size).astype(int)
         self.reset_step = self.steps_per_epoch
         self.random_sets = np.array([])
 
         self.num_checking = 0
 
-        self.gradient_approx_optimizer = Adahessian(self.model.parameters())
+        self.gradient_approx_optimizer = adahessian.Adahessian(self.model.parameters())
 
         self.loss_watch = np.ones((self.args.watch_interval, len(self.train_dataset))) * -1
 
@@ -51,14 +48,15 @@ class CRESTTrainer(SubsetTrainer):
                 self._get_quadratic_approximation(epoch, training_step)
             elif training_step == 0:
                 self.train_iter = iter(self.train_loader)
+            
 
             data_start = time.time()
             try:
                 batch = next(self.train_iter)
             except StopIteration:
-                if self.args.cache_dataset and self.args.clean_cache_iteration:
-                    self.train_dataset.clean()
-                    self._update_train_loader_and_weights()
+                # if self.args.cache_dataset and self.args.clean_cache_iteration:
+                #     self.train_dataset.clean()
+                #     self._update_train_loader_and_weights()
                 self.train_iter = iter(self.train_loader)
                 batch = next(self.train_iter)
 
@@ -71,12 +69,12 @@ class CRESTTrainer(SubsetTrainer):
 
             data_start = time.time()
 
-            if self.args.use_wandb:
-                wandb.log({
-                    "epoch": epoch,
-                    "training_step": training_step,
-                    "train_loss": loss.item(),
-                    "train_acc": train_acc})
+            # if self.args.use_wandb:
+            #     wandb.log({
+            #         "epoch": epoch,
+            #         "training_step": training_step,
+            #         "train_loss": loss.item(),
+            #         "train_acc": train_acc})
 
 
     def _forward_and_backward(self, data, target, data_idx):
@@ -195,6 +193,7 @@ class CRESTTrainer(SubsetTrainer):
         else:
             self.args.check_interval = int(torch.ceil(self.init_curvature_norm / gff_norm * self.args.interval_mul))
             self.args.num_minibatch_coreset = min(self.args.check_interval * self.args.batch_num_mul, self.steps_per_epoch)
+        
         self.args.logger.info(f"Checking interval {self.args.check_interval}. Number of minibatch coresets {self.args.num_minibatch_coreset}")
         if self.args.use_wandb:
             wandb.log({
@@ -231,19 +230,20 @@ class CRESTTrainer(SubsetTrainer):
         if loss_diff > thresh:
             self.reset_step = training_step
             log_str += f" is larger than threshold {thresh:.3f}. "
+
         self.args.logger.info(log_str)
 
         compare_time = time.time() - start_compare
         self.compare_time.update(compare_time)
 
-        if self.args.use_wandb:
-            wandb.log({
-                'epoch': epoch,
-                'training_step': training_step,
-                'loss_diff': loss_diff, 
-                'loss_thresh': thresh,
-                'delta_norm': delta_norm,
-                'num_checking': self.num_checking})
+        # if self.args.use_wandb:
+        #     wandb.log({
+        #         'epoch': epoch,
+        #         'training_step': training_step,
+        #         'loss_diff': loss_diff, 
+        #         'loss_thresh': thresh,
+        #         'delta_norm': delta_norm,
+        #         'num_checking': self.num_checking})
             
     def _drop_learned_data(self, epoch: int, training_step: int, indices: np.ndarray):
         """
@@ -275,10 +275,10 @@ class CRESTTrainer(SubsetTrainer):
             if len(order) > self.args.min_train_size:
                 self.train_indices = order
 
-            if self.args.use_wandb:
-                wandb.log({
-                    'epoch': epoch,
-                    'forgettable_train': len(self.train_indices)})
+            # if self.args.use_wandb:
+            #     wandb.log({
+            #         'epoch': epoch,
+            #         'forgettable_train': len(self.train_indices)})
             
     def _select_random_set(self) -> np.ndarray:
         indices = []
