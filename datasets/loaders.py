@@ -13,9 +13,9 @@ def load_data(args, train=True):
                 transforms.Normalize( mean=(0.4914, 0.4822, 0.4465), std=(0.2471, 0.2435, 0.2616) )  ])
 
         if train:
-            dataset = datasets.CIFAR10(root='./data', train=True, transform=transform)
+            dataset = datasets.CIFAR10(root=args.data_dir, train=True, transform=transform)
         else:
-            dataset = datasets.CIFAR10(root='./data', train=False, transform=transform)
+            dataset = datasets.CIFAR10(root=args.data_dir, train=False, transform=transform)
 
         # pool_dataset = IndexedDataset('CIFAR10', train_folder, transform= transform ) 
         # test_dataset = IndexedDataset('CIFAR10', test_folder, transform= transform) 
