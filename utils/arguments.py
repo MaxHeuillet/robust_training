@@ -38,7 +38,7 @@ def get_args():
 
     # General options
     parser.add_argument("--arch", default="resnet50", choices=['resnet20', 'resnet18', 'resnet50'], help="model architecture")
-    parser.add_argument('--data_dir', default='./data')
+    parser.add_argument('--data_dir', default='~/scratch/data')
     parser.add_argument('--dataset', default='CIFAR10', choices=['CIFAR10', 'CIFAR100','tinyimagenet'], help='dataset: ' + ' (default: cifar10)')
     parser.add_argument("--num_workers",default=1, type=int, help="number of data loading workers (default: 4)")
     parser.add_argument("--epochs", default=10, type=int, metavar="N", help="number of total epochs to run")
