@@ -7,9 +7,7 @@ import torchvision.datasets as datasets
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader, Dataset
 
-import submodular
-import craig
-
+from utils import submodular, craig
 
 def distribute_subset(subset, weight, ordering_time, similarity_time, pred_time, args):
     size = torch.Tensor([len(subset)]).int().cuda()
