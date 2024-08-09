@@ -38,7 +38,7 @@ def get_args():
 
     # General options
     parser.add_argument("--arch", default="resnet50", choices=['resnet20', 'resnet18', 'resnet50'], help="model architecture")
-    parser.add_argument('--data_dir', default='~/data')
+    parser.add_argument('--data_dir', default='./data')
     parser.add_argument('--dataset', default='CIFAR10', choices=['CIFAR10', 'CIFAR100','tinyimagenet'], help='dataset: ' + ' (default: cifar10)')
     parser.add_argument("--num_workers",default=1, type=int, help="number of data loading workers (default: 4)")
     parser.add_argument("--epochs", default=10, type=int, metavar="N", help="number of total epochs to run")
@@ -101,8 +101,8 @@ def get_args():
     # others
     parser.add_argument('--use_wandb', default=False, type=parse_bool, const=True, nargs='?')
 
-    parser.add_argument("--log_dir", default="../logs", type=str, help="The directory used to save logs")
-    parser.add_argument("--statedict_dir", default="../state_dicts", type=str, help="The directory used to save state dics")
+    parser.add_argument("--log_dir", default="./logs", type=str, help="The directory used to save logs")
+    parser.add_argument("--statedict_dir", default="./state_dicts", type=str, help="The directory used to save state dics")
     
 
     # args = parser.parse_args()

@@ -1,6 +1,6 @@
-import adahessian
+from utils import Adahessian
 
-from crest.trainers.subset_trainer import *
+from .subset_trainer import *
 
 
 class CRESTTrainer(SubsetTrainer):
@@ -17,7 +17,7 @@ class CRESTTrainer(SubsetTrainer):
 
         self.num_checking = 0
 
-        self.gradient_approx_optimizer = adahessian.Adahessian(self.model.parameters())
+        self.gradient_approx_optimizer = Adahessian(self.model.parameters())
 
         self.loss_watch = np.ones((self.args.watch_interval, len(self.train_dataset))) * -1
 
