@@ -4,17 +4,17 @@ import numpy as np
 from submodlib.functions.facilityLocation import FacilityLocationFunction
 
 
-def faciliy_location_order(c, X, y, metric, num_per_class, weights=None, mode="sparse", num_n=128):
+def faciliy_location_order(c, X, y, metric, num_per_class, weights=None, mod="sparse", num_n=128):
     
     class_indices = np.where(y == c)[0]
     X = X[class_indices]
     N = X.shape[0]
 
-    if mode == "dense":
+    if mod == "dense":
         num_n = None
 
     start = time.time()
-    obj = FacilityLocationFunction(n=len(X), mode=mode, data=X, metric=metric, num_neighbors=num_n)
+    obj = FacilityLocationFunction(n=len(X), mode=mod, data=X, metric=metric, num_neighbors=num_n)
     S_time = time.time() - start
 
     start = time.time()
