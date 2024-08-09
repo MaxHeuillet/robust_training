@@ -4,9 +4,8 @@ import numpy as np
 from submodlib.functions.facilityLocation import FacilityLocationFunction
 
 
-def faciliy_location_order(
-    c, X, y, metric, num_per_class, weights=None, mode="sparse", num_n=128
-):
+def faciliy_location_order(c, X, y, metric, num_per_class, weights=None, mode="sparse", num_n=128):
+    
     class_indices = np.where(y == c)[0]
     X = X[class_indices]
     N = X.shape[0]
@@ -15,9 +14,7 @@ def faciliy_location_order(
         num_n = None
 
     start = time.time()
-    obj = FacilityLocationFunction(
-        n=len(X), mode=mode, data=X, metric=metric, num_neighbors=num_n
-    )
+    obj = FacilityLocationFunction(n=len(X), mode=mode, data=X, metric=metric, num_neighbors=num_n)
     S_time = time.time() - start
 
     start = time.time()
@@ -97,15 +94,11 @@ def get_orders_and_weights(
 
     order_mg_all, cluster_sizes_all, greedy_times, similarity_times = zip(
         *map(
-            lambda c: faciliy_location_order(
-                c[1], X, y, metric, num_per_class[c[0]], weights, mode, num_n
-            ),
+            lambda c: faciliy_location_order(  c[1], X, y, metric, num_per_class[c[0]], weights, mode, num_n ),
             enumerate(classes),
         )
     )
-    print(
-        f"time (sec) for computing facility location: {greedy_times} similarity time {similarity_times}",
-    )
+    print( f"time (sec) for computing facility location: {greedy_times} similarity time {similarity_times}" )
 
     order_mg, weights_mg = [], []
     if equal_num:
