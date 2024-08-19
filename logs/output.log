@@ -56,3 +56,846 @@
 08/09/2024 12:14:57 - INFO - logs-2024-08-09-12-14-57 -   Time: 2024-08-09 12:14:57
 08/09/2024 12:23:00 - INFO - logs-2024-08-09-12-23-00 -   Arguments: Namespace(approx_moment=True, approx_with_coreset=True, arch='resnet50', batch_num_mul=5, batch_size=128, check_interval=1, check_thresh_factor=0.1, data_dir='./data', dataset='CIFAR10', device=device(type='cuda'), drop_interval=20, drop_learned=False, drop_thresh=0.1, epochs=10, gamma=0.1, gpu=[0], interval_mul=1.0, log_dir='./logs', logger=<Logger logs-2024-08-09-12-23-00 (INFO)>, lr=0.1, lr_milestones=[100, 150], min_train_size=40000, momentum=0.9, num_classes=10, num_minibatch_coreset=5, num_workers=1, partition_start=0, random_subset_size=0.01, resume_from_epoch=0, runs=1, save_freq=200, seed=0, selection_method='crest', shuffle=True, smtk=0, statedict_dir='./state_dicts', subset_start_epoch=0, train_frac=0.1, use_wandb=False, warm_start_epochs=20, watch_interval=5, weight_decay=0.0001)
 08/09/2024 12:23:00 - INFO - logs-2024-08-09-12-23-00 -   Time: 2024-08-09 12:23:00
+08/09/2024 16:31:30 - INFO - logs-2024-08-09-16-31-30 -   Arguments: Namespace(approx_moment=True, approx_with_coreset=True, arch='LeNet', batch_num_mul=5, batch_size=128, check_interval=1, check_thresh_factor=0.1, data_dir='~/scratch/data', dataset='MNIST', device=device(type='cuda'), drop_interval=20, drop_learned=False, drop_thresh=0.1, epochs=10, gamma=0.1, gpu=[0], interval_mul=1.0, log_dir='./logs', logger=<Logger logs-2024-08-09-16-31-30 (INFO)>, lr=0.1, lr_milestones=[100, 150], min_train_size=40000, momentum=0.9, num_classes=10, num_minibatch_coreset=5, num_workers=1, partition_start=0, random_subset_size=0.01, resume_from_epoch=0, runs=1, save_freq=200, seed=0, selection_method='crest', shuffle=True, smtk=0, statedict_dir='./state_dicts', subset_start_epoch=0, train_frac=0.1, use_wandb=False, warm_start_epochs=20, watch_interval=5, weight_decay=0.0001)
+08/09/2024 16:31:30 - INFO - logs-2024-08-09-16-31-30 -   Time: 2024-08-09 16:31:30
+08/09/2024 16:41:05 - INFO - logs-2024-08-09-16-41-05 -   Arguments: Namespace(approx_moment=True, approx_with_coreset=True, arch='LeNet', batch_num_mul=5, batch_size=128, check_interval=1, check_thresh_factor=0.1, data_dir='~/scratch/data', dataset='MNIST', device=device(type='cuda'), drop_interval=20, drop_learned=False, drop_thresh=0.1, epochs=10, gamma=0.1, gpu=[0], interval_mul=1.0, log_dir='./logs', logger=<Logger logs-2024-08-09-16-41-05 (INFO)>, lr=0.1, lr_milestones=[100, 150], min_train_size=40000, momentum=0.9, num_classes=10, num_minibatch_coreset=5, num_workers=1, partition_start=0, random_subset_size=0.01, resume_from_epoch=0, runs=1, save_freq=200, seed=0, selection_method='crest', shuffle=True, smtk=0, statedict_dir='./state_dicts', subset_start_epoch=0, train_frac=0.1, use_wandb=False, warm_start_epochs=20, watch_interval=5, weight_decay=0.0001)
+08/09/2024 16:41:05 - INFO - logs-2024-08-09-16-41-05 -   Time: 2024-08-09 16:41:05
+08/09/2024 16:42:35 - INFO - logs-2024-08-09-16-42-35 -   Arguments: Namespace(approx_moment=True, approx_with_coreset=True, arch='LeNet', batch_num_mul=5, batch_size=128, check_interval=1, check_thresh_factor=0.1, data_dir='~/scratch/data', dataset='MNIST', device=device(type='cuda'), drop_interval=20, drop_learned=False, drop_thresh=0.1, epochs=10, gamma=0.1, gpu=[0], interval_mul=1.0, log_dir='./logs', logger=<Logger logs-2024-08-09-16-42-35 (INFO)>, lr=0.1, lr_milestones=[100, 150], min_train_size=40000, momentum=0.9, num_classes=10, num_minibatch_coreset=5, num_workers=1, partition_start=0, random_subset_size=0.01, resume_from_epoch=0, runs=1, save_freq=200, seed=0, selection_method='crest', shuffle=True, smtk=0, statedict_dir='./state_dicts', subset_start_epoch=0, train_frac=0.1, use_wandb=False, warm_start_epochs=20, watch_interval=5, weight_decay=0.0001)
+08/09/2024 16:42:35 - INFO - logs-2024-08-09-16-42-35 -   Time: 2024-08-09 16:42:35
+08/09/2024 16:43:53 - INFO - logs-2024-08-09-16-42-35 -   Epoch 0 LR 0.000000
+08/09/2024 16:44:35 - INFO - logs-2024-08-09-16-44-35 -   Arguments: Namespace(approx_moment=True, approx_with_coreset=True, arch='LeNet', batch_num_mul=5, batch_size=128, check_interval=1, check_thresh_factor=0.1, data_dir='~/scratch/data', dataset='MNIST', device=device(type='cuda'), drop_interval=20, drop_learned=False, drop_thresh=0.1, epochs=10, gamma=0.1, gpu=[0], interval_mul=1.0, log_dir='./logs', logger=<Logger logs-2024-08-09-16-44-35 (INFO)>, lr=0.1, lr_milestones=[100, 150], min_train_size=40000, momentum=0.9, num_classes=10, num_minibatch_coreset=5, num_workers=1, partition_start=0, random_subset_size=0.01, resume_from_epoch=0, runs=1, save_freq=200, seed=0, selection_method='crest', shuffle=True, smtk=0, statedict_dir='./state_dicts', subset_start_epoch=0, train_frac=0.1, use_wandb=False, warm_start_epochs=20, watch_interval=5, weight_decay=0.0001)
+08/09/2024 16:44:35 - INFO - logs-2024-08-09-16-44-35 -   Time: 2024-08-09 16:44:35
+08/09/2024 16:44:54 - INFO - logs-2024-08-09-16-44-35 -   Epoch 0 LR 0.000000
+08/09/2024 16:44:58 - INFO - logs-2024-08-09-16-44-35 -   Epoch 0:	Train Loss: 2.307073	Train Acc: 0.099069	Val Loss: 2.306267	Val Acc: 0.103100
+08/09/2024 16:44:58 - INFO - logs-2024-08-09-16-44-35 -   Epoch 0:	Data Loading Time: 0.018153	Forward Time: 0.012658	Backward Time: 0.008531
+08/09/2024 16:44:58 - INFO - logs-2024-08-09-16-44-35 -   Epoch 1 LR 0.005000
+08/09/2024 16:44:59 - INFO - logs-2024-08-09-16-44-35 -   Updating train loader and weights with subset of size 650
+08/09/2024 16:44:59 - INFO - logs-2024-08-09-16-44-35 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 16:45:09 - INFO - logs-2024-08-09-16-44-35 -   Iter 48 loss difference 0.004 threshold 0.231 True loss 2.306 Approx loss 2.302 Delta norm 0.002
+08/09/2024 16:45:19 - INFO - logs-2024-08-09-16-44-35 -   Iter 49 loss difference 0.004 threshold 0.231 True loss 2.305 Approx loss 2.301 Delta norm 0.003
+08/09/2024 16:45:28 - INFO - logs-2024-08-09-16-44-35 -   Iter 50 loss difference 0.004 threshold 0.230 True loss 2.305 Approx loss 2.301 Delta norm 0.004
+08/09/2024 16:45:38 - INFO - logs-2024-08-09-16-44-35 -   Iter 51 loss difference 0.003 threshold 0.230 True loss 2.304 Approx loss 2.301 Delta norm 0.005
+08/09/2024 16:45:48 - INFO - logs-2024-08-09-16-44-35 -   Iter 52 loss difference 0.003 threshold 0.230 True loss 2.304 Approx loss 2.301 Delta norm 0.006
+08/09/2024 16:45:58 - INFO - logs-2024-08-09-16-44-35 -   Iter 53 loss difference 0.003 threshold 0.230 True loss 2.303 Approx loss 2.300 Delta norm 0.008
+08/09/2024 16:46:09 - INFO - logs-2024-08-09-16-44-35 -   Iter 54 loss difference 0.003 threshold 0.230 True loss 2.303 Approx loss 2.300 Delta norm 0.009
+08/09/2024 16:46:19 - INFO - logs-2024-08-09-16-44-35 -   Iter 55 loss difference 0.003 threshold 0.230 True loss 2.302 Approx loss 2.300 Delta norm 0.011
+08/09/2024 16:46:30 - INFO - logs-2024-08-09-16-44-35 -   Iter 56 loss difference 0.002 threshold 0.230 True loss 2.302 Approx loss 2.299 Delta norm 0.012
+08/09/2024 16:46:40 - INFO - logs-2024-08-09-16-44-35 -   Iter 57 loss difference 0.002 threshold 0.230 True loss 2.301 Approx loss 2.299 Delta norm 0.013
+08/09/2024 16:46:50 - INFO - logs-2024-08-09-16-44-35 -   Iter 58 loss difference 0.002 threshold 0.230 True loss 2.301 Approx loss 2.299 Delta norm 0.013
+08/09/2024 16:47:01 - INFO - logs-2024-08-09-16-44-35 -   Iter 59 loss difference 0.002 threshold 0.230 True loss 2.301 Approx loss 2.299 Delta norm 0.015
+08/09/2024 16:47:11 - INFO - logs-2024-08-09-16-44-35 -   Iter 60 loss difference 0.002 threshold 0.230 True loss 2.300 Approx loss 2.298 Delta norm 0.016
+08/09/2024 16:47:23 - INFO - logs-2024-08-09-16-44-35 -   Iter 61 loss difference 0.001 threshold 0.230 True loss 2.300 Approx loss 2.298 Delta norm 0.017
+08/09/2024 16:47:34 - INFO - logs-2024-08-09-16-44-35 -   Iter 62 loss difference 0.001 threshold 0.230 True loss 2.299 Approx loss 2.298 Delta norm 0.018
+08/09/2024 16:47:45 - INFO - logs-2024-08-09-16-44-35 -   Iter 63 loss difference 0.001 threshold 0.230 True loss 2.299 Approx loss 2.298 Delta norm 0.019
+08/09/2024 16:47:55 - INFO - logs-2024-08-09-16-44-35 -   Iter 64 loss difference 0.001 threshold 0.230 True loss 2.298 Approx loss 2.297 Delta norm 0.020
+08/09/2024 16:48:06 - INFO - logs-2024-08-09-16-44-35 -   Iter 65 loss difference 0.001 threshold 0.230 True loss 2.298 Approx loss 2.297 Delta norm 0.022
+08/09/2024 16:48:17 - INFO - logs-2024-08-09-16-44-35 -   Iter 66 loss difference 0.000 threshold 0.230 True loss 2.297 Approx loss 2.297 Delta norm 0.023
+08/09/2024 16:48:28 - INFO - logs-2024-08-09-16-44-35 -   Iter 67 loss difference 0.000 threshold 0.230 True loss 2.297 Approx loss 2.297 Delta norm 0.024
+08/09/2024 16:48:39 - INFO - logs-2024-08-09-16-44-35 -   Iter 68 loss difference 0.000 threshold 0.230 True loss 2.296 Approx loss 2.296 Delta norm 0.025
+08/09/2024 16:48:49 - INFO - logs-2024-08-09-16-44-35 -   Iter 69 loss difference 0.000 threshold 0.230 True loss 2.296 Approx loss 2.296 Delta norm 0.026
+08/09/2024 16:49:00 - INFO - logs-2024-08-09-16-44-35 -   Iter 70 loss difference 0.001 threshold 0.230 True loss 2.295 Approx loss 2.296 Delta norm 0.027
+08/09/2024 16:49:10 - INFO - logs-2024-08-09-16-44-35 -   Iter 71 loss difference 0.001 threshold 0.229 True loss 2.295 Approx loss 2.295 Delta norm 0.030
+08/09/2024 16:49:22 - INFO - logs-2024-08-09-16-44-35 -   Iter 72 loss difference 0.001 threshold 0.229 True loss 2.294 Approx loss 2.295 Delta norm 0.031
+08/09/2024 16:49:33 - INFO - logs-2024-08-09-16-44-35 -   Iter 73 loss difference 0.001 threshold 0.229 True loss 2.294 Approx loss 2.295 Delta norm 0.032
+08/09/2024 16:49:44 - INFO - logs-2024-08-09-16-44-35 -   Iter 74 loss difference 0.002 threshold 0.229 True loss 2.293 Approx loss 2.295 Delta norm 0.033
+08/09/2024 16:49:55 - INFO - logs-2024-08-09-16-44-35 -   Iter 75 loss difference 0.002 threshold 0.229 True loss 2.293 Approx loss 2.294 Delta norm 0.034
+08/09/2024 16:50:05 - INFO - logs-2024-08-09-16-44-35 -   Iter 76 loss difference 0.002 threshold 0.229 True loss 2.292 Approx loss 2.294 Delta norm 0.035
+08/09/2024 16:50:15 - INFO - logs-2024-08-09-16-44-35 -   Iter 77 loss difference 0.002 threshold 0.229 True loss 2.292 Approx loss 2.294 Delta norm 0.036
+08/09/2024 16:50:26 - INFO - logs-2024-08-09-16-44-35 -   Iter 78 loss difference 0.003 threshold 0.229 True loss 2.291 Approx loss 2.294 Delta norm 0.038
+08/09/2024 16:50:37 - INFO - logs-2024-08-09-16-44-35 -   Iter 79 loss difference 0.003 threshold 0.229 True loss 2.291 Approx loss 2.294 Delta norm 0.039
+08/09/2024 16:50:48 - INFO - logs-2024-08-09-16-44-35 -   Iter 80 loss difference 0.003 threshold 0.229 True loss 2.290 Approx loss 2.293 Delta norm 0.040
+08/09/2024 16:51:00 - INFO - logs-2024-08-09-16-44-35 -   Iter 81 loss difference 0.003 threshold 0.229 True loss 2.290 Approx loss 2.293 Delta norm 0.040
+08/09/2024 16:51:11 - INFO - logs-2024-08-09-16-44-35 -   Iter 82 loss difference 0.004 threshold 0.229 True loss 2.289 Approx loss 2.293 Delta norm 0.042
+08/09/2024 16:51:22 - INFO - logs-2024-08-09-16-44-35 -   Iter 83 loss difference 0.004 threshold 0.229 True loss 2.289 Approx loss 2.293 Delta norm 0.043
+08/09/2024 16:51:33 - INFO - logs-2024-08-09-16-44-35 -   Iter 84 loss difference 0.004 threshold 0.229 True loss 2.288 Approx loss 2.293 Delta norm 0.044
+08/09/2024 16:51:45 - INFO - logs-2024-08-09-16-44-35 -   Iter 85 loss difference 0.004 threshold 0.229 True loss 2.288 Approx loss 2.292 Delta norm 0.045
+08/09/2024 16:51:56 - INFO - logs-2024-08-09-16-44-35 -   Iter 86 loss difference 0.005 threshold 0.229 True loss 2.287 Approx loss 2.292 Delta norm 0.046
+08/09/2024 16:52:08 - INFO - logs-2024-08-09-16-44-35 -   Iter 87 loss difference 0.005 threshold 0.229 True loss 2.287 Approx loss 2.292 Delta norm 0.047
+08/09/2024 16:52:19 - INFO - logs-2024-08-09-16-44-35 -   Iter 88 loss difference 0.005 threshold 0.229 True loss 2.286 Approx loss 2.292 Delta norm 0.048
+08/09/2024 16:52:31 - INFO - logs-2024-08-09-16-44-35 -   Iter 89 loss difference 0.005 threshold 0.229 True loss 2.286 Approx loss 2.292 Delta norm 0.049
+08/09/2024 16:52:42 - INFO - logs-2024-08-09-16-44-35 -   Iter 90 loss difference 0.006 threshold 0.229 True loss 2.286 Approx loss 2.291 Delta norm 0.050
+08/09/2024 16:52:52 - INFO - logs-2024-08-09-16-44-35 -   Iter 91 loss difference 0.006 threshold 0.229 True loss 2.285 Approx loss 2.291 Delta norm 0.051
+08/09/2024 16:53:03 - INFO - logs-2024-08-09-16-44-35 -   Iter 92 loss difference 0.006 threshold 0.228 True loss 2.285 Approx loss 2.291 Delta norm 0.053
+08/09/2024 16:53:13 - INFO - logs-2024-08-09-16-44-35 -   Iter 93 loss difference 0.007 threshold 0.228 True loss 2.284 Approx loss 2.291 Delta norm 0.054
+08/09/2024 16:53:15 - INFO - logs-2024-08-09-16-44-35 -   Epoch 1:	Train Loss: 2.289741	Train Acc: 0.101349	Val Loss: 2.283128	Val Acc: 0.107400
+08/09/2024 16:53:15 - INFO - logs-2024-08-09-16-44-35 -   Epoch 1:	Data Loading Time: 0.010487	Forward Time: 0.000726	Backward Time: 0.001357
+08/09/2024 16:53:15 - INFO - logs-2024-08-09-16-44-35 -   Epoch 2 LR 0.010000
+08/09/2024 16:53:27 - INFO - logs-2024-08-09-16-44-35 -   Iter 94 loss difference 0.007 threshold 0.228 True loss 2.283 Approx loss 2.290 Delta norm 0.055
+08/09/2024 16:53:37 - INFO - logs-2024-08-09-16-44-35 -   Iter 95 loss difference 0.007 threshold 0.228 True loss 2.283 Approx loss 2.290 Delta norm 0.056
+08/09/2024 16:53:49 - INFO - logs-2024-08-09-16-44-35 -   Iter 96 loss difference 0.008 threshold 0.228 True loss 2.282 Approx loss 2.290 Delta norm 0.058
+08/09/2024 16:53:59 - INFO - logs-2024-08-09-16-44-35 -   Iter 97 loss difference 0.009 threshold 0.228 True loss 2.281 Approx loss 2.289 Delta norm 0.061
+08/09/2024 16:54:10 - INFO - logs-2024-08-09-16-44-35 -   Iter 98 loss difference 0.009 threshold 0.228 True loss 2.280 Approx loss 2.289 Delta norm 0.063
+08/09/2024 16:54:21 - INFO - logs-2024-08-09-16-44-35 -   Iter 99 loss difference 0.010 threshold 0.228 True loss 2.279 Approx loss 2.289 Delta norm 0.065
+08/09/2024 16:54:32 - INFO - logs-2024-08-09-16-44-35 -   Iter 100 loss difference 0.011 threshold 0.228 True loss 2.277 Approx loss 2.288 Delta norm 0.067
+08/09/2024 16:54:42 - INFO - logs-2024-08-09-16-44-35 -   Iter 101 loss difference 0.012 threshold 0.228 True loss 2.275 Approx loss 2.287 Delta norm 0.072
+08/09/2024 16:54:53 - INFO - logs-2024-08-09-16-44-35 -   Iter 102 loss difference 0.013 threshold 0.227 True loss 2.274 Approx loss 2.287 Delta norm 0.075
+08/09/2024 16:55:03 - INFO - logs-2024-08-09-16-44-35 -   Iter 103 loss difference 0.014 threshold 0.227 True loss 2.273 Approx loss 2.287 Delta norm 0.076
+08/09/2024 16:55:14 - INFO - logs-2024-08-09-16-44-35 -   Iter 104 loss difference 0.015 threshold 0.227 True loss 2.272 Approx loss 2.286 Delta norm 0.079
+08/09/2024 16:55:25 - INFO - logs-2024-08-09-16-44-35 -   Iter 105 loss difference 0.016 threshold 0.227 True loss 2.270 Approx loss 2.286 Delta norm 0.081
+08/09/2024 16:55:35 - INFO - logs-2024-08-09-16-44-35 -   Iter 106 loss difference 0.017 threshold 0.227 True loss 2.269 Approx loss 2.285 Delta norm 0.084
+08/09/2024 16:55:47 - INFO - logs-2024-08-09-16-44-35 -   Iter 107 loss difference 0.018 threshold 0.227 True loss 2.268 Approx loss 2.286 Delta norm 0.086
+08/09/2024 16:55:58 - INFO - logs-2024-08-09-16-44-35 -   Iter 108 loss difference 0.019 threshold 0.227 True loss 2.267 Approx loss 2.285 Delta norm 0.089
+08/09/2024 16:56:09 - INFO - logs-2024-08-09-16-44-35 -   Iter 109 loss difference 0.020 threshold 0.226 True loss 2.265 Approx loss 2.285 Delta norm 0.092
+08/09/2024 16:56:19 - INFO - logs-2024-08-09-16-44-35 -   Iter 110 loss difference 0.021 threshold 0.226 True loss 2.263 Approx loss 2.284 Delta norm 0.094
+08/09/2024 16:56:30 - INFO - logs-2024-08-09-16-44-35 -   Iter 111 loss difference 0.022 threshold 0.226 True loss 2.262 Approx loss 2.284 Delta norm 0.096
+08/09/2024 16:56:41 - INFO - logs-2024-08-09-16-44-35 -   Iter 112 loss difference 0.024 threshold 0.226 True loss 2.260 Approx loss 2.284 Delta norm 0.099
+08/09/2024 16:56:52 - INFO - logs-2024-08-09-16-44-35 -   Iter 113 loss difference 0.025 threshold 0.226 True loss 2.257 Approx loss 2.282 Delta norm 0.107
+08/09/2024 16:57:03 - INFO - logs-2024-08-09-16-44-35 -   Iter 114 loss difference 0.026 threshold 0.226 True loss 2.256 Approx loss 2.282 Delta norm 0.109
+08/09/2024 16:57:14 - INFO - logs-2024-08-09-16-44-35 -   Iter 115 loss difference 0.028 threshold 0.225 True loss 2.253 Approx loss 2.281 Delta norm 0.111
+08/09/2024 16:57:25 - INFO - logs-2024-08-09-16-44-35 -   Iter 116 loss difference 0.030 threshold 0.225 True loss 2.251 Approx loss 2.281 Delta norm 0.115
+08/09/2024 16:57:35 - INFO - logs-2024-08-09-16-44-35 -   Iter 117 loss difference 0.032 threshold 0.225 True loss 2.249 Approx loss 2.281 Delta norm 0.118
+08/09/2024 16:57:46 - INFO - logs-2024-08-09-16-44-35 -   Iter 118 loss difference 0.033 threshold 0.225 True loss 2.247 Approx loss 2.280 Delta norm 0.120
+08/09/2024 16:57:57 - INFO - logs-2024-08-09-16-44-35 -   Iter 119 loss difference 0.033 threshold 0.225 True loss 2.245 Approx loss 2.279 Delta norm 0.129
+08/09/2024 16:58:09 - INFO - logs-2024-08-09-16-44-35 -   Iter 120 loss difference 0.036 threshold 0.224 True loss 2.242 Approx loss 2.279 Delta norm 0.131
+08/09/2024 16:58:20 - INFO - logs-2024-08-09-16-44-35 -   Iter 121 loss difference 0.039 threshold 0.224 True loss 2.240 Approx loss 2.278 Delta norm 0.134
+08/09/2024 16:58:31 - INFO - logs-2024-08-09-16-44-35 -   Iter 122 loss difference 0.041 threshold 0.224 True loss 2.237 Approx loss 2.278 Delta norm 0.137
+08/09/2024 16:58:42 - INFO - logs-2024-08-09-16-44-35 -   Iter 123 loss difference 0.044 threshold 0.223 True loss 2.234 Approx loss 2.278 Delta norm 0.140
+08/09/2024 16:58:53 - INFO - logs-2024-08-09-16-44-35 -   Iter 124 loss difference 0.046 threshold 0.223 True loss 2.231 Approx loss 2.277 Delta norm 0.144
+08/09/2024 16:59:04 - INFO - logs-2024-08-09-16-44-35 -   Iter 125 loss difference 0.046 threshold 0.223 True loss 2.231 Approx loss 2.277 Delta norm 0.146
+08/09/2024 16:59:16 - INFO - logs-2024-08-09-16-44-35 -   Iter 126 loss difference 0.049 threshold 0.223 True loss 2.227 Approx loss 2.277 Delta norm 0.150
+08/09/2024 16:59:26 - INFO - logs-2024-08-09-16-44-35 -   Iter 127 loss difference 0.052 threshold 0.222 True loss 2.224 Approx loss 2.277 Delta norm 0.152
+08/09/2024 16:59:38 - INFO - logs-2024-08-09-16-44-35 -   Iter 128 loss difference 0.055 threshold 0.222 True loss 2.221 Approx loss 2.276 Delta norm 0.155
+08/09/2024 16:59:49 - INFO - logs-2024-08-09-16-44-35 -   Iter 129 loss difference 0.059 threshold 0.222 True loss 2.217 Approx loss 2.276 Delta norm 0.160
+08/09/2024 17:00:00 - INFO - logs-2024-08-09-16-44-35 -   Iter 130 loss difference 0.062 threshold 0.221 True loss 2.214 Approx loss 2.276 Delta norm 0.163
+08/09/2024 17:00:11 - INFO - logs-2024-08-09-16-44-35 -   Iter 131 loss difference 0.065 threshold 0.221 True loss 2.210 Approx loss 2.275 Delta norm 0.169
+08/09/2024 17:00:22 - INFO - logs-2024-08-09-16-44-35 -   Iter 132 loss difference 0.068 threshold 0.221 True loss 2.207 Approx loss 2.275 Delta norm 0.173
+08/09/2024 17:00:32 - INFO - logs-2024-08-09-16-44-35 -   Iter 133 loss difference 0.072 threshold 0.220 True loss 2.202 Approx loss 2.275 Delta norm 0.176
+08/09/2024 17:00:44 - INFO - logs-2024-08-09-16-44-35 -   Iter 134 loss difference 0.076 threshold 0.220 True loss 2.198 Approx loss 2.274 Delta norm 0.181
+08/09/2024 17:00:55 - INFO - logs-2024-08-09-16-44-35 -   Iter 135 loss difference 0.081 threshold 0.219 True loss 2.193 Approx loss 2.274 Delta norm 0.185
+08/09/2024 17:01:06 - INFO - logs-2024-08-09-16-44-35 -   Iter 136 loss difference 0.085 threshold 0.219 True loss 2.189 Approx loss 2.274 Delta norm 0.189
+08/09/2024 17:01:17 - INFO - logs-2024-08-09-16-44-35 -   Iter 137 loss difference 0.084 threshold 0.219 True loss 2.188 Approx loss 2.272 Delta norm 0.197
+08/09/2024 17:01:28 - INFO - logs-2024-08-09-16-44-35 -   Iter 138 loss difference 0.089 threshold 0.218 True loss 2.183 Approx loss 2.272 Delta norm 0.201
+08/09/2024 17:01:39 - INFO - logs-2024-08-09-16-44-35 -   Iter 139 loss difference 0.096 threshold 0.218 True loss 2.176 Approx loss 2.272 Delta norm 0.206
+08/09/2024 17:01:49 - INFO - logs-2024-08-09-16-44-35 -   Iter 140 loss difference 0.102 threshold 0.217 True loss 2.169 Approx loss 2.272 Delta norm 0.210
+08/09/2024 17:01:51 - INFO - logs-2024-08-09-16-44-35 -   Epoch 2:	Train Loss: 2.229869	Train Acc: 0.163249	Val Loss: 2.161538	Val Acc: 0.210400
+08/09/2024 17:01:51 - INFO - logs-2024-08-09-16-44-35 -   Epoch 2:	Data Loading Time: 0.012755	Forward Time: 0.000744	Backward Time: 0.001277
+08/09/2024 17:01:51 - INFO - logs-2024-08-09-16-44-35 -   Epoch 3 LR 0.015000
+08/09/2024 17:02:02 - INFO - logs-2024-08-09-16-44-35 -   Iter 141 loss difference 0.108 threshold 0.216 True loss 2.163 Approx loss 2.271 Delta norm 0.214
+08/09/2024 17:02:13 - INFO - logs-2024-08-09-16-44-35 -   Iter 142 loss difference 0.118 threshold 0.215 True loss 2.153 Approx loss 2.271 Delta norm 0.221
+08/09/2024 17:02:24 - INFO - logs-2024-08-09-16-44-35 -   Iter 143 loss difference 0.118 threshold 0.215 True loss 2.154 Approx loss 2.272 Delta norm 0.224
+08/09/2024 17:02:35 - INFO - logs-2024-08-09-16-44-35 -   Iter 144 loss difference 0.131 threshold 0.214 True loss 2.139 Approx loss 2.270 Delta norm 0.232
+08/09/2024 17:02:46 - INFO - logs-2024-08-09-16-44-35 -   Iter 145 loss difference 0.142 threshold 0.213 True loss 2.127 Approx loss 2.270 Delta norm 0.241
+08/09/2024 17:02:57 - INFO - logs-2024-08-09-16-44-35 -   Iter 146 loss difference 0.154 threshold 0.212 True loss 2.115 Approx loss 2.269 Delta norm 0.250
+08/09/2024 17:03:08 - INFO - logs-2024-08-09-16-44-35 -   Iter 147 loss difference 0.165 threshold 0.210 True loss 2.103 Approx loss 2.269 Delta norm 0.258
+08/09/2024 17:03:20 - INFO - logs-2024-08-09-16-44-35 -   Iter 148 loss difference 0.177 threshold 0.209 True loss 2.092 Approx loss 2.268 Delta norm 0.267
+08/09/2024 17:03:30 - INFO - logs-2024-08-09-16-44-35 -   Iter 149 loss difference 0.169 threshold 0.210 True loss 2.099 Approx loss 2.268 Delta norm 0.276
+08/09/2024 17:03:42 - INFO - logs-2024-08-09-16-44-35 -   Iter 150 loss difference 0.195 threshold 0.207 True loss 2.071 Approx loss 2.267 Delta norm 0.285
+08/09/2024 17:03:53 - INFO - logs-2024-08-09-16-44-35 -   Iter 151 loss difference 0.207 threshold 0.206 True loss 2.059 Approx loss 2.267 Delta norm 0.293 is larger than threshold 0.206. 
+08/09/2024 17:03:54 - INFO - logs-2024-08-09-16-44-35 -   Updating train loader and weights with subset of size 650
+08/09/2024 17:03:54 - INFO - logs-2024-08-09-16-44-35 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 17:04:06 - INFO - logs-2024-08-09-16-44-35 -   Iter 152 loss difference 0.016 threshold 0.204 True loss 2.038 Approx loss 2.054 Delta norm 0.017
+08/09/2024 17:04:17 - INFO - logs-2024-08-09-16-44-35 -   Iter 153 loss difference 0.026 threshold 0.203 True loss 2.026 Approx loss 2.052 Delta norm 0.024
+08/09/2024 17:04:28 - INFO - logs-2024-08-09-16-44-35 -   Iter 154 loss difference 0.041 threshold 0.201 True loss 2.006 Approx loss 2.047 Delta norm 0.035
+08/09/2024 17:04:39 - INFO - logs-2024-08-09-16-44-35 -   Iter 155 loss difference 0.057 threshold 0.198 True loss 1.984 Approx loss 2.041 Delta norm 0.050
+08/09/2024 17:04:50 - INFO - logs-2024-08-09-16-44-35 -   Iter 156 loss difference 0.073 threshold 0.196 True loss 1.962 Approx loss 2.035 Delta norm 0.063
+08/09/2024 17:05:01 - INFO - logs-2024-08-09-16-44-35 -   Iter 157 loss difference 0.069 threshold 0.197 True loss 1.966 Approx loss 2.035 Delta norm 0.075
+08/09/2024 17:05:12 - INFO - logs-2024-08-09-16-44-35 -   Iter 158 loss difference 0.092 threshold 0.194 True loss 1.940 Approx loss 2.032 Delta norm 0.084
+08/09/2024 17:05:23 - INFO - logs-2024-08-09-16-44-35 -   Iter 159 loss difference 0.112 threshold 0.192 True loss 1.917 Approx loss 2.029 Delta norm 0.093
+08/09/2024 17:05:34 - INFO - logs-2024-08-09-16-44-35 -   Iter 160 loss difference 0.137 threshold 0.188 True loss 1.884 Approx loss 2.021 Delta norm 0.108
+08/09/2024 17:05:46 - INFO - logs-2024-08-09-16-44-35 -   Iter 161 loss difference 0.161 threshold 0.185 True loss 1.854 Approx loss 2.015 Delta norm 0.124
+08/09/2024 17:05:57 - INFO - logs-2024-08-09-16-44-35 -   Iter 162 loss difference 0.182 threshold 0.183 True loss 1.827 Approx loss 2.009 Delta norm 0.139
+08/09/2024 17:06:08 - INFO - logs-2024-08-09-16-44-35 -   Iter 163 loss difference 0.101 threshold 0.191 True loss 1.914 Approx loss 2.014 Delta norm 0.165
+08/09/2024 17:06:19 - INFO - logs-2024-08-09-16-44-35 -   Iter 164 loss difference 0.195 threshold 0.181 True loss 1.806 Approx loss 2.001 Delta norm 0.171 is larger than threshold 0.181. 
+08/09/2024 17:06:20 - INFO - logs-2024-08-09-16-44-35 -   Updating train loader and weights with subset of size 650
+08/09/2024 17:06:21 - INFO - logs-2024-08-09-16-44-35 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 17:06:31 - INFO - logs-2024-08-09-16-44-35 -   Iter 165 loss difference 0.026 threshold 0.175 True loss 1.754 Approx loss 1.780 Delta norm 0.027
+08/09/2024 17:06:42 - INFO - logs-2024-08-09-16-44-35 -   Iter 166 loss difference 0.060 threshold 0.171 True loss 1.710 Approx loss 1.771 Delta norm 0.041
+08/09/2024 17:06:54 - INFO - logs-2024-08-09-16-44-35 -   Iter 167 loss difference 0.089 threshold 0.167 True loss 1.666 Approx loss 1.755 Delta norm 0.059
+08/09/2024 17:07:05 - INFO - logs-2024-08-09-16-44-35 -   Iter 168 loss difference 0.120 threshold 0.162 True loss 1.622 Approx loss 1.742 Delta norm 0.076
+08/09/2024 17:07:16 - INFO - logs-2024-08-09-16-44-35 -   Iter 169 loss difference 0.154 threshold 0.158 True loss 1.575 Approx loss 1.729 Delta norm 0.094
+08/09/2024 17:07:27 - INFO - logs-2024-08-09-16-44-35 -   Iter 170 loss difference 0.004 threshold 0.172 True loss 1.720 Approx loss 1.716 Delta norm 0.124
+08/09/2024 17:07:38 - INFO - logs-2024-08-09-16-44-35 -   Iter 171 loss difference 0.102 threshold 0.160 True loss 1.600 Approx loss 1.702 Delta norm 0.130
+08/09/2024 17:07:49 - INFO - logs-2024-08-09-16-44-35 -   Iter 172 loss difference 0.235 threshold 0.147 True loss 1.470 Approx loss 1.705 Delta norm 0.137 is larger than threshold 0.147. 
+08/09/2024 17:07:49 - INFO - logs-2024-08-09-16-44-35 -   Updating train loader and weights with subset of size 650
+08/09/2024 17:07:50 - INFO - logs-2024-08-09-16-44-35 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 17:08:01 - INFO - logs-2024-08-09-16-44-35 -   Iter 173 loss difference 0.010 threshold 0.144 True loss 1.438 Approx loss 1.428 Delta norm 0.027
+08/09/2024 17:08:12 - INFO - logs-2024-08-09-16-44-35 -   Iter 174 loss difference 0.008 threshold 0.140 True loss 1.396 Approx loss 1.404 Delta norm 0.046
+08/09/2024 17:08:23 - INFO - logs-2024-08-09-16-44-35 -   Iter 175 loss difference 0.045 threshold 0.135 True loss 1.350 Approx loss 1.395 Delta norm 0.064
+08/09/2024 17:08:33 - INFO - logs-2024-08-09-16-44-35 -   Iter 176 loss difference 0.026 threshold 0.140 True loss 1.400 Approx loss 1.373 Delta norm 0.085
+08/09/2024 17:08:45 - INFO - logs-2024-08-09-16-44-35 -   Iter 177 loss difference 0.027 threshold 0.138 True loss 1.384 Approx loss 1.357 Delta norm 0.101
+08/09/2024 17:08:55 - INFO - logs-2024-08-09-16-44-35 -   Iter 178 loss difference 0.170 threshold 0.152 True loss 1.518 Approx loss 1.347 Delta norm 0.126 is larger than threshold 0.152. 
+08/09/2024 17:08:56 - INFO - logs-2024-08-09-16-44-35 -   Updating train loader and weights with subset of size 650
+08/09/2024 17:08:56 - INFO - logs-2024-08-09-16-44-35 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 17:09:06 - INFO - logs-2024-08-09-16-44-35 -   Iter 179 loss difference 0.191 threshold 0.152 True loss 1.524 Approx loss 1.333 Delta norm 0.104 is larger than threshold 0.152. 
+08/09/2024 17:09:07 - INFO - logs-2024-08-09-16-44-35 -   Updating train loader and weights with subset of size 650
+08/09/2024 17:09:08 - INFO - logs-2024-08-09-16-44-35 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 17:09:18 - INFO - logs-2024-08-09-16-44-35 -   Iter 180 loss difference 0.192 threshold 0.129 True loss 1.287 Approx loss 1.479 Delta norm 0.093 is larger than threshold 0.129. 
+08/09/2024 17:09:19 - INFO - logs-2024-08-09-16-44-35 -   Updating train loader and weights with subset of size 650
+08/09/2024 17:09:19 - INFO - logs-2024-08-09-16-44-35 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 17:09:31 - INFO - logs-2024-08-09-16-44-35 -   Iter 181 loss difference 0.095 threshold 0.117 True loss 1.174 Approx loss 1.269 Delta norm 0.051
+08/09/2024 17:09:42 - INFO - logs-2024-08-09-16-44-35 -   Iter 182 loss difference 0.128 threshold 0.114 True loss 1.143 Approx loss 1.271 Delta norm 0.061 is larger than threshold 0.114. 
+08/09/2024 17:09:43 - INFO - logs-2024-08-09-16-44-35 -   Updating train loader and weights with subset of size 650
+08/09/2024 17:09:43 - INFO - logs-2024-08-09-16-44-35 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 17:09:55 - INFO - logs-2024-08-09-16-44-35 -   Iter 183 loss difference 0.079 threshold 0.113 True loss 1.133 Approx loss 1.054 Delta norm 0.047
+08/09/2024 17:10:05 - INFO - logs-2024-08-09-16-44-35 -   Iter 184 loss difference 0.069 threshold 0.117 True loss 1.167 Approx loss 1.098 Delta norm 0.043
+08/09/2024 17:10:16 - INFO - logs-2024-08-09-16-44-35 -   Iter 185 loss difference 0.306 threshold 0.131 True loss 1.312 Approx loss 1.006 Delta norm 0.081 is larger than threshold 0.131. 
+08/09/2024 17:10:17 - INFO - logs-2024-08-09-16-44-35 -   Updating train loader and weights with subset of size 650
+08/09/2024 17:10:17 - INFO - logs-2024-08-09-16-44-35 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 17:10:29 - INFO - logs-2024-08-09-16-44-35 -   Iter 186 loss difference 0.315 threshold 0.153 True loss 1.532 Approx loss 1.218 Delta norm 0.110 is larger than threshold 0.153. 
+08/09/2024 17:10:30 - INFO - logs-2024-08-09-16-44-35 -   Updating train loader and weights with subset of size 650
+08/09/2024 17:10:30 - INFO - logs-2024-08-09-16-44-35 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 17:10:41 - INFO - logs-2024-08-09-16-44-35 -   Iter 187 loss difference 0.051 threshold 0.134 True loss 1.336 Approx loss 1.387 Delta norm 0.110
+08/09/2024 17:10:43 - INFO - logs-2024-08-09-16-44-35 -   Epoch 3:	Train Loss: 1.716287	Train Acc: 0.417671	Val Loss: 1.432911	Val Acc: 0.543000
+08/09/2024 17:10:43 - INFO - logs-2024-08-09-16-44-35 -   Epoch 3:	Data Loading Time: 0.007791	Forward Time: 0.000731	Backward Time: 0.001454
+08/09/2024 17:10:43 - INFO - logs-2024-08-09-16-44-35 -   Epoch 4 LR 0.020000
+08/09/2024 17:10:54 - INFO - logs-2024-08-09-16-44-35 -   Iter 188 loss difference 0.014 threshold 0.146 True loss 1.457 Approx loss 1.471 Delta norm 0.071
+08/09/2024 17:11:05 - INFO - logs-2024-08-09-16-44-35 -   Iter 189 loss difference 0.563 threshold 0.189 True loss 1.891 Approx loss 1.328 Delta norm 0.180 is larger than threshold 0.189. 
+08/09/2024 17:11:06 - INFO - logs-2024-08-09-16-44-35 -   Updating train loader and weights with subset of size 650
+08/09/2024 17:11:06 - INFO - logs-2024-08-09-16-44-35 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 17:11:17 - INFO - logs-2024-08-09-16-44-35 -   Iter 190 loss difference 0.306 threshold 0.136 True loss 1.359 Approx loss 1.664 Delta norm 0.186 is larger than threshold 0.136. 
+08/09/2024 17:11:18 - INFO - logs-2024-08-09-16-44-35 -   Updating train loader and weights with subset of size 650
+08/09/2024 17:11:18 - INFO - logs-2024-08-09-16-44-35 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 17:11:29 - INFO - logs-2024-08-09-16-44-35 -   Iter 191 loss difference 0.208 threshold 0.117 True loss 1.171 Approx loss 1.379 Delta norm 0.073 is larger than threshold 0.117. 
+08/09/2024 17:11:30 - INFO - logs-2024-08-09-16-44-35 -   Updating train loader and weights with subset of size 650
+08/09/2024 17:11:30 - INFO - logs-2024-08-09-16-44-35 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 17:11:41 - INFO - logs-2024-08-09-16-44-35 -   Iter 192 loss difference 0.157 threshold 0.099 True loss 0.987 Approx loss 1.144 Delta norm 0.054 is larger than threshold 0.099. 
+08/09/2024 17:11:42 - INFO - logs-2024-08-09-16-44-35 -   Updating train loader and weights with subset of size 650
+08/09/2024 17:11:42 - INFO - logs-2024-08-09-16-44-35 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 17:11:53 - INFO - logs-2024-08-09-16-44-35 -   Iter 193 loss difference 0.044 threshold 0.092 True loss 0.920 Approx loss 0.964 Delta norm 0.041
+08/09/2024 17:12:04 - INFO - logs-2024-08-09-16-44-35 -   Iter 194 loss difference 0.047 threshold 0.089 True loss 0.887 Approx loss 0.934 Delta norm 0.060
+08/09/2024 17:12:15 - INFO - logs-2024-08-09-16-44-35 -   Iter 195 loss difference 0.046 threshold 0.088 True loss 0.882 Approx loss 0.928 Delta norm 0.090
+08/09/2024 17:12:26 - INFO - logs-2024-08-09-16-44-35 -   Iter 196 loss difference 0.117 threshold 0.103 True loss 1.034 Approx loss 0.918 Delta norm 0.106 is larger than threshold 0.103. 
+08/09/2024 17:12:27 - INFO - logs-2024-08-09-16-44-35 -   Updating train loader and weights with subset of size 650
+08/09/2024 17:12:27 - INFO - logs-2024-08-09-16-44-35 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 17:12:38 - INFO - logs-2024-08-09-16-44-35 -   Iter 197 loss difference 0.177 threshold 0.100 True loss 0.997 Approx loss 0.820 Delta norm 0.101 is larger than threshold 0.100. 
+08/09/2024 17:12:38 - INFO - logs-2024-08-09-16-44-35 -   Updating train loader and weights with subset of size 650
+08/09/2024 17:12:39 - INFO - logs-2024-08-09-16-44-35 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 17:12:49 - INFO - logs-2024-08-09-16-44-35 -   Iter 198 loss difference 0.097 threshold 0.088 True loss 0.882 Approx loss 0.978 Delta norm 0.089 is larger than threshold 0.088. 
+08/09/2024 17:12:50 - INFO - logs-2024-08-09-16-44-35 -   Updating train loader and weights with subset of size 650
+08/09/2024 17:12:51 - INFO - logs-2024-08-09-16-44-35 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 17:13:02 - INFO - logs-2024-08-09-16-44-35 -   Iter 199 loss difference 0.120 threshold 0.092 True loss 0.922 Approx loss 0.801 Delta norm 0.071 is larger than threshold 0.092. 
+08/09/2024 17:13:03 - INFO - logs-2024-08-09-16-44-35 -   Updating train loader and weights with subset of size 650
+08/09/2024 17:13:03 - INFO - logs-2024-08-09-16-44-35 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 17:13:13 - INFO - logs-2024-08-09-16-44-35 -   Iter 200 loss difference 0.439 threshold 0.120 True loss 1.204 Approx loss 0.764 Delta norm 0.118 is larger than threshold 0.120. 
+08/09/2024 17:13:14 - INFO - logs-2024-08-09-16-44-35 -   Updating train loader and weights with subset of size 650
+08/09/2024 17:13:14 - INFO - logs-2024-08-09-16-44-35 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 17:13:26 - INFO - logs-2024-08-09-16-44-35 -   Iter 201 loss difference 0.250 threshold 0.090 True loss 0.896 Approx loss 1.145 Delta norm 0.113 is larger than threshold 0.090. 
+08/09/2024 17:13:27 - INFO - logs-2024-08-09-16-44-35 -   Updating train loader and weights with subset of size 650
+08/09/2024 17:13:27 - INFO - logs-2024-08-09-16-44-35 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 17:13:39 - INFO - logs-2024-08-09-16-44-35 -   Iter 202 loss difference 0.150 threshold 0.071 True loss 0.706 Approx loss 0.856 Delta norm 0.066 is larger than threshold 0.071. 
+08/09/2024 17:13:40 - INFO - logs-2024-08-09-16-44-35 -   Updating train loader and weights with subset of size 650
+08/09/2024 17:13:40 - INFO - logs-2024-08-09-16-44-35 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 17:13:51 - INFO - logs-2024-08-09-16-44-35 -   Iter 203 loss difference 0.021 threshold 0.071 True loss 0.710 Approx loss 0.689 Delta norm 0.047
+08/09/2024 17:14:03 - INFO - logs-2024-08-09-16-44-35 -   Iter 204 loss difference 0.029 threshold 0.065 True loss 0.649 Approx loss 0.677 Delta norm 0.042
+08/09/2024 17:14:15 - INFO - logs-2024-08-09-16-44-35 -   Iter 205 loss difference 0.065 threshold 0.073 True loss 0.735 Approx loss 0.670 Delta norm 0.069
+08/09/2024 17:31:19 - INFO - logs-2024-08-09-17-31-19 -   Arguments: Namespace(approx_moment=True, approx_with_coreset=True, arch='LeNet', batch_num_mul=5, batch_size=128, check_interval=1, check_thresh_factor=0.1, data_dir='~/scratch/data', dataset='MNIST', device=device(type='cuda'), drop_interval=20, drop_learned=False, drop_thresh=0.1, epochs=10, gamma=0.1, gpu=[0], interval_mul=1.0, log_dir='./logs', logger=<Logger logs-2024-08-09-17-31-19 (INFO)>, lr=0.1, lr_milestones=[100, 150], min_train_size=40000, momentum=0.9, num_classes=10, num_minibatch_coreset=5, num_workers=1, partition_start=0, random_subset_size=0.01, resume_from_epoch=0, runs=1, save_freq=200, seed=0, selection_method='none', shuffle=True, smtk=0, statedict_dir='./state_dicts', subset_start_epoch=0, train_frac=0.1, use_wandb=False, warm_start_epochs=20, watch_interval=5, weight_decay=0.0001)
+08/09/2024 17:31:19 - INFO - logs-2024-08-09-17-31-19 -   Time: 2024-08-09 17:31:19
+08/09/2024 17:36:42 - INFO - logs-2024-08-09-17-36-42 -   Arguments: Namespace(approx_moment=True, approx_with_coreset=True, arch='LeNet', batch_num_mul=5, batch_size=128, check_interval=1, check_thresh_factor=0.1, data_dir='~/scratch/data', dataset='MNIST', device=device(type='cuda'), drop_interval=20, drop_learned=False, drop_thresh=0.1, epochs=10, gamma=0.1, gpu=[0], interval_mul=1.0, log_dir='./logs', logger=<Logger logs-2024-08-09-17-36-42 (INFO)>, lr=0.1, lr_milestones=[100, 150], min_train_size=40000, momentum=0.9, num_classes=10, num_minibatch_coreset=5, num_workers=1, partition_start=0, random_subset_size=0.01, resume_from_epoch=0, runs=1, save_freq=200, seed=0, selection_method='none', shuffle=True, smtk=0, statedict_dir='./state_dicts', subset_start_epoch=0, train_frac=0.1, use_wandb=False, warm_start_epochs=20, watch_interval=5, weight_decay=0.0001)
+08/09/2024 17:36:42 - INFO - logs-2024-08-09-17-36-42 -   Time: 2024-08-09 17:36:42
+08/09/2024 17:40:41 - INFO - logs-2024-08-09-17-40-41 -   Arguments: Namespace(approx_moment=True, approx_with_coreset=True, arch='LeNet', batch_num_mul=5, batch_size=128, check_interval=1, check_thresh_factor=0.1, data_dir='~/scratch/data', dataset='MNIST', device=device(type='cuda'), drop_interval=20, drop_learned=False, drop_thresh=0.1, epochs=10, gamma=0.1, gpu=[0], interval_mul=1.0, log_dir='./logs', logger=<Logger logs-2024-08-09-17-40-41 (INFO)>, lr=0.1, lr_milestones=[100, 150], min_train_size=40000, momentum=0.9, num_classes=10, num_minibatch_coreset=5, num_workers=1, partition_start=0, random_subset_size=0.01, resume_from_epoch=0, runs=1, save_freq=200, seed=0, selection_method='none', shuffle=True, smtk=0, statedict_dir='./state_dicts', subset_start_epoch=0, train_frac=0.1, use_wandb=False, warm_start_epochs=20, watch_interval=5, weight_decay=0.0001)
+08/09/2024 17:40:41 - INFO - logs-2024-08-09-17-40-41 -   Time: 2024-08-09 17:40:41
+08/09/2024 17:43:55 - INFO - logs-2024-08-09-17-43-55 -   Arguments: Namespace(approx_moment=True, approx_with_coreset=True, arch='LeNet', batch_num_mul=5, batch_size=128, check_interval=1, check_thresh_factor=0.1, data_dir='~/scratch/data', dataset='MNIST', device=device(type='cuda'), drop_interval=20, drop_learned=False, drop_thresh=0.1, epochs=10, gamma=0.1, gpu=[0], interval_mul=1.0, log_dir='./logs', logger=<Logger logs-2024-08-09-17-43-55 (INFO)>, lr=0.1, lr_milestones=[100, 150], min_train_size=40000, momentum=0.9, num_classes=10, num_minibatch_coreset=5, num_workers=1, partition_start=0, random_subset_size=0.01, resume_from_epoch=0, runs=1, save_freq=200, seed=0, selection_method='none', shuffle=True, smtk=0, statedict_dir='./state_dicts', subset_start_epoch=0, train_frac=0.1, use_wandb=False, warm_start_epochs=20, watch_interval=5, weight_decay=0.0001)
+08/09/2024 17:43:55 - INFO - logs-2024-08-09-17-43-55 -   Time: 2024-08-09 17:43:55
+08/09/2024 17:44:26 - INFO - logs-2024-08-09-17-44-26 -   Arguments: Namespace(approx_moment=True, approx_with_coreset=True, arch='LeNet', batch_num_mul=5, batch_size=128, check_interval=1, check_thresh_factor=0.1, data_dir='~/scratch/data', dataset='MNIST', device=device(type='cuda'), drop_interval=20, drop_learned=False, drop_thresh=0.1, epochs=10, gamma=0.1, gpu=[0], interval_mul=1.0, log_dir='./logs', logger=<Logger logs-2024-08-09-17-44-26 (INFO)>, lr=0.1, lr_milestones=[100, 150], min_train_size=40000, momentum=0.9, num_classes=10, num_minibatch_coreset=5, num_workers=1, partition_start=0, random_subset_size=0.01, resume_from_epoch=0, runs=1, save_freq=200, seed=0, selection_method='none', shuffle=True, smtk=0, statedict_dir='./state_dicts', subset_start_epoch=0, train_frac=0.1, use_wandb=False, warm_start_epochs=20, watch_interval=5, weight_decay=0.0001)
+08/09/2024 17:44:26 - INFO - logs-2024-08-09-17-44-26 -   Time: 2024-08-09 17:44:26
+08/09/2024 17:46:28 - INFO - logs-2024-08-09-17-46-28 -   Arguments: Namespace(approx_moment=True, approx_with_coreset=True, arch='LeNet', batch_num_mul=5, batch_size=128, check_interval=1, check_thresh_factor=0.1, data_dir='~/scratch/data', dataset='MNIST', device=device(type='cuda'), drop_interval=20, drop_learned=False, drop_thresh=0.1, epochs=10, gamma=0.1, gpu=[0], interval_mul=1.0, log_dir='./logs', logger=<Logger logs-2024-08-09-17-46-28 (INFO)>, lr=0.1, lr_milestones=[100, 150], min_train_size=40000, momentum=0.9, num_classes=10, num_minibatch_coreset=5, num_workers=1, partition_start=0, random_subset_size=0.01, resume_from_epoch=0, runs=1, save_freq=200, seed=0, selection_method='none', shuffle=True, smtk=0, statedict_dir='./state_dicts', subset_start_epoch=0, train_frac=0.1, use_wandb=False, warm_start_epochs=20, watch_interval=5, weight_decay=0.0001)
+08/09/2024 17:46:28 - INFO - logs-2024-08-09-17-46-28 -   Time: 2024-08-09 17:46:28
+08/09/2024 17:47:25 - INFO - logs-2024-08-09-17-47-25 -   Arguments: Namespace(approx_moment=True, approx_with_coreset=True, arch='LeNet', batch_num_mul=5, batch_size=128, check_interval=1, check_thresh_factor=0.1, data_dir='~/scratch/data', dataset='MNIST', device=device(type='cuda'), drop_interval=20, drop_learned=False, drop_thresh=0.1, epochs=10, gamma=0.1, gpu=[0], interval_mul=1.0, log_dir='./logs', logger=<Logger logs-2024-08-09-17-47-25 (INFO)>, lr=0.1, lr_milestones=[100, 150], min_train_size=40000, momentum=0.9, num_classes=10, num_minibatch_coreset=5, num_workers=1, partition_start=0, random_subset_size=0.01, resume_from_epoch=0, runs=1, save_freq=200, seed=0, selection_method='none', shuffle=True, smtk=0, statedict_dir='./state_dicts', subset_start_epoch=0, train_frac=0.1, use_wandb=False, warm_start_epochs=20, watch_interval=5, weight_decay=0.0001)
+08/09/2024 17:47:25 - INFO - logs-2024-08-09-17-47-25 -   Time: 2024-08-09 17:47:25
+08/09/2024 17:47:54 - INFO - logs-2024-08-09-17-47-25 -   Epoch 0:	Train Loss: 2.306001	Train Acc: 0.097967	Val Loss: 2.306301	Val Acc: 0.099700
+08/09/2024 17:47:54 - INFO - logs-2024-08-09-17-47-25 -   Epoch 0:	Data Loading Time: 0.018897	Forward Time: 0.000792	Backward Time: 0.001258
+08/09/2024 17:48:06 - INFO - logs-2024-08-09-17-47-25 -   Epoch 1:	Train Loss: 2.273304	Train Acc: 0.163250	Val Loss: 2.207289	Val Acc: 0.309100
+08/09/2024 17:48:06 - INFO - logs-2024-08-09-17-47-25 -   Epoch 1:	Data Loading Time: 0.018874	Forward Time: 0.000507	Backward Time: 0.001139
+08/09/2024 17:48:18 - INFO - logs-2024-08-09-17-47-25 -   Epoch 2:	Train Loss: 0.976096	Train Acc: 0.742383	Val Loss: 0.377402	Val Acc: 0.883600
+08/09/2024 17:48:18 - INFO - logs-2024-08-09-17-47-25 -   Epoch 2:	Data Loading Time: 0.019444	Forward Time: 0.000525	Backward Time: 0.001167
+08/09/2024 17:48:32 - INFO - logs-2024-08-09-17-47-25 -   Epoch 3:	Train Loss: 0.292020	Train Acc: 0.911417	Val Loss: 0.192063	Val Acc: 0.939800
+08/09/2024 17:48:32 - INFO - logs-2024-08-09-17-47-25 -   Epoch 3:	Data Loading Time: 0.021659	Forward Time: 0.000582	Backward Time: 0.001280
+08/09/2024 17:48:46 - INFO - logs-2024-08-09-17-47-25 -   Epoch 4:	Train Loss: 0.174111	Train Acc: 0.946567	Val Loss: 0.122444	Val Acc: 0.964000
+08/09/2024 17:48:46 - INFO - logs-2024-08-09-17-47-25 -   Epoch 4:	Data Loading Time: 0.022241	Forward Time: 0.000593	Backward Time: 0.001335
+08/09/2024 17:48:59 - INFO - logs-2024-08-09-17-47-25 -   Epoch 5:	Train Loss: 0.117838	Train Acc: 0.963850	Val Loss: 0.082941	Val Acc: 0.972200
+08/09/2024 17:48:59 - INFO - logs-2024-08-09-17-47-25 -   Epoch 5:	Data Loading Time: 0.020684	Forward Time: 0.000553	Backward Time: 0.001194
+08/09/2024 17:49:12 - INFO - logs-2024-08-09-17-47-25 -   Epoch 6:	Train Loss: 0.094532	Train Acc: 0.971067	Val Loss: 0.075182	Val Acc: 0.974800
+08/09/2024 17:49:12 - INFO - logs-2024-08-09-17-47-25 -   Epoch 6:	Data Loading Time: 0.022029	Forward Time: 0.000578	Backward Time: 0.001210
+08/09/2024 17:49:25 - INFO - logs-2024-08-09-17-47-25 -   Epoch 7:	Train Loss: 0.072500	Train Acc: 0.977167	Val Loss: 0.067625	Val Acc: 0.979000
+08/09/2024 17:49:25 - INFO - logs-2024-08-09-17-47-25 -   Epoch 7:	Data Loading Time: 0.020723	Forward Time: 0.000535	Backward Time: 0.001219
+08/09/2024 17:49:39 - INFO - logs-2024-08-09-17-47-25 -   Epoch 8:	Train Loss: 0.062578	Train Acc: 0.979567	Val Loss: 0.044068	Val Acc: 0.986800
+08/09/2024 17:49:39 - INFO - logs-2024-08-09-17-47-25 -   Epoch 8:	Data Loading Time: 0.020673	Forward Time: 0.000551	Backward Time: 0.001217
+08/09/2024 17:49:52 - INFO - logs-2024-08-09-17-47-25 -   Epoch 9:	Train Loss: 0.053753	Train Acc: 0.982467	Val Loss: 0.056420	Val Acc: 0.980500
+08/09/2024 17:49:52 - INFO - logs-2024-08-09-17-47-25 -   Epoch 9:	Data Loading Time: 0.022121	Forward Time: 0.000588	Backward Time: 0.001332
+08/09/2024 18:03:20 - INFO - logs-2024-08-09-18-03-20 -   Arguments: Namespace(approx_moment=True, approx_with_coreset=True, arch='LeNet', batch_num_mul=5, batch_size=128, check_interval=1, check_thresh_factor=0.1, data_dir='~/scratch/data', dataset='MNIST', device=device(type='cuda'), drop_interval=20, drop_learned=False, drop_thresh=0.1, epochs=10, gamma=0.1, gpu=[0], interval_mul=1.0, log_dir='./logs', logger=<Logger logs-2024-08-09-18-03-20 (INFO)>, lr=0.1, lr_milestones=[100, 150], min_train_size=40000, momentum=0.9, num_classes=10, num_minibatch_coreset=5, num_workers=1, partition_start=0, random_subset_size=0.01, resume_from_epoch=0, runs=1, save_freq=200, seed=0, selection_method='none', shuffle=True, smtk=0, statedict_dir='./state_dicts', subset_start_epoch=0, train_frac=1, use_wandb=False, warm_start_epochs=20, watch_interval=5, weight_decay=0.0001)
+08/09/2024 18:03:20 - INFO - logs-2024-08-09-18-03-20 -   Time: 2024-08-09 18:03:20
+08/09/2024 18:03:49 - INFO - logs-2024-08-09-18-03-20 -   Epoch 0:	Train Loss: 2.304428	Train Acc: 0.113433	Val Loss: 2.304684	Val Acc: 0.114900
+08/09/2024 18:03:49 - INFO - logs-2024-08-09-18-03-20 -   Epoch 0:	Data Loading Time: 0.018736	Forward Time: 0.000553	Backward Time: 0.001157
+08/09/2024 18:04:01 - INFO - logs-2024-08-09-18-03-20 -   Epoch 1:	Train Loss: 2.245599	Train Acc: 0.252300	Val Loss: 2.078002	Val Acc: 0.400100
+08/09/2024 18:04:01 - INFO - logs-2024-08-09-18-03-20 -   Epoch 1:	Data Loading Time: 0.018788	Forward Time: 0.000554	Backward Time: 0.001163
+08/09/2024 18:04:13 - INFO - logs-2024-08-09-18-03-20 -   Epoch 2:	Train Loss: 0.695586	Train Acc: 0.809950	Val Loss: 0.244609	Val Acc: 0.931800
+08/09/2024 18:04:13 - INFO - logs-2024-08-09-18-03-20 -   Epoch 2:	Data Loading Time: 0.018805	Forward Time: 0.000525	Backward Time: 0.001152
+08/09/2024 18:04:25 - INFO - logs-2024-08-09-18-03-20 -   Epoch 3:	Train Loss: 0.197870	Train Acc: 0.940583	Val Loss: 0.123286	Val Acc: 0.964100
+08/09/2024 18:04:25 - INFO - logs-2024-08-09-18-03-20 -   Epoch 3:	Data Loading Time: 0.019634	Forward Time: 0.000505	Backward Time: 0.001159
+08/09/2024 18:04:38 - INFO - logs-2024-08-09-18-03-20 -   Epoch 4:	Train Loss: 0.130174	Train Acc: 0.960800	Val Loss: 0.088993	Val Acc: 0.972400
+08/09/2024 18:04:38 - INFO - logs-2024-08-09-18-03-20 -   Epoch 4:	Data Loading Time: 0.019920	Forward Time: 0.000538	Backward Time: 0.001154
+08/09/2024 18:04:50 - INFO - logs-2024-08-09-18-03-20 -   Epoch 5:	Train Loss: 0.097660	Train Acc: 0.970300	Val Loss: 0.071520	Val Acc: 0.977300
+08/09/2024 18:04:50 - INFO - logs-2024-08-09-18-03-20 -   Epoch 5:	Data Loading Time: 0.019522	Forward Time: 0.000520	Backward Time: 0.001182
+08/09/2024 18:05:03 - INFO - logs-2024-08-09-18-03-20 -   Epoch 6:	Train Loss: 0.077737	Train Acc: 0.975650	Val Loss: 0.058192	Val Acc: 0.980300
+08/09/2024 18:05:03 - INFO - logs-2024-08-09-18-03-20 -   Epoch 6:	Data Loading Time: 0.020526	Forward Time: 0.000554	Backward Time: 0.001287
+08/09/2024 18:05:17 - INFO - logs-2024-08-09-18-03-20 -   Epoch 7:	Train Loss: 0.066613	Train Acc: 0.979350	Val Loss: 0.048770	Val Acc: 0.983100
+08/09/2024 18:05:17 - INFO - logs-2024-08-09-18-03-20 -   Epoch 7:	Data Loading Time: 0.021480	Forward Time: 0.000598	Backward Time: 0.001259
+08/09/2024 18:05:29 - INFO - logs-2024-08-09-18-03-20 -   Epoch 8:	Train Loss: 0.056877	Train Acc: 0.982283	Val Loss: 0.043564	Val Acc: 0.985600
+08/09/2024 18:05:29 - INFO - logs-2024-08-09-18-03-20 -   Epoch 8:	Data Loading Time: 0.020036	Forward Time: 0.000551	Backward Time: 0.001205
+08/09/2024 18:05:42 - INFO - logs-2024-08-09-18-03-20 -   Epoch 9:	Train Loss: 0.054145	Train Acc: 0.982917	Val Loss: 0.044090	Val Acc: 0.985100
+08/09/2024 18:05:42 - INFO - logs-2024-08-09-18-03-20 -   Epoch 9:	Data Loading Time: 0.020699	Forward Time: 0.000555	Backward Time: 0.001249
+08/09/2024 18:28:13 - INFO - logs-2024-08-09-18-28-13 -   Arguments: Namespace(approx_moment=True, approx_with_coreset=True, arch='LeNet', batch_num_mul=5, batch_size=128, check_interval=1, check_thresh_factor=0.1, data_dir='~/scratch/data', dataset='MNIST', device=device(type='cuda'), drop_interval=20, drop_learned=False, drop_thresh=0.1, epochs=10, gamma=0.1, gpu=[0], interval_mul=1.0, log_dir='./logs', logger=<Logger logs-2024-08-09-18-28-13 (INFO)>, lr=0.1, lr_milestones=[100, 150], min_train_size=40000, momentum=0.9, num_classes=10, num_minibatch_coreset=5, num_workers=1, partition_start=0, random_subset_size=0.01, resume_from_epoch=0, runs=1, save_freq=200, seed=0, selection_method='crest', shuffle=True, smtk=0, statedict_dir='./state_dicts', subset_start_epoch=0, train_frac=1, use_wandb=False, warm_start_epochs=20, watch_interval=5, weight_decay=0.0001)
+08/09/2024 18:28:13 - INFO - logs-2024-08-09-18-28-13 -   Time: 2024-08-09 18:28:13
+08/09/2024 18:28:27 - INFO - logs-2024-08-09-18-28-13 -   Epoch 0 LR 0.000000
+08/09/2024 18:28:38 - INFO - logs-2024-08-09-18-28-13 -   Epoch 0:	Train Loss: 2.300111	Train Acc: 0.099300	Val Loss: 2.300062	Val Acc: 0.103200
+08/09/2024 18:28:38 - INFO - logs-2024-08-09-18-28-13 -   Epoch 0:	Data Loading Time: 0.018241	Forward Time: 0.000544	Backward Time: 0.001162
+08/09/2024 18:28:38 - INFO - logs-2024-08-09-18-28-13 -   Epoch 1 LR 0.005000
+08/09/2024 18:28:39 - INFO - logs-2024-08-09-18-28-13 -   Updating train loader and weights with subset of size 650
+08/09/2024 18:28:40 - INFO - logs-2024-08-09-18-28-13 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 18:28:50 - INFO - logs-2024-08-09-18-28-13 -   Iter 470 loss difference 0.002 threshold 0.230 True loss 2.300 Approx loss 2.298 Delta norm 0.001
+08/09/2024 18:29:00 - INFO - logs-2024-08-09-18-28-13 -   Iter 471 loss difference 0.002 threshold 0.230 True loss 2.300 Approx loss 2.298 Delta norm 0.002
+08/09/2024 18:29:10 - INFO - logs-2024-08-09-18-28-13 -   Iter 472 loss difference 0.002 threshold 0.230 True loss 2.300 Approx loss 2.298 Delta norm 0.003
+08/09/2024 18:29:20 - INFO - logs-2024-08-09-18-28-13 -   Iter 473 loss difference 0.002 threshold 0.230 True loss 2.299 Approx loss 2.297 Delta norm 0.003
+08/09/2024 18:29:29 - INFO - logs-2024-08-09-18-28-13 -   Iter 474 loss difference 0.002 threshold 0.230 True loss 2.299 Approx loss 2.297 Delta norm 0.004
+08/09/2024 18:29:39 - INFO - logs-2024-08-09-18-28-13 -   Iter 475 loss difference 0.002 threshold 0.230 True loss 2.299 Approx loss 2.297 Delta norm 0.005
+08/09/2024 18:29:50 - INFO - logs-2024-08-09-18-28-13 -   Iter 476 loss difference 0.002 threshold 0.230 True loss 2.299 Approx loss 2.297 Delta norm 0.006
+08/09/2024 18:30:00 - INFO - logs-2024-08-09-18-28-13 -   Iter 477 loss difference 0.002 threshold 0.230 True loss 2.298 Approx loss 2.297 Delta norm 0.007
+08/09/2024 18:30:11 - INFO - logs-2024-08-09-18-28-13 -   Iter 478 loss difference 0.001 threshold 0.230 True loss 2.298 Approx loss 2.297 Delta norm 0.008
+08/09/2024 18:30:21 - INFO - logs-2024-08-09-18-28-13 -   Iter 479 loss difference 0.001 threshold 0.230 True loss 2.298 Approx loss 2.297 Delta norm 0.008
+08/09/2024 18:30:31 - INFO - logs-2024-08-09-18-28-13 -   Iter 480 loss difference 0.001 threshold 0.230 True loss 2.298 Approx loss 2.297 Delta norm 0.009
+08/09/2024 18:30:42 - INFO - logs-2024-08-09-18-28-13 -   Iter 481 loss difference 0.001 threshold 0.230 True loss 2.298 Approx loss 2.297 Delta norm 0.010
+08/09/2024 18:30:52 - INFO - logs-2024-08-09-18-28-13 -   Iter 482 loss difference 0.001 threshold 0.230 True loss 2.297 Approx loss 2.296 Delta norm 0.011
+08/09/2024 18:31:03 - INFO - logs-2024-08-09-18-28-13 -   Iter 483 loss difference 0.001 threshold 0.230 True loss 2.297 Approx loss 2.296 Delta norm 0.012
+08/09/2024 18:31:14 - INFO - logs-2024-08-09-18-28-13 -   Iter 484 loss difference 0.001 threshold 0.230 True loss 2.297 Approx loss 2.296 Delta norm 0.012
+08/09/2024 18:31:25 - INFO - logs-2024-08-09-18-28-13 -   Iter 485 loss difference 0.001 threshold 0.230 True loss 2.297 Approx loss 2.296 Delta norm 0.013
+08/09/2024 18:31:35 - INFO - logs-2024-08-09-18-28-13 -   Iter 486 loss difference 0.001 threshold 0.230 True loss 2.296 Approx loss 2.296 Delta norm 0.014
+08/09/2024 18:31:46 - INFO - logs-2024-08-09-18-28-13 -   Iter 487 loss difference 0.000 threshold 0.230 True loss 2.296 Approx loss 2.296 Delta norm 0.015
+08/09/2024 18:31:56 - INFO - logs-2024-08-09-18-28-13 -   Iter 488 loss difference 0.000 threshold 0.230 True loss 2.296 Approx loss 2.296 Delta norm 0.016
+08/09/2024 18:32:06 - INFO - logs-2024-08-09-18-28-13 -   Iter 489 loss difference 0.000 threshold 0.230 True loss 2.295 Approx loss 2.295 Delta norm 0.017
+08/09/2024 18:32:18 - INFO - logs-2024-08-09-18-28-13 -   Iter 490 loss difference 0.000 threshold 0.230 True loss 2.295 Approx loss 2.295 Delta norm 0.018
+08/09/2024 18:32:29 - INFO - logs-2024-08-09-18-28-13 -   Iter 491 loss difference 0.000 threshold 0.229 True loss 2.295 Approx loss 2.295 Delta norm 0.019
+08/09/2024 18:32:40 - INFO - logs-2024-08-09-18-28-13 -   Iter 492 loss difference 0.000 threshold 0.229 True loss 2.295 Approx loss 2.295 Delta norm 0.019
+08/09/2024 18:32:51 - INFO - logs-2024-08-09-18-28-13 -   Iter 493 loss difference 0.000 threshold 0.229 True loss 2.295 Approx loss 2.295 Delta norm 0.020
+08/09/2024 18:33:02 - INFO - logs-2024-08-09-18-28-13 -   Iter 494 loss difference 0.001 threshold 0.229 True loss 2.294 Approx loss 2.295 Delta norm 0.021
+08/09/2024 18:33:12 - INFO - logs-2024-08-09-18-28-13 -   Iter 495 loss difference 0.001 threshold 0.229 True loss 2.294 Approx loss 2.295 Delta norm 0.022
+08/09/2024 18:33:24 - INFO - logs-2024-08-09-18-28-13 -   Iter 496 loss difference 0.001 threshold 0.229 True loss 2.294 Approx loss 2.295 Delta norm 0.023
+08/09/2024 18:33:34 - INFO - logs-2024-08-09-18-28-13 -   Iter 497 loss difference 0.001 threshold 0.229 True loss 2.293 Approx loss 2.294 Delta norm 0.023
+08/09/2024 18:33:45 - INFO - logs-2024-08-09-18-28-13 -   Iter 498 loss difference 0.001 threshold 0.229 True loss 2.293 Approx loss 2.294 Delta norm 0.024
+08/09/2024 18:33:56 - INFO - logs-2024-08-09-18-28-13 -   Iter 499 loss difference 0.001 threshold 0.229 True loss 2.293 Approx loss 2.294 Delta norm 0.025
+08/09/2024 18:34:07 - INFO - logs-2024-08-09-18-28-13 -   Iter 500 loss difference 0.001 threshold 0.229 True loss 2.293 Approx loss 2.294 Delta norm 0.026
+08/09/2024 18:34:18 - INFO - logs-2024-08-09-18-28-13 -   Iter 501 loss difference 0.002 threshold 0.229 True loss 2.292 Approx loss 2.294 Delta norm 0.027
+08/09/2024 18:34:28 - INFO - logs-2024-08-09-18-28-13 -   Iter 502 loss difference 0.002 threshold 0.229 True loss 2.292 Approx loss 2.294 Delta norm 0.028
+08/09/2024 18:34:39 - INFO - logs-2024-08-09-18-28-13 -   Iter 503 loss difference 0.002 threshold 0.229 True loss 2.292 Approx loss 2.294 Delta norm 0.028
+08/09/2024 18:34:50 - INFO - logs-2024-08-09-18-28-13 -   Iter 504 loss difference 0.002 threshold 0.229 True loss 2.292 Approx loss 2.293 Delta norm 0.029
+08/09/2024 18:35:00 - INFO - logs-2024-08-09-18-28-13 -   Iter 505 loss difference 0.002 threshold 0.229 True loss 2.291 Approx loss 2.293 Delta norm 0.030
+08/09/2024 18:35:11 - INFO - logs-2024-08-09-18-28-13 -   Iter 506 loss difference 0.002 threshold 0.229 True loss 2.291 Approx loss 2.293 Delta norm 0.031
+08/09/2024 18:35:21 - INFO - logs-2024-08-09-18-28-13 -   Iter 507 loss difference 0.002 threshold 0.229 True loss 2.291 Approx loss 2.293 Delta norm 0.032
+08/09/2024 18:35:31 - INFO - logs-2024-08-09-18-28-13 -   Iter 508 loss difference 0.002 threshold 0.229 True loss 2.290 Approx loss 2.293 Delta norm 0.033
+08/09/2024 18:35:42 - INFO - logs-2024-08-09-18-28-13 -   Iter 509 loss difference 0.003 threshold 0.229 True loss 2.290 Approx loss 2.293 Delta norm 0.033
+08/09/2024 18:35:52 - INFO - logs-2024-08-09-18-28-13 -   Iter 510 loss difference 0.003 threshold 0.229 True loss 2.290 Approx loss 2.293 Delta norm 0.034
+08/09/2024 18:36:04 - INFO - logs-2024-08-09-18-28-13 -   Iter 511 loss difference 0.003 threshold 0.229 True loss 2.290 Approx loss 2.293 Delta norm 0.036
+08/09/2024 18:36:16 - INFO - logs-2024-08-09-18-28-13 -   Iter 512 loss difference 0.003 threshold 0.229 True loss 2.289 Approx loss 2.292 Delta norm 0.037
+08/09/2024 18:36:28 - INFO - logs-2024-08-09-18-28-13 -   Iter 513 loss difference 0.003 threshold 0.229 True loss 2.289 Approx loss 2.292 Delta norm 0.038
+08/09/2024 18:36:39 - INFO - logs-2024-08-09-18-28-13 -   Iter 514 loss difference 0.003 threshold 0.229 True loss 2.289 Approx loss 2.292 Delta norm 0.038
+08/09/2024 18:36:50 - INFO - logs-2024-08-09-18-28-13 -   Iter 515 loss difference 0.004 threshold 0.229 True loss 2.288 Approx loss 2.292 Delta norm 0.039
+08/09/2024 18:37:01 - INFO - logs-2024-08-09-18-28-13 -   Iter 516 loss difference 0.004 threshold 0.229 True loss 2.288 Approx loss 2.292 Delta norm 0.040
+08/09/2024 18:37:11 - INFO - logs-2024-08-09-18-37-11 -   Arguments: Namespace(approx_moment=True, approx_with_coreset=True, arch='LeNet', batch_num_mul=5, batch_size=128, check_interval=1, check_thresh_factor=0.1, data_dir='~/scratch/data', dataset='MNIST', device=device(type='cuda'), drop_interval=20, drop_learned=False, drop_thresh=0.1, epochs=10, gamma=0.1, gpu=[0], interval_mul=1.0, log_dir='./logs', logger=<Logger logs-2024-08-09-18-37-11 (INFO)>, lr=0.1, lr_milestones=[100, 150], min_train_size=40000, momentum=0.9, num_classes=10, num_minibatch_coreset=5, num_workers=1, partition_start=0, random_subset_size=0.01, resume_from_epoch=0, runs=1, save_freq=200, seed=0, selection_method='crest', shuffle=True, smtk=0, statedict_dir='./state_dicts', subset_start_epoch=0, train_frac=1, use_wandb=False, warm_start_epochs=20, watch_interval=5, weight_decay=0.0001)
+08/09/2024 18:37:11 - INFO - logs-2024-08-09-18-37-11 -   Time: 2024-08-09 18:37:11
+08/09/2024 18:39:08 - INFO - logs-2024-08-09-18-37-11 -   Epoch 0 LR 0.000000
+08/09/2024 18:39:20 - INFO - logs-2024-08-09-18-37-11 -   Epoch 0:	Train Loss: 2.300830	Train Acc: 0.111000	Val Loss: 2.300745	Val Acc: 0.111900
+08/09/2024 18:39:20 - INFO - logs-2024-08-09-18-37-11 -   Epoch 0:	Data Loading Time: 0.018720	Forward Time: 0.000547	Backward Time: 0.001199
+08/09/2024 18:39:20 - INFO - logs-2024-08-09-18-37-11 -   Epoch 1 LR 0.005000
+08/09/2024 18:39:20 - INFO - logs-2024-08-09-18-37-11 -   Updating train loader and weights with subset of size 650
+08/09/2024 18:39:21 - INFO - logs-2024-08-09-18-37-11 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 18:39:31 - INFO - logs-2024-08-09-18-37-11 -   Iter 470 loss difference 0.009 threshold 0.230 True loss 2.302 Approx loss 2.311 Delta norm 0.001
+08/09/2024 18:39:41 - INFO - logs-2024-08-09-18-37-11 -   Iter 471 loss difference 0.010 threshold 0.230 True loss 2.301 Approx loss 2.311 Delta norm 0.003
+08/09/2024 18:39:51 - INFO - logs-2024-08-09-18-37-11 -   Iter 472 loss difference 0.010 threshold 0.230 True loss 2.301 Approx loss 2.311 Delta norm 0.004
+08/09/2024 18:40:02 - INFO - logs-2024-08-09-18-37-11 -   Iter 473 loss difference 0.010 threshold 0.230 True loss 2.300 Approx loss 2.311 Delta norm 0.004
+08/09/2024 18:40:12 - INFO - logs-2024-08-09-18-37-11 -   Iter 474 loss difference 0.010 threshold 0.230 True loss 2.300 Approx loss 2.310 Delta norm 0.005
+08/09/2024 18:40:24 - INFO - logs-2024-08-09-18-37-11 -   Iter 475 loss difference 0.010 threshold 0.230 True loss 2.300 Approx loss 2.310 Delta norm 0.007
+08/09/2024 18:40:34 - INFO - logs-2024-08-09-18-37-11 -   Iter 476 loss difference 0.011 threshold 0.230 True loss 2.299 Approx loss 2.310 Delta norm 0.008
+08/09/2024 18:40:45 - INFO - logs-2024-08-09-18-37-11 -   Iter 477 loss difference 0.011 threshold 0.230 True loss 2.299 Approx loss 2.310 Delta norm 0.009
+08/09/2024 18:40:56 - INFO - logs-2024-08-09-18-37-11 -   Iter 478 loss difference 0.011 threshold 0.230 True loss 2.299 Approx loss 2.310 Delta norm 0.010
+08/09/2024 18:41:07 - INFO - logs-2024-08-09-18-37-11 -   Iter 479 loss difference 0.011 threshold 0.230 True loss 2.298 Approx loss 2.309 Delta norm 0.011
+08/09/2024 18:41:17 - INFO - logs-2024-08-09-18-37-11 -   Iter 480 loss difference 0.011 threshold 0.230 True loss 2.298 Approx loss 2.309 Delta norm 0.012
+08/09/2024 18:41:27 - INFO - logs-2024-08-09-18-37-11 -   Iter 481 loss difference 0.011 threshold 0.230 True loss 2.297 Approx loss 2.309 Delta norm 0.014
+08/09/2024 18:41:38 - INFO - logs-2024-08-09-18-37-11 -   Iter 482 loss difference 0.012 threshold 0.230 True loss 2.297 Approx loss 2.308 Delta norm 0.015
+08/09/2024 18:41:49 - INFO - logs-2024-08-09-18-37-11 -   Iter 483 loss difference 0.012 threshold 0.230 True loss 2.297 Approx loss 2.308 Delta norm 0.016
+08/09/2024 18:42:00 - INFO - logs-2024-08-09-18-37-11 -   Iter 484 loss difference 0.012 threshold 0.230 True loss 2.296 Approx loss 2.308 Delta norm 0.017
+08/09/2024 18:42:11 - INFO - logs-2024-08-09-18-37-11 -   Iter 485 loss difference 0.012 threshold 0.230 True loss 2.296 Approx loss 2.308 Delta norm 0.018
+08/09/2024 18:42:21 - INFO - logs-2024-08-09-18-37-11 -   Iter 486 loss difference 0.012 threshold 0.230 True loss 2.295 Approx loss 2.308 Delta norm 0.019
+08/09/2024 18:42:31 - INFO - logs-2024-08-09-18-37-11 -   Iter 487 loss difference 0.012 threshold 0.230 True loss 2.295 Approx loss 2.308 Delta norm 0.019
+08/09/2024 18:43:45 - INFO - logs-2024-08-09-18-43-45 -   Arguments: Namespace(approx_moment=True, approx_with_coreset=True, arch='LeNet', batch_num_mul=5, batch_size=128, check_interval=20, check_thresh_factor=0.1, data_dir='~/scratch/data', dataset='MNIST', device=device(type='cuda'), drop_interval=20, drop_learned=True, drop_thresh=0.1, epochs=10, gamma=0.1, gpu=[0], interval_mul=1.0, log_dir='./logs', logger=<Logger logs-2024-08-09-18-43-45 (INFO)>, lr=0.1, lr_milestones=[100, 150], min_train_size=40000, momentum=0.9, num_classes=10, num_minibatch_coreset=5, num_workers=1, partition_start=0, random_subset_size=0.01, resume_from_epoch=0, runs=1, save_freq=200, seed=0, selection_method='crest', shuffle=True, smtk=0, statedict_dir='./state_dicts', subset_start_epoch=0, train_frac=1, use_wandb=False, warm_start_epochs=20, watch_interval=5, weight_decay=0.0001)
+08/09/2024 18:43:45 - INFO - logs-2024-08-09-18-43-45 -   Time: 2024-08-09 18:43:45
+08/09/2024 18:43:57 - INFO - logs-2024-08-09-18-43-57 -   Arguments: Namespace(approx_moment=True, approx_with_coreset=True, arch='LeNet', batch_num_mul=5, batch_size=128, check_interval=20, check_thresh_factor=0.1, data_dir='~/scratch/data', dataset='MNIST', device=device(type='cuda'), drop_interval=20, drop_learned=True, drop_thresh=0.1, epochs=10, gamma=0.1, gpu=[0], interval_mul=1.0, log_dir='./logs', logger=<Logger logs-2024-08-09-18-43-57 (INFO)>, lr=0.1, lr_milestones=[100, 150], min_train_size=40000, momentum=0.9, num_classes=10, num_minibatch_coreset=5, num_workers=1, partition_start=0, random_subset_size=0.01, resume_from_epoch=0, runs=1, save_freq=200, seed=0, selection_method='crest', shuffle=True, smtk=0, statedict_dir='./state_dicts', subset_start_epoch=0, train_frac=0.1, use_wandb=False, warm_start_epochs=20, watch_interval=5, weight_decay=0.0001)
+08/09/2024 18:43:57 - INFO - logs-2024-08-09-18-43-57 -   Time: 2024-08-09 18:43:57
+08/09/2024 18:53:29 - INFO - logs-2024-08-09-18-43-57 -   Epoch 0 LR 0.000000
+08/09/2024 18:53:32 - INFO - logs-2024-08-09-18-43-57 -   Epoch 0:	Train Loss: 2.305309	Train Acc: 0.100565	Val Loss: 2.305311	Val Acc: 0.104000
+08/09/2024 18:53:32 - INFO - logs-2024-08-09-18-43-57 -   Epoch 0:	Data Loading Time: 0.019059	Forward Time: 0.003256	Backward Time: 0.002358
+08/09/2024 18:53:32 - INFO - logs-2024-08-09-18-43-57 -   Epoch 1 LR 0.005000
+08/09/2024 18:53:33 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 18:53:34 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 20. Number of minibatch coresets 5
+08/09/2024 18:53:44 - INFO - logs-2024-08-09-18-43-57 -   Iter 67 loss difference 0.002 threshold 0.230 True loss 2.305 Approx loss 2.307 Delta norm 0.010
+08/09/2024 18:53:55 - INFO - logs-2024-08-09-18-43-57 -   Iter 87 loss difference 0.003 threshold 0.230 True loss 2.303 Approx loss 2.306 Delta norm 0.020
+08/09/2024 18:53:57 - INFO - logs-2024-08-09-18-43-57 -   Epoch 1:	Train Loss: 2.306026	Train Acc: 0.101349	Val Loss: 2.302154	Val Acc: 0.106600
+08/09/2024 18:53:57 - INFO - logs-2024-08-09-18-43-57 -   Epoch 1:	Data Loading Time: 0.019325	Forward Time: 0.000603	Backward Time: 0.001107
+08/09/2024 18:53:57 - INFO - logs-2024-08-09-18-43-57 -   Epoch 2 LR 0.010000
+08/09/2024 18:54:07 - INFO - logs-2024-08-09-18-43-57 -   Iter 107 loss difference 0.004 threshold 0.230 True loss 2.301 Approx loss 2.305 Delta norm 0.033
+08/09/2024 18:54:18 - INFO - logs-2024-08-09-18-43-57 -   Iter 127 loss difference 0.005 threshold 0.230 True loss 2.299 Approx loss 2.304 Delta norm 0.049
+08/09/2024 18:54:20 - INFO - logs-2024-08-09-18-43-57 -   Epoch 2:	Train Loss: 2.301397	Train Acc: 0.108833	Val Loss: 2.295954	Val Acc: 0.119700
+08/09/2024 18:54:20 - INFO - logs-2024-08-09-18-43-57 -   Epoch 2:	Data Loading Time: 0.021314	Forward Time: 0.000670	Backward Time: 0.001168
+08/09/2024 18:54:20 - INFO - logs-2024-08-09-18-43-57 -   Epoch 3 LR 0.015000
+08/09/2024 18:54:30 - INFO - logs-2024-08-09-18-43-57 -   Iter 147 loss difference 0.007 threshold 0.230 True loss 2.295 Approx loss 2.302 Delta norm 0.069
+08/09/2024 18:54:41 - INFO - logs-2024-08-09-18-43-57 -   Iter 167 loss difference 0.011 threshold 0.229 True loss 2.289 Approx loss 2.300 Delta norm 0.103
+08/09/2024 18:54:51 - INFO - logs-2024-08-09-18-43-57 -   Iter 187 loss difference 0.019 threshold 0.228 True loss 2.280 Approx loss 2.298 Delta norm 0.136
+08/09/2024 18:54:53 - INFO - logs-2024-08-09-18-43-57 -   Epoch 3:	Train Loss: 2.285317	Train Acc: 0.222397	Val Loss: 2.279023	Val Acc: 0.243600
+08/09/2024 18:54:53 - INFO - logs-2024-08-09-18-43-57 -   Epoch 3:	Data Loading Time: 0.020713	Forward Time: 0.000591	Backward Time: 0.001156
+08/09/2024 18:54:53 - INFO - logs-2024-08-09-18-43-57 -   Epoch 4 LR 0.020000
+08/09/2024 18:55:04 - INFO - logs-2024-08-09-18-43-57 -   Iter 207 loss difference 0.040 threshold 0.226 True loss 2.256 Approx loss 2.296 Delta norm 0.197
+08/09/2024 18:55:15 - INFO - logs-2024-08-09-18-43-57 -   Iter 227 loss difference 0.103 threshold 0.219 True loss 2.191 Approx loss 2.295 Delta norm 0.302
+08/09/2024 18:55:17 - INFO - logs-2024-08-09-18-43-57 -   Epoch 4:	Train Loss: 2.237612	Train Acc: 0.247240	Val Loss: 2.121127	Val Acc: 0.410800
+08/09/2024 18:55:17 - INFO - logs-2024-08-09-18-43-57 -   Epoch 4:	Data Loading Time: 0.021869	Forward Time: 0.000607	Backward Time: 0.001186
+08/09/2024 18:55:17 - INFO - logs-2024-08-09-18-43-57 -   Epoch 5 LR 0.025000
+08/09/2024 18:55:27 - INFO - logs-2024-08-09-18-43-57 -   Iter 247 loss difference 0.520 threshold 0.178 True loss 1.777 Approx loss 2.297 Delta norm 0.568 is larger than threshold 0.178. 
+08/09/2024 18:55:28 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 18:55:28 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 18:55:40 - INFO - logs-2024-08-09-18-43-57 -   Iter 248 loss difference 0.038 threshold 0.173 True loss 1.726 Approx loss 1.764 Delta norm 0.031
+08/09/2024 18:55:51 - INFO - logs-2024-08-09-18-43-57 -   Iter 249 loss difference 0.075 threshold 0.168 True loss 1.676 Approx loss 1.752 Delta norm 0.059
+08/09/2024 18:56:02 - INFO - logs-2024-08-09-18-43-57 -   Iter 250 loss difference 0.094 threshold 0.165 True loss 1.648 Approx loss 1.742 Delta norm 0.085
+08/09/2024 18:56:12 - INFO - logs-2024-08-09-18-43-57 -   Iter 251 loss difference 0.109 threshold 0.162 True loss 1.618 Approx loss 1.726 Delta norm 0.115
+08/09/2024 18:56:24 - INFO - logs-2024-08-09-18-43-57 -   Iter 252 loss difference 0.192 threshold 0.153 True loss 1.534 Approx loss 1.726 Delta norm 0.133 is larger than threshold 0.153. 
+08/09/2024 18:56:24 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 18:56:25 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 18:56:35 - INFO - logs-2024-08-09-18-43-57 -   Iter 253 loss difference 0.015 threshold 0.145 True loss 1.454 Approx loss 1.469 Delta norm 0.046
+08/09/2024 18:56:45 - INFO - logs-2024-08-09-18-43-57 -   Iter 254 loss difference 0.059 threshold 0.141 True loss 1.408 Approx loss 1.467 Delta norm 0.061
+08/09/2024 18:56:55 - INFO - logs-2024-08-09-18-43-57 -   Iter 255 loss difference 0.034 threshold 0.144 True loss 1.445 Approx loss 1.410 Delta norm 0.098
+08/09/2024 18:57:06 - INFO - logs-2024-08-09-18-43-57 -   Iter 256 loss difference 0.062 threshold 0.138 True loss 1.379 Approx loss 1.442 Delta norm 0.110
+08/09/2024 18:57:16 - INFO - logs-2024-08-09-18-43-57 -   Iter 257 loss difference 0.571 threshold 0.191 True loss 1.910 Approx loss 1.339 Delta norm 0.166 is larger than threshold 0.191. 
+08/09/2024 18:57:17 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 18:57:17 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 18:57:28 - INFO - logs-2024-08-09-18-43-57 -   Iter 258 loss difference 0.312 threshold 0.182 True loss 1.817 Approx loss 1.505 Delta norm 0.189 is larger than threshold 0.182. 
+08/09/2024 18:57:29 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 18:57:29 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 18:57:42 - INFO - logs-2024-08-09-18-43-57 -   Iter 259 loss difference 0.139 threshold 0.167 True loss 1.672 Approx loss 1.811 Delta norm 0.173
+08/09/2024 18:57:52 - INFO - logs-2024-08-09-18-43-57 -   Iter 260 loss difference 0.334 threshold 0.146 True loss 1.464 Approx loss 1.798 Delta norm 0.149 is larger than threshold 0.146. 
+08/09/2024 18:57:53 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 18:57:53 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 18:58:05 - INFO - logs-2024-08-09-18-43-57 -   Iter 261 loss difference 0.126 threshold 0.130 True loss 1.303 Approx loss 1.428 Delta norm 0.081
+08/09/2024 18:58:16 - INFO - logs-2024-08-09-18-43-57 -   Iter 262 loss difference 0.365 threshold 0.113 True loss 1.133 Approx loss 1.498 Delta norm 0.099 is larger than threshold 0.113. 
+08/09/2024 18:58:17 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 18:58:18 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 18:58:28 - INFO - logs-2024-08-09-18-43-57 -   Iter 263 loss difference 0.005 threshold 0.106 True loss 1.061 Approx loss 1.066 Delta norm 0.053
+08/09/2024 18:58:40 - INFO - logs-2024-08-09-18-43-57 -   Iter 264 loss difference 0.053 threshold 0.106 True loss 1.059 Approx loss 1.112 Delta norm 0.068
+08/09/2024 18:58:51 - INFO - logs-2024-08-09-18-43-57 -   Iter 265 loss difference 0.088 threshold 0.111 True loss 1.106 Approx loss 1.019 Delta norm 0.098
+08/09/2024 18:59:01 - INFO - logs-2024-08-09-18-43-57 -   Iter 266 loss difference 0.057 threshold 0.116 True loss 1.156 Approx loss 1.099 Delta norm 0.115
+08/09/2024 18:59:13 - INFO - logs-2024-08-09-18-43-57 -   Iter 267 loss difference 0.120 threshold 0.111 True loss 1.112 Approx loss 0.991 Delta norm 0.138 is larger than threshold 0.111. 
+08/09/2024 18:59:14 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 18:59:14 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 18:59:25 - INFO - logs-2024-08-09-18-43-57 -   Iter 268 loss difference 0.825 threshold 0.186 True loss 1.860 Approx loss 1.036 Delta norm 0.147 is larger than threshold 0.186. 
+08/09/2024 18:59:26 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 18:59:26 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 18:59:37 - INFO - logs-2024-08-09-18-43-57 -   Iter 269 loss difference 0.951 threshold 0.229 True loss 2.289 Approx loss 1.338 Delta norm 0.301 is larger than threshold 0.229. 
+08/09/2024 18:59:38 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 18:59:39 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 18:59:51 - INFO - logs-2024-08-09-18-43-57 -   Iter 270 loss difference 0.885 threshold 0.141 True loss 1.408 Approx loss 2.293 Delta norm 0.147 is larger than threshold 0.141. 
+08/09/2024 18:59:52 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 18:59:52 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:00:05 - INFO - logs-2024-08-09-18-43-57 -   Iter 271 loss difference 0.240 threshold 0.115 True loss 1.155 Approx loss 1.395 Delta norm 0.066 is larger than threshold 0.115. 
+08/09/2024 19:00:06 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:00:06 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:00:18 - INFO - logs-2024-08-09-18-43-57 -   Iter 272 loss difference 0.108 threshold 0.100 True loss 1.001 Approx loss 1.109 Delta norm 0.053 is larger than threshold 0.100. 
+08/09/2024 19:00:19 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:00:19 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:00:32 - INFO - logs-2024-08-09-18-43-57 -   Iter 273 loss difference 0.029 threshold 0.091 True loss 0.908 Approx loss 0.938 Delta norm 0.045
+08/09/2024 19:00:43 - INFO - logs-2024-08-09-18-43-57 -   Iter 274 loss difference 0.023 threshold 0.093 True loss 0.935 Approx loss 0.912 Delta norm 0.074
+08/09/2024 19:00:55 - INFO - logs-2024-08-09-18-43-57 -   Iter 275 loss difference 0.104 threshold 0.101 True loss 1.005 Approx loss 0.902 Delta norm 0.107 is larger than threshold 0.101. 
+08/09/2024 19:00:56 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:00:57 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:01:08 - INFO - logs-2024-08-09-18-43-57 -   Iter 276 loss difference 0.010 threshold 0.089 True loss 0.890 Approx loss 0.880 Delta norm 0.091
+08/09/2024 19:01:20 - INFO - logs-2024-08-09-18-43-57 -   Iter 277 loss difference 0.064 threshold 0.087 True loss 0.871 Approx loss 0.935 Delta norm 0.072
+08/09/2024 19:01:32 - INFO - logs-2024-08-09-18-43-57 -   Iter 278 loss difference 0.064 threshold 0.093 True loss 0.929 Approx loss 0.865 Delta norm 0.113
+08/09/2024 19:01:43 - INFO - logs-2024-08-09-18-43-57 -   Iter 279 loss difference 0.273 threshold 0.120 True loss 1.197 Approx loss 0.924 Delta norm 0.112 is larger than threshold 0.120. 
+08/09/2024 19:01:44 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:01:44 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:01:56 - INFO - logs-2024-08-09-18-43-57 -   Iter 280 loss difference 0.165 threshold 0.100 True loss 0.998 Approx loss 0.833 Delta norm 0.149 is larger than threshold 0.100. 
+08/09/2024 19:01:58 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:01:58 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:02:10 - INFO - logs-2024-08-09-18-43-57 -   Iter 281 loss difference 0.059 threshold 0.101 True loss 1.012 Approx loss 1.071 Delta norm 0.132
+08/09/2024 19:02:12 - INFO - logs-2024-08-09-18-43-57 -   Epoch 5:	Train Loss: 1.449797	Train Acc: 0.483391	Val Loss: 1.074189	Val Acc: 0.667300
+08/09/2024 19:02:12 - INFO - logs-2024-08-09-18-43-57 -   Epoch 5:	Data Loading Time: 0.005098	Forward Time: 0.000663	Backward Time: 0.001349
+08/09/2024 19:02:12 - INFO - logs-2024-08-09-18-43-57 -   Epoch 6 LR 0.030000
+08/09/2024 19:02:24 - INFO - logs-2024-08-09-18-43-57 -   Iter 282 loss difference 0.126 threshold 0.113 True loss 1.129 Approx loss 1.003 Delta norm 0.087 is larger than threshold 0.113. 
+08/09/2024 19:02:25 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:02:26 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:02:38 - INFO - logs-2024-08-09-18-43-57 -   Iter 283 loss difference 0.225 threshold 0.101 True loss 1.014 Approx loss 0.789 Delta norm 0.152 is larger than threshold 0.101. 
+08/09/2024 19:02:38 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:02:39 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:02:50 - INFO - logs-2024-08-09-18-43-57 -   Iter 284 loss difference 0.133 threshold 0.091 True loss 0.913 Approx loss 1.046 Delta norm 0.134 is larger than threshold 0.091. 
+08/09/2024 19:02:51 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:02:51 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:03:03 - INFO - logs-2024-08-09-18-43-57 -   Iter 285 loss difference 0.023 threshold 0.090 True loss 0.896 Approx loss 0.873 Delta norm 0.118
+08/09/2024 19:03:14 - INFO - logs-2024-08-09-18-43-57 -   Iter 286 loss difference 0.059 threshold 0.095 True loss 0.952 Approx loss 0.893 Delta norm 0.107
+08/09/2024 19:03:26 - INFO - logs-2024-08-09-18-43-57 -   Iter 287 loss difference 0.148 threshold 0.072 True loss 0.717 Approx loss 0.866 Delta norm 0.104 is larger than threshold 0.072. 
+08/09/2024 19:03:26 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:03:27 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:03:37 - INFO - logs-2024-08-09-18-43-57 -   Iter 288 loss difference 0.008 threshold 0.064 True loss 0.645 Approx loss 0.636 Delta norm 0.062
+08/09/2024 19:03:49 - INFO - logs-2024-08-09-18-43-57 -   Iter 289 loss difference 0.009 threshold 0.066 True loss 0.662 Approx loss 0.653 Delta norm 0.066
+08/09/2024 19:04:01 - INFO - logs-2024-08-09-18-43-57 -   Iter 290 loss difference 0.109 threshold 0.075 True loss 0.745 Approx loss 0.636 Delta norm 0.102 is larger than threshold 0.075. 
+08/09/2024 19:04:02 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:04:02 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:04:14 - INFO - logs-2024-08-09-18-43-57 -   Iter 291 loss difference 0.176 threshold 0.084 True loss 0.842 Approx loss 0.666 Delta norm 0.130 is larger than threshold 0.084. 
+08/09/2024 19:04:15 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:04:16 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:04:27 - INFO - logs-2024-08-09-18-43-57 -   Iter 292 loss difference 0.122 threshold 0.067 True loss 0.672 Approx loss 0.794 Delta norm 0.099 is larger than threshold 0.067. 
+08/09/2024 19:04:27 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:04:28 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:04:39 - INFO - logs-2024-08-09-18-43-57 -   Iter 293 loss difference 0.007 threshold 0.061 True loss 0.606 Approx loss 0.613 Delta norm 0.085
+08/09/2024 19:04:50 - INFO - logs-2024-08-09-18-43-57 -   Iter 294 loss difference 0.056 threshold 0.057 True loss 0.566 Approx loss 0.623 Delta norm 0.061
+08/09/2024 19:05:02 - INFO - logs-2024-08-09-18-43-57 -   Iter 295 loss difference 0.006 threshold 0.060 True loss 0.600 Approx loss 0.595 Delta norm 0.085
+08/09/2024 19:05:14 - INFO - logs-2024-08-09-18-43-57 -   Iter 296 loss difference 0.075 threshold 0.070 True loss 0.703 Approx loss 0.628 Delta norm 0.093 is larger than threshold 0.070. 
+08/09/2024 19:05:15 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:05:15 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:05:27 - INFO - logs-2024-08-09-18-43-57 -   Iter 297 loss difference 0.396 threshold 0.096 True loss 0.957 Approx loss 0.561 Delta norm 0.147 is larger than threshold 0.096. 
+08/09/2024 19:05:27 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:05:28 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:05:39 - INFO - logs-2024-08-09-18-43-57 -   Iter 298 loss difference 0.191 threshold 0.109 True loss 1.092 Approx loss 0.900 Delta norm 0.200 is larger than threshold 0.109. 
+08/09/2024 19:05:40 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:05:40 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:05:51 - INFO - logs-2024-08-09-18-43-57 -   Iter 299 loss difference 0.106 threshold 0.082 True loss 0.816 Approx loss 0.922 Delta norm 0.163 is larger than threshold 0.082. 
+08/09/2024 19:05:52 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:05:53 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:06:04 - INFO - logs-2024-08-09-18-43-57 -   Iter 300 loss difference 0.227 threshold 0.060 True loss 0.604 Approx loss 0.831 Delta norm 0.068 is larger than threshold 0.060. 
+08/09/2024 19:06:05 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:06:05 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:06:17 - INFO - logs-2024-08-09-18-43-57 -   Iter 301 loss difference 0.031 threshold 0.054 True loss 0.541 Approx loss 0.572 Delta norm 0.046
+08/09/2024 19:06:29 - INFO - logs-2024-08-09-18-43-57 -   Iter 302 loss difference 0.012 threshold 0.054 True loss 0.543 Approx loss 0.556 Delta norm 0.074
+08/09/2024 19:06:41 - INFO - logs-2024-08-09-18-43-57 -   Iter 303 loss difference 0.048 threshold 0.053 True loss 0.525 Approx loss 0.574 Delta norm 0.083
+08/09/2024 19:06:52 - INFO - logs-2024-08-09-18-43-57 -   Iter 304 loss difference 0.023 threshold 0.052 True loss 0.519 Approx loss 0.542 Delta norm 0.101
+08/09/2024 19:07:03 - INFO - logs-2024-08-09-18-43-57 -   Iter 305 loss difference 0.062 threshold 0.052 True loss 0.523 Approx loss 0.585 Delta norm 0.099 is larger than threshold 0.052. 
+08/09/2024 19:07:04 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:07:04 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:07:16 - INFO - logs-2024-08-09-18-43-57 -   Iter 306 loss difference 0.079 threshold 0.052 True loss 0.519 Approx loss 0.440 Delta norm 0.069 is larger than threshold 0.052. 
+08/09/2024 19:07:17 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:07:17 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:07:29 - INFO - logs-2024-08-09-18-43-57 -   Iter 307 loss difference 0.051 threshold 0.044 True loss 0.439 Approx loss 0.490 Delta norm 0.057 is larger than threshold 0.044. 
+08/09/2024 19:07:30 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:07:30 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:07:42 - INFO - logs-2024-08-09-18-43-57 -   Iter 308 loss difference 0.046 threshold 0.048 True loss 0.481 Approx loss 0.434 Delta norm 0.050
+08/09/2024 19:07:54 - INFO - logs-2024-08-09-18-43-57 -   Iter 309 loss difference 0.227 threshold 0.063 True loss 0.632 Approx loss 0.406 Delta norm 0.072 is larger than threshold 0.063. 
+08/09/2024 19:07:55 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:07:55 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:08:07 - INFO - logs-2024-08-09-18-43-57 -   Iter 310 loss difference 0.196 threshold 0.071 True loss 0.708 Approx loss 0.512 Delta norm 0.143 is larger than threshold 0.071. 
+08/09/2024 19:08:08 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:08:08 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:08:19 - INFO - logs-2024-08-09-18-43-57 -   Iter 311 loss difference 0.081 threshold 0.077 True loss 0.768 Approx loss 0.686 Delta norm 0.145 is larger than threshold 0.077. 
+08/09/2024 19:08:20 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:08:20 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:08:32 - INFO - logs-2024-08-09-18-43-57 -   Iter 312 loss difference 0.004 threshold 0.060 True loss 0.599 Approx loss 0.603 Delta norm 0.135
+08/09/2024 19:08:44 - INFO - logs-2024-08-09-18-43-57 -   Iter 313 loss difference 0.194 threshold 0.047 True loss 0.472 Approx loss 0.667 Delta norm 0.100 is larger than threshold 0.047. 
+08/09/2024 19:08:45 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:08:45 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:08:57 - INFO - logs-2024-08-09-18-43-57 -   Iter 314 loss difference 0.015 threshold 0.042 True loss 0.424 Approx loss 0.409 Delta norm 0.055
+08/09/2024 19:09:09 - INFO - logs-2024-08-09-18-43-57 -   Iter 315 loss difference 0.021 threshold 0.040 True loss 0.403 Approx loss 0.424 Delta norm 0.057
+08/09/2024 19:09:20 - INFO - logs-2024-08-09-18-43-57 -   Iter 316 loss difference 0.019 threshold 0.041 True loss 0.407 Approx loss 0.426 Delta norm 0.059
+08/09/2024 19:09:32 - INFO - logs-2024-08-09-18-43-57 -   Iter 317 loss difference 0.057 threshold 0.038 True loss 0.379 Approx loss 0.436 Delta norm 0.068 is larger than threshold 0.038. 
+08/09/2024 19:09:33 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:09:33 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:09:44 - INFO - logs-2024-08-09-18-43-57 -   Iter 318 loss difference 0.031 threshold 0.041 True loss 0.405 Approx loss 0.375 Delta norm 0.035
+08/09/2024 19:09:55 - INFO - logs-2024-08-09-18-43-57 -   Iter 319 loss difference 0.041 threshold 0.043 True loss 0.427 Approx loss 0.386 Delta norm 0.048
+08/09/2024 19:10:07 - INFO - logs-2024-08-09-18-43-57 -   Iter 320 loss difference 0.014 threshold 0.038 True loss 0.378 Approx loss 0.364 Delta norm 0.050
+08/09/2024 19:10:19 - INFO - logs-2024-08-09-18-43-57 -   Iter 321 loss difference 0.011 threshold 0.040 True loss 0.398 Approx loss 0.388 Delta norm 0.056
+08/09/2024 19:10:30 - INFO - logs-2024-08-09-18-43-57 -   Iter 322 loss difference 0.028 threshold 0.039 True loss 0.393 Approx loss 0.365 Delta norm 0.065
+08/09/2024 19:10:41 - INFO - logs-2024-08-09-18-43-57 -   Iter 323 loss difference 0.015 threshold 0.039 True loss 0.390 Approx loss 0.375 Delta norm 0.082
+08/09/2024 19:10:53 - INFO - logs-2024-08-09-18-43-57 -   Iter 324 loss difference 0.030 threshold 0.040 True loss 0.404 Approx loss 0.374 Delta norm 0.085
+08/09/2024 19:11:04 - INFO - logs-2024-08-09-18-43-57 -   Iter 325 loss difference 0.012 threshold 0.038 True loss 0.375 Approx loss 0.363 Delta norm 0.097
+08/09/2024 19:11:16 - INFO - logs-2024-08-09-18-43-57 -   Iter 326 loss difference 0.002 threshold 0.036 True loss 0.358 Approx loss 0.356 Delta norm 0.100
+08/09/2024 19:11:28 - INFO - logs-2024-08-09-18-43-57 -   Iter 327 loss difference 0.013 threshold 0.039 True loss 0.393 Approx loss 0.380 Delta norm 0.109
+08/09/2024 19:11:40 - INFO - logs-2024-08-09-18-43-57 -   Iter 328 loss difference 0.058 threshold 0.040 True loss 0.398 Approx loss 0.341 Delta norm 0.123 is larger than threshold 0.040. 
+08/09/2024 19:11:40 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:11:41 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:11:43 - INFO - logs-2024-08-09-18-43-57 -   Epoch 6:	Train Loss: 0.592505	Train Acc: 0.603255	Val Loss: 0.348981	Val Acc: 0.892900
+08/09/2024 19:11:43 - INFO - logs-2024-08-09-18-43-57 -   Epoch 6:	Data Loading Time: 0.001951	Forward Time: 0.000676	Backward Time: 0.001424
+08/09/2024 19:11:43 - INFO - logs-2024-08-09-18-43-57 -   Epoch 7 LR 0.035000
+08/09/2024 19:11:55 - INFO - logs-2024-08-09-18-43-57 -   Iter 329 loss difference 0.016 threshold 0.038 True loss 0.378 Approx loss 0.394 Delta norm 0.062
+08/09/2024 19:12:06 - INFO - logs-2024-08-09-18-43-57 -   Iter 330 loss difference 0.038 threshold 0.034 True loss 0.345 Approx loss 0.383 Delta norm 0.056 is larger than threshold 0.034. 
+08/09/2024 19:12:07 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:12:07 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:12:19 - INFO - logs-2024-08-09-18-43-57 -   Iter 331 loss difference 0.018 threshold 0.033 True loss 0.334 Approx loss 0.317 Delta norm 0.042
+08/09/2024 19:12:31 - INFO - logs-2024-08-09-18-43-57 -   Iter 332 loss difference 0.102 threshold 0.042 True loss 0.419 Approx loss 0.317 Delta norm 0.058 is larger than threshold 0.042. 
+08/09/2024 19:12:32 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:12:32 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:12:43 - INFO - logs-2024-08-09-18-43-57 -   Iter 333 loss difference 0.188 threshold 0.054 True loss 0.537 Approx loss 0.349 Delta norm 0.102 is larger than threshold 0.054. 
+08/09/2024 19:12:44 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:12:44 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:12:56 - INFO - logs-2024-08-09-18-43-57 -   Iter 334 loss difference 0.255 threshold 0.069 True loss 0.690 Approx loss 0.435 Delta norm 0.141 is larger than threshold 0.069. 
+08/09/2024 19:12:57 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:12:57 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:13:08 - INFO - logs-2024-08-09-18-43-57 -   Iter 335 loss difference 0.049 threshold 0.051 True loss 0.509 Approx loss 0.558 Delta norm 0.147
+08/09/2024 19:13:20 - INFO - logs-2024-08-09-18-43-57 -   Iter 336 loss difference 0.234 threshold 0.034 True loss 0.339 Approx loss 0.572 Delta norm 0.090 is larger than threshold 0.034. 
+08/09/2024 19:13:21 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:13:21 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:13:33 - INFO - logs-2024-08-09-18-43-57 -   Iter 337 loss difference 0.115 threshold 0.042 True loss 0.420 Approx loss 0.305 Delta norm 0.057 is larger than threshold 0.042. 
+08/09/2024 19:13:34 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:13:34 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:13:46 - INFO - logs-2024-08-09-18-43-57 -   Iter 338 loss difference 0.045 threshold 0.038 True loss 0.378 Approx loss 0.333 Delta norm 0.086 is larger than threshold 0.038. 
+08/09/2024 19:13:47 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:13:47 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:13:59 - INFO - logs-2024-08-09-18-43-57 -   Iter 339 loss difference 0.090 threshold 0.047 True loss 0.468 Approx loss 0.378 Delta norm 0.096 is larger than threshold 0.047. 
+08/09/2024 19:14:00 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:14:00 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:14:12 - INFO - logs-2024-08-09-18-43-57 -   Iter 340 loss difference 0.055 threshold 0.042 True loss 0.418 Approx loss 0.363 Delta norm 0.112 is larger than threshold 0.042. 
+08/09/2024 19:14:12 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:14:13 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:14:24 - INFO - logs-2024-08-09-18-43-57 -   Iter 341 loss difference 0.058 threshold 0.036 True loss 0.361 Approx loss 0.419 Delta norm 0.069 is larger than threshold 0.036. 
+08/09/2024 19:14:25 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:14:25 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:14:37 - INFO - logs-2024-08-09-18-43-57 -   Iter 342 loss difference 0.106 threshold 0.043 True loss 0.432 Approx loss 0.326 Delta norm 0.089 is larger than threshold 0.043. 
+08/09/2024 19:14:38 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:14:39 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:14:51 - INFO - logs-2024-08-09-18-43-57 -   Iter 343 loss difference 0.061 threshold 0.034 True loss 0.338 Approx loss 0.398 Delta norm 0.084 is larger than threshold 0.034. 
+08/09/2024 19:14:52 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:14:52 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:15:04 - INFO - logs-2024-08-09-18-43-57 -   Iter 344 loss difference 0.036 threshold 0.030 True loss 0.298 Approx loss 0.334 Delta norm 0.053 is larger than threshold 0.030. 
+08/09/2024 19:15:05 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:15:05 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:15:17 - INFO - logs-2024-08-09-18-43-57 -   Iter 345 loss difference 0.008 threshold 0.027 True loss 0.271 Approx loss 0.279 Delta norm 0.029
+08/09/2024 19:15:29 - INFO - logs-2024-08-09-18-43-57 -   Iter 346 loss difference 0.040 threshold 0.031 True loss 0.313 Approx loss 0.273 Delta norm 0.057 is larger than threshold 0.031. 
+08/09/2024 19:15:30 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:15:30 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:15:42 - INFO - logs-2024-08-09-18-43-57 -   Iter 347 loss difference 0.025 threshold 0.027 True loss 0.269 Approx loss 0.294 Delta norm 0.046
+08/09/2024 19:15:54 - INFO - logs-2024-08-09-18-43-57 -   Iter 348 loss difference 0.032 threshold 0.027 True loss 0.267 Approx loss 0.300 Delta norm 0.036 is larger than threshold 0.027. 
+08/09/2024 19:15:55 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:15:55 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:16:07 - INFO - logs-2024-08-09-18-43-57 -   Iter 349 loss difference 0.005 threshold 0.029 True loss 0.288 Approx loss 0.283 Delta norm 0.028
+08/09/2024 19:16:19 - INFO - logs-2024-08-09-18-43-57 -   Iter 350 loss difference 0.041 threshold 0.031 True loss 0.308 Approx loss 0.267 Delta norm 0.049 is larger than threshold 0.031. 
+08/09/2024 19:16:20 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:16:20 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:16:32 - INFO - logs-2024-08-09-18-43-57 -   Iter 351 loss difference 0.011 threshold 0.030 True loss 0.296 Approx loss 0.284 Delta norm 0.049
+08/09/2024 19:16:44 - INFO - logs-2024-08-09-18-43-57 -   Iter 352 loss difference 0.015 threshold 0.027 True loss 0.268 Approx loss 0.283 Delta norm 0.039
+08/09/2024 19:16:56 - INFO - logs-2024-08-09-18-43-57 -   Iter 353 loss difference 0.013 threshold 0.027 True loss 0.271 Approx loss 0.283 Delta norm 0.052
+08/09/2024 19:17:08 - INFO - logs-2024-08-09-18-43-57 -   Iter 354 loss difference 0.014 threshold 0.027 True loss 0.266 Approx loss 0.280 Delta norm 0.054
+08/09/2024 19:17:20 - INFO - logs-2024-08-09-18-43-57 -   Iter 355 loss difference 0.014 threshold 0.027 True loss 0.270 Approx loss 0.284 Delta norm 0.053
+08/09/2024 19:17:31 - INFO - logs-2024-08-09-18-43-57 -   Iter 356 loss difference 0.218 threshold 0.050 True loss 0.497 Approx loss 0.278 Delta norm 0.113 is larger than threshold 0.050. 
+08/09/2024 19:17:32 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:17:32 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:17:44 - INFO - logs-2024-08-09-18-43-57 -   Iter 357 loss difference 0.580 threshold 0.091 True loss 0.907 Approx loss 0.327 Delta norm 0.179 is larger than threshold 0.091. 
+08/09/2024 19:17:45 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:17:45 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:17:56 - INFO - logs-2024-08-09-18-43-57 -   Iter 358 loss difference 0.281 threshold 0.049 True loss 0.494 Approx loss 0.776 Delta norm 0.189 is larger than threshold 0.049. 
+08/09/2024 19:17:57 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:17:57 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:18:09 - INFO - logs-2024-08-09-18-43-57 -   Iter 359 loss difference 0.020 threshold 0.050 True loss 0.500 Approx loss 0.520 Delta norm 0.153
+08/09/2024 19:18:20 - INFO - logs-2024-08-09-18-43-57 -   Iter 360 loss difference 0.178 threshold 0.031 True loss 0.313 Approx loss 0.491 Delta norm 0.104 is larger than threshold 0.031. 
+08/09/2024 19:18:21 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:18:22 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:18:33 - INFO - logs-2024-08-09-18-43-57 -   Iter 361 loss difference 0.011 threshold 0.028 True loss 0.280 Approx loss 0.290 Delta norm 0.041
+08/09/2024 19:18:45 - INFO - logs-2024-08-09-18-43-57 -   Iter 362 loss difference 0.026 threshold 0.028 True loss 0.282 Approx loss 0.308 Delta norm 0.061
+08/09/2024 19:18:57 - INFO - logs-2024-08-09-18-43-57 -   Iter 363 loss difference 0.034 threshold 0.027 True loss 0.267 Approx loss 0.302 Delta norm 0.058 is larger than threshold 0.027. 
+08/09/2024 19:18:57 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:18:58 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:19:09 - INFO - logs-2024-08-09-18-43-57 -   Iter 364 loss difference 0.078 threshold 0.029 True loss 0.290 Approx loss 0.212 Delta norm 0.072 is larger than threshold 0.029. 
+08/09/2024 19:19:10 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:19:10 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:19:22 - INFO - logs-2024-08-09-18-43-57 -   Iter 365 loss difference 0.009 threshold 0.032 True loss 0.316 Approx loss 0.324 Delta norm 0.090
+08/09/2024 19:19:33 - INFO - logs-2024-08-09-18-43-57 -   Iter 366 loss difference 0.051 threshold 0.027 True loss 0.270 Approx loss 0.321 Delta norm 0.056 is larger than threshold 0.027. 
+08/09/2024 19:19:34 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:19:34 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:19:47 - INFO - logs-2024-08-09-18-43-57 -   Iter 367 loss difference 0.005 threshold 0.026 True loss 0.259 Approx loss 0.254 Delta norm 0.043
+08/09/2024 19:19:59 - INFO - logs-2024-08-09-18-43-57 -   Iter 368 loss difference 0.011 threshold 0.025 True loss 0.249 Approx loss 0.260 Delta norm 0.046
+08/09/2024 19:20:09 - INFO - logs-2024-08-09-18-43-57 -   Iter 369 loss difference 0.005 threshold 0.025 True loss 0.251 Approx loss 0.256 Delta norm 0.047
+08/09/2024 19:20:21 - INFO - logs-2024-08-09-18-43-57 -   Iter 370 loss difference 0.009 threshold 0.024 True loss 0.242 Approx loss 0.251 Delta norm 0.054
+08/09/2024 19:20:33 - INFO - logs-2024-08-09-18-43-57 -   Iter 371 loss difference 0.018 threshold 0.024 True loss 0.236 Approx loss 0.254 Delta norm 0.060
+08/09/2024 19:20:45 - INFO - logs-2024-08-09-18-43-57 -   Iter 372 loss difference 0.290 threshold 0.053 True loss 0.530 Approx loss 0.240 Delta norm 0.158 is larger than threshold 0.053. 
+08/09/2024 19:20:46 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:20:46 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:20:58 - INFO - logs-2024-08-09-18-43-57 -   Iter 373 loss difference 0.096 threshold 0.048 True loss 0.482 Approx loss 0.386 Delta norm 0.173 is larger than threshold 0.048. 
+08/09/2024 19:20:59 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:20:59 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:21:11 - INFO - logs-2024-08-09-18-43-57 -   Iter 374 loss difference 0.105 threshold 0.039 True loss 0.390 Approx loss 0.495 Delta norm 0.137 is larger than threshold 0.039. 
+08/09/2024 19:21:12 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:21:13 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:21:24 - INFO - logs-2024-08-09-18-43-57 -   Iter 375 loss difference 0.075 threshold 0.024 True loss 0.239 Approx loss 0.313 Delta norm 0.057 is larger than threshold 0.024. 
+08/09/2024 19:21:25 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:21:25 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:21:27 - INFO - logs-2024-08-09-18-43-57 -   Epoch 7:	Train Loss: 0.346921	Train Acc: 0.678893	Val Loss: 0.222027	Val Acc: 0.937000
+08/09/2024 19:21:27 - INFO - logs-2024-08-09-18-43-57 -   Epoch 7:	Data Loading Time: 0.000396	Forward Time: 0.000678	Backward Time: 0.001466
+08/09/2024 19:21:27 - INFO - logs-2024-08-09-18-43-57 -   Epoch 8 LR 0.040000
+08/09/2024 19:21:39 - INFO - logs-2024-08-09-18-43-57 -   Iter 376 loss difference 0.005 threshold 0.024 True loss 0.240 Approx loss 0.245 Delta norm 0.029
+08/09/2024 19:21:51 - INFO - logs-2024-08-09-18-43-57 -   Iter 377 loss difference 0.010 threshold 0.024 True loss 0.237 Approx loss 0.247 Delta norm 0.037
+08/09/2024 19:22:02 - INFO - logs-2024-08-09-18-43-57 -   Iter 378 loss difference 0.002 threshold 0.023 True loss 0.233 Approx loss 0.235 Delta norm 0.049
+08/09/2024 19:22:13 - INFO - logs-2024-08-09-18-43-57 -   Iter 379 loss difference 0.001 threshold 0.024 True loss 0.237 Approx loss 0.236 Delta norm 0.056
+08/09/2024 19:22:24 - INFO - logs-2024-08-09-18-43-57 -   Iter 380 loss difference 0.013 threshold 0.023 True loss 0.226 Approx loss 0.239 Delta norm 0.061
+08/09/2024 19:22:36 - INFO - logs-2024-08-09-18-43-57 -   Iter 381 loss difference 0.218 threshold 0.047 True loss 0.470 Approx loss 0.252 Delta norm 0.111 is larger than threshold 0.047. 
+08/09/2024 19:22:37 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:22:38 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:22:49 - INFO - logs-2024-08-09-18-43-57 -   Iter 382 loss difference 0.004 threshold 0.032 True loss 0.316 Approx loss 0.311 Delta norm 0.128
+08/09/2024 19:23:00 - INFO - logs-2024-08-09-18-43-57 -   Iter 383 loss difference 0.119 threshold 0.022 True loss 0.223 Approx loss 0.341 Delta norm 0.095 is larger than threshold 0.022. 
+08/09/2024 19:23:01 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:23:02 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:23:14 - INFO - logs-2024-08-09-18-43-57 -   Iter 384 loss difference 0.015 threshold 0.021 True loss 0.211 Approx loss 0.227 Delta norm 0.028
+08/09/2024 19:23:26 - INFO - logs-2024-08-09-18-43-57 -   Iter 385 loss difference 0.020 threshold 0.021 True loss 0.213 Approx loss 0.234 Delta norm 0.041
+08/09/2024 19:23:38 - INFO - logs-2024-08-09-18-43-57 -   Iter 386 loss difference 0.020 threshold 0.021 True loss 0.206 Approx loss 0.226 Delta norm 0.040
+08/09/2024 19:23:49 - INFO - logs-2024-08-09-18-43-57 -   Iter 387 loss difference 0.015 threshold 0.020 True loss 0.204 Approx loss 0.218 Delta norm 0.045
+08/09/2024 19:24:00 - INFO - logs-2024-08-09-18-43-57 -   Iter 388 loss difference 0.003 threshold 0.022 True loss 0.224 Approx loss 0.228 Delta norm 0.064
+08/09/2024 19:24:11 - INFO - logs-2024-08-09-18-43-57 -   Iter 389 loss difference 0.009 threshold 0.022 True loss 0.224 Approx loss 0.215 Delta norm 0.088
+08/09/2024 19:24:22 - INFO - logs-2024-08-09-18-43-57 -   Iter 390 loss difference 0.030 threshold 0.021 True loss 0.206 Approx loss 0.236 Delta norm 0.088 is larger than threshold 0.021. 
+08/09/2024 19:24:23 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:24:24 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:24:35 - INFO - logs-2024-08-09-18-43-57 -   Iter 391 loss difference 0.035 threshold 0.025 True loss 0.247 Approx loss 0.212 Delta norm 0.061 is larger than threshold 0.025. 
+08/09/2024 19:24:36 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:24:36 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:24:48 - INFO - logs-2024-08-09-18-43-57 -   Iter 392 loss difference 0.011 threshold 0.026 True loss 0.256 Approx loss 0.245 Delta norm 0.066
+08/09/2024 19:25:00 - INFO - logs-2024-08-09-18-43-57 -   Iter 393 loss difference 0.006 threshold 0.024 True loss 0.239 Approx loss 0.233 Delta norm 0.050
+08/09/2024 19:25:12 - INFO - logs-2024-08-09-18-43-57 -   Iter 394 loss difference 0.021 threshold 0.021 True loss 0.213 Approx loss 0.234 Delta norm 0.052
+08/09/2024 19:25:24 - INFO - logs-2024-08-09-18-43-57 -   Iter 395 loss difference 0.028 threshold 0.021 True loss 0.209 Approx loss 0.237 Delta norm 0.055 is larger than threshold 0.021. 
+08/09/2024 19:25:25 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:25:25 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:25:37 - INFO - logs-2024-08-09-18-43-57 -   Iter 396 loss difference 0.002 threshold 0.019 True loss 0.189 Approx loss 0.191 Delta norm 0.034
+08/09/2024 19:25:49 - INFO - logs-2024-08-09-18-43-57 -   Iter 397 loss difference 0.010 threshold 0.021 True loss 0.208 Approx loss 0.198 Delta norm 0.041
+08/09/2024 19:26:01 - INFO - logs-2024-08-09-18-43-57 -   Iter 398 loss difference 0.006 threshold 0.018 True loss 0.185 Approx loss 0.190 Delta norm 0.041
+08/09/2024 19:26:12 - INFO - logs-2024-08-09-18-43-57 -   Iter 399 loss difference 0.005 threshold 0.018 True loss 0.184 Approx loss 0.189 Delta norm 0.046
+08/09/2024 19:26:24 - INFO - logs-2024-08-09-18-43-57 -   Iter 400 loss difference 0.018 threshold 0.017 True loss 0.175 Approx loss 0.193 Delta norm 0.047 is larger than threshold 0.017. 
+08/09/2024 19:26:25 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:26:26 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:26:38 - INFO - logs-2024-08-09-18-43-57 -   Iter 401 loss difference 0.006 threshold 0.021 True loss 0.213 Approx loss 0.207 Delta norm 0.022
+08/09/2024 19:26:49 - INFO - logs-2024-08-09-18-43-57 -   Iter 402 loss difference 0.024 threshold 0.022 True loss 0.220 Approx loss 0.196 Delta norm 0.038 is larger than threshold 0.022. 
+08/09/2024 19:26:50 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:26:50 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:27:01 - INFO - logs-2024-08-09-18-43-57 -   Iter 403 loss difference 0.034 threshold 0.025 True loss 0.245 Approx loss 0.212 Delta norm 0.060 is larger than threshold 0.025. 
+08/09/2024 19:27:02 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:27:02 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:27:14 - INFO - logs-2024-08-09-18-43-57 -   Iter 404 loss difference 0.032 threshold 0.026 True loss 0.257 Approx loss 0.226 Delta norm 0.074 is larger than threshold 0.026. 
+08/09/2024 19:27:15 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:27:15 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:27:27 - INFO - logs-2024-08-09-18-43-57 -   Iter 405 loss difference 0.017 threshold 0.024 True loss 0.236 Approx loss 0.219 Delta norm 0.075
+08/09/2024 19:27:39 - INFO - logs-2024-08-09-18-43-57 -   Iter 406 loss difference 0.041 threshold 0.019 True loss 0.195 Approx loss 0.236 Delta norm 0.054 is larger than threshold 0.019. 
+08/09/2024 19:27:40 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:27:40 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:27:52 - INFO - logs-2024-08-09-18-43-57 -   Iter 407 loss difference 0.025 threshold 0.022 True loss 0.221 Approx loss 0.196 Delta norm 0.040 is larger than threshold 0.022. 
+08/09/2024 19:27:52 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:27:53 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:28:04 - INFO - logs-2024-08-09-18-43-57 -   Iter 408 loss difference 0.006 threshold 0.018 True loss 0.185 Approx loss 0.191 Delta norm 0.053
+08/09/2024 19:28:16 - INFO - logs-2024-08-09-18-43-57 -   Iter 409 loss difference 0.010 threshold 0.019 True loss 0.188 Approx loss 0.198 Delta norm 0.042
+08/09/2024 19:28:28 - INFO - logs-2024-08-09-18-43-57 -   Iter 410 loss difference 0.000 threshold 0.018 True loss 0.182 Approx loss 0.183 Delta norm 0.051
+08/09/2024 19:28:40 - INFO - logs-2024-08-09-18-43-57 -   Iter 411 loss difference 0.022 threshold 0.017 True loss 0.168 Approx loss 0.191 Delta norm 0.050 is larger than threshold 0.017. 
+08/09/2024 19:28:41 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:28:41 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:28:53 - INFO - logs-2024-08-09-18-43-57 -   Iter 412 loss difference 0.011 threshold 0.020 True loss 0.202 Approx loss 0.191 Delta norm 0.035
+08/09/2024 19:29:05 - INFO - logs-2024-08-09-18-43-57 -   Iter 413 loss difference 0.002 threshold 0.019 True loss 0.194 Approx loss 0.192 Delta norm 0.033
+08/09/2024 19:29:18 - INFO - logs-2024-08-09-18-43-57 -   Iter 414 loss difference 0.006 threshold 0.019 True loss 0.194 Approx loss 0.188 Delta norm 0.037
+08/09/2024 19:29:30 - INFO - logs-2024-08-09-18-43-57 -   Iter 415 loss difference 0.003 threshold 0.019 True loss 0.194 Approx loss 0.192 Delta norm 0.048
+08/09/2024 19:29:41 - INFO - logs-2024-08-09-18-43-57 -   Iter 416 loss difference 0.019 threshold 0.020 True loss 0.204 Approx loss 0.185 Delta norm 0.051
+08/09/2024 19:29:53 - INFO - logs-2024-08-09-18-43-57 -   Iter 417 loss difference 0.402 threshold 0.061 True loss 0.612 Approx loss 0.210 Delta norm 0.100 is larger than threshold 0.061. 
+08/09/2024 19:29:54 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:29:54 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:30:06 - INFO - logs-2024-08-09-18-43-57 -   Iter 418 loss difference 1.653 threshold 0.163 True loss 1.628 Approx loss -0.025 Delta norm 0.285 is larger than threshold 0.163. 
+08/09/2024 19:30:07 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:30:07 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:30:19 - INFO - logs-2024-08-09-18-43-57 -   Iter 419 loss difference 0.814 threshold 0.166 True loss 1.661 Approx loss 0.847 Delta norm 0.461 is larger than threshold 0.166. 
+08/09/2024 19:30:20 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:30:20 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:30:32 - INFO - logs-2024-08-09-18-43-57 -   Iter 420 loss difference 0.175 threshold 0.099 True loss 0.995 Approx loss 1.169 Delta norm 0.306 is larger than threshold 0.099. 
+08/09/2024 19:30:33 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:30:33 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:30:45 - INFO - logs-2024-08-09-18-43-57 -   Iter 421 loss difference 0.407 threshold 0.058 True loss 0.576 Approx loss 0.983 Delta norm 0.115 is larger than threshold 0.058. 
+08/09/2024 19:30:46 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:30:46 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:30:58 - INFO - logs-2024-08-09-18-43-57 -   Iter 422 loss difference 0.128 threshold 0.040 True loss 0.403 Approx loss 0.531 Delta norm 0.072 is larger than threshold 0.040. 
+08/09/2024 19:30:59 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:30:59 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:31:01 - INFO - logs-2024-08-09-18-43-57 -   Epoch 8:	Train Loss: 0.312955	Train Acc: 0.722006	Val Loss: 0.284378	Val Acc: 0.929400
+08/09/2024 19:31:01 - INFO - logs-2024-08-09-18-43-57 -   Epoch 8:	Data Loading Time: 0.002057	Forward Time: 0.000659	Backward Time: 0.001399
+08/09/2024 19:31:01 - INFO - logs-2024-08-09-18-43-57 -   Epoch 9 LR 0.045000
+08/09/2024 19:31:12 - INFO - logs-2024-08-09-18-43-57 -   Iter 423 loss difference 0.050 threshold 0.030 True loss 0.297 Approx loss 0.347 Delta norm 0.061 is larger than threshold 0.030. 
+08/09/2024 19:31:13 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:31:13 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:31:25 - INFO - logs-2024-08-09-18-43-57 -   Iter 424 loss difference 0.014 threshold 0.027 True loss 0.266 Approx loss 0.279 Delta norm 0.055
+08/09/2024 19:31:38 - INFO - logs-2024-08-09-18-43-57 -   Iter 425 loss difference 0.017 threshold 0.024 True loss 0.240 Approx loss 0.257 Delta norm 0.077
+08/09/2024 19:31:49 - INFO - logs-2024-08-09-18-43-57 -   Iter 426 loss difference 0.009 threshold 0.024 True loss 0.244 Approx loss 0.253 Delta norm 0.092
+08/09/2024 19:32:01 - INFO - logs-2024-08-09-18-43-57 -   Iter 427 loss difference 0.001 threshold 0.024 True loss 0.239 Approx loss 0.238 Delta norm 0.108
+08/09/2024 19:32:12 - INFO - logs-2024-08-09-18-43-57 -   Iter 428 loss difference 0.026 threshold 0.021 True loss 0.211 Approx loss 0.237 Delta norm 0.115 is larger than threshold 0.021. 
+08/09/2024 19:32:13 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:32:13 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:32:24 - INFO - logs-2024-08-09-18-43-57 -   Iter 429 loss difference 0.000 threshold 0.020 True loss 0.204 Approx loss 0.204 Delta norm 0.028
+08/09/2024 19:32:35 - INFO - logs-2024-08-09-18-43-57 -   Iter 430 loss difference 0.007 threshold 0.019 True loss 0.194 Approx loss 0.201 Delta norm 0.033
+08/09/2024 19:32:47 - INFO - logs-2024-08-09-18-43-57 -   Iter 431 loss difference 0.007 threshold 0.019 True loss 0.189 Approx loss 0.196 Delta norm 0.044
+08/09/2024 19:32:58 - INFO - logs-2024-08-09-18-43-57 -   Iter 432 loss difference 0.005 threshold 0.019 True loss 0.189 Approx loss 0.194 Delta norm 0.053
+08/09/2024 19:33:10 - INFO - logs-2024-08-09-18-43-57 -   Iter 433 loss difference 0.011 threshold 0.018 True loss 0.183 Approx loss 0.194 Delta norm 0.058
+08/09/2024 19:33:21 - INFO - logs-2024-08-09-18-43-57 -   Iter 434 loss difference 0.082 threshold 0.028 True loss 0.278 Approx loss 0.196 Delta norm 0.094 is larger than threshold 0.028. 
+08/09/2024 19:33:22 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:33:23 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:33:34 - INFO - logs-2024-08-09-18-43-57 -   Iter 435 loss difference 0.035 threshold 0.021 True loss 0.210 Approx loss 0.245 Delta norm 0.083 is larger than threshold 0.021. 
+08/09/2024 19:33:35 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:33:35 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:33:47 - INFO - logs-2024-08-09-18-43-57 -   Iter 436 loss difference 0.028 threshold 0.019 True loss 0.192 Approx loss 0.220 Delta norm 0.032 is larger than threshold 0.019. 
+08/09/2024 19:33:48 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:33:48 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:33:59 - INFO - logs-2024-08-09-18-43-57 -   Iter 437 loss difference 0.006 threshold 0.019 True loss 0.190 Approx loss 0.184 Delta norm 0.035
+08/09/2024 19:34:11 - INFO - logs-2024-08-09-18-43-57 -   Iter 438 loss difference 0.003 threshold 0.018 True loss 0.182 Approx loss 0.185 Delta norm 0.038
+08/09/2024 19:34:23 - INFO - logs-2024-08-09-18-43-57 -   Iter 439 loss difference 0.005 threshold 0.018 True loss 0.176 Approx loss 0.180 Delta norm 0.043
+08/09/2024 19:34:35 - INFO - logs-2024-08-09-18-43-57 -   Iter 440 loss difference 0.011 threshold 0.017 True loss 0.169 Approx loss 0.180 Delta norm 0.049
+08/09/2024 19:34:47 - INFO - logs-2024-08-09-18-43-57 -   Iter 441 loss difference 0.011 threshold 0.017 True loss 0.170 Approx loss 0.181 Delta norm 0.050
+08/09/2024 19:34:58 - INFO - logs-2024-08-09-18-43-57 -   Iter 442 loss difference 0.011 threshold 0.017 True loss 0.173 Approx loss 0.184 Delta norm 0.054
+08/09/2024 19:35:10 - INFO - logs-2024-08-09-18-43-57 -   Iter 443 loss difference 0.009 threshold 0.017 True loss 0.171 Approx loss 0.180 Delta norm 0.067
+08/09/2024 19:35:22 - INFO - logs-2024-08-09-18-43-57 -   Iter 444 loss difference 0.012 threshold 0.016 True loss 0.164 Approx loss 0.176 Delta norm 0.072
+08/09/2024 19:35:35 - INFO - logs-2024-08-09-18-43-57 -   Iter 445 loss difference 0.013 threshold 0.017 True loss 0.167 Approx loss 0.180 Delta norm 0.080
+08/09/2024 19:35:48 - INFO - logs-2024-08-09-18-43-57 -   Iter 446 loss difference 0.010 threshold 0.017 True loss 0.171 Approx loss 0.182 Delta norm 0.089
+08/09/2024 19:36:00 - INFO - logs-2024-08-09-18-43-57 -   Iter 447 loss difference 0.014 threshold 0.016 True loss 0.160 Approx loss 0.174 Delta norm 0.091
+08/09/2024 19:36:12 - INFO - logs-2024-08-09-18-43-57 -   Iter 448 loss difference 0.760 threshold 0.093 True loss 0.932 Approx loss 0.172 Delta norm 0.186 is larger than threshold 0.093. 
+08/09/2024 19:36:13 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:36:13 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:36:26 - INFO - logs-2024-08-09-18-43-57 -   Iter 449 loss difference 1.177 threshold 0.102 True loss 1.018 Approx loss -0.159 Delta norm 0.475 is larger than threshold 0.102. 
+08/09/2024 19:36:27 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:36:27 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:36:39 - INFO - logs-2024-08-09-18-43-57 -   Iter 450 loss difference 0.194 threshold 0.078 True loss 0.778 Approx loss 0.972 Delta norm 0.121 is larger than threshold 0.078. 
+08/09/2024 19:36:41 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:36:41 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:36:52 - INFO - logs-2024-08-09-18-43-57 -   Iter 451 loss difference 0.163 threshold 0.055 True loss 0.554 Approx loss 0.717 Delta norm 0.088 is larger than threshold 0.055. 
+08/09/2024 19:36:53 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:36:53 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:37:04 - INFO - logs-2024-08-09-18-43-57 -   Iter 452 loss difference 0.038 threshold 0.047 True loss 0.470 Approx loss 0.508 Delta norm 0.060
+08/09/2024 19:37:16 - INFO - logs-2024-08-09-18-43-57 -   Iter 453 loss difference 0.101 threshold 0.042 True loss 0.419 Approx loss 0.520 Delta norm 0.086 is larger than threshold 0.042. 
+08/09/2024 19:37:17 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:37:18 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:37:30 - INFO - logs-2024-08-09-18-43-57 -   Iter 454 loss difference 0.048 threshold 0.035 True loss 0.348 Approx loss 0.396 Delta norm 0.064 is larger than threshold 0.035. 
+08/09/2024 19:37:31 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:37:31 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:37:43 - INFO - logs-2024-08-09-18-43-57 -   Iter 455 loss difference 0.024 threshold 0.027 True loss 0.271 Approx loss 0.295 Delta norm 0.054
+08/09/2024 19:37:55 - INFO - logs-2024-08-09-18-43-57 -   Iter 456 loss difference 0.048 threshold 0.023 True loss 0.232 Approx loss 0.280 Delta norm 0.080 is larger than threshold 0.023. 
+08/09/2024 19:37:56 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:37:56 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:38:08 - INFO - logs-2024-08-09-18-43-57 -   Iter 457 loss difference 0.001 threshold 0.021 True loss 0.209 Approx loss 0.210 Delta norm 0.040
+08/09/2024 19:38:19 - INFO - logs-2024-08-09-18-43-57 -   Iter 458 loss difference 0.004 threshold 0.020 True loss 0.198 Approx loss 0.202 Delta norm 0.055
+08/09/2024 19:38:31 - INFO - logs-2024-08-09-18-43-57 -   Iter 459 loss difference 0.008 threshold 0.019 True loss 0.190 Approx loss 0.198 Delta norm 0.064
+08/09/2024 19:38:43 - INFO - logs-2024-08-09-18-43-57 -   Iter 460 loss difference 0.011 threshold 0.019 True loss 0.186 Approx loss 0.197 Delta norm 0.078
+08/09/2024 19:38:53 - INFO - logs-2024-08-09-18-43-57 -   Iter 461 loss difference 0.011 threshold 0.017 True loss 0.174 Approx loss 0.185 Delta norm 0.090
+08/09/2024 19:39:05 - INFO - logs-2024-08-09-18-43-57 -   Iter 462 loss difference 0.021 threshold 0.021 True loss 0.208 Approx loss 0.187 Delta norm 0.108 is larger than threshold 0.021. 
+08/09/2024 19:39:06 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:39:06 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:39:19 - INFO - logs-2024-08-09-18-43-57 -   Iter 463 loss difference 0.024 threshold 0.018 True loss 0.185 Approx loss 0.209 Delta norm 0.038 is larger than threshold 0.018. 
+08/09/2024 19:39:20 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:39:20 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:39:32 - INFO - logs-2024-08-09-18-43-57 -   Iter 464 loss difference 0.001 threshold 0.015 True loss 0.154 Approx loss 0.155 Delta norm 0.026
+08/09/2024 19:39:43 - INFO - logs-2024-08-09-18-43-57 -   Iter 465 loss difference 0.002 threshold 0.015 True loss 0.151 Approx loss 0.152 Delta norm 0.032
+08/09/2024 19:39:55 - INFO - logs-2024-08-09-18-43-57 -   Iter 466 loss difference 0.000 threshold 0.015 True loss 0.149 Approx loss 0.149 Delta norm 0.043
+08/09/2024 19:40:08 - INFO - logs-2024-08-09-18-43-57 -   Iter 467 loss difference 0.005 threshold 0.015 True loss 0.147 Approx loss 0.141 Delta norm 0.049
+08/09/2024 19:40:20 - INFO - logs-2024-08-09-18-43-57 -   Iter 468 loss difference 0.007 threshold 0.015 True loss 0.148 Approx loss 0.154 Delta norm 0.055
+08/09/2024 19:40:32 - INFO - logs-2024-08-09-18-43-57 -   Iter 469 loss difference 0.041 threshold 0.018 True loss 0.185 Approx loss 0.144 Delta norm 0.084 is larger than threshold 0.018. 
+08/09/2024 19:40:33 - INFO - logs-2024-08-09-18-43-57 -   Updating train loader and weights with subset of size 650
+08/09/2024 19:40:33 - INFO - logs-2024-08-09-18-43-57 -   Checking interval 1. Number of minibatch coresets 5
+08/09/2024 19:40:35 - INFO - logs-2024-08-09-18-43-57 -   Epoch 9:	Train Loss: 0.265432	Train Acc: 0.744379	Val Loss: 0.163834	Val Acc: 0.951100
+08/09/2024 19:40:35 - INFO - logs-2024-08-09-18-43-57 -   Epoch 9:	Data Loading Time: 0.002744	Forward Time: 0.000702	Backward Time: 0.001486
+08/09/2024 19:58:26 - INFO - logs-2024-08-09-19-58-26 -   Arguments: Namespace(approx_moment=True, approx_with_coreset=True, arch='LeNet', batch_num_mul=5, batch_size=128, check_interval=20, check_thresh_factor=0.1, data_dir='~/scratch/data', dataset='MNIST', device=device(type='cuda'), drop_interval=20, drop_learned=True, drop_thresh=0.1, epochs=10, gamma=0.1, gpu=[0], interval_mul=1.0, log_dir='./logs', logger=<Logger logs-2024-08-09-19-58-26 (INFO)>, lr=0.1, lr_milestones=[100, 150], min_train_size=40000, momentum=0.9, num_classes=10, num_minibatch_coreset=5, num_workers=1, partition_start=0, random_subset_size=0.01, resume_from_epoch=0, runs=1, save_freq=200, seed=0, selection_method='none', shuffle=True, smtk=0, statedict_dir='./state_dicts', subset_start_epoch=0, train_frac=0.1, use_wandb=False, warm_start_epochs=20, watch_interval=5, weight_decay=0.0001)
+08/09/2024 19:58:26 - INFO - logs-2024-08-09-19-58-26 -   Time: 2024-08-09 19:58:26
+08/09/2024 19:58:53 - INFO - logs-2024-08-09-19-58-26 -   Epoch 0:	Train Loss: 2.306696	Train Acc: 0.104000	Val Loss: 2.307026	Val Acc: 0.105100
+08/09/2024 19:58:53 - INFO - logs-2024-08-09-19-58-26 -   Epoch 0:	Data Loading Time: 0.019573	Forward Time: 0.000520	Backward Time: 0.001217
+08/09/2024 19:59:05 - INFO - logs-2024-08-09-19-58-26 -   Epoch 1:	Train Loss: 2.236100	Train Acc: 0.276967	Val Loss: 2.019186	Val Acc: 0.606000
+08/09/2024 19:59:05 - INFO - logs-2024-08-09-19-58-26 -   Epoch 1:	Data Loading Time: 0.019163	Forward Time: 0.000521	Backward Time: 0.001187
+08/09/2024 19:59:17 - INFO - logs-2024-08-09-19-58-26 -   Epoch 2:	Train Loss: 0.664439	Train Acc: 0.835017	Val Loss: 0.273520	Val Acc: 0.919500
+08/09/2024 19:59:17 - INFO - logs-2024-08-09-19-58-26 -   Epoch 2:	Data Loading Time: 0.019633	Forward Time: 0.000532	Backward Time: 0.001233
+08/09/2024 19:59:30 - INFO - logs-2024-08-09-19-58-26 -   Epoch 3:	Train Loss: 0.229398	Train Acc: 0.930733	Val Loss: 0.148840	Val Acc: 0.955700
+08/09/2024 19:59:30 - INFO - logs-2024-08-09-19-58-26 -   Epoch 3:	Data Loading Time: 0.020127	Forward Time: 0.000540	Backward Time: 0.001230
+08/09/2024 19:59:43 - INFO - logs-2024-08-09-19-58-26 -   Epoch 4:	Train Loss: 0.141072	Train Acc: 0.956867	Val Loss: 0.152330	Val Acc: 0.951000
+08/09/2024 19:59:43 - INFO - logs-2024-08-09-19-58-26 -   Epoch 4:	Data Loading Time: 0.019609	Forward Time: 0.000570	Backward Time: 0.001225
+08/09/2024 19:59:56 - INFO - logs-2024-08-09-19-58-26 -   Epoch 5:	Train Loss: 0.105531	Train Acc: 0.968100	Val Loss: 0.070577	Val Acc: 0.977900
+08/09/2024 19:59:56 - INFO - logs-2024-08-09-19-58-26 -   Epoch 5:	Data Loading Time: 0.020751	Forward Time: 0.000555	Backward Time: 0.001273
+08/09/2024 20:00:09 - INFO - logs-2024-08-09-19-58-26 -   Epoch 6:	Train Loss: 0.083309	Train Acc: 0.974550	Val Loss: 0.071892	Val Acc: 0.978000
+08/09/2024 20:00:09 - INFO - logs-2024-08-09-19-58-26 -   Epoch 6:	Data Loading Time: 0.020853	Forward Time: 0.000554	Backward Time: 0.001251
+08/09/2024 20:00:23 - INFO - logs-2024-08-09-19-58-26 -   Epoch 7:	Train Loss: 0.070660	Train Acc: 0.978550	Val Loss: 0.054142	Val Acc: 0.981600
+08/09/2024 20:00:23 - INFO - logs-2024-08-09-19-58-26 -   Epoch 7:	Data Loading Time: 0.023242	Forward Time: 0.000612	Backward Time: 0.001380
+08/09/2024 20:00:37 - INFO - logs-2024-08-09-19-58-26 -   Epoch 8:	Train Loss: 0.059860	Train Acc: 0.981283	Val Loss: 0.045120	Val Acc: 0.985000
+08/09/2024 20:00:37 - INFO - logs-2024-08-09-19-58-26 -   Epoch 8:	Data Loading Time: 0.021609	Forward Time: 0.000563	Backward Time: 0.001308
+08/09/2024 20:00:51 - INFO - logs-2024-08-09-19-58-26 -   Epoch 9:	Train Loss: 0.056548	Train Acc: 0.982267	Val Loss: 0.048017	Val Acc: 0.984100
+08/09/2024 20:00:51 - INFO - logs-2024-08-09-19-58-26 -   Epoch 9:	Data Loading Time: 0.021714	Forward Time: 0.000573	Backward Time: 0.001308
+08/15/2024 15:34:06 - INFO - logs-2024-08-15-15-34-06 -   Arguments: Namespace(approx_moment=True, approx_with_coreset=True, arch='LeNet', batch_num_mul=5, batch_size=128, check_interval=20, check_thresh_factor=0.1, data_dir='./data', dataset='MNIST', device=device(type='cuda'), drop_interval=20, drop_learned=True, drop_thresh=0.1, epochs=10, gamma=0.1, gpu=[0], interval_mul=1.0, log_dir='./logs', logger=<Logger logs-2024-08-15-15-34-06 (INFO)>, lr=0.1, lr_milestones=[100, 150], min_train_size=40000, momentum=0.9, num_classes=10, num_minibatch_coreset=5, num_workers=1, partition_start=0, random_subset_size=0.01, resume_from_epoch=0, runs=1, save_freq=200, seed=0, selection_method='none', shuffle=True, smtk=0, statedict_dir='./state_dicts', subset_start_epoch=0, train_frac=0.1, use_wandb=False, warm_start_epochs=20, watch_interval=5, weight_decay=0.0001)
+08/15/2024 15:34:06 - INFO - logs-2024-08-15-15-34-06 -   Time: 2024-08-15 15:34:06

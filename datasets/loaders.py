@@ -2,11 +2,24 @@
 from torchvision import datasets, transforms
 from torchvision.transforms.functional import InterpolationMode
 import os
+import torch
 # from datasets import load_dataset, load_from_disk
 
 def load_data(args, train=True):
 
-    if args.dataset == 'CIFAR10':
+    if args.dataset == 'MNIST':
+
+        # Load the dataset
+        transform = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Normalize((0.1307,), (0.3081,))  # MNIST mean and std
+        ])
+        if train:
+            dataset = datasets.MNIST(root=args.data_dir, train=True, download=True, transform=transform)
+        else:
+            dataset = datasets.MNIST(root=args.data_dir, train=False, download=True, transform=transform)
+
+    elif args.dataset == 'CIFAR10':
 
         transform = transforms.Compose([
                 transforms.ToTensor(),
@@ -40,6 +53,20 @@ def load_data(args, train=True):
         # test_dataset = IndexedDataset('Imagenet1k', test_folder, transform= transform) 
 
         print('load dataloader')
+
+    elif args.dataset == 'random':
+
+
+        from torch.utils.data import TensorDataset
+
+        # Create 10 unique integers as observations
+        observations = torch.randperm(10)
+
+        # Create corresponding labels (for example, labels can be the same as observations, or any other related value)
+        labels = observations.clone()  # Here, labels are the same as observations for simplicity
+
+        # Combine observations and labels into a TensorDataset
+        dataset = TensorDataset(observations.view(-1, 1), labels.view(-1, 1))
 
     # elif self.data == 'Imagenette':
 

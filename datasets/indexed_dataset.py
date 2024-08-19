@@ -47,17 +47,17 @@ class IndexedDataset(Dataset): #Dataset
         #         9: 701   # n04251144  }
         
         # Initializing the targets attribute
-        if self.dataset_name == 'Imagenette':
-            self.targets = [self.imagenette_to_imagenet[d['label']] for d in self.dataset]
-        elif self.dataset_name in ['Imagenet1k', 'CIFAR10']:
-            self.targets = [d[1] for d in self.dataset]  # Assuming the dataset is a list of tuples (image, label)
-        else:
-            print('Dataset name error')
+        # if self.dataset_name == 'Imagenette':
+        #     self.targets = [self.imagenette_to_imagenet[d['label']] for d in self.dataset]
+        # elif self.dataset_name in ['Imagenet1k', 'CIFAR10', 'MNIST']:
+        #     self.targets = [d[1] for d in self.dataset]  # Assuming the dataset is a list of tuples (image, label)
+        # else:
+        #     print('Dataset name error')
 
     def __len__(self):
         return len(self.dataset)
     
-    def get_item_imagenet(self, idx):
+    def get_item_skip(self, idx):
         try:
             data = self.dataset[idx]
             if isinstance(data, tuple) and len(data) == 2:
@@ -74,17 +74,17 @@ class IndexedDataset(Dataset): #Dataset
     #     label = self.imagenette_to_imagenet[ self.dataset[idx]['label'] ]
     #     return image, label
     
-    def get_item_cifar10(self,idx):
+    def get_item_noskip(self,idx):
         image, label = self.dataset[idx]
         return image, label
     
     def __getitem__(self, idx):
 
         if self.dataset_name == 'Imagenet1k':
-            image_data,label = self.get_item_imagenet(idx)
+            image_data,label = self.get_item_skip(idx)
 
-        elif self.dataset_name == 'CIFAR10':
-            image_data,label = self.get_item_cifar10(idx)
+        elif self.dataset_name in ['CIFAR10','MNIST', 'random']:
+            image_data,label = self.get_item_noskip(idx)
         # elif self.dataset_name == 'Imagenette':
         #     image_data,label = self.get_item_imagenette(idx)
         else:    

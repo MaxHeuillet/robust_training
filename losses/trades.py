@@ -26,7 +26,6 @@ def trades_loss(model,
     
     # define KL-loss
     # criterion_kl = nn.KLDivLoss(size_average=False)
-    criterion_kl = nn.KLDivLoss(reduction='sum')
     model.eval()
     batch_size = len(x_natural)
     # generate adversarial example
@@ -46,7 +45,7 @@ def trades_loss(model,
                 #print('infer')
                 logits_nat, logits_adv = model(x_natural, x_adv)
                 #print('kl loss')
-                loss_kl = criterion_kl( F.log_softmax(logits_adv, dim=1), F.softmax(logits_nat, dim=1) )
+                loss_kl = nn.KLDivLoss(reduction='sum')( F.log_softmax(logits_adv, dim=1), F.softmax(logits_nat, dim=1) )
 
             # print(f' GPU Memory Allocated: {torch.cuda.memory_allocated()} bytes')
             # print(f' GPU Memory Cached: {torch.cuda.memory_reserved()} bytes')
@@ -68,8 +67,18 @@ def trades_loss(model,
     optimizer.zero_grad()
     # calculate robust loss
     logits_nat, logits_adv = model(x_natural, x_adv)
-    loss_natural = F.cross_entropy(logits_nat, y)
-    loss_robust = (1.0 / batch_size) * criterion_kl(F.log_softmax(logits_adv, dim=1), F.softmax(logits_nat, dim=1))
-    loss = loss_natural + beta * loss_robust
+    # print(logits_nat.shape, logits_adv.shape)
+    
+    clean_values = F.cross_entropy(logits_nat, y, reduction='none')
+    # print(loss_natural.shape)  # Should be [batch_size]
 
-    return logits_nat, loss
+    robust_values = nn.KLDivLoss(reduction='none')( F.log_softmax(logits_adv, dim=1), F.softmax(logits_nat, dim=1) ).sum(dim=1)
+    # print(loss_robust.shape)  # Should be [batch_size]
+    
+    loss_values = clean_values + beta * robust_values
+    # print(loss_individual.shape)  # Should be [batch_size]
+
+
+    # print(loss.shape)  # Should be a scalar []
+
+    return loss_values, clean_values, robust_values

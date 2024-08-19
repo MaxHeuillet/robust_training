@@ -6,7 +6,7 @@
 #SBATCH --cpus-per-task=10
 #SBATCH --gres=gpu:v100l:4
 #SBATCH --mem-per-cpu=4000M
-#SBATCH --time=24:00:00
+#SBATCH --time=05:00:00
 #SBATCH --mail-user=maxime.heuillet.1@ulaval.ca
 #SBATCH --mail-type=ALL
 

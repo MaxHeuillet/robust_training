@@ -37,9 +37,10 @@ def get_args():
     parser = argparse.ArgumentParser()
 
     # General options
-    parser.add_argument("--arch", default="resnet50", choices=['resnet20', 'resnet18', 'resnet50'], help="model architecture")
-    parser.add_argument('--data_dir', default='~/scratch/data')
-    parser.add_argument('--dataset', default='CIFAR10', choices=['CIFAR10', 'CIFAR100','tinyimagenet'], help='dataset: ' + ' (default: cifar10)')
+    parser.add_argument("--arch", default="resnet50", choices=['resnet50', 'LeNet5'], help="model architecture")
+    # parser.add_argument('--data_dir', default='~/scratch/data')
+    parser.add_argument('--data_dir', default='./data')
+    parser.add_argument('--dataset', default='CIFAR10', choices=['CIFAR10', 'CIFAR100','tinyimagenet','MNIST'], help='dataset: ' + ' (default: cifar10)')
     parser.add_argument("--num_workers",default=1, type=int, help="number of data loading workers (default: 4)")
     parser.add_argument("--epochs", default=10, type=int, metavar="N", help="number of total epochs to run")
     parser.add_argument("--resume_from_epoch", default=0, type=int, help="resume from a specific epoch")
@@ -72,7 +73,7 @@ def get_args():
         help="use momentum in approximation")
     parser.add_argument("--approx_with_coreset", default=True, type=parse_bool, const=True, nargs='?',
         help="use all (selected) coreset data for loss function approximation")
-    parser.add_argument("--check_interval", default=1, type=int,
+    parser.add_argument("--check_interval", default=20, type=int,
         help="frequency to check the loss difference")
     parser.add_argument("--num_minibatch_coreset", default=5, type=int, 
         help="number of minibatches to select together")
@@ -92,7 +93,7 @@ def get_args():
         help="which epoch to start selecting by minibatches")
 
     # dropping examples below a loss threshold
-    parser.add_argument('--drop_learned', default=False, type=parse_bool, const=True, nargs='?', help='drop learned examples')
+    parser.add_argument('--drop_learned', default=True, type=parse_bool, const=True, nargs='?', help='drop learned examples')
     parser.add_argument('--watch_interval', default=5, type=int, help='decide whether an example is learned based on how many epochs')
     parser.add_argument('--drop_interval', default=20, type=int, help='decide whether an example is learned based on how many epochs')
     parser.add_argument('--drop_thresh', default=0.1, type=float, help='loss threshold')
