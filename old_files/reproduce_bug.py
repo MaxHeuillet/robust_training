@@ -9,7 +9,7 @@ from torch.autograd import Variable
 import torch.distributed as dist
 import torch.nn.functional as F
 
-from models_local import resnet_imagenet
+from architectures import resnet_imagenet
 
 
 class CustomDataset(Dataset):

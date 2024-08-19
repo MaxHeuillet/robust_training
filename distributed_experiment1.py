@@ -31,14 +31,11 @@ import gzip
 
 import pickle as pkl
 
-import torch.nn.utils.parametrize as parametrize
-import lora 
-
 # import active
 import math
 
 from torch.utils.data import Subset
-import trades
+import losses.trades as trades
 import utils
 # import sys
 
@@ -48,7 +45,6 @@ from torch.utils.data import DataLoader
 import torch.distributed as dist
 from torchvision.transforms.functional import InterpolationMode
 
-from models_local import resnet_imagenet, resnet_cifar10
 
 import random
 
@@ -171,7 +167,6 @@ class BaseExperiment:
 
         self.conf = conf
 
-
         self.n_rounds = conf['rounds']
         self.size = conf['size']
         self.epochs = conf['epochs']
@@ -187,7 +182,6 @@ class BaseExperiment:
 
         self.world_size = world_size
         self.jobid = jobid
-
 
         if os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'beluga' and self.loss == 'TRADES':
             self.batch_size_uncertainty = 512
@@ -224,156 +218,156 @@ class BaseExperiment:
         else:
             print('error')
 
-    def load_model(self,):
-        if self.model == 'resnet50' and self.data == 'CIFAR10':
-            model = resnet_cifar10.ResNet(resnet_cifar10.Bottleneck, [3, 4, 6, 3] )
-            state_dict = torch.load('./state_dicts/resnet50_cifar10.pt')
-            model.load_state_dict(state_dict)
-            model.to('cuda')
+    # def load_model(self,):
+    #     if self.model == 'resnet50' and self.data == 'CIFAR10':
+    #         model = resnet_cifar10.ResNet(resnet_cifar10.Bottleneck, [3, 4, 6, 3] )
+    #         state_dict = torch.load('./state_dicts/resnet50_cifar10.pt')
+    #         model.load_state_dict(state_dict)
+    #         model.to('cuda')
 
-        elif self.model == 'resnet50' and self.data in ['Imagenet1k' , 'Imagenette']:
-            model = resnet_imagenet.ResNet(resnet_imagenet.Bottleneck, [3, 4, 6, 3], )
-            state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
-            model.load_state_dict(state_dict)
-            model.to('cuda')
+    #     elif self.model == 'resnet50' and self.data in ['Imagenet1k' , 'Imagenette']:
+    #         model = resnet_imagenet.ResNet(resnet_imagenet.Bottleneck, [3, 4, 6, 3], )
+    #         state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
+    #         model.load_state_dict(state_dict)
+    #         model.to('cuda')
 
-        self.add_lora(model)
+    #     self.add_lora(model)
 
-        return model
+    #     return model
     
 
-    def add_lora(self, model):
+    # def add_lora(self, model):
 
-        layers = [ model.conv1, model.layer1[0].conv1, model.layer1[0].conv2, model.layer1[0].conv3,
-                model.layer2[0].conv1, model.layer2[0].conv2, model.layer2[0].conv3,
-                model.layer3[0].conv1, model.layer3[0].conv2, model.layer3[0].conv3,
-                model.layer4[0].conv1, model.layer4[0].conv2, model.layer4[0].conv3, model.fc ]
+    #     layers = [ model.conv1, model.layer1[0].conv1, model.layer1[0].conv2, model.layer1[0].conv3,
+    #             model.layer2[0].conv1, model.layer2[0].conv2, model.layer2[0].conv3,
+    #             model.layer3[0].conv1, model.layer3[0].conv2, model.layer3[0].conv3,
+    #             model.layer4[0].conv1, model.layer4[0].conv2, model.layer4[0].conv3, model.fc ]
 
-        for conv_layer in layers:
-            lora_param = lora.layer_parametrization(conv_layer, device="cuda", rank=10, lora_alpha=1)
-            parametrize.register_parametrization(conv_layer, 'weight', lora_param)
+    #     for conv_layer in layers:
+    #         lora_param = lora.layer_parametrization(conv_layer, device="cuda", rank=10, lora_alpha=1)
+    #         parametrize.register_parametrization(conv_layer, 'weight', lora_param)
 
-        lora.set_lora_gradients(model, layers)
+    #     lora.set_lora_gradients(model, layers)
         
     
-    def load_data(self,):
+    # def load_data(self,):
 
-        if self.data == 'CIFAR10':
+    #     if self.data == 'CIFAR10':
 
-            transform = transforms.Compose([
-                transforms.ToTensor(),
-                transforms.Normalize( mean=(0.4914, 0.4822, 0.4465), std=(0.2471, 0.2435, 0.2616) )  ])
+    #         transform = transforms.Compose([
+    #             transforms.ToTensor(),
+    #             transforms.Normalize( mean=(0.4914, 0.4822, 0.4465), std=(0.2471, 0.2435, 0.2616) )  ])
 
-            train_folder = datasets.CIFAR10(root='~/scratch/data', train=True)
-            test_folder = datasets.CIFAR10(root='~/scratch/data', train=False)
+    #         train_folder = datasets.CIFAR10(root='~/scratch/data', train=True)
+    #         test_folder = datasets.CIFAR10(root='~/scratch/data', train=False)
 
-            pool_dataset = CustomImageDataset('CIFAR10', train_folder, transform= transform ) 
-            test_dataset = CustomImageDataset('CIFAR10', test_folder, transform= transform) 
+    #         pool_dataset = CustomImageDataset('CIFAR10', train_folder, transform= transform ) 
+    #         test_dataset = CustomImageDataset('CIFAR10', test_folder, transform= transform) 
 
-            print('load dataloader')
+    #         print('load dataloader')
             
-        elif self.data == 'Imagenet1k':
+    #     elif self.data == 'Imagenet1k':
 
-            transform = transforms.Compose([
-                transforms.Lambda(to_rgb),
-                transforms.Resize(232, interpolation=InterpolationMode.BILINEAR),  # Resize the image to 232x232
-                transforms.CenterCrop(224),  # Crop the center of the image to make it 224x224
-                transforms.ToTensor(),  # Convert the image to a tensor
-                transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  ])
+    #         transform = transforms.Compose([
+    #             transforms.Lambda(to_rgb),
+    #             transforms.Resize(232, interpolation=InterpolationMode.BILINEAR),  # Resize the image to 232x232
+    #             transforms.CenterCrop(224),  # Crop the center of the image to make it 224x224
+    #             transforms.ToTensor(),  # Convert the image to a tensor
+    #             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  ])
 
-            train_folder = datasets.ImageFolder(os.path.join(os.environ['SLURM_TMPDIR'], 'data/imagenet/train'))
-            test_folder = datasets.ImageFolder(os.path.join(os.environ['SLURM_TMPDIR'], 'data/imagenet/val'))
+    #         train_folder = datasets.ImageFolder(os.path.join(os.environ['SLURM_TMPDIR'], 'data/imagenet/train'))
+    #         test_folder = datasets.ImageFolder(os.path.join(os.environ['SLURM_TMPDIR'], 'data/imagenet/val'))
 
-            pool_dataset = CustomImageDataset('Imagenet1k', train_folder, transform= transform ) 
-            test_dataset = CustomImageDataset('Imagenet1k', test_folder, transform= transform) 
+    #         pool_dataset = CustomImageDataset('Imagenet1k', train_folder, transform= transform ) 
+    #         test_dataset = CustomImageDataset('Imagenet1k', test_folder, transform= transform) 
 
-            print('load dataloader')
+    #         print('load dataloader')
 
-        elif self.data == 'Imagenette':
+    #     elif self.data == 'Imagenette':
 
-            transform = transforms.Compose([
-                transforms.Lambda(to_rgb),
-                transforms.Resize(232, interpolation=InterpolationMode.BILINEAR),  
-                transforms.CenterCrop(224),  
-                transforms.ToTensor(), 
-                transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  
-            ])
+    #         transform = transforms.Compose([
+    #             transforms.Lambda(to_rgb),
+    #             transforms.Resize(232, interpolation=InterpolationMode.BILINEAR),  
+    #             transforms.CenterCrop(224),  
+    #             transforms.ToTensor(), 
+    #             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  
+    #         ])
 
-            # dataset = load_dataset("frgfm/imagenette", "full_size", cache_dir='/home/mheuill/scratch')
-            dataset = load_from_disk('/home/mheuill/scratch/imagenette')
+    #         # dataset = load_dataset("frgfm/imagenette", "full_size", cache_dir='/home/mheuill/scratch')
+    #         dataset = load_from_disk('/home/mheuill/scratch/imagenette')
 
-            pool_dataset = CustomImageDataset('Imagenette', dataset['train'], transform= transform )
+    #         pool_dataset = CustomImageDataset('Imagenette', dataset['train'], transform= transform )
         
-            test_dataset = CustomImageDataset('Imagenette', dataset['validation'], transform= transform )
+    #         test_dataset = CustomImageDataset('Imagenette', dataset['validation'], transform= transform )
 
-            print('load dataloader')
+    #         print('load dataloader')
             
-        else:
-            print('undefined data')
+    #     else:
+    #         print('undefined data')
 
-        return pool_dataset, test_dataset
+    #     return pool_dataset, test_dataset
     
 
-    def uncertainty_sampling(self, rank, args):
-        state_dict, pool_dataset, N, top_n_indices = args
+    # def uncertainty_sampling(self, rank, args):
+    #     state_dict, pool_dataset, N, top_n_indices = args
 
-        setup(self.world_size, rank)
+    #     setup(self.world_size, rank)
 
-        sampler = DistributedSampler(pool_dataset, num_replicas=self.world_size, rank=rank, shuffle=False)
-        loader = DataLoader(pool_dataset, batch_size=self.batch_size_uncertainty, sampler=sampler, num_workers=self.world_size, shuffle=False)
+    #     sampler = DistributedSampler(pool_dataset, num_replicas=self.world_size, rank=rank, shuffle=False)
+    #     loader = DataLoader(pool_dataset, batch_size=self.batch_size_uncertainty, sampler=sampler, num_workers=self.world_size, shuffle=False)
 
-        model = self.load_model()
-        model.load_state_dict(state_dict)
-        model.to(rank)
-        model.eval()  # Ensure the model is in evaluation mode
-        model = DDP(model, device_ids=[rank])
+    #     model = self.load_model()
+    #     model.load_state_dict(state_dict)
+    #     model.to(rank)
+    #     model.eval()  # Ensure the model is in evaluation mode
+    #     model = DDP(model, device_ids=[rank])
 
-        print('do the predictions')
-        predictions = []
-        indices_list = []
-        with torch.no_grad():
-            for inputs, _, indices in loader:
-                inputs = inputs.cuda(rank)
-                outputs = model(inputs) 
-                predictions.append(outputs)
-                indices_list.append( indices.cuda(rank) )
-        print('prepare the predictions')
-        predictions = torch.cat(predictions, dim=0)
-        outputs = torch.softmax(predictions, dim=1)
-        uncertainty = 1 - torch.max(outputs, dim=1)[0]
-        gather_list = [torch.zeros_like(uncertainty) for _ in range(self.world_size)]
+    #     print('do the predictions')
+    #     predictions = []
+    #     indices_list = []
+    #     with torch.no_grad():
+    #         for inputs, _, indices in loader:
+    #             inputs = inputs.cuda(rank)
+    #             outputs = model(inputs) 
+    #             predictions.append(outputs)
+    #             indices_list.append( indices.cuda(rank) )
+    #     print('prepare the predictions')
+    #     predictions = torch.cat(predictions, dim=0)
+    #     outputs = torch.softmax(predictions, dim=1)
+    #     uncertainty = 1 - torch.max(outputs, dim=1)[0]
+    #     gather_list = [torch.zeros_like(uncertainty) for _ in range(self.world_size)]
         
-        indices = torch.cat(indices_list, dim=0)
-        index_gather_list = [torch.zeros_like(indices) for _ in range(self.world_size)]
-        print('gather the predictions')
+    #     indices = torch.cat(indices_list, dim=0)
+    #     index_gather_list = [torch.zeros_like(indices) for _ in range(self.world_size)]
+    #     print('gather the predictions')
 
-        dist.all_gather(gather_list, uncertainty)
-        dist.all_gather(index_gather_list, indices)
+    #     dist.all_gather(gather_list, uncertainty)
+    #     dist.all_gather(index_gather_list, indices)
 
-        dist.barrier()  # Synchronization point
+    #     dist.barrier()  # Synchronization point
 
-        if rank == 0:
-            all_uncertainties = torch.cat(gather_list, dim=0)
-            all_indices = torch.cat(index_gather_list, dim=0)
-            _, top_n_indices_sub = torch.topk(all_uncertainties, N, largest=True)
-            top_n_indices.copy_(all_indices[top_n_indices_sub])
+    #     if rank == 0:
+    #         all_uncertainties = torch.cat(gather_list, dim=0)
+    #         all_indices = torch.cat(index_gather_list, dim=0)
+    #         _, top_n_indices_sub = torch.topk(all_uncertainties, N, largest=True)
+    #         top_n_indices.copy_(all_indices[top_n_indices_sub])
 
-        cleanup()
+    #     cleanup()
 
-    def random_sampling(self, args):
-        pool_dataset, N = args
+    # def random_sampling(self, args):
+    #     pool_dataset, N = args
 
-        # List of all dataset indices
-        all_indices = list( range( len(pool_dataset) ) )
+    #     # List of all dataset indices
+    #     all_indices = list( range( len(pool_dataset) ) )
         
-        # Check if the requested number of instances is greater than the dataset size
-        if N > len(all_indices):
-            print(f"Requested number of instances ({N}) exceeds the dataset size ({len(all_indices)}). Returning all available indices.")
-            return all_indices
+    #     # Check if the requested number of instances is greater than the dataset size
+    #     if N > len(all_indices):
+    #         print(f"Requested number of instances ({N}) exceeds the dataset size ({len(all_indices)}). Returning all available indices.")
+    #         return all_indices
         
-        # Randomly select 'n_instances' indices
-        random_indices = random.sample(all_indices, N)
-        return random_indices
+    #     # Randomly select 'n_instances' indices
+    #     random_indices = random.sample(all_indices, N)
+    #     return random_indices
 
 
     def update(self, rank, args): 

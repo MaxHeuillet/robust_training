@@ -5,7 +5,8 @@ import time
 import numpy as np
 import torch
 import torch.nn as nn
-from tqdm import tqdm
+# from tqdm import tqdm
+from tqdm.notebook import tqdm
 
 import wandb
 from datasets import IndexedDataset
@@ -174,7 +175,7 @@ class BaseTrainer:
 
         data_start = time.time()
         # use tqdm to display a smart progress bar
-        pbar = tqdm(enumerate(self.train_loader), total=len(self.train_loader), file=sys.stdout)
+        pbar = tqdm(self.train_loader, total=len(self.train_loader), file=sys.stdout)
         for batch_idx, (data, target, data_idx) in enumerate(pbar):
 
             # load data to device and record data loading time

@@ -3,12 +3,12 @@ import torch.nn as nn
 import torchvision.models as models
 
 # Define the Bottleneck block used in ResNet-50
-class Bottleneck(nn.Module):
+class Bottleneck_imagenet(nn.Module):
     expansion = 4
 
     def __init__(self, inplanes, planes, stride=1, downsample=None, groups=1,
                  base_width=64, dilation=1, norm_layer=None):
-        super(Bottleneck, self).__init__()
+        super(Bottleneck_imagenet, self).__init__()
         if norm_layer is None:
             norm_layer = nn.BatchNorm2d
         width = int(planes * (base_width / 64.)) * groups
@@ -46,12 +46,12 @@ class Bottleneck(nn.Module):
         return out
 
 # Define the ResNet class
-class ResNet(nn.Module):
+class ResNet_imagenet(nn.Module):
 
     def __init__(self, block, layers, num_classes=1000, zero_init_residual=False,
                  groups=1, width_per_group=64, replace_stride_with_dilation=None,
                  norm_layer=None):
-        super(ResNet, self).__init__()
+        super(ResNet_imagenet, self).__init__()
         if norm_layer is None:
             norm_layer = nn.BatchNorm2d
         self._norm_layer = norm_layer
@@ -150,13 +150,13 @@ class ResNet(nn.Module):
     # def forward(self, x):
     #     return self._forward_impl(x)
 
-# Function to create ResNet-50
-def resnet50(pretrained=False, progress=True, **kwargs):
-    model = ResNet(Bottleneck, [3, 4, 6, 3], **kwargs)
-    if pretrained:
-        # state_dict = models.utils.load_state_dict_from_url(models.resnet.model_urls['resnet50'],
-        #                                       progress=progress)
-        state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
-        # model.load_state_dict(state_dict)
-        model.load_state_dict(state_dict)
-    return model
+# # Function to create ResNet-50
+# def resnet50(pretrained=False, progress=True, **kwargs):
+#     model = ResNet(Bottleneck, [3, 4, 6, 3], **kwargs)
+#     if pretrained:
+#         # state_dict = models.utils.load_state_dict_from_url(models.resnet.model_urls['resnet50'],
+#         #                                       progress=progress)
+#         state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
+#         # model.load_state_dict(state_dict)
+#         model.load_state_dict(state_dict)
+#     return model
