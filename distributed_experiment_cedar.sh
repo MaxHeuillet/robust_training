@@ -51,7 +51,7 @@ python3 ./distributed_experiment1.py \
     --loss_function ${LOSS} \
     --sched ${SCHED} \
     --task ${TASK} \
-    --data ${DATA} \
+    --dataset ${DATA} \
     --arch ${ARCH} \
     --seed ${SEED} \
     --iterations ${NITER} \

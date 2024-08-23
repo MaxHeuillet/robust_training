@@ -31,7 +31,7 @@ python3 ./distributed_experiment1.py \
     --loss_function ${LOSS} \
     --sched ${SCHED} \
     --task ${TASK} \
-    --data ${DATA} \
+    --dataset ${DATA} \
     --arch ${ARCH} \
     --seed ${SEED} \
     --iterations ${NITER} \
@@ -45,16 +45,16 @@ python3 ./distributed_experiment1.py \
 
 
 
-    python3 ./distributed_experiment1.py \
-    --_init_lr 0.01 \
-    --loss_function 'TRADES' \
-    --sched 'sched' \
-    --task 'train' \
-    --data 'MNIST' \
-    --arch 'resnet50' \
-    --seed 0 \
-    --iterations 2 \
-    --pruning_ratio 0.5 \
-    --pruning_strategy 'random' \
-    --batch_strategy 'random' \
-    > stdout_$SLURM_JOB_ID 2> stderr_$SLURM_JOB_ID
+    # python3 ./distributed_experiment1.py \
+    # --_init_lr 0.01 \
+    # --loss_function 'TRADES' \
+    # --sched 'sched' \
+    # --task 'train' \
+    # --dataset 'MNIST' \
+    # --arch 'resnet50' \
+    # --seed 0 \
+    # --iterations 2 \
+    # --pruning_ratio 0.5 \
+    # --pruning_strategy 'random' \
+    # --batch_strategy 'random' \
+    # > stdout_$SLURM_JOB_ID 2> stderr_$SLURM_JOB_ID

@@ -17,7 +17,7 @@ import numpy as np
 import os
 import losses.trades as trades
 
-from transformers import set_seed as hf_set_seed  # Hugging Face specific seed setter
+# from transformers import set_seed as hf_set_seed  # Hugging Face specific seed setter
 
 
 def get_indices_for_round(L, n, current_round):
@@ -63,25 +63,7 @@ def add_data(query_indices, pool_indices, pool_dataset, adapt_dataset):
     
 
 
-def set_seeds(seed):
-    """
-    Set the seed for reproducibility in all used libraries.
-    
-    Args:
-    seed (int): The seed number to set.
-    """
-    # Setting the seed for various Python, Numpy and PyTorch operations
-    random.seed(seed)
-    np.random.seed(seed)
-    torch.manual_seed(seed)
-    torch.cuda.manual_seed(seed)
-    torch.cuda.manual_seed_all(seed)  # if you are using multi-GPU.
-    torch.backends.cudnn.deterministic = True
-    torch.backends.cudnn.benchmark = False
-    hf_set_seed(seed)
-    
-    # Setting the seed for the OS
-    os.environ['PYTHONHASHSEED'] = str(seed)
+
 
 def pgd_linf(model, X, y, epsilon=0.1, alpha=0.01, num_iter=10, randomize=False):
     """ Construct FGSM adversarial examples on the examples X"""
