@@ -136,7 +136,7 @@ class CustomSampler(object):
         if not batch_set:
             raise StopIteration
         
-        print(batch_set)
+        # print(batch_set)
 
         return batch_set
     
