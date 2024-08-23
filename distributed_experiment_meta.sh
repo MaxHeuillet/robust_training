@@ -2,30 +2,58 @@
 
 seeds=$1
 
-model='resnet50'
+arch='resnet50'
 data=$2 #'Imagenet1k' #'CIFAR10'
 task=$3 #'train' 'evaluation'
-loss=$4 #'TRADES' 'Madry'
+loss=$4 #'TRADES' 'TRADES_v2' 'Madry'
 sched=$5 #'sched' 'nosched'
+iterations=$6
 
-lrs=( 0.01 0.001 0.0001 )  
-sizes=( 5 10 25 )  
-strategies=('random' ) #'uncertainty' 'attack_uncertainty' 'random' 'margin' 'entropy' 'attack'
+init_lrs=( 0.01 0.001 0.0001 )  
+pruning_ratios=( 0.3 0.5 0.7 )  
+pruning_strategies=('random' ) #'uncertainty' 'attack_uncertainty' 'random' 'margin' 'entropy' 'attack'
+batch_strategies=('random')
 
 # Second set of experiments
-for size in "${sizes[@]}"; do
-    for strategy in "${strategies[@]}"; do
-        for lr in "${lrs[@]}"; do
-            for ((id=0; id<$seeds; id++)); do
-                if [ "$CC_CLUSTER" = "cedar" ]; then
-                    sbatch --export=ALL,NROUNDS=1,NBEPOCHS=100,TASK=$task,SIZE=$size,ASTRAT=$strategy,DATA=$data,MODEL=$model,SEED=$id,LOSS=$loss,SCHED=$sched,LR=$lr ./distributed_experiment_cedar.sh
-                else
-                    sbatch --export=ALL,NROUNDS=1,NBEPOCHS=100,TASK=$task,SIZE=$size,ASTRAT=$strategy,DATA=$data,MODEL=$model,SEED=$id,LOSS=$loss,SCHED=$sched,LR=$lr ./distributed_experiment_other.sh
-                fi
+
+for pruning_ratio in "${pruning_ratio[@]}"; do
+    for pruning_strategy in "${pruning_strategies[@]}"; do
+        for batch_strategy in "${batch_strategies[@]}"; do
+            for init_lr in "${init_lrs[@]}"; do
+                for ((id=0; id<$seeds; id++)); do
+                    if [ "$CC_CLUSTER" = "cedar" ]; then
+                        sbatch --export=ALL,\
+NITER=$iterations,\
+TASK=$task,\
+RATIO=$pruning_ratio,\
+PSTRAT=$pruning_strategy,\
+BSTRAT=$batch_strategy,\
+DATA=$data,\
+ARCH=$arch,\
+SEED=$id,\
+LOSS=$loss,\
+SCHED=$sched,\
+LR=$init_lr \
+./distributed_experiment_cedar.sh
+                    else
+                        sbatch --export=ALL,\
+NITER=$iterations,\
+TASK=$task,\
+RATIO=$pruning_ratio,\
+PSTRAT=$pruning_strategy,\
+BSTRAT=$batch_strategy,\
+DATA=$data,\
+ARCH=$arch,\
+SEED=$id,\
+LOSS=$loss,\
+SCHED=$sched,\
+LR=$init_lr \
+./distributed_experiment_other.sh
+                    fi
+                done
             done
         done
     done
 done
-
 
 

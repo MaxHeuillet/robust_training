@@ -33,3 +33,23 @@ def load_architecture(args,):
                 model.layer4[0].conv1, model.layer4[0].conv2, model.layer4[0].conv3, model.fc ]
 
     return model, target_layers
+
+
+
+
+def load_statedict(args,):
+
+    if args.arch == 'resnet50' and args.dataset == 'CIFAR10':
+        
+        state_dict = torch.load('./state_dicts/resnet50_cifar10.pt')
+        
+        
+    elif args.arch == 'LeNet5':
+        print('no state dict at the moment')
+
+    elif args.arch == 'resnet50' and args.dataset in ['Imagenet1k' , 'Imagenette']:
+        
+        state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
+
+
+    return state_dict
