@@ -1,6 +1,6 @@
 import argparse
 import torch
-import socket
+import os
 
 
 def get_exp_name(args):
@@ -26,11 +26,8 @@ def get_args():
 
     parser = argparse.ArgumentParser()
 
-    # Detect if on local laptop or cluster
-    hostname = socket.gethostname()
 
-    # Adjust the default `data_dir` based on hostname
-    if "cluster" in hostname or "node" in hostname:  # Customize this to match your cluster naming convention
+    if "calculquebec" in os.uname().nodename:  # Check for a substring that is unique to the cluster
         default_data_dir = '~/scratch/data'
     else:
         default_data_dir = './data'
