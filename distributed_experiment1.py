@@ -82,9 +82,12 @@ class BaseExperiment:
         print('set up the distributed setup,', rank)
         self.setup.distributed_setup(self.world_size, rank)
 
-        # if rank == 0:
-        #     print('initialize monitor', rank)
-        #     self.setup.initialize_monitor()
+        dist.barrier()
+        if rank == 0:
+            print('initialize monitor', rank)
+            self.setup.initialize_monitor()
+
+        dist.barrier()
 
         print('initialize dataset', rank) 
         train_dataset = WeightedDataset(self.args, train=True, prune_ratio = self.args.pruning_ratio, )
