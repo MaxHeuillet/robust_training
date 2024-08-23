@@ -86,9 +86,9 @@ class BaseExperiment:
         
         trainloader = DataLoader(train_dataset, batch_size=None, sampler=dist_sampler, num_workers=self.world_size) #
 
-        model, target_layers = load_architecture(args)
+        model, target_layers = load_architecture(self.args)
 
-        statedict = load_statedict(args)
+        statedict = load_statedict(self.args)
 
         model.load_state_dict(statedict)
 
@@ -114,7 +114,7 @@ class BaseExperiment:
                 optimizer.zero_grad()
 
                 with autocast():
-                    loss_values, clean_values, robust_values, logits_nat, logits_adv = get_loss(args, model, data, target, optimizer)
+                    loss_values, clean_values, robust_values, logits_nat, logits_adv = get_loss(self.args, model, data, target, optimizer)
 
                 train_dataset.update_scores(idxs, clean_values, robust_values, loss_values, logits_nat, logits_adv)
                 loss = train_dataset.compute_weighted_loss(idxs, loss_values)
