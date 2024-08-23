@@ -15,10 +15,7 @@ class Setup:
     def initialize_monitor(self, ):
         
         print('instantiate experiment')
-        self.exp_logger = Experiment(
-                api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
-                project_name="robust_training",
-                workspace="maxheuillet",  )
+        self.exp_logger = Experiment(  )
         
         print('set name')
         self.exp_logger.set_name( self.config_name )
