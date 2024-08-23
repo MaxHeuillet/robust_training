@@ -5,7 +5,7 @@ from comet_ml import Experiment
 
 class Setup:
 
-    def __init__(self, args,config_name):
+    def __init__(self, args, config_name):
         self.config_name = config_name
         self.args = args
 

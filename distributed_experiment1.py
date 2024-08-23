@@ -71,8 +71,8 @@ class BaseExperiment:
     def __init__(self, args, world_size, ):
 
         self.args = args
-        self.setup = Setup(args)
         self.config_name = get_exp_name(args)
+        self.setup = Setup(args, self.config_name)
         self.world_size = world_size
 
     def training(self, rank, ): 
