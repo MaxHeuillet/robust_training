@@ -83,18 +83,8 @@ class BaseExperiment:
         self.setup.distributed_setup(self.world_size, rank)
 
         # dist.barrier()
-        # if rank == 0:
-
-        #     print('instantiate experiment')
-        #     self.exp_logger = Experiment(
-        #         api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
-        #         project_name="robust_training",
-        #         workspace="maxheuillet",  )
-        
-        #     print('set name')
-        #     self.exp_logger.set_name( self.config_name )
-        #     print('log paragameters')
-        #     self.exp_logger.log_parameters(self.args)
+        if rank == 0:
+            self.setup.update_monitor(self, iteration, optimizer, loss, gradient_norm)
 
         print(f'Rank {rank} reached second barrier')
         dist.barrier()
@@ -152,18 +142,18 @@ class BaseExperiment:
             if self.args.sched == 'sched':
                 scheduler.step()
 
-            # if rank == 0:
-            #     print('compute gradient norm', rank)
-            #     gradient_norm = compute_gradient_norms(model)
-            #     current_lr = optimizer.param_groups[0]['lr']
+            if rank == 0:
+                # print('compute gradient norm', rank)
+                gradient_norm = compute_gradient_norms(model)
+                # current_lr = optimizer.param_groups[0]['lr']
 
-            #     # Log each metric for the current epoch
-            #     self.exp_logger.log_metric("iteration", iteration, epoch=iteration)
-            #     self.exp_logger.log_metric("loss_value", loss, epoch=iteration)
-            #     self.exp_logger.log_metric("lr_schedule", current_lr, epoch=iteration)
-            #     self.exp_logger.log_metric("gradient_norm", gradient_norm, epoch=iteration)
+                # # Log each metric for the current epoch
+                # self.exp_logger.log_metric("iteration", iteration, epoch=iteration)
+                # self.exp_logger.log_metric("loss_value", loss, epoch=iteration)
+                # self.exp_logger.log_metric("lr_schedule", current_lr, epoch=iteration)
+                # self.exp_logger.log_metric("gradient_norm", gradient_norm, epoch=iteration)
                 # print('update monitor', rank)
-                # self.setup.update_monitor( iteration, optimizer, loss, gradient_norm )
+                self.setup.update_monitor( iteration, optimizer, loss, gradient_norm )
                 
             print(f'Rank {rank}, Iteration {iteration}, ') 
 
@@ -173,7 +163,7 @@ class BaseExperiment:
             torch.save(model.state_dict(), "./state_dicts/{}.pt".format(self.config_name) )
             # self.exp_logger.end()
 
-            # self.setup.end_monitor()
+            self.setup.end_monitor()
 
         print('clean up')
         self.setup.cleanup()
