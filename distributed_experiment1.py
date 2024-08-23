@@ -82,7 +82,7 @@ class BaseExperiment:
         if rank == 0:
             self.setup.initialize_monitor()
             
-        train_dataset = WeightedDataset(self.args, train=True, prune_ratio = args.ratio, )
+        train_dataset = WeightedDataset(self.args, train=True, prune_ratio = self.args.pruning_ratio, )
 
         dist_sampler = DistributedCustomSampler(self.args, train_dataset, num_replicas=self.world_size, rank=rank, drop_last=True)
         
@@ -142,7 +142,7 @@ class BaseExperiment:
             self.setup.end_monitor()
 
         print('clean up')
-        setup.cleanup()
+        self.setup.cleanup()
 
 
     def evaluation(self, rank, args):
