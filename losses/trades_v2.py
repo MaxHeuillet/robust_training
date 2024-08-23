@@ -67,8 +67,18 @@ def trades_loss_v2(model,
     optimizer.zero_grad()
     # calculate robust loss
     logits_nat, logits_adv = model(x_natural, x_adv)
-    loss_natural = F.cross_entropy(logits_nat, y)
-    loss_robust = (1.0 / batch_size) * criterion_kl(F.log_softmax(logits_adv, dim=1), F.softmax(logits_nat, dim=1))
-    loss = loss_natural + beta * loss_robust
+    # print(logits_nat.shape, logits_adv.shape)
+    
+    clean_values = F.cross_entropy(logits_nat, y, reduction='none')
+    # print(loss_natural.shape)  # Should be [batch_size]
 
-    return logits_nat, loss
+    robust_values = nn.KLDivLoss(reduction='none')( F.log_softmax(logits_adv, dim=1), F.softmax(logits_nat, dim=1) ).sum(dim=1)
+    # print(loss_robust.shape)  # Should be [batch_size]
+    
+    loss_values = clean_values + beta * robust_values
+    # print(loss_individual.shape)  # Should be [batch_size]
+
+
+    # print(loss.shape)  # Should be a scalar []
+
+    return loss_values, clean_values, robust_values, logits_nat, logits_adv

@@ -1,7 +1,7 @@
 import sys
 sys.path.append('/home/mheuillet/Desktop/robust_training')
 
-import models_local.resnet_cifar10
+import architectures.resnet_cifar10
 import torch
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
@@ -48,7 +48,7 @@ def main(args):
             num_workers=args.num_workers,
             pin_memory=True,   )
 
-    model = models_local.resnet_cifar10.resnet50(pretrained=False, progress=True).to(args.device)
+    model = architectures.resnet_cifar10.resnet50(pretrained=False, progress=True).to(args.device)
 
     from trainers import CRESTTrainer
     trainer = CRESTTrainer(args, model, train_dataset, val_loader )

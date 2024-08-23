@@ -9,16 +9,16 @@ from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 from torch.optim.lr_scheduler import StepLR
 
-import models_local 
+import architectures 
 import utils
 
 import sys
 
 import torch.nn.utils.parametrize as parametrize
-import lora 
+import architectures.lora as lora 
 
 from torch.utils.data import Subset
-import trades
+import losses.trades as trades
 import active
 import torch.optim as optim
 from torch import nn
@@ -69,7 +69,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 utils.set_seeds(seed)
 
 if args.model == 'resnet50':
-    model = models_local.resnet.resnet50(pretrained=True, progress=True, device="cuda").to('cuda')
+    model = architectures.resnet.resnet50(pretrained=True, progress=True, device="cuda").to('cuda')
 else:
     print('model undefined')
 

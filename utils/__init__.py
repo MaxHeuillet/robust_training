@@ -1,4 +1,4 @@
-from .arguments import get_args
+from .arguments import get_args, get_exp_name
 # from .auto_naming import get_exp_name
 from .gradients import Adahessian
 from .submodular import *

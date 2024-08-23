@@ -2,11 +2,25 @@
 from torchvision import datasets, transforms
 from torchvision.transforms.functional import InterpolationMode
 import os
+import torch
 # from datasets import load_dataset, load_from_disk
 
 def load_data(args, train=True):
 
-    if args.dataset == 'CIFAR10':
+    if args.dataset == 'MNIST':
+
+        # Load the dataset
+        transform = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Normalize((0.1307,), (0.3081,))  # MNIST mean and std
+        ])
+        if train:
+            dataset = datasets.MNIST(root=args.data_dir, train=True, download=True, transform=transform)
+        else:
+            dataset = datasets.MNIST(root=args.data_dir, train=False, download=True, transform=transform)
+        K = 10
+
+    elif args.dataset == 'CIFAR10':
 
         transform = transforms.Compose([
                 transforms.ToTensor(),
@@ -19,6 +33,7 @@ def load_data(args, train=True):
 
         # pool_dataset = IndexedDataset('CIFAR10', train_folder, transform= transform ) 
         # test_dataset = IndexedDataset('CIFAR10', test_folder, transform= transform) 
+        K = 10
 
         print('load dataloader')
             
@@ -38,8 +53,24 @@ def load_data(args, train=True):
 
         # pool_dataset = IndexedDataset('Imagenet1k', train_folder, transform= transform ) 
         # test_dataset = IndexedDataset('Imagenet1k', test_folder, transform= transform) 
+        K = 1000
 
         print('load dataloader')
+
+    elif args.dataset == 'random':
+
+
+        from torch.utils.data import TensorDataset
+
+        # Create 10 unique integers as observations
+        observations = torch.arange(7)
+
+        # Create corresponding labels (for example, labels can be the same as observations, or any other related value)
+        labels = observations.clone()  # Here, labels are the same as observations for simplicity
+
+        # Combine observations and labels into a TensorDataset
+        dataset = TensorDataset(observations.view(-1, 1), labels.view(-1, 1))
+        K = 10
 
     # elif self.data == 'Imagenette':
 
@@ -62,7 +93,7 @@ def load_data(args, train=True):
     else:
         print('undefined data')
 
-    return dataset
+    return dataset, K
 
 def to_rgb(x):
     return x.convert("RGB")
