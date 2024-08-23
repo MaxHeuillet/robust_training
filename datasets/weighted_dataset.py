@@ -53,8 +53,8 @@ class WeightedDataset(IndexedDataset):
         self.clean_scores = torch.ones(len(self.dataset)) * 3 #to generate randomly instead
         self.robust_scores = torch.ones(len(self.dataset)) * 3 #to generate randomly instad
         self.global_scores = torch.ones(len(self.dataset)) * 3
-        self.clean_pred = torch.ones( len(self.dataset), self.K ) * 3
-        self.robust_pred = torch.ones( len(self.dataset), self.K ) * 3
+        self.clean_pred = torch.ones( len(self.dataset), self.K ).half() * 3
+        self.robust_pred = torch.ones( len(self.dataset), self.K ).half() * 3
 
 
         self.weights = torch.ones(len(self.dataset))
