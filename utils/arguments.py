@@ -57,6 +57,7 @@ def get_args():
     parser.add_argument("--log_dir", default="./logs", type=str, help="The directory used to save logs")
     parser.add_argument("--statedict_dir", default="./state_dicts", type=str, help="The directory used to save state dics")
     parser.add_argument('--data_dir', default=default_data_dir,type=str,)
+    print(default_data_dir)
 
     parser.add_argument('--task', default='train',type=str, choices=['train', 'eval'], help="wether to train or to evaluate the model")
 
