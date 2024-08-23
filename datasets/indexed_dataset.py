@@ -16,7 +16,7 @@
 #     def clean(self):
 #         self._cachers = []
 
-
+import torch
 from torch.utils.data import Dataset
 from PIL import Image
 import io
@@ -28,9 +28,10 @@ class IndexedDataset(Dataset): #Dataset
 
         super().__init__()
 
-        self.dataset = load_data(args, train=train) #, train_transform=train_transform
-
+        self.dataset, K = load_data(args, train=train) #, train_transform=train_transform
+        self.K = K
         self.dataset_name = args.dataset
+        self.global_indices = list(range(len(self.dataset)))
         
         # self.transform = transform
         # self.dataset = dataset
@@ -78,29 +79,45 @@ class IndexedDataset(Dataset): #Dataset
         image, label = self.dataset[idx]
         return image, label
     
+
     def __getitem__(self, idx):
+        # print(idx)
+        # Print the index or indices
+        # print('idx', idx)
 
+        # Handle the case where idx is a list of indices
+        if isinstance(idx, list):
+            # Pre-allocate lists or use list comprehension
+            images = [None] * len(idx)
+            labels = [None] * len(idx)
+            indices = [None] * len(idx)
+
+            for i, single_idx in enumerate(idx):
+                image, label, _ = self._get_single_item(single_idx)
+                images[i] = image
+                labels[i] = label
+                indices[i] = single_idx
+            
+            # print( torch.stack(images), torch.tensor(labels), torch.tensor(indices) )
+            return torch.stack(images), torch.tensor(labels), torch.tensor(indices)
+        else:
+            # Handle the case where idx is a single index
+            return self._get_single_item(idx)
+        
+    def _get_single_item(self, idx):
         if self.dataset_name == 'Imagenet1k':
-            image_data,label = self.get_item_skip(idx)
+            image_data, label = self.get_item_skip(idx)
+        elif self.dataset_name in ['CIFAR10', 'MNIST', 'random']:
+            image_data, label = self.get_item_noskip(idx)
+        else:
+            raise ValueError("Unsupported dataset name")
 
-        elif self.dataset_name in ['CIFAR10','MNIST', 'random']:
-            image_data,label = self.get_item_noskip(idx)
-        # elif self.dataset_name == 'Imagenette':
-        #     image_data,label = self.get_item_imagenette(idx)
-        else:    
-            print('error')
-
+        # Process the image data
         if isinstance(image_data, bytes):
             image = Image.open(io.BytesIO(image_data))
         else:
             image = image_data
         
-        # if self.transform:
-        #     #print("transorm appplied")
-        #     image = self.transform(image)
-        #print(image_data, image_data)
-        
+        # Return the processed image, label, and index
         return image, label, idx
     
-    # def clean(self):
-    #     self._cachers = []

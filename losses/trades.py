@@ -81,4 +81,4 @@ def trades_loss(model,
 
     # print(loss.shape)  # Should be a scalar []
 
-    return loss_values, clean_values, robust_values
+    return loss_values, clean_values, robust_values, logits_nat, logits_adv
