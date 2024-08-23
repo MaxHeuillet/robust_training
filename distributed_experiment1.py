@@ -86,6 +86,7 @@ class BaseExperiment:
         if rank == 0:
             print('initialize monitor', rank)
             self.setup.initialize_monitor()
+            print('monitor initialized')
 
         dist.barrier()
 
