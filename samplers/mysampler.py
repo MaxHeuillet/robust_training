@@ -101,7 +101,7 @@ class CustomSampler(object):
         self.batch_size = args.batch_size
 
     def max_prune(self):
-        return self.args.epochs * self.args.delta
+        return self.args.iterations * self.args.delta
 
     def __getitem__(self, idx):
         return self.tosample_indices[idx]
