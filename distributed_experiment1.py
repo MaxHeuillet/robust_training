@@ -274,21 +274,7 @@ class BaseExperiment:
 
 if __name__ == "__main__":
 
-    # parser = argparse.ArgumentParser()
-
-    # parser.add_argument("--n_rounds", required=True, help="nb of active learning rounds")
-    # parser.add_argument("--nb_epochs", required=True, help="nb of Lora epochs")
-    # parser.add_argument("--size", required=True, help="wether to compute clean accuracy, PGD robustness or AA robustness")
-    # parser.add_argument("--active_strategy", required=True, help="which observation strategy to choose")
-    # parser.add_argument("--seed", required=True, help="the random seed")
-    # parser.add_argument("--data", required=True, help="the data used for the experiment")
-    # parser.add_argument("--model", required=True, help="the model used for the experiment")
-    # parser.add_argument("--task", required = True, help="the task")
-    # parser.add_argument("--loss", required = True, help="the loss")
-    # parser.add_argument("--sched", required = True, help="the scheduler")
-    # parser.add_argument("--lr", required = True, help="the learning rate")
-
-    # args = parser.parse_args()
+    print('begining of the execution')
 
     args = get_args()
 

@@ -9,8 +9,8 @@ loss=$4 #'TRADES' 'TRADES_v2' 'Madry'
 sched=$5 #'sched' 'nosched'
 iterations=$6
 
-init_lrs=( 0.01 0.001 0.0001 )  
-pruning_ratios=( 0.3 0.5 0.7 )  
+init_lrs=( 0.01  )  #0.001 0.0001
+pruning_ratios=( 0.9 )  #0.3 0.5 0.7
 pruning_strategies=('random' ) #'uncertainty' 'attack_uncertainty' 'random' 'margin' 'entropy' 'attack'
 batch_strategies=('random')
 
