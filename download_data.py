@@ -1,7 +1,17 @@
-import pickle as pkl
-import gzip
-
 from torchvision import datasets
+
+
+
+print('download CIFAR10')
+
+datasets.CIFAR10(root='~/scratch/data', train=True, download=True)
+datasets.CIFAR10(root='~/scratch/data', train=False,  download=True)
+
+print('download MNIST')
+
+datasets.MNIST(root='~/scratch/data', train=True, download=True)
+datasets.MNIST(root='~/scratch/data', train=False,  download=True)
+
 
 
 # from datasets import load_dataset 
@@ -16,13 +26,3 @@ from torchvision import datasets
 # dataset = load_dataset('imagenet-1k',  cache_dir='/home/mheuill/scratch')
 # print('save')
 # dataset.save_to_disk('/home/mheuill/scratch/imagenet-1k')
-
-print('download CIFAR10')
-
-datasets.CIFAR10(root='~/scratch/data', train=True, download=True)
-datasets.CIFAR10(root='~/scratch/data', train=False,  download=True)
-
-print('download MNIST')
-
-datasets.MNIST(root='~/scratch/data', train=True, download=True)
-datasets.MNIST(root='~/scratch/data', train=False,  download=True)
