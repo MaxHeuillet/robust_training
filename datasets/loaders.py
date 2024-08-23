@@ -15,9 +15,9 @@ def load_data(args, train=True):
             transforms.Normalize((0.1307,), (0.3081,))  # MNIST mean and std
         ])
         if train:
-            dataset = datasets.MNIST(root=args.data_dir, train=True, download=True, transform=transform)
+            dataset = datasets.MNIST(root=args.data_dir, train=True, download=False, transform=transform)
         else:
-            dataset = datasets.MNIST(root=args.data_dir, train=False, download=True, transform=transform)
+            dataset = datasets.MNIST(root=args.data_dir, train=False, download=False, transform=transform)
         K = 10
 
     elif args.dataset == 'CIFAR10':

@@ -19,5 +19,10 @@ from torchvision import datasets
 
 print('download CIFAR10')
 
-datasets.CIFAR10(root='/home/mheuill/scratch/data', train=True, download=True)
-datasets.CIFAR10(root='/home/mheuill/scratch/data', train=False,  download=True)
+datasets.CIFAR10(root='~/scratch/data', train=True, download=True)
+datasets.CIFAR10(root='~/scratch/data', train=False,  download=True)
+
+print('download MNIST')
+
+datasets.CIFAR10(root='~/scratch/data', train=True, download=True)
+datasets.CIFAR10(root='~/scratch/data', train=False,  download=True)
