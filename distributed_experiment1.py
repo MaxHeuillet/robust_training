@@ -1,61 +1,32 @@
 
 
 import torch
-# import torch.nn as nn
 import torch.distributed as dist
-# import torch.optim as optim
 from torch.utils.data import DataLoader, DistributedSampler
-# from torchvision.models import resnet50
-# from torchvision.datasets import ImageNet
 
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.cuda.amp import autocast, GradScaler
 from torch.optim.lr_scheduler import CosineAnnealingLR
 
-# from transformers import AutoImageProcessor, ResNetModel
 import torch
-from datasets import load_dataset, load_from_disk
 
-# import torchvision.models as models
-import argparse
-import os
 import io
-
-from torch.utils.data import Dataset
-
-from PIL import Image
-
-# from torchvision.models import resnet50, ResNet50_Weights
 
 import gzip
 
 import pickle as pkl
 
-# import active
 import math
 
-from torch.utils.data import Subset
-import losses.trades as trades
 import utils
-# import sys
 
-from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 
 import torch.distributed as dist
-from torchvision.transforms.functional import InterpolationMode
-
-
-import random
 
 import sys
 import torch.nn as nn
-# import torch.multiprocessing as mp
 
-# import wandb
-import time
-
-import subprocess
 
 from utils import Setup
 from samplers import DistributedCustomSampler
