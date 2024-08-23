@@ -33,7 +33,7 @@ from samplers import DistributedCustomSampler
 from datasets import WeightedDataset
 from architectures import load_architecture, load_statedict
 from losses import get_loss
-from utils import get_args, get_exp_name
+from utils import get_args, get_exp_name, set_seeds
 
 
 
@@ -252,7 +252,8 @@ if __name__ == "__main__":
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, write_through=True)
 
     world_size = torch.cuda.device_count()
-    utils.set_seeds(args.seed)
+    
+    set_seeds(args.seed)
 
     experiment = BaseExperiment(args, world_size, args.slurm_jobid)
     setup = Setup(args)
