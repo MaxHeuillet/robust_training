@@ -82,12 +82,13 @@ class BaseExperiment:
         print('set up the distributed setup,', rank)
         self.setup.distributed_setup(self.world_size, rank)
 
-        dist.barrier()
-        if rank == 0:
-            print('initialize monitor', rank)
-            self.setup.initialize_monitor()
+        # dist.barrier()
+        # if rank == 0:
+        #     print('initialize monitor', rank)
+            
+        #     print('monitor initialized')
 
-        dist.barrier()
+        # dist.barrier()
 
         print('initialize dataset', rank) 
         train_dataset = WeightedDataset(self.args, train=True, prune_ratio = self.args.pruning_ratio, )
@@ -276,6 +277,7 @@ if __name__ == "__main__":
 
     if args.task == "train":
         print('begin training')
+        experiment.setup.initialize_monitor()
         torch.multiprocessing.spawn(experiment.training,  nprocs=experiment.world_size, join=True)
     else:
         print('begin evaluation')
