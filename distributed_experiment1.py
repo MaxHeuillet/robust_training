@@ -255,7 +255,7 @@ if __name__ == "__main__":
     
     set_seeds(args.seed)
 
-    experiment = BaseExperiment(args, world_size, args.slurm_jobid)
+    experiment = BaseExperiment(args, world_size)
     setup = Setup(args)
 
 
