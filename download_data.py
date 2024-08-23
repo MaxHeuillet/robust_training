@@ -24,5 +24,5 @@ datasets.CIFAR10(root='~/scratch/data', train=False,  download=True)
 
 print('download MNIST')
 
-datasets.CIFAR10(root='~/scratch/data', train=True, download=True)
-datasets.CIFAR10(root='~/scratch/data', train=False,  download=True)
+datasets.MNIST(root='~/scratch/data', train=True, download=True)
+datasets.MNIST(root='~/scratch/data', train=False,  download=True)
