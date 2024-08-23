@@ -79,7 +79,7 @@ class BaseExperiment:
 
     def training(self, rank, ): 
 
-        print('set up the distributed setup,', rank)
+        print('set up the distributed setup,', rank, flush=True)
         self.setup.distributed_setup(self.world_size, rank)
 
         # dist.barrier()
@@ -90,27 +90,27 @@ class BaseExperiment:
                 project_name="robust_training",
                 workspace="maxheuillet",  )
         
-            print('set name')
+            print('set name',flush=True)
             self.exp_logger.set_name( self.config_name )
-            print('log paragameters')
+            print('log paragameters',flush=True)
             self.exp_logger.log_parameters(self.args)
 
-        print(f'Rank {rank} reached second barrier')
+        print(f'Rank {rank} reached second barrier',flush=True)
         dist.barrier()
 
-        print('initialize dataset', rank) 
+        print('initialize dataset', rank,flush=True) 
         train_dataset = WeightedDataset(self.args, train=True, prune_ratio = self.args.pruning_ratio, )
 
-        print('initialize sampler', rank) 
+        print('initialize sampler', rank,flush=True) 
         dist_sampler = DistributedCustomSampler(self.args, train_dataset, num_replicas=self.world_size, rank=rank, drop_last=True)
         
-        print('initialize dataoader', rank) 
+        print('initialize dataoader', rank,flush=True) 
         trainloader = DataLoader(train_dataset, batch_size=None, sampler=dist_sampler, num_workers=self.world_size) #
 
-        print('load model', rank) 
+        print('load model', rank,flush=True) 
         model, target_layers = load_architecture(self.args)
 
-        print('load statedict', rank) 
+        print('load statedict', rank,flush=True) 
         statedict = load_statedict(self.args)
 
         model.load_state_dict(statedict)
@@ -124,7 +124,7 @@ class BaseExperiment:
         
         for iteration in range(self.args.iterations):
 
-            print('start iteration', iteration, rank) 
+            print('start iteration', iteration, rank,flush=True) 
 
             model.train()
             dist_sampler.set_epoch(iteration)
@@ -159,10 +159,10 @@ class BaseExperiment:
                 self.exp_logger.log_metric("loss_value", loss, epoch=iteration)
                 self.exp_logger.log_metric("lr_schedule", current_lr, epoch=iteration)
                 self.exp_logger.log_metric("gradient_norm", gradient_norm, epoch=iteration)
-                print('update monitor', rank)
+                print('update monitor', rank,flush=True)
                 # self.setup.update_monitor( iteration, optimizer, loss, gradient_norm )
                 
-            print(f'Rank {rank}, Iteration {iteration}, ') 
+            print(f'Rank {rank}, Iteration {iteration},', flush=True) 
 
         dist.barrier() 
 
@@ -172,7 +172,7 @@ class BaseExperiment:
 
             # self.setup.end_monitor()
 
-        print('clean up')
+        print('clean up',flush=True)
         self.setup.cleanup()
 
 
