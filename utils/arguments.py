@@ -43,6 +43,7 @@ def get_args():
     parser.add_argument("--iterations", default=10, type=int, metavar="N", help="number of total iterations to run")
     parser.add_argument("--delta", default=0.875, type=float,help="the amount of pruning iterations")
     parser.add_argument("--batch_size", default=128, type=int, help="mini-batch size (default: 128)")
+    parser.add_argument("--sample_size", default=256, type=int, help="mini-batch sampling size (default: 256)")
 
     parser.add_argument("--loss_function", default="TRADES", type=str,choices=['TRADES', 'TRADES_v2'], help="the loss function")
     parser.add_argument("--init_lr", default=0.1, type=float,help="initial learning rate")
