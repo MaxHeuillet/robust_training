@@ -69,14 +69,14 @@ class Pruner:
         return indices
     
     def prune(self):
-        if self.args.pruner == 'random':
+        if self.args.pruning_strategy == 'random':
             return self.random_pruning()
-        elif self.args.pruner == 'score':
+        elif self.args.pruning_strategy == 'score':
             return self.score_based_pruning()
-        elif self.args.pruner == 'uncertainty':
+        elif self.args.pruning_strategy == 'uncertainty':
             return self.uncertainty_pruning()
         else:
-            raise ValueError(f"Undefined pruner: {self.args.pruner}")
+            raise ValueError(f"Undefined pruning strategy: {self.args.pruning_strategy}")
 
 
 
