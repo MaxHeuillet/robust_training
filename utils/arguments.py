@@ -58,6 +58,8 @@ def get_args():
     parser.add_argument("--statedict_dir", default="./state_dicts", type=str, help="The directory used to save state dics")
     parser.add_argument('--data_dir', default=default_data_dir,type=str,)
 
+    parser.add_argument('--task', default='train',type=str, choices=['train', 'eval'], help="wether to train or to evaluate the model")
+
     parser.add_argument("--num_workers",default=1, type=int, help="number of data loading workers (default: 4)")
 
     args, unknown = parser.parse_known_args()
