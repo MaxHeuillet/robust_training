@@ -82,9 +82,9 @@ class BaseExperiment:
         if rank == 0:
             self.setup.initialize_monitor()
             
-        train_dataset = WeightedDataset(args, train=True, prune_ratio = args.ratio, )
+        train_dataset = WeightedDataset(self.args, train=True, prune_ratio = args.ratio, )
 
-        dist_sampler = DistributedCustomSampler(args, train_dataset, num_replicas=self.world_size, rank=rank, drop_last=True)
+        dist_sampler = DistributedCustomSampler(self.args, train_dataset, num_replicas=self.world_size, rank=rank, drop_last=True)
         
         trainloader = DataLoader(train_dataset, batch_size=None, sampler=dist_sampler, num_workers=self.world_size) #
 
