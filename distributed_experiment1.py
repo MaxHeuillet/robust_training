@@ -83,17 +83,17 @@ class BaseExperiment:
         self.setup.distributed_setup(self.world_size, rank)
 
         # dist.barrier()
-        # if rank == 0:
-        #     # self.setup.initialize_monitor()
-        #     self.exp_logger = Experiment(
-        #         api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
-        #         project_name="robust_training",
-        #         workspace="maxheuillet",  )
+        if rank == 0:
+            # self.setup.initialize_monitor()
+            self.exp_logger = Experiment(
+                api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
+                project_name="robust_training",
+                workspace="maxheuillet",  )
         
-        #     print('set name',flush=True)
-        #     self.exp_logger.set_name( self.config_name )
-        #     print('log paragameters',flush=True)
-        #     self.exp_logger.log_parameters(self.args)
+            print('set name',flush=True)
+            self.exp_logger.set_name( self.config_name )
+            print('log paragameters',flush=True)
+            self.exp_logger.log_parameters(self.args)
 
         print(f'Rank {rank} reached second barrier',flush=True)
         dist.barrier()
