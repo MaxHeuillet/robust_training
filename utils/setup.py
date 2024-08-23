@@ -15,12 +15,7 @@ class Setup:
     def initialize_monitor(self, ):
         
         print('instantiate experiment')
-        self.exp_logger = Experiment(  )
         
-        print('set name')
-        self.exp_logger.set_name( self.config_name )
-        print('log paragameters')
-        self.exp_logger.log_parameters(self.args)
 
     def update_monitor(self, iteration, optimizer, loss, gradient_norm):
         # Compute gradient norms
