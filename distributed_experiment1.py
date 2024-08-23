@@ -96,6 +96,7 @@ class BaseExperiment:
             print('log paragameters')
             self.exp_logger.log_parameters(self.args)
 
+        print(f'Rank {rank} reached second barrier')
         dist.barrier()
 
         print('initialize dataset', rank) 
@@ -126,7 +127,6 @@ class BaseExperiment:
         for iteration in range(self.args.iterations):
 
             print('start iteration', iteration, rank) 
-
 
             model.train()
             dist_sampler.set_epoch(iteration)
