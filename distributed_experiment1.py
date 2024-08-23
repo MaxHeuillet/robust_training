@@ -84,7 +84,7 @@ class BaseExperiment:
 
         # dist.barrier()
         if rank == 0:
-            self.setup.update_monitor(self, iteration, optimizer, loss, gradient_norm)
+            self.setup.initialize_monitor()
 
         print(f'Rank {rank} reached second barrier')
         dist.barrier()
@@ -109,7 +109,6 @@ class BaseExperiment:
         model.to(rank)
         model = DDP(model, device_ids=[rank])
         
-
         scaler = GradScaler()
         optimizer = torch.optim.SGD( model.parameters(),lr=self.args.init_lr, weight_decay=self.args.weight_decay, momentum=self.args.momentum, nesterov=True, )
         scheduler = CosineAnnealingLR(optimizer, T_max=10)
@@ -146,7 +145,6 @@ class BaseExperiment:
                 # print('compute gradient norm', rank)
                 gradient_norm = compute_gradient_norms(model)
                 # current_lr = optimizer.param_groups[0]['lr']
-
                 # # Log each metric for the current epoch
                 # self.exp_logger.log_metric("iteration", iteration, epoch=iteration)
                 # self.exp_logger.log_metric("loss_value", loss, epoch=iteration)
