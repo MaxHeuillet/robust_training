@@ -4,23 +4,10 @@ References:
 https://github.com/microsoft/LoRA/blob/main/loralib/layers.py
 """
 
-from torchvision import datasets, transforms
-from torch.utils.data import DataLoader
-from torch.optim.lr_scheduler import StepLR
-
-import models_local 
-import utils
-
-import math
-from functools import partial
-
-import torch
-import torch.nn.utils.parametrize as parametrize
 from torch import nn
 
 import torch
-# import lora 
-# import utils
+
 from functools import partial
 import torch.nn.utils.parametrize as parametrize
 
@@ -62,3 +49,13 @@ def set_lora_gradients(model, layers):
     if param.requires_grad:
       pass
       # print(f"Parameter: {name}, Shape: {param.size()}")
+
+
+
+def add_lora(target_layers, model):
+
+  for conv_layer in target_layers:
+    lora_param = layer_parametrization(conv_layer, device="cuda", rank=10, lora_alpha=1)
+    parametrize.register_parametrization(conv_layer, 'weight', lora_param)
+  
+  set_lora_gradients(model, target_layers)

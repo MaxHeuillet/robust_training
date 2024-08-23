@@ -6,7 +6,7 @@
 #SBATCH --cpus-per-task=10
 #SBATCH --gres=gpu:v100l:4
 #SBATCH --mem-per-cpu=4000M
-#SBATCH --time=24:00:00
+#SBATCH --time=05:00:00
 #SBATCH --mail-user=maxime.heuillet.1@ulaval.ca
 #SBATCH --mail-type=ALL
 
@@ -45,7 +45,17 @@ echo "LOSS = ${LOSS}"
 echo "SCHED = ${SCHED}"
 echo "LR = ${LR}"
 
-python3 ./distributed_experiment1.py --lr ${LR} --loss ${LOSS} --sched ${SCHED} --task ${TASK} --data ${DATA} --model ${MODEL} --seed ${SEED} --n_rounds ${NROUNDS} --nb_epochs ${NBEPOCHS} --size ${SIZE} --active_strategy ${ASTRAT} --slurm_job_id ${SLURM_JOB_ID} > stdout_$SLURM_JOB_ID 2>stderr_$SLURM_JOB_ID
 
-
-# wandb sync wandb/offline-run-*
+python3 ./distributed_experiment1.py \
+    --_init_lr ${LR} \
+    --loss_function ${LOSS} \
+    --sched ${SCHED} \
+    --task ${TASK} \
+    --data ${DATA} \
+    --arch ${ARCH} \
+    --seed ${SEED} \
+    --iterations ${NITER} \
+    --pruning_ratio ${RATIO} \
+    --pruning_strategy ${PSTRAT} \
+    --batch_strategy ${BSTRAT} \
+    > stdout_$SLURM_JOB_ID 2> stderr_$SLURM_JOB_ID

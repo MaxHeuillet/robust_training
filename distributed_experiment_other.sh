@@ -16,12 +16,6 @@ source ~/scratch/MYENV4/bin/activate
 pip install  -r requirements.txt
 
 
-# wandb login --relogin <<EOF
-# 12c5bc9e9809f53b1150856be2ae3614c88e4639
-# EOF
-
-# wandb offline
-
 if [ "${DATA}" = "Imagenet1k" ]; then
     echo 'unzip imagenet'
     mkdir -p $SLURM_TMPDIR/data
@@ -31,19 +25,17 @@ fi
 
 echo 'HZ: start python3 ./distributed_experiment1.py ..at '; date
 
-echo "DATA = ${DATA}"
-echo "MODEL = ${MODEL}"
-echo "SEED = ${SEED}"
-echo "NROUNDS = ${NROUNDS}"
-echo "NBEPOCHS = ${NBEPOCHS}"
-echo "SIZE = ${SIZE}"
-echo "ACTIVE_STRATEGY = ${ASTRAT}"
-echo "TASK = ${TASK}"
-echo "LOSS = ${LOSS}"
-echo "SCHED = ${SCHED}"
-echo "LR = ${LR}"
 
-python3 ./distributed_experiment1.py --lr ${LR} --loss ${LOSS} --sched ${SCHED} --task ${TASK} --data ${DATA} --model ${MODEL} --seed ${SEED} --n_rounds ${NROUNDS} --nb_epochs ${NBEPOCHS} --size ${SIZE} --active_strategy ${ASTRAT} --slurm_job_id ${SLURM_JOB_ID} > stdout_$SLURM_JOB_ID 2>stderr_$SLURM_JOB_ID
-
-
-# wandb sync wandb/offline-run-*
+python3 ./distributed_experiment1.py \
+    --_init_lr ${LR} \
+    --loss_function ${LOSS} \
+    --sched ${SCHED} \
+    --task ${TASK} \
+    --data ${DATA} \
+    --arch ${ARCH} \
+    --seed ${SEED} \
+    --iterations ${NITER} \
+    --pruning_ratio ${RATIO} \
+    --pruning_strategy ${PSTRAT} \
+    --batch_strategy ${BSTRAT} \
+    > stdout_$SLURM_JOB_ID 2> stderr_$SLURM_JOB_ID
