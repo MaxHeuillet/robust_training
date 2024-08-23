@@ -29,7 +29,7 @@ class Setup:
 
         # Log each metric for the current epoch
         self.exp_logger.log_metric("iteration", iteration, epoch=iteration)
-        self.exp_logger.log_metric("loss_function", loss, epoch=iteration)
+        self.exp_logger.log_metric("loss_value", loss, epoch=iteration)
         self.exp_logger.log_metric("lr_schedule", current_lr, epoch=iteration)
         self.exp_logger.log_metric("gradient_norm", gradient_norm, epoch=iteration)
 
