@@ -1,10 +1,4 @@
-from utils import Setup
-from samplers import DistributedCustomSampler
-from datasets import WeightedDataset
-from architectures import load_architecture, load_statedict
-from losses import get_loss
-from utils import get_args, get_exp_name, set_seeds
-
+from comet_ml import Experiment
 
 import torch
 import torch.distributed as dist
@@ -32,6 +26,16 @@ import torch.distributed as dist
 
 import sys
 import torch.nn as nn
+
+from utils import Setup
+
+from samplers import DistributedCustomSampler
+from datasets import WeightedDataset
+from architectures import load_architecture, load_statedict
+from losses import get_loss
+from utils import get_args, get_exp_name, set_seeds
+
+
 
 
 
