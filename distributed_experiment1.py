@@ -79,19 +79,26 @@ class BaseExperiment:
 
     def training(self, rank, ): 
 
+        print('set up the distributed setup,', rank)
         self.setup.distributed_setup(self.world_size, rank)
 
         if rank == 0:
+            print('initialize monitor', rank)
             self.setup.initialize_monitor()
-            
+
+        print('initialize dataset', rank) 
         train_dataset = WeightedDataset(self.args, train=True, prune_ratio = self.args.pruning_ratio, )
 
+        print('initialize sampler', rank) 
         dist_sampler = DistributedCustomSampler(self.args, train_dataset, num_replicas=self.world_size, rank=rank, drop_last=True)
         
+        print('initialize dataoader', rank) 
         trainloader = DataLoader(train_dataset, batch_size=None, sampler=dist_sampler, num_workers=self.world_size) #
 
+        print('load model', rank) 
         model, target_layers = load_architecture(self.args)
 
+        print('load statedict', rank) 
         statedict = load_statedict(self.args)
 
         model.load_state_dict(statedict)
@@ -105,6 +112,9 @@ class BaseExperiment:
         scheduler = CosineAnnealingLR(optimizer, T_max=10)
         
         for iteration in range(self.args.iterations):
+
+            print('start iteration', iteration, rank) 
+
 
             model.train()
             dist_sampler.set_epoch(iteration)
@@ -131,7 +141,9 @@ class BaseExperiment:
                 scheduler.step()
 
             if rank == 0:
+                print('compute gradient norm', rank)
                 gradient_norm = compute_gradient_norms(model)
+                print('update monitor', rank)
                 self.setup.update_monitor( iteration, optimizer, loss, gradient_norm )
                 
             print(f'Rank {rank}, Iteration {iteration}, ') 
