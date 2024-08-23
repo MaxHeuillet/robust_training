@@ -13,13 +13,16 @@ class Setup:
         self.args = args
 
     def initialize_monitor(self, ):
-
+        
+        print('instantiate experiment')
         self.exp_logger = Experiment(
                 api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
                 project_name="robust_training",
                 workspace="maxheuillet",  )
+        
+        print('set name')
         self.exp_logger.set_name( self.config_name )
-
+        print('log paragameters')
         self.exp_logger.log_parameters(self.args)
 
     def update_monitor(self, iteration, optimizer, loss, gradient_norm):
