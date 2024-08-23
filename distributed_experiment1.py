@@ -82,9 +82,9 @@ class BaseExperiment:
         print('set up the distributed setup,', rank)
         self.setup.distributed_setup(self.world_size, rank)
 
-        if rank == 0:
-            print('initialize monitor', rank)
-            self.setup.initialize_monitor()
+        # if rank == 0:
+        #     print('initialize monitor', rank)
+        #     self.setup.initialize_monitor()
 
         print('initialize dataset', rank) 
         train_dataset = WeightedDataset(self.args, train=True, prune_ratio = self.args.pruning_ratio, )
@@ -140,11 +140,11 @@ class BaseExperiment:
             if self.args.sched == 'sched':
                 scheduler.step()
 
-            if rank == 0:
-                print('compute gradient norm', rank)
-                gradient_norm = compute_gradient_norms(model)
-                print('update monitor', rank)
-                self.setup.update_monitor( iteration, optimizer, loss, gradient_norm )
+            # if rank == 0:
+            #     print('compute gradient norm', rank)
+            #     gradient_norm = compute_gradient_norms(model)
+            #     print('update monitor', rank)
+            #     self.setup.update_monitor( iteration, optimizer, loss, gradient_norm )
                 
             print(f'Rank {rank}, Iteration {iteration}, ') 
 
@@ -153,7 +153,7 @@ class BaseExperiment:
         if rank == 0:
             torch.save(model.state_dict(), "./state_dicts/{}.pt".format(self.config_name) )
 
-            self.setup.end_monitor()
+            # self.setup.end_monitor()
 
         print('clean up')
         self.setup.cleanup()
