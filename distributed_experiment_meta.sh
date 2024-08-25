@@ -3,7 +3,7 @@
 seeds=$1
 
 arch='resnet50'
-data=$2 #'Imagenet1k' #'CIFAR10'
+dataset=$2 #'Imagenet1k' #'CIFAR10'
 task=$3 #'train' 'evaluation'
 loss=$4 #'TRADES' 'TRADES_v2' 'Madry'
 sched=$5 #'sched' 'nosched'
