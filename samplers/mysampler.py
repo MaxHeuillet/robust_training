@@ -31,10 +31,10 @@ class Pruner:
         
         # Randomly select 'n_instances' indices
         indices = np.random.choice(self.global_indices, self.N_tokeep, replace=False).tolist()  
-        np.random.shuffle(indices)
+        # np.random.shuffle(indices)
         return indices
 
-    def uncertainty_pruning(self, ):
+    def uncertainty_based(self, ):
 
         proba_predictions = torch.softmax(self.dataset.clean_pred, dim=1)
         uncertainty = 1 - torch.max(proba_predictions, dim=1)[0]
@@ -44,39 +44,67 @@ class Pruner:
         sampling_probas /= np.sum(sampling_probas)
         
         indices = np.random.choice(len(self.dataset), size=self.N_tokeep, replace=False, p=sampling_probas).tolist()
-        np.random.shuffle(indices)
+        # np.random.shuffle(indices)
         return indices
+    
+    def loss_score_based(self,):
 
-    def score_based_pruning(self, ):
-        # Implement score-based pruning
-        well_learned_mask = ( (self.dataset.clean_scores < self.dataset.clean_scores.mean()) & (self.dataset.robust_scores < self.dataset.robust_scores.mean()) )
-        well_learned_indices = np.where(well_learned_mask)[0]
+        if self.args.prunning_strategy == 'score_v1':
+            scores = (self.dataset.global_scores - self.dataset.global_scores.min()) / (self.dataset.global_scores.max() - self.dataset.global_scores.min())
 
-        indices = np.where(~well_learned_mask)[0].tolist()
-        selected_indices = np.random.choice(well_learned_indices, int( self.dataset.keep_ratio * len(well_learned_indices) ), replace=False )
-        print('There are {} well learned samples and {} still to learn. We sampled {}'.format( sum(well_learned_mask), sum(~well_learned_mask), len(selected_indices) ) )
+        elif self.args.prunning_strategy == 'score_v2':
+            clean_scores = (self.dataset.clean_scores - self.dataset.clean_scores.min()) / (self.dataset.clean_scores.max() - self.dataset.clean_scores.min())
+            robust_scores = (self.dataset.robust_scores - self.dataset.robust_scores.min()) / (self.dataset.robust_scores.max() - self.dataset.robust_scores.min())
 
-        if len(selected_indices) > 0:
-            self.dataset.update_weights(selected_indices)
-            indices.extend(selected_indices)
+            alpha = 0.5
+            scores = alpha * clean_scores + (1 - alpha) * robust_scores
+        else:
+            print('score not implemented')
+
+        sampling_probas = scores / np.sum(scores)
+        indices = np.random.choice(len(self.dataset), size=self.N_tokeep, replace=False, p=sampling_probas).tolist()
         np.random.shuffle(indices)
-        print('For next epoch, there will be {} samples. Total dataset size was {}'.format( len(indices), len(self.dataset) ) )
         return indices
 
     def no_pruning(self):
         indices = self.global_indices.copy()
-        np.random.shuffle(indices)
+        # np.random.shuffle(indices)
         return indices
     
     def prune(self):
         if self.args.pruning_strategy == 'random':
             return self.random_pruning()
-        elif self.args.pruning_strategy == 'score':
-            return self.score_based_pruning()
+        elif self.args.pruning_strategy in [ 'score_v1', 'score_v2' ]:
+            return self.loss_score_based()
         elif self.args.pruning_strategy == 'uncertainty':
-            return self.uncertainty_pruning()
+            return self.uncertainty_based()
         else:
             raise ValueError(f"Undefined pruning strategy: {self.args.pruning_strategy}")
+        
+
+
+
+    # def score_based(self, ):
+
+    #     if self.args.prunning_strategy == 'score_v1':
+    #         well_learned_mask =  (self.dataset.global_scores < self.dataset.global_scores.mean()) 
+    #     elif self.args.prunning_strategy == 'score_v2':
+    #         well_learned_mask = ( (self.dataset.clean_scores < self.dataset.clean_scores.mean()) & (self.dataset.robust_scores < self.dataset.robust_scores.mean()) )
+    #     else:
+    #         print('score not implemented')
+
+    #     well_learned_indices = np.where(well_learned_mask)[0]
+
+    #     indices = np.where(~well_learned_mask)[0].tolist()
+    #     selected_indices = np.random.choice(well_learned_indices, int( self.dataset.keep_ratio * len(well_learned_indices) ), replace=False )
+    #     print('There are {} well learned samples and {} still to learn. We sampled {}'.format( sum(well_learned_mask), sum(~well_learned_mask), len(selected_indices) ) )
+
+    #     if len(selected_indices) > 0:
+    #         self.dataset.update_weights(selected_indices)
+    #         indices.extend(selected_indices)
+    #     # np.random.shuffle(indices)
+    #     print('For next epoch, there will be {} samples. Total dataset size was {}'.format( len(indices), len(self.dataset) ) )
+    #     return indices
 
 
 
