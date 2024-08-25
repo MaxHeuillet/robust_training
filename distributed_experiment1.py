@@ -37,27 +37,6 @@ from utils import get_args, get_exp_name, set_seeds
 
 
 
-
-
-
-# def setup(world_size, rank):
-#   #Initialize the distributed environment.
-#   print( ' world size {}, rank {}'.format(world_size,rank) )
-#   print('set up the master adress and port')
-#   os.environ['MASTER_ADDR'] = 'localhost'
-#   os.environ['MASTER_PORT'] = '12354'
-#   #Set environment variables for offline usage of Hugging Face libraries
-#   os.environ['HF_DATASETS_OFFLINE'] = '1'
-#   os.environ['TRANSFORMERS_OFFLINE'] = '1'
-  
-#   #Set up the local GPU for this process
-#   torch.cuda.set_device(rank)
-#   dist.init_process_group("nccl", rank=rank, world_size=world_size)
-#   print('init process group ok')
-
-# def cleanup():
-#    dist.destroy_process_group()
-
 def compute_gradient_norms(model):
     total_norm = 0
     for p in model.parameters():
@@ -83,83 +62,87 @@ class BaseExperiment:
         self.setup.distributed_setup(self.world_size, rank)
 
         # dist.barrier()
-        if rank == 0:
-            # self.setup.initialize_monitor()
-            self.exp_logger = Experiment(
-                api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
-                project_name="robust_training",
-                workspace="maxheuillet",  )
+
+        experiment = Experiment(auto_output_logging="simple")
+        experiment.log_parameter("run_id", self.config_name)
+        experiment.log_parameter("global_process_rank", rank)
+
+        experiment.set_name( self.config_name )
+        experiment.log_parameters(self.args)
+
+                # if rank == 0:
+        #     self.setup.initialize_monitor()
+        #     self.exp_logger = Experiment(
+        #         api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
+        #         project_name="robust_training",
+        #         workspace="maxheuillet",  )
         
-            print('set name',flush=True)
-            self.exp_logger.set_name( self.config_name )
-            print('log paragameters',flush=True)
-            self.exp_logger.log_parameters(self.args)
+        #     print('set name',flush=True)
 
-        print(f'Rank {rank} reached second barrier',flush=True)
-        dist.barrier()
+  
 
-        # print('initialize dataset', rank,flush=True) 
-        # train_dataset = WeightedDataset(self.args, train=True, prune_ratio = self.args.pruning_ratio, )
+        print('initialize dataset', rank,flush=True) 
+        train_dataset = WeightedDataset(self.args, train=True, prune_ratio = self.args.pruning_ratio, )
 
-        # print('initialize sampler', rank,flush=True) 
-        # dist_sampler = DistributedCustomSampler(self.args, train_dataset, num_replicas=self.world_size, rank=rank, drop_last=True)
+        print('initialize sampler', rank,flush=True) 
+        dist_sampler = DistributedCustomSampler(self.args, train_dataset, num_replicas=self.world_size, rank=rank, drop_last=True)
         
-        # print('initialize dataoader', rank,flush=True) 
-        # trainloader = DataLoader(train_dataset, batch_size=None, sampler=dist_sampler, num_workers=self.world_size) #
+        print('initialize dataoader', rank,flush=True) 
+        trainloader = DataLoader(train_dataset, batch_size=None, sampler=dist_sampler, num_workers=self.world_size) #
 
-        # print('load model', rank,flush=True) 
-        # model, target_layers = load_architecture(self.args)
+        print('load model', rank,flush=True) 
+        model, target_layers = load_architecture(self.args)
 
-        # print('load statedict', rank,flush=True) 
-        # statedict = load_statedict(self.args)
+        print('load statedict', rank,flush=True) 
+        statedict = load_statedict(self.args)
 
-        # model.load_state_dict(statedict)
+        model.load_state_dict(statedict)
 
-        # model.to(rank)
-        # model = DDP(model, device_ids=[rank])
+        model.to(rank)
+        model = DDP(model, device_ids=[rank])
         
-        # scaler = GradScaler()
-        # optimizer = torch.optim.SGD( model.parameters(),lr=self.args.init_lr, weight_decay=self.args.weight_decay, momentum=self.args.momentum, nesterov=True, )
-        # scheduler = CosineAnnealingLR(optimizer, T_max=10)
+        scaler = GradScaler()
+        optimizer = torch.optim.SGD( model.parameters(),lr=self.args.init_lr, weight_decay=self.args.weight_decay, momentum=self.args.momentum, nesterov=True, )
+        scheduler = CosineAnnealingLR(optimizer, T_max=10)
         
         for iteration in range(self.args.iterations):
 
             # print('start iteration', iteration, rank,flush=True) 
 
-            # model.train()
-            # dist_sampler.set_epoch(iteration)
+            model.train()
+            dist_sampler.set_epoch(iteration)
 
-            # for batch_id, batch in enumerate( trainloader ):
+            for batch_id, batch in enumerate( trainloader ):
 
-            #     data, target, idxs = batch
+                data, target, idxs = batch
 
-            #     data, target = data.to(rank), target.to(rank) 
+                data, target = data.to(rank), target.to(rank) 
 
-            #     optimizer.zero_grad()
+                optimizer.zero_grad()
 
-            #     with autocast():
-            #         loss_values, clean_values, robust_values, logits_nat, logits_adv = get_loss(self.args, model, data, target, optimizer)
+                with autocast():
+                    loss_values, clean_values, robust_values, logits_nat, logits_adv = get_loss(self.args, model, data, target, optimizer)
 
-            #     train_dataset.update_scores(idxs, clean_values, robust_values, loss_values, logits_nat, logits_adv)
-            #     loss = train_dataset.compute_weighted_loss(idxs, loss_values)
+                train_dataset.update_scores(idxs, clean_values, robust_values, loss_values, logits_nat, logits_adv)
+                loss = train_dataset.compute_weighted_loss(idxs, loss_values)
 
-            #     scaler.scale(loss).backward()
-            #     scaler.step(optimizer)
-            #     scaler.update()
+                scaler.scale(loss).backward()
+                scaler.step(optimizer)
+                scaler.update()
 
-            # if self.args.sched == 'sched':
-            #     scheduler.step()
+            if self.args.sched == 'sched':
+                scheduler.step()
 
-            if rank == 0:
+            # if rank == 0:
                 # print('compute gradient norm', rank)
-                # gradient_norm = compute_gradient_norms(model)
-                # current_lr = optimizer.param_groups[0]['lr']
+            gradient_norm = compute_gradient_norms(model)
+            current_lr = optimizer.param_groups[0]['lr']
                 # Log each metric for the current epoch
-                self.exp_logger.log_metric("iteration", iteration, epoch=iteration)
-                # self.exp_logger.log_metric("loss_value", loss, epoch=iteration)
-                # self.exp_logger.log_metric("lr_schedule", current_lr, epoch=iteration)
-                # self.exp_logger.log_metric("gradient_norm", gradient_norm, epoch=iteration)
-                print('update monitor', rank,flush=True)
+            experiment.log_metric("iteration", iteration, epoch=iteration)
+            experiment.log_metric("loss_value", loss, epoch=iteration)
+            experiment.log_metric("lr_schedule", current_lr, epoch=iteration)
+            experiment.log_metric("gradient_norm", gradient_norm, epoch=iteration)
+            print('update monitor', rank,flush=True)
                 # self.setup.update_monitor( iteration, optimizer, loss, gradient_norm )
                 
             print(f'Rank {rank}, Iteration {iteration},', flush=True) 

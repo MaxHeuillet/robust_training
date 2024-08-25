@@ -1,5 +1,5 @@
 
-from comet_ml import Experiment
+# from comet_ml import Experiment
 
 import os
 import torch
@@ -12,24 +12,24 @@ class Setup:
         self.config_name = config_name
         self.args = args
 
-    def initialize_monitor(self, ):
+    # def initialize_monitor(self, ):
         
-        print('instantiate experiment')
+    #     print('instantiate experiment')
         
 
-    def update_monitor(self, iteration, optimizer, loss, gradient_norm):
-        # Compute gradient norms
+    # def update_monitor(self, iteration, optimizer, loss, gradient_norm):
+    #     # Compute gradient norms
         
-        current_lr = optimizer.param_groups[0]['lr']
+    #     current_lr = optimizer.param_groups[0]['lr']
 
-        # Log each metric for the current epoch
-        self.exp_logger.log_metric("iteration", iteration, epoch=iteration)
-        self.exp_logger.log_metric("loss_value", loss, epoch=iteration)
-        self.exp_logger.log_metric("lr_schedule", current_lr, epoch=iteration)
-        self.exp_logger.log_metric("gradient_norm", gradient_norm, epoch=iteration)
+    #     # Log each metric for the current epoch
+    #     self.exp_logger.log_metric("iteration", iteration, epoch=iteration)
+    #     self.exp_logger.log_metric("loss_value", loss, epoch=iteration)
+    #     self.exp_logger.log_metric("lr_schedule", current_lr, epoch=iteration)
+    #     self.exp_logger.log_metric("gradient_norm", gradient_norm, epoch=iteration)
 
-    def end_monitor(self,):
-        self.exp_logger.end()
+    # def end_monitor(self,):
+    #     self.exp_logger.end()
         
     def distributed_setup(self, world_size, rank):
         #Initialize the distributed environment.
