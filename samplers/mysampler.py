@@ -49,10 +49,10 @@ class Pruner:
     
     def loss_score_based(self,):
 
-        if self.args.prunning_strategy == 'score_v1':
+        if self.args.pruning_strategy == 'score_v1':
             scores = (self.dataset.global_scores - self.dataset.global_scores.min()) / (self.dataset.global_scores.max() - self.dataset.global_scores.min())
 
-        elif self.args.prunning_strategy == 'score_v2':
+        elif self.args.pruning_strategy == 'score_v2':
             clean_scores = (self.dataset.clean_scores - self.dataset.clean_scores.min()) / (self.dataset.clean_scores.max() - self.dataset.clean_scores.min())
             robust_scores = (self.dataset.robust_scores - self.dataset.robust_scores.min()) / (self.dataset.robust_scores.max() - self.dataset.robust_scores.min())
 
