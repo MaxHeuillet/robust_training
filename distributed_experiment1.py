@@ -63,7 +63,7 @@ class BaseExperiment:
 
         # dist.barrier()
 
-        experiment = Experiment(auto_output_logging="simple")
+        experiment = Experiment(api_key="I5AiXfuD0TVuSz5UOtujrUM9i", project_name="robust_training", workspace="maxheuillet",)
         experiment.log_parameter("run_id", self.config_name)
         experiment.log_parameter("global_process_rank", rank)
 
@@ -73,7 +73,7 @@ class BaseExperiment:
                 # if rank == 0:
         #     self.setup.initialize_monitor()
         #     self.exp_logger = Experiment(
-        #         api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
+        #         
         #         project_name="robust_training",
         #         workspace="maxheuillet",  )
         
