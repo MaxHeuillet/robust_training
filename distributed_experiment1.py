@@ -86,13 +86,13 @@ class BaseExperiment:
 
         print('load model', rank,flush=True) 
         model, target_layers = load_architecture(self.args)
-        add_lora(target_layers, model)
-
-
+        
         print('load statedict', rank,flush=True) 
         statedict = load_statedict(self.args)
 
         model.load_state_dict(statedict)
+
+        add_lora(target_layers, model)
 
         model.to(rank)
         model = DDP(model, device_ids=[rank])
