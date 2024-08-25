@@ -13,8 +13,7 @@ module --force purge
 module load StdEnv/2023 python/3.10 scipy-stack httpproxy arrow
 
 source ~/scratch/MYENV4/bin/activate
-pip install  -r requirements.txt
-
+# pip install  -r requirements.txt
 
 if [ "${DATA}" = "Imagenet1k" ]; then
     echo 'unzip imagenet'
