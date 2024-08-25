@@ -3,20 +3,19 @@
 seeds=$1
 
 arch='resnet50'
-dataset=$2 #'Imagenet1k' #'CIFAR10'
-task=$3 #'train' 'evaluation'
-loss=$4 #'TRADES' 'TRADES_v2' 'Madry'
-sched=$5 #'sched' 'nosched'
+data=$2  # 'Imagenet1k' or 'CIFAR10'
+task=$3  # 'train' or 'evaluation'
+loss=$4  # 'TRADES' 'TRADES_v2' 'Madry'
+sched=$5  # 'sched' or 'nosched'
 iterations=$6
 
-init_lrs=( 0.01   )  # 0.001 0.0001
-pruning_ratios=( 0.7 )  #0.3 0.5
-pruning_strategies=('random' 'uncertainty' 'score_v1' 'score_v2' ) 
+init_lrs=( 0.01 )  # 0.001 0.0001
+pruning_ratios=( 0.7 )  # 0.3 0.5
+pruning_strategies=('random' 'uncertainty' 'score_v1' 'score_v2')
 batch_strategies=('random')
 
 # Second set of experiments
-
-for pruning_ratio in "${pruning_ratio[@]}"; do
+for pruning_ratio in "${pruning_ratios[@]}"; do
     for pruning_strategy in "${pruning_strategies[@]}"; do
         for batch_strategy in "${batch_strategies[@]}"; do
             for init_lr in "${init_lrs[@]}"; do
@@ -55,5 +54,3 @@ LR=$init_lr \
         done
     done
 done
-
-
