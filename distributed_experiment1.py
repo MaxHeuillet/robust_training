@@ -65,23 +65,13 @@ class BaseExperiment:
 
         experiment = Experiment(api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
                                 project_name="robust_training",
-                                workspace="maxheuillet",
-                                log_code=False,     # Disable automatic code logging
-                                log_stdout=False   ) # Prevent capturing of stdout)
+                                workspace="maxheuillet",)
         experiment.log_parameter("run_id", self.config_name)
         experiment.log_parameter("global_process_rank", rank)
 
         experiment.set_name( self.config_name )
         experiment.log_parameters(self.args)
 
-                # if rank == 0:
-        #     self.setup.initialize_monitor()
-        #     self.exp_logger = Experiment(
-        #         
-        #         project_name="robust_training",
-        #         workspace="maxheuillet",  )
-        
-        #     print('set name',flush=True)
 
   
 
