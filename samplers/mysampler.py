@@ -155,11 +155,11 @@ class CustomSampler(object):
     def set_epoch(self, iteration):
 
         self.set_seed(iteration)
-        # print('global', self.dataset.global_indices)
+        print('global', self.dataset.global_indices)
         self.post_pruning_indices = self.reset(iteration)
-        # print('post_pruning', self.post_pruning_indices)
+        print('post_pruning', self.post_pruning_indices)
         self.process_indices = self.get_process_indices(self.post_pruning_indices)
-        # print('process', self.process_indices)
+        print('process', self.process_indices)
 
 
     
