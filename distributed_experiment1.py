@@ -65,7 +65,8 @@ class BaseExperiment:
 
         experiment = Experiment(api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
                                 project_name="robust_training",
-                                workspace="maxheuillet",)
+                                workspace="maxheuillet",
+                                auto_output_logging=False)
         experiment.log_parameter("run_id", self.config_name)
         experiment.log_parameter("global_process_rank", rank)
 
@@ -143,9 +144,9 @@ class BaseExperiment:
 
         dist.barrier() 
 
-        if rank == 0:
+        # if rank == 0:
             # torch.save(model.state_dict(), "./state_dicts/{}.pt".format(self.config_name) )
-            self.exp_logger.end()
+        experiment.end()
 
             # self.setup.end_monitor()
 
