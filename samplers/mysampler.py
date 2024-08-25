@@ -20,6 +20,7 @@ class Pruner:
         self.dataset = dataset
         self.global_indices = dataset.global_indices
         self.N_tokeep = int( self.dataset.keep_ratio * len(self.global_indices) )
+        print(self.N_tokeep, len(self.global_indices) )
 
     def random_pruning(self, ):
         # Implement random pruning
@@ -43,13 +44,14 @@ class Pruner:
         sampling_probas = sampling_probas.cpu().numpy()
         sampling_probas /= np.sum(sampling_probas)
         
-        indices = np.random.choice(len(self.dataset), size=self.N_tokeep, replace=False, p=sampling_probas).tolist()
+        indices = np.random.choice(self.global_indices, size=self.N_tokeep, replace=False, p=sampling_probas).tolist()
         # np.random.shuffle(indices)
         return indices
     
     def loss_score_based(self,):
 
         if self.args.pruning_strategy == 'score_v1':
+            # print( self.dataset.global_scores )
             scores = (self.dataset.global_scores - self.dataset.global_scores.min()) / (self.dataset.global_scores.max() - self.dataset.global_scores.min())
 
         elif self.args.pruning_strategy == 'score_v2':
@@ -62,8 +64,13 @@ class Pruner:
             print('score not implemented')
 
         sampling_probas = scores / scores.sum()
+        sampling_probas = sampling_probas.cpu().numpy()
+        sampling_probas /= np.sum(sampling_probas)
+        # print(scores)
+        # print(scores.sum())
+        # print(sampling_probas.sum())
 
-        indices = np.random.choice(len(self.dataset), size=self.N_tokeep, replace=False, p=sampling_probas).tolist()
+        indices = np.random.choice(self.global_indices, size=self.N_tokeep, replace=False, p=sampling_probas).tolist()
         np.random.shuffle(indices)
         return indices
 
@@ -73,14 +80,18 @@ class Pruner:
         return indices
     
     def prune(self):
-        if self.args.pruning_strategy == 'random':
-            return self.random_pruning()
-        elif self.args.pruning_strategy in [ 'score_v1', 'score_v2' ]:
-            return self.loss_score_based()
-        elif self.args.pruning_strategy == 'uncertainty':
-            return self.uncertainty_based()
+
+        if self.args.pruning_ratio > 0:
+            if self.args.pruning_strategy == 'random':
+                return self.random_pruning()
+            elif self.args.pruning_strategy in [ 'score_v1', 'score_v2' ]:
+                return self.loss_score_based()
+            elif self.args.pruning_strategy == 'uncertainty':
+                return self.uncertainty_based()
+            else:
+                raise ValueError(f"Undefined pruning strategy: {self.args.pruning_strategy}")
         else:
-            raise ValueError(f"Undefined pruning strategy: {self.args.pruning_strategy}")
+            return self.global_indices
         
 
 
