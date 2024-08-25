@@ -61,7 +61,8 @@ class Pruner:
         else:
             print('score not implemented')
 
-        sampling_probas = scores / np.sum(scores)
+        sampling_probas = scores / scores.sum()
+
         indices = np.random.choice(len(self.dataset), size=self.N_tokeep, replace=False, p=sampling_probas).tolist()
         np.random.shuffle(indices)
         return indices
