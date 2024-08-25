@@ -63,7 +63,11 @@ class BaseExperiment:
 
         # dist.barrier()
 
-        experiment = Experiment(api_key="I5AiXfuD0TVuSz5UOtujrUM9i", project_name="robust_training", workspace="maxheuillet",)
+        experiment = Experiment(api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
+                                project_name="robust_training",
+                                workspace="maxheuillet",
+                                log_code=False,     # Disable automatic code logging
+                                log_stdout=False   ) # Prevent capturing of stdout)
         experiment.log_parameter("run_id", self.config_name)
         experiment.log_parameter("global_process_rank", rank)
 
