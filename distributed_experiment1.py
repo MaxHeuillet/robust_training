@@ -7,9 +7,9 @@ from torch.utils.data import DataLoader, DistributedSampler
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.cuda.amp import autocast, GradScaler
 from torch.optim.lr_scheduler import CosineAnnealingLR
-
-import torch
 import os
+import torch
+
 import io
 
 import gzip
@@ -67,12 +67,16 @@ class BaseExperiment:
                                 project_name="robust_training",
                                 workspace="maxheuillet",
                                 auto_output_logging=False)
+        
         experiment.log_parameter("run_id", os.getenv('SLURM_JOB_ID') )
-        experiment.log_parameter("name", self.config_name )
+
         experiment.log_parameter("global_process_rank", rank)
 
         experiment.set_name( self.config_name )
         experiment.log_parameters(self.args)
+
+
+  
 
         print('initialize dataset', rank,flush=True) 
         train_dataset = WeightedDataset(self.args, train=True, prune_ratio = self.args.pruning_ratio, )
@@ -126,13 +130,17 @@ class BaseExperiment:
             if self.args.sched == 'sched':
                 scheduler.step()
 
+            # if rank == 0:
+                # print('compute gradient norm', rank)
             gradient_norm = compute_gradient_norms(model)
             current_lr = optimizer.param_groups[0]['lr']
+                # Log each metric for the current epoch
             experiment.log_metric("iteration", iteration, epoch=iteration)
             experiment.log_metric("loss_value", loss, epoch=iteration)
             experiment.log_metric("lr_schedule", current_lr, epoch=iteration)
             experiment.log_metric("gradient_norm", gradient_norm, epoch=iteration)
             print('update monitor', rank,flush=True)
+                # self.setup.update_monitor( iteration, optimizer, loss, gradient_norm )
                 
             print(f'Rank {rank}, Iteration {iteration},', flush=True) 
 
