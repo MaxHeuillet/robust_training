@@ -36,7 +36,7 @@ def get_args():
     parser.add_argument("--arch", default="resnet50",type=str, choices=['resnet50', 'LeNet5'], help="model architecture")
     parser.add_argument('--dataset', default='CIFAR10', type=str,choices=['CIFAR10', 'CIFAR100', 'tinyimagenet', 'MNIST'], help='dataset: ' + ' (default: cifar10)')
     
-    parser.add_argument("--pruning_strategy", default="none", type=str,choices=['none', 'random', 'uncertainty', 'score'], help="the pruning strategy")
+    parser.add_argument("--pruning_strategy", default="none", type=str,choices=['none', 'random', 'uncertainty', 'score_v1', 'score_v2'], help="the pruning strategy")
     parser.add_argument("--pruning_ratio", default=0, type=float,choices=[0, 0.3, 0.5, 0.7], help="the pruning ratio")
     parser.add_argument("--batch_strategy", default="random",type=str, choices=['random',], help="the batching strategy")
 
