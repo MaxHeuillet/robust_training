@@ -63,7 +63,7 @@ def load_data(args, train=True):
         from torch.utils.data import TensorDataset
 
         # Create 10 unique integers as observations
-        observations = torch.arange(7)
+        observations = torch.arange(10)
 
         # Create corresponding labels (for example, labels can be the same as observations, or any other related value)
         labels = observations.clone()  # Here, labels are the same as observations for simplicity
