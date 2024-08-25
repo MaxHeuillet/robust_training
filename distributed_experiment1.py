@@ -31,7 +31,7 @@ from utils import Setup
 
 from samplers import DistributedCustomSampler
 from datasets import WeightedDataset
-from architectures import load_architecture, load_statedict
+from architectures import load_architecture, load_statedict, add_lora
 from losses import get_loss
 from utils import get_args, get_exp_name, set_seeds
 
@@ -66,7 +66,7 @@ class BaseExperiment:
         experiment = Experiment(api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
                                 project_name="robust_training",
                                 workspace="maxheuillet",
-                                auto_output_logging=False)
+                                auto_output_logging=True)
         
         experiment.log_parameter("run_id", os.getenv('SLURM_JOB_ID') )
 
@@ -74,9 +74,6 @@ class BaseExperiment:
 
         experiment.set_name( self.config_name )
         experiment.log_parameters(self.args)
-
-
-  
 
         print('initialize dataset', rank,flush=True) 
         train_dataset = WeightedDataset(self.args, train=True, prune_ratio = self.args.pruning_ratio, )
@@ -89,6 +86,8 @@ class BaseExperiment:
 
         print('load model', rank,flush=True) 
         model, target_layers = load_architecture(self.args)
+        add_lora(target_layers, model)
+
 
         print('load statedict', rank,flush=True) 
         statedict = load_statedict(self.args)
