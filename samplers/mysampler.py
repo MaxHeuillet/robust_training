@@ -36,7 +36,7 @@ class Pruner:
 
         # posterior sampling
         Lambda = np.maximum(np.random.gamma(alpha, 1.0 / beta, size=self.dataset.K), 1e-3)
-        self.mu = mu + np.random.randn(self.K) / np.sqrt(kappa * Lambda)
+        self.mu = mu + np.random.randn(self.dataset.K) / np.sqrt(kappa * Lambda)
 
         # arm = np.argmax(self.mu)
         sampling_probas = self.mu / torch.sum(self.mu)
