@@ -24,6 +24,16 @@ class Pruner:
 
     def thompson_pruning(self,):
 
+        from scipy.stats import truncnorm
+
+        def truncated_normal(mean, std, lower_bound=0, upper_bound=np.inf):
+            mean = mean.numpy() # Ensure mean is an array
+            std = std.numpy()    # Ensure std is an array
+            # Calculate the bounds for the truncated normal distribution
+            a, b = (lower_bound - mean) / std, (upper_bound - mean) / std
+            # Sample from the truncated normal distribution
+            return truncnorm.rvs(a, b, loc=mean, scale=std, size=mean.shape)
+
         # posterior distribution
         mu = (self.dataset.kappa0 * self.dataset.mu0 + self.dataset.reward) / (self.dataset.kappa0 + self.dataset.pulls)
         kappa = np.maximum(self.dataset.kappa0 + self.dataset.pulls, 1e-3)
@@ -35,13 +45,14 @@ class Pruner:
         self.dataset.kappa0 * self.dataset.pulls * np.square(mean_reward - self.dataset.mu0) / (2 * kappa)
 
         # posterior sampling
-        Lambda = np.maximum(np.random.gamma(alpha, 1.0 / beta, size=self.dataset.K), 1e-3)
-        self.mu = mu + np.random.randn(self.dataset.K) / np.sqrt(kappa * Lambda)
+        Lambda = np.maximum( np.random.gamma(alpha, 1.0 / beta, size=self.dataset.K), 1e-3 )
+
+        # self.mu = mu + np.random.randn(self.dataset.K) / np.sqrt(kappa * Lambda)
+        self.mu = truncated_normal(mu, np.sqrt(kappa * Lambda) )
+
 
         # arm = np.argmax(self.mu)
-        sampling_probas = self.mu / torch.sum(self.mu)
-        sampling_probas = sampling_probas.cpu().numpy()
-        sampling_probas /= np.sum(sampling_probas)
+        sampling_probas = self.mu / np.sum(self.mu)
         
         indices = np.random.choice(self.global_indices, size=self.N_tokeep, replace=False, p=sampling_probas).tolist()
 
