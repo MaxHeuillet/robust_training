@@ -18,7 +18,8 @@ def trades_loss(args,
                 model,
                 x_natural,
                 y,
-                optimizer,):
+                optimizer,
+                train:bool):
     
     # define KL-loss
     # criterion_kl = nn.KLDivLoss(size_average=False)
@@ -57,7 +58,7 @@ def trades_loss(args,
         x_adv = torch.clamp(x_adv, 0.0, 1.0).detach()
 
 
-    if args.task == 'train':
+    if train:
         model.train()
 
         # zero gradient
