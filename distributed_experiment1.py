@@ -104,10 +104,12 @@ class BaseExperiment:
         optimizer = torch.optim.SGD( model.parameters(),lr=self.args.init_lr, weight_decay=self.args.weight_decay, momentum=self.args.momentum, nesterov=True, )
         scheduler = CosineAnnealingLR(optimizer, T_max=10)
 
+        self.validate(valloader, model, optimizer, 0, rank)
+
 
         for iteration in range(self.args.iterations):
 
-            # print('start iteration', iteration, rank,flush=True) 
+            
 
             model.train()
             train_sampler.set_epoch(iteration)
@@ -143,17 +145,9 @@ class BaseExperiment:
             experiment.log_metric("gradient_norm", gradient_norm, epoch=iteration)  
 
 
-
-            print('start validation')
+            print('start validation') 
+            self.validate(valloader, model, optimizer, iteration+1, rank)
             
-            
-            total_loss, total_correct_nat, total_correct_adv, total_examples = self.validate(valloader, model, optimizer, rank)
-            dist.barrier() 
-            avg_loss, clean_accuracy, robust_accuracy  = self.sync_validation_results(total_loss, total_correct_nat, total_correct_adv, total_examples, rank)
-            experiment.log_metric("val_loss", avg_loss, epoch=iteration)
-            experiment.log_metric("val_clean_accuracy", clean_accuracy, epoch=iteration)
-            experiment.log_metric("val_robust_accuracy", robust_accuracy, epoch=iteration)
-
             print(f'Rank {rank}, Iteration {iteration},', flush=True) 
 
         dist.barrier() 
@@ -167,7 +161,16 @@ class BaseExperiment:
         print('clean up',flush=True)
         self.setup.cleanup()
 
-    def validate(self, valloader, model, optimizer, rank):
+    def validate(self, valloader, model, optimizer, iteration, rank):
+        total_loss, total_correct_nat, total_correct_adv, total_examples = self.validate(valloader, model, optimizer, rank)
+        dist.barrier() 
+        avg_loss, clean_accuracy, robust_accuracy  = self.sync_validation_results(total_loss, total_correct_nat, total_correct_adv, total_examples, rank)
+        experiment.log_metric("val_loss", avg_loss, epoch=iteration)
+        experiment.log_metric("val_clean_accuracy", clean_accuracy, epoch=iteration)
+        experiment.log_metric("val_robust_accuracy", robust_accuracy, epoch=iteration)
+
+
+    def validation_metrics(self, valloader, model, optimizer, rank):
 
         model.eval()
 
