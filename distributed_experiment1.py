@@ -145,7 +145,11 @@ class BaseExperiment:
 
 
             print('start validation')
-            avg_loss, clean_accuracy, robust_accuracy = self.validate(valloader, model, optimizer, rank)
+            
+            
+            total_loss, total_correct_nat, total_correct_adv, total_examples = self.validate(valloader, model, optimizer, rank)
+            dist.barrier() 
+            avg_loss, clean_accuracy, robust_accuracy  = self.sync_validation_results(total_loss, total_correct_nat, total_correct_adv, total_examples, rank)
             experiment.log_metric("val_loss", avg_loss, epoch=iteration)
             experiment.log_metric("val_clean_accuracy", clean_accuracy, epoch=iteration)
             experiment.log_metric("val_robust_accuracy", robust_accuracy, epoch=iteration)
@@ -190,10 +194,25 @@ class BaseExperiment:
                 total_correct_adv += (preds_adv == target).sum().item()
                 total_examples += target.size(0)
 
-        # Calculate clean and robust accuracy
-        clean_accuracy = total_correct_nat / total_examples
-        robust_accuracy = total_correct_adv / total_examples
-        avg_loss = total_loss / total_examples
+        return total_loss, total_correct_nat, total_correct_adv, total_examples
+    
+    def sync_validation_results(self, total_loss, total_correct_nat, total_correct_adv, total_examples, rank):
+
+        # Aggregate results across all processes
+        total_loss_tensor = torch.tensor([total_loss], dtype=torch.float32, device=rank)
+        total_correct_nat_tensor = torch.tensor([total_correct_nat], dtype=torch.float32, device=rank)
+        total_correct_adv_tensor = torch.tensor([total_correct_adv], dtype=torch.float32, device=rank)
+        total_examples_tensor = torch.tensor([total_examples], dtype=torch.float32, device=rank)
+
+        dist.all_reduce(total_loss_tensor, op=dist.ReduceOp.SUM)
+        dist.all_reduce(total_correct_nat_tensor, op=dist.ReduceOp.SUM)
+        dist.all_reduce(total_correct_adv_tensor, op=dist.ReduceOp.SUM)
+        dist.all_reduce(total_examples_tensor, op=dist.ReduceOp.SUM)
+
+        # Compute global averages
+        avg_loss = total_loss_tensor.item() / total_examples_tensor.item()
+        clean_accuracy = total_correct_nat_tensor.item() / total_examples_tensor.item()
+        robust_accuracy = total_correct_adv_tensor.item() / total_examples_tensor.item()
 
         return avg_loss, clean_accuracy, robust_accuracy
 
