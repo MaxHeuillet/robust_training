@@ -62,6 +62,14 @@ def get_args():
 
     parser.add_argument("--num_workers",default=1, type=int, help="number of data loading workers (default: 4)")
 
+    ### arguments for TRADES loss function:
+    parser.add_argument("--step_size", default=0.003, type=float, help="step size of trades")
+    parser.add_argument("--epsilon", default=0.031, type=float, help="epsilon of trades")
+    parser.add_argument("--perturb_steps", default=10, type=int, help="number of steps of trades")
+    parser.add_argument("--beta", default=1.0, type=float, help="beta of trades")
+    parser.add_argument("--distance", default='l_inf', type=float, help="distance of trades")
+
+
     args, unknown = parser.parse_known_args()
 
     args.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
