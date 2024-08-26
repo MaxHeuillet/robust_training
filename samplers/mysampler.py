@@ -22,6 +22,31 @@ class Pruner:
         self.N_tokeep = int( self.dataset.keep_ratio * len(self.global_indices) )
         print(self.N_tokeep, len(self.global_indices) )
 
+    def thompson_pruning(self,):
+
+        # posterior distribution
+        mu = (self.dataset.kappa0 * self.dataset.mu0 + self.dataset.reward) / (self.dataset.kappa0 + self.dataset.pulls)
+        kappa = np.maximum(self.dataset.kappa0 + self.dataset.pulls, 1e-3)
+        alpha = self.dataset.alpha0 + self.dataset.pulls / 2
+        mean_reward = self.dataset.reward / np.maximum(self.dataset.pulls, 1)
+        
+        beta = self.dataset.beta0 + \
+        0.5 * (self.dataset.reward2 - 2 * self.dataset.reward * mean_reward + self.dataset.pulls * np.square(mean_reward)) + \
+        self.dataset.kappa0 * self.dataset.pulls * np.square(mean_reward - self.dataset.mu0) / (2 * kappa)
+
+        # posterior sampling
+        Lambda = np.maximum(np.random.gamma(alpha, 1.0 / beta, size=self.dataset.K), 1e-3)
+        self.mu = mu + np.random.randn(self.K) / np.sqrt(kappa * Lambda)
+
+        # arm = np.argmax(self.mu)
+        sampling_probas = self.mu / torch.sum(self.mu)
+        sampling_probas = sampling_probas.cpu().numpy()
+        sampling_probas /= np.sum(sampling_probas)
+        
+        indices = np.random.choice(self.global_indices, size=self.N_tokeep, replace=False, p=sampling_probas).tolist()
+
+        return indices
+
     def random_pruning(self, ):
         # Implement random pruning
         
@@ -88,6 +113,8 @@ class Pruner:
                 return self.loss_score_based()
             elif self.args.pruning_strategy == 'uncertainty':
                 return self.uncertainty_based()
+            elif self.args.pruning_strategy == 'TS_pruning':
+                return self.thompson_pruning()
             else:
                 raise ValueError(f"Undefined pruning strategy: {self.args.pruning_strategy}")
         else:

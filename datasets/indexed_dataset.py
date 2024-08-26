@@ -28,8 +28,8 @@ class IndexedDataset(Dataset): #Dataset
 
         super().__init__()
 
-        self.dataset, K = load_data(args, train=train) #, train_transform=train_transform
-        self.K = K
+        self.dataset, N = load_data(args, train=train) #, train_transform=train_transform
+        self.N = N
         self.dataset_name = args.dataset
         self.global_indices = list(range(len(self.dataset)))
         

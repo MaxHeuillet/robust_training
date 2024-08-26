@@ -47,19 +47,27 @@ class WeightedDataset(IndexedDataset):
         super().__init__(args, train)
 
         self.keep_ratio = min(1.0, max(1e-1, 1.0 - prune_ratio))
+        self.K = len(self.dataset)
 
         
         # self.scores stores the loss value of each sample. Note that smaller value indicates the sample is better learned by the network.
         mean = 1.0
-        std_dev = 0.1  # Small standard deviation for small variance
+        std_dev = 0.1  
+        self.clean_scores = torch.normal(mean, std_dev, size=(self.N,))
+        self.robust_scores = torch.normal(mean, std_dev, size=(self.N,))
+        self.global_scores = torch.normal(mean, std_dev, size=(self.N,))
+        self.clean_pred = torch.ones( self.K, self.N ).half() * 3
+        self.robust_pred = torch.ones( self.K, self.N ).half() * 3
 
-        # Generate random vectors with mean=1 and small variance
-        self.clean_scores = torch.normal(mean, std_dev, size=(len(self.dataset),))
-        self.robust_scores = torch.normal(mean, std_dev, size=(len(self.dataset),))
-        self.global_scores = torch.normal(mean, std_dev, size=(len(self.dataset),))
-        self.clean_pred = torch.ones( len(self.dataset), self.K ).half() * 3
-        self.robust_pred = torch.ones( len(self.dataset), self.K ).half() * 3
+        ### arguments relative to Thomspon pruning:
+        self.mu0 = torch.zeros(self.K)
+        self.kappa0 = torch.ones(self.K)
+        self.alpha0 = torch.ones(self.K)
+        self.beta0 = torch.ones(self.K)
 
+        self.pulls = torch.zeros(self.K)  # number of pulls
+        self.reward = torch.zeros(self.K)  # cumulative reward
+        self.reward2 = torch.zeros(self.K)  # cumulative squared reward
 
         self.weights = torch.ones(len(self.dataset))
 
@@ -75,16 +83,37 @@ class WeightedDataset(IndexedDataset):
         assert isinstance(clean_values, torch.Tensor)
         assert isinstance(robust_values, torch.Tensor)
 
-        # batch_size = clean_values.shape[0]
+        clean_loss_val = clean_values.detach().clone()
+        self.clean_scores[indices.cpu().long()] = clean_loss_val.cpu()
+
+        robust_loss_val = robust_values.detach().clone()
+        self.robust_scores[indices.cpu().long()] = robust_loss_val.cpu()
+
+        global_loss_val = global_values.detach().clone()
+        self.global_scores[indices.cpu().long()] = global_loss_val.cpu()
+        self.reward[indices.cpu().long()] += global_loss_val
+        self.reward2[indices.cpu().long()] += global_loss_val * global_loss_val
+
+        clean_pred = clean_pred.detach().clone()
+        self.clean_pred[indices.cpu().long()] = clean_pred.cpu()
+
+        robust_pred = robust_pred.detach().clone()
+        self.robust_pred[indices.cpu().long()] = robust_pred.cpu()
+
+        # Update the number of pulls for each arm
+        self.pulls[indices.cpu().long()] += 1
+        
+        # Update the sum of rewards for each arm
+        
+        
+        # Update the sum of squared rewards for each arm
+        
+
+
+            # batch_size = clean_values.shape[0]
         # assert len(self.cur_batch_index) == batch_size, 'not enough index'
         # device = clean_values.device
         # indices = self.cur_batch_index.to(device)
-
-        clean_loss_val = clean_values.detach().clone()
-        robust_loss_val = robust_values.detach().clone()
-        
-        clean_pred = clean_pred.detach().clone()
-        robust_pred = robust_pred.detach().clone()
 
         # if dist.is_available() and dist.is_initialized():
         #     idx_val = torch.cat([ indices.view(1, -1), clean_loss_val.view(1, -1), robust_loss_val.view(1, -1)], dim=0)
@@ -93,14 +122,9 @@ class WeightedDataset(IndexedDataset):
         #     clean_loss_val = idx_val_whole_group[1]
         #     robust_loss_val = idx_val_whole_group[2]
 
-        self.clean_scores[indices.cpu().long()] = clean_loss_val.cpu()
-        self.robust_scores[indices.cpu().long()] = robust_loss_val.cpu()
-
-        self.clean_pred[indices.cpu().long()] = clean_pred.cpu()
-        self.robust_pred[indices.cpu().long()] = robust_pred.cpu()
 
     
-    def compute_weighted_loss(self, indices, loss_values):
+    def compute_loss(self, indices, loss_values):
         device = loss_values.device
         weights = self.weights[indices].to(device) #self.cur_batch_index
         # self.reset_cur_batch_index()
