@@ -18,7 +18,7 @@ def load_data(args, train=True):
             dataset = datasets.MNIST(root=args.data_dir, train=True, download=True, transform=transform)
         else:
             dataset = datasets.MNIST(root=args.data_dir, train=False, download=True, transform=transform)
-        K = 10
+        N = 10
 
     elif args.dataset == 'CIFAR10':
 
@@ -33,7 +33,7 @@ def load_data(args, train=True):
 
         # pool_dataset = IndexedDataset('CIFAR10', train_folder, transform= transform ) 
         # test_dataset = IndexedDataset('CIFAR10', test_folder, transform= transform) 
-        K = 10
+        N = 10
 
         print('load dataloader')
             
@@ -53,7 +53,7 @@ def load_data(args, train=True):
 
         # pool_dataset = IndexedDataset('Imagenet1k', train_folder, transform= transform ) 
         # test_dataset = IndexedDataset('Imagenet1k', test_folder, transform= transform) 
-        K = 1000
+        N = 1000
 
         print('load dataloader')
 
@@ -70,7 +70,7 @@ def load_data(args, train=True):
 
         # Combine observations and labels into a TensorDataset
         dataset = TensorDataset(observations.view(-1, 1), labels.view(-1, 1))
-        K = 10
+        N = 10
 
     # elif self.data == 'Imagenette':
 
@@ -93,7 +93,7 @@ def load_data(args, train=True):
     else:
         print('undefined data')
 
-    return dataset, K
+    return dataset, N
 
 def to_rgb(x):
     return x.convert("RGB")

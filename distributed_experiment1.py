@@ -127,7 +127,7 @@ class BaseExperiment:
                     loss_values, clean_values, robust_values, logits_nat, logits_adv = get_loss(self.args, model, data, target, optimizer, train=True)
 
                 train_dataset.update_scores(idxs, clean_values, robust_values, loss_values, logits_nat, logits_adv)
-                loss = train_dataset.compute_weighted_loss(idxs, loss_values)
+                loss = train_dataset.compute_loss(idxs, loss_values)
 
                 scaler.scale(loss).backward()
                 scaler.step(optimizer)
@@ -220,104 +220,6 @@ class BaseExperiment:
         return avg_loss, clean_accuracy, robust_accuracy
 
 
-    def evaluation(self, rank, args):
-
-        state_dict, test_dataset, accuracy_tensor, type = args
-
-        setup.distributed_setup(self.world_size, rank)
-
-        sampler = DistributedSampler(test_dataset, num_replicas=self.world_size, rank=rank, shuffle=False)
-        
-        model = self.load_model()
-
-        model.load_state_dict(state_dict)
-
-        model.load_state_dict(state_dict)
-        model.to('cuda')
-
-        model.to(rank)
-        model.eval()  # Ensure the model is in evaluation mode
-        model = DDP(model, device_ids=[rank], broadcast_buffers=False)
-
-        if type=='clean_accuracy':
-            loader = DataLoader(test_dataset, batch_size=self.batch_size_cleanacc, sampler=sampler, num_workers=self.world_size)
-            correct, total = utils.compute_clean_accuracy(model, loader, rank)
-        elif type == 'pgd_accuracy':
-            loader = DataLoader(test_dataset, batch_size=self.batch_size_pgdacc, sampler=sampler, num_workers=self.world_size)
-            correct, total = utils.compute_PGD_accuracy(model, loader, rank)
-        else:
-            print('error')
-
-        # Tensorize the correct and total for reduction
-        correct_tensor = torch.tensor(correct).cuda(rank)
-        total_tensor = torch.tensor(total).cuda(rank)
-        print(correct_tensor, total_tensor)
-
-        # Use dist.all_reduce to sum the values across all processes
-        dist.all_reduce(correct_tensor, op=dist.ReduceOp.SUM)
-        dist.all_reduce(total_tensor, op=dist.ReduceOp.SUM)
-
-        print(correct_tensor, total_tensor)
-
-        # Compute accuracy and store it in the shared tensor
-        accuracy_tensor[rank] = correct_tensor.item() / total_tensor.item()
-
-        print(accuracy_tensor)
-
-    def launch_evaluation(self,  ):
-
-        result = self.conf.copy()
-
-        pool_dataset, test_dataset = self.load_data()
-
-        model = self.load_model()
-        state_dict = model.state_dict()
-        
-        accuracy_tensor = torch.zeros(world_size, dtype=torch.float)  # Placeholder for the accuracy, shared memory
-        accuracy_tensor.share_memory_()  
-        arg = (state_dict, test_dataset, accuracy_tensor, 'clean_accuracy')
-        torch.multiprocessing.spawn(self.evaluation, args=(arg,), nprocs=world_size, join=True)
-        clean_acc = accuracy_tensor[0]
-        print('clean_acc', clean_acc)
-        result['init_clean_accuracy'] = clean_acc.item()
-        
-        card =  math.ceil( len( pool_dataset ) * self.size/100 )
-        result['card'] = card
-
-        # try: 
-        temp_state_dict = torch.load("./state_dicts/{}_{}_{}_{}_{}_{}_{}_{}_{}_{}.pt".format(self.loss, self.lr, self.sched, self.data, self.model, self.active_strategy, self.n_rounds, self.size, self.epochs, self.seed) )
-        state_dict = {}
-        for key, value in temp_state_dict.items():
-            if key.startswith("module."):
-                state_dict[key[7:]] = value  # remove 'module.' prefix
-            else:
-                state_dict[key] = value
-            # model.load_state_dict(new_state_dict)
-
-        accuracy_tensor = torch.zeros(world_size, dtype=torch.float)  # Placeholder for the accuracy, shared memory
-        accuracy_tensor.share_memory_()  
-        arg = (state_dict, test_dataset, accuracy_tensor, 'clean_accuracy')
-        torch.multiprocessing.spawn(self.evaluation, args=(arg,), nprocs=world_size, join=True)
-        clean_acc = accuracy_tensor[0]
-        print('clean_acc', clean_acc)
-        result['final_clean_accuracy'] = clean_acc.item()
-
-        accuracy_tensor = torch.zeros(world_size, dtype=torch.float)  # Placeholder for the accuracy, shared memory
-        accuracy_tensor.share_memory_()  
-        arg = (state_dict, test_dataset, accuracy_tensor, 'pgd_accuracy')
-        torch.multiprocessing.spawn(self.evaluation, args=(arg,), nprocs=world_size, join=True)
-        pgd_acc = accuracy_tensor[0]
-        print('pgd_acc', pgd_acc)
-        result['final_PGD_accuracy'] = pgd_acc.item()
-        
-        print(result)
-        print('finished')
-        with gzip.open( './results/{}.pkl.gz'.format(self.config_name) ,'wb') as f:
-            pkl.dump(result,f)
-        print('saved')
-
-
-
 if __name__ == "__main__":
 
     print('begining of the execution')
@@ -335,7 +237,117 @@ if __name__ == "__main__":
     if args.task == "train":
         print('begin training')
         torch.multiprocessing.spawn(experiment.training,  nprocs=experiment.world_size, join=True)
-    else:
-        print('begin evaluation')
-        experiment.launch_evaluation()
+    
+
+    # else:
+    #     print('begin evaluation')
+    #     experiment.launch_evaluation()
+
+
+
+
+
+
+
+
+
+
+   # def evaluation(self, rank, args):
+
+    #     state_dict, test_dataset, accuracy_tensor, type = args
+
+    #     setup.distributed_setup(self.world_size, rank)
+
+    #     sampler = DistributedSampler(test_dataset, num_replicas=self.world_size, rank=rank, shuffle=False)
+        
+    #     model = self.load_model()
+
+    #     model.load_state_dict(state_dict)
+
+    #     model.load_state_dict(state_dict)
+    #     model.to('cuda')
+
+    #     model.to(rank)
+    #     model.eval()  # Ensure the model is in evaluation mode
+    #     model = DDP(model, device_ids=[rank], broadcast_buffers=False)
+
+    #     if type=='clean_accuracy':
+    #         loader = DataLoader(test_dataset, batch_size=self.batch_size_cleanacc, sampler=sampler, num_workers=self.world_size)
+    #         correct, total = utils.compute_clean_accuracy(model, loader, rank)
+    #     elif type == 'pgd_accuracy':
+    #         loader = DataLoader(test_dataset, batch_size=self.batch_size_pgdacc, sampler=sampler, num_workers=self.world_size)
+    #         correct, total = utils.compute_PGD_accuracy(model, loader, rank)
+    #     else:
+    #         print('error')
+
+    #     # Tensorize the correct and total for reduction
+    #     correct_tensor = torch.tensor(correct).cuda(rank)
+    #     total_tensor = torch.tensor(total).cuda(rank)
+    #     print(correct_tensor, total_tensor)
+
+    #     # Use dist.all_reduce to sum the values across all processes
+    #     dist.all_reduce(correct_tensor, op=dist.ReduceOp.SUM)
+    #     dist.all_reduce(total_tensor, op=dist.ReduceOp.SUM)
+
+    #     print(correct_tensor, total_tensor)
+
+    #     # Compute accuracy and store it in the shared tensor
+    #     accuracy_tensor[rank] = correct_tensor.item() / total_tensor.item()
+
+    #     print(accuracy_tensor)
+
+    # def launch_evaluation(self,  ):
+
+    #     result = self.conf.copy()
+
+    #     pool_dataset, test_dataset = self.load_data()
+
+    #     model = self.load_model()
+    #     state_dict = model.state_dict()
+        
+    #     accuracy_tensor = torch.zeros(world_size, dtype=torch.float)  # Placeholder for the accuracy, shared memory
+    #     accuracy_tensor.share_memory_()  
+    #     arg = (state_dict, test_dataset, accuracy_tensor, 'clean_accuracy')
+    #     torch.multiprocessing.spawn(self.evaluation, args=(arg,), nprocs=world_size, join=True)
+    #     clean_acc = accuracy_tensor[0]
+    #     print('clean_acc', clean_acc)
+    #     result['init_clean_accuracy'] = clean_acc.item()
+        
+    #     card =  math.ceil( len( pool_dataset ) * self.size/100 )
+    #     result['card'] = card
+
+    #     # try: 
+    #     temp_state_dict = torch.load("./state_dicts/{}_{}_{}_{}_{}_{}_{}_{}_{}_{}.pt".format(self.loss, self.lr, self.sched, self.data, self.model, self.active_strategy, self.n_rounds, self.size, self.epochs, self.seed) )
+    #     state_dict = {}
+    #     for key, value in temp_state_dict.items():
+    #         if key.startswith("module."):
+    #             state_dict[key[7:]] = value  # remove 'module.' prefix
+    #         else:
+    #             state_dict[key] = value
+    #         # model.load_state_dict(new_state_dict)
+
+    #     accuracy_tensor = torch.zeros(world_size, dtype=torch.float)  # Placeholder for the accuracy, shared memory
+    #     accuracy_tensor.share_memory_()  
+    #     arg = (state_dict, test_dataset, accuracy_tensor, 'clean_accuracy')
+    #     torch.multiprocessing.spawn(self.evaluation, args=(arg,), nprocs=world_size, join=True)
+    #     clean_acc = accuracy_tensor[0]
+    #     print('clean_acc', clean_acc)
+    #     result['final_clean_accuracy'] = clean_acc.item()
+
+    #     accuracy_tensor = torch.zeros(world_size, dtype=torch.float)  # Placeholder for the accuracy, shared memory
+    #     accuracy_tensor.share_memory_()  
+    #     arg = (state_dict, test_dataset, accuracy_tensor, 'pgd_accuracy')
+    #     torch.multiprocessing.spawn(self.evaluation, args=(arg,), nprocs=world_size, join=True)
+    #     pgd_acc = accuracy_tensor[0]
+    #     print('pgd_acc', pgd_acc)
+    #     result['final_PGD_accuracy'] = pgd_acc.item()
+        
+    #     print(result)
+    #     print('finished')
+    #     with gzip.open( './results/{}.pkl.gz'.format(self.config_name) ,'wb') as f:
+    #         pkl.dump(result,f)
+    #     print('saved')
+
+
+    
 
