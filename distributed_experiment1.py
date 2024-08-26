@@ -103,7 +103,8 @@ class BaseExperiment:
         scaler = GradScaler()
         optimizer = torch.optim.SGD( model.parameters(),lr=self.args.init_lr, weight_decay=self.args.weight_decay, momentum=self.args.momentum, nesterov=True, )
         scheduler = CosineAnnealingLR(optimizer, T_max=10)
-        
+
+
         for iteration in range(self.args.iterations):
 
             # print('start iteration', iteration, rank,flush=True) 
@@ -120,7 +121,8 @@ class BaseExperiment:
                 optimizer.zero_grad()
 
                 with autocast():
-                    loss_values, clean_values, robust_values, logits_nat, logits_adv = get_loss(self.args, model, data, target, optimizer)
+                    
+                    loss_values, clean_values, robust_values, logits_nat, logits_adv = get_loss(self.args, model, data, target, optimizer, train=True)
 
                 train_dataset.update_scores(idxs, clean_values, robust_values, loss_values, logits_nat, logits_adv)
                 loss = train_dataset.compute_weighted_loss(idxs, loss_values)
@@ -138,9 +140,11 @@ class BaseExperiment:
             experiment.log_metric("iteration", iteration, epoch=iteration)
             experiment.log_metric("loss_value", loss, epoch=iteration)
             experiment.log_metric("lr_schedule", current_lr, epoch=iteration)
-            experiment.log_metric("gradient_norm", gradient_norm, epoch=iteration)
+            experiment.log_metric("gradient_norm", gradient_norm, epoch=iteration)  
 
 
+
+            print('start validation')
             avg_loss, clean_accuracy, robust_accuracy = self.validate(valloader, model, optimizer, rank)
             experiment.log_metric("val_loss", avg_loss, epoch=iteration)
             experiment.log_metric("val_clean_accuracy", clean_accuracy, epoch=iteration)
@@ -174,7 +178,7 @@ class BaseExperiment:
 
                 data, target = data.to(rank), target.to(rank) 
 
-                loss_values, _, _, logits_nat, logits_adv = get_loss(self.args, model, data, target, optimizer)
+                loss_values, _, _, logits_nat, logits_adv = get_loss(self.args, model, data, target, optimizer, train=False)
 
                 total_loss += loss_values.sum().item()
                 # Compute predictions
