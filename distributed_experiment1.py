@@ -140,15 +140,11 @@ class BaseExperiment:
             experiment.log_metric("lr_schedule", current_lr, epoch=iteration)
             experiment.log_metric("gradient_norm", gradient_norm, epoch=iteration)
 
-            # Synchronize all processes before validation
-            dist.barrier()
 
-            # Perform validation only on rank 0
-            if rank == 0:
-                avg_loss, clean_accuracy, robust_accuracy = self.validate(valloader, model, optimizer, rank)
-                experiment.log_metric("val_loss", avg_loss, epoch=iteration)
-                experiment.log_metric("val_clean_accuracy", clean_accuracy, epoch=iteration)
-                experiment.log_metric("val_robust_accuracy", robust_accuracy, epoch=iteration)
+            avg_loss, clean_accuracy, robust_accuracy = self.validate(valloader, model, optimizer, rank)
+            experiment.log_metric("val_loss", avg_loss, epoch=iteration)
+            experiment.log_metric("val_clean_accuracy", clean_accuracy, epoch=iteration)
+            experiment.log_metric("val_robust_accuracy", robust_accuracy, epoch=iteration)
 
             print(f'Rank {rank}, Iteration {iteration},', flush=True) 
 
