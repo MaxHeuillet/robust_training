@@ -66,7 +66,7 @@ class BaseExperiment:
         experiment = Experiment(api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
                                 project_name="robust_training",
                                 workspace="maxheuillet",
-                                auto_output_logging=True)
+                                auto_output_logging=False)
         
         experiment.log_parameter("run_id", os.getenv('SLURM_JOB_ID') )
 
