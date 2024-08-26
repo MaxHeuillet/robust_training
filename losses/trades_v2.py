@@ -14,17 +14,15 @@ def l2_norm(x):
     return squared_l2_norm(x).sqrt()
 
 
-def trades_loss_v2(model,
+def trades_loss_v2(args,
+                model,
                 x_natural,
                 y,
                 optimizer,
-                step_size=0.003,
-                epsilon=0.031,
-                perturb_steps=10,
-                beta=1.0,
-                distance='l_inf'):
-
-    criterion_kl = nn.KLDivLoss(reduction='sum')
+                train:bool):
+    
+    # define KL-loss
+    # criterion_kl = nn.KLDivLoss(size_average=False)
     model.eval()
     batch_size = len(x_natural)
     # generate adversarial example
@@ -33,19 +31,19 @@ def trades_loss_v2(model,
     # print(x_natural)
     # print(x_adv)
 
-    if distance == 'l_inf':
+    if args.distance == 'l_inf':
         # print('init x_adv')
-        for _ in range(perturb_steps):
+        for _ in range(args.perturb_steps):
             # print(f' GPU Memory Allocated: {torch.cuda.memory_allocated()} bytes')
             # print(f' GPU Memory Cached: {torch.cuda.memory_reserved()} bytes')
 
             x_adv = x_adv.requires_grad_()
             with torch.enable_grad():
                 #print('infer')
-                logits_adv = model(x_adv)
+                logits_nat, logits_adv = model(x_natural, x_adv)
                 #print('kl loss')
+                # loss_kl = nn.KLDivLoss(reduction='sum')( F.log_softmax(logits_adv, dim=1), F.softmax(logits_nat, dim=1) )
                 loss = F.cross_entropy( logits_adv, y)
-                # loss_kl = criterion_kl( F.log_softmax(logits_adv, dim=1), F.softmax(logits_nat, dim=1) )
 
             # print(f' GPU Memory Allocated: {torch.cuda.memory_allocated()} bytes')
             # print(f' GPU Memory Cached: {torch.cuda.memory_reserved()} bytes')
@@ -54,31 +52,35 @@ def trades_loss_v2(model,
             # print('gradient compute')
             grad = torch.autograd.grad(loss, [x_adv])[0]
             # print('other operations')
-            x_adv = x_adv.detach() + step_size * torch.sign(grad.detach())
-            x_adv = torch.min(torch.max(x_adv, x_natural - epsilon), x_natural + epsilon).detach()
-            x_adv = torch.clamp(x_adv, 0.0, 1.0)
+            x_adv = x_adv.detach() + args.step_size * torch.sign(grad.detach())
+            x_adv = torch.min(torch.max(x_adv, x_natural - args.epsilon), x_natural + args.epsilon).detach()
+            x_adv = torch.clamp(x_adv, 0.0, 1.0).detach()
     else:
         x_adv = torch.clamp(x_adv, 0.0, 1.0).detach()
 
-    model.train()
 
-    x_adv = Variable(torch.clamp(x_adv, 0.0, 1.0), requires_grad=False)
-    # zero gradient
-    optimizer.zero_grad()
-    # calculate robust loss
-    logits_nat, logits_adv = model(x_natural, x_adv)
-    # print(logits_nat.shape, logits_adv.shape)
-    
-    clean_values = F.cross_entropy(logits_nat, y, reduction='none')
-    # print(loss_natural.shape)  # Should be [batch_size]
+    if train:
+        model.train()
 
-    robust_values = nn.KLDivLoss(reduction='none')( F.log_softmax(logits_adv, dim=1), F.softmax(logits_nat, dim=1) ).sum(dim=1)
-    # print(loss_robust.shape)  # Should be [batch_size]
-    
-    loss_values = clean_values + beta * robust_values
-    # print(loss_individual.shape)  # Should be [batch_size]
+        # zero gradient
+        optimizer.zero_grad()
+        # calculate robust loss
+        logits_nat, logits_adv = model(x_natural, x_adv)
+        # print(logits_nat.shape, logits_adv.shape)
+        
+        clean_values = F.cross_entropy(logits_nat, y, reduction='none')
+        # print(loss_natural.shape)  # Should be [batch_size]
 
-
-    # print(loss.shape)  # Should be a scalar []
+        robust_values = nn.KLDivLoss(reduction='none')( F.log_softmax(logits_adv, dim=1), F.softmax(logits_nat, dim=1) ).sum(dim=1)
+        # print(loss_robust.shape)  # Should be [batch_size]
+        
+        loss_values = clean_values + args.beta * robust_values
+        # print(loss_individual.shape)  # Should be [batch_size]
+    else:
+        logits_nat, logits_adv = model(x_natural, x_adv)
+        
+        clean_values = F.cross_entropy(logits_nat, y, reduction='none')
+        robust_values = nn.KLDivLoss(reduction='none')(F.log_softmax(logits_adv, dim=1), F.softmax(logits_nat, dim=1)).sum(dim=1)
+        loss_values = clean_values + args.beta * robust_values
 
     return loss_values, clean_values, robust_values, logits_nat, logits_adv
