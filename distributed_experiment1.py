@@ -162,7 +162,7 @@ class BaseExperiment:
         self.setup.cleanup()
 
     def validate(self, valloader, model, optimizer, iteration, rank):
-        total_loss, total_correct_nat, total_correct_adv, total_examples = self.validate(valloader, model, optimizer, rank)
+        total_loss, total_correct_nat, total_correct_adv, total_examples = self.validation_metrics(valloader, model, optimizer, rank)
         dist.barrier() 
         avg_loss, clean_accuracy, robust_accuracy  = self.sync_validation_results(total_loss, total_correct_nat, total_correct_adv, total_examples, rank)
         experiment.log_metric("val_loss", avg_loss, epoch=iteration)
