@@ -146,7 +146,7 @@ class BaseExperiment:
 
 
             print('start validation') 
-            self.validate(valloader, model, optimizer, iteration+1, rank)
+            self.validate(valloader, model, optimizer, experiment, iteration+1, rank)
             
             print(f'Rank {rank}, Iteration {iteration},', flush=True) 
 
@@ -161,7 +161,7 @@ class BaseExperiment:
         print('clean up',flush=True)
         self.setup.cleanup()
 
-    def validate(self, valloader, model, optimizer, iteration, rank):
+    def validate(self, valloader, model, optimizer, experiment, iteration, rank):
         total_loss, total_correct_nat, total_correct_adv, total_examples = self.validation_metrics(valloader, model, optimizer, rank)
         dist.barrier() 
         avg_loss, clean_accuracy, robust_accuracy  = self.sync_validation_results(total_loss, total_correct_nat, total_correct_adv, total_examples, rank)
