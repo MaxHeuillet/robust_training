@@ -30,7 +30,7 @@ import torch.nn as nn
 from utils import Setup
 
 from samplers import DistributedCustomSampler
-from datasets import WeightedDataset
+from datasets import WeightedDataset, IndexedDataset
 from architectures import load_architecture, load_statedict, add_lora
 from losses import get_loss
 from utils import get_args, get_exp_name, set_seeds
@@ -77,12 +77,15 @@ class BaseExperiment:
 
         print('initialize dataset', rank,flush=True) 
         train_dataset = WeightedDataset(self.args, train=True, prune_ratio = self.args.pruning_ratio, )
+        val_dataset = IndexedDataset(self.args, train=False)  
 
         print('initialize sampler', rank,flush=True) 
-        dist_sampler = DistributedCustomSampler(self.args, train_dataset, num_replicas=self.world_size, rank=rank, drop_last=True)
+        train_sampler = DistributedCustomSampler(self.args, train_dataset, num_replicas=self.world_size, rank=rank, drop_last=True)
+        val_sampler = DistributedSampler(val_dataset, num_replicas=self.world_size, rank=rank, drop_last=False)
         
         print('initialize dataoader', rank,flush=True) 
-        trainloader = DataLoader(train_dataset, batch_size=None, sampler=dist_sampler, num_workers=self.world_size) #
+        trainloader = DataLoader(train_dataset, batch_size=None, sampler=train_sampler, num_workers=self.world_size) #
+        valloader = DataLoader(val_dataset, batch_size=None, sampler=val_sampler, num_workers=self.world_size)
 
         print('load model', rank,flush=True) 
         model, target_layers = load_architecture(self.args)
@@ -106,7 +109,7 @@ class BaseExperiment:
             # print('start iteration', iteration, rank,flush=True) 
 
             model.train()
-            dist_sampler.set_epoch(iteration)
+            train_sampler.set_epoch(iteration)
 
             for batch_id, batch in enumerate( trainloader ):
 
@@ -129,18 +132,24 @@ class BaseExperiment:
             if self.args.sched == 'sched':
                 scheduler.step()
 
-            # if rank == 0:
-                # print('compute gradient norm', rank)
+
             gradient_norm = compute_gradient_norms(model)
             current_lr = optimizer.param_groups[0]['lr']
-                # Log each metric for the current epoch
             experiment.log_metric("iteration", iteration, epoch=iteration)
             experiment.log_metric("loss_value", loss, epoch=iteration)
             experiment.log_metric("lr_schedule", current_lr, epoch=iteration)
             experiment.log_metric("gradient_norm", gradient_norm, epoch=iteration)
-            print('update monitor', rank,flush=True)
-                # self.setup.update_monitor( iteration, optimizer, loss, gradient_norm )
-                
+
+            # Synchronize all processes before validation
+            dist.barrier()
+
+            # Perform validation only on rank 0
+            if rank == 0:
+                avg_loss, clean_accuracy, robust_accuracy = self.validate(model, valloader)
+                experiment.log_metric("val_loss", avg_loss, epoch=iteration)
+                experiment.log_metric("val_clean_accuracy", clean_accuracy, epoch=iteration)
+                experiment.log_metric("val_robust_accuracy", robust_accuracy, epoch=iteration)
+
             print(f'Rank {rank}, Iteration {iteration},', flush=True) 
 
         dist.barrier() 
@@ -153,6 +162,40 @@ class BaseExperiment:
 
         print('clean up',flush=True)
         self.setup.cleanup()
+
+    def validate(self, valloader, model, optimizer, rank):
+
+        model.eval()
+
+        total_loss = 0.0
+        total_correct_nat = 0
+        total_correct_adv = 0
+        total_examples = 0
+
+        for batch_id, batch in enumerate( valloader ):
+
+                data, target, idxs = batch
+
+                data, target = data.to(rank), target.to(rank) 
+
+                loss_values, _, _, logits_nat, logits_adv = get_loss(self.args, model, data, target, optimizer)
+
+                total_loss += loss_values.sum().item()
+                # Compute predictions
+                preds_nat = torch.argmax(logits_nat, dim=1)  # Predicted classes for natural examples
+                preds_adv = torch.argmax(logits_adv, dim=1)  # Predicted classes for adversarial examples
+
+                # Accumulate correct predictions
+                total_correct_nat += (preds_nat == target).sum().item()
+                total_correct_adv += (preds_adv == target).sum().item()
+                total_examples += target.size(0)
+
+        # Calculate clean and robust accuracy
+        clean_accuracy = total_correct_nat / total_examples
+        robust_accuracy = total_correct_adv / total_examples
+        avg_loss = total_loss / total_examples
+
+        return avg_loss, clean_accuracy, robust_accuracy
 
 
     def evaluation(self, rank, args):
