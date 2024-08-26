@@ -7,8 +7,8 @@ def get_loss(args, model, x_natural, y, optimizer, train):
 
     if args.loss_function == 'TRADES':
         return trades_loss(args, model, x_natural, y, optimizer, train)
-    elif args.loss_function == 'TRADESv2':
-        return trades_loss_v2(model, x_natural, y, optimizer)
+    elif args.loss_function == 'TRADES_v2':
+        return trades_loss_v2(args, model, x_natural, y, optimizer, train)
     # elif args.loss_function == 'MADRY':
     #     return madry_loss(model, x_natural, y, optimizer)
     else:
