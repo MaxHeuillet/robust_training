@@ -145,7 +145,7 @@ class BaseExperiment:
 
             # Perform validation only on rank 0
             if rank == 0:
-                avg_loss, clean_accuracy, robust_accuracy = self.validate(model, valloader)
+                avg_loss, clean_accuracy, robust_accuracy = self.validate(valloader, model, optimizer, rank)
                 experiment.log_metric("val_loss", avg_loss, epoch=iteration)
                 experiment.log_metric("val_clean_accuracy", clean_accuracy, epoch=iteration)
                 experiment.log_metric("val_robust_accuracy", robust_accuracy, epoch=iteration)
