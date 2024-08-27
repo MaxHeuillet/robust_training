@@ -145,6 +145,7 @@ class BaseExperiment:
 
             print('start validation') 
             self.validate(valloader, model, experiment, iteration+1, rank)
+  
             
             print(f'Rank {rank}, Iteration {iteration},', flush=True) 
 
