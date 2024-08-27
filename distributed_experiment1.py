@@ -234,7 +234,7 @@ class BaseExperiment:
         experiment.log_metric("val_clean_accuracy", clean_accuracy, epoch=iteration)
         experiment.log_metric("val_robust_accuracy", robust_accuracy, epoch=iteration)
     
-    def sync_result(self, total_loss, total_correct_nat, total_correct_adv, total_examples, rank):
+    def sync_validation_results(self, total_loss, total_correct_nat, total_correct_adv, total_examples, rank):
 
         # Aggregate results across all processes
         total_loss_tensor = torch.tensor([total_loss], dtype=torch.float32, device=rank)
