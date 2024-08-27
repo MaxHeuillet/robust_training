@@ -153,14 +153,14 @@ class BaseExperiment:
         # if rank == 0:
             # torch.save(model.state_dict(), "./state_dicts/{}.pt".format(self.config_name) )
         
-        self.final_validation(self, valloader, model, iteration, rank )
+        self.final_validation(self, valloader, model, experiment, iteration, rank )
         
         experiment.end()
 
         print('clean up',flush=True)
         self.setup.cleanup()
 
-    def final_validation(self, valloader, model, iteration, rank ):
+    def final_validation(self, valloader, model, experiment, iteration, rank ):
         total_correct_nat, total_correct_adv, total_examples = self.compute_AA_accuracy(valloader, model, rank)
         dist.barrier() 
         clean_accuracy, robust_accuracy  = self.sync_final_result(total_correct_nat, total_correct_adv, total_examples, rank)
