@@ -14,7 +14,7 @@ def l2_norm(x):
     return squared_l2_norm(x).sqrt()
 
 
-def trades_loss_v2(args,
+def trades_loss_eval(args,
                 model,
                 x_natural,
                 y,):
