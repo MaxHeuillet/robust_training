@@ -19,6 +19,7 @@ def trades_loss_eval(args,
                 x_natural,
                 y,):
     
+    step_size = args.epsilon / 4
     model.eval()
     logits_nat = model(x_natural)
     x_adv = x_natural.detach() + 0.001 * torch.randn(x_natural.shape, device=x_natural.device).detach()
@@ -35,7 +36,7 @@ def trades_loss_eval(args,
 
             grad = torch.autograd.grad(loss, [x_adv])[0]
             # print('other operations')
-            x_adv = x_adv.detach() + args.step_size * torch.sign(grad.detach())
+            x_adv = x_adv.detach() + step_size * torch.sign(grad.detach())
             x_adv = torch.min(torch.max(x_adv, x_natural - args.epsilon), x_natural + args.epsilon).detach()
             x_adv = torch.clamp(x_adv, 0.0, 1.0).detach()
     else:

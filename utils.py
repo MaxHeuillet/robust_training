@@ -310,7 +310,6 @@ def compute_PGD_accuracy(model, test_loader, dev='cuda'):
     
 #     norm = 'Linf'
 #     epsilon = 8/255
-    
 #     adversary = AutoAttack(forward_pass, norm=norm, eps=epsilon, version='standard')
     
 #     correct = 0

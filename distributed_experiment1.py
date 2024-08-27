@@ -17,7 +17,7 @@ import gzip
 import pickle as pkl
 
 import math
-
+from autoattack import AutoAttack
 import utils
 
 from torch.utils.data import DataLoader
@@ -144,7 +144,7 @@ class BaseExperiment:
 
 
             print('start validation') 
-            self.validate(valloader, model, optimizer, experiment, iteration+1, rank)
+            self.validate(valloader, model, experiment, iteration+1, rank)
             
             print(f'Rank {rank}, Iteration {iteration},', flush=True) 
 
@@ -152,21 +152,106 @@ class BaseExperiment:
 
         # if rank == 0:
             # torch.save(model.state_dict(), "./state_dicts/{}.pt".format(self.config_name) )
+        
+        self.final_validation(self, valloader, model, iteration, rank )
+        
         experiment.end()
-
-            # self.setup.end_monitor()
 
         print('clean up',flush=True)
         self.setup.cleanup()
 
-    def validate(self, valloader, model, optimizer, experiment, iteration, rank):
+    def final_validation(self, valloader, model, iteration, rank ):
+        total_correct_nat, total_correct_adv, total_examples = self.compute_AA_accuracy(valloader, model, rank)
+        dist.barrier() 
+        clean_accuracy, robust_accuracy  = self.sync_final_result(total_correct_nat, total_correct_adv, total_examples, rank)
+        experiment.log_metric("final_clean_accuracy", clean_accuracy, epoch=iteration)
+        experiment.log_metric("final_robust_accuracy", robust_accuracy, epoch=iteration)
+
+    def sync_final_result(self, total_correct_nat, total_correct_adv, total_examples, rank):
+
+        # Aggregate results across all processes
+        total_correct_nat_tensor = torch.tensor([total_correct_nat], dtype=torch.float32, device=rank)
+        total_correct_adv_tensor = torch.tensor([total_correct_adv], dtype=torch.float32, device=rank)
+        total_examples_tensor = torch.tensor([total_examples], dtype=torch.float32, device=rank)
+
+        dist.all_reduce(total_correct_nat_tensor, op=dist.ReduceOp.SUM)
+        dist.all_reduce(total_correct_adv_tensor, op=dist.ReduceOp.SUM)
+        dist.all_reduce(total_examples_tensor, op=dist.ReduceOp.SUM)
+
+        # Compute global averages
+        clean_accuracy = total_correct_nat_tensor.item() / total_examples_tensor.item()
+        robust_accuracy = total_correct_adv_tensor.item() / total_examples_tensor.item()
+
+        return clean_accuracy, robust_accuracy
+
+    def compute_AA_accuracy(self, valloader, model, rank):
+
+        model.eval()
+
+        def forward_pass(x):
+            return model(x)
+        
+        norm = 'Linf'
+        epsilon = 8/255
+        adversary = AutoAttack(forward_pass, norm=norm, eps=epsilon, version='standard')
+        
+        total_correct_nat = 0
+        total_correct_adv = 0
+        total_examples = 0
+        
+        for batch_id, batch in enumerate( valloader ):
+
+            data, target, idxs = batch
+
+            data, target = data.to(rank), target.to(rank) 
+
+            batch_size = data.size(0)
+
+            x_adv = adversary.run_standard_evaluation(data, target, bs=batch_size )
+            
+            # Evaluate the model on adversarial examples
+            adv_outputs = model(x_adv)
+            _, preds_adv = torch.max(adv_outputs.data, 1)
+
+            nat_outputs = model(data)
+            _, preds_nat = torch.max(nat_outputs.data, 1)
+            
+            total_correct_nat += (preds_nat == target).sum().item()
+            total_correct_adv += (preds_adv == target).sum().item()
+            total_examples += target.size(0)
+
+        return total_correct_nat, total_correct_adv, total_examples
+    
+
+
+    
+    def validate(self, valloader, model, experiment, iteration, rank):
         total_loss, total_correct_nat, total_correct_adv, total_examples = self.validation_metrics(valloader, model, rank)
         dist.barrier() 
         avg_loss, clean_accuracy, robust_accuracy  = self.sync_validation_results(total_loss, total_correct_nat, total_correct_adv, total_examples, rank)
         experiment.log_metric("val_loss", avg_loss, epoch=iteration)
         experiment.log_metric("val_clean_accuracy", clean_accuracy, epoch=iteration)
         experiment.log_metric("val_robust_accuracy", robust_accuracy, epoch=iteration)
+    
+    def sync_result(self, total_loss, total_correct_nat, total_correct_adv, total_examples, rank):
 
+        # Aggregate results across all processes
+        total_loss_tensor = torch.tensor([total_loss], dtype=torch.float32, device=rank)
+        total_correct_nat_tensor = torch.tensor([total_correct_nat], dtype=torch.float32, device=rank)
+        total_correct_adv_tensor = torch.tensor([total_correct_adv], dtype=torch.float32, device=rank)
+        total_examples_tensor = torch.tensor([total_examples], dtype=torch.float32, device=rank)
+
+        dist.all_reduce(total_loss_tensor, op=dist.ReduceOp.SUM)
+        dist.all_reduce(total_correct_nat_tensor, op=dist.ReduceOp.SUM)
+        dist.all_reduce(total_correct_adv_tensor, op=dist.ReduceOp.SUM)
+        dist.all_reduce(total_examples_tensor, op=dist.ReduceOp.SUM)
+
+        # Compute global averages
+        avg_loss = total_loss_tensor.item() / total_examples_tensor.item()
+        clean_accuracy = total_correct_nat_tensor.item() / total_examples_tensor.item()
+        robust_accuracy = total_correct_adv_tensor.item() / total_examples_tensor.item()
+
+        return avg_loss, clean_accuracy, robust_accuracy
 
     def validation_metrics(self, valloader, model, rank):
 
@@ -197,25 +282,7 @@ class BaseExperiment:
 
         return total_loss, total_correct_nat, total_correct_adv, total_examples
     
-    def sync_validation_results(self, total_loss, total_correct_nat, total_correct_adv, total_examples, rank):
-
-        # Aggregate results across all processes
-        total_loss_tensor = torch.tensor([total_loss], dtype=torch.float32, device=rank)
-        total_correct_nat_tensor = torch.tensor([total_correct_nat], dtype=torch.float32, device=rank)
-        total_correct_adv_tensor = torch.tensor([total_correct_adv], dtype=torch.float32, device=rank)
-        total_examples_tensor = torch.tensor([total_examples], dtype=torch.float32, device=rank)
-
-        dist.all_reduce(total_loss_tensor, op=dist.ReduceOp.SUM)
-        dist.all_reduce(total_correct_nat_tensor, op=dist.ReduceOp.SUM)
-        dist.all_reduce(total_correct_adv_tensor, op=dist.ReduceOp.SUM)
-        dist.all_reduce(total_examples_tensor, op=dist.ReduceOp.SUM)
-
-        # Compute global averages
-        avg_loss = total_loss_tensor.item() / total_examples_tensor.item()
-        clean_accuracy = total_correct_nat_tensor.item() / total_examples_tensor.item()
-        robust_accuracy = total_correct_adv_tensor.item() / total_examples_tensor.item()
-
-        return avg_loss, clean_accuracy, robust_accuracy
+    
 
 
 if __name__ == "__main__":
@@ -235,11 +302,7 @@ if __name__ == "__main__":
     if args.task == "train":
         print('begin training')
         torch.multiprocessing.spawn(experiment.training,  nprocs=experiment.world_size, join=True)
-    
 
-    # else:
-    #     print('begin evaluation')
-    #     experiment.launch_evaluation()
 
 
 
