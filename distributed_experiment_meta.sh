@@ -10,7 +10,7 @@ sched=$5  # 'sched' or 'nosched'
 iterations=$6
 
 init_lrs=( 0.001 0.0001 )  #  #0.01
-pruning_ratios=( 0.7 )  # 0.3 0.5
+pruning_ratios=( 0.3 0.5 0.7 )  # 
 pruning_strategies=( 'random' 'uncertainty' 'score_v1' 'score_v2' 'TS_pruning' ) 
 batch_strategies=('random')
 
