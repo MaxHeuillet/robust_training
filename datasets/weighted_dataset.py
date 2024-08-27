@@ -83,22 +83,23 @@ class WeightedDataset(IndexedDataset):
         assert isinstance(clean_values, torch.Tensor)
         assert isinstance(robust_values, torch.Tensor)
 
-        clean_loss_val = clean_values.detach().clone()
-        self.clean_scores[indices.cpu().long()] = clean_loss_val.cpu()
+        clean_loss_val = clean_values.detach().clone().cpu()
+        self.clean_scores[indices.cpu().long()] = clean_loss_val
 
-        robust_loss_val = robust_values.detach().clone()
-        self.robust_scores[indices.cpu().long()] = robust_loss_val.cpu()
+        robust_loss_val = robust_values.detach().clone().cpu()
 
-        global_loss_val = global_values.detach().clone()
-        self.global_scores[indices.cpu().long()] = global_loss_val.cpu()
+        self.robust_scores[indices.cpu().long()] = robust_loss_val
+
+        global_loss_val = global_values.detach().clone().cpu()
+        self.global_scores[indices.cpu().long()] = global_loss_val
         self.reward[indices.cpu().long()] += global_loss_val
         self.reward2[indices.cpu().long()] += global_loss_val * global_loss_val
 
-        clean_pred = clean_pred.detach().clone()
-        self.clean_pred[indices.cpu().long()] = clean_pred.cpu()
+        clean_pred = clean_pred.detach().clone().cpu()
+        self.clean_pred[indices.cpu().long()] = clean_pred
 
-        robust_pred = robust_pred.detach().clone()
-        self.robust_pred[indices.cpu().long()] = robust_pred.cpu()
+        robust_pred = robust_pred.detach().clone().cpu()
+        self.robust_pred[indices.cpu().long()] = robust_pred
 
         # Update the number of pulls for each arm
         self.pulls[indices.cpu().long()] += 1
