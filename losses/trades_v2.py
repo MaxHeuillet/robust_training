@@ -21,7 +21,7 @@ def trades_loss_v2(args,
                 optimizer,):
     
     model.eval()
-    logits_nat = model(x_natural)
+    # logits_nat = model(x_natural)
     x_adv = x_natural.detach() + 0.001 * torch.randn(x_natural.shape, device=x_natural.device).detach()
 
     if args.distance == 'l_inf':
