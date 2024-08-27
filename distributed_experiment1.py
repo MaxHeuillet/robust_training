@@ -32,7 +32,7 @@ from utils import Setup
 from samplers import DistributedCustomSampler
 from datasets import WeightedDataset, IndexedDataset
 from architectures import load_architecture, load_statedict, add_lora
-from losses import get_loss
+from losses import get_loss, get_eval_loss
 from utils import get_args, get_exp_name, set_seeds
 
 
@@ -109,8 +109,6 @@ class BaseExperiment:
 
         for iteration in range(self.args.iterations):
 
-            
-
             model.train()
             train_sampler.set_epoch(iteration)
 
@@ -124,7 +122,7 @@ class BaseExperiment:
 
                 with autocast():
                     
-                    loss_values, clean_values, robust_values, logits_nat, logits_adv = get_loss(self.args, model, data, target, optimizer, train=True)
+                    loss_values, clean_values, robust_values, logits_nat, logits_adv = get_loss(self.args, model, data, target, optimizer)
 
                 train_dataset.update_scores(idxs, clean_values, robust_values, loss_values, logits_nat, logits_adv)
                 loss = train_dataset.compute_loss(idxs, loss_values)
@@ -170,7 +168,7 @@ class BaseExperiment:
         experiment.log_metric("val_robust_accuracy", robust_accuracy, epoch=iteration)
 
 
-    def validation_metrics(self, valloader, model, optimizer, rank):
+    def validation_metrics(self, valloader, model, rank):
 
         model.eval()
 
@@ -185,7 +183,7 @@ class BaseExperiment:
 
                 data, target = data.to(rank), target.to(rank) 
 
-                loss_values, _, _, logits_nat, logits_adv = get_loss(self.args, model, data, target, optimizer, train=False)
+                loss_values, _, _, logits_nat, logits_adv = get_eval_loss(self.args, model, data, target, )
 
                 total_loss += loss_values.sum().item()
                 # Compute predictions
