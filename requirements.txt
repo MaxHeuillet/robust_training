@@ -19,6 +19,7 @@ datasets
 wandb
 comet_ml
 
+#pip install git+https://github.com/fra31/auto-attack
 #logging
 #pip install -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ submodlib==1.1.5
 # pip install torchdatasets
