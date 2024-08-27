@@ -1,7 +1,7 @@
 
 from losses.trades import trades_loss
 from losses.trades_v2 import trades_loss_v2
-
+from losses.eval_trades import trades_loss_eval
 
 def get_loss(args, model, x_natural, y, optimizer):
 
@@ -17,4 +17,6 @@ def get_loss(args, model, x_natural, y, optimizer):
 
 def get_eval_loss(args, model, x_natural, y):
 
-    return trades_loss_v2(args, model, x_natural, y)
+    return trades_loss_eval(args, model, x_natural, y)
+
+
