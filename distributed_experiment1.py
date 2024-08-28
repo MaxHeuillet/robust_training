@@ -182,6 +182,14 @@ class BaseExperiment:
         dist.all_reduce(robust_pred, op=dist.ReduceOp.SUM)
         dist.all_reduce(pulls, op=dist.ReduceOp.SUM)
 
+        train_dataset.clean_scores = clean_scores
+        train_dataset.robust_scores = robust_scores
+        train_dataset.global_scores = global_scores
+        train_dataset.clean_pred = clean_pred
+        train_dataset.robust_pred = robust_pred
+        train_dataset.pulls = pulls
+
+
     def final_validation(self, valloader, model, experiment, iteration, rank ):
         total_correct_nat, total_correct_adv, total_examples = self.compute_AA_accuracy(valloader, model, rank)
         dist.barrier() 
