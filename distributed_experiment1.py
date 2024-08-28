@@ -76,7 +76,7 @@ class BaseExperiment:
         experiment.log_parameters(self.args)
 
         print('initialize dataset', rank,flush=True) 
-        train_dataset = WeightedDataset(rank, self.args, train=True, prune_ratio = self.args.pruning_ratio, )
+        train_dataset = WeightedDataset(self.args, train=True, prune_ratio = self.args.pruning_ratio, )
         val_dataset = IndexedDataset(self.args, train=False)  
 
         print('initialize sampler', rank,flush=True) 
@@ -135,7 +135,7 @@ class BaseExperiment:
                 scheduler.step()
 
             #### synchronize the different quantities between the different processes
-
+            dist.barrier()
             self.sync_updated_values(train_dataset, rank)
 
 
@@ -168,12 +168,13 @@ class BaseExperiment:
 
     def sync_updated_values(self, train_dataset, rank):
         
-        clean_scores = torch.tensor(train_dataset.clean_scores, device=rank)
-        robust_scores = torch.tensor(train_dataset.robust_scores, device=rank)
-        global_scores = torch.tensor(train_dataset.global_scores, device=rank)
-        clean_pred = torch.tensor(train_dataset.clean_pred, device=rank)
-        robust_pred = torch.tensor(train_dataset.robust_pred, device=rank)
-        pulls = torch.tensor(train_dataset.pulls, device=rank)
+        clean_scores = train_dataset.clean_scores.clone().to(device=rank)
+        robust_scores = train_dataset.robust_scores.clone().to(device=rank)
+        global_scores = train_dataset.global_scores.clone().to(device=rank)
+        clean_pred = train_dataset.clean_pred.clone().to(device=rank)
+        robust_pred = train_dataset.robust_pred.clone().to(device=rank)
+        pulls = train_dataset.pulls.clone().to(device=rank)
+
 
         dist.all_reduce(clean_scores, op=dist.ReduceOp.SUM)
         dist.all_reduce(robust_scores, op=dist.ReduceOp.SUM)
