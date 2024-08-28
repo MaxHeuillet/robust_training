@@ -59,7 +59,7 @@ class WeightedDataset(IndexedDataset):
         self.clean_pred = torch.ones( self.K, self.N ).half() * 3
         self.robust_pred = torch.ones( self.K, self.N ).half() * 3
 
-        ### arguments relative to Thomspon pruning:
+        ### arguments relative to Thomspon pruning (non-contextual):
         self.mu0 = torch.zeros(self.K)
         self.kappa0 = torch.ones(self.K)
         self.alpha0 = torch.ones(self.K)
@@ -70,30 +70,27 @@ class WeightedDataset(IndexedDataset):
         self.reward2 = torch.zeros(self.K)  # cumulative squared reward
 
         self.weights = torch.ones(len(self.dataset))
-
-
         self.num_pruned_samples = 0
         # self.cur_batch_index = None
 
-    # def set_active_indices(self, cur_batch_indices: torch.Tensor):
-    #     self.cur_batch_index = cur_batch_indices
+        self.alpha = 1
+        self.mu = torch.zeros(2048)
+        self.Sigma_inv = torch.eye(2048) / self.alpha
 
+    def define_latent_features(self,features):
+        self.latent = features
+        
     def update_scores(self, indices, clean_values, robust_values, global_values, clean_pred, robust_pred):
 
-        assert isinstance(clean_values, torch.Tensor)
-        assert isinstance(robust_values, torch.Tensor)
-
+        #### update regarding score based pruning strategies:
         clean_loss_val = clean_values.detach().clone().cpu()
         self.clean_scores[indices.cpu().long()] = clean_loss_val
 
         robust_loss_val = robust_values.detach().clone().cpu()
-
         self.robust_scores[indices.cpu().long()] = robust_loss_val
 
         global_loss_val = global_values.detach().clone().cpu()
         self.global_scores[indices.cpu().long()] = global_loss_val
-        self.reward[indices.cpu().long()] += global_loss_val
-        self.reward2[indices.cpu().long()] += global_loss_val * global_loss_val
 
         clean_pred = clean_pred.detach().clone().cpu()
         self.clean_pred[indices.cpu().long()] = clean_pred
@@ -101,30 +98,37 @@ class WeightedDataset(IndexedDataset):
         robust_pred = robust_pred.detach().clone().cpu()
         self.robust_pred[indices.cpu().long()] = robust_pred
 
-        # Update the number of pulls for each arm
         self.pulls[indices.cpu().long()] += 1
         
-        # Update the sum of rewards for each arm
         
+    # def update_noncontextual_TS_parameters(self,):
+    #### update regarding to TS (non contextual):
+        # self.reward[indices.cpu().long()] += global_loss_val
+        # self.reward2[indices.cpu().long()] += global_loss_val * global_loss_val
+        # self.pulls[indices.cpu().long()] += 1
+
+    #     pass
         
-        # Update the sum of squared rewards for each arm
+
+    # def update_contextual_TS_parameters(self,):
+
+    #     #### update regarding TS (contextual):
+
+    #     x = self.latent[indices].T
+
+    #     # Compute the scalar factor for the Sherman-Morrison update
+    #     Sigma_inv_x = torch.matmul(self.Sigma_inv, x)
+    #     scaling_factor = 1 + torch.matmul(x.T, Sigma_inv_x)
+
+    #     # Update the inverse covariance matrix using the Sherman-Morrison formula
+    #     self.Sigma_inv = self.Sigma_inv - torch.matmul(Sigma_inv_x, Sigma_inv_x.T) / scaling_factor
+
+    #     # Update the mean vector
+    #     mu_dot_x = torch.matmul(self.mu, x.flatten())
+    #     self.mu = self.mu + (global_loss_val - mu_dot_x) * Sigma_inv_x.flatten()
+
+
         
-
-
-            # batch_size = clean_values.shape[0]
-        # assert len(self.cur_batch_index) == batch_size, 'not enough index'
-        # device = clean_values.device
-        # indices = self.cur_batch_index.to(device)
-
-        # if dist.is_available() and dist.is_initialized():
-        #     idx_val = torch.cat([ indices.view(1, -1), clean_loss_val.view(1, -1), robust_loss_val.view(1, -1)], dim=0)
-        #     idx_val_whole_group = concat_all_gather(idx_val, 1)
-        #     indices = idx_val_whole_group[0]
-        #     clean_loss_val = idx_val_whole_group[1]
-        #     robust_loss_val = idx_val_whole_group[2]
-
-
-    
     def compute_loss(self, indices, loss_values):
         device = loss_values.device
         weights = self.weights[indices].to(device) #self.cur_batch_index
