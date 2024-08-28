@@ -42,40 +42,41 @@ class WeightedDataset(IndexedDataset):
         delta (float, optional): The first delta * num_epochs the pruning process is conducted. It should be close to 1. Defaults to 0.875.
     """
 
-    def __init__(self, args, train=True, prune_ratio: float = 0.5):
+    def __init__(self, rank, args, train=True, prune_ratio: float = 0.5):
 
         super().__init__(args, train)
 
         self.keep_ratio = min(1.0, max(1e-1, 1.0 - prune_ratio))
         self.K = len(self.dataset)
+        self.rank = rank
 
         
         # self.scores stores the loss value of each sample. Note that smaller value indicates the sample is better learned by the network.
         mean = 1.0
         std_dev = 0.1  
-        self.clean_scores = torch.normal(mean, std_dev, size=(self.K,))
-        self.robust_scores = torch.normal(mean, std_dev, size=(self.K,))
-        self.global_scores = torch.normal(mean, std_dev, size=(self.K,))
-        self.clean_pred = torch.ones( self.K, self.N ).half() * 3
-        self.robust_pred = torch.ones( self.K, self.N ).half() * 3
+        self.clean_scores = torch.normal(mean, std_dev, size=(self.K,)).cpu()
+        self.robust_scores = torch.normal(mean, std_dev, size=(self.K,)).cpu()
+        self.global_scores = torch.normal(mean, std_dev, size=(self.K,)).cpu()
+        self.clean_pred = torch.ones( self.K, self.N ).half().cpu() * 3
+        self.robust_pred = torch.ones( self.K, self.N ).half().cpu() * 3
 
         ### arguments relative to Thomspon pruning (non-contextual):
-        self.mu0 = torch.zeros(self.K)
-        self.kappa0 = torch.ones(self.K)
-        self.alpha0 = torch.ones(self.K)
-        self.beta0 = torch.ones(self.K)
+        self.mu0 = torch.zeros(self.K).cpu()
+        self.kappa0 = torch.ones(self.K).cpu()
+        self.alpha0 = torch.ones(self.K).cpu()
+        self.beta0 = torch.ones(self.K).cpu()
 
-        self.pulls = torch.zeros(self.K)  # number of pulls
-        self.reward = torch.zeros(self.K)  # cumulative reward
-        self.reward2 = torch.zeros(self.K)  # cumulative squared reward
+        self.pulls = torch.zeros(self.K).cpu() # number of pulls
+        self.reward = torch.zeros(self.K).cpu()  # cumulative reward
+        self.reward2 = torch.zeros(self.K).cpu()  # cumulative squared reward
 
-        self.weights = torch.ones(len(self.dataset))
+        self.weights = torch.ones(len(self.dataset)).cpu()
         self.num_pruned_samples = 0
         # self.cur_batch_index = None
 
         self.alpha = 1
-        self.mu = torch.zeros(2048)
-        self.Sigma_inv = torch.eye(2048) / self.alpha
+        self.mu = torch.zeros(2048).cpu()
+        self.Sigma_inv = torch.eye(2048).cpu() / self.alpha
 
     def define_latent_features(self,features):
         self.latent = features
