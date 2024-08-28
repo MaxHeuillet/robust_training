@@ -154,7 +154,7 @@ class BaseExperiment:
         # if rank == 0:
             # torch.save(model.state_dict(), "./state_dicts/{}.pt".format(self.config_name) )
         
-        self.final_validation(self, valloader, model, experiment, iteration, rank )
+        self.final_validation(valloader, model, experiment, iteration, rank )
         
         experiment.end()
 
