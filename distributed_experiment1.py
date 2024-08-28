@@ -76,7 +76,7 @@ class BaseExperiment:
         experiment.log_parameters(self.args)
 
         print('initialize dataset', rank,flush=True) 
-        train_dataset = WeightedDataset(self.args, train=True, prune_ratio = self.args.pruning_ratio, )
+        train_dataset = WeightedDataset(rank, self.args, train=True, prune_ratio = self.args.pruning_ratio, )
         val_dataset = IndexedDataset(self.args, train=False)  
 
         print('initialize sampler', rank,flush=True) 
@@ -182,12 +182,12 @@ class BaseExperiment:
         dist.all_reduce(robust_pred, op=dist.ReduceOp.SUM)
         dist.all_reduce(pulls, op=dist.ReduceOp.SUM)
 
-        train_dataset.clean_scores = clean_scores
-        train_dataset.robust_scores = robust_scores
-        train_dataset.global_scores = global_scores
-        train_dataset.clean_pred = clean_pred
-        train_dataset.robust_pred = robust_pred
-        train_dataset.pulls = pulls
+        train_dataset.clean_scores = clean_scores.cpu()
+        train_dataset.robust_scores = robust_scores.cpu()
+        train_dataset.global_scores = global_scores.cpu()
+        train_dataset.clean_pred = clean_pred.cpu()
+        train_dataset.robust_pred = robust_pred.cpu()
+        train_dataset.pulls = pulls.cpu()
 
 
     def final_validation(self, valloader, model, experiment, iteration, rank ):
