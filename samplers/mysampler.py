@@ -10,6 +10,15 @@ import torch.distributed as dist
 import warnings
 import random
 
+from scipy.stats import truncnorm
+
+def truncated_normal(mean, std, lower_bound=0, upper_bound=np.inf):
+    mean = mean.numpy() # Ensure mean is an array
+    std = std.numpy()    # Ensure std is an array
+    # Calculate the bounds for the truncated normal distribution
+    a, b = (lower_bound - mean) / std, (upper_bound - mean) / std
+    # Sample from the truncated normal distribution
+    return truncnorm.rvs(a, b, loc=mean, scale=std, size=mean.shape)
 
 class Pruner:
 
@@ -22,26 +31,33 @@ class Pruner:
         self.N_tokeep = int( self.dataset.keep_ratio * len(self.global_indices) )
         print(self.N_tokeep, len(self.global_indices) )
 
+    def linear_homoskedastic_thomspon_pruning(self,):
+
+        Sigma = np.linalg.inv(self.Sigma_inv)
+
+        theta_sampled = np.random.multivariate_normal(self.dataset.mu, Sigma)
+
+        excpected_rewards = self.dataset.latent.dot(theta_sampled)
+        
+        truncated_rewards = np.maximum(0, excpected_rewards)
+
+        sampling_probas = truncated_rewards / np.sum(truncated_rewards)
+
+        indices = np.random.choice(self.global_indices, size=self.N_tokeep, replace=False, p=sampling_probas).tolist()
+
+        return indices
+
+
     def thompson_pruning(self,):
 
-        from scipy.stats import truncnorm
-
-        def truncated_normal(mean, std, lower_bound=0, upper_bound=np.inf):
-            mean = mean.numpy() # Ensure mean is an array
-            std = std.numpy()    # Ensure std is an array
-            # Calculate the bounds for the truncated normal distribution
-            a, b = (lower_bound - mean) / std, (upper_bound - mean) / std
-            # Sample from the truncated normal distribution
-            return truncnorm.rvs(a, b, loc=mean, scale=std, size=mean.shape)
-
         # posterior distribution
-        mu = (self.dataset.kappa0 * self.dataset.mu0 + self.dataset.reward) / (self.dataset.kappa0 + self.dataset.pulls)
+        mu = (self.dataset.kappa0 * self.dataset.mu0 + self.dataset.global_scores) / (self.dataset.kappa0 + self.dataset.pulls)
         kappa = np.maximum(self.dataset.kappa0 + self.dataset.pulls, 1e-3)
         alpha = self.dataset.alpha0 + self.dataset.pulls / 2
-        mean_reward = self.dataset.reward / np.maximum(self.dataset.pulls, 1)
+        mean_reward = self.dataset.global_scores / np.maximum(self.dataset.pulls, 1)
         
         beta = self.dataset.beta0 + \
-        0.5 * (self.dataset.reward2 - 2 * self.dataset.reward * mean_reward + self.dataset.pulls * np.square(mean_reward)) + \
+        0.5 * (self.dataset.global_scores**2 - 2 * self.dataset.global_scores * mean_reward + self.dataset.pulls * np.square(mean_reward)) + \
         self.dataset.kappa0 * self.dataset.pulls * np.square(mean_reward - self.dataset.mu0) / (2 * kappa)
 
         # posterior sampling
@@ -49,7 +65,6 @@ class Pruner:
 
         # self.mu = mu + np.random.randn(self.dataset.K) / np.sqrt(kappa * Lambda)
         self.mu = truncated_normal(mu, np.sqrt(kappa * Lambda) )
-
 
         # arm = np.argmax(self.mu)
         sampling_probas = self.mu / np.sum(self.mu)

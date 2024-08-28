@@ -106,7 +106,6 @@ class BaseExperiment:
 
         self.validate(valloader, model, experiment, 0, rank)
 
-
         for iteration in range(self.args.iterations):
 
             model.train()
@@ -125,6 +124,7 @@ class BaseExperiment:
                     loss_values, clean_values, robust_values, logits_nat, logits_adv = get_loss(self.args, model, data, target, optimizer)
 
                 train_dataset.update_scores(idxs, clean_values, robust_values, loss_values, logits_nat, logits_adv)
+                
                 loss = train_dataset.compute_loss(idxs, loss_values)
 
                 scaler.scale(loss).backward()
@@ -134,6 +134,13 @@ class BaseExperiment:
             if self.args.sched == 'sched':
                 scheduler.step()
 
+            #### synchronize the different quantities between the different processes
+
+            self.sync_updated_values(train_dataset, rank)
+
+
+            #### compute TS update with master and synchronize the update.
+
 
             gradient_norm = compute_gradient_norms(model)
             current_lr = optimizer.param_groups[0]['lr']
@@ -142,11 +149,9 @@ class BaseExperiment:
             experiment.log_metric("lr_schedule", current_lr, epoch=iteration)
             experiment.log_metric("gradient_norm", gradient_norm, epoch=iteration)  
 
-
             print('start validation') 
             self.validate(valloader, model, experiment, iteration+1, rank)
   
-            
             print(f'Rank {rank}, Iteration {iteration},', flush=True) 
 
         dist.barrier() 
@@ -160,6 +165,22 @@ class BaseExperiment:
 
         print('clean up',flush=True)
         self.setup.cleanup()
+
+    def sync_updated_values(self, train_dataset, rank):
+        
+        clean_scores = torch.tensor(train_dataset.clean_scores, device=rank)
+        robust_scores = torch.tensor(train_dataset.robust_scores, device=rank)
+        global_scores = torch.tensor(train_dataset.global_scores, device=rank)
+        clean_pred = torch.tensor(train_dataset.clean_pred, device=rank)
+        robust_pred = torch.tensor(train_dataset.robust_pred, device=rank)
+        pulls = torch.tensor(train_dataset.pulls, device=rank)
+
+        dist.all_reduce(clean_scores, op=dist.ReduceOp.SUM)
+        dist.all_reduce(robust_scores, op=dist.ReduceOp.SUM)
+        dist.all_reduce(global_scores, op=dist.ReduceOp.SUM)
+        dist.all_reduce(clean_pred, op=dist.ReduceOp.SUM)
+        dist.all_reduce(robust_pred, op=dist.ReduceOp.SUM)
+        dist.all_reduce(pulls, op=dist.ReduceOp.SUM)
 
     def final_validation(self, valloader, model, experiment, iteration, rank ):
         total_correct_nat, total_correct_adv, total_examples = self.compute_AA_accuracy(valloader, model, rank)
