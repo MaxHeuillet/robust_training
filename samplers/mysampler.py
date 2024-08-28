@@ -31,21 +31,21 @@ class Pruner:
         self.N_tokeep = int( self.dataset.keep_ratio * len(self.global_indices) )
         print(self.N_tokeep, len(self.global_indices) )
 
-    def linear_homoskedastic_thomspon_pruning(self,):
+    # def linear_homoskedastic_thomspon_pruning(self,):
 
-        Sigma = np.linalg.inv(self.Sigma_inv)
+    #     Sigma = np.linalg.inv(self.Sigma_inv)
 
-        theta_sampled = np.random.multivariate_normal(self.dataset.mu, Sigma)
+    #     theta_sampled = np.random.multivariate_normal(self.dataset.mu, Sigma)
 
-        excpected_rewards = self.dataset.latent.dot(theta_sampled)
+    #     excpected_rewards = self.dataset.latent.dot(theta_sampled)
         
-        truncated_rewards = np.maximum(0, excpected_rewards)
+    #     truncated_rewards = np.maximum(0, excpected_rewards)
 
-        sampling_probas = truncated_rewards / np.sum(truncated_rewards)
+    #     sampling_probas = truncated_rewards / np.sum(truncated_rewards)
 
-        indices = np.random.choice(self.global_indices, size=self.N_tokeep, replace=False, p=sampling_probas).tolist()
+    #     indices = np.random.choice(self.global_indices, size=self.N_tokeep, replace=False, p=sampling_probas).tolist()
 
-        return indices
+    #     return indices
 
 
     def thompson_pruning(self,):
