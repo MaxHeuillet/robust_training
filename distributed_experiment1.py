@@ -138,6 +138,10 @@ class BaseExperiment:
             dist.barrier()
             self.sync_updated_values(train_dataset, rank)
 
+            # print('before update',rank, train_dataset.Sigma_inv, train_dataset.mu)
+            # train_dataset.update_contextual_TS_parameters()
+            # print('after update',rank, train_dataset.Sigma_inv, train_dataset.mu)
+
             #### compute TS update with master and synchronize the update.
 
 
@@ -166,6 +170,16 @@ class BaseExperiment:
         self.setup.cleanup()
 
     def sync_updated_values(self, train_dataset, rank):
+
+        print('before reduce')
+        print(train_dataset.clean_scores.shape )
+        print(train_dataset.robust_scores.shape)
+        print(train_dataset.global_scores.shape)
+        print(train_dataset.clean_pred.shape)
+        print(train_dataset.robust_pred.shape)
+        print(train_dataset.pulls.shape)
+        print(train_dataset.reward.shape)
+
         
         clean_scores = train_dataset.clean_scores.clone().to(device=rank)
         robust_scores = train_dataset.robust_scores.clone().to(device=rank)
@@ -190,6 +204,15 @@ class BaseExperiment:
         train_dataset.robust_pred = robust_pred.cpu()
         train_dataset.pulls = pulls.cpu()
         train_dataset.reward = reward.cpu()
+
+        print('after reduce')
+        print(train_dataset.clean_scores.shape )
+        print(train_dataset.robust_scores.shape)
+        print(train_dataset.global_scores.shape)
+        print(train_dataset.clean_pred.shape)
+        print(train_dataset.robust_pred.shape)
+        print(train_dataset.pulls.shape)
+        print(train_dataset.reward.shape)
 
 
     def final_validation(self, valloader, model, experiment, iteration, rank ):
