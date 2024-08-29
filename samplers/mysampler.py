@@ -51,13 +51,13 @@ class Pruner:
     def thompson_pruning(self,):
 
         # posterior distribution
-        mu = (self.dataset.kappa0 * self.dataset.mu0 + self.dataset.global_scores) / (self.dataset.kappa0 + self.dataset.pulls)
+        mu = (self.dataset.kappa0 * self.dataset.mu0 + self.dataset.reward) / (self.dataset.kappa0 + self.dataset.pulls)
         kappa = np.maximum(self.dataset.kappa0 + self.dataset.pulls, 1e-3)
         alpha = self.dataset.alpha0 + self.dataset.pulls / 2
-        mean_reward = self.dataset.global_scores / np.maximum(self.dataset.pulls, 1)
+        mean_reward = self.dataset.reward / np.maximum(self.dataset.pulls, 1)
         
         beta = self.dataset.beta0 + \
-        0.5 * (self.dataset.global_scores**2 - 2 * self.dataset.global_scores * mean_reward + self.dataset.pulls * np.square(mean_reward)) + \
+        0.5 * (self.dataset.reward**2 - 2 * self.dataset.reward * mean_reward + self.dataset.pulls * np.square(mean_reward)) + \
         self.dataset.kappa0 * self.dataset.pulls * np.square(mean_reward - self.dataset.mu0) / (2 * kappa)
 
         # posterior sampling
