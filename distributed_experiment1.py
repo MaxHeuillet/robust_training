@@ -138,7 +138,6 @@ class BaseExperiment:
             dist.barrier()
             self.sync_updated_values(train_dataset, rank)
 
-
             #### compute TS update with master and synchronize the update.
 
 
@@ -174,7 +173,7 @@ class BaseExperiment:
         clean_pred = train_dataset.clean_pred.clone().to(device=rank)
         robust_pred = train_dataset.robust_pred.clone().to(device=rank)
         pulls = train_dataset.pulls.clone().to(device=rank)
-
+        reward = train_dataset.reward.clone().to(device=rank)
 
         dist.all_reduce(clean_scores, op=dist.ReduceOp.SUM)
         dist.all_reduce(robust_scores, op=dist.ReduceOp.SUM)
@@ -182,6 +181,7 @@ class BaseExperiment:
         dist.all_reduce(clean_pred, op=dist.ReduceOp.SUM)
         dist.all_reduce(robust_pred, op=dist.ReduceOp.SUM)
         dist.all_reduce(pulls, op=dist.ReduceOp.SUM)
+        dist.all_reduce(reward, op=dist.ReduceOp.SUM)
 
         train_dataset.clean_scores = clean_scores.cpu()
         train_dataset.robust_scores = robust_scores.cpu()
@@ -189,6 +189,7 @@ class BaseExperiment:
         train_dataset.clean_pred = clean_pred.cpu()
         train_dataset.robust_pred = robust_pred.cpu()
         train_dataset.pulls = pulls.cpu()
+        train_dataset.reward = reward.cpu()
 
 
     def final_validation(self, valloader, model, experiment, iteration, rank ):
