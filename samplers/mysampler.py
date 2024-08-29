@@ -31,21 +31,21 @@ class Pruner:
         self.N_tokeep = int( self.dataset.keep_ratio * len(self.global_indices) )
         print(self.N_tokeep, len(self.global_indices) )
 
-    # def linear_homoskedastic_thomspon_pruning(self,):
+    def linear_homoskedastic_thomspon_pruning(self,):
 
-    #     Sigma = np.linalg.inv(self.Sigma_inv)
+        Sigma = np.linalg.inv(self.Sigma_inv)
 
-    #     theta_sampled = np.random.multivariate_normal(self.dataset.mu, Sigma)
+        theta_sampled = np.random.multivariate_normal(self.dataset.mu, Sigma)
 
-    #     excpected_rewards = self.dataset.latent.dot(theta_sampled)
+        excpected_rewards = self.dataset.latent.dot(theta_sampled)
         
-    #     truncated_rewards = np.maximum(0, excpected_rewards)
+        truncated_rewards = np.maximum(0, excpected_rewards)
 
-    #     sampling_probas = truncated_rewards / np.sum(truncated_rewards)
+        sampling_probas = truncated_rewards / np.sum(truncated_rewards)
 
-    #     indices = np.random.choice(self.global_indices, size=self.N_tokeep, replace=False, p=sampling_probas).tolist()
+        indices = np.random.choice(self.global_indices, size=self.N_tokeep, replace=False, p=sampling_probas).tolist()
 
-    #     return indices
+        return indices
 
 
     def thompson_pruning(self,):
@@ -88,12 +88,16 @@ class Pruner:
 
     def uncertainty_based(self, ):
 
+
         proba_predictions = torch.softmax(self.dataset.clean_pred, dim=1)
         uncertainty = 1 - torch.max(proba_predictions, dim=1)[0]
-        
-        sampling_probas = uncertainty / torch.sum(uncertainty)
-        sampling_probas = sampling_probas.cpu().numpy()
-        sampling_probas /= np.sum(sampling_probas)
+        uncertainty = uncertainty.cpu().numpy()
+
+        sampling_probas = uncertainty / np.sum(uncertainty)
+
+        # Count non-zero elements
+        non_zero_count = np.count_nonzero(sampling_probas)
+        print("Number of non-zero elements:", non_zero_count)
         
         indices = np.random.choice(self.global_indices, size=self.N_tokeep, replace=False, p=sampling_probas).tolist()
         # np.random.shuffle(indices)
@@ -141,35 +145,13 @@ class Pruner:
                 return self.uncertainty_based()
             elif self.args.pruning_strategy == 'TS_pruning':
                 return self.thompson_pruning()
+            elif self.args.pruning_strategy == 'TS_context':
+                return self.linear_homoskedastic_thomspon_pruning()
             else:
                 raise ValueError(f"Undefined pruning strategy: {self.args.pruning_strategy}")
         else:
             return self.global_indices
-        
 
-
-
-    # def score_based(self, ):
-
-    #     if self.args.prunning_strategy == 'score_v1':
-    #         well_learned_mask =  (self.dataset.global_scores < self.dataset.global_scores.mean()) 
-    #     elif self.args.prunning_strategy == 'score_v2':
-    #         well_learned_mask = ( (self.dataset.clean_scores < self.dataset.clean_scores.mean()) & (self.dataset.robust_scores < self.dataset.robust_scores.mean()) )
-    #     else:
-    #         print('score not implemented')
-
-    #     well_learned_indices = np.where(well_learned_mask)[0]
-
-    #     indices = np.where(~well_learned_mask)[0].tolist()
-    #     selected_indices = np.random.choice(well_learned_indices, int( self.dataset.keep_ratio * len(well_learned_indices) ), replace=False )
-    #     print('There are {} well learned samples and {} still to learn. We sampled {}'.format( sum(well_learned_mask), sum(~well_learned_mask), len(selected_indices) ) )
-
-    #     if len(selected_indices) > 0:
-    #         self.dataset.update_weights(selected_indices)
-    #         indices.extend(selected_indices)
-    #     # np.random.shuffle(indices)
-    #     print('For next epoch, there will be {} samples. Total dataset size was {}'.format( len(indices), len(self.dataset) ) )
-    #     return indices
 
 
 
