@@ -68,7 +68,6 @@ class WeightedDataset(IndexedDataset):
 
         self.pulls = torch.zeros(self.K).cpu() # number of pulls
         self.reward = torch.zeros(self.K).cpu()  # cumulative reward
-        self.reward2 = torch.zeros(self.K).cpu()  # cumulative squared reward
 
         self.weights = torch.ones(len(self.dataset)).cpu()
         self.num_pruned_samples = 0
@@ -100,33 +99,26 @@ class WeightedDataset(IndexedDataset):
         self.robust_pred[indices.cpu().long()] = robust_pred
 
         self.pulls[indices.cpu().long()] += 1
-        
-        
-    # def update_noncontextual_TS_parameters(self,):
-    #### update regarding to TS (non contextual):
-        # self.reward[indices.cpu().long()] += global_loss_val
-        # self.reward2[indices.cpu().long()] += global_loss_val * global_loss_val
-        # self.pulls[indices.cpu().long()] += 1
+                
 
-    #     pass
-        
+    def update_contextual_TS_parameters(self,):
 
-    # def update_contextual_TS_parameters(self,):
+        #### update regarding TS (contextual):
 
-    #     #### update regarding TS (contextual):
+        non_zero_indices = torch.nonzero(self.pulls, as_tuple=False)
 
-    #     x = self.latent[indices].T
+        x = self.latent[indices].T
 
-    #     # Compute the scalar factor for the Sherman-Morrison update
-    #     Sigma_inv_x = torch.matmul(self.Sigma_inv, x)
-    #     scaling_factor = 1 + torch.matmul(x.T, Sigma_inv_x)
+        # Compute the scalar factor for the Sherman-Morrison update
+        Sigma_inv_x = torch.matmul(self.Sigma_inv, x)
+        scaling_factor = 1 + torch.matmul(x.T, Sigma_inv_x)
 
-    #     # Update the inverse covariance matrix using the Sherman-Morrison formula
-    #     self.Sigma_inv = self.Sigma_inv - torch.matmul(Sigma_inv_x, Sigma_inv_x.T) / scaling_factor
+        # Update the inverse covariance matrix using the Sherman-Morrison formula
+        self.Sigma_inv = self.Sigma_inv - torch.matmul(Sigma_inv_x, Sigma_inv_x.T) / scaling_factor
 
-    #     # Update the mean vector
-    #     mu_dot_x = torch.matmul(self.mu, x.flatten())
-    #     self.mu = self.mu + (global_loss_val - mu_dot_x) * Sigma_inv_x.flatten()
+        # Update the mean vector
+        mu_dot_x = torch.matmul(self.mu, x.flatten())
+        self.mu = self.mu + (global_loss_val - mu_dot_x) * Sigma_inv_x.flatten()
 
 
         
@@ -136,40 +128,7 @@ class WeightedDataset(IndexedDataset):
         # self.reset_cur_batch_index()
         loss_values.mul_(weights)
         return loss_values.mean() 
-    
-    # def reset_cur_batch_index(self):
-    #     self.cur_batch_index = []
         
-    # def __len__(self):
-    #     return len(self.dataset)
-
-    # def __getitem__(self, index):
-    #     # self.cur_batch_index.append(index)
-    #     return index, self.dataset[index] # , index
-    #     # return self.dataset[index], index, self.scores[index]
-
-    # def prune(self):
-    #     # Prune samples that are well learned, rebalance the weight by scaling up remaining
-    #     # well learned samples' learning rate to keep estimation about the same
-    #     # for the next version, also consider new class balance
-
-    #     well_learned_mask = ( (self.clean_scores < self.clean_scores.mean()) & (self.robust_scores < self.robust_scores.mean()) )
-    #     well_learned_indices = np.where(well_learned_mask)[0]
-
-    #     remained_indices = np.where(~well_learned_mask)[0].tolist()
-    #     selected_indices = np.random.choice(well_learned_indices, int( self.keep_ratio * len(well_learned_indices)), replace=False )
-    #     print('There are {} well learned samples and {} still to learn. We sampled {}'.format( sum(well_learned_mask), sum(~well_learned_mask), len(selected_indices) ) )
-
-    #     # self.reset_weights()
-    #     if len(selected_indices) > 0:
-    #         self.update_weights(selected_indices)
-    #         remained_indices.extend(selected_indices)
-    #     self.num_pruned_samples += len(self.dataset) - len(remained_indices)
-    #     np.random.shuffle(remained_indices)
-    #     print('For next epoch, there will be {} samples. Total dataset size was {}'.format( len(remained_indices), len(self.dataset) ) )
-
-    #     return remained_indices
-    
     def update_weights(self, indices):
         self.weights[indices] = 1 / self.keep_ratio
 
@@ -178,27 +137,3 @@ class WeightedDataset(IndexedDataset):
 
     def get_weights(self, indexes):
         return self.weights[indexes]
-
-    # def get_pruned_count(self):
-    #     return self.num_pruned_samples
-
-    # def no_prune(self):
-    #     samples_indices = list(range(len(self.dataset))) #list(range(len(self)))
-    #     np.random.shuffle(samples_indices)
-    #     return samples_indices
-
-    # @property
-    # def sampler(self):
-    #     sampler = CustomSampler(self)
-    #     # if dist.is_available() and dist.is_initialized():
-    #     #     sampler = DistributedCustomSampler(sampler)
-    #     return sampler
-
-    # def mean_score(self):
-    #     return self.scores.mean()
-
-    # @property
-    # def stop_prune(self):
-    #     return self.num_epochs * self.delta
-
-    
