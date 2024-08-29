@@ -69,7 +69,7 @@ class WeightedDataset(IndexedDataset):
         self.pulls = torch.zeros(self.K).cpu() # number of pulls
         self.reward = torch.zeros(self.K).cpu()  # cumulative reward
 
-        self.weights = torch.ones(len(self.dataset)).cpu()
+        self.weights = torch.ones(self.K).cpu()
         self.num_pruned_samples = 0
         # self.cur_batch_index = None
 
