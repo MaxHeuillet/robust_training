@@ -88,7 +88,6 @@ class Pruner:
 
     def uncertainty_based(self, ):
 
-
         proba_predictions = torch.softmax(self.dataset.clean_pred, dim=1)
         uncertainty = 1 - torch.max(proba_predictions, dim=1)[0]
         uncertainty = uncertainty.cpu().numpy()
@@ -118,12 +117,8 @@ class Pruner:
         else:
             print('score not implemented')
 
-        sampling_probas = scores / scores.sum()
-        sampling_probas = sampling_probas.cpu().numpy()
-        sampling_probas /= np.sum(sampling_probas)
-        # print(scores)
-        # print(scores.sum())
-        # print(sampling_probas.sum())
+        scores = scores.cpu().numpy()
+        sampling_probas = scores / np.sum(scores)
 
         indices = np.random.choice(self.global_indices, size=self.N_tokeep, replace=False, p=sampling_probas).tolist()
         np.random.shuffle(indices)
