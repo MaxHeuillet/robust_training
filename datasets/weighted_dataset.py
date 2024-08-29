@@ -57,8 +57,8 @@ class WeightedDataset(IndexedDataset):
         self.clean_scores = torch.normal(mean, std_dev, size=(self.K,)).cpu()
         self.robust_scores = torch.normal(mean, std_dev, size=(self.K,)).cpu()
         self.global_scores = torch.normal(mean, std_dev, size=(self.K,)).cpu()
-        self.clean_pred = torch.zeros( self.K, self.N ).half().cpu() 
-        self.robust_pred = torch.zeros( self.K, self.N ).half().cpu() 
+        self.clean_pred = torch.zeros( self.K, self.N ).cpu() #.half()
+        self.robust_pred = torch.zeros( self.K, self.N ).cpu() #.half() 
 
         ### arguments relative to Thomspon pruning (non-contextual):
         self.mu0 = torch.zeros(self.K).cpu()

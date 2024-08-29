@@ -119,17 +119,18 @@ class BaseExperiment:
 
                 optimizer.zero_grad()
 
-                with autocast():
+                # with autocast():
                     
-                    loss_values, clean_values, robust_values, logits_nat, logits_adv = get_loss(self.args, model, data, target, optimizer)
+                loss_values, clean_values, robust_values, logits_nat, logits_adv = get_loss(self.args, model, data, target, optimizer)
 
                 train_dataset.update_scores(idxs, clean_values, robust_values, loss_values, logits_nat, logits_adv)
                 
                 loss = train_dataset.compute_loss(idxs, loss_values)
 
-                scaler.scale(loss).backward()
-                scaler.step(optimizer)
-                scaler.update()
+                loss.backward()
+                # scaler.scale(loss).backward()
+                # scaler.step(optimizer)
+                # scaler.update()
 
             if self.args.sched == 'sched':
                 scheduler.step()
