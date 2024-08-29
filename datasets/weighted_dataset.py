@@ -91,6 +91,7 @@ class WeightedDataset(IndexedDataset):
 
         global_loss_val = global_values.detach().clone().cpu()
         self.global_scores[indices.cpu().long()] = global_loss_val
+        self.reward[indices.cpu().long()] = global_loss_val
 
         clean_pred = clean_pred.detach().clone().cpu()
         self.clean_pred[indices.cpu().long()] = clean_pred
@@ -107,18 +108,16 @@ class WeightedDataset(IndexedDataset):
 
         non_zero_indices = torch.nonzero(self.pulls, as_tuple=False)
 
-        x = self.latent[indices].T
+        x = self.latent[non_zero_indices].T
 
         # Compute the scalar factor for the Sherman-Morrison update
         Sigma_inv_x = torch.matmul(self.Sigma_inv, x)
         scaling_factor = 1 + torch.matmul(x.T, Sigma_inv_x)
-
-        # Update the inverse covariance matrix using the Sherman-Morrison formula
         self.Sigma_inv = self.Sigma_inv - torch.matmul(Sigma_inv_x, Sigma_inv_x.T) / scaling_factor
 
         # Update the mean vector
         mu_dot_x = torch.matmul(self.mu, x.flatten())
-        self.mu = self.mu + (global_loss_val - mu_dot_x) * Sigma_inv_x.flatten()
+        self.mu = self.mu + (self.reward - mu_dot_x) * Sigma_inv_x.flatten()
 
 
         
