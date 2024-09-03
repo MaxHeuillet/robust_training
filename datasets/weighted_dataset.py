@@ -133,8 +133,8 @@ class WeightedDataset(IndexedDataset):
         print(f"robust_pred shape: {robust_pred.shape}")
 
         # Ensure `clean_pred` and `robust_pred` have the correct shape by adding an extra dimension
-        clean_pred = clean_pred.unsqueeze(dim=1)  
-        robust_pred = robust_pred.unsqueeze(dim=1)  
+        # clean_pred = clean_pred.unsqueeze(dim=1)  
+        # robust_pred = robust_pred.unsqueeze(dim=1)  
         
         # Update scores and predictions
         self.pulls[indices.cpu().long()] += 1
