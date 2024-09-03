@@ -100,7 +100,7 @@ class BaseExperiment:
         model.to(rank)
         model = DDP(model, device_ids=[rank])
         
-        scaler = GradScaler()
+        # scaler = GradScaler()
         optimizer = torch.optim.SGD( model.parameters(),lr=self.args.init_lr, weight_decay=self.args.weight_decay, momentum=self.args.momentum, nesterov=True, )
         scheduler = CosineAnnealingLR(optimizer, T_max=10)
 
@@ -128,6 +128,7 @@ class BaseExperiment:
                 loss = train_dataset.compute_loss(idxs, loss_values)
 
                 loss.backward()
+                optimizer.step()
                 # scaler.scale(loss).backward()
                 # scaler.step(optimizer)
                 # scaler.update()
