@@ -65,7 +65,6 @@ class WeightedDataset(IndexedDataset):
         self.beta0 = torch.ones(self.K).cpu()
 
         self.pulls = torch.zeros(self.K).cpu() # number of pulls
-        self.reward = torch.zeros(self.K).cpu()  # cumulative reward
 
         self.weights = torch.ones(self.K).cpu()
         self.num_pruned_samples = 0
@@ -74,8 +73,6 @@ class WeightedDataset(IndexedDataset):
         self.alpha = 1
         self.mu = torch.zeros(2048).cpu()
         self.Sigma_inv = torch.eye(2048).cpu() / self.alpha
-
-        self.global_scores2 = torch.zeros( (self.args.iterations, self.K) ).cpu()
 
     def define_latent_features(self,features):
         self.latent = features
@@ -93,12 +90,12 @@ class WeightedDataset(IndexedDataset):
         robust_pred = robust_pred.detach().clone().to(rank)
 
         # Check and print shapes for debugging
-        print(f"indices shape: {indices.shape}")
-        print(f"clean_loss_val shape: {clean_loss_val.shape}")
-        print(f"robust_loss_val shape: {robust_loss_val.shape}")
-        print(f"global_loss_val shape: {global_loss_val.shape}")
-        print(f"clean_pred shape: {clean_pred.shape}")
-        print(f"robust_pred shape: {robust_pred.shape}")
+        # print(f"indices shape: {indices.shape}")
+        # print(f"clean_loss_val shape: {clean_loss_val.shape}")
+        # print(f"robust_loss_val shape: {robust_loss_val.shape}")
+        # print(f"global_loss_val shape: {global_loss_val.shape}")
+        # print(f"clean_pred shape: {clean_pred.shape}")
+        # print(f"robust_pred shape: {robust_pred.shape}")
         
         if dist.is_available() and dist.is_initialized():
             iv = torch.cat([indices, 
@@ -118,23 +115,17 @@ class WeightedDataset(IndexedDataset):
             robust_loss_val = iv_whole_group[:, 2]#.view(-1, 1)
             global_loss_val = iv_whole_group[:, 3]#.view(-1, 1)
 
-            # Correct extraction for clean_pred and robust_pred based on column positions
-            # Since each pred should have 10 columns, adjust indices accordingly
             clean_pred = iv_whole_group[:, 4:14]  # Extract next 10 columns for clean_pred
             robust_pred = iv_whole_group[:, 14:24]  # Extract the next 10 columns for robust_pred
 
             
         # Check and print shapes for debugging
-        print(f"indices shape: {indices.shape}")
-        print(f"clean_loss_val shape: {clean_loss_val.shape}")
-        print(f"robust_loss_val shape: {robust_loss_val.shape}")
-        print(f"global_loss_val shape: {global_loss_val.shape}")
-        print(f"clean_pred shape: {clean_pred.shape}")
-        print(f"robust_pred shape: {robust_pred.shape}")
-
-        # Ensure `clean_pred` and `robust_pred` have the correct shape by adding an extra dimension
-        # clean_pred = clean_pred.unsqueeze(dim=1)  
-        # robust_pred = robust_pred.unsqueeze(dim=1)  
+        # print(f"indices shape: {indices.shape}")
+        # print(f"clean_loss_val shape: {clean_loss_val.shape}")
+        # print(f"robust_loss_val shape: {robust_loss_val.shape}")
+        # print(f"global_loss_val shape: {global_loss_val.shape}")
+        # print(f"clean_pred shape: {clean_pred.shape}")
+        # print(f"robust_pred shape: {robust_pred.shape}")
         
         # Update scores and predictions
         self.pulls[indices.cpu().long()] += 1
