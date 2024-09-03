@@ -80,17 +80,17 @@ class WeightedDataset(IndexedDataset):
     def define_latent_features(self,features):
         self.latent = features
         
-    def update_scores(self, indices, clean_values, robust_values, global_values, clean_pred, robust_pred):
+    def update_scores(self, rank, indices, clean_values, robust_values, global_values, clean_pred, robust_pred):
 
         # Reshape 1D tensors to 2D to concatenate along columns
         n = indices.shape[0]
         indices = indices.view(n, 1)
-        clean_loss_val = clean_values.detach().clone().cpu().view(n, 1)
-        robust_loss_val = robust_values.detach().clone().cpu().view(n, 1)
-        global_loss_val = global_values.detach().clone().cpu().view(n, 1)
+        clean_loss_val = clean_values.detach().clone().device(rank).view(n, 1)
+        robust_loss_val = robust_values.detach().clone().device(rank).view(n, 1)
+        global_loss_val = global_values.detach().clone().device(rank).view(n, 1)
 
-        clean_pred = clean_pred.detach().clone().cpu()
-        robust_pred = robust_pred.detach().clone().cpu()
+        clean_pred = clean_pred.detach().clone().device(rank)
+        robust_pred = robust_pred.detach().clone().device(rank)
 
         # Check and print shapes for debugging
         print(f"indices shape: {indices.shape}")
@@ -114,7 +114,7 @@ class WeightedDataset(IndexedDataset):
             robust_loss_val = iv_whole_group[2]
             global_loss_val = iv_whole_group[3]
 
-            clean_pred = iv_whole_group[4:4 + self.K * self.N].view(self.K, self.N)  
+            clean_pred = iv_whole_group[4:4 + self.K * self.N].view(self.K, self.N)
             robust_pred = iv_whole_group[4 + self.K * self.N:].view(self.K, self.N)  
 
 
@@ -132,11 +132,11 @@ class WeightedDataset(IndexedDataset):
         
         # Update scores and predictions
         self.pulls[indices.cpu().long()] += 1
-        self.clean_scores[indices.cpu().long()] = clean_loss_val
-        self.robust_scores[indices.cpu().long()] = robust_loss_val
-        self.global_scores[indices.cpu().long()] = global_loss_val
-        self.clean_pred[indices.cpu().long()] = clean_pred
-        self.robust_pred[indices.cpu().long()] = robust_pred
+        self.clean_scores[indices.cpu().long()] = clean_loss_val.cpu()
+        self.robust_scores[indices.cpu().long()] = robust_loss_val.cpu()
+        self.global_scores[indices.cpu().long()] = global_loss_val.cpu()
+        self.clean_pred[indices.cpu().long()] = clean_pred.cpu()
+        self.robust_pred[indices.cpu().long()] = robust_pred.cpu()
 
     # def update_scores2(self, iteration, indices, global_values,):
 
