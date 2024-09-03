@@ -148,8 +148,8 @@ class BaseExperiment:
                 scheduler.step()
 
             #### synchronize the different quantities between the different processes
-            dist.barrier()
-            self.sync_updated_values(train_dataset, rank)
+            # dist.barrier()
+            # self.sync_updated_values(train_dataset, rank)
 
             # print('before update',rank, train_dataset.Sigma_inv, train_dataset.mu)
             # train_dataset.update_contextual_TS_parameters()
