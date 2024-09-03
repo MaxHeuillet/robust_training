@@ -77,6 +77,8 @@ class WeightedDataset(IndexedDataset):
         self.mu = torch.zeros(2048).cpu()
         self.Sigma_inv = torch.eye(2048).cpu() / self.alpha
 
+        self.global_scores2 = torch.zeros( (self.args.iterations, self.K) ).cpu()
+
     def define_latent_features(self,features):
         self.latent = features
         
@@ -100,6 +102,12 @@ class WeightedDataset(IndexedDataset):
         self.robust_pred[indices.cpu().long()] = robust_pred
 
         self.pulls[indices.cpu().long()] += 1
+
+    def update_scores2(self, iteration, indices, global_values,):
+
+        global_loss_val = global_values.detach().clone().cpu()
+        self.global_scores2[iteration][indices.cpu().long()] = global_loss_val
+
                 
 
     def update_contextual_TS_parameters(self,):

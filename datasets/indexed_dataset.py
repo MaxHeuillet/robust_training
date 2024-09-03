@@ -28,6 +28,7 @@ class IndexedDataset(Dataset): #Dataset
 
         super().__init__()
 
+        self.args = args
         self.dataset, N = load_data(args, train=train) #, train_transform=train_transform
         self.N = N
         self.dataset_name = args.dataset
