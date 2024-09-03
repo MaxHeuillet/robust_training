@@ -91,6 +91,14 @@ class WeightedDataset(IndexedDataset):
 
         clean_pred = clean_pred.detach().clone().cpu()
         robust_pred = robust_pred.detach().clone().cpu()
+
+        # Check and print shapes for debugging
+        print(f"indices shape: {indices.shape}")
+        print(f"clean_loss_val shape: {clean_loss_val.shape}")
+        print(f"robust_loss_val shape: {robust_loss_val.shape}")
+        print(f"global_loss_val shape: {global_loss_val.shape}")
+        print(f"clean_pred shape: {clean_pred.shape}")
+        print(f"robust_pred shape: {robust_pred.shape}")
         
         if dist.is_available() and dist.is_initialized():
             iv = torch.cat([indices, 
@@ -106,13 +114,22 @@ class WeightedDataset(IndexedDataset):
             robust_loss_val = iv_whole_group[2]
             global_loss_val = iv_whole_group[3]
 
-            # Extract clean_pred and robust_pred correctly from the concatenated tensor
-            clean_pred = iv_whole_group[4:4 + self.K * self.N].view(self.K, self.N)  # Adjust the slicing based on K and N
-            robust_pred = iv_whole_group[4 + self.K * self.N:].view(self.K, self.N)  # Adjust the slicing based on K and N
+            clean_pred = iv_whole_group[4:4 + self.K * self.N].view(self.K, self.N)  
+            robust_pred = iv_whole_group[4 + self.K * self.N:].view(self.K, self.N)  
+
+
+        # Check and print shapes for debugging
+        print(f"indices shape: {indices.shape}")
+        print(f"clean_loss_val shape: {clean_loss_val.shape}")
+        print(f"robust_loss_val shape: {robust_loss_val.shape}")
+        print(f"global_loss_val shape: {global_loss_val.shape}")
+        print(f"clean_pred shape: {clean_pred.shape}")
+        print(f"robust_pred shape: {robust_pred.shape}")
 
         # Ensure `clean_pred` and `robust_pred` have the correct shape by adding an extra dimension
-        clean_pred = clean_pred.unsqueeze(dim=1)  # Shape: [128, 1, 10]
-        robust_pred = robust_pred.unsqueeze(dim=1)  # Shape: [128, 1, 10]
+        clean_pred = clean_pred.unsqueeze(dim=1)  
+        robust_pred = robust_pred.unsqueeze(dim=1)  
+        
         # Update scores and predictions
         self.pulls[indices.cpu().long()] += 1
         self.clean_scores[indices.cpu().long()] = clean_loss_val
@@ -125,8 +142,6 @@ class WeightedDataset(IndexedDataset):
 
     #     global_loss_val = global_values.detach().clone().cpu()
     #     self.global_scores2[iteration][indices.cpu().long()] = global_loss_val
-
-                
 
     # def update_contextual_TS_parameters(self,):
 
