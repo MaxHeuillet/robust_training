@@ -114,9 +114,9 @@ class WeightedDataset(IndexedDataset):
             print(iv_whole_group.shape)
             # Extract values correctly based on the concatenated structure
             indices = iv_whole_group[:, 0].long()  # Extract the indices column
-            clean_loss_val = iv_whole_group[:, 1].view(-1, 1)
-            robust_loss_val = iv_whole_group[:, 2].view(-1, 1)
-            global_loss_val = iv_whole_group[:, 3].view(-1, 1)
+            clean_loss_val = iv_whole_group[:, 1] #.view(-1, 1)
+            robust_loss_val = iv_whole_group[:, 2]#.view(-1, 1)
+            global_loss_val = iv_whole_group[:, 3]#.view(-1, 1)
 
             # Correct extraction for clean_pred and robust_pred based on column positions
             # Since each pred should have 10 columns, adjust indices accordingly
