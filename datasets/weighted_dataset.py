@@ -85,12 +85,12 @@ class WeightedDataset(IndexedDataset):
         # Reshape 1D tensors to 2D to concatenate along columns
         n = indices.shape[0]
         indices = indices.view(n, 1)
-        clean_loss_val = clean_values.detach().clone().device(rank).view(n, 1)
-        robust_loss_val = robust_values.detach().clone().device(rank).view(n, 1)
-        global_loss_val = global_values.detach().clone().device(rank).view(n, 1)
+        clean_loss_val = clean_values.detach().clone().to(rank).view(n, 1)
+        robust_loss_val = robust_values.detach().clone().to(rank).view(n, 1)
+        global_loss_val = global_values.detach().clone().to(rank).view(n, 1)
 
-        clean_pred = clean_pred.detach().clone().device(rank)
-        robust_pred = robust_pred.detach().clone().device(rank)
+        clean_pred = clean_pred.detach().clone().to(rank)
+        robust_pred = robust_pred.detach().clone().to(rank)
 
         # Check and print shapes for debugging
         print(f"indices shape: {indices.shape}")
