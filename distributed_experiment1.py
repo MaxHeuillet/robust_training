@@ -46,6 +46,11 @@ def compute_gradient_norms(model):
     total_norm = total_norm ** 0.5
     return total_norm
 
+def check_for_nans(tensors, tensor_names):
+    for tensor, name in zip(tensors, tensor_names):
+        if torch.isnan(tensor).any():
+            print(f"{name} contains NaNs!")
+
 
 class BaseExperiment:
 
@@ -124,7 +129,13 @@ class BaseExperiment:
                 loss_values, clean_values, robust_values, logits_nat, logits_adv = get_loss(self.args, model, data, target, optimizer)
 
                 train_dataset.update_scores(idxs, clean_values, robust_values, loss_values, logits_nat, logits_adv)
-                
+
+                # List of tensors and their names for easy reference in the check
+                tensors = [loss_values, clean_values, robust_values, logits_nat, logits_adv]
+                tensor_names = ['loss_values', 'clean_values', 'robust_values', 'logits_nat', 'logits_adv']
+
+                check_for_nans(tensors, tensor_names)
+
                 loss = train_dataset.compute_loss(idxs, loss_values)
 
                 loss.backward()
@@ -181,7 +192,6 @@ class BaseExperiment:
         print(train_dataset.robust_pred.shape)
         print(train_dataset.pulls.shape)
         print(train_dataset.reward.shape)
-
         
         clean_scores = train_dataset.clean_scores.clone().to(device=rank)
         robust_scores = train_dataset.robust_scores.clone().to(device=rank)
@@ -213,7 +223,7 @@ class BaseExperiment:
         print(train_dataset.global_scores.shape)
         print(train_dataset.clean_pred.shape)
         print(train_dataset.robust_pred.shape)
-        print(train_dataset.pulls.shape)
+        print(train_dataset.pulls.shape, torch.max(train_dataset.pulls) )
         print(train_dataset.reward.shape)
 
 
