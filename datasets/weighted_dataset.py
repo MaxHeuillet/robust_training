@@ -93,10 +93,10 @@ class WeightedDataset(IndexedDataset):
         robust_pred = robust_pred.detach().clone().cpu()
         
         if dist.is_available() and dist.is_initialized():
-            iv = torch.cat([indices.view(1, -1), 
-                                clean_loss_val.view(1, -1),
-                                robust_loss_val.view(1, -1),
-                                global_loss_val.view(1, -1),
+            iv = torch.cat([indices, 
+                                clean_loss_val,
+                                robust_loss_val,
+                                global_loss_val,
                                 clean_pred,
                                 robust_pred ], dim=0)
             
@@ -109,7 +109,6 @@ class WeightedDataset(IndexedDataset):
             # Extract clean_pred and robust_pred correctly from the concatenated tensor
             clean_pred = iv_whole_group[4:4 + self.K * self.N].view(self.K, self.N)  # Adjust the slicing based on K and N
             robust_pred = iv_whole_group[4 + self.K * self.N:].view(self.K, self.N)  # Adjust the slicing based on K and N
-
 
         # Ensure `clean_pred` and `robust_pred` have the correct shape by adding an extra dimension
         clean_pred = clean_pred.unsqueeze(dim=1)  # Shape: [128, 1, 10]
