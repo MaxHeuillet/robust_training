@@ -105,7 +105,7 @@ class BaseExperiment:
         model.to(rank)
         model = DDP(model, device_ids=[rank])
         
-        # scaler = GradScaler()
+        scaler = GradScaler()
         optimizer = torch.optim.SGD( model.parameters(),lr=self.args.init_lr, weight_decay=self.args.weight_decay, momentum=self.args.momentum, nesterov=True, )
         scheduler = CosineAnnealingLR(optimizer, T_max=10)
 
@@ -124,9 +124,9 @@ class BaseExperiment:
 
                 optimizer.zero_grad()
 
-                # with autocast():
+                with autocast():
                     
-                loss_values, clean_values, robust_values, logits_nat, logits_adv = get_loss(self.args, model, data, target, optimizer)
+                    loss_values, clean_values, robust_values, logits_nat, logits_adv = get_loss(self.args, model, data, target, optimizer)
 
                 train_dataset.update_scores(rank, idxs, clean_values, robust_values, loss_values, logits_nat, logits_adv)
 
@@ -138,25 +138,20 @@ class BaseExperiment:
 
                 loss = train_dataset.compute_loss(idxs, loss_values)
 
-                loss.backward()
-                optimizer.step()
-                # scaler.scale(loss).backward()
-                # scaler.step(optimizer)
-                # scaler.update()
+                # loss.backward()
+                # optimizer.step()
+                scaler.scale(loss).backward()
+                scaler.step(optimizer)
+                scaler.update()
 
             if self.args.sched == 'sched':
                 scheduler.step()
-
-            #### synchronize the different quantities between the different processes
-            # dist.barrier()
-            # self.sync_updated_values(train_dataset, rank)
 
             # print('before update',rank, train_dataset.Sigma_inv, train_dataset.mu)
             # train_dataset.update_contextual_TS_parameters()
             # print('after update',rank, train_dataset.Sigma_inv, train_dataset.mu)
 
             #### compute TS update with master and synchronize the update.
-
 
             gradient_norm = compute_gradient_norms(model)
             current_lr = optimizer.param_groups[0]['lr']
@@ -181,51 +176,6 @@ class BaseExperiment:
 
         print('clean up',flush=True)
         self.setup.cleanup()
-
-    def sync_updated_values(self, train_dataset, rank):
-
-        print('before reduce')
-        print(train_dataset.clean_scores.shape )
-        print(train_dataset.robust_scores.shape)
-        print(train_dataset.global_scores.shape)
-        print(train_dataset.clean_pred.shape)
-        print(train_dataset.robust_pred.shape)
-        print(train_dataset.pulls.shape)
-        print(train_dataset.reward.shape)
-        
-        clean_scores = train_dataset.clean_scores.clone().to(device=rank)
-        robust_scores = train_dataset.robust_scores.clone().to(device=rank)
-        global_scores = train_dataset.global_scores.clone().to(device=rank)
-        clean_pred = train_dataset.clean_pred.clone().to(device=rank)
-        robust_pred = train_dataset.robust_pred.clone().to(device=rank)
-        pulls = train_dataset.pulls.clone().to(device=rank)
-        reward = train_dataset.reward.clone().to(device=rank)
-
-        dist.all_reduce(clean_scores, op=dist.ReduceOp.SUM)
-        dist.all_reduce(robust_scores, op=dist.ReduceOp.SUM)
-        dist.all_reduce(global_scores, op=dist.ReduceOp.SUM)
-        dist.all_reduce(clean_pred, op=dist.ReduceOp.SUM)
-        dist.all_reduce(robust_pred, op=dist.ReduceOp.SUM)
-        dist.all_reduce(pulls, op=dist.ReduceOp.SUM)
-        dist.all_reduce(reward, op=dist.ReduceOp.SUM)
-
-        train_dataset.clean_scores = clean_scores.cpu()
-        train_dataset.robust_scores = robust_scores.cpu()
-        train_dataset.global_scores = global_scores.cpu()
-        train_dataset.clean_pred = clean_pred.cpu()
-        train_dataset.robust_pred = robust_pred.cpu()
-        train_dataset.pulls = pulls.cpu()
-        train_dataset.reward = reward.cpu()
-
-        print('after reduce')
-        print(train_dataset.clean_scores.shape )
-        print(train_dataset.robust_scores.shape)
-        print(train_dataset.global_scores.shape)
-        print(train_dataset.clean_pred.shape)
-        print(train_dataset.robust_pred.shape)
-        print(train_dataset.pulls.shape, torch.max(train_dataset.pulls) )
-        print(train_dataset.reward.shape)
-
 
     def final_validation(self, valloader, model, experiment, iteration, rank ):
         total_correct_nat, total_correct_adv, total_examples = self.compute_AA_accuracy(valloader, model, rank)
@@ -288,9 +238,6 @@ class BaseExperiment:
             total_examples += target.size(0)
 
         return total_correct_nat, total_correct_adv, total_examples
-    
-
-
     
     def validate(self, valloader, model, experiment, iteration, rank):
         total_loss, total_correct_nat, total_correct_adv, total_examples = self.validation_metrics(valloader, model, rank)
