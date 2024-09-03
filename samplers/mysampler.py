@@ -22,8 +22,16 @@ def truncated_normal(mean, std, lower_bound=0, upper_bound=np.inf):
 
 def check_for_nans(tensors, tensor_names):
     for tensor, name in zip(tensors, tensor_names):
-        if torch.isnan(tensor).any():
-            print(f"{name} contains NaNs!")
+        if isinstance(tensor, torch.Tensor):
+            # Check for NaNs in PyTorch tensors
+            if torch.isnan(tensor).any():
+                print(f"{name} contains NaNs!")
+        elif isinstance(tensor, np.ndarray):
+            # Check for NaNs in NumPy arrays
+            if np.isnan(tensor).any():
+                print(f"{name} contains NaNs!")
+        else:
+            print(f"{name} is not a recognized type (neither PyTorch tensor nor NumPy array).")
 
 class Pruner:
 
