@@ -109,13 +109,23 @@ class WeightedDataset(IndexedDataset):
                                 robust_pred ], dim=1)
             
             iv_whole_group = concat_all_gather(iv, 1)
-            indices = iv_whole_group[0]
-            clean_loss_val = iv_whole_group[1]
-            robust_loss_val = iv_whole_group[2]
-            global_loss_val = iv_whole_group[3]
+            print(iv_whole_group.shape)
+            indices = iv_whole_group[:, 0].long()  # Extract the indices column
+            clean_loss_val = iv_whole_group[:, 1].view(-1, 1)
+            robust_loss_val = iv_whole_group[:, 2].view(-1, 1)
+            global_loss_val = iv_whole_group[:, 3].view(-1, 1)
 
-            clean_pred = iv_whole_group[4:4 + self.K * self.N].view(self.K, self.N)
-            robust_pred = iv_whole_group[4 + self.K * self.N:].view(self.K, self.N)  
+            # Correct extraction based solely on self.K
+            clean_pred = iv_whole_group[:, 4:4 + self.K]  # Extract K columns for clean_pred
+            robust_pred = iv_whole_group[:, 4 + self.K:4 + 2 * self.K]  # Extract the next K columns for robust_pred
+            
+            # indices = iv_whole_group[0]
+            # clean_loss_val = iv_whole_group[1]
+            # robust_loss_val = iv_whole_group[2]
+            # global_loss_val = iv_whole_group[3]
+
+            # clean_pred = iv_whole_group[4:4 + self.K * self.N]
+            # robust_pred = iv_whole_group[4 + self.K * self.N:] 
 
 
         # Check and print shapes for debugging
