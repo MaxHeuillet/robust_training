@@ -108,26 +108,22 @@ class WeightedDataset(IndexedDataset):
                                 clean_pred,
                                 robust_pred ], dim=1)
             
-            iv_whole_group = concat_all_gather(iv, 1)
+            print('iv', iv.shape)
+            
+            iv_whole_group = concat_all_gather(iv, 0)
             print(iv_whole_group.shape)
+            # Extract values correctly based on the concatenated structure
             indices = iv_whole_group[:, 0].long()  # Extract the indices column
             clean_loss_val = iv_whole_group[:, 1].view(-1, 1)
             robust_loss_val = iv_whole_group[:, 2].view(-1, 1)
             global_loss_val = iv_whole_group[:, 3].view(-1, 1)
 
-            # Correct extraction based solely on self.K
-            clean_pred = iv_whole_group[:, 4:4 + self.K]  # Extract K columns for clean_pred
-            robust_pred = iv_whole_group[:, 4 + self.K:4 + 2 * self.K]  # Extract the next K columns for robust_pred
+            # Correct extraction for clean_pred and robust_pred based on column positions
+            # Since each pred should have 10 columns, adjust indices accordingly
+            clean_pred = iv_whole_group[:, 4:14]  # Extract next 10 columns for clean_pred
+            robust_pred = iv_whole_group[:, 14:24]  # Extract the next 10 columns for robust_pred
+
             
-            # indices = iv_whole_group[0]
-            # clean_loss_val = iv_whole_group[1]
-            # robust_loss_val = iv_whole_group[2]
-            # global_loss_val = iv_whole_group[3]
-
-            # clean_pred = iv_whole_group[4:4 + self.K * self.N]
-            # robust_pred = iv_whole_group[4 + self.K * self.N:] 
-
-
         # Check and print shapes for debugging
         print(f"indices shape: {indices.shape}")
         print(f"clean_loss_val shape: {clean_loss_val.shape}")
