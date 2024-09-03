@@ -106,7 +106,7 @@ class WeightedDataset(IndexedDataset):
                                 robust_loss_val,
                                 global_loss_val,
                                 clean_pred,
-                                robust_pred ], dim=0)
+                                robust_pred ], dim=1)
             
             iv_whole_group = concat_all_gather(iv, 1)
             indices = iv_whole_group[0]
