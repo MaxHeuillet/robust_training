@@ -20,6 +20,11 @@ def truncated_normal(mean, std, lower_bound=0, upper_bound=np.inf):
     # Sample from the truncated normal distribution
     return truncnorm.rvs(a, b, loc=mean, scale=std, size=mean.shape)
 
+def check_for_nans(tensors, tensor_names):
+    for tensor, name in zip(tensors, tensor_names):
+        if torch.isnan(tensor).any():
+            print(f"{name} contains NaNs!")
+
 class Pruner:
 
     ##note: it's important that the random selection is done with numpy
@@ -93,6 +98,12 @@ class Pruner:
         uncertainty = uncertainty.cpu().numpy()
 
         sampling_probas = uncertainty / np.sum(uncertainty)
+
+        # List of tensors and their names for easy reference in the check
+        tensors = [proba_predictions, uncertainty, sampling_probas]
+        tensor_names = ['proba_predictions', 'uncertainty', 'sampling_probas',]
+
+        check_for_nans(tensors, tensor_names)
 
         # Count non-zero elements
         non_zero_count = np.count_nonzero(sampling_probas)
