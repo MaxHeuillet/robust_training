@@ -48,8 +48,6 @@ class WeightedDataset(IndexedDataset):
 
         self.keep_ratio = min(1.0, max(1e-1, 1.0 - prune_ratio))
         self.K = len(self.dataset)
-
-
         
         # self.scores stores the loss value of each sample. Note that smaller value indicates the sample is better learned by the network.
         mean = 1.0
@@ -84,48 +82,69 @@ class WeightedDataset(IndexedDataset):
         
     def update_scores(self, indices, clean_values, robust_values, global_values, clean_pred, robust_pred):
 
-        #### update regarding score based pruning strategies:
-        clean_loss_val = clean_values.detach().clone().cpu()
-        self.clean_scores[indices.cpu().long()] = clean_loss_val
-
-        robust_loss_val = robust_values.detach().clone().cpu()
-        self.robust_scores[indices.cpu().long()] = robust_loss_val
-
-        global_loss_val = global_values.detach().clone().cpu()
-        self.global_scores[indices.cpu().long()] = global_loss_val
-        self.reward[indices.cpu().long()] = global_loss_val
+        # Reshape 1D tensors to 2D to concatenate along columns
+        n = indices.shape[0]
+        indices = indices.view(n, 1)
+        clean_loss_val = clean_values.detach().clone().cpu().view(n, 1)
+        robust_loss_val = robust_values.detach().clone().cpu().view(n, 1)
+        global_loss_val = global_values.detach().clone().cpu().view(n, 1)
 
         clean_pred = clean_pred.detach().clone().cpu()
-        self.clean_pred[indices.cpu().long()] = clean_pred
-
         robust_pred = robust_pred.detach().clone().cpu()
+        
+        if dist.is_available() and dist.is_initialized():
+            iv = torch.cat([indices.view(1, -1), 
+                                clean_loss_val.view(1, -1),
+                                robust_loss_val.view(1, -1),
+                                global_loss_val.view(1, -1),
+                                clean_pred,
+                                robust_pred ], dim=0)
+            
+            iv_whole_group = concat_all_gather(iv, 1)
+            indices = iv_whole_group[0]
+            clean_loss_val = iv_whole_group[1]
+            robust_loss_val = iv_whole_group[2]
+            global_loss_val = iv_whole_group[3]
+
+            # Extract clean_pred and robust_pred correctly from the concatenated tensor
+            clean_pred = iv_whole_group[4:4 + self.K * self.N].view(self.K, self.N)  # Adjust the slicing based on K and N
+            robust_pred = iv_whole_group[4 + self.K * self.N:].view(self.K, self.N)  # Adjust the slicing based on K and N
+
+
+        # Ensure `clean_pred` and `robust_pred` have the correct shape by adding an extra dimension
+        clean_pred = clean_pred.unsqueeze(dim=1)  # Shape: [128, 1, 10]
+        robust_pred = robust_pred.unsqueeze(dim=1)  # Shape: [128, 1, 10]
+        # Update scores and predictions
+        self.pulls[indices.cpu().long()] += 1
+        self.clean_scores[indices.cpu().long()] = clean_loss_val
+        self.robust_scores[indices.cpu().long()] = robust_loss_val
+        self.global_scores[indices.cpu().long()] = global_loss_val
+        self.clean_pred[indices.cpu().long()] = clean_pred
         self.robust_pred[indices.cpu().long()] = robust_pred
 
-        self.pulls[indices.cpu().long()] += 1
+    # def update_scores2(self, iteration, indices, global_values,):
 
-    def update_scores2(self, iteration, indices, global_values,):
-
-        global_loss_val = global_values.detach().clone().cpu()
-        self.global_scores2[iteration][indices.cpu().long()] = global_loss_val
+    #     global_loss_val = global_values.detach().clone().cpu()
+    #     self.global_scores2[iteration][indices.cpu().long()] = global_loss_val
 
                 
 
-    def update_contextual_TS_parameters(self,):
+    # def update_contextual_TS_parameters(self,):
 
-        #### update regarding TS (contextual):
+    #     #### update regarding TS (contextual):
 
-        non_zero_indices = torch.nonzero(self.pulls, as_tuple=False)
+    #     non_zero_indices = torch.nonzero(self.pulls, as_tuple=False)
 
-        x = self.latent[non_zero_indices].T
+    #     x = self.latent[non_zero_indices].T
 
-        # Compute the scalar factor for the Sherman-Morrison update
-        Sigma_inv_x = torch.matmul(self.Sigma_inv, x)
-        scaling_factor = 1 + torch.matmul(x.T, Sigma_inv_x)
-        self.Sigma_inv = self.Sigma_inv - torch.matmul(Sigma_inv_x, Sigma_inv_x.T) / scaling_factor
+    #     # Compute the scalar factor for the Sherman-Morrison update
+    #     Sigma_inv_x = torch.matmul(self.Sigma_inv, x)
+    #     scaling_factor = 1 + torch.matmul(x.T, Sigma_inv_x)
+    #     self.Sigma_inv = self.Sigma_inv - torch.matmul(Sigma_inv_x, Sigma_inv_x.T) / scaling_factor
 
-        # Update the mean vector
-        mu_dot_x = torch.matmul(self.mu, x.flatten())
-        self.mu = self.mu + (self.reward - mu_dot_x) * Sigma_inv_x.flatten()
+    #     # Update the mean vector
+    #     mu_dot_x = torch.matmul(self.mu, x.flatten())
+    #     self.mu = self.mu + (self.reward - mu_dot_x) * Sigma_inv_x.flatten()
 
 
         
