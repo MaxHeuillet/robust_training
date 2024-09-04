@@ -136,6 +136,10 @@ class BaseExperiment:
 
                 check_for_nans(tensors, tensor_names)
 
+                # Check for negative values and raise an error if found
+                if (loss_values < 0).any():
+                    raise ValueError("The tensor 'loss_values' contains negative values.")
+
                 loss = train_dataset.compute_loss(idxs, loss_values)
 
                 # loss.backward()
