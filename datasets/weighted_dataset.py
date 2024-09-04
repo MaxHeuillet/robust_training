@@ -50,11 +50,10 @@ class WeightedDataset(IndexedDataset):
         self.K = len(self.dataset)
         
         # self.scores stores the loss value of each sample. Note that smaller value indicates the sample is better learned by the network.
-        mean = 1.0
-        std_dev = 0.1  
-        self.clean_scores = torch.normal(mean, std_dev, size=(self.K,)).cpu()
-        self.robust_scores = torch.normal(mean, std_dev, size=(self.K,)).cpu()
-        self.global_scores = torch.normal(mean, std_dev, size=(self.K,)).cpu()
+        self.clean_scores = torch.ones(self.K)
+        self.robust_scores = torch.ones(self.K)
+        self.global_scores = torch.ones(self.K)
+
         self.clean_pred = torch.zeros( self.K, self.N ).cpu() #.half()
         self.robust_pred = torch.zeros( self.K, self.N ).cpu() #.half() 
 
