@@ -16,7 +16,7 @@ class LoRA(nn.Module):
         super().__init__()
         self.mat_A = nn.Parameter(torch.zeros((rank,features_out)).to(device))
         self.mat_B = nn.Parameter(torch.zeros((features_in, rank)).to(device))
-        nn.init.normal_(self.mat_A, mean=0, std=0.01)
+        nn.init.normal_(self.mat_A, mean=0, std=1)
 
         self.scale = alpha / rank
 
