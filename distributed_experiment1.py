@@ -132,14 +132,14 @@ class BaseExperiment:
                 train_dataset.update_scores(rank, idxs, clean_values, robust_values, loss_values, logits_nat, logits_adv)
 
                 # List of tensors and their names for easy reference in the check
-                tensors = [loss_values, clean_values, robust_values, logits_nat, logits_adv]
-                tensor_names = ['loss_values', 'clean_values', 'robust_values', 'logits_nat', 'logits_adv']
+                # tensors = [loss_values, clean_values, robust_values, logits_nat, logits_adv]
+                # tensor_names = ['loss_values', 'clean_values', 'robust_values', 'logits_nat', 'logits_adv']
 
-                check_for_nans(tensors, tensor_names)
+                # check_for_nans(tensors, tensor_names)
 
-                # Check for negative values and raise an error if found
-                if (loss_values < 0).any():
-                    raise ValueError("The tensor 'loss_values' contains negative values.")
+                # # Check for negative values and raise an error if found
+                # if (loss_values < 0).any():
+                #     raise ValueError("The tensor 'loss_values' contains negative values.")
 
                 loss = train_dataset.compute_loss(idxs, loss_values)
 

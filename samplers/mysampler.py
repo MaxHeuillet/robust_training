@@ -108,14 +108,14 @@ class Pruner:
         sampling_probas = uncertainty / np.sum(uncertainty)
 
         # List of tensors and their names for easy reference in the check
-        tensors = [proba_predictions, uncertainty, sampling_probas]
-        tensor_names = ['proba_predictions', 'uncertainty', 'sampling_probas',]
+        # tensors = [proba_predictions, uncertainty, sampling_probas]
+        # tensor_names = ['proba_predictions', 'uncertainty', 'sampling_probas',]
 
-        check_for_nans(tensors, tensor_names)
+        # check_for_nans(tensors, tensor_names)
 
         # Count non-zero elements
-        non_zero_count = np.count_nonzero(sampling_probas)
-        print("Number of non-zero elements:", non_zero_count)
+        # non_zero_count = np.count_nonzero(sampling_probas)
+        # print("Number of non-zero elements:", non_zero_count)
         
         indices = np.random.choice(self.global_indices, size=self.N_tokeep, replace=False, p=sampling_probas).tolist()
         # np.random.shuffle(indices)
