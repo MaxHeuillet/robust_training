@@ -11,7 +11,7 @@ iterations=$6
 
 init_lrs=( 0.01  )  # 0.001 0.0001
 pruning_ratios=( 0.7 )  #0.3 0.5  
-pruning_strategies=(  'TS_pruning'  ) # 'TS_context' 'random'  'score_v1' 'score_v2' 'uncertainty'
+pruning_strategies=(  'TS_pruning' 'TS_context' 'random'  'score_v1' 'score_v2' 'uncertainty'  ) 
 batch_strategies=('random')
 
 # Second set of experiments
