@@ -2,7 +2,7 @@
 
 #SBATCH --account=rrg-adurand
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=10
+#SBATCH --cpus-per-task=12
 #SBATCH --gpus-per-node=4
 #SBATCH --mem-per-cpu=4000M
 #SBATCH --time=12:00:00

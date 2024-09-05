@@ -90,8 +90,17 @@ class BaseExperiment:
         val_sampler = DistributedSampler(val_dataset, num_replicas=self.world_size, rank=rank, drop_last=False)
         
         print('initialize dataoader', rank,flush=True) 
-        trainloader = DataLoader(train_dataset, batch_size=None, sampler=train_sampler, num_workers=self.world_size) #
-        valloader = DataLoader(val_dataset, batch_size=256, sampler=val_sampler, num_workers=self.world_size)
+        trainloader = DataLoader(train_dataset, 
+                                 batch_size=None, 
+                                 sampler=train_sampler, 
+                                 num_workers=self.world_size, 
+                                 pin_memory=True) 
+        
+        valloader = DataLoader(val_dataset, 
+                               batch_size=256, 
+                               sampler=val_sampler, 
+                               num_workers=self.world_size,
+                               pin_memory=True)
 
         print('load model', rank,flush=True) 
         model, target_layers = load_architecture(self.args)
