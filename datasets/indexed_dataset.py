@@ -22,6 +22,33 @@ from PIL import Image
 import io
 from datasets.loaders import load_data
 
+# self.transform = transform
+# self.dataset = dataset
+# self.imagenette_to_imagenet = {
+#         0: 0,    # n01440764
+#         1: 217,    # n02102040
+#         2: 491,    # n02979186
+#         3: 491,   # n03028079
+#         4: 497,   # n03394916
+#         5: 566,  # n03417042
+#         6: 569,  # n03425413
+#         7: 571,  # n03445777
+#         8: 574,  # n03888257
+#         9: 701   # n04251144  }
+        
+# Initializing the targets attribute
+# if self.dataset_name == 'Imagenette':
+#     self.targets = [self.imagenette_to_imagenet[d['label']] for d in self.dataset]
+# elif self.dataset_name in ['Imagenet1k', 'CIFAR10', 'MNIST']:
+#     self.targets = [d[1] for d in self.dataset]  # Assuming the dataset is a list of tuples (image, label)
+# else:
+#     print('Dataset name error')
+
+# def get_item_imagenette(self,idx):
+#     image = self.dataset[idx]['image']
+#     label = self.imagenette_to_imagenet[ self.dataset[idx]['label'] ]
+#     return image, label
+    
 class IndexedDataset(Dataset): #Dataset
 
     def __init__(self, args, train=True): #, transform=None
@@ -29,33 +56,13 @@ class IndexedDataset(Dataset): #Dataset
         super().__init__()
 
         self.args = args
-        self.dataset, N = load_data(args, train=train) #, train_transform=train_transform
+        self.dataset, N, transform = load_data(args, train=train) 
         self.N = N
         self.dataset_name = args.dataset
         self.global_indices = list(range(len(self.dataset)))
-        
-        # self.transform = transform
-        # self.dataset = dataset
-        # self.imagenette_to_imagenet = {
-        #         0: 0,    # n01440764
-        #         1: 217,    # n02102040
-        #         2: 491,    # n02979186
-        #         3: 491,   # n03028079
-        #         4: 497,   # n03394916
-        #         5: 566,  # n03417042
-        #         6: 569,  # n03425413
-        #         7: 571,  # n03445777
-        #         8: 574,  # n03888257
-        #         9: 701   # n04251144  }
-        
-        # Initializing the targets attribute
-        # if self.dataset_name == 'Imagenette':
-        #     self.targets = [self.imagenette_to_imagenet[d['label']] for d in self.dataset]
-        # elif self.dataset_name in ['Imagenet1k', 'CIFAR10', 'MNIST']:
-        #     self.targets = [d[1] for d in self.dataset]  # Assuming the dataset is a list of tuples (image, label)
-        # else:
-        #     print('Dataset name error')
+        self.transform = transform  # Add transform parameter
 
+    
     def __len__(self):
         return len(self.dataset)
     
@@ -71,15 +78,9 @@ class IndexedDataset(Dataset): #Dataset
             print(f"Error with index {idx}: {e}. Trying next index {next_idx}")
             return self.get_item_imagenet(next_idx)
 
-    # def get_item_imagenette(self,idx):
-    #     image = self.dataset[idx]['image']
-    #     label = self.imagenette_to_imagenet[ self.dataset[idx]['label'] ]
-    #     return image, label
-    
     def get_item_noskip(self,idx):
         image, label = self.dataset[idx]
         return image, label
-    
 
     def __getitem__(self, idx):
         # print(idx)
@@ -108,7 +109,7 @@ class IndexedDataset(Dataset): #Dataset
     def _get_single_item(self, idx):
         if self.dataset_name == 'Imagenet1k':
             image_data, label = self.get_item_skip(idx)
-        elif self.dataset_name in ['CIFAR10', 'MNIST', 'random']:
+        elif self.dataset_name in ['CIFAR10', 'CIFAR10s', 'MNIST', 'random']:
             image_data, label = self.get_item_noskip(idx)
         else:
             raise ValueError("Unsupported dataset name")
@@ -118,6 +119,10 @@ class IndexedDataset(Dataset): #Dataset
             image = Image.open(io.BytesIO(image_data))
         else:
             image = image_data
+
+        # Apply the transform if it exists
+        if self.transform is not None:
+            image = self.transform(image)
         
         # Return the processed image, label, and index
         return image, label, idx

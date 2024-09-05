@@ -3,7 +3,8 @@ from torchvision import datasets, transforms
 from torchvision.transforms.functional import InterpolationMode
 import os
 import torch
-# from datasets import load_dataset, load_from_disk
+from datasets.semisupervised_dataset import SemiSupervisedDataset
+from torch.utils.data import TensorDataset
 
 def load_data(args, train=True):
 
@@ -15,9 +16,9 @@ def load_data(args, train=True):
             transforms.Normalize((0.1307,), (0.3081,))  # MNIST mean and std
         ])
         if train:
-            dataset = datasets.MNIST(root=args.data_dir, train=True, download=True, transform=transform)
+            dataset = datasets.MNIST(root=args.data_dir, train=True, download=True, )
         else:
-            dataset = datasets.MNIST(root=args.data_dir, train=False, download=True, transform=transform)
+            dataset = datasets.MNIST(root=args.data_dir, train=False, download=True, )
         N = 10
 
     elif args.dataset == 'CIFAR10':
@@ -27,15 +28,28 @@ def load_data(args, train=True):
                 transforms.Normalize( mean=(0.4914, 0.4822, 0.4465), std=(0.2471, 0.2435, 0.2616) )  ])
 
         if train:
-            dataset = datasets.CIFAR10(root=args.data_dir, train=True, download=True, transform=transform)
+            dataset = datasets.CIFAR10(root=args.data_dir, train=True, download=True, )
         else:
-            dataset = datasets.CIFAR10(root=args.data_dir, train=False, download=True, transform=transform)
+            dataset = datasets.CIFAR10(root=args.data_dir, train=False, download=True, )
 
         # pool_dataset = IndexedDataset('CIFAR10', train_folder, transform= transform ) 
         # test_dataset = IndexedDataset('CIFAR10', test_folder, transform= transform) 
         N = 10
 
-        print('load dataloader')
+    elif args.dataset == 'CIFAR10s':
+
+        transform = transforms.Compose([
+                transforms.ToTensor(),
+                transforms.Normalize( mean=(0.4914, 0.4822, 0.4465), std=(0.2471, 0.2435, 0.2616) )  ])
+
+        if train:
+            dataset = SemiSupervisedDataset(args, train=True, )
+        else:
+            dataset = SemiSupervisedDataset(args, train=False, )
+
+        N = 10
+
+
             
     elif args.dataset == 'Imagenet1k':
 
@@ -47,9 +61,9 @@ def load_data(args, train=True):
                 transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  ])
 
         if train:
-            dataset = datasets.ImageFolder(os.path.join(os.environ['SLURM_TMPDIR'], 'data/imagenet/train'), transform=transform)
+            dataset = datasets.ImageFolder(os.path.join(os.environ['SLURM_TMPDIR'], 'data/imagenet/train'))
         else:
-            dataset = datasets.ImageFolder(os.path.join(os.environ['SLURM_TMPDIR'], 'data/imagenet/val'), transform=transform)
+            dataset = datasets.ImageFolder(os.path.join(os.environ['SLURM_TMPDIR'], 'data/imagenet/val'))
 
         # pool_dataset = IndexedDataset('Imagenet1k', train_folder, transform= transform ) 
         # test_dataset = IndexedDataset('Imagenet1k', test_folder, transform= transform) 
@@ -59,9 +73,8 @@ def load_data(args, train=True):
 
     elif args.dataset == 'random':
 
-
-        from torch.utils.data import TensorDataset
-
+        transform = None
+        
         # Create 10 unique integers as observations
         observations = torch.arange(10)
 
@@ -93,7 +106,7 @@ def load_data(args, train=True):
     else:
         print('undefined data')
 
-    return dataset, N
+    return dataset, N, transform
 
 def to_rgb(x):
     return x.convert("RGB")

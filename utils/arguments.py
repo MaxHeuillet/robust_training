@@ -70,6 +70,11 @@ def get_args():
     parser.add_argument("--distance", default='l_inf', type=str, help="distance of trades")
 
 
+    ### arguments for diffusion augmented learning:
+    parser.add_argument("--unsup_fraction", default=0.3, type=float, help="fraction of data generated from diffusion model")
+    
+
+
     args, unknown = parser.parse_known_args()
 
     args.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

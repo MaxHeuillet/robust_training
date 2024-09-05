@@ -5,7 +5,7 @@ from architectures.LeNet import LeNet5
 
 def load_architecture(args,):
 
-    if args.arch == 'resnet50' and args.dataset == 'CIFAR10':
+    if args.arch == 'resnet50' and args.dataset in ['CIFAR10', 'CIFAR10s']:
         model = ResNet_cifar10(Bottleneck_cifar10, [3, 4, 6, 3] )
         state_dict = torch.load('./state_dicts/resnet50_cifar10.pt')
         model.load_state_dict(state_dict)

@@ -33,7 +33,7 @@ def check_for_nans(tensors, tensor_names):
         else:
             print(f"{name} is not a recognized type (neither PyTorch tensor nor NumPy array).")
 
-class Pruner:
+class SemiSupPruner:
 
     ##note: it's important that the random selection is done with numpy
 
@@ -171,12 +171,12 @@ class Pruner:
 
 
 
-class CustomSampler(object):
+class SemiSupCustomSampler(object):
     
     def __init__(self, args, dataset, ):
 
         self.args = args
-        self.pruner = Pruner(args, dataset)
+        self.pruner = SemiSupPruner(args, dataset)
         self.dataset = dataset
         self.stop_prune = self.max_prune()
 
@@ -243,8 +243,48 @@ class CustomSampler(object):
         self.process_indices = self.get_process_indices(self.post_pruning_indices)
         # print('process', self.process_indices)
 
+
+
+class SemiSupervisedSampler(SemiSupCustomSampler):
+    """
+    Balanced sampling from the labeled and unlabeled data.
+    """
+    def __init__(self, args, dataset,):
+
+        super( ).__init__(args, dataset)
+
+        self.unsup_fraction = args.unsup_fraction
+
+        self.sup_inds = dataset.dataset.sup_indices
+        self.unsup_inds = dataset.dataset.unsup_indices
+
+        unsup_batch_size = int(self.batch_size * self.unsup_fraction)
+        self.sup_batch_size = self.batch_size - unsup_batch_size
+
+    def __next__(self):
+
+        sup_inds_shuffled = [ self.sup_inds[i] for i in torch.randperm( len(self.sup_inds) ) ]
+        for sup_k in range(0, len(self.sup_inds), self.sup_batch_size):
+            
+            batch = sup_inds_shuffled[sup_k:(sup_k + self.sup_batch_size)]
+            if self.sup_batch_size < self.batch_size:
+                batch.extend([self.unsup_inds[i] for i in torch.randint(high=len(self.unsup_inds), 
+                                                                        size=(self.batch_size - len(batch),), 
+                                                                        dtype=torch.int64)])
+            np.random.shuffle(batch)
+            yield batch
+            
+
+    def __iter__(self):
+        return self
+        
+
+    def __len__(self):
+        return self.num_batches
+
+
     
-class DistributedCustomSampler(CustomSampler):
+class DistributedCustomSampler(SemisupCustomSampler):
 
     def __init__(
         self,
@@ -305,216 +345,3 @@ class DistributedCustomSampler(CustomSampler):
         indices = indices[self.rank : self.total_size : self.num_replicas]
         assert len(indices) == self.num_samples
         return indices
-    
-
-
-
-        
-        # If the dataset length is evenly divisible by # of replicas, then there
-        # is no need to drop any data, since the dataset will be split equally.
-  
-        # print('num replicas', self.num_replicas)
-        # print('num samples', self.num_samples)
-
-
-        # if unsup_fraction is None or unsup_fraction < 0:
-        #     self.sup_inds = sup_inds + unsup_inds
-        #     unsup_fraction = 0.0
-        # else:
-        # self.sup_inds = sup_inds
-        # self.unsup_inds = unsup_inds
-
-        # self.batch_size = batch_size
-        
-
-        # if num_batches is not None:
-        #     self.num_batches = num_batches
-        # else:
-        #     self.num_batches = int(np.ceil(len(self.sup_inds) / self.sup_batch_size))
-
-        # super().__init__(None)
-                # batch_counter = 0
-        # while batch_counter < self.num_batches:
-        # if batch_counter == self.num_batches:
-        # break
-        # batch_counter += 1        
-
-
-
-        # if len(self.tosample_indices) == 0:
-            
-        #     raise StopIteration
-        
-        # # print('hey2')
-        
-        # # Ensure sample size does not exceed the available to-sample indices
-        # current_sample_size = min(self.sample_size, len(self.tosample_indices))
-        # sampled_set = random.sample(self.tosample_indices, current_sample_size)
-
-        # # Ensure batch size does not exceed the sampled set size
-        # current_batch_size = min(self.batch_size, len(sampled_set))
-        # batch_set = random.sample(sampled_set, current_batch_size)
-
-        # if not batch_set:
-        #     # print('hey3')
-        #     raise StopIteration
-
-        # # Update sampled and tosample indices
-        # # self.sampled_indices.update(batch_set)
-        # # self.tosample_indices.difference_update(batch_set)
-        # self.tosample_indices = [index for index in self.tosample_indices if index not in batch_set]
-
-        # self.dataset.set_active_indices(indices)
-
-
-        # return batch_set
-
-# import torch
-# import numpy as np
-# import random
-
-# class DistributedCustomSampler(CustomSampler):
-
-#     def __init__(self, args, sampler, dataset: Dataset, num_replicas: Optional[int] = None, 
-#                  rank: Optional[int] = None, shuffle: bool = True,
-#                  seed: int = 0, drop_last: bool = False):
-
-#         super().__init__(args, dataset,)
-
-#         self.args = args
-
-#         self.sampler = sampler
-
-#         self.batch_size = args.batch_size
-#         self.indices = []
-
-#         print('num samples', self.num_samples)
-#         print('num replicas', self.num_replicas)
-#         # print(self.indices)
-
-#         def set_epoch(self, epoch: int):
-#             self.epoch = epoch
-#             self.sampler.set_seed()
-#             self.sampler.reset()
-
-#         def __iter__(self) -> Iterator[int]:
-#             if self.shuffle:
-#                 # deterministically shuffle based on epoch and seed
-#                 g = torch.Generator()
-#                 g.manual_seed(self.seed + self.epoch)
-#                 indices = torch.randperm(len(self.dataset), generator=g).tolist()  # type: ignore[arg-type]
-#             else:
-#                 indices = list(range(len(self.dataset)))  # type: ignore[arg-type]
-
-#             if not self.drop_last:
-#                 # add extra samples to make it evenly divisible
-#                 padding_size = self.total_size - len(indices)
-#                 if padding_size <= len(indices):
-#                     indices += indices[:padding_size]
-#                 else:
-#                     indices += (indices * math.ceil(padding_size / len(indices)))[
-#                         :padding_size
-#                     ]
-#             else:
-#                 # remove tail of data to make it evenly divisible.
-#                 indices = indices[: self.total_size]
-#             assert len(indices) == self.total_size
-
-#             # subsample
-#             indices = indices[self.rank : self.total_size : self.num_replicas]
-#             print('sampler indices', indices)
-#             assert len(indices) == self.num_samples
-
-#             return iter(indices)
-
-            
-
-
-
-
-
-
-# class DistributedCustomSampler(DistributedSampler):
-#     """
-#     Wrapper over `Sampler` for distributed training.
-#     Allows you to use any sampler in distributed mode.
-#     It is especially useful in conjunction with
-#     `torch.nn.parallel.DistributedDataParallel`. In such case, each
-#     process can pass a DistributedSamplerWrapper instance as a DataLoader
-#     sampler, and load a subset of subsampled data of the original dataset
-#     that is exclusive to it.
-#     .. note::
-#         Sampler can change size during training.
-#     """
-#     class DatasetFromSampler(Dataset):
-#         def __init__(self, sampler: CustomSampler):
-#             self.dataset = sampler
-#             # self.indices = None
- 
-#         def reset(self, ):
-#             self.indices = None
-#             self.dataset.reset()
-
-#         def __len__(self):
-#             return len(self.dataset)
-
-#         def __getitem__(self, index: int):
-#             """Gets element of the dataset.
-#             Args:
-#                 index: index of the element in the dataset
-#             Returns:
-#                 Single element by index
-#             """
-#             # if self.indices is None:
-#             #    self.indices = list(self.dataset)
-#             return self.dataset[index]
-
-#     def __init__(self, dataset: CustomSampler, num_replicas: Optional[int] = None,
-#                  rank: Optional[int] = None, shuffle: bool = True,
-#                  seed: int = 0, drop_last: bool = True) -> None:
-        
-#         sampler = self.DatasetFromSampler(dataset)
-#         super(DistributedCustomSampler, self).__init__(sampler, num_replicas, rank, shuffle, seed, drop_last)
-#         self.sampler = sampler
-#         self.dataset = sampler.dataset.dataset # the real dataset.
-#         self.iter_obj = None
-
-#     def __iter__(self) -> Iterator[int]:
-#         """
-#         Notes self.dataset is actually an instance of IBSampler rather than DataSchedule.
-#         """
-#         self.sampler.reset()
-#         if self.drop_last and len(self.sampler) % self.num_replicas != 0:  # type: ignore[arg-type]
-#             # Split to nearest available length that is evenly divisible.
-#             # This is to ensure each rank receives the same amount of data when
-#             # using this Sampler.
-#             self.num_samples = math.ceil((len(self.sampler) - self.num_replicas) /   self.num_replicas   ) # type: ignore[arg-type]
-#         else:
-#             self.num_samples = math.ceil(len(self.sampler) / self.num_replicas)  # type: ignore[arg-type]
-#         self.total_size = self.num_samples * self.num_replicas
-
-#         if self.shuffle:
-#             # deterministically shuffle based on epoch and seed
-#             g = torch.Generator()
-#             g.manual_seed(self.seed + self.epoch)
-#             # type: ignore[arg-type]
-#             indices = torch.randperm(len(self.sampler), generator=g).tolist()
-#         else:
-#             indices = list(range(len(self.sampler)))  # type: ignore[arg-type]
-
-#         if not self.drop_last:
-#             # add extra samples to make it evenly divisible
-#             padding_size = self.total_size - len(indices)
-#             if padding_size <= len(indices):
-#                 indices += indices[:padding_size]
-#             else:
-#                 indices += (indices * math.ceil(padding_size /
-#                             len(indices)))[:padding_size]
-#         else:
-#             # remove tail of data to make it evenly divisible.
-#             indices = indices[:self.total_size]
-#         assert len(indices) == self.total_size
-#         indices = indices[self.rank:self.total_size:self.num_replicas]
-#         # print('distribute iter is called')
-#         self.iter_obj = iter(itemgetter(*indices)(self.sampler))
-#         return self.iter_obj

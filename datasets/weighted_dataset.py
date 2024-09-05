@@ -88,6 +88,9 @@ class WeightedDataset(IndexedDataset):
         clean_pred = clean_pred.detach().clone().to(rank)
         robust_pred = robust_pred.detach().clone().to(rank)
 
+
+        print(clean_pred.shape)
+        print(robust_pred.shape)
         # Check and print shapes for debugging
         # print(f"indices shape: {indices.shape}")
         # print(f"clean_loss_val shape: {clean_loss_val.shape}")
@@ -117,7 +120,8 @@ class WeightedDataset(IndexedDataset):
             clean_pred = iv_whole_group[:, 4:14]  # Extract next 10 columns for clean_pred
             robust_pred = iv_whole_group[:, 14:24]  # Extract the next 10 columns for robust_pred
 
-            
+        print(clean_pred.shape, self.clean_pred[indices.cpu().long()].shape, indices.cpu().long().shape)
+        print(robust_pred.shape, self.robust_pred[indices.cpu().long()].shape)  
         # Check and print shapes for debugging
         # print(f"indices shape: {indices.shape}")
         # print(f"clean_loss_val shape: {clean_loss_val.shape}")
