@@ -250,7 +250,7 @@ class CustomSampler(object):
         self.post_pruning_indices = self.reset(iteration)
         # print('post_pruning', self.post_pruning_indices)
         self.process_indices = self.get_process_indices(self.post_pruning_indices)
-        # print('process', self.process_indices)
+        print('process') #self.process_indices)
 
     
 class DistributedCustomSampler(CustomSampler):

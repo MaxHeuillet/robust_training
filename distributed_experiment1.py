@@ -128,11 +128,15 @@ class BaseExperiment:
             model.train()
             train_sampler.set_epoch(iteration)
 
+            print('start batches')
+
             for batch_id, batch in enumerate( trainloader ):
 
                 data, target, idxs = batch
 
                 data, target = data.to(rank), target.to(rank) 
+
+                print('batch in gpu memory')
 
                 optimizer.zero_grad()
 
@@ -140,6 +144,7 @@ class BaseExperiment:
                     
                     loss_values, clean_values, robust_values, logits_nat, logits_adv = get_loss(self.args, model, data, target, optimizer)
 
+                print('got losses')
                 train_dataset.update_scores(rank, idxs, clean_values, robust_values, loss_values, logits_nat, logits_adv)
 
                 # List of tensors and their names for easy reference in the check
@@ -156,6 +161,7 @@ class BaseExperiment:
 
                 # loss.backward()
                 # optimizer.step()
+                print('backward')
                 scaler.scale(loss).backward()
                 scaler.step(optimizer)
                 scaler.update()
