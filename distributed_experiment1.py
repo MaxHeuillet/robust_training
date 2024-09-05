@@ -100,17 +100,19 @@ class BaseExperiment:
         statedict = load_statedict(self.args)
 
         model.load_state_dict(statedict)
-
+        print('add lora')
         add_lora(target_layers, model)
 
         model.to(rank)
         model = DDP(model, device_ids=[rank])
+        print('add model')
         
         scaler = GradScaler()
         optimizer = torch.optim.SGD( model.parameters(),lr=self.args.init_lr, weight_decay=self.args.weight_decay, momentum=self.args.momentum, nesterov=True, )
         scheduler = CosineAnnealingLR(optimizer, T_max=10)
 
         self.validate(valloader, model, experiment, 0, rank)
+        print('start the loop')
 
         for iteration in range(self.args.iterations):
 
