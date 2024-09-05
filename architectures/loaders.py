@@ -39,7 +39,7 @@ def load_architecture(args,):
 
 def load_statedict(args,):
 
-    if args.arch == 'resnet50' and args.dataset == 'CIFAR10':
+    if args.arch == 'resnet50' and args.dataset in ['CIFAR10', 'CIFAR10s']:
         
         state_dict = torch.load('./state_dicts/resnet50_cifar10.pt')
         
