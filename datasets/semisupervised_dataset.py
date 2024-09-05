@@ -17,7 +17,8 @@ class SemiSupervisedDataset(Dataset):
             self.sup_indices = list(range(len(self.targets)))
             self.unsup_indices = []
 
-            aux = np.load('./data/1m.npz')
+            file_path = args.data_dir + '/1m.npz'
+            aux = np.load(file_path)
             aux_data = aux['image']
             print(aux_data.shape)
             aux_targets = aux['label']
