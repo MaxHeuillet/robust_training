@@ -5,7 +5,7 @@
 #SBATCH --cpus-per-task=10
 #SBATCH --gpus-per-node=4
 #SBATCH --mem-per-cpu=4000M
-#SBATCH --time=03:00:00
+#SBATCH --time=12:00:00
 #SBATCH --mail-user=maxime.heuillet.1@ulaval.ca
 #SBATCH --mail-type=ALL
 
@@ -38,9 +38,6 @@ python3 ./distributed_experiment1.py \
     --pruning_strategy ${PSTRAT} \
     --batch_strategy ${BSTRAT} \
     > stdout_$SLURM_JOB_ID 2> stderr_$SLURM_JOB_ID
-
-
-
 
 
 

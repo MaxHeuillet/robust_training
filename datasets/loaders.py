@@ -22,10 +22,15 @@ def load_data(args, train=True):
         N = 10
 
     elif args.dataset == 'CIFAR10':
-
-        transform = transforms.Compose([
-                transforms.ToTensor(),
-                transforms.Normalize( mean=(0.4914, 0.4822, 0.4465), std=(0.2471, 0.2435, 0.2616) )  ])
+        
+        transform = transforms.Compose([transforms.RandomCrop(32, padding=4), 
+                                        transforms.RandomHorizontalFlip(0.5), 
+                                        transforms.Normalize( mean=(0.4914, 0.4822, 0.4465), std=(0.2471, 0.2435, 0.2616) ), 
+                                        transforms.ToTensor()])
+        
+        # transform = transforms.Compose([
+        #         transforms.ToTensor(),
+        #         transforms.Normalize( mean=(0.4914, 0.4822, 0.4465), std=(0.2471, 0.2435, 0.2616) )  ])
 
         if train:
             dataset = datasets.CIFAR10(root=args.data_dir, train=True, download=True, )
@@ -38,9 +43,14 @@ def load_data(args, train=True):
 
     elif args.dataset == 'CIFAR10s':
 
-        transform = transforms.Compose([
-                transforms.ToTensor(),
-                transforms.Normalize( mean=(0.4914, 0.4822, 0.4465), std=(0.2471, 0.2435, 0.2616) )  ])
+        transform = transforms.Compose([transforms.RandomCrop(32, padding=4), 
+                                        transforms.RandomHorizontalFlip(0.5), 
+                                        transforms.Normalize( mean=(0.4914, 0.4822, 0.4465), std=(0.2471, 0.2435, 0.2616) ), 
+                                        transforms.ToTensor()])
+
+        # transform = transforms.Compose([
+        #         transforms.ToTensor(),
+        #          ])
 
         if train:
             dataset = SemiSupervisedDataset(args, train=True, )
