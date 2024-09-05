@@ -120,8 +120,14 @@ class WeightedDataset(IndexedDataset):
             clean_pred = iv_whole_group[:, 4:14]  # Extract next 10 columns for clean_pred
             robust_pred = iv_whole_group[:, 14:24]  # Extract the next 10 columns for robust_pred
 
-        print(clean_pred.shape, self.clean_pred[indices.cpu().long()].shape, indices.cpu().long().shape)
-        print(robust_pred.shape, self.robust_pred[indices.cpu().long()].shape)  
+        else:
+            print(indices.shape)
+            indices = indices.squeeze(1)
+            print(indices.shape, indices.cpu().long().shape)
+
+        # print(clean_pred.shape, self.clean_pred[indices.cpu().long()].shape, indices.cpu().long().shape)
+        # print(robust_pred.shape, self.robust_pred[indices.cpu().long()].shape)
+
         # Check and print shapes for debugging
         # print(f"indices shape: {indices.shape}")
         # print(f"clean_loss_val shape: {clean_loss_val.shape}")
@@ -131,6 +137,7 @@ class WeightedDataset(IndexedDataset):
         # print(f"robust_pred shape: {robust_pred.shape}")
         
         # Update scores and predictions
+        print('hey', self.clean_scores[indices.cpu().long()].shape,clean_loss_val.cpu().shape )
         self.pulls[indices.cpu().long()] += 1
         self.clean_scores[indices.cpu().long()] = clean_loss_val.cpu()
         self.robust_scores[indices.cpu().long()] = robust_loss_val.cpu()
