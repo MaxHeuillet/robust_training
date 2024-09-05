@@ -44,19 +44,28 @@ class Pruner:
         self.N_tokeep = int( self.dataset.keep_ratio * len(self.global_indices) )
         print(self.N_tokeep, len(self.global_indices) )
 
-    def linear_homoskedastic_thomspon_pruning(self,):
+    def linear_homoskedastic_thomspon_pruning(self):
+        # Add a small value to the diagonal for numerical stability
+        regularization = 1e-6 * torch.eye(self.Sigma_inv.size(0)).cpu()
+        Sigma = torch.linalg.inv(self.Sigma_inv + regularization)  # Use torch.linalg.inv for inversion
 
-        Sigma = np.linalg.inv(self.dataset.Sigma_inv)
+        # Sample theta from the multivariate normal distribution using PyTorch
+        theta_sampled = torch.distributions.MultivariateNormal(self.mu, Sigma).sample()
 
-        theta_sampled = np.random.multivariate_normal(self.dataset.mu, Sigma)
-
-        excpected_rewards = self.dataset.latent.dot(theta_sampled)
+        # Compute expected rewards using matrix multiplication
+        excpected_rewards = self.latent @ theta_sampled  # @ is the matrix multiplication operator in PyTorch
         
-        truncated_rewards = np.maximum(0, excpected_rewards)
+        # Apply truncation to ensure non-negative rewards
+        truncated_rewards = torch.maximum(torch.zeros_like(excpected_rewards), excpected_rewards)
 
-        sampling_probas = truncated_rewards / np.sum(truncated_rewards)
+        # Compute sampling probabilities
+        sampling_probas = truncated_rewards / truncated_rewards.sum()
 
-        indices = np.random.choice(self.global_indices, size=self.N_tokeep, replace=False, p=sampling_probas).tolist()
+        # Convert probabilities to NumPy for use with np.random.choice if needed
+        sampling_probas_np = sampling_probas.cpu().numpy()
+
+        # Use sampling probabilities to select indices
+        indices = np.random.choice(self.global_indices, size=self.N_tokeep, replace=False, p=sampling_probas_np).tolist()
 
         return indices
 

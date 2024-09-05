@@ -1,6 +1,7 @@
 import numpy as np
 from torchvision import datasets
 from torch.utils.data import Dataset
+import os
 
 class SemiSupervisedDataset(Dataset):
     """
@@ -18,7 +19,8 @@ class SemiSupervisedDataset(Dataset):
             self.unsup_indices = []
 
             file_path = args.data_dir + '/1m.npz'
-            aux = np.load(file_path)
+            expanded_path = os.path.expanduser(file_path)  # Expands to the full path
+            aux = np.load(expanded_path)
             aux_data = aux['image']
             print(aux_data.shape)
             aux_targets = aux['label']
