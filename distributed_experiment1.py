@@ -93,13 +93,13 @@ class BaseExperiment:
         trainloader = DataLoader(train_dataset, 
                                  batch_size=None, 
                                  sampler=train_sampler, 
-                                 num_workers=1, 
+                                 num_workers=3, 
                                  pin_memory=True) 
         
         valloader = DataLoader(val_dataset, 
                                batch_size=256, 
                                sampler=val_sampler, 
-                               num_workers=1,
+                               num_workers=3,
                                pin_memory=True)
 
         print('load model', rank,flush=True) 
