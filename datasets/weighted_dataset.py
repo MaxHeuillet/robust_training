@@ -88,12 +88,12 @@ class WeightedDataset(IndexedDataset):
         clean_pred = clean_pred.detach().clone().to(rank)
         robust_pred = robust_pred.detach().clone().to(rank)
 
-        print(f"indices shape: {indices.shape}")
-        print(f"clean_loss_val shape: {clean_loss_val.shape}")
-        print(f"robust_loss_val shape: {robust_loss_val.shape}")
-        print(f"global_loss_val shape: {global_loss_val.shape}")
-        print(f"clean_pred shape: {clean_pred.shape}")
-        print(f"robust_pred shape: {robust_pred.shape}")
+        # print(f"indices shape: {indices.shape}")
+        # print(f"clean_loss_val shape: {clean_loss_val.shape}")
+        # print(f"robust_loss_val shape: {robust_loss_val.shape}")
+        # print(f"global_loss_val shape: {global_loss_val.shape}")
+        # print(f"clean_pred shape: {clean_pred.shape}")
+        # print(f"robust_pred shape: {robust_pred.shape}")
         
         if dist.is_available() and dist.is_initialized():
             iv = torch.cat([indices, 
@@ -130,15 +130,15 @@ class WeightedDataset(IndexedDataset):
         # print(robust_pred.shape, self.robust_pred[indices.cpu().long()].shape)
 
         # Check and print shapes for debugging
-        print(f"indices shape: {indices.shape}")
-        print(f"clean_loss_val shape: {clean_loss_val.shape}")
-        print(f"robust_loss_val shape: {robust_loss_val.shape}")
-        print(f"global_loss_val shape: {global_loss_val.shape}")
-        print(f"clean_pred shape: {clean_pred.shape}")
-        print(f"robust_pred shape: {robust_pred.shape}")
+        # print(f"indices shape: {indices.shape}")
+        # print(f"clean_loss_val shape: {clean_loss_val.shape}")
+        # print(f"robust_loss_val shape: {robust_loss_val.shape}")
+        # print(f"global_loss_val shape: {global_loss_val.shape}")
+        # print(f"clean_pred shape: {clean_pred.shape}")
+        # print(f"robust_pred shape: {robust_pred.shape}")
         
         # Update scores and predictions
-        print('hey', self.clean_scores[indices.cpu().long()].shape,clean_loss_val.cpu().shape )
+        # print('hey', self.clean_scores[indices.cpu().long()].shape,clean_loss_val.cpu().shape )
         self.pulls[indices.cpu().long()] += 1
         self.clean_scores[indices.cpu().long()] = clean_loss_val.cpu()
         self.robust_scores[indices.cpu().long()] = robust_loss_val.cpu()
