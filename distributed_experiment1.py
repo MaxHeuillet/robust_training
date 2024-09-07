@@ -119,7 +119,7 @@ class BaseExperiment:
         scaler = GradScaler()
         optimizer = torch.optim.SGD( model.parameters(),lr=self.args.init_lr, weight_decay=self.args.weight_decay, momentum=self.args.momentum, nesterov=True, )
         scheduler = CosineAnnealingLR(optimizer, T_max=10)
-
+        print('here is it?')
         self.validate(valloader, model, experiment, 0, rank)
         print('start the loop')
 
