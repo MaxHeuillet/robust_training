@@ -118,7 +118,8 @@ class BaseExperiment:
         
         scaler = GradScaler()
         optimizer = torch.optim.SGD( model.parameters(),lr=self.args.init_lr, weight_decay=self.args.weight_decay, momentum=self.args.momentum, nesterov=True, )
-        scheduler = CosineAnnealingLR(optimizer, T_max=10)
+        scheduler = CosineAnnealingLR(optimizer, max_lr=self.args.init_lr, epochs=int(self.args.iterations) )
+
         print('here is it?')
         self.validate(valloader, model, experiment, 0, rank)
         print('start the loop')
@@ -179,6 +180,8 @@ class BaseExperiment:
             current_lr = optimizer.param_groups[0]['lr']
             experiment.log_metric("iteration", iteration, epoch=iteration)
             experiment.log_metric("loss_value", loss, epoch=iteration)
+            experiment.log_metric("clean_value", clean_values.mean(), epoch=iteration)
+            experiment.log_metric("adv_value", robust_values.mean(), epoch=iteration)
             experiment.log_metric("lr_schedule", current_lr, epoch=iteration)
             experiment.log_metric("gradient_norm", gradient_norm, epoch=iteration)  
 
