@@ -1,12 +1,14 @@
 from comet_ml import Experiment
 
+
+
 import torch
 import torch.distributed as dist
 from torch.utils.data import DataLoader, DistributedSampler
 
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.cuda.amp import autocast, GradScaler
-from torch.optim.lr_scheduler import CosineAnnealingLR
+# from torch.optim.lr_scheduler import CosineAnnealingLR
 import os
 import torch
 
@@ -34,6 +36,7 @@ from datasets import WeightedDataset, IndexedDataset
 from architectures import load_architecture, load_statedict, add_lora
 from losses import get_loss, get_eval_loss
 from utils import get_args, get_exp_name, set_seeds
+from cosine import CosineLR
 
 
 
@@ -118,7 +121,7 @@ class BaseExperiment:
         
         scaler = GradScaler()
         optimizer = torch.optim.SGD( model.parameters(),lr=self.args.init_lr, weight_decay=self.args.weight_decay, momentum=self.args.momentum, nesterov=True, )
-        scheduler = CosineAnnealingLR(optimizer, max_lr=self.args.init_lr, epochs=int(self.args.iterations) )
+        scheduler = CosineLR(self.optimizer, max_lr=self.args.init_lr, T_max=int(self.args.iterations) )
 
         print('here is it?')
         self.validate(valloader, model, experiment, 0, rank)
