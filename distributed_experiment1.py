@@ -121,7 +121,7 @@ class BaseExperiment:
         
         scaler = GradScaler()
         optimizer = torch.optim.SGD( model.parameters(),lr=self.args.init_lr, weight_decay=self.args.weight_decay, momentum=self.args.momentum, nesterov=True, )
-        scheduler = CosineLR(self.optimizer, max_lr=self.args.init_lr, T_max=int(self.args.iterations) )
+        scheduler = CosineLR( optimizer, max_lr=self.args.init_lr, T_max=int(self.args.iterations) )
 
         print('here is it?')
         self.validate(valloader, model, experiment, 0, rank)
