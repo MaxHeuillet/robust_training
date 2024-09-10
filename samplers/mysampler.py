@@ -46,14 +46,14 @@ class Pruner:
 
     def linear_homoskedastic_thomspon_pruning(self):
         # Add a small value to the diagonal for numerical stability
-        regularization = 1e-6 * torch.eye(self.Sigma_inv.size(0)).cpu()
-        Sigma = torch.linalg.inv(self.Sigma_inv + regularization)  # Use torch.linalg.inv for inversion
+        regularization = 1e-6 * torch.eye(self.dataset.Sigma_inv.size(0)).cpu()
+        Sigma = torch.linalg.inv(self.dataset.Sigma_inv + regularization)  # Use torch.linalg.inv for inversion
 
         # Sample theta from the multivariate normal distribution using PyTorch
         theta_sampled = torch.distributions.MultivariateNormal(self.mu, Sigma).sample()
 
         # Compute expected rewards using matrix multiplication
-        excpected_rewards = self.latent @ theta_sampled  # @ is the matrix multiplication operator in PyTorch
+        excpected_rewards = self.dataset.latent @ theta_sampled  # @ is the matrix multiplication operator in PyTorch
         
         # Apply truncation to ensure non-negative rewards
         truncated_rewards = torch.maximum(torch.zeros_like(excpected_rewards), excpected_rewards)
@@ -68,6 +68,24 @@ class Pruner:
         indices = np.random.choice(self.global_indices, size=self.N_tokeep, replace=False, p=sampling_probas_np).tolist()
 
         return indices
+    
+    def thompson_pruning_decay(self,):
+
+        sampled_lambdas = np.random.gamma(self.alpha, 1 / self.beta)
+
+        expected_rewards = self.dataset.initial_reward * np.exp(-sampled_lambdas * self.dataset.pulls) 
+
+        # Compute sampling probabilities
+        sampling_probas = expected_rewards / expected_rewards.sum()
+
+        # Convert probabilities to NumPy for use with np.random.choice if needed
+        sampling_probas_np = sampling_probas.cpu().numpy()
+
+        # Use sampling probabilities to select indices
+        indices = np.random.choice(self.global_indices, size=self.N_tokeep, replace=False, p=sampling_probas_np).tolist()
+
+        return indices
+
 
 
     def thompson_pruning(self,):
@@ -170,6 +188,8 @@ class Pruner:
                 return self.thompson_pruning()
             elif self.args.pruning_strategy == 'TS_context':
                 return self.linear_homoskedastic_thomspon_pruning()
+            elif self.args.pruning_strategy == 'TS_decay':
+                return self.thompson_pruning_decay()
             else:
                 raise ValueError(f"Undefined pruning strategy: {self.args.pruning_strategy}")
         else:
