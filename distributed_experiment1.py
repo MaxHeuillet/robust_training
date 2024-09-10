@@ -186,7 +186,8 @@ class BaseExperiment:
             experiment.log_metric("clean_value", clean_values.mean(), epoch=iteration)
             experiment.log_metric("adv_value", robust_values.mean(), epoch=iteration)
             experiment.log_metric("lr_schedule", current_lr, epoch=iteration)
-            experiment.log_metric("gradient_norm", gradient_norm, epoch=iteration)  
+            experiment.log_metric("gradient_norm", gradient_norm, epoch=iteration)
+            experiment.log_metric("reward", loss_values.sum(), epoch=iteration)  
 
             print('start validation') 
             self.validate(valloader, model, experiment, iteration+1, rank)

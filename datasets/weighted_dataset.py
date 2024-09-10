@@ -55,23 +55,31 @@ class WeightedDataset(IndexedDataset):
         self.global_scores = torch.ones(self.K)
 
         self.clean_pred = torch.zeros( self.K, self.N ).cpu() #.half()
-        self.robust_pred = torch.zeros( self.K, self.N ).cpu() #.half() 
+        self.robust_pred = torch.zeros( self.K, self.N ).cpu() #.half()
+
+        self.weights = torch.ones(self.K).cpu()
+        self.num_pruned_samples = 0
+        self.global_scores2 = torch.zeros( (self.args.iterations, self.K) ).cpu()
+        # self.cur_batch_index = None 
 
         ### arguments relative to Thomspon pruning (non-contextual):
         self.mu0 = torch.zeros(self.K).cpu()
         self.kappa0 = torch.ones(self.K).cpu()
         self.alpha0 = torch.ones(self.K).cpu()
         self.beta0 = torch.ones(self.K).cpu()
-
         self.pulls = torch.zeros(self.K).cpu() # number of pulls
 
-        self.weights = torch.ones(self.K).cpu()
-        self.num_pruned_samples = 0
-        # self.cur_batch_index = None
+        ### arguments relative to Thomspon pruning (non-contextual, exponential decay):
+        self.alpha = torch.ones(self.K).cpu()
+        self.beta = torch.ones(self.K).cpu()
+        self.initial_loss = torch.ones(self.K).cpu() * 5
 
+        ### arguments relative to Thomspon pruning (contextual):
         self.alpha = 1
         self.mu = torch.zeros(2048).cpu()
         self.Sigma_inv = torch.eye(2048).cpu() / self.alpha
+
+        
 
     def define_latent_features(self,features):
         self.latent = features
@@ -103,10 +111,10 @@ class WeightedDataset(IndexedDataset):
                                 clean_pred,
                                 robust_pred ], dim=1)
             
-            print('iv', iv.shape)
+            # print('iv', iv.shape)
             
             iv_whole_group = concat_all_gather(iv, 0)
-            print(iv_whole_group.shape)
+            # print(iv_whole_group.shape)
             # Extract values correctly based on the concatenated structure
             indices = iv_whole_group[:, 0].long()  # Extract the indices column
             clean_loss_val = iv_whole_group[:, 1] #.view(-1, 1)
@@ -117,7 +125,7 @@ class WeightedDataset(IndexedDataset):
             robust_pred = iv_whole_group[:, 14:24]  # Extract the next 10 columns for robust_pred
 
         else:
-            print(indices.shape)
+            # print(indices.shape)
             indices = indices.squeeze(1)
             clean_pred = clean_pred.squeeze(1)
             robust_pred = robust_pred.squeeze(1)
@@ -139,12 +147,26 @@ class WeightedDataset(IndexedDataset):
         
         # Update scores and predictions
         # print('hey', self.clean_scores[indices.cpu().long()].shape,clean_loss_val.cpu().shape )
-        self.pulls[indices.cpu().long()] += 1
-        self.clean_scores[indices.cpu().long()] = clean_loss_val.cpu()
-        self.robust_scores[indices.cpu().long()] = robust_loss_val.cpu()
-        self.global_scores[indices.cpu().long()] = global_loss_val.cpu()
-        self.clean_pred[indices.cpu().long()] = clean_pred.cpu()
-        self.robust_pred[indices.cpu().long()] = robust_pred.cpu()
+        idxs = indices.cpu().long()
+        
+        self.pulls[idxs] += 1
+        self.clean_scores[idxs] = clean_loss_val.cpu()
+        self.robust_scores[idxs] = robust_loss_val.cpu()
+        self.global_scores[idxs] = global_loss_val.cpu()
+        self.clean_pred[idxs] = clean_pred.cpu()
+        self.robust_pred[idxs] = robust_pred.cpu()
+
+        # Updates for TS decay
+        subset_pulls = self.pulls[idxs]
+        subset_zero_pulls_mask = subset_pulls == 1
+        subset_indices = torch.nonzero(subset_zero_pulls_mask).squeeze()
+        subset_indices = subset_indices.cpu().long()
+        self.initial_loss[subset_indices] = global_loss_val[subset_indices].cpu()
+
+        self.alpha[idxs] = self.alpha[idxs] + 1
+        self.beta[idxs] = self.beta[idxs] + global_loss_val.cpu()
+
+        
 
     # def update_scores2(self, iteration, indices, global_values,):
 
