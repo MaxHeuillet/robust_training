@@ -70,8 +70,8 @@ class WeightedDataset(IndexedDataset):
         self.pulls = torch.zeros(self.K).cpu() # number of pulls
 
         ### arguments relative to Thomspon pruning (non-contextual, exponential decay):
-        self.alpha = torch.ones(self.K).cpu()
-        self.beta = torch.ones(self.K).cpu()
+        self.alphas = torch.ones(self.K).cpu()
+        self.betas = torch.ones(self.K).cpu()
         self.initial_loss = torch.ones(self.K).cpu() * 5
 
         ### arguments relative to Thomspon pruning (contextual):
@@ -163,8 +163,8 @@ class WeightedDataset(IndexedDataset):
         subset_indices = subset_indices.cpu().long()
         self.initial_loss[subset_indices] = global_loss_val[subset_indices].cpu()
 
-        self.alpha[idxs] = self.alpha[idxs] + 1
-        self.beta[idxs] = self.beta[idxs] + global_loss_val.cpu()
+        self.alphas[idxs] = self.alphas[idxs] + 1
+        self.betas[idxs] = self.betas[idxs] + global_loss_val.cpu()
 
         
 
