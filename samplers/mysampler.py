@@ -71,7 +71,7 @@ class Pruner:
     
     def thompson_pruning_decay(self,):
 
-        sampled_lambdas = np.random.gamma(self.alpha, 1 / self.beta)
+        sampled_lambdas = np.random.gamma(self.alphas, 1 / self.betas)
 
         expected_rewards = self.dataset.initial_reward * np.exp(-sampled_lambdas * self.dataset.pulls) 
 
