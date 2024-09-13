@@ -191,6 +191,8 @@ class BaseExperiment:
 
             print('start validation') 
             self.validate(valloader, model, experiment, iteration+1, rank)
+
+
   
             print(f'Rank {rank}, Iteration {iteration},', flush=True) 
 
@@ -324,9 +326,6 @@ class BaseExperiment:
                 total_examples += target.size(0)
 
         return total_loss, total_correct_nat, total_correct_adv, total_examples
-    
-    
-
 
 if __name__ == "__main__":
 
