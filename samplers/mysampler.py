@@ -77,7 +77,9 @@ class Pruner:
 
     def decay_based(self, ):
 
-        pred_decays = self.dataset.pred_decay
+        pred_decays = self.dataset.pred_decay.numpy()
+
+        print('pred_decays', pred_decays)
         
         sampling_probas = pred_decays / np.sum(pred_decays)
 
@@ -207,6 +209,7 @@ class Pruner:
             elif self.args.pruning_strategy == 'TS_decay':
                 return self.thompson_pruning_decay()
             elif self.args.pruning_strategy == 'decay_based':
+                print('hey')
                 return self.decay_based()
             else:
                 raise ValueError(f"Undefined pruning strategy: {self.args.pruning_strategy}")
