@@ -192,7 +192,7 @@ class BaseExperiment:
             print('start validation') 
             self.validate(valloader, model, experiment, iteration+1, rank)
 
-            if args.pruning_strategy == 'exp_decay':
+            if args.pruning_strategy == 'decay_based':
                 indices = train_sampler.process_indices
                 results = torch.tensor([ train_dataset.decay_model.fit_predict( train_dataset.global_scores2[idx] ) for idx in indices ])
                 results = results.float()
