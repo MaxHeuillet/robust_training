@@ -89,7 +89,7 @@ class WeightedDataset(IndexedDataset):
     def define_latent_features(self,features):
         self.latent = features
         
-    def update_scores(self, rank, iteration, indices, clean_values, robust_values, global_values, clean_pred, robust_pred):
+    def update_scores(self, rank, indices, clean_values, robust_values, global_values, clean_pred, robust_pred):
 
         # Reshape 1D tensors to 2D to concatenate along columns
         n = indices.shape[0]
