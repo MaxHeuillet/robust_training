@@ -75,7 +75,7 @@ class WeightedDataset(IndexedDataset):
         self.alphas = torch.ones(self.K).float().cpu()
         self.betas = torch.ones(self.K).float().cpu()
         self.cetas = torch.zeros(self.K).float().cpu()
-        # self.initial_loss = torch.ones(self.K).cpu() * 5
+        self.pred_decay = torch.ones(self.K).cpu() * 5
         self.global_scores2 = defaultdict(list)
         self.decay_model = FitExpDecay(c_fixed=args.c_fixed)
 

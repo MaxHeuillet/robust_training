@@ -75,10 +75,15 @@ class Pruner:
         return indices
     
 
-    # def pruning_decay(self,):
-        
-    #     return indices
+    def decay_based(self, ):
 
+        pred_decays = self.dataset.pred_decay
+        
+        sampling_probas = pred_decays / np.sum(pred_decays)
+
+        indices = np.random.choice(self.global_indices, size=self.N_tokeep, replace=False, p=sampling_probas).tolist()
+        # np.random.shuffle(indices)
+        return indices
     
     def thompson_pruning_decay(self,):
 
@@ -201,6 +206,8 @@ class Pruner:
                 return self.linear_homoskedastic_thomspon_pruning()
             elif self.args.pruning_strategy == 'TS_decay':
                 return self.thompson_pruning_decay()
+            elif self.args.pruning_strategy == 'decay_based':
+                return self.decay_based()
             else:
                 raise ValueError(f"Undefined pruning strategy: {self.args.pruning_strategy}")
         else:
