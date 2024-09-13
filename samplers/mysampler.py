@@ -9,7 +9,8 @@ from operator import itemgetter
 import torch.distributed as dist
 import warnings
 import random
-
+import numpy as np
+from scipy.optimize import curve_fit
 from scipy.stats import truncnorm
 
 def truncated_normal(mean, std, lower_bound=0, upper_bound=np.inf):
@@ -33,6 +34,9 @@ def check_for_nans(tensors, tensor_names):
         else:
             print(f"{name} is not a recognized type (neither PyTorch tensor nor NumPy array).")
 
+
+
+
 class Pruner:
 
     ##note: it's important that the random selection is done with numpy
@@ -42,6 +46,7 @@ class Pruner:
         self.dataset = dataset
         self.global_indices = dataset.global_indices
         self.N_tokeep = int( self.dataset.keep_ratio * len(self.global_indices) )
+        self.post_pruning_indices = None
         print(self.N_tokeep, len(self.global_indices) )
 
     def linear_homoskedastic_thomspon_pruning(self):
@@ -68,6 +73,12 @@ class Pruner:
         indices = np.random.choice(self.global_indices, size=self.N_tokeep, replace=False, p=sampling_probas_np).tolist()
 
         return indices
+    
+
+    # def pruning_decay(self,):
+        
+    #     return indices
+
     
     def thompson_pruning_decay(self,):
 
@@ -197,9 +208,6 @@ class Pruner:
 
 
 
-
-
-
 class CustomSampler(object):
     
     def __init__(self, args, dataset, ):
@@ -239,13 +247,13 @@ class CustomSampler(object):
         return indices
     
     def __next__(self):
-        if len(self.process_indices) == 0:
+        if len(self.current_indices) == 0:
             raise StopIteration
         # Select the batch
-        batch_set = self.process_indices[:self.batch_size]
+        batch_set = self.current_indices[:self.batch_size]
         np.random.shuffle(batch_set)
         # Remove the selected indices from the list
-        self.process_indices = self.process_indices[self.batch_size:]
+        self.current_indices = self.current_indices[self.batch_size:]
         if not batch_set:
             raise StopIteration
         # print(batch_set)
@@ -270,6 +278,7 @@ class CustomSampler(object):
         self.post_pruning_indices = self.reset(iteration)
         # print('post_pruning', self.post_pruning_indices)
         self.process_indices = self.get_process_indices(self.post_pruning_indices)
+        self.current_indices = self.process_indices.copy()
         print('process') #self.process_indices)
 
     

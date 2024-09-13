@@ -11,7 +11,9 @@ import warnings
 import random
 
 from datasets.indexed_dataset import IndexedDataset
+from collections import defaultdict
 
+from utils.exp_decay import FitExpDecay
 
 
 @torch.no_grad()
@@ -59,7 +61,7 @@ class WeightedDataset(IndexedDataset):
 
         self.weights = torch.ones(self.K).cpu()
         self.num_pruned_samples = 0
-        self.global_scores2 = torch.zeros( (self.args.iterations, self.K) ).cpu()
+        
         # self.cur_batch_index = None 
 
         ### arguments relative to Thomspon pruning (non-contextual):
@@ -69,10 +71,13 @@ class WeightedDataset(IndexedDataset):
         self.beta0 = torch.ones(self.K).cpu()
         self.pulls = torch.zeros(self.K).cpu() # number of pulls
 
-        ### arguments relative to Thomspon pruning (non-contextual, exponential decay):
-        self.alphas = torch.ones(self.K).cpu()
-        self.betas = torch.ones(self.K).cpu()
-        self.initial_loss = torch.ones(self.K).cpu() * 5
+        ### arguments relative to Exponential decay:
+        self.alphas = torch.ones(self.K).float().cpu()
+        self.betas = torch.ones(self.K).float().cpu()
+        self.cetas = torch.zeros(self.K).float().cpu()
+        # self.initial_loss = torch.ones(self.K).cpu() * 5
+        self.global_scores2 = defaultdict(list)
+        self.decay_model = FitExpDecay(c_fixed=args.c_fixed)
 
         ### arguments relative to Thomspon pruning (contextual):
         self.alpha = 1
@@ -84,7 +89,7 @@ class WeightedDataset(IndexedDataset):
     def define_latent_features(self,features):
         self.latent = features
         
-    def update_scores(self, rank, indices, clean_values, robust_values, global_values, clean_pred, robust_pred):
+    def update_scores(self, rank, iteration, indices, clean_values, robust_values, global_values, clean_pred, robust_pred):
 
         # Reshape 1D tensors to 2D to concatenate along columns
         n = indices.shape[0]
@@ -156,15 +161,24 @@ class WeightedDataset(IndexedDataset):
         self.clean_pred[idxs] = clean_pred.cpu()
         self.robust_pred[idxs] = robust_pred.cpu()
 
-        # Updates for TS decay
-        subset_pulls = self.pulls[idxs]
-        subset_zero_pulls_mask = subset_pulls == 1
-        subset_indices = torch.nonzero(subset_zero_pulls_mask).squeeze()
-        subset_indices = subset_indices.cpu().long()
-        self.initial_loss[subset_indices] = global_loss_val[subset_indices].cpu()
+        # self.global_scores2[iteration][idxs] = global_loss_val.cpu()
 
-        self.alphas[idxs] = self.alphas[idxs] + 1
-        self.betas[idxs] = self.betas[idxs] + global_loss_val.cpu()
+        # Updates for TS decay:
+        # subset_pulls = self.pulls[idxs]
+        # subset_zero_pulls_mask = subset_pulls == 1
+        # subset_indices = torch.nonzero(subset_zero_pulls_mask).squeeze()
+        # subset_indices = subset_indices.cpu().long()
+        # self.initial_loss[subset_indices] = global_loss_val[subset_indices].cpu()
+
+        # Update Exponential decay:
+        idxs = idxs.tolist()
+
+        for key, value in zip(idxs, global_loss_val.cpu()):
+            self.global_scores2[key].append(value.item())
+
+
+
+        
 
         
 
