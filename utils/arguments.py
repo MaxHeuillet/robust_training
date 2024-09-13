@@ -69,6 +69,8 @@ def get_args():
     parser.add_argument("--beta", default=1.0, type=float, help="beta of trades")
     parser.add_argument("--distance", default='l_inf', type=str, help="distance of trades")
 
+    parser.add_argument("--c_fixed", default=True, type=bool, help="assume c=0 in exponential decay")
+
 
     ### arguments for diffusion augmented learning:
     parser.add_argument("--unsup_fraction", default=0.3, type=float, help="fraction of data generated from diffusion model")
