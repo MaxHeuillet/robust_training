@@ -14,6 +14,7 @@ from datasets.indexed_dataset import IndexedDataset
 from collections import defaultdict
 
 from utils.exp_decay import FitExpDecay
+from utils.exp_decay_v2 import FitExpDecay_v2
 
 
 @torch.no_grad()
@@ -76,8 +77,8 @@ class WeightedDataset(IndexedDataset):
         # self.betas = torch.ones(self.K).float().cpu()
         # self.cetas = torch.zeros(self.K).float().cpu()
         # self.pred_decay = torch.ones(self.K).cpu() * 5
-        # self.global_scores2 = defaultdict(list)
-        # self.decay_model = FitExpDecay(c_fixed=args.c_fixed)
+        self.global_scores2 = defaultdict(list)
+        self.decay_model = FitExpDecay(c_fixed=args.c_fixed) if args.pruning_strateg == 'decay_based' else FitExpDecay_v2(c_fixed=args.c_fixed)
 
         ### arguments relative to Thomspon pruning (contextual):
         self.alpha = 1
@@ -171,10 +172,9 @@ class WeightedDataset(IndexedDataset):
         # self.initial_loss[subset_indices] = global_loss_val[subset_indices].cpu()
 
         # Update Exponential decay:
-        # idxs = idxs.tolist()
-
-        # for key, value in zip(idxs, global_loss_val.cpu()):
-        #     self.global_scores2[key].append(value.item())
+        idxs = idxs.tolist()
+        for key, value in zip(idxs, global_loss_val.cpu()):
+            self.global_scores2[key].append(value.item())
 
 
 
