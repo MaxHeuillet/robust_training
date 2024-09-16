@@ -23,7 +23,7 @@ class FitExpDecay_v2:
             # c is fixed to zero
             # Use curve_fit to fit only b
             popt, _ = curve_fit(
-                lambda t, b: FitExpDecay.exponential_decay_fixed_a_c_zero(t, b, a),
+                lambda t, b: FitExpDecay_v2.exponential_decay_fixed_a_c_zero(t, b, a),
                 t,
                 loss_values,
                 p0=(0.1,),             # Initial guess for b
@@ -36,7 +36,7 @@ class FitExpDecay_v2:
             # c is not fixed
             # Use curve_fit with bounds to ensure c >= 0
             popt, _ = curve_fit(
-                lambda t, b, c: FitExpDecay.exponential_decay_fixed_a(t, b, c, a),
+                lambda t, b, c: FitExpDecay_v2.exponential_decay_fixed_a(t, b, c, a),
                 t,
                 loss_values,
                 p0=(0.1, 0),            # Initial guesses for b and c
