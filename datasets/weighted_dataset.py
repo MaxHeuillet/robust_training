@@ -72,12 +72,12 @@ class WeightedDataset(IndexedDataset):
         self.pulls = torch.zeros(self.K).cpu() # number of pulls
 
         ### arguments relative to Exponential decay:
-        self.alphas = torch.ones(self.K).float().cpu()
-        self.betas = torch.ones(self.K).float().cpu()
-        self.cetas = torch.zeros(self.K).float().cpu()
-        self.pred_decay = torch.ones(self.K).cpu() * 5
-        self.global_scores2 = defaultdict(list)
-        self.decay_model = FitExpDecay(c_fixed=args.c_fixed)
+        # self.alphas = torch.ones(self.K).float().cpu()
+        # self.betas = torch.ones(self.K).float().cpu()
+        # self.cetas = torch.zeros(self.K).float().cpu()
+        # self.pred_decay = torch.ones(self.K).cpu() * 5
+        # self.global_scores2 = defaultdict(list)
+        # self.decay_model = FitExpDecay(c_fixed=args.c_fixed)
 
         ### arguments relative to Thomspon pruning (contextual):
         self.alpha = 1
@@ -171,10 +171,10 @@ class WeightedDataset(IndexedDataset):
         # self.initial_loss[subset_indices] = global_loss_val[subset_indices].cpu()
 
         # Update Exponential decay:
-        idxs = idxs.tolist()
+        # idxs = idxs.tolist()
 
-        for key, value in zip(idxs, global_loss_val.cpu()):
-            self.global_scores2[key].append(value.item())
+        # for key, value in zip(idxs, global_loss_val.cpu()):
+        #     self.global_scores2[key].append(value.item())
 
 
 
