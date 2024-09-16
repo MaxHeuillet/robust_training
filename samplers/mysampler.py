@@ -35,8 +35,6 @@ def check_for_nans(tensors, tensor_names):
             print(f"{name} is not a recognized type (neither PyTorch tensor nor NumPy array).")
 
 
-
-
 class Pruner:
 
     ##note: it's important that the random selection is done with numpy
@@ -76,6 +74,18 @@ class Pruner:
     
 
     def decay_based(self, ):
+
+        pred_decays = self.dataset.pred_decay.numpy()
+
+        print('pred_decays', pred_decays)
+        
+        sampling_probas = pred_decays / np.sum(pred_decays)
+
+        indices = np.random.choice(self.global_indices, size=self.N_tokeep, replace=False, p=sampling_probas).tolist()
+        # np.random.shuffle(indices)
+        return indices
+    
+    def decay_based_v2(self, ):
 
         pred_decays = self.dataset.pred_decay.numpy()
 
@@ -209,7 +219,8 @@ class Pruner:
             elif self.args.pruning_strategy == 'TS_decay':
                 return self.thompson_pruning_decay()
             elif self.args.pruning_strategy == 'decay_based':
-                print('hey')
+                return self.decay_based()
+            elif self.args.pruning_strategy == 'decay_based_v2':
                 return self.decay_based()
             else:
                 raise ValueError(f"Undefined pruning strategy: {self.args.pruning_strategy}")
