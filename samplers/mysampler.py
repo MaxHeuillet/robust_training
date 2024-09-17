@@ -75,7 +75,7 @@ class Pruner:
 
     def decay_based(self, ):
 
-        pred_decays = self.dataset.pred_decay.numpy()
+        pred_decays = self.dataset.pred_decay.numpy() 
 
         print('pred_decays', pred_decays)
         
@@ -87,7 +87,7 @@ class Pruner:
     
     def decay_based_v2(self, ):
 
-        pred_decays = self.dataset.pred_decay.numpy()
+        pred_decays = abs(  self.dataset.pred_decay.numpy() )
 
         print('pred_decays', pred_decays)
         
