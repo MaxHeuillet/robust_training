@@ -73,9 +73,9 @@ class WeightedDataset(IndexedDataset):
         self.pulls = torch.zeros(self.K).cpu() # number of pulls
 
         ### arguments relative to Exponential decay:
-        # self.alphas = torch.ones(self.K).float().cpu()
-        # self.betas = torch.ones(self.K).float().cpu()
-        # self.cetas = torch.zeros(self.K).float().cpu()
+        self.alphas = torch.ones(self.K).float().cpu()
+        self.betas = torch.ones(self.K).float().cpu()
+        self.cetas = torch.zeros(self.K).float().cpu()
         self.pred_decay = torch.ones(self.K).cpu() * 5
         self.global_scores2 = defaultdict(list)
         self.decay_model = FitExpDecay(c_fixed=args.c_fixed) if args.pruning_strategy == 'decay_based' else FitExpDecay_v2(c_fixed=args.c_fixed)
