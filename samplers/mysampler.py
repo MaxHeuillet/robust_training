@@ -221,7 +221,7 @@ class Pruner:
             elif self.args.pruning_strategy == 'decay_based':
                 return self.decay_based()
             elif self.args.pruning_strategy == 'decay_based_v2':
-                return self.decay_based()
+                return self.decay_based_v2()
             else:
                 raise ValueError(f"Undefined pruning strategy: {self.args.pruning_strategy}")
         else:
