@@ -51,19 +51,18 @@ class WeightedDataset(IndexedDataset):
 
         self.keep_ratio = min(1.0, max(1e-1, 1.0 - prune_ratio))
         self.K = len(self.dataset)
-        
-        # self.scores stores the loss value of each sample. Note that smaller value indicates the sample is better learned by the network.
-        self.clean_scores = torch.ones(self.K)
-        self.robust_scores = torch.ones(self.K)
-        self.global_scores = torch.ones(self.K)
-
-        self.clean_pred = torch.zeros( self.K, self.N ).cpu() #.half()
-        self.robust_pred = torch.zeros( self.K, self.N ).cpu() #.half()
 
         self.weights = torch.ones(self.K).cpu()
         self.num_pruned_samples = 0
+
+        # self.scores stores the loss value of each sample. Note that smaller value indicates the sample is better learned by the network.
+        self.clean_scores = torch.ones(self.K)
+            
+        self.robust_scores = torch.ones(self.K)
+        self.global_scores = torch.ones(self.K)
         
-        # self.cur_batch_index = None 
+        self.clean_pred = torch.zeros( self.K, self.N ).cpu() #.half()
+        # self.robust_pred = torch.zeros( self.K, self.N ).cpu() #.half()
 
         ### arguments relative to Thomspon pruning (non-contextual):
         self.mu0 = torch.zeros(self.K).cpu()
@@ -79,12 +78,14 @@ class WeightedDataset(IndexedDataset):
         self.pred_decay = torch.ones(self.K).cpu() * 5
         self.global_scores2 = defaultdict(list)
         self.decay_model = FitExpDecay(c_fixed=args.c_fixed) if args.pruning_strategy == 'decay_based' else FitExpDecay_v2(c_fixed=args.c_fixed)
-
+        
+        # self.cur_batch_index = None 
         ### arguments relative to Thomspon pruning (contextual):
-        self.alpha = 1
-        self.mu = torch.zeros(2048).cpu()
-        self.Sigma_inv = torch.eye(2048).cpu() / self.alpha
+        # self.alpha = 1
+        # self.mu = torch.zeros(2048).cpu()
+        # self.Sigma_inv = torch.eye(2048).cpu() / self.alpha
 
+        
         
 
     def define_latent_features(self,features):
@@ -160,7 +161,7 @@ class WeightedDataset(IndexedDataset):
         self.robust_scores[idxs] = robust_loss_val.cpu()
         self.global_scores[idxs] = global_loss_val.cpu()
         self.clean_pred[idxs] = clean_pred.cpu()
-        self.robust_pred[idxs] = robust_pred.cpu()
+        # self.robust_pred[idxs] = robust_pred.cpu()
 
         # self.global_scores2[iteration][idxs] = global_loss_val.cpu()
 

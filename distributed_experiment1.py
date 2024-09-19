@@ -38,6 +38,8 @@ from losses import get_loss, get_eval_loss
 from utils import get_args, get_exp_name, set_seeds
 from cosine import CosineLR
 
+import numpy as np
+
 
 
 def compute_gradient_norms(model):
@@ -53,6 +55,24 @@ def check_for_nans(tensors, tensor_names):
     for tensor, name in zip(tensors, tensor_names):
         if torch.isnan(tensor).any():
             print(f"{name} contains NaNs!")
+
+def fit_one_curve(x):
+
+    z = np.log(x)
+
+    n = len(x)
+    S_x = np.sum(x)
+    S_z = np.sum(z)
+    S_xz = np.sum(x * z)
+    S_xx = np.sum(x ** 2)
+
+    slope = (n * S_xz - S_x * S_z) / (n * S_xx - S_x ** 2)
+    B = -slope  
+    C = (S_z - slope * S_x) / n
+
+    A = np.exp(C)  
+
+    return A, B, C
 
 
 class BaseExperiment:
@@ -192,10 +212,20 @@ class BaseExperiment:
             print('start validation') 
             self.validate(valloader, model, experiment, iteration+1, rank)
 
-            if self.args.pruning_strategy in ['decay_based', 'decay_based_v2']:
+            if self.args.pruning_strategy in ['decay_based', 'decay_based_v2', ]:
                 print('start decay')
                 indices = train_sampler.process_indices
                 results = torch.tensor([ train_dataset.decay_model.fit_predict( train_dataset.global_scores2[idx] ) for idx in indices ])
+                results = results.float()
+                train_dataset.alphas[indices] = results[:,1]
+                train_dataset.betas[indices] = results[:,2]
+                train_dataset.cetas[indices] = results[:,3]
+                train_dataset.pred_decay[indices] = results[:,4]
+
+            elif self.args.pruning_strategy in [ 'decay_based_v3' ]:
+                print('start decay')
+                indices = train_sampler.process_indices
+                results = torch.tensor([ fit_one_curve( train_dataset.global_scores2[idx] ) for idx in indices  ])
                 results = results.float()
                 train_dataset.alphas[indices] = results[:,1]
                 train_dataset.betas[indices] = results[:,2]
