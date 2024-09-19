@@ -97,6 +97,18 @@ class Pruner:
         # np.random.shuffle(indices)
         return indices
     
+    def decay_based_v3(self, ):
+
+        pred_decays = abs(  self.dataset.pred_decay.numpy() )
+
+        print('pred_decays', pred_decays)
+        
+        sampling_probas = pred_decays / np.sum(pred_decays)
+
+        indices = np.random.choice(self.global_indices, size=self.N_tokeep, replace=False, p=sampling_probas).tolist()
+        # np.random.shuffle(indices)
+        return indices
+    
     def thompson_pruning_decay(self,):
 
         sampled_lambdas = np.random.gamma(self.alphas, 1 / self.betas)
@@ -222,6 +234,8 @@ class Pruner:
                 return self.decay_based()
             elif self.args.pruning_strategy == 'decay_based_v2':
                 return self.decay_based_v2()
+            elif self.args.pruning_strategy == 'decay_based_v3':
+                return self.decay_based_v3()
             else:
                 raise ValueError(f"Undefined pruning strategy: {self.args.pruning_strategy}")
         else:
