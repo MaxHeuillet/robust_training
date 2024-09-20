@@ -105,6 +105,11 @@ class Pruner:
         
         sampling_probas = pred_decays / np.sum(pred_decays)
 
+        # List of tensors and their names for easy reference in the check
+        tensors = [pred_decays, sampling_probas]
+        tensor_names = ['pred_decays', 'sampling_probas',]
+        check_for_nans(tensors, tensor_names)
+
         indices = np.random.choice(self.global_indices, size=self.N_tokeep, replace=False, p=sampling_probas).tolist()
         # np.random.shuffle(indices)
         return indices
