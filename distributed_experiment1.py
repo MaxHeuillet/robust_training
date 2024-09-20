@@ -225,7 +225,7 @@ class BaseExperiment:
             if self.args.pruning_strategy in ['decay_based', 'decay_based_v2', ]:
                 print('start decay')
                 indices = train_sampler.process_indices
-                results = torch.tensor([ train_dataset.decay_model.fit_predict( train_dataset.global_scores2[idx] ) for idx in indices ])
+                results = torch.tensor([ train_dataset.decay_model.fit_predict( train_dataset.global_scores2[idx], train_dataset.betas[idx], train_dataset.cetas[idx] ) for idx in indices ])
                 results = results.float()
                 train_dataset.alphas[indices] = results[:,1]
                 train_dataset.betas[indices] = results[:,2]
