@@ -164,7 +164,7 @@ class BaseExperiment:
 
             print('start batches')
 
-            for batch_id, batch in tqdm( enumerate( trainloader ) ):
+            for batch_id, batch in enumerate( trainloader ) :
 
                 data, target, idxs = batch
 
