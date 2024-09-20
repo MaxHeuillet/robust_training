@@ -73,7 +73,7 @@ class WeightedDataset(IndexedDataset):
 
         ### arguments relative to Exponential decay:
         self.alphas = torch.ones(self.K).float().cpu()
-        self.betas = torch.ones(self.K).float().cpu()
+        self.betas = torch.ones(self.K).float().cpu() * 0.1
         self.cetas = torch.zeros(self.K).float().cpu()
         self.pred_decay = torch.ones(self.K).cpu() * 5
         self.global_scores2 = defaultdict(list)
