@@ -58,6 +58,8 @@ def check_for_nans(tensors, tensor_names):
 
 def fit_one_curve(x):
 
+    print(x)
+
     z = np.log(x)
 
     n = len(x)
