@@ -14,7 +14,7 @@ class FitExpDecay_v2:
     def exponential_decay_fixed_a_c_zero(t, b, a):
         return a * np.exp(-b * t)
     
-    def fit(self, loss_values):
+    def fit(self, loss_values, beta, ceta):
         t = np.arange(len(loss_values))
         a = loss_values[0]  # Fix a as the first loss value
         n = len(loss_values)
@@ -26,7 +26,7 @@ class FitExpDecay_v2:
                 lambda t, b: FitExpDecay_v2.exponential_decay_fixed_a_c_zero(t, b, a),
                 t,
                 loss_values,
-                p0=(0.1,),             # Initial guess for b
+                p0=(beta,),             # Initial guess for b
                 bounds=([0], [np.inf])  # Bounds: b >= 0
             )
             b = popt[0]
@@ -39,7 +39,7 @@ class FitExpDecay_v2:
                 lambda t, b, c: FitExpDecay_v2.exponential_decay_fixed_a(t, b, c, a),
                 t,
                 loss_values,
-                p0=(0.1, 0),            # Initial guesses for b and c
+                p0=(beta, ceta),            # Initial guesses for b and c
                 bounds=([0, 0], [np.inf, np.inf])  # Bounds: b >= 0, c >= 0
             )
             b, c = popt
