@@ -58,7 +58,10 @@ def check_for_nans(tensors, tensor_names):
 
 def fit_one_curve(x):
 
-    print(x)
+    x = np.array(x, dtype=np.float32)
+
+    if len(x) < 2:
+        x = np.insert(x, 0, 5)  
 
     z = np.log(x)
 

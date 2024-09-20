@@ -77,6 +77,7 @@ class WeightedDataset(IndexedDataset):
         self.cetas = torch.zeros(self.K).float().cpu()
         self.pred_decay = torch.ones(self.K).cpu() * 5
         self.global_scores2 = defaultdict(list)
+        # default_dict_np = defaultdict(lambda: np.array([]))
         self.decay_model = FitExpDecay(c_fixed=args.c_fixed) if args.pruning_strategy == 'decay_based' else FitExpDecay_v2(c_fixed=args.c_fixed)
         
         # self.cur_batch_index = None 
