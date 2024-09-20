@@ -74,10 +74,14 @@ def fit_one_curve(x):
     slope = (n * S_xz - S_x * S_z) / (n * S_xx - S_x ** 2)
     B = -slope  
     C = (S_z - slope * S_x) / n
+    A = np.exp(C) 
 
-    A = np.exp(C)  
+    m = n+1
+    next_value = A * np.exp(-B * m)  
+    last_observed_value = x[-1]
+    D = (last_observed_value - next_value) / last_observed_value 
 
-    return A, B, C
+    return A, B, C, D
 
 
 class BaseExperiment:
@@ -165,7 +169,7 @@ class BaseExperiment:
 
                 data, target = data.to(rank), target.to(rank) 
 
-                print('batch in gpu memory')
+                # print('batch in gpu memory')
 
                 optimizer.zero_grad()
 
@@ -173,7 +177,7 @@ class BaseExperiment:
                     
                     loss_values, clean_values, robust_values, logits_nat, logits_adv = get_loss(self.args, model, data, target, optimizer)
 
-                print('got losses')
+                # print('got losses')
                 train_dataset.update_scores(rank, idxs, clean_values, robust_values, loss_values, logits_nat, logits_adv)
 
                 # List of tensors and their names for easy reference in the check
@@ -190,7 +194,7 @@ class BaseExperiment:
 
                 # loss.backward()
                 # optimizer.step()
-                print('backward')
+                # print('backward')
                 scaler.scale(loss).backward()
                 scaler.step(optimizer)
                 scaler.update()
