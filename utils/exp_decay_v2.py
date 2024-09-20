@@ -48,6 +48,7 @@ class FitExpDecay_v2:
     def predict(self, fit, last_observed_value):
         a, b, c, n = fit
         # Predict the next observation value (n+1)
+        last_observed_value = self.exponential_decay_fixed_a(n-1, b, c, a)
         next_value = self.exponential_decay_fixed_a(n, b, c, a)
         # Calculate the decay rate using the actual last observed value
         decay_rate = (last_observed_value - next_value) / last_observed_value
