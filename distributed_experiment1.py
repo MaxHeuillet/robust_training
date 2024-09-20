@@ -39,6 +39,7 @@ from utils import get_args, get_exp_name, set_seeds
 from cosine import CosineLR
 
 import numpy as np
+import tqdm
 
 
 
@@ -81,7 +82,7 @@ def fit_one_curve(x):
     last_observed_value = x[-1]
     D = (last_observed_value - next_value) / last_observed_value 
 
-    return A, B, C, D
+    return (A, B, C, n, D)
 
 
 class BaseExperiment:
@@ -163,7 +164,7 @@ class BaseExperiment:
 
             print('start batches')
 
-            for batch_id, batch in enumerate( trainloader ):
+            for batch_id, batch in tqdm( enumerate( trainloader ) ):
 
                 data, target, idxs = batch
 
