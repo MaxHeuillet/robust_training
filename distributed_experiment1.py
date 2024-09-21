@@ -223,9 +223,10 @@ class BaseExperiment:
             self.validate(valloader, model, experiment, iteration+1, rank)
 
             if self.args.pruning_strategy in ['decay_based', 'decay_based_v2', ]:
-                print('start decay')
                 indices = train_sampler.process_indices
+                train_dataset.decay_model.reset_counters()
                 results = torch.tensor([ train_dataset.decay_model.fit_predict( train_dataset.global_scores2[idx], train_dataset.betas[idx], train_dataset.cetas[idx] ) for idx in indices ])
+                print(train_dataset.decay_model.success, train_dataset.decay_model.fail)
                 results = results.float()
                 train_dataset.alphas[indices] = results[:,0]
                 train_dataset.betas[indices] = results[:,1]
@@ -233,7 +234,6 @@ class BaseExperiment:
                 train_dataset.pred_decay[indices] = results[:,4]
 
             elif self.args.pruning_strategy in [ 'decay_based_v3' ]:
-                print('start decay')
                 indices = train_sampler.process_indices
                 results = torch.tensor([ fit_one_curve( train_dataset.global_scores2[idx] ) for idx in indices  ])
                 results = results.float()
