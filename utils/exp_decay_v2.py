@@ -66,11 +66,13 @@ class FitExpDecay_v2:
         return decay_rate
     
     def fit_predict(self, loss_values, beta, ceta):
+        
         prior = self.generate_adaptive_prior(loss_values)
         try:
             fit = self.fit(loss_values, prior)
+            self.success +=1
         except:
-            print('did not find a solution')
+            self.fail +=1
             if self.c_fixed is not None:
                 fit = (loss_values[-1], prior[0], prior[1], len(loss_values) )
             else:
@@ -79,3 +81,7 @@ class FitExpDecay_v2:
         pred = self.predict(fit,)
         a, b, c, n = fit
         return (a, b, c, n, pred)
+    
+    def reset_counters(self,):
+        self.success = 0
+        self.fail = 0

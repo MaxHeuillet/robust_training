@@ -9,9 +9,9 @@ loss=$4  # 'TRADES' 'TRADES_v2' 'Madry'
 sched=$5  # 'sched' or 'nosched'
 iterations=$6
 
-init_lrs=( 0.2 0.01 0.001 )  # 
+init_lrs=( 0.2 )  # 
 pruning_ratios=( 0.7 )  #0.3 0.5  
-pruning_strategies=( 'decay_based_v2' ) # 'decay_based' 'TS_pruning' 'random' 'uncertainty' 'score_v1' 'score_v2'  'TS_context' 
+pruning_strategies=( 'decay_based_v2' 'TS_pruning' 'random' 'uncertainty' 'score_v1' 'score_v2' ) # 'decay_based'   'TS_context' 
 batch_strategies=('random')
 
 # Second set of experiments
