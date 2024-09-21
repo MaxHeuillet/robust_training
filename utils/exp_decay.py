@@ -51,9 +51,9 @@ class FitExpDecay:
     def predict(self, fit):
         a, b, c, n = fit
         if self.c_fixed:
-            return FitExpDecay.exponential_decay_fixed_a(n+1, b, c, a)
+            return FitExpDecay.exponential_decay_fixed_a(n, b, c, a)
         else:
-            return FitExpDecay.exponential_decay_fixed_a_c_zero(n+1, b, a)
+            return FitExpDecay.exponential_decay_fixed_a_c_zero(n, b, a)
         
     def fit_predict(self,loss_values):
         fit = self.fit(loss_values)
