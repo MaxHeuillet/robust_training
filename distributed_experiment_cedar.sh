@@ -47,7 +47,7 @@ echo "LR = ${LR}"
 
 
 python3 ./distributed_experiment1.py \
-    --_init_lr ${LR} \
+    --init_lr ${LR} \
     --loss_function ${LOSS} \
     --sched ${SCHED} \
     --task ${TASK} \
