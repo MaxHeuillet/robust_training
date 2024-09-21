@@ -26,7 +26,7 @@ echo 'HZ: start python3 ./distributed_experiment1.py ..at '; date
 
 
 python3 ./distributed_experiment1.py \
-    --_init_lr ${LR} \
+    --init_lr ${LR} \
     --loss_function ${LOSS} \
     --sched ${SCHED} \
     --task ${TASK} \
