@@ -79,10 +79,8 @@ class WeightedDataset(IndexedDataset):
         self.global_scores2 = defaultdict(list)
         # default_dict_np = defaultdict(lambda: np.array([]))
         if self.args.pruning_strategy == 'decay_based':
-            print('allo allo allo')
             self.decay_model = FitExpDecay(c_fixed=args.c_fixed)
         elif self.args.pruning_strategy == 'decay_based_v2':
-            print('hey hey hey')
             self.decay_model = FitExpDecay_v2(c_fixed=args.c_fixed)
         
         # self.cur_batch_index = None 
