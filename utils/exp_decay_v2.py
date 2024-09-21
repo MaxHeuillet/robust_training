@@ -15,6 +15,7 @@ class FitExpDecay_v2:
         return a * np.exp(-b * t)
     
     def fit(self, loss_values, beta, ceta):
+        print(beta,ceta)
         t = np.arange(len(loss_values))
         a = loss_values[0]  # Fix a as the first loss value
         n = len(loss_values)
