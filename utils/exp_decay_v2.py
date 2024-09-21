@@ -20,8 +20,7 @@ class FitExpDecay_v2:
     def generate_adaptive_prior(self, loss_values):
         t = np.arange(len(loss_values))
         b_prior = np.log(loss_values[0] / loss_values[-1]) / (t[-1] - t[0])  # Rough estimate of the decay rate
-        if not self.c_fixed:
-            c_prior = np.min(loss_values)  # Assume the smallest loss is close to c
+        c_prior = np.min(loss_values)  # Assume the smallest loss is close to c
         return [b_prior, c_prior]
     
     def fit(self, loss_values, prior):
