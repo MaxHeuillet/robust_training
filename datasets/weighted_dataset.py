@@ -78,9 +78,10 @@ class WeightedDataset(IndexedDataset):
         self.pred_decay = torch.ones(self.K).cpu() * 5
         self.global_scores2 = defaultdict(list)
         # default_dict_np = defaultdict(lambda: np.array([]))
-        if args.pruning_strategy == 'decay_based':
+        if self.args.pruning_strategy == 'decay_based':
+            print('allo allo allo')
             self.decay_model = FitExpDecay(c_fixed=args.c_fixed)
-        elif args.pruning_strategy == 'decay_based_v2':
+        elif self.args.pruning_strategy == 'decay_based_v2':
             print('hey hey hey')
             self.decay_model = FitExpDecay_v2(c_fixed=args.c_fixed)
         
