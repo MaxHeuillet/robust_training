@@ -222,26 +222,18 @@ class BaseExperiment:
             print('start validation') 
             self.validate(valloader, model, experiment, iteration+1, rank)
 
-            if self.args.pruning_strategy in ['decay_based', 'decay_based_v2', ]:
+            if self.args.pruning_strategy in ['decay_based', 'decay_based_v2',  'decay_based_v3']:
                 indices = train_sampler.process_indices
                 train_dataset.decay_model.reset_counters()
-                results = torch.tensor([ train_dataset.decay_model.fit_predict( train_dataset.global_scores2[idx], train_dataset.betas[idx], train_dataset.cetas[idx] ) for idx in indices ])
-                print(train_dataset.decay_model.success, train_dataset.decay_model.fail)
+                results = torch.tensor([ train_dataset.decay_model.fit_predict( train_dataset.global_scores2[idx], ) for idx in indices ])
+                experiment.log_metric("solver_fails", train_dataset.decay_model.fail, epoch=iteration)
+                experiment.log_metric("solver_total", train_dataset.decay_model.total, epoch=iteration)
+
                 results = results.to(dtype=torch.float32)
                 train_dataset.alphas[indices] = results[:,0]
                 train_dataset.betas[indices] = results[:,1]
                 train_dataset.cetas[indices] = results[:,2]
                 train_dataset.pred_decay[indices] = results[:,4]
-
-            elif self.args.pruning_strategy in [ 'decay_based_v3' ]:
-                indices = train_sampler.process_indices
-                results = torch.tensor([ fit_one_curve( train_dataset.global_scores2[idx] ) for idx in indices  ])
-                results = results.to(dtype=torch.float32)
-                train_dataset.alphas[indices] = results[:,0]
-                train_dataset.betas[indices] = results[:,1]
-                train_dataset.cetas[indices] = results[:,2]
-                train_dataset.pred_decay[indices] = results[:,4]
-
   
             print(f'Rank {rank}, Iteration {iteration},', flush=True) 
 
