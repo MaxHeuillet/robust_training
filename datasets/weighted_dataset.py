@@ -15,6 +15,7 @@ from collections import defaultdict
 
 from utils.exp_decay import FitExpDecay
 from utils.exp_decay_v2 import FitExpDecay_v2
+from utils.exp_decay_v3 import FitExpDecay_v3
 
 
 @torch.no_grad()
@@ -81,7 +82,9 @@ class WeightedDataset(IndexedDataset):
         if self.args.pruning_strategy == 'decay_based':
             self.decay_model = FitExpDecay(c_fixed=args.c_fixed)
         elif self.args.pruning_strategy == 'decay_based_v2':
-            self.decay_model = FitExpDecay_v2(c_fixed=args.c_fixed)
+            self.decay_model = FitExpDecay_v2()
+        elif self.args.pruning_strategy == 'decay_based_v3':
+            self.decay_model = FitExpDecay_v3()
         
         # self.cur_batch_index = None 
         ### arguments relative to Thomspon pruning (contextual):
