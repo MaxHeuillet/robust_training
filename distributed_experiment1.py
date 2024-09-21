@@ -150,6 +150,7 @@ class BaseExperiment:
         print('add model')
         
         scaler = GradScaler()
+        print(self.args.init_lr, self.args.weight_decay, self.args.momentum) 
         optimizer = torch.optim.SGD( model.parameters(),lr=self.args.init_lr, weight_decay=self.args.weight_decay, momentum=self.args.momentum, nesterov=True, )
         scheduler = CosineLR( optimizer, max_lr=self.args.init_lr, epochs=int(self.args.iterations) )
 

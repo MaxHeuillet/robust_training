@@ -46,7 +46,7 @@ def get_args():
     parser.add_argument("--sample_size", default=256, type=int, help="mini-batch sampling size (default: 256)")
 
     parser.add_argument("--loss_function", default="TRADES_v2", type=str,choices=['TRADES', 'TRADES_v2', 'TRADES_v3'], help="the loss function")
-    parser.add_argument("--init_lr", default=0.01, type=float,help="initial learning rate")
+    parser.add_argument("--init_lr", type=float,help="initial learning rate")
     parser.add_argument("--sched", default='sched',type=str, choices=['sched', 'nosched'], help="the scheduler")
     parser.add_argument("--momentum", "-m", type=float, default=0.9, help="momentum")
     parser.add_argument("--weight_decay", "--wd", default=1e-4, type=float, help="weight decay (default: 5e-4)")

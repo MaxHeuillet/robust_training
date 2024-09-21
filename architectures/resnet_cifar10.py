@@ -259,21 +259,21 @@ class ResNet_cifar10(nn.Module):
             return self._forward_impl(x_natural)
         
     # Add a method to extract features from the penultimate layer
-    def get_latent_representation(self, x):
-        x = self.conv1(x)
-        x = self.bn1(x)
-        x = self.relu(x)
-        x = self.maxpool(x)
+    # def get_latent_representation(self, x):
+    #     x = self.conv1(x)
+    #     x = self.bn1(x)
+    #     x = self.relu(x)
+    #     x = self.maxpool(x)
 
-        x = self.layer1(x)
-        x = self.layer2(x)
-        x = self.layer3(x)
-        x = self.layer4(x)
+    #     x = self.layer1(x)
+    #     x = self.layer2(x)
+    #     x = self.layer3(x)
+    #     x = self.layer4(x)
 
-        x = self.avgpool(x)
-        x = x.reshape(x.size(0), -1)  # Flatten the output, this is the penultimate layer
+    #     x = self.avgpool(x)
+    #     x = x.reshape(x.size(0), -1)  # Flatten the output, this is the penultimate layer
         
-        return x  # Return the latent representation before passing to the fully connected layer
+    #     return x  # Return the latent representation before passing to the fully connected layer
 
 
 
