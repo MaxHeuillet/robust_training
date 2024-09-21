@@ -55,8 +55,8 @@ class FitExpDecay_v2:
         decay_rate = (last_observed_value - next_value) / last_observed_value
         return decay_rate
     
-    def fit_predict(self, loss_values):
-        fit = self.fit(loss_values)
+    def fit_predict(self, loss_values, beta, ceta):
+        fit = self.fit(loss_values, beta, ceta)
         last_observed_value = loss_values[-1]  # Use the actual last observed value
         pred = self.predict(fit, last_observed_value)
         a, b, c, n = fit
