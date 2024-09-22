@@ -37,6 +37,7 @@ python3 ./distributed_experiment1.py \
     --pruning_ratio ${RATIO} \
     --pruning_strategy ${PSTRAT} \
     --batch_strategy ${BSTRAT} \
+    --aug ${AUG} \
     > stdout_$SLURM_JOB_ID 2> stderr_$SLURM_JOB_ID
 
 
