@@ -8,6 +8,7 @@ task=$3  # 'train' or 'evaluation'
 loss=$4  # 'TRADES' 'TRADES_v2' 'Madry'
 sched=$5  # 'sched' or 'nosched'
 iterations=$6
+aug=$7
 
 init_lrs=( 0.2 0.01 0.001 )  # 0.2
 pruning_ratios=( 0.7 0.3 0.5 )  #  
@@ -32,7 +33,8 @@ ARCH=$arch,\
 SEED=$id,\
 LOSS=$loss,\
 SCHED=$sched,\
-LR=$init_lr \
+LR=$init_lr,\
+AUG=$aug \
 ./distributed_experiment_cedar.sh
                     else
                         sbatch --export=ALL,\
@@ -46,7 +48,8 @@ ARCH=$arch,\
 SEED=$id,\
 LOSS=$loss,\
 SCHED=$sched,\
-LR=$init_lr \
+LR=$init_lr,\
+AUG=$aug \
 ./distributed_experiment_other.sh
                     fi
                 done
