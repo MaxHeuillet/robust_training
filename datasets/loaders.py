@@ -23,11 +23,16 @@ def load_data(args, train=True):
 
     elif args.dataset == 'CIFAR10':
 
-        transform = transforms.Compose([transforms.ToTensor(),
+        if args.augmentation == 'aug':
+            transform = transforms.Compose([transforms.ToTensor(),
                                         transforms.RandomCrop(32, padding=4), 
                                         transforms.RandomHorizontalFlip(0.5), 
                                         transforms.Normalize( mean=(0.4914, 0.4822, 0.4465), std=(0.2471, 0.2435, 0.2616) ),])
-        
+        elif args.augmentation == 'noaug':
+            transform = transforms.Compose([transforms.ToTensor(),
+                                        transforms.Normalize( mean=(0.4914, 0.4822, 0.4465), std=(0.2471, 0.2435, 0.2616) ),])
+        else: 
+            print('undefined augmentation')
         # transform = transforms.Compose([
         #         
         #         transforms.Normalize( mean=(0.4914, 0.4822, 0.4465), std=(0.2471, 0.2435, 0.2616) )  ])
@@ -43,11 +48,16 @@ def load_data(args, train=True):
 
     elif args.dataset == 'CIFAR10s':
 
-        transform = transforms.Compose([transforms.ToTensor(),
+        if args.augmentation == 'aug':
+            transform = transforms.Compose([transforms.ToTensor(),
                                         transforms.RandomCrop(32, padding=4), 
                                         transforms.RandomHorizontalFlip(0.5), 
                                         transforms.Normalize( mean=(0.4914, 0.4822, 0.4465), std=(0.2471, 0.2435, 0.2616) ),])
-        
+        elif args.augmentation == 'noaug':
+            transform = transforms.Compose([transforms.ToTensor(),
+                                        transforms.Normalize( mean=(0.4914, 0.4822, 0.4465), std=(0.2471, 0.2435, 0.2616) ),])
+        else: 
+            print('undefined augmentation')
 
         # transform = transforms.Compose([
         #         transforms.ToTensor(),
