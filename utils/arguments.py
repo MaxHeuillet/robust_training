@@ -39,7 +39,7 @@ def get_args():
     parser.add_argument("--pruning_strategy", default="random", type=str, help="the pruning strategy")
     parser.add_argument("--pruning_ratio", default=0, type=float,choices=[0, 0.3, 0.5, 0.7], help="the pruning ratio")
     parser.add_argument("--batch_strategy", default="random",type=str, choices=['random',], help="the batching strategy")
-    parser.add_argument("--aug", type=str, choices=['aug, noaug',], help="use data augmentation")
+    parser.add_argument("--aug", type=str, choices=['aug', 'noaug',], help="use data augmentation")
 
     parser.add_argument("--iterations", default=10, type=int, metavar="N", help="number of total iterations to run")
     parser.add_argument("--delta", default=0.875, type=float,help="the amount of pruning iterations")
