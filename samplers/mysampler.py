@@ -82,7 +82,7 @@ class Pruner:
         sampling_probas = pred_decays / np.sum(pred_decays)
 
         indices = np.random.choice(self.global_indices, size=self.N_tokeep, replace=False, p=sampling_probas).tolist()
-        # np.random.shuffle(indices)
+
         return indices
     
     def decay_based_v2(self, ):
@@ -94,7 +94,7 @@ class Pruner:
         sampling_probas = pred_decays / np.sum(pred_decays)
 
         indices = np.random.choice(self.global_indices, size=self.N_tokeep, replace=False, p=sampling_probas).tolist()
-        # np.random.shuffle(indices)
+
         return indices
     
     def decay_based_v3(self, ):
@@ -111,7 +111,7 @@ class Pruner:
         check_for_nans(tensors, tensor_names)
 
         indices = np.random.choice(self.global_indices, size=self.N_tokeep, replace=False, p=sampling_probas).tolist()
-        # np.random.shuffle(indices)
+
         return indices
     
     def thompson_pruning_decay(self,):
@@ -168,7 +168,7 @@ class Pruner:
         
         # Randomly select 'n_instances' indices
         indices = np.random.choice(self.global_indices, self.N_tokeep, replace=False).tolist()  
-        # np.random.shuffle(indices)
+
         return indices
 
     def uncertainty_based(self, ):
@@ -190,7 +190,7 @@ class Pruner:
         # print("Number of non-zero elements:", non_zero_count)
         
         indices = np.random.choice(self.global_indices, size=self.N_tokeep, replace=False, p=sampling_probas).tolist()
-        # np.random.shuffle(indices)
+
         return indices
     
     def loss_score_based(self,):
@@ -212,12 +212,12 @@ class Pruner:
         sampling_probas = scores / np.sum(scores)
 
         indices = np.random.choice(self.global_indices, size=self.N_tokeep, replace=False, p=sampling_probas).tolist()
-        np.random.shuffle(indices)
+
         return indices
 
     def no_pruning(self):
         indices = self.global_indices.copy()
-        # np.random.shuffle(indices)
+
         return indices
     
     def prune(self):
@@ -289,10 +289,8 @@ class CustomSampler(object):
     def __next__(self):
         if len(self.current_indices) == 0:
             raise StopIteration
-        # Select the batch
         batch_set = self.current_indices[:self.batch_size]
-        np.random.shuffle(batch_set)
-        # Remove the selected indices from the list
+
         self.current_indices = self.current_indices[self.batch_size:]
         if not batch_set:
             raise StopIteration
@@ -316,6 +314,7 @@ class CustomSampler(object):
         self.set_seed(iteration)
         # print('global', self.dataset.global_indices)
         self.post_pruning_indices = self.reset(iteration)
+        np.random.shuffle(self.post_pruning_indices)
         # print('post_pruning', self.post_pruning_indices)
         self.process_indices = self.get_process_indices(self.post_pruning_indices)
         self.current_indices = self.process_indices.copy()
