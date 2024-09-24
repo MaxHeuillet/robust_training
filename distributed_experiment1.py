@@ -135,19 +135,17 @@ class BaseExperiment:
                                num_workers=3,
                                pin_memory=True)
 
-        print('load model', rank,flush=True) 
         model, target_layers = load_architecture(self.args)
         
-        print('load statedict', rank,flush=True) 
-        statedict = load_statedict(self.args)
-
-        model.load_state_dict(statedict)
-        print('add lora')
-        add_lora(target_layers, model)
+        if self.args.pre_trained:
+            statedict = load_statedict(self.args)
+            model.load_state_dict(statedict)
+        if self.args.lora:
+            add_lora(target_layers, model)
 
         model.to(rank)
         model = DDP(model, device_ids=[rank])
-        print('add model')
+
         
         scaler = GradScaler()
         print(self.args.init_lr, self.args.weight_decay, self.args.momentum) 
