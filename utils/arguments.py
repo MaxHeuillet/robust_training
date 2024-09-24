@@ -34,8 +34,8 @@ def get_args():
 
     # General options
     parser.add_argument("--arch", default="resnet50",type=str, choices=['resnet50', 'LeNet5'], help="model architecture")
-    parser.add_argument("--pre_trained", default=False, type=bool, help="load pretrained non robust model")
-    parser.add_argument("--lora", default=False, type=bool, help="add lora layers and train only on them")
+    parser.add_argument("--pre_trained", default=True, type=bool, help="load pretrained non robust model")
+    parser.add_argument("--lora", default=True, type=bool, help="add lora layers and train only on them")
 
     parser.add_argument('--dataset', default='CIFAR10', type=str, help='dataset: ' + ' (default: cifar10)')
     parser.add_argument("--pruning_strategy", default="random", type=str, help="the pruning strategy")
@@ -45,7 +45,7 @@ def get_args():
 
     parser.add_argument("--iterations", default=10, type=int, metavar="N", help="number of total iterations to run")
     parser.add_argument("--delta", default=1, type=float,help="the proportion of pruning iterations")
-    parser.add_argument("--batch_size", default=1042, type=int, help="mini-batch size (default: 128)")
+    parser.add_argument("--batch_size", default=128, type=int, help="mini-batch size (default: 128)")
     parser.add_argument("--sample_size", default=256, type=int, help="mini-batch sampling size (default: 256)")
 
     parser.add_argument("--loss_function", default="TRADES_v2", type=str,choices=['TRADES', 'TRADES_v2', 'TRADES_v3'], help="the loss function")
