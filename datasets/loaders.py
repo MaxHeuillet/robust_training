@@ -5,6 +5,8 @@ import os
 import torch
 from datasets.semisupervised_dataset import SemiSupervisedDataset
 from torch.utils.data import TensorDataset
+import random
+from torch.utils.data import Subset
 
 def load_data(args, train=True):
 
@@ -85,6 +87,19 @@ def load_data(args, train=True):
             dataset = datasets.ImageFolder(os.path.join(os.environ['SLURM_TMPDIR'], 'data/imagenet/train'))
         else:
             dataset = datasets.ImageFolder(os.path.join(os.environ['SLURM_TMPDIR'], 'data/imagenet/val'))
+
+            # Set the seed for reproducibility
+            seed = 42  # You can choose any seed value
+            random.seed(seed)
+
+            all_indices = list(range(len(dataset)))
+
+            # Randomly sample 10,000 indices from the dataset
+            sampled_indices = random.sample(all_indices, 10000)
+
+            # Create a subset using the randomly sampled indices
+            dataset = Subset(dataset, sampled_indices)
+
 
         # pool_dataset = IndexedDataset('Imagenet1k', train_folder, transform= transform ) 
         # test_dataset = IndexedDataset('Imagenet1k', test_folder, transform= transform) 
