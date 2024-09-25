@@ -6,7 +6,7 @@
 #SBATCH --cpus-per-task=10
 #SBATCH --gres=gpu:v100l:4
 #SBATCH --mem-per-cpu=4000M
-#SBATCH --time=05:00:00
+#SBATCH --time=06:00:00
 #SBATCH --mail-user=maxime.heuillet.1@ulaval.ca
 #SBATCH --mail-type=ALL
 
@@ -33,18 +33,6 @@ fi
 
 echo 'HZ: start python3 ./distributed_experiment1.py ..at '; date
 
-echo "DATA = ${DATA}"
-echo "MODEL = ${MODEL}"
-echo "SEED = ${SEED}"
-echo "NROUNDS = ${NROUNDS}"
-echo "NBEPOCHS = ${NBEPOCHS}"
-echo "SIZE = ${SIZE}"
-echo "ACTIVE_STRATEGY = ${ASTRAT}"
-echo "TASK = ${TASK}"
-echo "LOSS = ${LOSS}"
-echo "SCHED = ${SCHED}"
-echo "LR = ${LR}"
-
 
 python3 ./distributed_experiment1.py \
     --init_lr ${LR} \
@@ -58,4 +46,5 @@ python3 ./distributed_experiment1.py \
     --pruning_ratio ${RATIO} \
     --pruning_strategy ${PSTRAT} \
     --batch_strategy ${BSTRAT} \
+    --aug ${AUG} \
     > stdout_$SLURM_JOB_ID 2> stderr_$SLURM_JOB_ID
