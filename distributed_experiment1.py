@@ -130,7 +130,7 @@ class BaseExperiment:
                                  pin_memory=True) 
         
         valloader = DataLoader(val_dataset, 
-                               batch_size=256, 
+                               batch_size=128, #256
                                sampler=val_sampler, 
                                num_workers=3,
                                pin_memory=True)
