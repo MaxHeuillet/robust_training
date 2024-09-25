@@ -30,39 +30,39 @@ class Setup:
     def cleanup(self,):
         dist.destroy_process_group()
 
-    # def batch_sizes(self,):
-    #     if os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'beluga' and self.args.loss == 'TRADES':
-    #         batch_size_uncertainty = 512
-    #         batch_size_update = 64
-    #         batch_size_pgdacc = 64
-    #         batch_size_cleanacc = 512
-    #     elif os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'narval' and self.args.loss == 'TRADES':
-    #         batch_size_uncertainty = 1024
-    #         batch_size_update = 256
-    #         batch_size_pgdacc = 128
-    #         batch_size_cleanacc = 512
-    #     elif os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'cedar' and self.args.loss == 'TRADES':
-    #         batch_size_uncertainty = 1024
-    #         batch_size_update = 64
-    #         batch_size_pgdacc = 128
-    #         batch_size_cleanacc = 1024
+    def batch_sizes(self,):
+        if os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'beluga' and self.args.loss == 'TRADES':
+            batch_size_train = 512
+            batch_size_validation = 64
+            batch_size_pgdacc = 64
+            batch_size_cleanacc = 512
+        elif os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'narval' and self.args.loss == 'TRADES':
+            batch_size_uncertainty = 1024
+            batch_size_update = 256
+            batch_size_pgdacc = 128
+            batch_size_cleanacc = 512
+        elif os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'cedar' and self.args.loss == 'TRADES':
+            batch_size_uncertainty = 1024
+            batch_size_update = 64
+            batch_size_pgdacc = 128
+            batch_size_cleanacc = 1024
 
-    #     elif os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'beluga' and self.args.loss == 'Madry':
-    #         batch_size_uncertainty = 512
-    #         batch_size_update = 512
-    #         batch_size_pgdacc = 512
-    #         batch_size_cleanacc = 512
-    #     elif os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'cedar' and self.args.loss == 'Madry':
-    #         batch_size_uncertainty = 512
-    #         batch_size_update = 512
-    #         batch_size_pgdacc = 128
-    #         batch_size_cleanacc = 1024
-    #     elif os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'narval' and self.loss == 'Madry':
-    #         batch_size_uncertainty = 1024
-    #         batch_size_update = 1024
-    #         batch_size_pgdacc = 1024
-    #         batch_size_cleanacc = 1024
-    #     else:
-    #         print('error')
+        elif os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'beluga' and self.args.loss == 'Madry':
+            batch_size_uncertainty = 512
+            batch_size_update = 512
+            batch_size_pgdacc = 512
+            batch_size_cleanacc = 512
+        elif os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'cedar' and self.args.loss == 'Madry':
+            batch_size_uncertainty = 512
+            batch_size_update = 512
+            batch_size_pgdacc = 128
+            batch_size_cleanacc = 1024
+        elif os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'narval' and self.loss == 'Madry':
+            batch_size_uncertainty = 1024
+            batch_size_update = 1024
+            batch_size_pgdacc = 1024
+            batch_size_cleanacc = 1024
+        else:
+            print('error')
 
-    #     return batch_size_uncertainty, batch_size_update, batch_size_pgdacc, batch_size_cleanacc
+        return batch_size_uncertainty, batch_size_update, batch_size_pgdacc, batch_size_cleanacc
