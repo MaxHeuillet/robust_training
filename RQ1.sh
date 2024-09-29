@@ -39,7 +39,7 @@ LR=$init_lr,\
 AUG=$aug,\
 PRETRAINED='no',\
 LORA=False \
-./distributed_experiment_cedar.sh
+./distributed_experiment_other.sh
 
             ### Pretrained non robust
             sbatch --export=ALL,\
@@ -57,7 +57,7 @@ LR=$init_lr,\
 AUG=$aug,\
 PRETRAINED='robust',\
 LORA=False \
-./distributed_experiment_cedar.sh
+./distributed_experiment_other.sh
 
             ### Pretrained robust
             sbatch --export=ALL,\
@@ -75,7 +75,7 @@ LR=$init_lr,\
 AUG=$aug,\
 PRETRAINED='non_robust',\
 LORA=False \
-./distributed_experiment_cedar.sh
+./distributed_experiment_other.sh
 
           done
         done
