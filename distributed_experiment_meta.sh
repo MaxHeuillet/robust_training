@@ -1,8 +1,8 @@
 #!/bin/bash
 
-seeds=$1
+seeds=1
 
-arch='resnet50'
+arch=$1 #'resnet50'
 data=$2  # 'Imagenet1k' or 'CIFAR10' or 'CIFAR10s'
 task=$3  # 'train' or 'evaluation'
 loss=$4  # 'TRADES' 'TRADES_v2' 'Madry'
@@ -11,8 +11,8 @@ iterations=$6
 aug=$7
 
 init_lrs=( 0.01 )  # 0.2 0.001 0.2 
-pruning_ratios=( 0.9  )  #   0.0 0.3 0.5 0.7 
-pruning_strategies=( 'decay_based_v2' 'TS_pruning' 'random' 'uncertainty' 'score_v1' 'score_v2' ) #'decay_based_v3' 'decay_based'   'TS_context' 
+pruning_ratios=( 0 )  #   0.0 0.3 0.5 0.7 
+pruning_strategies=( 'random' ) # 'decay_based_v2' 'TS_pruning' 'random' 'uncertainty' 'score_v1' 'score_v2' 'decay_based_v3' 'decay_based'   'TS_context' 
 batch_strategies=('random')
 
 # Second set of experiments

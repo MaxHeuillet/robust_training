@@ -33,7 +33,7 @@ from utils import Setup
 
 from samplers import DistributedCustomSampler
 from datasets import WeightedDataset, IndexedDataset
-from architectures import load_architecture, load_statedict, add_lora
+from architectures import load_architecture, load_statedict, add_lora, set_lora_gradients
 from losses import get_loss, get_eval_loss
 from utils import get_args, get_exp_name, set_seeds
 from cosine import CosineLR
@@ -56,34 +56,6 @@ def check_for_nans(tensors, tensor_names):
     for tensor, name in zip(tensors, tensor_names):
         if torch.isnan(tensor).any():
             print(f"{name} contains NaNs!")
-
-def fit_one_curve(x):
-
-    x = np.array(x, dtype=np.float32)
-
-    if len(x) < 2:
-        x = np.insert(x, 0, 5)  
-
-    z = np.log(x)
-
-    n = len(x)
-    S_x = np.sum(x)
-    S_z = np.sum(z)
-    S_xz = np.sum(x * z)
-    S_xx = np.sum(x ** 2)
-
-    slope = (n * S_xz - S_x * S_z) / (n * S_xx - S_x ** 2)
-    B = -slope  
-    C = (S_z - slope * S_x) / n
-    A = np.exp(C) 
-
-    m = n+1
-    next_value = A * np.exp(-B * m)  
-    last_observed_value = x[-1]
-    D = (last_observed_value - next_value) / last_observed_value 
-
-    return (A, B, C, n, D)
-
 
 class BaseExperiment:
 
@@ -108,9 +80,7 @@ class BaseExperiment:
                                 auto_output_logging=False)
         
         experiment.log_parameter("run_id", os.getenv('SLURM_JOB_ID') )
-
         experiment.log_parameter("global_process_rank", rank)
-
         experiment.set_name( self.config_name )
         experiment.log_parameters(self.args)
 
@@ -130,18 +100,21 @@ class BaseExperiment:
                                  pin_memory=True) 
         
         valloader = DataLoader(val_dataset, 
-                               batch_size=64, #256
+                               batch_size=256, 
                                sampler=val_sampler, 
                                num_workers=3,
                                pin_memory=True)
 
-        model, target_layers = load_architecture(self.args)
+        model = load_architecture(self.args)
         
-        if self.args.pre_trained:
-            statedict = load_statedict(self.args)
-            model.load_state_dict(statedict)
+
+        # if self.args.pre_trained:
+        #     statedict = load_statedict(self.args)
+        #     model.load_state_dict(statedict)
+
         if self.args.lora:
             add_lora(target_layers, model)
+            set_lora_gradients(args, model, target_layers)
 
         model.to(rank)
         model = DDP(model, device_ids=[rank])
