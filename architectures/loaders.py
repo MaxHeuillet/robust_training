@@ -15,7 +15,6 @@ def load_architecture(args,):
         # model = timm.create_model('resnet50', pretrained=False)
         model = ResNet_imagenet(Bottleneck_imagenet, [3, 4, 6, 3], )
         
-
         if args.pre_trained:
             # state_dict = torch.load('./state_dicts/timm_resnet50_imagenet1k.pt')
             state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
