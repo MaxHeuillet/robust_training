@@ -9,6 +9,11 @@ import torch.nn as nn
 
 import types
 
+from typing import Tuple
+from torch import Tensor
+import torch.nn as nn
+from collections import OrderedDict
+
 
 def custom_forward(self, x_natural, x_adv=None):
     # Implement your custom forward logic
@@ -22,6 +27,32 @@ def custom_forward(self, x_natural, x_adv=None):
         logits_nat = self.forward_features(x_natural)
         logits_nat = self.head(logits_nat)
         return logits_nat
+    
+class ImageNormalizer(nn.Module):
+    def __init__(self, mean: Tuple[float, float, float],
+        std: Tuple[float, float, float],
+        persistent: bool = True) -> None:
+        super(ImageNormalizer, self).__init__()
+
+        self.register_buffer('mean', torch.as_tensor(mean).view(1, 3, 1, 1),
+            persistent=persistent)
+        self.register_buffer('std', torch.as_tensor(std).view(1, 3, 1, 1),
+            persistent=persistent)
+
+    def forward(self, input: Tensor) -> Tensor:
+        return (input - self.mean) / self.std
+
+def normalize_model(model: nn.Module, mean: Tuple[float, float, float],
+    std: Tuple[float, float, float]) -> nn.Module:
+    layers = OrderedDict([
+        ('normalize', ImageNormalizer(mean, std)),
+        ('model', model)
+    ])
+    return nn.Sequential(layers)
+
+IMAGENET_MEAN = [c * 1. for c in (0.485, 0.456, 0.406)] #[np.array([0., 0., 0.]), np.array([0.485, 0.456, 0.406])][-1] * 255
+IMAGENET_STD = [c * 1. for c in (0.229, 0.224, 0.225)] #[np.array([1., 1., 1.]), np.array([0.229, 0.224, 0.225])][-1] * 255
+
 
 
 
@@ -67,20 +98,50 @@ def load_architecture(args,):
     #             model.layer3[0].conv1, model.layer3[0].conv2, model.layer3[0].conv3,
     #             model.layer4[0].conv1, model.layer4[0].conv2, model.layer4[0].conv3, model.fc ]
         
-    # elif args.arch == 'ViTs':
+#     elif args.arch == 'vitsmall':
 
-    #     model = create_model('vit_small_patch16_224', pretrained=True)
+#         if args.dataset == 'CIFAR10':
+#             model = timm.create_model('vit_small_patch16_224', pretrained=False, img_size=32, patch_size=4)
+# )
+#         if args.pre_trained:
+#             state_dict = torch.load('./state_dicts/timm_vit_small_patch16_224_imagenet1k.pt')
+#             model.load_state_dict(state_dict)
+
         # target_layers = ["qkv", "proj"]
 
     elif args.arch == 'convnext':
 
         model = timm.models.convnext.convnext_tiny(pretrained=False)
         # Replace the model's forward method with your custom one
-        model.forward = types.MethodType(custom_forward, model)
-
-        if args.pre_trained:
+        
+        if args.pre_trained == 'non_robust':
             state_dict = torch.load('./state_dicts/timm_convnext_imagenet1k.pt')
             model.load_state_dict(state_dict)
+        
+        elif args.pre_trained == 'robust': # code from: https://github.com/nmndeep/revisiting-at/blob/main/utils_architecture.py
+            model = normalize_model(model, IMAGENET_MEAN, IMAGENET_STD)
+            ckpt = torch.load('./state_dicts/weights_convnext_t.pt', map_location='cpu')
+            ckpt = {k.replace('module.', ''): v for k, v in ckpt.items()}
+            try:
+                model.load_state_dict(ckpt)
+                print('standard loading')
+
+            except:
+                try:
+                    ckpt = {f'base_model.{k}': v for k, v in ckpt.items()}
+                    model.load_state_dict(ckpt)
+                    print('loaded from clean model')
+                except:
+                    ckpt = {k.replace('base_model.', ''): v for k, v in ckpt.items()}
+                    # ckpt = {f'base_model.{k}': v for k, v in ckpt.items()}
+                    model.load_state_dict(ckpt)
+                    print('loaded')
+
+            if isinstance(model, nn.Sequential) and 'normalize' in model._modules: # remove normalization layer
+                # Rebuild the sequential model without the 'normalize' layer
+                model = model._modules['model']
+
+        model.forward = types.MethodType(custom_forward, model)
 
         if args.dataset == 'CIFAR10':
             num_features = model.head.fc.in_features

@@ -25,16 +25,22 @@ def load_data(args, train=True):
 
     elif args.dataset == 'CIFAR10':
 
-        if args.aug == 'aug':
+        if args.aug == 'aug' and args.pre_trained == 'no':
             transform = transforms.Compose([transforms.ToTensor(),
                                         transforms.RandomCrop(32, padding=4), 
                                         transforms.RandomHorizontalFlip(0.5), 
                                         transforms.Normalize( mean=(0.4914, 0.4822, 0.4465), std=(0.2471, 0.2435, 0.2616) ),])
-        elif args.aug == 'noaug':
+        elif args.aug == 'noaug' and args.pre_trained == 'no':
             transform = transforms.Compose([transforms.ToTensor(),
                                         transforms.Normalize( mean=(0.4914, 0.4822, 0.4465), std=(0.2471, 0.2435, 0.2616) ),])
-        else: 
-            print('undefined augmentation')
+        
+        elif args.aug == 'aug' and args.pre_trained in ['robust', 'non_robust']: 
+            transform = transforms.Compose([transforms.ToTensor(),
+                                        transforms.RandomCrop(32, padding=4), 
+                                        transforms.RandomHorizontalFlip(0.5), 
+                                        transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ),])
+        else:
+            print('undefined case')
         # transform = transforms.Compose([
         #         
         #         transforms.Normalize( mean=(0.4914, 0.4822, 0.4465), std=(0.2471, 0.2435, 0.2616) )  ])
