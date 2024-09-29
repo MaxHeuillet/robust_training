@@ -107,14 +107,13 @@ class BaseExperiment:
 
         model = load_architecture(self.args)
         
-
         # if self.args.pre_trained:
         #     statedict = load_statedict(self.args)
         #     model.load_state_dict(statedict)
 
-        if self.args.lora:
-            add_lora(target_layers, model)
-            set_lora_gradients(args, model, target_layers)
+        # if self.args.lora:
+        #     add_lora(target_layers, model)
+        #     set_lora_gradients(args, model, target_layers)
 
         model.to(rank)
         model = DDP(model, device_ids=[rank])
