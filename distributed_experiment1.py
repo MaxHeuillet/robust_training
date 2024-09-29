@@ -33,7 +33,7 @@ from utils import Setup
 
 from samplers import DistributedCustomSampler
 from datasets import WeightedDataset, IndexedDataset
-from architectures import load_architecture, load_statedict, add_lora, set_lora_gradients
+from architectures import load_architecture, add_lora, set_lora_gradients
 from losses import get_loss, get_eval_loss
 from utils import get_args, get_exp_name, set_seeds
 from cosine import CosineLR
@@ -107,9 +107,7 @@ class BaseExperiment:
 
         model = load_architecture(self.args)
         
-        # if self.args.pre_trained:
-        #     statedict = load_statedict(self.args)
-        #     model.load_state_dict(statedict)
+        
 
         # if self.args.lora:
         #     add_lora(target_layers, model)
