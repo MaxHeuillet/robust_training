@@ -7,7 +7,7 @@ data='CIFAR10'
 task='train'
 loss='TRADES_v2'
 sched='nosched'
-iterations=100
+iterations=50
 aug='aug'
 
 init_lrs=( 0.001 )
@@ -23,7 +23,7 @@ for arch in "${archs[@]}"; do
         for init_lr in "${init_lrs[@]}"; do
           for id in $(seq 1 $seeds); do
           
-### Not pretrained 
+            ### Not pretrained 
             sbatch --export=ALL,\
 NITER=$iterations,\
 TASK=$task,\
@@ -41,7 +41,7 @@ PRETRAINED='no',\
 LORA=False \
 ./distributed_experiment_cedar.sh
 
-### Pretrained non robust
+            ### Pretrained non robust
             sbatch --export=ALL,\
 NITER=$iterations,\
 TASK=$task,\
@@ -59,8 +59,7 @@ PRETRAINED='robust',\
 LORA=False \
 ./distributed_experiment_cedar.sh
 
-
-### Pretrained robust
+            ### Pretrained robust
             sbatch --export=ALL,\
 NITER=$iterations,\
 TASK=$task,\
@@ -78,4 +77,9 @@ PRETRAINED='non_robust',\
 LORA=False \
 ./distributed_experiment_cedar.sh
 
-
+          done
+        done
+      done
+    done
+  done
+done
