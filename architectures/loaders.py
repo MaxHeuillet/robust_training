@@ -12,10 +12,13 @@ def load_architecture(args,):
 
     if args.arch == 'resnet50':
 
-        model = timm.create_model('resnet50', pretrained=False)
+        # model = timm.create_model('resnet50', pretrained=False)
+        model = ResNet_imagenet(Bottleneck_imagenet, [3, 4, 6, 3], )
+        
 
         if args.pre_trained:
-            state_dict = torch.load('./state_dicts/timm_resnet50_imagenet1k.pt')
+            # state_dict = torch.load('./state_dicts/timm_resnet50_imagenet1k.pt')
+            state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
             model.load_state_dict(state_dict)
 
         if args.dataset == 'CIFAR10':
