@@ -26,7 +26,6 @@ def get_args():
 
     parser = argparse.ArgumentParser()
 
-
     if "calculquebec" in os.uname().nodename:  # Check for a substring that is unique to the cluster
         default_data_dir = '~/scratch/data'
     else:
@@ -34,8 +33,8 @@ def get_args():
 
     # General options
     parser.add_argument("--arch", default="resnet50",type=str, help="model architecture")
-    parser.add_argument("--pre_trained", default=True, type=bool, help="load pretrained non robust model")
-    parser.add_argument("--lora", default=True, type=bool, help="add lora layers and train only on them")
+    parser.add_argument("--pre_trained", type=bool, help="load pretrained non robust model")
+    parser.add_argument("--lora", type=bool, help="add lora layers and train only on them")
 
     parser.add_argument('--dataset', default='CIFAR10', type=str, help='dataset: ' + ' (default: cifar10)')
     parser.add_argument("--pruning_strategy", default="random", type=str, help="the pruning strategy")
