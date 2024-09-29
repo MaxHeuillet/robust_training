@@ -43,7 +43,7 @@ def trades_loss_eval(args,
         # x_adv = torch.clamp(x_adv, 0.0, 1.0).detach()
 
     if args.arch == 'resnet50':
-        logits_nat, logits_adv = model(x_natural, logits_adv)
+        logits_nat, logits_adv = model(x_natural, x_adv)
     else:
         logits_nat = model(x_natural)    
         logits_adv = model(x_adv)
