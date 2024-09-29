@@ -116,7 +116,7 @@ class BaseExperiment:
         model.to(rank)
         model = DDP(model, device_ids=[rank])
 
-        torch.autograd.set_detect_anomaly(True)
+        # torch.autograd.set_detect_anomaly(True)
 
         
         scaler = GradScaler()
