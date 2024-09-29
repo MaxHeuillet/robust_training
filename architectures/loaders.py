@@ -13,6 +13,11 @@ def load_architecture(args,):
     if args.arch == 'resnet50':
 
         model = timm.create_model('resnet50', pretrained=False)
+
+        if args.pre_trained:
+            state_dict = torch.load('./state_dicts/timm_resnet50_imagenet1k.pt')
+            model.load_state_dict(state_dict)
+
         if args.dataset == 'CIFAR10':
             num_features = model.fc.in_features
             model.fc = nn.Linear(num_features, 10)  # CIFAR-10 has 10 classes
@@ -49,7 +54,9 @@ def load_architecture(args,):
 
         model = timm.models.convnext.convnext_tiny(pretrained=False)
 
-
+        if args.pre_trained:
+            state_dict = torch.load('./state_dicts/timm_convnext_imagenet1k.pt')
+            model.load_state_dict(state_dict)
 
         if args.dataset == 'CIFAR10':
             num_features = model.head.fc.in_features
@@ -58,23 +65,22 @@ def load_architecture(args,):
     return model
 
 
-def load_statedict(args,):
+# def load_statedict(args,):
 
-    if args.arch == 'resnet50' and args.pre_trained_data in ['CIFAR10', 'CIFAR10s']:
+#     # if args.arch == 'resnet50' and args.pre_trained_data in ['CIFAR10']:
         
-        state_dict = torch.load('./state_dicts/resnet50_cifar10.pt')
+#     #     state_dict = torch.load('./state_dicts/resnet50_cifar10.pt')
 
-    if args.arch == 'resnet50' and args.pre_trained_data == 'Imagenet1k':
+#     if args.arch == 'resnet50':
 
-        state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
+#         state_dict = torch.load('./state_dicts/timm_resnet50_imagenet1k.pt')
         
-    
-    elif args.arch == 'resnet50' and args.dataset in ['Imagenet1k' , 'Imagenette']:
-        
-        state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
+#     elif args.arch == 'convnext':
 
-    elif args.arch == 'LeNet5':
-        print('no state dict at the moment')
+#         state_dict = torch.load('./state_dicts/timm_convnext_imagenet1k.pt')
+
+#     elif args.arch == 'LeNet5':
+#         print('no state dict at the moment')
 
 
-    return state_dict
+#     return state_dict
