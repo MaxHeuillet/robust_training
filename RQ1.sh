@@ -38,7 +38,7 @@ SCHED=$sched,\
 LR=$init_lr,\
 AUG=$aug,\
 PRETRAINED='no',\
-LORA=False \
+LORA='nolora' \
 ./distributed_experiment_other.sh
 
             ### Pretrained non robust
@@ -56,7 +56,7 @@ SCHED=$sched,\
 LR=$init_lr,\
 AUG=$aug,\
 PRETRAINED='robust',\
-LORA=False \
+LORA='nolora' \
 ./distributed_experiment_other.sh
 
             ### Pretrained robust
@@ -74,7 +74,7 @@ SCHED=$sched,\
 LR=$init_lr,\
 AUG=$aug,\
 PRETRAINED='non_robust',\
-LORA=False \
+LORA='nolora' \
 ./distributed_experiment_other.sh
 
           done
