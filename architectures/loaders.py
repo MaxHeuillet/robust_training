@@ -7,6 +7,25 @@ import timm
 from timm.models import create_model
 import torch.nn as nn
 
+import types
+
+
+def custom_forward(self, x_natural, x_adv=None):
+    # Implement your custom forward logic
+    if x_adv is not None:
+        logits_nat = self.forward_features(x_natural)  # Assuming forward_features is the main forward logic
+        logits_adv = self.forward_features(x_adv)
+        logits_nat = self.head(logits_nat)  # Final classification head
+        logits_adv = self.head(logits_adv)
+        return logits_nat, logits_adv
+    else:
+        logits_nat = self.forward_features(x_natural)
+        logits_nat = self.head(logits_nat)
+        return logits_nat
+
+
+
+
 
 def load_architecture(args,):
 
@@ -14,6 +33,7 @@ def load_architecture(args,):
 
         # model = timm.create_model('resnet50', pretrained=False)
         model = ResNet_imagenet(Bottleneck_imagenet, [3, 4, 6, 3], )
+        
         
         if args.pre_trained:
             # state_dict = torch.load('./state_dicts/timm_resnet50_imagenet1k.pt')
@@ -55,6 +75,8 @@ def load_architecture(args,):
     elif args.arch == 'convnext':
 
         model = timm.models.convnext.convnext_tiny(pretrained=False)
+        # Replace the model's forward method with your custom one
+        model.forward = types.MethodType(custom_forward, model)
 
         if args.pre_trained:
             state_dict = torch.load('./state_dicts/timm_convnext_imagenet1k.pt')
