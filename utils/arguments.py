@@ -33,7 +33,7 @@ def get_args():
         default_data_dir = './data'
 
     # General options
-    parser.add_argument("--arch", default="resnet50",type=str, choices=['resnet50', 'LeNet5'], help="model architecture")
+    parser.add_argument("--arch", default="resnet50",type=str, help="model architecture")
     parser.add_argument("--pre_trained", default=True, type=bool, help="load pretrained non robust model")
     parser.add_argument("--lora", default=True, type=bool, help="add lora layers and train only on them")
 
