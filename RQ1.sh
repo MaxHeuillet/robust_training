@@ -10,7 +10,7 @@ sched='nosched'
 iterations=50
 aug='aug'
 
-init_lrs=( 0.0001 )
+init_lrs=( 0.01 )
 pruning_ratios=( 0 )
 pruning_strategies=( 'random' )
 batch_strategies=('random')
