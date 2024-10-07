@@ -21,8 +21,17 @@ def trades_loss_v2(args,
                 optimizer,):
     
     model.eval()
+
+    use_rs = False
     # logits_nat = model(x_natural)
-    x_adv = x_natural.detach() + 0.001 * torch.randn(x_natural.shape, device=x_natural.device).detach()
+    # x_adv = x_natural.detach() #+ 0.001 * torch.randn(x_natural.shape, device=x_natural.device).detach()
+
+    if not use_rs:
+        x_adv = x_natural.clone()
+    else:
+        raise NotImplemented
+    
+    x_adv = x_adv.clamp(0., 1.)
 
     if args.distance == 'l_inf':
         # print('init x_adv')
