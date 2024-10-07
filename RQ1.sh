@@ -10,7 +10,7 @@ sched='nosched'
 iterations=50
 aug='aug'
 
-init_lrs=( 0.01 )
+init_lrs=( 0.0001 0.001 0.01 )
 pruning_ratios=( 0 )
 pruning_strategies=( 'random' )
 batch_strategies=('random')
@@ -23,24 +23,6 @@ for arch in "${archs[@]}"; do
         for init_lr in "${init_lrs[@]}"; do
           for id in $(seq 1 $seeds); do
           
-            ### Not pretrained 
-            sbatch --export=ALL,\
-NITER=$iterations,\
-TASK=$task,\
-RATIO=$pruning_ratio,\
-PSTRAT=$pruning_strategy,\
-BSTRAT=$batch_strategy,\
-DATA=$data,\
-ARCH=$arch,\
-SEED=$id,\
-LOSS=$loss,\
-SCHED=$sched,\
-LR=$init_lr,\
-AUG=$aug,\
-PRETRAINED='no',\
-LORA='nolora' \
-./distributed_experiment_other.sh
-
             ### Pretrained non robust
             sbatch --export=ALL,\
 NITER=$iterations,\
