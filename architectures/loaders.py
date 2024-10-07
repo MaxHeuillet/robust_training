@@ -66,7 +66,7 @@ def load_architecture(args,):
         model = ResNet_imagenet(Bottleneck_imagenet, [3, 4, 6, 3], )
         
         
-        if args.pre_trained:
+        if args.pre_trained == 'non_robust':
             # state_dict = torch.load('./state_dicts/timm_resnet50_imagenet1k.pt')
             state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
             model.load_state_dict(state_dict)
@@ -82,10 +82,10 @@ def load_architecture(args,):
         #         model.layer3[0].conv1, model.layer3[0].conv2, model.layer3[0].conv3,
         #         model.layer4[0].conv1, model.layer4[0].conv2, model.layer4[0].conv3, model.fc ]
         
-    # elif args.arch == 'LeNet5':
-    #     model = LeNet5()
-    #     model.to('cuda')
-    #     target_layers = [model.conv1.weight, model.conv2.weight, model.fc1.weight, model.fc2.weight,model.fc3.weight] 
+    elif args.arch == 'LeNet5':
+        model = LeNet5()
+        model.to('cuda')
+        # target_layers = [model.conv1.weight, model.conv2.weight, model.fc1.weight, model.fc2.weight,model.fc3.weight] 
 
     # elif args.arch == 'resnet50' and args.dataset in ['Imagenet1k' , 'Imagenette']:
     #     model = ResNet_imagenet(Bottleneck_imagenet, [3, 4, 6, 3], )

@@ -50,7 +50,7 @@ class WeightedDataset(IndexedDataset):
 
         super().__init__(args, train)
 
-        self.keep_ratio = min(1.0, max(1e-1, 1.0 - prune_ratio))
+        self.keep_ratio = min(1.0, max(1e-2, 1.0 - prune_ratio))
         self.K = len(self.dataset)
 
         self.weights = torch.ones(self.K).cpu()
