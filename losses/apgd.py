@@ -187,4 +187,4 @@ def apgd_loss(args, model, x_natural, y, optimizer):
     logits_adv = model(x_adv)
     loss_values = F.cross_entropy(logits_adv, y, reduction='none')
 
-    return loss_values, None, None, None, logits_adv
+    return loss_values, logits_adv

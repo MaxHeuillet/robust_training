@@ -83,4 +83,4 @@ def trades_loss_v2(args,
         # robust_values = nn.KLDivLoss(reduction='none')(F.log_softmax(logits_adv, dim=1), F.softmax(logits_nat, dim=1)).sum(dim=1)
         # loss_values = clean_values + args.beta * robust_values
 
-    return loss_values, clean_values, robust_values, logits_nat, logits_adv
+    return loss_values, logits_adv

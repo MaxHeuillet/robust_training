@@ -146,10 +146,10 @@ class BaseExperiment:
 
                 with autocast():
                     
-                    loss_values, clean_values, robust_values, logits_nat, logits_adv = get_loss(self.args, model, data, target, optimizer)
+                    loss_values, logits = get_loss(self.args, model, data, target, optimizer)
 
                 # print('got losses')
-                train_dataset.update_scores(rank, idxs, clean_values, robust_values, loss_values, logits_nat, logits_adv)
+                train_dataset.update_scores(rank, idxs, loss_values, logits)
 
                 # List of tensors and their names for easy reference in the check
                 # tensors = [loss_values, clean_values, robust_values, logits_nat, logits_adv]
