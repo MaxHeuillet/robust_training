@@ -183,8 +183,8 @@ class BaseExperiment:
             current_lr = optimizer.param_groups[0]['lr']
             experiment.log_metric("iteration", iteration, epoch=iteration)
             experiment.log_metric("loss_value", loss, epoch=iteration)
-            experiment.log_metric("clean_value", clean_values.mean(), epoch=iteration)
-            experiment.log_metric("adv_value", robust_values.mean(), epoch=iteration)
+            # experiment.log_metric("clean_value", clean_values.mean(), epoch=iteration)
+            # experiment.log_metric("adv_value", robust_values.mean(), epoch=iteration)
             experiment.log_metric("lr_schedule", current_lr, epoch=iteration)
             experiment.log_metric("gradient_norm", gradient_norm, epoch=iteration)
             experiment.log_metric("reward", loss_values.sum(), epoch=iteration)  
