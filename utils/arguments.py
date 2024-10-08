@@ -73,7 +73,7 @@ def get_args():
 
     ### arguments for diffusion augmented learning:
     parser.add_argument("--unsup_fraction", default=0.3, type=float, help="fraction of data generated from diffusion model")
-    parser.add_argument("--exp", default='', type=float, help="the experiment type")
+    parser.add_argument("--exp", default='', type=str, help="the experiment type")
     
 
 
