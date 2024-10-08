@@ -9,10 +9,11 @@ loss=$4  # 'TRADES' 'TRADES_v2' 'Madry'
 sched=$5  # 'sched' or 'nosched'
 iterations=$6
 aug=$7
+exp=$8
 
-init_lrs=( 0.0001 )  # 0.2 0.001 0.2 
-pruning_ratios=( 0 )  #   0.0 0.3 0.5 0.7 
-pruning_strategies=( 'random' ) # 'decay_based_v2' 'TS_pruning' 'random' 'uncertainty' 'score_v1' 'score_v2' 'decay_based_v3' 'decay_based'   'TS_context' 
+init_lrs=( 0.001 )  # 0.2 0.001 0.2 
+pruning_ratios=( 0.3 0.5 0.9 )  #   0.0 0.3 0.5 0.7 
+pruning_strategies=( 'fixed_random' ) # 'decay_based_v2' 'TS_pruning' 'random' 'uncertainty' 'score_v1' 'score_v2' 'decay_based_v3' 'decay_based'   'TS_context' 
 batch_strategies=('random')
 
 # Second set of experiments
@@ -34,7 +35,8 @@ SEED=$id,\
 LOSS=$loss,\
 SCHED=$sched,\
 LR=$init_lr,\
-AUG=$aug \
+AUG=$aug,\
+EXP=$exp \
 ./distributed_experiment_cedar.sh
                     else
                         sbatch --export=ALL,\
@@ -49,7 +51,8 @@ SEED=$id,\
 LOSS=$loss,\
 SCHED=$sched,\
 LR=$init_lr,\
-AUG=$aug \
+AUG=$aug,\
+EXP=$exp \
 ./distributed_experiment_other.sh
                     fi
                 done
