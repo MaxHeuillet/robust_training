@@ -9,6 +9,7 @@ loss='APGD'
 sched='nosched'
 iterations=50
 aug='aug'
+exp='RQ2'
 
 init_lrs=( 0.001 )
 pruning_ratios=( 0.3 0.5 0.7 )
@@ -38,7 +39,8 @@ SCHED=$sched,\
 LR=$init_lr,\
 AUG=$aug,\
 PRETRAINED='non_robust',\
-LORA='nolora' \
+LORA='nolora',\
+EXP=$exp \
 ./distributed_experiment_other.sh
 
           done
