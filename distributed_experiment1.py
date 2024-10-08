@@ -123,7 +123,7 @@ class BaseExperiment:
         original_data_size = len( train_dataset.global_indices )  # Size of original dataset
         batch_size = self.args.batch_size             # Batch size for training
         original_epochs = self.args.iterations        # Number of epochs for original dataset
-        pruned_data_size = train_sampler.N_tokeep #int(0.30 * original_data_size)
+        pruned_data_size = train_sampler.pruner.N_tokeep #int(0.30 * original_data_size)
         adjusted_epochs = adjust_epochs(original_data_size, pruned_data_size, batch_size, original_epochs)
 
         model = load_architecture(self.args)
