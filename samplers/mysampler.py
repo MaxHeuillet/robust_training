@@ -214,6 +214,12 @@ class Pruner:
         indices = np.random.choice(self.global_indices, size=self.N_tokeep, replace=False, p=sampling_probas).tolist()
 
         return indices
+    
+    def fixed_random(self,):
+        np.random.seed(0)
+        indices = np.random.choice(self.global_indices, size=self.N_tokeep, replace=False).tolist()
+        return indices
+
 
     def no_pruning(self):
         indices = self.global_indices.copy()
@@ -225,6 +231,8 @@ class Pruner:
         if self.args.pruning_ratio > 0:
             if self.args.pruning_strategy == 'random':
                 return self.random_pruning()
+            elif self.args.pruning_strategy == 'fixed_random':
+                return self.fixed_random()
             elif self.args.pruning_strategy in [ 'score_v1', 'score_v2' ]:
                 return self.loss_score_based()
             elif self.args.pruning_strategy == 'uncertainty':

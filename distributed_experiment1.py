@@ -57,6 +57,21 @@ def check_for_nans(tensors, tensor_names):
         if torch.isnan(tensor).any():
             print(f"{name} contains NaNs!")
 
+
+def adjust_epochs(original_data_size, pruned_data_size, batch_size, original_epochs):
+
+    # Calculate the total number of iterations with the original data
+    original_iterations_per_epoch = math.ceil(original_data_size / batch_size)
+    total_iterations_original = original_iterations_per_epoch * original_epochs
+
+    # Calculate the number of iterations per epoch with the pruned data
+    pruned_iterations_per_epoch = math.ceil(pruned_data_size / batch_size)
+
+    # Calculate the number of epochs needed for pruned data to match total iterations
+    adjusted_epochs = math.ceil(total_iterations_original / pruned_iterations_per_epoch)
+    
+    return adjusted_epochs
+
 class BaseExperiment:
 
     def __init__(self, args, world_size, ):
@@ -105,10 +120,14 @@ class BaseExperiment:
                                num_workers=3,
                                pin_memory=True)
 
+        original_data_size = len( train_dataset.global_indices )  # Size of original dataset
+        batch_size = self.args.batch_size             # Batch size for training
+        original_epochs = self.args.iterations        # Number of epochs for original dataset
+        pruned_data_size = train_sampler.N_tokeep #int(0.30 * original_data_size)
+        adjusted_epochs = adjust_epochs(original_data_size, pruned_data_size, batch_size, original_epochs)
+
         model = load_architecture(self.args)
         
-        
-
         # if self.args.lora:
         #     add_lora(target_layers, model)
         #     set_lora_gradients(args, model, target_layers)
@@ -118,7 +137,6 @@ class BaseExperiment:
 
         # torch.autograd.set_detect_anomaly(True)
 
-        
         scaler = GradScaler()
         print(self.args.init_lr, self.args.weight_decay, self.args.momentum) 
         optimizer = torch.optim.SGD( model.parameters(),lr=self.args.init_lr, weight_decay=self.args.weight_decay, momentum=self.args.momentum, nesterov=True, )
@@ -127,7 +145,7 @@ class BaseExperiment:
         self.validate(valloader, model, experiment, 0, rank)
         print('start the loop')
 
-        for iteration in range(self.args.iterations):
+        for iteration in range(adjusted_epochs):
 
             model.train()
             train_sampler.set_epoch(iteration)
