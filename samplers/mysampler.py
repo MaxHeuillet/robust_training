@@ -12,6 +12,8 @@ import random
 import numpy as np
 from scipy.optimize import curve_fit
 from scipy.stats import truncnorm
+import numpy as np
+from collections import defaultdict
 
 def truncated_normal(mean, std, lower_bound=0, upper_bound=np.inf):
     mean = mean.numpy() # Ensure mean is an array
@@ -219,6 +221,26 @@ class Pruner:
         np.random.seed(0)
         indices = np.random.choice(self.global_indices, size=self.N_tokeep, replace=False).tolist()
         return indices
+    
+    def fixed_stratified(self,):
+        # Get class labels from the dataset
+        class_indices = defaultdict(list)
+        
+        # Populate class_indices with the indices of each class
+        for idx, (_, label) in enumerate(self.dataset):
+            class_indices[label].append(idx)
+        
+        # Calculate the number of samples to keep for each class
+        num_to_keep_per_class = {cls: int( len(indices) * (1 - prune_percentage) ) for cls, indices in class_indices.items()}
+        
+        # Perform stratified sampling for each class
+        pruned_indices = []
+        np.random.seed(0)  # Ensure reproducibility
+        for cls, indices in class_indices.items():
+            pruned_indices.extend( np.random.choice(indices, size=num_to_keep_per_class[cls], replace=False).tolist() )
+        
+        return pruned_indices
+
 
 
     def no_pruning(self):
@@ -233,6 +255,8 @@ class Pruner:
                 return self.random_pruning()
             elif self.args.pruning_strategy == 'fixed_random':
                 return self.fixed_random()
+            elif self.args.pruning_strategy == 'fixed_stratified':
+                return self.fixed_stratified()
             elif self.args.pruning_strategy in [ 'score_v1', 'score_v2' ]:
                 return self.loss_score_based()
             elif self.args.pruning_strategy == 'uncertainty':
@@ -320,10 +344,10 @@ class CustomSampler(object):
     def set_epoch(self, iteration):
 
         self.set_seed(iteration)
-        # print('global', self.dataset.global_indices)
         self.post_pruning_indices = self.reset(iteration)
+        
+        self.set_seed(iteration)
         np.random.shuffle(self.post_pruning_indices)
-        # print('post_pruning', self.post_pruning_indices)
         self.process_indices = self.get_process_indices(self.post_pruning_indices)
         self.current_indices = self.process_indices.copy()
         print('process') #self.process_indices)

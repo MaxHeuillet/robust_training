@@ -46,9 +46,9 @@ class WeightedDataset(IndexedDataset):
         delta (float, optional): The first delta * num_epochs the pruning process is conducted. It should be close to 1. Defaults to 0.875.
     """
 
-    def __init__(self, args, train=True, prune_ratio: float = 0.5):
+    def __init__(self, args, dataset, transform, N, prune_ratio: float = 0.5):
 
-        super().__init__(args, train)
+        super().__init__(args, dataset, transform, N)
 
         self.keep_ratio = min(1.0, max(1e-2, 1.0 - prune_ratio))
         self.K = len(self.dataset)
