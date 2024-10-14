@@ -103,14 +103,14 @@ class BaseExperiment:
 
         train_dataset, val_dataset, test_dataset, N, transform = load_data(self.args) 
         
-        train_dataset = WeightedDataset(train_dataset, transform, N, prune_ratio = self.args.pruning_ratio, )
+        train_dataset = WeightedDataset(self.args, train_dataset, transform, N, prune_ratio = self.args.pruning_ratio, )
         val_dataset = IndexedDataset(val_dataset, transform,  N,) 
         test_dataset = IndexedDataset(test_dataset, transform, N,)  
 
         print('initialize sampler', rank,flush=True) 
         train_sampler = DistributedCustomSampler(self.args, train_dataset, num_replicas=self.world_size, rank=rank, drop_last=True)
-        val_sampler = DistributedSampler(test_dataset, num_replicas=self.world_size, rank=rank, drop_last=False)
-        test_sampler = DistributedSampler(test_dataset, num_replicas=self.world_size, rank=rank, drop_last=False)
+        val_sampler = DistributedSampler(self.args, val_dataset, num_replicas=self.world_size, rank=rank, drop_last=False)
+        test_sampler = DistributedSampler(self.args, test_dataset, num_replicas=self.world_size, rank=rank, drop_last=False)
         
         print('initialize dataoader', rank,flush=True) 
         trainloader = DataLoader(train_dataset, 
