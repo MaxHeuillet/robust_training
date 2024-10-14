@@ -15,6 +15,7 @@ init_lrs=( 0.0001 0.001 0.01 )
 pruning_ratios=( 0 )
 pruning_strategies=( 'random' )
 batch_strategies=('random')
+pts=('imagenet21k_non_robust', 'imagenet1k_non_robust', 'imagenet1k_robust')
 
 # Loop over architectures, pruning ratios, strategies, and learning rates
 for arch in "${archs[@]}"; do
@@ -23,9 +24,10 @@ for arch in "${archs[@]}"; do
       for batch_strategy in "${batch_strategies[@]}"; do
         for init_lr in "${init_lrs[@]}"; do
           for id in $(seq 1 $seeds); do
+            for pt in "${pts[@]}"; do
           
-            ### Pretrained non robust
-            sbatch --export=ALL,\
+              ### Pretrained non robust
+              sbatch --export=ALL,\
 NITER=$iterations,\
 TASK=$task,\
 RATIO=$pruning_ratio,\
@@ -38,30 +40,12 @@ LOSS=$loss,\
 SCHED=$sched,\
 LR=$init_lr,\
 AUG=$aug,\
-PRETRAINED='robust',\
+PRETRAINED=$pt,\
 LORA='nolora',\
 EXP=$exp \
 ./distributed_experiment_other.sh
 
-            ### Pretrained robust
-            sbatch --export=ALL,\
-NITER=$iterations,\
-TASK=$task,\
-RATIO=$pruning_ratio,\
-PSTRAT=$pruning_strategy,\
-BSTRAT=$batch_strategy,\
-DATA=$data,\
-ARCH=$arch,\
-SEED=$id,\
-LOSS=$loss,\
-SCHED=$sched,\
-LR=$init_lr,\
-AUG=$aug,\
-PRETRAINED='non_robust',\
-LORA='nolora',\
-EXP=$exp \
-./distributed_experiment_other.sh
-
+            done
           done
         done
       done
