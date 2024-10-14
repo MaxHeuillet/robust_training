@@ -38,7 +38,7 @@ LOSS=$loss,\
 SCHED=$sched,\
 LR=$init_lr,\
 AUG=$aug,\
-PRETRAINED='non_robust',\
+PRETRAINED='imagenet1k_non_robust',\
 LORA='nolora',\
 EXP=$exp \
 ./distributed_experiment_other.sh

@@ -59,7 +59,8 @@ def load_data(args):
         val_size = len(dataset) - train_size
         print("train size", train_size, "val size", val_size)
 
-        train_dataset, val_dataset = random_split(dataset, [train_size, val_size])  
+        generator1 = torch.Generator().manual_seed(42)
+        train_dataset, val_dataset = random_split(dataset, [train_size, val_size], generator = generator1)  
         test_dataset = datasets.CIFAR10(root=args.data_dir, train=False, download=True, )
 
     else:
