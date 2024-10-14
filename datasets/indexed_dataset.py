@@ -56,6 +56,7 @@ class IndexedDataset(Dataset): #Dataset
         super().__init__()
 
         self.args = args
+        self.dataset = dataset
         self.N = N
         self.dataset_name = args.dataset
         self.global_indices = list(range(len(dataset)))
