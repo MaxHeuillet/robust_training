@@ -217,7 +217,7 @@ class BaseExperiment:
             experiment.log_metric("gradient_norm", gradient_norm, epoch=iteration)
             experiment.log_metric("reward", loss_values.sum(), epoch=iteration)  
 
-            if iteration % 2 == 0:
+            if iteration % 5 == 0:
                 print('start validation') 
                 self.validate(valloader, model, experiment, iteration+1, rank)
 
