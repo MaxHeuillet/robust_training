@@ -20,10 +20,13 @@ def load_data(args):
         ])
 
         N = 10
-        train_size = int(0.95 * len(dataset))
-        val_size = len(dataset) - train_size
+        
         
         dataset = datasets.MNIST(root=args.data_dir, train=True, download=True, )
+
+        train_size = int(0.95 * len(dataset))
+        val_size = len(dataset) - train_size
+
         train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
         test_dataset = datasets.MNIST(root=args.data_dir, train=False, download=True, )
 
@@ -48,11 +51,14 @@ def load_data(args):
             print('undefined case')
 
         N = 10
+        
+
+        dataset = datasets.CIFAR10(root=args.data_dir, train=True, download=True, )
+
         train_size = int(0.95 * len(dataset))
         val_size = len(dataset) - train_size
         print("train size", train_size, "val size", val_size)
 
-        dataset = datasets.CIFAR10(root=args.data_dir, train=True, download=True, )
         train_dataset, val_dataset = random_split(dataset, [train_size, val_size])  
         test_dataset = datasets.CIFAR10(root=args.data_dir, train=False, download=True, )
 
