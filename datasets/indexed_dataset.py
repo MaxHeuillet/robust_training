@@ -51,15 +51,14 @@ from datasets.loaders import load_data
     
 class IndexedDataset(Dataset): #Dataset
 
-    def __init__(self, args, train=True): #, transform=None
+    def __init__(self, args, dataset, transform, N): #, transform=None
 
         super().__init__()
 
         self.args = args
-        self.dataset, N, transform = load_data(args, train=train) 
         self.N = N
         self.dataset_name = args.dataset
-        self.global_indices = list(range(len(self.dataset)))
+        self.global_indices = list(range(len(dataset)))
         self.transform = transform  # Add transform parameter
 
     

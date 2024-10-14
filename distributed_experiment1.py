@@ -32,7 +32,7 @@ import torch.nn as nn
 from utils import Setup
 
 from samplers import DistributedCustomSampler
-from datasets import WeightedDataset, IndexedDataset
+from datasets import WeightedDataset, IndexedDataset, load_data
 from architectures import load_architecture, add_lora, set_lora_gradients
 from losses import get_loss, get_eval_loss
 from utils import get_args, get_exp_name, set_seeds
@@ -100,12 +100,17 @@ class BaseExperiment:
         experiment.log_parameters(self.args)
 
         print('initialize dataset', rank,flush=True) 
-        train_dataset = WeightedDataset(self.args, train=True, prune_ratio = self.args.pruning_ratio, )
-        val_dataset = IndexedDataset(self.args, train=False)  
+
+        train_dataset, val_dataset, test_dataset, N, transform = load_data(args) 
+        
+        train_dataset = WeightedDataset(train_dataset, transform, N, prune_ratio = self.args.pruning_ratio, )
+        val_dataset = IndexedDataset(val_dataset, transform,  N,) 
+        test_dataset = IndexedDataset(test_dataset, transform, N,)  
 
         print('initialize sampler', rank,flush=True) 
         train_sampler = DistributedCustomSampler(self.args, train_dataset, num_replicas=self.world_size, rank=rank, drop_last=True)
-        val_sampler = DistributedSampler(val_dataset, num_replicas=self.world_size, rank=rank, drop_last=False)
+        val_sampler = DistributedSampler(test_dataset, num_replicas=self.world_size, rank=rank, drop_last=False)
+        test_sampler = DistributedSampler(test_dataset, num_replicas=self.world_size, rank=rank, drop_last=False)
         
         print('initialize dataoader', rank,flush=True) 
         trainloader = DataLoader(train_dataset, 
@@ -117,6 +122,12 @@ class BaseExperiment:
         valloader = DataLoader(val_dataset, 
                                batch_size=256, 
                                sampler=val_sampler, 
+                               num_workers=3,
+                               pin_memory=True)
+        
+        testloader = DataLoader(test_dataset, 
+                               batch_size=256, 
+                               sampler=test_sampler, 
                                num_workers=3,
                                pin_memory=True)
 
@@ -142,7 +153,7 @@ class BaseExperiment:
         optimizer = torch.optim.SGD( model.parameters(),lr=self.args.init_lr, weight_decay=self.args.weight_decay, momentum=self.args.momentum, nesterov=True, )
         scheduler = CosineLR( optimizer, max_lr=self.args.init_lr, epochs=int(self.args.iterations) )
 
-        self.validate(valloader, model, experiment, 0, rank)
+        self.validate(testloader, model, experiment, 0, rank)
         print('start the loop')
 
         for iteration in range(adjusted_epochs):
@@ -195,7 +206,6 @@ class BaseExperiment:
             # train_dataset.update_contextual_TS_parameters()
             # print('after update',rank, train_dataset.Sigma_inv, train_dataset.mu)
 
-            #### compute TS update with master and synchronize the update.
 
             gradient_norm = compute_gradient_norms(model)
             current_lr = optimizer.param_groups[0]['lr']
@@ -210,18 +220,18 @@ class BaseExperiment:
             print('start validation') 
             self.validate(valloader, model, experiment, iteration+1, rank)
 
-            if self.args.pruning_strategy in ['decay_based', 'decay_based_v2',  'decay_based_v3']:
-                indices = train_sampler.process_indices
-                train_dataset.decay_model.reset_counters()
-                results = torch.tensor([ train_dataset.decay_model.fit_predict( train_dataset.global_scores2[idx], ) for idx in indices ])
-                experiment.log_metric("solver_fails", train_dataset.decay_model.fail, epoch=iteration)
-                experiment.log_metric("solver_total", train_dataset.decay_model.total, epoch=iteration)
+            # if self.args.pruning_strategy in ['decay_based', 'decay_based_v2',  'decay_based_v3']:
+            #     indices = train_sampler.process_indices
+            #     train_dataset.decay_model.reset_counters()
+            #     results = torch.tensor([ train_dataset.decay_model.fit_predict( train_dataset.global_scores2[idx], ) for idx in indices ])
+            #     experiment.log_metric("solver_fails", train_dataset.decay_model.fail, epoch=iteration)
+            #     experiment.log_metric("solver_total", train_dataset.decay_model.total, epoch=iteration)
 
-                results = results.to(dtype=torch.float32)
-                train_dataset.alphas[indices] = results[:,0]
-                train_dataset.betas[indices] = results[:,1]
-                train_dataset.cetas[indices] = results[:,2]
-                train_dataset.pred_decay[indices] = results[:,4]
+            #     results = results.to(dtype=torch.float32)
+            #     train_dataset.alphas[indices] = results[:,0]
+            #     train_dataset.betas[indices] = results[:,1]
+            #     train_dataset.cetas[indices] = results[:,2]
+            #     train_dataset.pred_decay[indices] = results[:,4]
   
             print(f'Rank {rank}, Iteration {iteration},', flush=True) 
 
@@ -230,7 +240,7 @@ class BaseExperiment:
         # if rank == 0:
             # torch.save(model.state_dict(), "./state_dicts/{}.pt".format(self.config_name) )
         
-        self.final_validation(valloader, model, experiment, iteration, rank )
+        self.final_validation(testloader, model, experiment, iteration, rank )
         
         experiment.end()
 
