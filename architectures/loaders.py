@@ -114,11 +114,17 @@ def load_architecture(args,):
         model = timm.models.convnext.convnext_tiny(pretrained=False)
         # Replace the model's forward method with your custom one
         
-        if args.pre_trained == 'non_robust':
+        if args.pre_trained == 'imagenet1k_non_robust':
             state_dict = torch.load('./state_dicts/timm_convnext_imagenet1k.pt')
             model.load_state_dict(state_dict)
         
-        elif args.pre_trained == 'robust': # code from: https://github.com/nmndeep/revisiting-at/blob/main/utils_architecture.py
+        elif args.pre_trained == 'imagenet21k_non_robust':
+            num_features = model.head.fc.in_features
+            model.head.fc = nn.Linear(num_features, 21841) 
+            state_dict = torch.load('./state_dicts/convnext_imagenet21k.pt') 
+            model.load_state_dict(state_dict)
+        
+        elif args.pre_trained == 'imagenet1k_robust': # code from: https://github.com/nmndeep/revisiting-at/blob/main/utils_architecture.py
             model = normalize_model(model, IMAGENET_MEAN, IMAGENET_STD)
             ckpt = torch.load('./state_dicts/weights_convnext_t.pt', map_location='cpu')
             ckpt = {k.replace('module.', ''): v for k, v in ckpt.items()}
