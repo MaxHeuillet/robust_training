@@ -12,7 +12,7 @@ aug='aug'
 exp='RQ2'
 
 init_lrs=( 0.001 )
-pruning_ratios=( 0.0 0.3 0.5 0.7 )
+pruning_ratios=( 0.7 0.0 0.3 0.5  )
 pruning_strategies=( 'fixed_random' )
 batch_strategies=('random')
 
