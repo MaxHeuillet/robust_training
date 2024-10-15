@@ -47,6 +47,8 @@ class Pruner:
         self.global_indices = dataset.global_indices
         self.N_tokeep = int( self.dataset.keep_ratio * len(self.global_indices) )
         self.post_pruning_indices = None
+        self.class_indices = None
+        self.num_to_keep_per_class = None
         print(self.N_tokeep, len(self.global_indices) )
 
     def linear_homoskedastic_thomspon_pruning(self):
@@ -222,22 +224,27 @@ class Pruner:
         indices = np.random.choice(self.global_indices, size=self.N_tokeep, replace=False).tolist()
         return indices
     
-    def fixed_stratified(self,):
+    def compute_class_distribution(self,):
         # Get class labels from the dataset
         class_indices = defaultdict(list)
-        
         # Populate class_indices with the indices of each class
-        for idx, (_, label) in enumerate(self.dataset):
+        for _, label, idx in self.dataset:
             class_indices[label].append(idx)
-        
         # Calculate the number of samples to keep for each class
         num_to_keep_per_class = {cls: int( len(indices) * self.dataset.keep_ratio ) for cls, indices in class_indices.items()}
-        
+        print(class_indices, num_to_keep_per_class)
         # Perform stratified sampling for each class
+        return class_indices, num_to_keep_per_class
+    
+    def fixed_stratified(self,):
+
+        if self.class_indices == None:
+            self.class_indices, self.num_to_keep_per_class = self.compute_class_distribution() 
+
         pruned_indices = []
         np.random.seed(0)  # Ensure reproducibility
-        for cls, indices in class_indices.items():
-            pruned_indices.extend( np.random.choice(indices, size=num_to_keep_per_class[cls], replace=False).tolist() )
+        for cls, indices in self.class_indices.items():
+            pruned_indices.extend( np.random.choice(indices, size=self.num_to_keep_per_class[cls], replace=False).tolist() )
         
         return pruned_indices
 
