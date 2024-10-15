@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --account=rrg-adurand
+#SBATCH --account=def-adurand
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=12
 #SBATCH --gpus-per-node=4
