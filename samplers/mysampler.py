@@ -231,7 +231,7 @@ class Pruner:
             class_indices[label].append(idx)
         
         # Calculate the number of samples to keep for each class
-        num_to_keep_per_class = {cls: int( len(indices) * (1 - prune_percentage) ) for cls, indices in class_indices.items()}
+        num_to_keep_per_class = {cls: int( len(indices) * self.dataset.keep_ratio ) for cls, indices in class_indices.items()}
         
         # Perform stratified sampling for each class
         pruned_indices = []

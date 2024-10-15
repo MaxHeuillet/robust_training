@@ -13,7 +13,7 @@ exp='RQ2'
 
 init_lrs=( 0.001 )
 pruning_ratios=( 0.7 0.0 0.3 0.5  )
-pruning_strategies=( 'fixed_random' )
+pruning_strategies=( 'fixed_stratified' )
 batch_strategies=('random')
 
 # Loop over architectures, pruning ratios, strategies, and learning rates
