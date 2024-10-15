@@ -1,16 +1,22 @@
 from torchvision import datasets
 
 
+print('download aircraft')
 
-print('download CIFAR10')
+datasets.FGVCAircraft(root='~/scratch/data', split='train', download=True, )
+datasets.FGVCAircraft(root='~/scratch/data', split='val', download=True, )
+datasets.FGVCAircraft(root='~/scratch/data', split='test', download=True, )
 
-datasets.CIFAR10(root='~/scratch/data', train=True, download=True)
-datasets.CIFAR10(root='~/scratch/data', train=False,  download=True)
 
-print('download MNIST')
+# print('download CIFAR10')
 
-datasets.MNIST(root='~/scratch/data', train=True, download=True)
-datasets.MNIST(root='~/scratch/data', train=False,  download=True)
+# datasets.CIFAR10(root='~/scratch/data', train=True, download=True)
+# datasets.CIFAR10(root='~/scratch/data', train=False,  download=True)
+
+# print('download MNIST')
+
+# datasets.MNIST(root='~/scratch/data', train=True, download=True)
+# datasets.MNIST(root='~/scratch/data', train=False,  download=True)
 
 
 
