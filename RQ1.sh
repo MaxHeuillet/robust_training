@@ -5,7 +5,7 @@ seeds=1
 archs=( 'convnext' ) # 'resnet50' 'vitsmall'
 data='CIFAR10'
 task='train'
-loss='APGD'
+losses=('TRADES_v2', 'APGD')
 sched='nosched'
 iterations=50
 aug='aug'
@@ -18,13 +18,14 @@ batch_strategies=('random')
 pts=('imagenet21k_non_robust', 'imagenet1k_non_robust', 'imagenet1k_robust')
 
 # Loop over architectures, pruning ratios, strategies, and learning rates
-for arch in "${archs[@]}"; do
-  for pruning_ratio in "${pruning_ratios[@]}"; do
-    for pruning_strategy in "${pruning_strategies[@]}"; do
-      for batch_strategy in "${batch_strategies[@]}"; do
-        for init_lr in "${init_lrs[@]}"; do
-          for id in $(seq 1 $seeds); do
-            for pt in "${pts[@]}"; do
+for loss in "${losses[@]}"; do
+  for arch in "${archs[@]}"; do
+    for pruning_ratio in "${pruning_ratios[@]}"; do
+      for pruning_strategy in "${pruning_strategies[@]}"; do
+        for batch_strategy in "${batch_strategies[@]}"; do
+          for init_lr in "${init_lrs[@]}"; do
+            for id in $(seq 1 $seeds); do
+              for pt in "${pts[@]}"; do
           
               ### Pretrained non robust
               sbatch --export=ALL,\
@@ -45,6 +46,7 @@ LORA='nolora',\
 EXP=$exp \
 ./distributed_experiment_other.sh
 
+              done
             done
           done
         done
