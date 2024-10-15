@@ -7,6 +7,10 @@ datasets.FGVCAircraft(root='~/scratch/data', split='train', download=True, )
 datasets.FGVCAircraft(root='~/scratch/data', split='val', download=True, )
 datasets.FGVCAircraft(root='~/scratch/data', split='test', download=True, )
 
+print('download CIFAR100')
+
+datasets.CIFAR100(root='~/scratch/data', train=True, download=True)
+datasets.CIFAR100(root='~/scratch/data', train=False,  download=True)
 
 # print('download CIFAR10')
 
