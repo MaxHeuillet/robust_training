@@ -63,6 +63,24 @@ def load_data(args):
         train_dataset, val_dataset = random_split(dataset, [train_size, val_size], generator = generator1)  
         test_dataset = datasets.CIFAR10(root=args.data_dir, train=False, download=True, )
 
+    elif args.dataset == 'Aircraft':
+        
+        if args.aug == 'aug' and args.pre_trained != 'no': 
+            transform = transforms.Compose([
+                                        transforms.Resize((224, 224)),  # Resize images to 224x224
+                                        transforms.ToTensor(),
+                                        transforms.RandomCrop(32, padding=4), 
+                                        transforms.RandomHorizontalFlip(0.5), 
+                                        transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ),])
+        else:
+            print('undefined case')
+
+        N = 100
+        
+        train_dataset = datasets.FGVCAircraft(root=args.data_dir, split='train', download=True, )
+        val_dataset =   datasets.FGVCAircraft(root=args.data_dir, split='val', download=True, )
+        test_dataset = datasets.FGVCAircraft(root=args.data_dir, split='test', download=True, )
+
     else:
         print('undefined data')
 
