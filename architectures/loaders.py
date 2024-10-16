@@ -152,7 +152,7 @@ def load_architecture(args,):
         if args.dataset == 'CIFAR10':
             num_features = model.head.fc.in_features
             model.head.fc = nn.Linear(num_features, 10)  # CIFAR-10 has 10 classes
-        if args.dataset in ['CIFAR100', 'Aircraft']:
+        elif args.dataset in ['CIFAR100', 'Aircraft']:
             num_features = model.head.fc.in_features
             model.head.fc = nn.Linear(num_features, 100)  # CIFAR-10 has 10 classes
 
