@@ -1,28 +1,19 @@
 #!/bin/bash
 
-
-#SBATCH --account=def-adurand
+#SBATCH --account=rrg-adurand
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=10
-#SBATCH --gres=gpu:v100l:4
-#SBATCH --mem-per-cpu=4000M
-#SBATCH --time=06:00:00
+#SBATCH --cpus-per-task=12
+#SBATCH --gpus-per-node=4
+#SBATCH --mem-per-cpu=8000M
+#SBATCH --time=03:00:00
 #SBATCH --mail-user=maxime.heuillet.1@ulaval.ca
 #SBATCH --mail-type=ALL
 
 module --force purge
-module load StdEnv/2023
-module load python/3.10
-module load scipy-stack
-module load arrow
-module load httpproxy
+module load StdEnv/2023 python/3.10 scipy-stack httpproxy arrow
 
 source ~/scratch/MYENV4/bin/activate
-pip install  -r requirements.txt
-
-# wandb login --relogin <<EOF
-# 12c5bc9e9809f53b1150856be2ae3614c88e4639
-# EOF
+# pip install  -r requirements.txt
 
 if [ "${DATA}" = "Imagenet1k" ]; then
     echo 'unzip imagenet'
@@ -47,4 +38,7 @@ python3 ./distributed_experiment1.py \
     --pruning_strategy ${PSTRAT} \
     --batch_strategy ${BSTRAT} \
     --aug ${AUG} \
+    --pre_trained ${PRETRAINED} \
+    --lora ${LORA} \
+    --exp ${EXP} \
     > stdout_$SLURM_JOB_ID 2> stderr_$SLURM_JOB_ID

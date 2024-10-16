@@ -3,7 +3,7 @@
 # Define variables
 seeds=1
 archs=( 'convnext' ) # 'resnet50' 'vitsmall'
-datas=('CIFAR100', 'CIFAR10', 'EuroSAT', ) #'Aircraft'
+datas=('CIFAR100', 'CIFAR10', ) #'Aircraft' 'EuroSAT', 
 task='train'
 losses=('TRADES_v2', 'APGD')
 sched='nosched'
@@ -27,6 +27,8 @@ for data in "${datas[@]}"; do
             for init_lr in "${init_lrs[@]}"; do
               for id in $(seq 1 $seeds); do
                 for pt in "${pts[@]}"; do
+
+                  if [ "$CC_CLUSTER" = "beluga" ]; then
           
               ### Pretrained non robust
               sbatch --export=ALL,\
@@ -45,7 +47,30 @@ AUG=$aug,\
 PRETRAINED=$pt,\
 LORA='nolora',\
 EXP=$exp \
+./distributed_experiment_beluga.sh
+
+                  else
+
+              ### Pretrained non robust
+              sbatch --export=ALL,\
+NITER=$iterations,\
+TASK=$task,\
+RATIO=$pruning_ratio,\
+PSTRAT=$pruning_strategy,\
+BSTRAT=$batch_strategy,\
+DATA=$data,\
+ARCH=$arch,\
+SEED=$id,\
+LOSS=$loss,\
+SCHED=$sched,\
+LR=$init_lr,\
+AUG=$aug,\
+PRETRAINED=$pt,\
+LORA='nolora',\
+EXP=$exp \
 ./distributed_experiment_other.sh
+
+                  fi
 
                 done
               done
