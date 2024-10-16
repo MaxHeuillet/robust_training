@@ -28,6 +28,8 @@ def get_args():
 
     if "calculquebec" in os.uname().nodename:  # Check for a substring that is unique to the cluster
         default_data_dir = '~/scratch/data'
+    elif "calcul.quebec" in os.uname().nodename:
+        default_data_dir = '~/scratch/data'
     else:
         default_data_dir = './data'
 
