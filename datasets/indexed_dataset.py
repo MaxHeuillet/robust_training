@@ -109,10 +109,9 @@ class IndexedDataset(Dataset): #Dataset
     def _get_single_item(self, idx):
         if self.dataset_name == 'Imagenet1k':
             image_data, label = self.get_item_skip(idx)
-        elif self.dataset_name in ['CIFAR10', 'CIFAR10s', 'MNIST', 'random']:
-            image_data, label = self.get_item_noskip(idx)
         else:
-            raise ValueError("Unsupported dataset name")
+            image_data, label = self.get_item_noskip(idx)
+
 
         # Process the image data
         if isinstance(image_data, bytes):
