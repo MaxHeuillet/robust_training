@@ -3,7 +3,7 @@
 # Define variables
 seeds=1
 archs=( 'convnext' ) # 'resnet50' 'vitsmall'
-data='CIFAR100'
+datas=('CIFAR100', 'CIFAR10', 'EuroSAT', ) #'Aircraft'
 task='train'
 losses=('TRADES_v2', 'APGD')
 sched='nosched'
@@ -18,14 +18,15 @@ batch_strategies=('random')
 pts=('imagenet21k_non_robust', 'imagenet1k_non_robust', 'imagenet1k_robust')
 
 # Loop over architectures, pruning ratios, strategies, and learning rates
-for loss in "${losses[@]}"; do
-  for arch in "${archs[@]}"; do
-    for pruning_ratio in "${pruning_ratios[@]}"; do
-      for pruning_strategy in "${pruning_strategies[@]}"; do
-        for batch_strategy in "${batch_strategies[@]}"; do
-          for init_lr in "${init_lrs[@]}"; do
-            for id in $(seq 1 $seeds); do
-              for pt in "${pts[@]}"; do
+for data in "${datas[@]}"; do
+  for loss in "${losses[@]}"; do
+    for arch in "${archs[@]}"; do
+      for pruning_ratio in "${pruning_ratios[@]}"; do
+        for pruning_strategy in "${pruning_strategies[@]}"; do
+          for batch_strategy in "${batch_strategies[@]}"; do
+            for init_lr in "${init_lrs[@]}"; do
+              for id in $(seq 1 $seeds); do
+                for pt in "${pts[@]}"; do
           
               ### Pretrained non robust
               sbatch --export=ALL,\
@@ -46,6 +47,7 @@ LORA='nolora',\
 EXP=$exp \
 ./distributed_experiment_other.sh
 
+                done
               done
             done
           done
