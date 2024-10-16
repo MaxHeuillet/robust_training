@@ -77,9 +77,9 @@ def load_data(args):
 
         N = 100
         
-        train_dataset = datasets.FGVCAircraft(root=args.data_dir, split='train', download=True, )
-        val_dataset =   datasets.FGVCAircraft(root=args.data_dir, split='val', download=True, )
-        test_dataset = datasets.FGVCAircraft(root=args.data_dir, split='test', download=True, )
+        train_dataset = datasets.FGVCAircraft(root=args.data_dir, split='train', download=False, )
+        val_dataset =   datasets.FGVCAircraft(root=args.data_dir, split='val', download=False, )
+        test_dataset = datasets.FGVCAircraft(root=args.data_dir, split='test', download=False, )
 
     else:
         print('undefined data')
