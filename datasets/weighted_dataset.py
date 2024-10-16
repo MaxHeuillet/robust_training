@@ -62,7 +62,7 @@ class WeightedDataset(IndexedDataset):
         self.global_scores = torch.ones(self.K)
         
         # self.pred = torch.zeros( self.K, self.N ).cpu() #.half()
-        self.robust_pred = torch.zeros( self.K, self.N ).cpu() #.half()
+        # self.robust_pred = torch.zeros( self.K, self.N ).cpu() #.half()
 
         ### arguments relative to Thomspon pruning (non-contextual):
         self.mu0 = torch.zeros(self.K).cpu()
@@ -107,7 +107,7 @@ class WeightedDataset(IndexedDataset):
         global_loss_val = global_values.detach().clone().to(rank).view(n, 1)
 
         # clean_pred = clean_pred.detach().clone().to(rank)
-        robust_pred = robust_pred.detach().clone().to(rank)
+        # robust_pred = robust_pred.detach().clone().to(rank)
 
         # print(f"indices shape: {indices.shape}")
         # print(f"clean_loss_val shape: {clean_loss_val.shape}")
@@ -117,7 +117,7 @@ class WeightedDataset(IndexedDataset):
         # print(f"robust_pred shape: {robust_pred.shape}")
         
         if dist.is_available() and dist.is_initialized():
-            iv = torch.cat([indices, global_loss_val, robust_pred ], dim=1)
+            iv = torch.cat([indices, global_loss_val,  ], dim=1) #robust_pred
             
             # print('iv', iv.shape)
             
@@ -130,13 +130,13 @@ class WeightedDataset(IndexedDataset):
             global_loss_val = iv_whole_group[:, 1]#.view(-1, 1)
 
             # clean_pred = iv_whole_group[:, 4:14]  # Extract next 10 columns for clean_pred
-            robust_pred = iv_whole_group[:, 2:12]  # Extract the next 10 columns for robust_pred
+            #robust_pred = iv_whole_group[:, 2:12]  # Extract the next 10 columns for robust_pred
 
         else:
             # print(indices.shape)
             indices = indices.squeeze(1)
             # clean_pred = clean_pred.squeeze(1)
-            robust_pred = robust_pred.squeeze(1)
+            #robust_pred = robust_pred.squeeze(1)
             # clean_loss_val = clean_loss_val.squeeze(1)
             # robust_loss_val = robust_loss_val.squeeze(1)
             global_loss_val = global_loss_val.squeeze(1)
@@ -162,7 +162,7 @@ class WeightedDataset(IndexedDataset):
         # self.robust_scores[idxs] = robust_loss_val.cpu()
         self.global_scores[idxs] = global_loss_val.cpu()
         # self.clean_pred[idxs] = clean_pred.cpu()
-        self.robust_pred[idxs] = robust_pred.cpu()
+        # self.robust_pred[idxs] = robust_pred.cpu()
 
         # self.global_scores2[iteration][idxs] = global_loss_val.cpu()
 
