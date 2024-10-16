@@ -1,6 +1,7 @@
 #!/bin/bash
 
-#SBATCH --account=rrg-adurand
+
+#SBATCH --account=def-adurand
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=12
 #SBATCH --gpus-per-node=4
@@ -11,7 +12,6 @@
 
 module --force purge
 module load StdEnv/2023 python/3.10 scipy-stack httpproxy arrow
-
 source ~/scratch/MYENV4/bin/activate
 # pip install  -r requirements.txt
 
@@ -38,7 +38,4 @@ python3 ./distributed_experiment1.py \
     --pruning_strategy ${PSTRAT} \
     --batch_strategy ${BSTRAT} \
     --aug ${AUG} \
-    --pre_trained ${PRETRAINED} \
-    --lora ${LORA} \
-    --exp ${EXP} \
     > stdout_$SLURM_JOB_ID 2> stderr_$SLURM_JOB_ID
