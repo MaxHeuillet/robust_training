@@ -242,6 +242,10 @@ class BaseExperiment:
 
         # if rank == 0:
             # torch.save(model.state_dict(), "./state_dicts/{}.pt".format(self.config_name) )
+
+        del trainloader, valloader
+        del train_dataset, val_dataset
+        del train_sampler, val_sampler
         
         self.final_validation(testloader, model, experiment, iteration, rank )
         
@@ -250,8 +254,10 @@ class BaseExperiment:
         print('clean up',flush=True)
         self.setup.cleanup()
 
-    def final_validation(self, valloader, model, experiment, iteration, rank ):
-        total_correct_nat, total_correct_adv, total_examples = self.compute_AA_accuracy(valloader, model, rank)
+    def final_validation(self, testloader, model, experiment, iteration, rank ):
+        print('start AA accuracy')
+        total_correct_nat, total_correct_adv, total_examples = self.compute_AA_accuracy(testloader, model, rank)
+        print('end AA accuracy')
         dist.barrier() 
         clean_accuracy, robust_accuracy  = self.sync_final_result(total_correct_nat, total_correct_adv, total_examples, rank)
         experiment.log_metric("final_clean_accuracy", clean_accuracy, epoch=iteration)
@@ -274,7 +280,7 @@ class BaseExperiment:
 
         return clean_accuracy, robust_accuracy
 
-    def compute_AA_accuracy(self, valloader, model, rank):
+    def compute_AA_accuracy(self, testloader, model, rank):
 
         model.eval()
 
@@ -289,7 +295,7 @@ class BaseExperiment:
         total_correct_adv = 0
         total_examples = 0
         
-        for batch_id, batch in enumerate( valloader ):
+        for batch_id, batch in enumerate( testloader ):
 
             data, target, idxs = batch
 
