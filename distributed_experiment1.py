@@ -7,7 +7,8 @@ import torch.distributed as dist
 from torch.utils.data import DataLoader, DistributedSampler
 
 from torch.nn.parallel import DistributedDataParallel as DDP
-from torch.cuda.amp import autocast, GradScaler
+from torch.amp import GradScaler,autocast
+
 # from torch.optim.lr_scheduler import CosineAnnealingLR
 import os
 import torch
@@ -149,7 +150,7 @@ class BaseExperiment:
 
         # torch.autograd.set_detect_anomaly(True)
 
-        scaler = GradScaler(rank)
+        scaler = GradScaler()
         print(self.args.init_lr, self.args.weight_decay, self.args.momentum) 
         optimizer = torch.optim.SGD( model.parameters(),lr=self.args.init_lr, weight_decay=self.args.weight_decay, momentum=self.args.momentum, nesterov=True, )
         scheduler = CosineLR( optimizer, max_lr=self.args.init_lr, epochs=int(self.args.iterations) )
