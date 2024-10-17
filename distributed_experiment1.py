@@ -175,7 +175,7 @@ class BaseExperiment:
 
                 optimizer.zero_grad()
 
-                with torch.autocast(device_type='cuda', device_index=rank):
+                with torch.autocast(device_type='cuda'):
                     
                     loss_values, logits = get_loss(self.args, model, data, target, optimizer)
 
