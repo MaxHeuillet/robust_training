@@ -54,10 +54,6 @@ IMAGENET_MEAN = [c * 1. for c in (0.485, 0.456, 0.406)] #[np.array([0., 0., 0.])
 IMAGENET_STD = [c * 1. for c in (0.229, 0.224, 0.225)] #[np.array([1., 1., 1.]), np.array([0.229, 0.224, 0.225])][-1] * 255
 
 
-
-
-
-
 def load_architecture(args,):
 
     if args.arch == 'resnet50':
