@@ -75,8 +75,7 @@ def load_data(args):
 
         N = 10
         
-
-        dataset = datasets.CIFAR10(root=args.data_dir, train=True, download=True, )
+        dataset = datasets.CIFAR100(root=args.data_dir, train=True, download=True, )
 
         train_size = int(0.95 * len(dataset))
         val_size = len(dataset) - train_size
@@ -84,7 +83,7 @@ def load_data(args):
 
         generator1 = torch.Generator().manual_seed(42)
         train_dataset, val_dataset = random_split(dataset, [train_size, val_size], generator = generator1)  
-        test_dataset = datasets.CIFAR10(root=args.data_dir, train=False, download=True, )
+        test_dataset = datasets.CIFAR100(root=args.data_dir, train=False, download=True, )
 
     elif args.dataset == 'Aircraft':
         
