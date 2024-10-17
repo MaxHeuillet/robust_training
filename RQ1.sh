@@ -11,7 +11,7 @@ iterations=50
 aug='aug'
 exp='RQ1'
 
-init_lrs=( 0.0001 0.001 0.01 )
+init_lrs=( 0.0001 0.0005 0.001  )
 pruning_ratios=( 0 )
 pruning_strategies=( 'random' )
 batch_strategies=('random')
