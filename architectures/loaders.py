@@ -147,6 +147,9 @@ def load_architecture(args,):
                 # Rebuild the sequential model without the 'normalize' layer
                 model = model._modules['model']
 
+        else:
+            print('no pre-trained model specified')
+
         model.forward = types.MethodType(custom_forward, model)
 
         if args.dataset == 'CIFAR10':

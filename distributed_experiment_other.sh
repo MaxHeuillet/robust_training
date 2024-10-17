@@ -38,4 +38,7 @@ python3 ./distributed_experiment1.py \
     --pruning_strategy ${PSTRAT} \
     --batch_strategy ${BSTRAT} \
     --aug ${AUG} \
+    --pre_trained ${PRETRAINED} \
+    --lora ${LORA} \
+    --exp ${EXP} \
     > stdout_$SLURM_JOB_ID 2> stderr_$SLURM_JOB_ID

@@ -120,13 +120,13 @@ class BaseExperiment:
                                  pin_memory=True) 
         
         valloader = DataLoader(val_dataset, 
-                               batch_size=256, 
+                               batch_size=64, 
                                sampler=val_sampler, 
                                num_workers=3,
                                pin_memory=True)
         
         testloader = DataLoader(test_dataset, 
-                               batch_size=256, 
+                               batch_size=64, 
                                sampler=test_sampler, 
                                num_workers=3,
                                pin_memory=True)
@@ -174,7 +174,7 @@ class BaseExperiment:
 
                 optimizer.zero_grad()
 
-                with autocast():
+                with autocast(rank):
                     
                     loss_values, logits = get_loss(self.args, model, data, target, optimizer)
 
