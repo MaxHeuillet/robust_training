@@ -122,7 +122,8 @@ def load_architecture(args,):
         
         elif args.pre_trained == 'imagenet1k_robust': # code from: https://github.com/nmndeep/revisiting-at/blob/main/utils_architecture.py
             model = normalize_model(model, IMAGENET_MEAN, IMAGENET_STD)
-            ckpt = torch.load('./state_dicts/weights_convnext_t.pt', map_location='cpu')
+            ckpt = torch.load('./state_dicts/weights_convnext_t.pt', map_location='cpu', weights_only=False)
+
             ckpt = {k.replace('module.', ''): v for k, v in ckpt.items()}
             try:
                 model.load_state_dict(ckpt)
