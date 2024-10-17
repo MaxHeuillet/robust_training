@@ -174,7 +174,7 @@ class BaseExperiment:
 
                 optimizer.zero_grad()
 
-                with autocast(rank):
+                with autocast():
                     
                     loss_values, logits = get_loss(self.args, model, data, target, optimizer)
 
