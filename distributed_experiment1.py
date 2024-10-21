@@ -255,6 +255,30 @@ class BaseExperiment:
         self.setup.cleanup()
 
     def final_validation(self, testloader, model, experiment, iteration, rank ):
+
+        # Use the underlying model
+        model = model.module  # Remove DDP wrapper
+        model.eval()
+        model = model.to(rank)  # Ensure the model is on the correct device
+
+        # Create a new testloader without DistributedSampler
+        test_dataset = testloader.dataset
+        total_size = len(test_dataset)
+        per_process_size = total_size // self.world_size
+
+        # Calculate start and end indices for each process
+        start_idx = rank * per_process_size
+        # Ensure the last process gets any remaining data
+        end_idx = (rank + 1) * per_process_size if rank != self.world_size - 1 else total_size
+
+        # Subset the dataset
+        subset_indices = list(range(start_idx, end_idx))
+        subset_dataset = torch.utils.data.Subset(test_dataset, subset_indices)
+
+        # Create DataLoader for the subset
+        testloader = DataLoader(subset_dataset, batch_size=64, shuffle=False, num_workers=3, pin_memory=True)
+
+
         print('start AA accuracy')
         total_correct_nat, total_correct_adv, total_examples = self.compute_AA_accuracy(testloader, model, rank)
         print('end AA accuracy')
@@ -283,6 +307,7 @@ class BaseExperiment:
     def compute_AA_accuracy(self, testloader, model, rank):
 
         model.eval()
+        model = model.to(rank)  # Ensure model is on the correct device
 
         def forward_pass(x):
             return model(x)
@@ -290,12 +315,15 @@ class BaseExperiment:
         norm = 'Linf'
         epsilon = 8/255
         adversary = AutoAttack(forward_pass, norm=norm, eps=epsilon, version='standard')
+        print('adversary instanciated')
         
         total_correct_nat = 0
         total_correct_adv = 0
         total_examples = 0
         
         for batch_id, batch in enumerate( testloader ):
+
+            print('start batch iterations')
 
             data, target, idxs = batch
 
