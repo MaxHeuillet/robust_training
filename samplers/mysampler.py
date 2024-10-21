@@ -220,7 +220,7 @@ class Pruner:
         return indices
     
     def fixed_random(self,):
-        np.random.seed(0)
+        #np.random.seed(0)
         indices = np.random.choice(self.global_indices, size=self.N_tokeep, replace=False).tolist()
         return indices
     
@@ -242,7 +242,7 @@ class Pruner:
             self.class_indices, self.num_to_keep_per_class = self.compute_class_distribution() 
 
         pruned_indices = []
-        np.random.seed(0)  # Ensure reproducibility
+        #np.random.seed(0)  # Ensure reproducibility
         for cls, indices in self.class_indices.items():
             pruned_indices.extend( np.random.choice(indices, size=self.num_to_keep_per_class[cls], replace=False).tolist() )
         
