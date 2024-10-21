@@ -111,7 +111,6 @@ class BaseExperiment:
         print('initialize sampler', rank,flush=True) 
         train_sampler = DistributedCustomSampler(self.args, train_dataset, num_replicas=self.world_size, rank=rank, drop_last=True)
         val_sampler = DistributedSampler(val_dataset, num_replicas=self.world_size, rank=rank, drop_last=False)
-        test_sampler = DistributedSampler(test_dataset, num_replicas=self.world_size, rank=rank, drop_last=False)
         
         print('initialize dataoader', rank,flush=True) 
         trainloader = DataLoader(train_dataset, 
@@ -125,12 +124,7 @@ class BaseExperiment:
                                sampler=val_sampler, 
                                num_workers=3,
                                pin_memory=True)
-        
-        testloader = DataLoader(test_dataset, 
-                               batch_size=64, 
-                               sampler=test_sampler, 
-                               num_workers=3,
-                               pin_memory=True)
+
 
         original_data_size = len( train_dataset.global_indices )  # Size of original dataset
         batch_size = self.args.batch_size             # Batch size for training
@@ -155,7 +149,7 @@ class BaseExperiment:
         optimizer = torch.optim.SGD( model.parameters(),lr=self.args.init_lr, weight_decay=self.args.weight_decay, momentum=self.args.momentum, nesterov=True, )
         scheduler = CosineLR( optimizer, max_lr=self.args.init_lr, epochs=int(self.args.iterations) )
 
-        self.validate(testloader, model, experiment, 0, rank)
+        self.validate(valloader, model, experiment, 0, rank)
         print('start the loop')
 
         for iteration in range(adjusted_epochs):
@@ -247,14 +241,14 @@ class BaseExperiment:
         del train_dataset, val_dataset
         del train_sampler, val_sampler
         
-        self.final_validation(testloader, model, experiment, iteration, rank )
+        self.final_validation(test_dataset, model, experiment, iteration, rank )
         
         experiment.end()
 
         print('clean up',flush=True)
         self.setup.cleanup()
 
-    def final_validation(self, testloader, model, experiment, iteration, rank ):
+    def final_validation(self, test_dataset, model, experiment, iteration, rank ):
 
         # Use the underlying model
         model = model.module  # Remove DDP wrapper
@@ -262,7 +256,6 @@ class BaseExperiment:
         model = model.to(rank)  # Ensure the model is on the correct device
 
         # Create a new testloader without DistributedSampler
-        test_dataset = testloader.dataset
         total_size = len(test_dataset)
         per_process_size = total_size // self.world_size
 
@@ -276,14 +269,16 @@ class BaseExperiment:
         subset_dataset = torch.utils.data.Subset(test_dataset, subset_indices)
 
         # Create DataLoader for the subset
-        testloader = DataLoader(subset_dataset, batch_size=64, shuffle=False, num_workers=3, pin_memory=True)
-
+        testloader = DataLoader(subset_dataset, batch_size=64, shuffle=False, num_workers=2, pin_memory=False)
 
         print('start AA accuracy')
         total_correct_nat, total_correct_adv, total_examples = self.compute_AA_accuracy(testloader, model, rank)
         print('end AA accuracy')
+
         dist.barrier() 
         clean_accuracy, robust_accuracy  = self.sync_final_result(total_correct_nat, total_correct_adv, total_examples, rank)
+        
+        
         experiment.log_metric("final_clean_accuracy", clean_accuracy, epoch=iteration)
         experiment.log_metric("final_robust_accuracy", robust_accuracy, epoch=iteration)
 
