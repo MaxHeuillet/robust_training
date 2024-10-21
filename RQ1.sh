@@ -3,7 +3,7 @@
 # Define variables
 seeds=1
 archs=( 'convnext' ) # 'resnet50' 'vitsmall'
-datas=( 'Aircraft'  ) # 'CIFAR100',   'EuroSAT', 'CIFAR100', 'CIFAR10', ,
+datas=( 'CIFAR10'  ) # 'CIFAR100',   'EuroSAT', 'CIFAR100', 'CIFAR10', ,
 task='train'
 losses=('TRADES_v2', 'APGD')
 sched='nosched'
@@ -15,7 +15,7 @@ init_lrs=( 0.0001 0.0005 0.001  )
 pruning_ratios=( 0 )
 pruning_strategies=( 'random' )
 batch_strategies=('random')
-pts=('imagenet21k_non_robust', 'imagenet1k_non_robust', 'imagenet1k_robust')
+pts=('imagenet21k_non_robust',) # 'imagenet1k_non_robust', 'imagenet1k_robust'
 
 # Loop over architectures, pruning ratios, strategies, and learning rates
 for data in "${datas[@]}"; do
