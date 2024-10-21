@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define variables
-seeds=1
+seeds=5
 archs=( 'convnext' ) # 'resnet50' 'vitsmall'
 data='CIFAR10'
 task='train'
@@ -16,6 +16,8 @@ pruning_ratios=( 0.0 0.7 0.3 0.5  )
 pruning_strategies=( 'fixed_stratified' )
 batch_strategies=('random')
 
+pts=('imagenet21k_non_robust', 'imagenet1k_non_robust', 'imagenet1k_robust' ) 
+
 # Loop over architectures, pruning ratios, strategies, and learning rates
 for arch in "${archs[@]}"; do
   for pruning_ratio in "${pruning_ratios[@]}"; do
@@ -23,6 +25,7 @@ for arch in "${archs[@]}"; do
       for batch_strategy in "${batch_strategies[@]}"; do
         for init_lr in "${init_lrs[@]}"; do
           for id in $(seq 1 $seeds); do
+            for pt in "${pts[@]}"; do
           
             ### Pretrained robust
             sbatch --export=ALL,\
@@ -38,11 +41,12 @@ LOSS=$loss,\
 SCHED=$sched,\
 LR=$init_lr,\
 AUG=$aug,\
-PRETRAINED='imagenet1k_non_robust',\
+PRETRAINED=$pt,\
 LORA='nolora',\
 EXP=$exp \
 ./distributed_experiment_other.sh
 
+            done
           done
         done
       done
