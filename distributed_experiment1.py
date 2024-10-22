@@ -269,13 +269,12 @@ class BaseExperiment:
 
     def final_validation(self, test_dataset, model, experiment, iteration, rank ):
 
-        # Use the underlying model
-        #model = model.module  # Remove DDP wrapper
-        model = model.module  # Remove DDP wrapper
+        model_eval = load_architecture(self.args).to(rank)
+        model_eval.load_state_dict(model.module.state_dict())
         # Convert SyncBatchNorm to BatchNorm
-        model = convert_syncbn_to_bn(model)
+        model_eval = convert_syncbn_to_bn(model_eval)
+
         model.eval()
-        model = model.to(rank)  # Ensure the model is on the correct device
 
         # Create a new testloader without DistributedSampler
         total_size = len(test_dataset)
