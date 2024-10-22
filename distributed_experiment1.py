@@ -58,6 +58,25 @@ def check_for_nans(tensors, tensor_names):
         if torch.isnan(tensor).any():
             print(f"{name} contains NaNs!")
 
+def convert_syncbn_to_bn(module):
+    module_output = module
+    if isinstance(module, torch.nn.SyncBatchNorm):
+        module_output = torch.nn.BatchNorm2d(
+            module.num_features,
+            eps=module.eps,
+            momentum=module.momentum,
+            affine=module.affine,
+            track_running_stats=module.track_running_stats,
+        )
+        if module.affine:
+            module_output.weight = module.weight
+            module_output.bias = module.bias
+        module_output.running_mean = module.running_mean
+        module_output.running_var = module.running_var
+    else:
+        for name, child in module.named_children():
+            module_output.add_module(name, convert_syncbn_to_bn(child))
+    return module_output
 
 def adjust_epochs(original_data_size, pruned_data_size, batch_size, original_epochs):
 
@@ -252,6 +271,9 @@ class BaseExperiment:
 
         # Use the underlying model
         #model = model.module  # Remove DDP wrapper
+        model = model.module  # Remove DDP wrapper
+        # Convert SyncBatchNorm to BatchNorm
+        model = convert_syncbn_to_bn(model)
         model.eval()
         model = model.to(rank)  # Ensure the model is on the correct device
 
