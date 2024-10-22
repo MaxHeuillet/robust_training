@@ -251,7 +251,7 @@ class BaseExperiment:
     def final_validation(self, test_dataset, model, experiment, iteration, rank ):
 
         # Use the underlying model
-        model = model.module  # Remove DDP wrapper
+        #model = model.module  # Remove DDP wrapper
         model.eval()
         model = model.to(rank)  # Ensure the model is on the correct device
 
@@ -267,9 +267,10 @@ class BaseExperiment:
         # Subset the dataset
         subset_indices = list(range(start_idx, end_idx))
         subset_dataset = torch.utils.data.Subset(test_dataset, subset_indices)
+        print(rank, len(subset_indices) )
 
         # Create DataLoader for the subset
-        testloader = DataLoader(subset_dataset, batch_size=64, shuffle=False, num_workers=2, pin_memory=False)
+        testloader = DataLoader(subset_dataset, batch_size=64, shuffle=False, num_workers=0, pin_memory=False)
 
         print('start AA accuracy')
         total_correct_nat, total_correct_adv, total_examples = self.compute_AA_accuracy(testloader, model, rank)
