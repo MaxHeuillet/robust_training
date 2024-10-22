@@ -309,7 +309,7 @@ class BaseExperiment:
         
         norm = 'Linf'
         epsilon = 8/255
-        adversary = AutoAttack(forward_pass, norm=norm, eps=epsilon, version='standard')
+        adversary = AutoAttack(forward_pass, norm=norm, eps=epsilon, version='standard', device = rank)
         print('adversary instanciated')
         
         total_correct_nat = 0
