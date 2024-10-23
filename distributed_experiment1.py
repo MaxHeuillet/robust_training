@@ -1,4 +1,6 @@
 from comet_ml import Experiment
+from filelock import FileLock
+import pandas as pd
 
 
 
@@ -282,30 +284,34 @@ class BaseExperiment:
         self.final_validation(test_dataset, model, experiment, iteration, rank )
         
         ### log all the results of the experiment in a csv file:
+        # Define the file lock
+        lock = FileLock("results.csv.lock")
 
-        data_path = './results/results_{}.csv'.format(self.args.exp)
-        try:
-            df = pd.read_csv(data_path)
-        except FileNotFoundError:
-            df = pd.DataFrame()
+        with lock:
+            cluster_name = os.environ.get('SLURM_CLUSTER_NAME', 'Unknown')
+            data_path = './results/results_{}_{}.csv'.format(cluster_name, self.args.exp)
+            try:
+                df = pd.read_csv(data_path)
+            except FileNotFoundError:
+                df = pd.DataFrame()
 
-        current_experiment = vars(self.args)
+            current_experiment = vars(self.args)
 
-        key_columns = list( current_experiment.keys() )
+            key_columns = list( current_experiment.keys() )
 
-        # Check if the experiment exists and get the matching row index
-        exists, match_mask = experiment_exists(df, current_experiment, key_columns, tol=1e-6)
+            # Check if the experiment exists and get the matching row index
+            exists, match_mask = experiment_exists(df, current_experiment, key_columns, tol=1e-6)
 
-        if not exists:
-            # If the experiment doesn't exist, append it as a new row
-            new_row = pd.DataFrame([current_experiment])
-            new_row.to_csv(data_path, mode='a', header=not df.empty, index=False)
-        else:
-            # If the experiment exists, overwrite the existing row
-            df.loc[match_mask, :] = pd.DataFrame([current_experiment])
-            df.to_csv('results.csv', index=False)
+            if not exists:
+                # If the experiment doesn't exist, append it as a new row
+                new_row = pd.DataFrame([current_experiment])
+                new_row.to_csv(data_path, mode='a', header=not df.empty, index=False)
+            else:
+                # If the experiment exists, overwrite the existing row
+                df.loc[match_mask, :] = pd.DataFrame([current_experiment])
+                df.to_csv('results.csv', index=False)
 
-        print(f"Experiment {'updated' if exists else 'added'} successfully.")
+            print(f"Experiment {'updated' if exists else 'added'} successfully.")
 
 
         experiment.end()
