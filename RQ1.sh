@@ -3,15 +3,15 @@
 # Define variables
 seeds=1
 archs=( 'convnext' ) # 'resnet50' 'vitsmall'
-datas=( 'Aircraft'  ) # 'CIFAR100',   'EuroSAT', 'CIFAR100', 'CIFAR10', ,
+datas=( 'CIFAR10'  ) # 'CIFAR100',   'EuroSAT', 'CIFAR100', 'CIFAR10', ,
 task='train'
 losses=('TRADES_v2', 'APGD')
 sched='nosched'
-iterations=50
+iterations=2
 aug='aug'
 exp='RQ1'
 
-init_lrs=( 0.0001 0.0005 0.001  )
+init_lrs=( 0.0001 ) #0.0005 0.001
 pruning_ratios=( 0 )
 pruning_strategies=( 'random' )
 batch_strategies=('random')
