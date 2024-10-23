@@ -41,6 +41,24 @@ from cosine import CosineLR
 
 import numpy as np
 import tqdm
+import pandas as pd
+
+def experiment_exists(df, current_experiment, key_columns, tol=1e-6):
+    df_key = df[key_columns]
+    current_experiment_key = {k: current_experiment[k] for k in key_columns}
+    current_df_key = pd.DataFrame([current_experiment_key])
+
+    matches = []
+    for col in key_columns:
+        if df_key[col].dtype.kind in 'fc':  # if column is float or complex
+            match_series = pd.Series(np.isclose(df_key[col], current_df_key[col].iloc[0], atol=tol))
+        else:
+            match_series = df_key[col] == current_df_key[col].iloc[0]
+        matches.append(match_series)
+
+    exists = pd.concat(matches, axis=1).all(axis=1).any()
+
+    return exists, pd.concat(matches, axis=1).all(axis=1)
 
 
 
@@ -230,7 +248,7 @@ class BaseExperiment:
             # experiment.log_metric("adv_value", robust_values.mean(), epoch=iteration)
             experiment.log_metric("lr_schedule", current_lr, epoch=iteration)
             experiment.log_metric("gradient_norm", gradient_norm, epoch=iteration)
-            experiment.log_metric("reward", loss_values.sum(), epoch=iteration)  
+            #experiment.log_metric("reward", loss_values.sum(), epoch=iteration)  
 
             if iteration % 5 == 0:
                 print('start validation') 
@@ -259,9 +277,37 @@ class BaseExperiment:
         del trainloader, valloader
         del train_dataset, val_dataset
         del train_sampler, val_sampler
+
         print('final validation')
         self.final_validation(test_dataset, model, experiment, iteration, rank )
         
+        ### log all the results of the experiment in a csv file:
+
+        data_path = './results/results_{}.csv'.format(self.args.exp)
+        try:
+            df = pd.read_csv(data_path)
+        except FileNotFoundError:
+            df = pd.DataFrame()
+
+        current_experiment = vars(self.args)
+
+        key_columns = list( current_experiment.keys() )
+
+        # Check if the experiment exists and get the matching row index
+        exists, match_mask = experiment_exists(df, current_experiment, key_columns, tol=1e-6)
+
+        if not exists:
+            # If the experiment doesn't exist, append it as a new row
+            new_row = pd.DataFrame([current_experiment])
+            new_row.to_csv(data_path, mode='a', header=not df.empty, index=False)
+        else:
+            # If the experiment exists, overwrite the existing row
+            df.loc[match_mask, :] = pd.DataFrame([current_experiment])
+            df.to_csv('results.csv', index=False)
+
+        print(f"Experiment {'updated' if exists else 'added'} successfully.")
+
+
         experiment.end()
 
         print('clean up',flush=True)
