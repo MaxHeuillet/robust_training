@@ -259,7 +259,7 @@ class BaseExperiment:
         del trainloader, valloader
         del train_dataset, val_dataset
         del train_sampler, val_sampler
-        
+        print('final validation')
         self.final_validation(test_dataset, model, experiment, iteration, rank )
         
         experiment.end()
@@ -267,59 +267,95 @@ class BaseExperiment:
         print('clean up',flush=True)
         self.setup.cleanup()
 
-    def final_validation(self, test_dataset, model, experiment, iteration, rank ):
+    def final_validation(self, test_dataset, model, experiment, iteration, rank):
 
-        model_eval = load_architecture(self.args).to(rank)
-        model_eval.load_state_dict(model.module.state_dict())
-        # Convert SyncBatchNorm to BatchNorm
-        model_eval = convert_syncbn_to_bn(model_eval)
+        if rank == 0:
+            # Re-instantiate the model
+            model_eval = load_architecture(self.args)
+            model_eval.load_state_dict(model.module.state_dict())
+            # Convert SyncBatchNorm to BatchNorm
+            model_eval = convert_syncbn_to_bn(model_eval)
+            model_eval.eval()
+            model_eval = model_eval.to(rank)  # Ensure the model is on the correct device
 
-        model.eval()
+            # Create DataLoader for the test_dataset
+            testloader = DataLoader(
+                test_dataset, batch_size=64, shuffle=False, num_workers=0, pin_memory=False
+            )
 
-        # Create a new testloader without DistributedSampler
-        total_size = len(test_dataset)
-        per_process_size = total_size // self.world_size
+            print('start AA accuracy')
+            total_correct_nat, total_correct_adv, total_examples = self.compute_AA_accuracy(
+                testloader, model_eval, rank
+            )
+            print('end AA accuracy')
 
-        # Calculate start and end indices for each process
-        start_idx = rank * per_process_size
-        # Ensure the last process gets any remaining data
-        end_idx = (rank + 1) * per_process_size if rank != self.world_size - 1 else total_size
+            # Compute the metrics
+            clean_accuracy = total_correct_nat / total_examples
+            robust_accuracy = total_correct_adv / total_examples
 
-        # Subset the dataset
-        subset_indices = list(range(start_idx, end_idx))
-        subset_dataset = torch.utils.data.Subset(test_dataset, subset_indices)
-        print(rank, len(subset_indices) )
+            # Log the metrics
+            experiment.log_metric("final_clean_accuracy", clean_accuracy, epoch=iteration)
+            experiment.log_metric("final_robust_accuracy", robust_accuracy, epoch=iteration)
+        else:
+            # Other ranks do nothing
+            pass
 
-        # Create DataLoader for the subset
-        testloader = DataLoader(subset_dataset, batch_size=64, shuffle=False, num_workers=0, pin_memory=False)
+        # Do not use dist.barrier() here
 
-        print('start AA accuracy')
-        total_correct_nat, total_correct_adv, total_examples = self.compute_AA_accuracy(testloader, model, rank)
-        print('end AA accuracy')
 
-        dist.barrier() 
-        clean_accuracy, robust_accuracy  = self.sync_final_result(total_correct_nat, total_correct_adv, total_examples, rank)
+    # def final_validation(self, test_dataset, model, experiment, iteration, rank ):
+
+    #     model_eval = load_architecture(self.args).to(rank)
+    #     model_eval.load_state_dict(model.module.state_dict())
+    #     # Convert SyncBatchNorm to BatchNorm
+    #     model_eval = convert_syncbn_to_bn(model_eval)
+
+    #     model.eval()
+
+    #     # Create a new testloader without DistributedSampler
+    #     total_size = len(test_dataset)
+    #     per_process_size = total_size // self.world_size
+
+    #     # Calculate start and end indices for each process
+    #     start_idx = rank * per_process_size
+    #     # Ensure the last process gets any remaining data
+    #     end_idx = (rank + 1) * per_process_size if rank != self.world_size - 1 else total_size
+
+    #     # Subset the dataset
+    #     subset_indices = list(range(start_idx, end_idx))
+    #     subset_dataset = torch.utils.data.Subset(test_dataset, subset_indices)
+    #     print(rank, len(subset_indices) )
+
+    #     # Create DataLoader for the subset
+    #     testloader = DataLoader(subset_dataset, batch_size=64, shuffle=False, num_workers=0, pin_memory=False)
+
+    #     print('start AA accuracy')
+    #     total_correct_nat, total_correct_adv, total_examples = self.compute_AA_accuracy(testloader, model, rank)
+    #     print('end AA accuracy')
+
+    #     dist.barrier() 
+    #     clean_accuracy, robust_accuracy  = self.sync_final_result(total_correct_nat, total_correct_adv, total_examples, rank)
         
         
-        experiment.log_metric("final_clean_accuracy", clean_accuracy, epoch=iteration)
-        experiment.log_metric("final_robust_accuracy", robust_accuracy, epoch=iteration)
+    #     experiment.log_metric("final_clean_accuracy", clean_accuracy, epoch=iteration)
+    #     experiment.log_metric("final_robust_accuracy", robust_accuracy, epoch=iteration)
 
-    def sync_final_result(self, total_correct_nat, total_correct_adv, total_examples, rank):
+    # def sync_final_result(self, total_correct_nat, total_correct_adv, total_examples, rank):
 
-        # Aggregate results across all processes
-        total_correct_nat_tensor = torch.tensor([total_correct_nat], dtype=torch.float32, device=rank)
-        total_correct_adv_tensor = torch.tensor([total_correct_adv], dtype=torch.float32, device=rank)
-        total_examples_tensor = torch.tensor([total_examples], dtype=torch.float32, device=rank)
+    #     # Aggregate results across all processes
+    #     total_correct_nat_tensor = torch.tensor([total_correct_nat], dtype=torch.float32, device=rank)
+    #     total_correct_adv_tensor = torch.tensor([total_correct_adv], dtype=torch.float32, device=rank)
+    #     total_examples_tensor = torch.tensor([total_examples], dtype=torch.float32, device=rank)
 
-        dist.all_reduce(total_correct_nat_tensor, op=dist.ReduceOp.SUM)
-        dist.all_reduce(total_correct_adv_tensor, op=dist.ReduceOp.SUM)
-        dist.all_reduce(total_examples_tensor, op=dist.ReduceOp.SUM)
+    #     dist.all_reduce(total_correct_nat_tensor, op=dist.ReduceOp.SUM)
+    #     dist.all_reduce(total_correct_adv_tensor, op=dist.ReduceOp.SUM)
+    #     dist.all_reduce(total_examples_tensor, op=dist.ReduceOp.SUM)
 
-        # Compute global averages
-        clean_accuracy = total_correct_nat_tensor.item() / total_examples_tensor.item()
-        robust_accuracy = total_correct_adv_tensor.item() / total_examples_tensor.item()
+    #     # Compute global averages
+    #     clean_accuracy = total_correct_nat_tensor.item() / total_examples_tensor.item()
+    #     robust_accuracy = total_correct_adv_tensor.item() / total_examples_tensor.item()
 
-        return clean_accuracy, robust_accuracy
+    #     return clean_accuracy, robust_accuracy
 
     def compute_AA_accuracy(self, testloader, model, rank):
 
