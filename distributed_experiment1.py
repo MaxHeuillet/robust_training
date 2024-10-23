@@ -286,7 +286,7 @@ class BaseExperiment:
         del train_sampler, val_sampler
 
         print('final validation')
-        self.final_validation(test_dataset, model, experiment, iteration, rank )
+        clean_accuracy, robust_accuracy = self.final_validation(test_dataset, model, experiment, iteration, rank )
         
         ### log all the results of the experiment in a csv file:
         # Define the file lock
@@ -304,6 +304,8 @@ class BaseExperiment:
 
             # Add a timestamp to the current experiment
             current_experiment['timestamp'] = generate_timestamp()
+            current_experiment['clean_acc'] = clean_accuracy
+            current_experiment['robust_acc'] = robust_accuracy
 
             # Define the key columns to check for experiment existence
             key_columns = list(current_experiment.keys())
@@ -361,6 +363,8 @@ class BaseExperiment:
         else:
             # Other ranks do nothing
             pass
+
+        return clean_accuracy,robust_accuracy
 
         # Do not use dist.barrier() here
 
