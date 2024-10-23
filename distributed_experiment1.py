@@ -44,6 +44,7 @@ from cosine import CosineLR
 import numpy as np
 import tqdm
 import pandas as pd
+from datetime import datetime
 
 def experiment_exists(df, current_experiment, key_columns, tol=1e-6):
     df_key = df[key_columns]
@@ -61,6 +62,10 @@ def experiment_exists(df, current_experiment, key_columns, tol=1e-6):
     exists = pd.concat(matches, axis=1).all(axis=1).any()
 
     return exists, pd.concat(matches, axis=1).all(axis=1)
+
+# Generate timestamp in AA/MM/DD/HH/MM/SS format
+def generate_timestamp():
+    return datetime.now().strftime('%y/%m/%d/%H/%M/%S')
 
 
 
@@ -297,7 +302,12 @@ class BaseExperiment:
 
             current_experiment = vars(self.args)
 
-            key_columns = list( current_experiment.keys() )
+            # Add a timestamp to the current experiment
+            current_experiment['timestamp'] = generate_timestamp()
+
+            # Define the key columns to check for experiment existence
+            key_columns = list(current_experiment.keys())
+            key_columns.remove('timestamp')  # 'timestamp' is not part of the key
 
             # Check if the experiment exists and get the matching row index
             exists, match_mask = experiment_exists(df, current_experiment, key_columns, tol=1e-6)
