@@ -286,8 +286,23 @@ class BaseExperiment:
         del train_sampler, val_sampler
 
         print('final validation')
-        clean_accuracy, robust_accuracy = self.final_validation(test_dataset, model, experiment, iteration, rank )
-        
+
+        if rank == 0:
+            clean_accuracy, robust_accuracy = self.final_validation(test_dataset, model, experiment, iteration, rank )
+            
+            self.syn_results(clean_accuracy, robust_accuracy)
+
+        else:
+            # Other ranks do nothing
+            pass
+
+
+        experiment.end()
+
+        print('clean up',flush=True)
+        self.setup.cleanup()
+
+    def syn_results(self,clean_accuracy, robust_accuracy):
         ### log all the results of the experiment in a csv file:
         # Define the file lock
         lock = FileLock("results.csv.lock")
@@ -309,7 +324,9 @@ class BaseExperiment:
 
             # Define the key columns to check for experiment existence
             key_columns = list(current_experiment.keys())
-            key_columns.remove('timestamp')  # 'timestamp' is not part of the key
+            key_columns.remove('timestamp')  
+            key_columns.remove('clean_acc') 
+            key_columns.remove('robust_acc')  
 
             # Check if the experiment exists and get the matching row index
             exists, match_mask = experiment_exists(df, current_experiment, key_columns, tol=1e-6)
@@ -321,19 +338,14 @@ class BaseExperiment:
             else:
                 # If the experiment exists, overwrite the existing row
                 df.loc[match_mask, :] = pd.DataFrame([current_experiment])
-                df.to_csv('results.csv', index=False)
+                df.to_csv(data_path, index=False)
 
             print(f"Experiment {'updated' if exists else 'added'} successfully.")
 
-
-        experiment.end()
-
-        print('clean up',flush=True)
-        self.setup.cleanup()
+    
 
     def final_validation(self, test_dataset, model, experiment, iteration, rank):
-
-        if rank == 0:
+        
             # Re-instantiate the model
             model_eval = load_architecture(self.args)
             model_eval.load_state_dict(model.module.state_dict())
@@ -360,11 +372,11 @@ class BaseExperiment:
             # Log the metrics
             experiment.log_metric("final_clean_accuracy", clean_accuracy, epoch=iteration)
             experiment.log_metric("final_robust_accuracy", robust_accuracy, epoch=iteration)
-        else:
-            # Other ranks do nothing
-            pass
 
-        return clean_accuracy,robust_accuracy
+            return clean_accuracy, robust_accuracy
+
+
+    
 
         # Do not use dist.barrier() here
 
