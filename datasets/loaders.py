@@ -16,11 +16,9 @@ def load_data(args):
         # Load the dataset
         transform = transforms.Compose([
             transforms.ToTensor(),
-            transforms.Normalize((0.1307,), (0.3081,))  
-        ])
+            transforms.Normalize((0.1307,), (0.3081,))    ])
 
         N = 10
-        
         
         dataset = datasets.MNIST(root=args.data_dir, train=True, download=True, )
 
@@ -103,8 +101,19 @@ def load_data(args):
         val_dataset =   datasets.FGVCAircraft(root=args.data_dir, split='val', download=False, )
         test_dataset = datasets.FGVCAircraft(root=args.data_dir, split='test', download=False, )
 
-    else:
-        print('undefined data')
+    elif args.dataset == 'Eurosat':
+
+        if args.aug == 'aug' and args.pre_trained != 'no': 
+            transform = transforms.Compose([
+                                        transforms.Resize((64, 64)),  # Resize images to 224x224
+                                        transforms.ToTensor(),
+                                        transforms.RandomCrop(224, padding=4), 
+                                        transforms.RandomHorizontalFlip(0.5), 
+                                        transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ),])
+        else:
+            print('undefined case')
+
+        
 
     return train_dataset, val_dataset, test_dataset, N, transform
 
