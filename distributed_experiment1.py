@@ -308,28 +308,26 @@ class BaseExperiment:
         lock = FileLock("results.csv.lock")
 
         with lock:
+
             cluster_name = os.environ.get('SLURM_CLUSTER_NAME', 'Unknown')
             data_path = './results/results_{}_{}.csv'.format(cluster_name, self.args.exp)
+            # Define the key columns to check for experiment existence
+            columns = list(current_experiment.keys())
+
             try:
                 df = pd.read_csv(data_path)
             except FileNotFoundError:
-                df = pd.DataFrame()
-
-            
+                df = pd.DataFrame(columns=key_columns + ['timestamp', 'clean_acc', 'robust_acc'])
 
             current_experiment = vars(self.args)
-
-            # Add a timestamp to the current experiment
             current_experiment['timestamp'] = generate_timestamp()
             current_experiment['clean_acc'] = clean_accuracy
             current_experiment['robust_acc'] = robust_accuracy
 
-            # Define the key columns to check for experiment existence
-            key_columns = list(current_experiment.keys())
+            key_columns = columns.copy()
             key_columns.remove('timestamp')  
             key_columns.remove('clean_acc') 
             key_columns.remove('robust_acc')  
-
 
             if df.empty:
                 exists = False
@@ -362,7 +360,7 @@ class BaseExperiment:
 
             # Create DataLoader for the test_dataset
             testloader = DataLoader(
-                test_dataset, batch_size=256, shuffle=False, num_workers=0, pin_memory=False
+                test_dataset, batch_size=512, shuffle=False, num_workers=0, pin_memory=False
             )
 
             print('start AA accuracy')
