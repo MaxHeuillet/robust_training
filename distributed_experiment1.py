@@ -315,6 +315,8 @@ class BaseExperiment:
             except FileNotFoundError:
                 df = pd.DataFrame()
 
+            
+
             current_experiment = vars(self.args)
 
             # Add a timestamp to the current experiment
@@ -328,8 +330,12 @@ class BaseExperiment:
             key_columns.remove('clean_acc') 
             key_columns.remove('robust_acc')  
 
-            # Check if the experiment exists and get the matching row index
-            exists, match_mask = experiment_exists(df, current_experiment, key_columns, tol=1e-6)
+
+            if df.empty:
+                exists = False
+                match_mask = None
+            else:
+                exists, match_mask = experiment_exists(df, current_experiment, key_columns, tol=1e-6)
 
             if not exists:
                 # If the experiment doesn't exist, append it as a new row
