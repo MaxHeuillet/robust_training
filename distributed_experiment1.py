@@ -312,19 +312,20 @@ class BaseExperiment:
             cluster_name = os.environ.get('SLURM_CLUSTER_NAME', 'Unknown')
             data_path = './results/results_{}_{}.csv'.format(cluster_name, self.args.exp)
             # Define the key columns to check for experiment existence
+            current_experiment = vars(self.args)
             columns = list(current_experiment.keys())
+            key_columns = columns.copy()
 
             try:
                 df = pd.read_csv(data_path)
             except FileNotFoundError:
                 df = pd.DataFrame(columns=key_columns + ['timestamp', 'clean_acc', 'robust_acc'])
 
-            current_experiment = vars(self.args)
+            
             current_experiment['timestamp'] = generate_timestamp()
             current_experiment['clean_acc'] = clean_accuracy
             current_experiment['robust_acc'] = robust_accuracy
 
-            key_columns = columns.copy()
             key_columns.remove('timestamp')  
             key_columns.remove('clean_acc') 
             key_columns.remove('robust_acc')  
