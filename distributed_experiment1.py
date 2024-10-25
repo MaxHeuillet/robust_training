@@ -326,9 +326,9 @@ class BaseExperiment:
             current_experiment['clean_acc'] = clean_accuracy
             current_experiment['robust_acc'] = robust_accuracy
 
-            key_columns.remove('timestamp')  
-            key_columns.remove('clean_acc') 
-            key_columns.remove('robust_acc')  
+            # key_columns.remove('timestamp')  
+            # key_columns.remove('clean_acc') 
+            # key_columns.remove('robust_acc')  
 
             if df.empty:
                 exists = False
