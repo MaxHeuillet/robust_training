@@ -46,26 +46,45 @@ import tqdm
 import pandas as pd
 from datetime import datetime
 
-def experiment_exists(df, current_experiment, key_columns, tol=1e-6):
-    df_key = df[key_columns]
-    current_experiment_key = {k: current_experiment[k] for k in key_columns}
-    current_df_key = pd.DataFrame([current_experiment_key])
+def get_unique_id(args):
+    """
+    Generates a unique ID for a given configuration of arguments.
+    :param args: A dictionary of arguments.
+    :return: A unique ID string.
+    """
+    # Serialize the arguments to a JSON string, ensuring consistent sorting of keys
+    args_string = json.dumps(args, sort_keys=True)
+    
+    # Generate a hash from the serialized string
+    unique_id = hashlib.md5(args_string.encode()).hexdigest()
+    
+    return unique_id
 
-    matches = []
-    for col in key_columns:
-        if df_key[col].dtype.kind in 'fc':  # if column is float or complex
-            match_series = pd.Series(np.isclose(df_key[col], current_df_key[col].iloc[0], atol=tol))
-        else:
-            match_series = df_key[col] == current_df_key[col].iloc[0]
-        matches.append(match_series)
-
-    exists = pd.concat(matches, axis=1).all(axis=1).any()
-
-    return exists, pd.concat(matches, axis=1).all(axis=1)
-
-# Generate timestamp in AA/MM/DD/HH/MM/SS format
 def generate_timestamp():
     return datetime.now().strftime('%y/%m/%d/%H/%M/%S')
+
+def check_unique_id(df1, df2, unique_id_col='unique_id'):
+    """
+    Checks if the unique ID from df2 exists in df1.
+    
+    :param df1: DataFrame containing multiple rows.
+    :param df2: DataFrame containing a single row.
+    :param unique_id_col: Column name for the unique ID.
+    :return: (bool, list) - Exists flag and list of iloc indices if matches are found, else an empty list.
+    """
+    # Get the unique ID from df2
+    unique_id = df2[unique_id_col].iloc[0]
+    
+    # Find all matching indices in df1
+    matching_indices = df1[df1[unique_id_col] == unique_id].index
+
+    if not matching_indices.empty:
+        # If matches are found, return True and the list of iloc indices
+        iloc_indices = [df1.index.get_loc(idx) for idx in matching_indices]
+        return True, iloc_indices
+    else:
+        # If no matches are found, return False and an empty list
+        return False, []
 
 
 
@@ -302,17 +321,17 @@ class BaseExperiment:
         print('clean up',flush=True)
         self.setup.cleanup()
 
-    def syn_results(self,clean_accuracy, robust_accuracy):
-        ### log all the results of the experiment in a csv file:
-        # Define the file lock
-        lock = FileLock("results.csv.lock")
+    def syn_results(self, clean_accuracy, robust_accuracy):
+
+        cluster_name = os.environ.get('SLURM_CLUSTER_NAME', 'Unknown')
+        data_path = './results/results_{}_{}.csv'.format(cluster_name, self.args.exp)
+        
+        lock = FileLock(data_path + '.lock')
 
         with lock:
 
-            cluster_name = os.environ.get('SLURM_CLUSTER_NAME', 'Unknown')
-            data_path = './results/results_{}_{}.csv'.format(cluster_name, self.args.exp)
-            # Define the key columns to check for experiment existence
             current_experiment = vars(self.args)
+            epx_id = get_unique_id(current_experiment)
             columns = list(current_experiment.keys())
             key_columns = columns.copy()
 
@@ -321,31 +340,31 @@ class BaseExperiment:
             except FileNotFoundError:
                 df = pd.DataFrame(columns=key_columns + ['timestamp', 'clean_acc', 'robust_acc'])
 
-            
+            current_experiment['id'] = epx_id        
             current_experiment['timestamp'] = generate_timestamp()
             current_experiment['clean_acc'] = clean_accuracy
             current_experiment['robust_acc'] = robust_accuracy
-
-            # key_columns.remove('timestamp')  
-            # key_columns.remove('clean_acc') 
-            # key_columns.remove('robust_acc')  
-
+            
+            new_row = pd.DataFrame([current_experiment], columns=current_experiment.keys() )
+            
             if df.empty:
-                exists = False
-                match_mask = None
+                df = pd.concat([df, new_row]) 
+                
             else:
-                exists, match_mask = experiment_exists(df, current_experiment, key_columns, tol=1e-6)
+                exists, match_mask = check_unique_id(df, new_row, 'id')
+                print('exists', exists, match_mask)
 
-            if not exists:
-                # If the experiment doesn't exist, append it as a new row
-                new_row = pd.DataFrame([current_experiment])
-                new_row.to_csv(data_path, mode='a', header=not df.empty, index=False)
-            else:
-                # If the experiment exists, overwrite the existing row
-                df.loc[match_mask, :] = pd.DataFrame([current_experiment])
-                df.to_csv(data_path, index=False)
+                if not exists:
+                    print('experiment does not exist in the database')
+                    df = pd.concat([df, new_row])
 
-            print(f"Experiment {'updated' if exists else 'added'} successfully.")
+                else:
+                    print('experiment already exists in the database')
+                    # If the experiment exists, overwrite the existing row
+                    new_row = new_row[df.columns]
+                    df.loc[match_mask, :] = new_row.values
+
+            df.to_csv(data_path, header=True, index=False)
 
     
 
