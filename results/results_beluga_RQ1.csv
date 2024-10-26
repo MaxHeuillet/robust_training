@@ -1,2 +1,0 @@
-convnext,imagenet21k_non_robust,nolora,CIFAR10,random,0.0,random,aug,2,1,64,64,APGD,0.0001,nosched,0.9,0.0001,1,./logs,./state_dicts,~/scratch/data,train,1,0.01568627450980392,0.00784313725490196,10,1.0,l_inf,0.3,RQ1,cuda,24/10/23/22/23/57,0.145,0.0092
-convnext,imagenet1k_non_robust,nolora,CIFAR10,random,0.0,random,aug,2,1,64,64,APGD,0.0001,nosched,0.9,0.0001,1,./logs,./state_dicts,~/scratch/data,train,1,0.01568627450980392,0.00784313725490196,10,1.0,l_inf,0.3,RQ1,cuda,24/10/23/22/28/13,0.2276,0.0875
