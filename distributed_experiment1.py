@@ -46,16 +46,16 @@ import tqdm
 import pandas as pd
 from datetime import datetime
 
+import hashlib
+import json
+
+import pandas as pd
+import numpy as np
+
 def get_unique_id(args):
-    """
-    Generates a unique ID for a given configuration of arguments.
-    :param args: A dictionary of arguments.
-    :return: A unique ID string.
-    """
-    # Serialize the arguments to a JSON string, ensuring consistent sorting of keys
+
     args_string = json.dumps(args, sort_keys=True)
-    
-    # Generate a hash from the serialized string
+  
     unique_id = hashlib.md5(args_string.encode()).hexdigest()
     
     return unique_id
@@ -64,29 +64,16 @@ def generate_timestamp():
     return datetime.now().strftime('%y/%m/%d/%H/%M/%S')
 
 def check_unique_id(df1, df2, unique_id_col='unique_id'):
-    """
-    Checks if the unique ID from df2 exists in df1.
-    
-    :param df1: DataFrame containing multiple rows.
-    :param df2: DataFrame containing a single row.
-    :param unique_id_col: Column name for the unique ID.
-    :return: (bool, list) - Exists flag and list of iloc indices if matches are found, else an empty list.
-    """
-    # Get the unique ID from df2
+
     unique_id = df2[unique_id_col].iloc[0]
     
-    # Find all matching indices in df1
     matching_indices = df1[df1[unique_id_col] == unique_id].index
 
     if not matching_indices.empty:
-        # If matches are found, return True and the list of iloc indices
         iloc_indices = [df1.index.get_loc(idx) for idx in matching_indices]
         return True, iloc_indices
     else:
-        # If no matches are found, return False and an empty list
         return False, []
-
-
 
 def compute_gradient_norms(model):
     total_norm = 0
@@ -144,6 +131,8 @@ class BaseExperiment:
         self.config_name = get_exp_name(args)
         self.setup = Setup(args, self.config_name)
         self.world_size = world_size
+        self.current_experiment = vars(self.args)
+        self.epx_id = get_unique_id(self.current_experiment)
 
     def training(self, rank, ): 
 
@@ -330,9 +319,8 @@ class BaseExperiment:
 
         with lock:
 
-            current_experiment = vars(self.args)
-            epx_id = get_unique_id(current_experiment)
-            columns = list(current_experiment.keys())
+            
+            columns = list(self.current_experiment.keys())
             key_columns = columns.copy()
 
             try:
@@ -340,12 +328,12 @@ class BaseExperiment:
             except FileNotFoundError:
                 df = pd.DataFrame(columns=key_columns + ['timestamp', 'clean_acc', 'robust_acc'])
 
-            current_experiment['id'] = epx_id        
-            current_experiment['timestamp'] = generate_timestamp()
-            current_experiment['clean_acc'] = clean_accuracy
-            current_experiment['robust_acc'] = robust_accuracy
+            self.current_experiment['id'] = self.epx_id        
+            self.current_experiment['timestamp'] = generate_timestamp()
+            self.current_experiment['clean_acc'] = clean_accuracy
+            self.current_experiment['robust_acc'] = robust_accuracy
             
-            new_row = pd.DataFrame([current_experiment], columns=current_experiment.keys() )
+            new_row = pd.DataFrame([self.current_experiment], columns=self.current_experiment.keys() )
             
             if df.empty:
                 df = pd.concat([df, new_row]) 
@@ -399,65 +387,6 @@ class BaseExperiment:
 
             return clean_accuracy, robust_accuracy
 
-
-    
-
-        # Do not use dist.barrier() here
-
-
-    # def final_validation(self, test_dataset, model, experiment, iteration, rank ):
-
-    #     model_eval = load_architecture(self.args).to(rank)
-    #     model_eval.load_state_dict(model.module.state_dict())
-    #     # Convert SyncBatchNorm to BatchNorm
-    #     model_eval = convert_syncbn_to_bn(model_eval)
-
-    #     model.eval()
-
-    #     # Create a new testloader without DistributedSampler
-    #     total_size = len(test_dataset)
-    #     per_process_size = total_size // self.world_size
-
-    #     # Calculate start and end indices for each process
-    #     start_idx = rank * per_process_size
-    #     # Ensure the last process gets any remaining data
-    #     end_idx = (rank + 1) * per_process_size if rank != self.world_size - 1 else total_size
-
-    #     # Subset the dataset
-    #     subset_indices = list(range(start_idx, end_idx))
-    #     subset_dataset = torch.utils.data.Subset(test_dataset, subset_indices)
-    #     print(rank, len(subset_indices) )
-
-    #     # Create DataLoader for the subset
-    #     testloader = DataLoader(subset_dataset, batch_size=64, shuffle=False, num_workers=0, pin_memory=False)
-
-    #     print('start AA accuracy')
-    #     total_correct_nat, total_correct_adv, total_examples = self.compute_AA_accuracy(testloader, model, rank)
-    #     print('end AA accuracy')
-
-    #     dist.barrier() 
-    #     clean_accuracy, robust_accuracy  = self.sync_final_result(total_correct_nat, total_correct_adv, total_examples, rank)
-        
-        
-    #     experiment.log_metric("final_clean_accuracy", clean_accuracy, epoch=iteration)
-    #     experiment.log_metric("final_robust_accuracy", robust_accuracy, epoch=iteration)
-
-    # def sync_final_result(self, total_correct_nat, total_correct_adv, total_examples, rank):
-
-    #     # Aggregate results across all processes
-    #     total_correct_nat_tensor = torch.tensor([total_correct_nat], dtype=torch.float32, device=rank)
-    #     total_correct_adv_tensor = torch.tensor([total_correct_adv], dtype=torch.float32, device=rank)
-    #     total_examples_tensor = torch.tensor([total_examples], dtype=torch.float32, device=rank)
-
-    #     dist.all_reduce(total_correct_nat_tensor, op=dist.ReduceOp.SUM)
-    #     dist.all_reduce(total_correct_adv_tensor, op=dist.ReduceOp.SUM)
-    #     dist.all_reduce(total_examples_tensor, op=dist.ReduceOp.SUM)
-
-    #     # Compute global averages
-    #     clean_accuracy = total_correct_nat_tensor.item() / total_examples_tensor.item()
-    #     robust_accuracy = total_correct_adv_tensor.item() / total_examples_tensor.item()
-
-    #     return clean_accuracy, robust_accuracy
 
     def compute_AA_accuracy(self, testloader, model, rank):
 
@@ -577,3 +506,67 @@ if __name__ == "__main__":
     if args.task == "train":
         print('begin training')
         torch.multiprocessing.spawn(experiment.training,  nprocs=experiment.world_size, join=True)
+
+
+
+
+
+
+    
+
+# Do not use dist.barrier() here
+
+
+    # def final_validation(self, test_dataset, model, experiment, iteration, rank ):
+
+    #     model_eval = load_architecture(self.args).to(rank)
+    #     model_eval.load_state_dict(model.module.state_dict())
+    #     # Convert SyncBatchNorm to BatchNorm
+    #     model_eval = convert_syncbn_to_bn(model_eval)
+
+    #     model.eval()
+
+    #     # Create a new testloader without DistributedSampler
+    #     total_size = len(test_dataset)
+    #     per_process_size = total_size // self.world_size
+
+    #     # Calculate start and end indices for each process
+    #     start_idx = rank * per_process_size
+    #     # Ensure the last process gets any remaining data
+    #     end_idx = (rank + 1) * per_process_size if rank != self.world_size - 1 else total_size
+
+    #     # Subset the dataset
+    #     subset_indices = list(range(start_idx, end_idx))
+    #     subset_dataset = torch.utils.data.Subset(test_dataset, subset_indices)
+    #     print(rank, len(subset_indices) )
+
+    #     # Create DataLoader for the subset
+    #     testloader = DataLoader(subset_dataset, batch_size=64, shuffle=False, num_workers=0, pin_memory=False)
+
+    #     print('start AA accuracy')
+    #     total_correct_nat, total_correct_adv, total_examples = self.compute_AA_accuracy(testloader, model, rank)
+    #     print('end AA accuracy')
+
+    #     dist.barrier() 
+    #     clean_accuracy, robust_accuracy  = self.sync_final_result(total_correct_nat, total_correct_adv, total_examples, rank)
+        
+        
+    #     experiment.log_metric("final_clean_accuracy", clean_accuracy, epoch=iteration)
+    #     experiment.log_metric("final_robust_accuracy", robust_accuracy, epoch=iteration)
+
+    # def sync_final_result(self, total_correct_nat, total_correct_adv, total_examples, rank):
+
+    #     # Aggregate results across all processes
+    #     total_correct_nat_tensor = torch.tensor([total_correct_nat], dtype=torch.float32, device=rank)
+    #     total_correct_adv_tensor = torch.tensor([total_correct_adv], dtype=torch.float32, device=rank)
+    #     total_examples_tensor = torch.tensor([total_examples], dtype=torch.float32, device=rank)
+
+    #     dist.all_reduce(total_correct_nat_tensor, op=dist.ReduceOp.SUM)
+    #     dist.all_reduce(total_correct_adv_tensor, op=dist.ReduceOp.SUM)
+    #     dist.all_reduce(total_examples_tensor, op=dist.ReduceOp.SUM)
+
+    #     # Compute global averages
+    #     clean_accuracy = total_correct_nat_tensor.item() / total_examples_tensor.item()
+    #     robust_accuracy = total_correct_adv_tensor.item() / total_examples_tensor.item()
+
+    #     return clean_accuracy, robust_accuracy
