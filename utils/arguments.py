@@ -81,6 +81,6 @@ def get_args():
 
     args, unknown = parser.parse_known_args()
 
-    args.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    #args.device = "cuda" if torch.cuda.is_available() else "cpu"
     
     return args
