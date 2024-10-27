@@ -36,7 +36,7 @@ class Setup:
         elif os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'beluga' and self.args.dataset in ['EuroSAT']:
             batch_size = 128
         elif os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'narval' and self.args.dataset in ['Aircraft']:
-            batch_size = 128
+            batch_size = 64
 
         else:
             print('error')
