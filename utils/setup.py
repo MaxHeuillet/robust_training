@@ -37,6 +37,8 @@ class Setup:
             batch_size = 128
         elif os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'narval' and self.args.dataset in ['Aircraft']:
             batch_size = 64
+        elif os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'narval' and self.args.dataset in ['CIFAR10', 'CIFAR100']:
+            batch_size = 512
 
         else:
             print('error')
