@@ -368,7 +368,7 @@ class BaseExperiment:
 
             # Create DataLoader for the test_dataset
             testloader = DataLoader(
-                test_dataset, batch_size=256, shuffle=False, num_workers=0, pin_memory=False
+                test_dataset, batch_size=128, shuffle=False, num_workers=0, pin_memory=False
             )
 
             print('start AA accuracy')
