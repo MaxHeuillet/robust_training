@@ -51,7 +51,7 @@ def load_data(args):
         N = 10
         
 
-        dataset = datasets.CIFAR10(root=args.data_dir, train=True, download=True, )
+        dataset = datasets.CIFAR10(root=args.data_dir, train=True, download=False, )
 
         train_size = int(0.95 * len(dataset))
         val_size = len(dataset) - train_size
@@ -73,7 +73,7 @@ def load_data(args):
 
         N = 10
         
-        dataset = datasets.CIFAR100(root=args.data_dir, train=True, download=True, )
+        dataset = datasets.CIFAR100(root=args.data_dir, train=True, download=False, )
 
         train_size = int(0.95 * len(dataset))
         val_size = len(dataset) - train_size
