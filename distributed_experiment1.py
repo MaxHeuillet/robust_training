@@ -367,8 +367,9 @@ class BaseExperiment:
             model_eval = model_eval.to(rank)  # Ensure the model is on the correct device
 
             # Create DataLoader for the test_dataset
+            b_size = self.setup.test_batch_size()
             testloader = DataLoader(
-                test_dataset, batch_size=128, shuffle=False, num_workers=0, pin_memory=False
+                test_dataset, batch_size=b_size, shuffle=False, num_workers=0, pin_memory=False
             )
 
             print('start AA accuracy')
