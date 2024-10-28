@@ -11,7 +11,7 @@
 #SBATCH --mail-type=ALL
 
 module --force purge
-module load StdEnv/2023 python/3.10 scipy-stack httpproxy arrow
+module load StdEnv/2023 python/3.10 scipy-stack arrow httpproxy
 source ~/scratch/MYENV4/bin/activate
 # pip install  -r requirements.txt
 

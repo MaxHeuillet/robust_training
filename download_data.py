@@ -12,10 +12,10 @@ from torchvision import datasets
 # datasets.CIFAR100(root='~/scratch/data', train=True, download=True)
 # datasets.CIFAR100(root='~/scratch/data', train=False,  download=True)
 
-print('download CIFAR10')
+# print('download CIFAR10')
 
-datasets.CIFAR10(root='~/scratch/data', train=True, download=True)
-datasets.CIFAR10(root='~/scratch/data', train=False,  download=True)
+# datasets.CIFAR10(root='~/scratch/data', train=True, download=True)
+# datasets.CIFAR10(root='~/scratch/data', train=False,  download=True)
 
 # print('download MNIST')
 
