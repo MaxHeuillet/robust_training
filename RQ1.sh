@@ -5,13 +5,13 @@ seeds=1
 archs=( 'convnext' ) # 'resnet50' 'vitsmall'
 datas=( 'CIFAR100', ) #     'EuroSAT', 'CIFAR100',  'CIFAR10' 
 task='train'
-losses=('TRADES_v2', 'APGD')
+losses=('TRADES_v2') #, 'APGD'
 sched='nosched'
 iterations=50
 aug='aug'
 exp='RQ1'
 
-init_lrs=( 0.0005 0.0001 0.001 ) #
+init_lrs=( 0.0005  ) # 0.0001 0.001
 pruning_ratios=( 0 )
 pruning_strategies=( 'random' )
 batch_strategies=('random')
