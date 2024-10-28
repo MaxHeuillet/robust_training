@@ -8,6 +8,9 @@ from torch.utils.data import TensorDataset
 import random
 from torch.utils.data import Subset
 from torch.utils.data import random_split
+from datasets.eurosat import EuroSATDataset
+
+from sklearn.model_selection import train_test_split
 
 def load_data(args):
 
@@ -113,8 +116,29 @@ def load_data(args):
         else:
             print('undefined case')
 
-        
+        # Load the dataset
+        dataset = EuroSATDataset(root_dir='./data/EuroSAT/2750')
 
+        # Extract labels from the dataset
+        labels = [label for _, label in dataset]
+
+        # Split the dataset into train+val and test, keeping stratification
+        train_val_indices, test_indices = train_test_split( range(len(labels)), test_size=0.2, stratify=labels, random_state=42 )
+
+        # Extract labels for the train+val set for further stratification
+        train_val_labels = [labels[i] for i in train_val_indices]
+
+        # Split the train+val set into train and validation, keeping stratification
+        train_indices, val_indices = train_test_split( train_val_indices, test_size=0.15, stratify=train_val_labels, random_state=42 )  # 0.25 * 0.8 = 0.2 of the dataset
+
+        # Create subsets for train, validation, and test
+
+        N = 10
+
+        train_dataset = torch.utils.data.Subset(dataset, train_indices)
+        val_dataset = torch.utils.data.Subset(dataset, val_indices)
+        test_dataset = torch.utils.data.Subset(dataset, test_indices)
+        
     return train_dataset, val_dataset, test_dataset, N, transform
 
 def to_rgb(x):
