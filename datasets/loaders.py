@@ -104,7 +104,7 @@ def load_data(args):
         val_dataset =   datasets.FGVCAircraft(root=args.data_dir, split='val', download=False, )
         test_dataset = datasets.FGVCAircraft(root=args.data_dir, split='test', download=False, )
 
-    elif args.dataset == 'Eurosat':
+    elif args.dataset == 'EuroSAT':
 
         if args.aug == 'aug' and args.pre_trained != 'no': 
             transform = transforms.Compose([
