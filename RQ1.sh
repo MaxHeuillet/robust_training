@@ -3,9 +3,9 @@
 # Define variables
 seeds=1
 archs=( 'convnext' ) # 'resnet50' 'vitsmall'
-datas=( 'CIFAR10',  ) #  'EuroSAT',   'EuroSAT', 'CIFAR100',  'CIFAR10' 
+datas=(  'EuroSAT', ) # 'CIFAR10',    'EuroSAT', 'CIFAR100',  'CIFAR10' 
 task='train'
-losses=( 'APGD' ) #, 'TRADES_v2'
+losses=( 'TRADES_v2' 'APGD' ) #, 
 sched='nosched'
 iterations=50
 aug='aug'
