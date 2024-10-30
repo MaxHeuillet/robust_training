@@ -117,7 +117,8 @@ def load_data(args):
             print('undefined case')
 
         # Load the dataset
-        dataset = EuroSATDataset(root_dir='./data/EuroSAT/2750')
+        path = args.data_dir + '/EuroSAT/2750'
+        dataset = EuroSATDataset(root_dir=path)
 
         # Extract labels from the dataset
         labels = [label for _, label in dataset]
