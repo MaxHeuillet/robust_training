@@ -34,16 +34,16 @@ from torch.utils.data import Dataset
 
 class EuroSATDataset(Dataset):
     def __init__(self, root_dir, transform=None):
-        self.root_dir = root_dir
+        self.root_dir = os.path.expanduser(root_dir)
         self.transform = transform
         self.image_paths = []
         self.labels = []
 
         # Create a mapping from class names to indices
-        self.class_to_idx = {cls_name: idx for idx, cls_name in enumerate(sorted(os.listdir(root_dir)))}
+        self.class_to_idx = {cls_name: idx for idx, cls_name in enumerate(sorted(os.listdir(self.root_dir)))}
 
         # Traverse the directory and collect image paths and labels
-        for root, _, files in os.walk(root_dir):
+        for root, _, files in os.walk(self.root_dir):
             for file in files:
                 if file.endswith('.jpg'):  # Adjust if images have different extensions
                     self.image_paths.append(os.path.join(root, file))
