@@ -2,6 +2,8 @@ import torch
 from architectures.resnet_cifar10 import ResNet_cifar10, Bottleneck_cifar10
 from architectures.resnet_imagenet import ResNet_imagenet, Bottleneck_imagenet
 from architectures.LeNet import LeNet5
+from architectures.wideresnetswish import wideresnet
+
 
 import timm
 from timm.models import create_model
@@ -105,7 +107,7 @@ def load_architecture(args,):
 
         # target_layers = ["qkv", "proj"]
 
-    elif args.arch == 'convnext':
+    elif args.arch == 'convnext_tiny':
 
         model = timm.models.convnext.convnext_tiny(pretrained=False)
         # Replace the model's forward method with your custom one
@@ -149,12 +151,34 @@ def load_architecture(args,):
 
         model.forward = types.MethodType(custom_forward, model)
 
-        if args.dataset == 'CIFAR10':
+        if args.dataset in [ 'CIFAR10', 'EuroSAT' ]:
             num_features = model.head.fc.in_features
             model.head.fc = nn.Linear(num_features, 10)  # CIFAR-10 has 10 classes
         elif args.dataset in ['CIFAR100', 'Aircraft']:
             num_features = model.head.fc.in_features
             model.head.fc = nn.Linear(num_features, 100)  # CIFAR-10 has 10 classes
+
+
+    elif args.arch == 'wideresnet-28-10': 
+
+        depth = 28
+        widen = 10
+        act_fn = 'swish'  # Assuming 'swish' is the desired activation function
+        num_classes = 200
+        model = wideresnet(depth, widen, act_fn, num_classes)
+
+        if args.pre_trained == 'tinyimagenet_semisup_robust':
+
+            ckpt = torch.load('./state_dicts/tiny_linf_wrn28-10.pt')
+            ckpt = {k.replace('module.0.', ''): v for k, v in ckpt['model_state_dict'].items()}
+            model.load_state_dict(ckpt)
+
+        if args.dataset in [ 'CIFAR10', 'EuroSAT' ]:
+            num_features = model.logits.in_features
+            model.logits = nn.Linear(num_features, 10)
+        elif args.dataset in ['CIFAR100', 'Aircraft']:
+            num_features = model.logits.in_features
+            model.logits = nn.Linear(num_features, 100)
 
 
     return model
