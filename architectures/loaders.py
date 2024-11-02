@@ -107,7 +107,7 @@ def load_architecture(args,):
 
         # target_layers = ["qkv", "proj"]
 
-    elif args.arch == 'convnext_tiny':
+    elif args.arch == 'convnext':
 
         model = timm.models.convnext.convnext_tiny(pretrained=False)
         # Replace the model's forward method with your custom one
