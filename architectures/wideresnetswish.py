@@ -168,7 +168,7 @@ class WideResNet(nn.Module):
         return self.logits(out)
     
     
-def wideresnetwithswish(depth, widen, act_fn,  num_classes):
+def wideresnet(depth, widen, act_fn,  num_classes):
     """
     Returns suitable Wideresnet model with Swish activation function from its name.
     Arguments:
