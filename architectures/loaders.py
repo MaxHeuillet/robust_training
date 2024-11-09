@@ -55,133 +55,190 @@ def normalize_model(model: nn.Module, mean: Tuple[float, float, float],
 IMAGENET_MEAN = [c * 1. for c in (0.485, 0.456, 0.406)] #[np.array([0., 0., 0.]), np.array([0.485, 0.456, 0.406])][-1] * 255
 IMAGENET_STD = [c * 1. for c in (0.229, 0.224, 0.225)] #[np.array([1., 1., 1.]), np.array([0.229, 0.224, 0.225])][-1] * 255
 
-
 def load_architecture(args,):
 
-    if args.arch == 'resnet50':
+    equivalencies = { 'convnext_base':'convnext_base',
+                      'convnext_base.fb_in22k':'convnext_base.fb_in22k', 
+                      'robust_convnext_base':'convnext_base',
+                      
+                      'convnext_tiny':'convnext_tiny',
+                      'convnext_tiny.fb_in22k':'convnext_tiny.fb_in22k',
+                      'robust_convnext_tiny':'convnext_tiny',
 
-        # model = timm.create_model('resnet50', pretrained=False)
-        model = ResNet_imagenet(Bottleneck_imagenet, [3, 4, 6, 3], )
-        
-        
-        if args.pre_trained == 'non_robust':
-            # state_dict = torch.load('./state_dicts/timm_resnet50_imagenet1k.pt')
-            state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
-            model.load_state_dict(state_dict)
+                      'robust_wideresnet_28_10': 'robust_wideresnet_28_10',
 
-        if args.dataset == 'CIFAR10':
-            num_features = model.fc.in_features
-            model.fc = nn.Linear(num_features, 10)  # CIFAR-10 has 10 classes
-        # model = ResNet_cifar10(Bottleneck_cifar10, [3, 4, 6, 3] )
-        # model.to('cuda')
+                      'deit_small_patch16_224.fb_in1k': 'deit_small_patch16_224.fb_in1k',
+                      'robust_deit_small_patch16_224': 'deit_small_patch16_224',
 
-        # target_layers = [ model.conv1, model.layer1[0].conv1, model.layer1[0].conv2, model.layer1[0].conv3,
-        #         model.layer2[0].conv1, model.layer2[0].conv2, model.layer2[0].conv3,
-        #         model.layer3[0].conv1, model.layer3[0].conv2, model.layer3[0].conv3,
-        #         model.layer4[0].conv1, model.layer4[0].conv2, model.layer4[0].conv3, model.fc ]
-        
-    elif args.arch == 'LeNet5':
-        model = LeNet5()
-        model.to('cuda')
-        # target_layers = [model.conv1.weight, model.conv2.weight, model.fc1.weight, model.fc2.weight,model.fc3.weight] 
+                      'vit_base_patch16_224.augreg_in1k':'vit_base_patch16_224.augreg_in1k',
+                      'vit_base_patch16_224.augreg_in21k':'vit_base_patch16_224.augreg_in21k',
+                      'robust_vit_base_patch16_224': 'vit_base_patch16_224'
+                           
+                        }
 
-    # elif args.arch == 'resnet50' and args.dataset in ['Imagenet1k' , 'Imagenette']:
-    #     model = ResNet_imagenet(Bottleneck_imagenet, [3, 4, 6, 3], )
-    #     state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
-    #     model.load_state_dict(state_dict)
-    #     model.to('cuda')
+    if 'convnext' in args.backbone:
+        model = timm.create_model(equivalencies[args.backbone], pretrained=False)
+        state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) )
+        model.load_state_dict(state_dict)
 
-    #     target_layers = [ model.conv1, model.layer1[0].conv1, model.layer1[0].conv2, model.layer1[0].conv3,
-    #             model.layer2[0].conv1, model.layer2[0].conv2, model.layer2[0].conv3,
-    #             model.layer3[0].conv1, model.layer3[0].conv2, model.layer3[0].conv3,
-    #             model.layer4[0].conv1, model.layer4[0].conv2, model.layer4[0].conv3, model.fc ]
-        
-#     elif args.arch == 'vitsmall':
-
-#         if args.dataset == 'CIFAR10':
-#             model = timm.create_model('vit_small_patch16_224', pretrained=False, img_size=32, patch_size=4)
-# )
-#         if args.pre_trained:
-#             state_dict = torch.load('./state_dicts/timm_vit_small_patch16_224_imagenet1k.pt')
-#             model.load_state_dict(state_dict)
-
-        # target_layers = ["qkv", "proj"]
-
-    elif args.arch == 'convnext':
-
-        model = timm.models.convnext.convnext_tiny(pretrained=False)
-        # Replace the model's forward method with your custom one
-        
-        if args.pre_trained == 'imagenet1k_non_robust':
-            state_dict = torch.load('./state_dicts/timm_convnext_imagenet1k.pt')
-            model.load_state_dict(state_dict)
-        
-        elif args.pre_trained == 'imagenet21k_non_robust':
+        if args.dataset in [ 'CIFAR10', 'EuroSAT' ] and "convnext" in args.backbone:
             num_features = model.head.fc.in_features
-            model.head.fc = nn.Linear(num_features, 21841) 
-            state_dict = torch.load('./state_dicts/convnext_imagenet21k.pt') 
-            model.load_state_dict(state_dict)
-        
-        elif args.pre_trained == 'imagenet1k_robust': # code from: https://github.com/nmndeep/revisiting-at/blob/main/utils_architecture.py
-            model = normalize_model(model, IMAGENET_MEAN, IMAGENET_STD)
-            ckpt = torch.load('./state_dicts/weights_convnext_t.pt', map_location='cpu', weights_only=False)
-
-            ckpt = {k.replace('module.', ''): v for k, v in ckpt.items()}
-            try:
-                model.load_state_dict(ckpt)
-                print('standard loading')
-
-            except:
-                try:
-                    ckpt = {f'base_model.{k}': v for k, v in ckpt.items()}
-                    model.load_state_dict(ckpt)
-                    print('loaded from clean model')
-                except:
-                    ckpt = {k.replace('base_model.', ''): v for k, v in ckpt.items()}
-                    # ckpt = {f'base_model.{k}': v for k, v in ckpt.items()}
-                    model.load_state_dict(ckpt)
-                    print('loaded')
-
-            if isinstance(model, nn.Sequential) and 'normalize' in model._modules: # remove normalization layer
-                # Rebuild the sequential model without the 'normalize' layer
-                model = model._modules['model']
-
-        else:
-            print('no pre-trained model specified')
-
-        model.forward = types.MethodType(custom_forward, model)
-
-        if args.dataset in [ 'CIFAR10', 'EuroSAT' ]:
+            model.head.fc = nn.Linear(num_features, 10)  
+        elif args.dataset in ['CIFAR100', 'Aircraft'] and "convnext" in args.backbone:
             num_features = model.head.fc.in_features
-            model.head.fc = nn.Linear(num_features, 10)  # CIFAR-10 has 10 classes
-        elif args.dataset in ['CIFAR100', 'Aircraft']:
-            num_features = model.head.fc.in_features
-            model.head.fc = nn.Linear(num_features, 100)  # CIFAR-10 has 10 classes
+            model.head.fc = nn.Linear(num_features, 100) 
 
+    elif 'wideresnet' in args.backbone:
+        model = wideresnet(depth = 28, widen = 10, act_fn = 'swish', num_classes = 200)
+        state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) )
+        model.load_state_dict(state_dict)
 
-    elif args.arch == 'wideresnet-28-10': 
-
-        depth = 28
-        widen = 10
-        act_fn = 'swish'  # Assuming 'swish' is the desired activation function
-        num_classes = 200
-        model = wideresnet(depth, widen, act_fn, num_classes)
-
-        if args.pre_trained == 'tinyimagenet_semisup_robust':
-
-            ckpt = torch.load('./state_dicts/tiny_linf_wrn28-10.pt')
-            ckpt = {k.replace('module.0.', ''): v for k, v in ckpt['model_state_dict'].items()}
-            model.load_state_dict(ckpt)
-
-        if args.dataset in [ 'CIFAR10', 'EuroSAT' ]:
+        if args.dataset in [ 'CIFAR10', 'EuroSAT' ] and "wideresnet" in args.backbone:
             num_features = model.logits.in_features
             model.logits = nn.Linear(num_features, 10)
-        elif args.dataset in ['CIFAR100', 'Aircraft']:
+        elif args.dataset in ['CIFAR100', 'Aircraft'] and "wideresnet" in args.backbone:
             num_features = model.logits.in_features
             model.logits = nn.Linear(num_features, 100)
 
+    elif 'deit' in args.backbone:
+        model = timm.create_model(equivalencies[args.backbone], pretrained=False)
+        state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) )
+        model.load_state_dict(state_dict)
 
+    elif 'vit' in args.backbone:
+        model = timm.create_model(equivalencies[args.backbone], pretrained=False)
+        state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) )
+        model.load_state_dict(state_dict)
+    
     return model
+
+
+# def load_architecture(args,):
+
+#     if args.arch == 'resnet50':
+
+#         # model = timm.create_model('resnet50', pretrained=False)
+#         model = ResNet_imagenet(Bottleneck_imagenet, [3, 4, 6, 3], )
+        
+        
+#         if args.pre_trained == 'non_robust':
+#             # state_dict = torch.load('./state_dicts/timm_resnet50_imagenet1k.pt')
+#             state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
+#             model.load_state_dict(state_dict)
+
+#         if args.dataset == 'CIFAR10':
+#             num_features = model.fc.in_features
+#             model.fc = nn.Linear(num_features, 10)  # CIFAR-10 has 10 classes
+#         # model = ResNet_cifar10(Bottleneck_cifar10, [3, 4, 6, 3] )
+#         # model.to('cuda')
+
+#         # target_layers = [ model.conv1, model.layer1[0].conv1, model.layer1[0].conv2, model.layer1[0].conv3,
+#         #         model.layer2[0].conv1, model.layer2[0].conv2, model.layer2[0].conv3,
+#         #         model.layer3[0].conv1, model.layer3[0].conv2, model.layer3[0].conv3,
+#         #         model.layer4[0].conv1, model.layer4[0].conv2, model.layer4[0].conv3, model.fc ]
+        
+#     elif args.arch == 'LeNet5':
+#         model = LeNet5()
+#         model.to('cuda')
+#         # target_layers = [model.conv1.weight, model.conv2.weight, model.fc1.weight, model.fc2.weight,model.fc3.weight] 
+
+#     # elif args.arch == 'resnet50' and args.dataset in ['Imagenet1k' , 'Imagenette']:
+#     #     model = ResNet_imagenet(Bottleneck_imagenet, [3, 4, 6, 3], )
+#     #     state_dict = torch.load('./state_dicts/resnet50_imagenet1k.pt')
+#     #     model.load_state_dict(state_dict)
+#     #     model.to('cuda')
+
+#     #     target_layers = [ model.conv1, model.layer1[0].conv1, model.layer1[0].conv2, model.layer1[0].conv3,
+#     #             model.layer2[0].conv1, model.layer2[0].conv2, model.layer2[0].conv3,
+#     #             model.layer3[0].conv1, model.layer3[0].conv2, model.layer3[0].conv3,
+#     #             model.layer4[0].conv1, model.layer4[0].conv2, model.layer4[0].conv3, model.fc ]
+        
+# #     elif args.arch == 'vitsmall':
+
+# #         if args.dataset == 'CIFAR10':
+# #             model = timm.create_model('vit_small_patch16_224', pretrained=False, img_size=32, patch_size=4)
+# # )
+# #         if args.pre_trained:
+# #             state_dict = torch.load('./state_dicts/timm_vit_small_patch16_224_imagenet1k.pt')
+# #             model.load_state_dict(state_dict)
+
+#         # target_layers = ["qkv", "proj"]
+
+#     elif args.arch == 'convnext':
+
+#         model = timm.models.convnext.convnext_tiny(pretrained=False)
+#         # Replace the model's forward method with your custom one
+        
+#         if args.pre_trained == 'imagenet1k_non_robust':
+#             state_dict = torch.load('./state_dicts/timm_convnext_imagenet1k.pt')
+#             model.load_state_dict(state_dict)
+        
+#         elif args.pre_trained == 'imagenet21k_non_robust':
+#             num_features = model.head.fc.in_features
+#             model.head.fc = nn.Linear(num_features, 21841) 
+#             state_dict = torch.load('./state_dicts/convnext_imagenet21k.pt') 
+#             model.load_state_dict(state_dict)
+        
+#         elif args.pre_trained == 'imagenet1k_robust': # code from: https://github.com/nmndeep/revisiting-at/blob/main/utils_architecture.py
+#             model = normalize_model(model, IMAGENET_MEAN, IMAGENET_STD)
+#             ckpt = torch.load('./state_dicts/weights_convnext_t.pt', map_location='cpu', weights_only=False)
+
+#             ckpt = {k.replace('module.', ''): v for k, v in ckpt.items()}
+#             try:
+#                 model.load_state_dict(ckpt)
+#                 print('standard loading')
+
+#             except:
+#                 try:
+#                     ckpt = {f'base_model.{k}': v for k, v in ckpt.items()}
+#                     model.load_state_dict(ckpt)
+#                     print('loaded from clean model')
+#                 except:
+#                     ckpt = {k.replace('base_model.', ''): v for k, v in ckpt.items()}
+#                     # ckpt = {f'base_model.{k}': v for k, v in ckpt.items()}
+#                     model.load_state_dict(ckpt)
+#                     print('loaded')
+
+#             if isinstance(model, nn.Sequential) and 'normalize' in model._modules: # remove normalization layer
+#                 # Rebuild the sequential model without the 'normalize' layer
+#                 model = model._modules['model']
+
+#         else:
+#             print('no pre-trained model specified')
+
+#         model.forward = types.MethodType(custom_forward, model)
+
+#         if args.dataset in [ 'CIFAR10', 'EuroSAT' ]:
+#             num_features = model.head.fc.in_features
+#             model.head.fc = nn.Linear(num_features, 10)  # CIFAR-10 has 10 classes
+#         elif args.dataset in ['CIFAR100', 'Aircraft']:
+#             num_features = model.head.fc.in_features
+#             model.head.fc = nn.Linear(num_features, 100)  # CIFAR-10 has 10 classes
+
+
+#     elif args.arch == 'wideresnet-28-10': 
+
+#         depth = 28
+#         widen = 10
+#         act_fn = 'swish'  # Assuming 'swish' is the desired activation function
+#         num_classes = 200
+#         model = wideresnet(depth, widen, act_fn, num_classes)
+
+#         if args.pre_trained == 'tinyimagenet_semisup_robust':
+
+#             ckpt = torch.load('./state_dicts/tiny_linf_wrn28-10.pt')
+#             ckpt = {k.replace('module.0.', ''): v for k, v in ckpt['model_state_dict'].items()}
+#             model.load_state_dict(ckpt)
+
+#         if args.dataset in [ 'CIFAR10', 'EuroSAT' ]:
+#             num_features = model.logits.in_features
+#             model.logits = nn.Linear(num_features, 10)
+#         elif args.dataset in ['CIFAR100', 'Aircraft']:
+#             num_features = model.logits.in_features
+#             model.logits = nn.Linear(num_features, 100)
+
+
+#     return model
 
 
 # def load_statedict(args,):

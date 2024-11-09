@@ -154,9 +154,9 @@ class BaseExperiment:
 
         print('initialize dataset', rank,flush=True) 
 
-        train_dataset, val_dataset, test_dataset, N, transform = load_data(self.args) 
+        train_dataset, val_dataset, test_dataset, N, train_transform, transform = load_data(self.args) 
         
-        train_dataset = WeightedDataset(self.args, train_dataset, transform, N, prune_ratio = self.args.pruning_ratio, )
+        train_dataset = WeightedDataset(self.args, train_dataset, train_transform, N, prune_ratio = self.args.pruning_ratio, )
         val_dataset = IndexedDataset(self.args, val_dataset, transform,  N,) 
         test_dataset = IndexedDataset(self.args, test_dataset, transform, N,)  
 
