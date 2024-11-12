@@ -34,8 +34,9 @@ def get_args():
         default_data_dir = './data'
 
     # General options
-    parser.add_argument("--arch", default="resnet50",type=str, help="model architecture")
-    parser.add_argument("--pre_trained", type=str, help="load pretrained non robust model")
+    # parser.add_argument("--arch", default="resnet50",type=str, help="model architecture")
+    # parser.add_argument("--pre_trained", type=str, help="load pretrained non robust model")
+    parser.add_argument("--backbone", type=str, help="load backbone")
     parser.add_argument("--lora", type=str, help="add lora layers and train only on them")
 
     parser.add_argument('--dataset', default='CIFAR10', type=str, help='dataset: ' + ' (default: cifar10)')

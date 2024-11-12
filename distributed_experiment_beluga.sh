@@ -30,14 +30,13 @@ python3 ./distributed_experiment1.py \
     --sched ${SCHED} \
     --task ${TASK} \
     --dataset ${DATA} \
-    --arch ${ARCH} \
     --seed ${SEED} \
     --iterations ${NITER} \
     --pruning_ratio ${RATIO} \
     --pruning_strategy ${PSTRAT} \
     --batch_strategy ${BSTRAT} \
     --aug ${AUG} \
-    --pre_trained ${PRETRAINED} \
+    --backbone ${BCKBN} \
     --lora ${LORA} \
     --exp ${EXP} \
     > stdout_$SLURM_JOB_ID 2> stderr_$SLURM_JOB_ID
