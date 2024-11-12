@@ -10,7 +10,7 @@ def get_exp_name(args):
     grd += f"_{args.init_lr}"
     grd += f"_{args.sched}"
     grd += f"_{args.dataset}" 
-    grd += f"_{args.arch}" 
+    grd += f"_{args.backbone}" 
 
     grd += f"_{args.pruning_strategy}" 
     grd += f"_{args.pruning_ratio}"  
