@@ -14,33 +14,18 @@ from sklearn.model_selection import train_test_split
 
 def load_data(args):
 
-    if args.dataset == 'MNIST':
-
-        # Load the dataset
-        transform = transforms.Compose([
-            transforms.ToTensor(),
-            transforms.Normalize((0.1307,), (0.3081,))    ])
-
-        N = 10
-        
-        dataset = datasets.MNIST(root=args.data_dir, train=True, download=True, )
-
-        train_size = int(0.95 * len(dataset))
-        val_size = len(dataset) - train_size
-
-        train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
-        test_dataset = datasets.MNIST(root=args.data_dir, train=False, download=True, )
+    if args.dataset == 'CIFAR10':
 
 
-    elif args.dataset == 'CIFAR10':
-
-
-        train_transform = transforms.Compose([transforms.ToTensor(),
+        train_transform = transforms.Compose([
+                                        transforms.Resize((224, 224)),  # Resize images to 224x224
+                                        transforms.ToTensor(),
                                         transforms.RandomCrop(32, padding=4), 
                                         transforms.RandomHorizontalFlip(0.5), 
                                         transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ),])
 
-        transform = transforms.Compose([transforms.ToTensor(),
+        transform = transforms.Compose([transforms.Resize((224, 224)),  # Resize images to 224x224
+                                        transforms.ToTensor(),
                                         transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ),])
         
         N = 10
@@ -59,12 +44,15 @@ def load_data(args):
     elif args.dataset == 'CIFAR100':
         
  
-        train_transform = transforms.Compose([transforms.ToTensor(),
+        train_transform = transforms.Compose([
+                                        transforms.Resize((224, 224)),  # Resize images to 224x224
+                                        transforms.ToTensor(),
                                         transforms.RandomCrop(32, padding=4), 
                                         transforms.RandomHorizontalFlip(0.5), 
                                         transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ),])
         
-        transform = transforms.Compose([transforms.ToTensor(),
+        transform = transforms.Compose([transforms.Resize((224, 224)),  # Resize images to 224x224
+                                        transforms.ToTensor(),
                                         transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ),])
 
 
@@ -89,8 +77,7 @@ def load_data(args):
                                         transforms.RandomHorizontalFlip(0.5), 
                                         transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ),])
         
-        transform = transforms.Compose([
-                                        transforms.Resize((224, 224)),  # Resize images to 224x224
+        transform = transforms.Compose([transforms.Resize((224, 224)),  # Resize images to 224x224
                                         transforms.ToTensor(), 
                                         transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ),])
 
@@ -104,15 +91,13 @@ def load_data(args):
     elif args.dataset == 'EuroSAT':
 
 
-        transform = transforms.Compose([
-                                        transforms.Resize((64, 64)),  # Resize images to 224x224
+        transform = transforms.Compose([transforms.Resize((224, 224)),  # Resize images to 224x224
                                         transforms.ToTensor(),
                                         transforms.RandomCrop(64, padding=4), 
                                         transforms.RandomHorizontalFlip(0.5), 
                                         transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ),])
         
-        transform = transforms.Compose([
-                                        transforms.Resize((64, 64)),  
+        transform = transforms.Compose([transforms.Resize((224, 224)),  
                                         transforms.ToTensor(),
                                         transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ),])
 
@@ -147,6 +132,23 @@ def to_rgb(x):
     return x.convert("RGB")
 
 
+
+    # if args.dataset == 'MNIST':
+
+    #     # Load the dataset
+    #     transform = transforms.Compose([
+    #         transforms.ToTensor(),
+    #         transforms.Normalize((0.1307,), (0.3081,))    ])
+
+    #     N = 10
+        
+    #     dataset = datasets.MNIST(root=args.data_dir, train=True, download=True, )
+
+    #     train_size = int(0.95 * len(dataset))
+    #     val_size = len(dataset) - train_size
+
+    #     train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
+    #     test_dataset = datasets.MNIST(root=args.data_dir, train=False, download=True, )
 
     # elif args.dataset == 'CIFAR10s':
 
