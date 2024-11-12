@@ -105,10 +105,24 @@ def load_architecture(args,):
         state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) )
         model.load_state_dict(state_dict)
 
+        if args.dataset in [ 'CIFAR10', 'EuroSAT' ] and "deit" in args.backbone:
+            num_features = model.head.in_features
+            model.head = nn.Linear(num_features, 10)
+        elif args.dataset in ['CIFAR100', 'Aircraft'] and "deit" in args.backbone:
+            num_features = model.head.in_features
+            model.head = nn.Linear(num_features, 100)
+
     elif 'vit' in args.backbone:
         model = timm.create_model(equivalencies[args.backbone], pretrained=False)
         state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) )
         model.load_state_dict(state_dict)
+
+        if args.dataset in [ 'CIFAR10', 'EuroSAT' ] and "vit" in args.backbone:
+            num_features = model.head.in_features
+            model.head = nn.Linear(num_features, 10)
+        elif args.dataset in ['CIFAR100', 'Aircraft'] and "vit" in args.backbone:
+            num_features = model.head.in_features
+            model.head = nn.Linear(num_features, 100)
     
     return model
 
