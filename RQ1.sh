@@ -5,17 +5,20 @@ seeds=1
 #archs=( 'convnext' ) # 'resnet50' 'vitsmall'
 datas=(  'CIFAR10', 'CIFAR100', 'EuroSAT', 'Aircraft' ) #  'EuroSAT',   'CIFAR10' 
 task='train'
-losses=( 'TRADES_v2' 'APGD' ) #, 
+losses=( 'TRADES_v2'  ) #, 'APGD'
 sched='nosched'
 iterations=50
 aug='aug'
 exp='RQ1'
 
-init_lrs=( 0.0005 0.0001 0.001  ) # 
+init_lrs=( 0.001  ) # 0.0005 0.0001
 pruning_ratios=( 0 )
 pruning_strategies=( 'random' )
 batch_strategies=('random')
-backbones=('imagenet21k_non_robust', 'imagenet1k_non_robust', 'imagenet1k_robust' ) # 
+backbones=( 'convnext_base',  'convnext_base.fb_in22k', 'robust_convnext_base',  
+            'convnext_tiny',  'convnext_tiny.fb_in22k', 'robust_convnext_tiny',
+            'robust_wideresnet_28_10',  'deit_small_patch16_224.fb_in1k','robust_deit_small_patch16_224',
+            'vit_base_patch16_224.augreg_in1k', 'vit_base_patch16_224.augreg_in21k', 'robust_vit_base_patch16_224'  ) # 
 
 # Loop over architectures, pruning ratios, strategies, and learning rates
 for data in "${datas[@]}"; do
