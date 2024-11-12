@@ -247,6 +247,8 @@ class BaseExperiment:
                 scaler.step(optimizer)
                 scaler.update()
 
+                break
+
             if self.args.sched == 'sched':
                 scheduler.step()
 
