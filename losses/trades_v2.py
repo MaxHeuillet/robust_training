@@ -65,10 +65,12 @@ def trades_loss_v2(args,
     optimizer.zero_grad()
 
     #if args.arch == 'resnet50':
-    logits_nat, logits_adv = model(x_natural, x_adv)
+    # logits_nat, logits_adv = model(x_natural, x_adv)
     # else:
     #     logits_nat = model(x_natural)    
     #     logits_adv = model(x_adv)
+    logits_nat = model(x_natural)
+    logits_adv = model(x_adv)
         
     clean_values = F.cross_entropy(logits_nat, y, reduction='none')
         
