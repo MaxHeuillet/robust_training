@@ -123,6 +123,8 @@ def load_architecture(args,):
         elif args.dataset in ['CIFAR100', 'Aircraft'] and "vit" in args.backbone:
             num_features = model.head.in_features
             model.head = nn.Linear(num_features, 100)
+
+    model.forward = types.MethodType(custom_forward, model)
     
     return model
 
