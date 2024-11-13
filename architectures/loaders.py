@@ -17,18 +17,18 @@ import torch.nn as nn
 from collections import OrderedDict
 
 
-def custom_forward(self, x_natural, x_adv=None):
-    # Implement your custom forward logic
-    if x_adv is not None:
-        logits_nat = self.forward_features(x_natural)  # Assuming forward_features is the main forward logic
-        logits_adv = self.forward_features(x_adv)
-        logits_nat = self.head(logits_nat)  # Final classification head
-        logits_adv = self.head(logits_adv)
-        return logits_nat, logits_adv
-    else:
-        logits_nat = self.forward_features(x_natural)
-        logits_nat = self.head(logits_nat)
-        return logits_nat
+# def custom_forward(self, x_natural, x_adv=None):
+#     # Implement your custom forward logic
+#     if x_adv is not None:
+#         logits_nat = self.forward_features(x_natural)  # Assuming forward_features is the main forward logic
+#         logits_adv = self.forward_features(x_adv)
+#         logits_nat = self.head(logits_nat)  # Final classification head
+#         logits_adv = self.head(logits_adv)
+#         return logits_nat, logits_adv
+#     else:
+#         logits_nat = self.forward_features(x_natural)
+#         logits_nat = self.head(logits_nat)
+#         return logits_nat
     
 class ImageNormalizer(nn.Module):
     def __init__(self, mean: Tuple[float, float, float],
@@ -124,7 +124,7 @@ def load_architecture(args,):
             num_features = model.head.in_features
             model.head = nn.Linear(num_features, 100)
 
-    model.forward = types.MethodType(custom_forward, model)
+    # model.forward = types.MethodType(custom_forward, model)
     
     return model
 
