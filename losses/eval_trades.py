@@ -42,11 +42,10 @@ def trades_loss_eval(args,
         print('attack distance misspecified')
         # x_adv = torch.clamp(x_adv, 0.0, 1.0).detach()
 
-    if args.arch == 'resnet50':
-        logits_nat, logits_adv = model(x_natural, x_adv)
-    else:
-        logits_nat = model(x_natural)    
-        logits_adv = model(x_adv)
+
+    # logits_nat = model(x_natural)    
+    # logits_adv = model(x_adv)
+    logits_nat, logits_adv = model(x_natural, x_adv)
     clean_values = F.cross_entropy(logits_nat, y, reduction='none')
     robust_values = nn.KLDivLoss(reduction='none')(F.log_softmax(logits_adv, dim=1), F.softmax(logits_nat, dim=1)).sum(dim=1)
     loss_values = clean_values + args.beta * robust_values

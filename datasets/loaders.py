@@ -91,7 +91,7 @@ def load_data(args):
     elif args.dataset == 'EuroSAT':
 
 
-        transform = transforms.Compose([transforms.Resize((224, 224)),  # Resize images to 224x224
+        train_transform = transforms.Compose([transforms.Resize((224, 224)),  # Resize images to 224x224
                                         transforms.ToTensor(),
                                         transforms.RandomCrop(64, padding=4), 
                                         transforms.RandomHorizontalFlip(0.5), 
