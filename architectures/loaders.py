@@ -32,9 +32,10 @@ from collections import OrderedDict
 
 def custom_forward(model, x_natural, x_adv=None):
 
+    # Directly access the model's forward method without using model(x)
     def get_logits(x):
-        return model(x)  
-            
+        return model.forward(x)
+    
     logits_nat = get_logits(x_natural)  # Get natural input logits
     
     logits_adv = None
@@ -42,6 +43,7 @@ def custom_forward(model, x_natural, x_adv=None):
         logits_adv = get_logits(x_adv)  # Get adversarial input logits if provided
     
     return logits_nat, logits_adv
+
     
 class ImageNormalizer(nn.Module):
     def __init__(self, mean: Tuple[float, float, float],
