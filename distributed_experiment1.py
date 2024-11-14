@@ -172,7 +172,7 @@ class BaseExperiment:
                                  pin_memory=True) 
         
         valloader = DataLoader(val_dataset, 
-                               batch_size=64, 
+                               batch_size=2, #64
                                sampler=val_sampler, 
                                num_workers=3,
                                pin_memory=True)
@@ -495,6 +495,7 @@ class BaseExperiment:
                 total_correct_nat += (preds_nat == target).sum().item()
                 total_correct_adv += (preds_adv == target).sum().item()
                 total_examples += target.size(0)
+                break
 
         return total_loss, total_correct_nat, total_correct_adv, total_examples
 
