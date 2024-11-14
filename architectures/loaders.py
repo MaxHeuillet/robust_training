@@ -109,28 +109,30 @@ def load_architecture(args,):
         state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) )
         model.load_state_dict(state_dict)
 
+    model = change_head(args,model)
+
     model.forward = types.MethodType(custom_forward, model)
     
     return model
 
 
-def change_head(args, model, N):
+def change_head(args, model, ):
 
     if "convnext" in args.backbone:
         num_features = model.head.fc.in_features
-        model.head.fc = nn.Linear(num_features, N)  
+        model.head.fc = nn.Linear(num_features, args.N)  
 
     elif "wideresnet" in args.backbone:
         num_features = model.logits.in_features
-        model.logits = nn.Linear(num_features, N)
+        model.logits = nn.Linear(num_features, args.N)
 
     elif "deit" in args.backbone:
         num_features = model.head.in_features
-        model.head = nn.Linear(num_features, N)
+        model.head = nn.Linear(num_features, args.N)
 
     elif "vit" in args.backbone:
         num_features = model.head.in_features
-        model.head = nn.Linear(num_features, 100)
+        model.head = nn.Linear(num_features, args.N)
 
     return model
 

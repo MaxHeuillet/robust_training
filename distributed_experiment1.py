@@ -155,6 +155,7 @@ class BaseExperiment:
         print('initialize dataset', rank,flush=True) 
 
         train_dataset, val_dataset, test_dataset, N, train_transform, transform = load_data(self.args) 
+        self.args.N = N
         
         train_dataset = WeightedDataset(self.args, train_dataset, train_transform, N, prune_ratio = self.args.pruning_ratio, )
         val_dataset = IndexedDataset(self.args, val_dataset, transform,  N,) 
@@ -187,7 +188,6 @@ class BaseExperiment:
 
         model = load_architecture(self.args)
 
-        model = change_head(self.args,model,N)
 
 
         
