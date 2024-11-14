@@ -31,6 +31,7 @@ class Setup:
         dist.destroy_process_group()
 
     def test_batch_size(self,):
+        
         if os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'beluga' and self.args.dataset in ['CIFAR10', 'CIFAR100']:
             batch_size = 256
         elif os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'beluga' and self.args.dataset in ['EuroSAT']:
