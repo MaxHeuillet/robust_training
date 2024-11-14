@@ -8,9 +8,11 @@ class CustomModel(nn.Module):
     
     def forward(self, x_natural, x_adv=None):
         # Forward pass for natural input
+        
         logits_nat = self.base_model(x_natural)
-        
-        # Forward pass for adversarial input if provided
-        logits_adv = self.base_model(x_adv) if x_adv is not None else None
-        
-        return logits_nat, logits_adv
+
+        if x_adv is not None:
+            logits_adv = self.base_model(x_adv)
+            return logits_nat, logits_adv
+        else:
+            return logits_nat

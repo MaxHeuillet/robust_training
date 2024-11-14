@@ -42,7 +42,7 @@ def trades_loss_eval(args,
         print('attack distance misspecified')
         # x_adv = torch.clamp(x_adv, 0.0, 1.0).detach()
 
-    logits_nat, logits_adv = model.custom_forward(x_natural, x_adv)
+    logits_nat, logits_adv = model(x_natural, x_adv)
     # logits_nat = model(x_natural)    
     # logits_adv = model(x_adv)
     # logits_nat, logits_adv = model(x_natural, x_adv)
