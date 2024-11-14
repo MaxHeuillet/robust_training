@@ -125,6 +125,28 @@ def load_data(args):
         train_dataset = torch.utils.data.Subset(dataset, train_indices)
         val_dataset = torch.utils.data.Subset(dataset, val_indices)
         test_dataset = torch.utils.data.Subset(dataset, test_indices)
+
+    elif args.dataset == 'Flowers':
+        # Define the transformations for training and testing
+        train_transform = transforms.Compose([
+                transforms.Resize((224, 224)),  # Resize images to 224x224
+                transforms.ToTensor(),
+                transforms.RandomCrop(224, padding=4),
+                transforms.RandomHorizontalFlip(0.5),
+                transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+            ])
+            
+        transform = transforms.Compose([
+                transforms.Resize((224, 224)),  # Resize images to 224x224
+                transforms.ToTensor(),
+                transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+            ])
+            
+        # Load the Flowers102 dataset
+        N = 102
+        train_dataset = datasets.Flowers102(root=args.data_dir, split='train', download=False)
+        val_dataset = datasets.Flowers102(root=args.data_dir, split='val', download=False)
+        test_dataset = datasets.Flowers102(root=args.data_dir, split='test', download=False)        
         
     return train_dataset, val_dataset, test_dataset, N, train_transform, transform
 
