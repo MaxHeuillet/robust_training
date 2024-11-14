@@ -81,52 +81,51 @@ def load_architecture(args,):
         state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) )
         model.load_state_dict(state_dict)
 
-        if args.dataset in [ 'CIFAR10', 'EuroSAT' ] and "convnext" in args.backbone:
-            num_features = model.head.fc.in_features
-            model.head.fc = nn.Linear(num_features, 10)  
-        elif args.dataset in ['CIFAR100', 'Aircraft'] and "convnext" in args.backbone:
-            num_features = model.head.fc.in_features
-            model.head.fc = nn.Linear(num_features, 100) 
-
     elif 'wideresnet' in args.backbone:
         model = wideresnet(depth = 28, widen = 10, act_fn = 'swish', num_classes = 200)
         state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) )
         model.load_state_dict(state_dict)
-
-        if args.dataset in [ 'CIFAR10', 'EuroSAT' ] and "wideresnet" in args.backbone:
-            num_features = model.logits.in_features
-            model.logits = nn.Linear(num_features, 10)
-        elif args.dataset in ['CIFAR100', 'Aircraft'] and "wideresnet" in args.backbone:
-            num_features = model.logits.in_features
-            model.logits = nn.Linear(num_features, 100)
 
     elif 'deit' in args.backbone:
         model = timm.create_model(equivalencies[args.backbone], pretrained=False)
         state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) )
         model.load_state_dict(state_dict)
 
-        if args.dataset in [ 'CIFAR10', 'EuroSAT' ] and "deit" in args.backbone:
-            num_features = model.head.in_features
-            model.head = nn.Linear(num_features, 10)
-        elif args.dataset in ['CIFAR100', 'Aircraft'] and "deit" in args.backbone:
-            num_features = model.head.in_features
-            model.head = nn.Linear(num_features, 100)
-
     elif 'vit' in args.backbone:
         model = timm.create_model(equivalencies[args.backbone], pretrained=False)
         state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) )
         model.load_state_dict(state_dict)
 
-        if args.dataset in [ 'CIFAR10', 'EuroSAT' ] and "vit" in args.backbone:
-            num_features = model.head.in_features
-            model.head = nn.Linear(num_features, 10)
-        elif args.dataset in ['CIFAR100', 'Aircraft'] and "vit" in args.backbone:
-            num_features = model.head.in_features
-            model.head = nn.Linear(num_features, 100)
-
     # model.forward = types.MethodType(custom_forward, model)
     
     return model
+
+
+def change_head(args, model, N):
+
+    if "convnext" in args.backbone:
+        num_features = model.head.fc.in_features
+        model.head.fc = nn.Linear(num_features, N)  
+
+    elif "wideresnet" in args.backbone:
+        num_features = model.logits.in_features
+        model.logits = nn.Linear(num_features, N)
+
+    elif "deit" in args.backbone:
+        num_features = model.head.in_features
+        model.head = nn.Linear(num_features, N)
+
+    elif "vit" in args.backbone:
+        num_features = model.head.in_features
+        model.head = nn.Linear(num_features, 100)
+
+    return model
+
+
+
+
+
+
 
 
 # def load_architecture(args,):
