@@ -113,7 +113,8 @@ def load_architecture(args,):
 
     model = change_head(args,model)
 
-    model.forward = types.MethodType(custom_forward, model)
+    # model.forward = types.MethodType(custom_forward, model)
+    model.custom_forward = types.MethodType(custom_forward, model)
     
     return model
 
