@@ -7,7 +7,7 @@ datas=(  'Flowers', 'CIFAR10', 'CIFAR100', 'EuroSAT', 'Aircraft' ) #  'EuroSAT',
 task='train'
 losses=( 'TRADES_v2'  ) #, 'APGD'
 sched='nosched'
-iterations=50
+iterations=2 #50
 aug='aug'
 exp='RQ1'
 
