@@ -3,7 +3,7 @@ import torch.nn as nn
 class CustomModel(nn.Module):
     def __init__(self, original_model):
         super(CustomModel, self).__init__()
-        self.model = original_model
+        self.base_model = original_model
 
     
     def forward(self, x_natural, x_adv=None):
