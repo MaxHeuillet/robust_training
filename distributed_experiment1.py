@@ -36,7 +36,7 @@ from utils import Setup
 
 from samplers import DistributedCustomSampler
 from datasets import WeightedDataset, IndexedDataset, load_data
-from architectures import load_architecture, add_lora, set_lora_gradients, change_head
+from architectures import load_architecture, add_lora, set_lora_gradients, change_head, CustomModel
 from losses import get_loss, get_eval_loss
 from utils import get_args, get_exp_name, set_seeds
 from cosine import CosineLR
@@ -187,9 +187,7 @@ class BaseExperiment:
         experiment.log_parameter("adjusted_epochs", adjusted_epochs)
 
         model = load_architecture(self.args)
-
-
-
+        model = CustomModel(model)
         
         # if self.args.lora:
         #     add_lora(target_layers, model)
