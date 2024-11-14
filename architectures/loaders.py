@@ -29,6 +29,19 @@ from collections import OrderedDict
 #         logits_nat = self.forward_features(x_natural)
 #         logits_nat = self.head(logits_nat)
 #         return logits_nat
+
+def custom_forward(model, x_natural, x_adv=None):
+
+    def get_logits(x):
+        return model(x)  
+            
+    logits_nat = get_logits(x_natural)  # Get natural input logits
+    
+    logits_adv = None
+    if x_adv is not None:
+        logits_adv = get_logits(x_adv)  # Get adversarial input logits if provided
+    
+    return logits_nat, logits_adv
     
 class ImageNormalizer(nn.Module):
     def __init__(self, mean: Tuple[float, float, float],
@@ -96,7 +109,7 @@ def load_architecture(args,):
         state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) )
         model.load_state_dict(state_dict)
 
-    # model.forward = types.MethodType(custom_forward, model)
+    model.forward = types.MethodType(custom_forward, model)
     
     return model
 
