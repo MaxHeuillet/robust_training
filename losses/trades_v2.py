@@ -71,7 +71,7 @@ def trades_loss_v2(args,
     #     logits_adv = model(x_adv)
     # logits_nat = model(x_natural)
     # logits_adv = model(x_adv)
-    logits_nat, logits_adv = model.custom_forward(x_natural, x_adv)
+    logits_nat, logits_adv = model(x_natural, x_adv)
         
     clean_values = F.cross_entropy(logits_nat, y, reduction='none')
         
