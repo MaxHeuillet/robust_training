@@ -7,13 +7,13 @@ class CustomModel(nn.Module):
         self.args = args
         self.base_model = original_model
 
-    def forward(self, x_natural, x_adv=None):
-        logits_nat = self.base_model(x_natural)
-        if x_adv is not None:
-            logits_adv = self.base_model(x_adv)
-            return logits_nat, logits_adv
+    def forward(self, x_1, x_2=None):
+        logits_1 = self.base_model(x_1)
+        if x_2 is not None:
+            logits_2 = self.base_model(x_2)
+            return logits_1, logits_2
         else:
-            return logits_nat
+            return logits_1
 
     def set_fine_tuning_strategy(self, strategy):
         if strategy == 'full_fine_tuning':
