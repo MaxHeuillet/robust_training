@@ -3,9 +3,9 @@
 # Define variables
 seeds=1
 #archs=( 'convnext' ) # 'resnet50' 'vitsmall'
-datas=(  'Flowers', 'CIFAR10', 'CIFAR100', 'EuroSAT', 'Aircraft' ) #  'EuroSAT',   'CIFAR10' 
+datas=(  'Flowers', 'CIFAR10', ) # 'CIFAR100', 'EuroSAT', 'Aircraft' 
 task='train'
-losses=( 'TRADES_v2'  ) #, 'APGD'
+losses=( 'TRADES_v2' , 'APGD' ) #
 sched='nosched'
 iterations=2 #50
 aug='aug'
@@ -18,7 +18,9 @@ batch_strategies=('random')
 backbones=( 'convnext_base',  'convnext_base.fb_in22k', 'robust_convnext_base',  
             'convnext_tiny',  'convnext_tiny.fb_in22k', 'robust_convnext_tiny',
             'robust_wideresnet_28_10',  'deit_small_patch16_224.fb_in1k','robust_deit_small_patch16_224',
-            'vit_base_patch16_224.augreg_in1k', 'vit_base_patch16_224.augreg_in21k', 'robust_vit_base_patch16_224'  ) # 
+            'vit_base_patch16_224.augreg_in1k', 'vit_base_patch16_224.augreg_in21k', 'robust_vit_base_patch16_224'  ) 
+
+ft_type=( 'lora' , 'full_fine_tuning', 'linear_probing' )
 
 # Loop over architectures, pruning ratios, strategies, and learning rates
 for data in "${datas[@]}"; do
@@ -29,8 +31,9 @@ for data in "${datas[@]}"; do
             for init_lr in "${init_lrs[@]}"; do
               for id in $(seq 1 $seeds); do
                 for bckbn in "${backbones[@]}"; do
-
-                  if [ "$CC_CLUSTER" = "beluga" ]; then
+                  for fttype in "${ft_type[@]}"; do
+                    
+                    if [ "$CC_CLUSTER" = "beluga" ]; then
           
               ### Pretrained non robust
               sbatch --export=ALL,\
@@ -50,7 +53,7 @@ LORA='nolora',\
 EXP=$exp \
 ./distributed_experiment_beluga.sh
 
-                  else
+                    else
 
               ### Pretrained non robust
               sbatch --export=ALL,\
@@ -70,8 +73,9 @@ LORA='nolora',\
 EXP=$exp \
 ./distributed_experiment_other.sh
 
-                  fi
+                    fi
 
+                done
               done
             done
           done
@@ -79,4 +83,4 @@ EXP=$exp \
       done
     done
   done
-done
+done 
