@@ -134,6 +134,7 @@ class WideResNet(nn.Module):
                         activation_fn=activation_fn),
             _BlockGroup(num_blocks, num_channels[2], num_channels[3], 2,
                         activation_fn=activation_fn))
+        
         self.batchnorm = nn.BatchNorm2d(num_channels[3], momentum=0.01)
         self.relu = activation_fn(inplace=True)
         self.logits = nn.Linear(num_channels[3], num_classes)
@@ -163,10 +164,29 @@ class WideResNet(nn.Module):
         out = self.init_conv(out)
         out = self.layer(out)
         out = self.relu(self.batchnorm(out))
-        out = F.avg_pool2d(out, 8)
-        out = out.view(-1, self.num_channels)
+
+        # Use adaptive pooling to reduce spatial dimensions to 1x1
+        out = F.adaptive_avg_pool2d(out, (1, 1))
+        print('out', out.shape)
+
+        # Flatten while preserving batch size
+        out = out.view(x.size(0), -1)
+        print('out', out.shape)
         print("num channels", self.num_channels)
-        return self.logits(out)
+
+        final = self.logits(out)
+        print('final', final.shape)
+        return final
+
+        # print('out', out.shape)
+        # out = F.avg_pool2d(out, 8)
+        # print('out', out.shape)
+        # out = out.view(-1, self.num_channels)
+        # print('out', out.shape)
+        # print("num channels", self.num_channels)
+        # final = self.logits(out)
+        # print('final'  , final.shape)
+        # return final
     
     
 def wideresnet(depth, widen, act_fn,  num_classes):
