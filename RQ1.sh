@@ -5,7 +5,7 @@ seeds=1
 #archs=( 'convnext' ) # 'resnet50' 'vitsmall'
 datas=(  'Flowers', 'CIFAR10', ) # 'CIFAR100', 'EuroSAT', 'Aircraft' 
 task='train'
-losses=( 'TRADES_v2' , 'APGD' ) #
+losses=( 'TRADES_v2' , ) # 'APGD' 
 sched='nosched'
 iterations=2 #50
 aug='aug'
@@ -20,7 +20,7 @@ backbones=( 'convnext_base',  'convnext_base.fb_in22k', 'robust_convnext_base',
             'robust_wideresnet_28_10',  'deit_small_patch16_224.fb_in1k','robust_deit_small_patch16_224',
             'vit_base_patch16_224.augreg_in1k', 'vit_base_patch16_224.augreg_in21k', 'robust_vit_base_patch16_224'  ) 
 
-ft_type=( 'lora' , 'full_fine_tuning', 'linear_probing' )
+ft_type=( 'full_fine_tuning', ) #'lora' ,  'linear_probing'
 
 # Loop over architectures, pruning ratios, strategies, and learning rates
 for data in "${datas[@]}"; do
