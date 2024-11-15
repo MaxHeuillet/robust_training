@@ -33,7 +33,9 @@ def trades_loss_eval(args,
             with torch.enable_grad():
                 #print('infer')
                 logits_adv = model(x_adv)
+                print(logits_adv.shape, y.shape)
                 loss = F.cross_entropy( logits_adv, y)
+
 
             grad = torch.autograd.grad(loss, [x_adv])[0]
             # print('other operations')
