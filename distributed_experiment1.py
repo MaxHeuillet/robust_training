@@ -187,12 +187,8 @@ class BaseExperiment:
         experiment.log_parameter("adjusted_epochs", adjusted_epochs)
 
         model = load_architecture(self.args)
-        model = CustomModel(model)
-        
-        # if self.args.lora:
-        #     add_lora(target_layers, model)
-        #     set_lora_gradients(args, model, target_layers)
-
+        model = CustomModel(self.args, model)
+        model.set_fine_tuning_strategy('full_fine_tuning')
         model.to(rank)
         model = DDP(model, device_ids=[rank])
 
@@ -304,11 +300,6 @@ class BaseExperiment:
             
             self.syn_results(clean_accuracy, robust_accuracy)
 
-        else:
-            # Other ranks do nothing
-            pass
-
-
         experiment.end()
 
         print('clean up',flush=True)
@@ -322,7 +313,6 @@ class BaseExperiment:
         lock = FileLock(data_path + '.lock')
 
         with lock:
-
             
             columns = list(self.current_experiment.keys())
             key_columns = columns.copy()
@@ -358,12 +348,14 @@ class BaseExperiment:
 
             df.to_csv(data_path, header=True, index=False)
 
-    
-
     def final_validation(self, test_dataset, model, experiment, iteration, rank):
         
             # Re-instantiate the model
             model_eval = load_architecture(self.args)
+            model_eval = CustomModel(self.args, model_eval)
+            model_eval.set_fine_tuning_strategy('full_fine_tuning')
+            model_eval.to(rank)
+
             model_eval.load_state_dict(model.module.state_dict())
             # Convert SyncBatchNorm to BatchNorm
             model_eval = convert_syncbn_to_bn(model_eval)
@@ -434,8 +426,6 @@ class BaseExperiment:
             total_examples += target.size(0)
 
             break
-
-            #break
 
         return total_correct_nat, total_correct_adv, total_examples
     
@@ -518,10 +508,10 @@ if __name__ == "__main__":
 
 
 
-
-
+# if self.args.lora:
+#     add_lora(target_layers, model)
+#     set_lora_gradients(args, model, target_layers)
     
-
 # Do not use dist.barrier() here
 
 

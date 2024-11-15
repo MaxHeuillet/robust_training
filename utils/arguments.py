@@ -37,7 +37,7 @@ def get_args():
     # parser.add_argument("--arch", default="resnet50",type=str, help="model architecture")
     # parser.add_argument("--pre_trained", type=str, help="load pretrained non robust model")
     parser.add_argument("--backbone", type=str, help="load backbone")
-    parser.add_argument("--lora", type=str, help="add lora layers and train only on them")
+    parser.add_argument("--finetuning_type", type=str, help="fine tuning type")
 
     parser.add_argument('--dataset', default='CIFAR10', type=str, help='dataset: ' + ' (default: cifar10)')
     parser.add_argument("--pruning_strategy", default="random", type=str, help="the pruning strategy")
