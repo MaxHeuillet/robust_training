@@ -261,6 +261,8 @@ class BaseExperiment:
 
     def evaluate(self, rank, ):
 
+        print('N', self.args.N )
+
         # Re-instantiate the model
         model_eval = load_architecture(self.args)
         model_eval = CustomModel(self.args, model_eval)
@@ -270,8 +272,7 @@ class BaseExperiment:
         model_eval.load_state_dict( self.trained_state_dict )
         model_eval.eval()
 
-        _, _, test_dataset, N, _, transform = load_data(self.args) 
-        self.args.N = N
+        _, _, test_dataset, _, _, transform = load_data(self.args) 
 
         test_dataset = IndexedDataset(self.args, test_dataset, transform, N,)
 
