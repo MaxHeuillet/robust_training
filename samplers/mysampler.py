@@ -340,7 +340,10 @@ class CustomSampler(object):
         np.random.seed(iteration)
 
     def __len__(self):
-        return len(self.sample_indices)
+        # Compute the total number of batches
+        num_samples = len(self.process_indices) if self.process_indices else 0
+        return (num_samples + self.batch_size - 1) // self.batch_size  # Ceiling division
+
 
     def __iter__(self):
         return self
