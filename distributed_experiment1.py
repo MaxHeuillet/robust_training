@@ -275,8 +275,17 @@ class BaseExperiment:
 
         test_dataset = IndexedDataset(self.args, test_dataset, transform, N,)
 
-        b_size = 2#self.setup.test_batch_size()
-        testloader = DataLoader( test_dataset, batch_size=b_size, shuffle=False, num_workers=0, pin_memory=False  )
+        test_sampler = DistributedSampler(test_dataset, num_replicas=self.world_size, rank=rank, drop_last=False)
+        
+        testloader = DataLoader(test_dataset, 
+                               batch_size=2, #64
+                               sampler=test_sampler, 
+                               num_workers=3,
+                               pin_memory=True)
+        
+
+        # b_size = 2#self.setup.test_batch_size()
+        # testloader = DataLoader( test_dataset, batch_size=2, shuffle=False, num_workers=0, pin_memory=False  )
 
         print('start AA accuracy')
         total_correct_nat, total_correct_adv, total_examples = self.compute_AA_accuracy(testloader, model_eval, rank)
