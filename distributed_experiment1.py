@@ -175,6 +175,8 @@ class BaseExperiment:
 
         trainloader, valloader, train_sampler, val_sampler = self.initialize_loaders(rank)
 
+        print('N', self.args.N, flush=True)
+
         model = load_architecture(self.args)
         model = CustomModel(self.args, model)
         model.set_fine_tuning_strategy('full_fine_tuning')
