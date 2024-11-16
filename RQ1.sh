@@ -3,7 +3,7 @@
 # Define variables
 seeds=1
 #archs=( 'convnext' ) # 'resnet50' 'vitsmall'
-datas=(  'Flowers', 'CIFAR10' ) # 'CIFAR100', 'EuroSAT', 'Aircraft' 
+datas=(  'Flowers',  ) # 'CIFAR100', 'EuroSAT', 'Aircraft'  'CIFAR10'
 task='train'
 losses=( 'TRADES_v2'  ) # 'APGD' 
 sched='nosched'

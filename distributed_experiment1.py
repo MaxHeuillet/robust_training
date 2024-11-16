@@ -199,13 +199,21 @@ class BaseExperiment:
         optimizer = torch.optim.SGD( model.parameters(),lr=self.args.init_lr, weight_decay=self.args.weight_decay, momentum=self.args.momentum, nesterov=True, )
         scheduler = CosineLR( optimizer, max_lr=self.args.init_lr, epochs=int(self.args.iterations) )
 
-        self.validate(valloader, model, experiment, 0, rank)
-        print('start the loop')
+        #self.validate(valloader, model, experiment, 0, rank)
+        #print('start the loop')
+
+        # Desired effective batch size
+        effective_batch_size = 1024
+        per_gpu_batch_size = self.args.batch_size  # Choose a batch size that fits in memory
+        accumulation_steps = effective_batch_size // (self.world_size * per_gpu_batch_size)
+        global_step = 0  # Track global iterations across accumulation steps
+        print('effective batch size', effective_batch_size, 'per_gpu_batch_size', per_gpu_batch_size, 'accumulation steps', accumulation_steps)
 
         for iteration in range(adjusted_epochs):
 
             model.train()
             train_sampler.set_epoch(iteration)
+            optimizer.zero_grad()
 
             print('start batches')
 
@@ -214,10 +222,6 @@ class BaseExperiment:
                 data, target, idxs = batch
 
                 data, target = data.to(rank), target.to(rank) 
-
-                # print('batch in gpu memory')
-
-                optimizer.zero_grad()
 
                 with torch.autocast(device_type='cuda'):
                     
@@ -237,15 +241,33 @@ class BaseExperiment:
                 #     raise ValueError("The tensor 'loss_values' contains negative values.")
 
                 loss = train_dataset.compute_loss(idxs, loss_values)
+                loss = loss / accumulation_steps  # Scale the loss
+
+                # Backward pass with gradient scaling
+                scaler.scale(loss).backward()
+
+                if (batch_id + 1) % accumulation_steps == 0 or (batch_id + 1) == len(trainloader):
+                    scaler.step(optimizer)
+                    scaler.update()
+                    optimizer.zero_grad()  # Clear gradients after optimizer step
+
+                    # Log metrics
+                    global_step += 1
+                    gradient_norm = compute_gradient_norms(model)
+                    current_lr = optimizer.param_groups[0]['lr']
+                    experiment.log_metric("global_step", global_step, epoch=iteration)
+                    experiment.log_metric("loss_value", loss.item() * accumulation_steps, epoch=iteration)
+                    experiment.log_metric("lr_schedule", current_lr, epoch=iteration)
+                    experiment.log_metric("gradient_norm", gradient_norm, epoch=iteration)
 
                 # loss.backward()
                 # optimizer.step()
                 # print('backward')
-                scaler.scale(loss).backward()
-                scaler.step(optimizer)
-                scaler.update()
+                # scaler.scale(loss).backward()
+                # scaler.step(optimizer)
+                # scaler.update()
 
-                break
+                # break
 
             if self.args.sched == 'sched':
                 scheduler.step()
@@ -265,9 +287,9 @@ class BaseExperiment:
             experiment.log_metric("gradient_norm", gradient_norm, epoch=iteration)
             #experiment.log_metric("reward", loss_values.sum(), epoch=iteration)  
 
-            if iteration % 5 == 0:
-                print('start validation') 
-                self.validate(valloader, model, experiment, iteration+1, rank)
+            # if iteration % 5 == 0:
+            #     print('start validation') 
+            #     self.validate(valloader, model, experiment, iteration+1, rank)
 
             # if self.args.pruning_strategy in ['decay_based', 'decay_based_v2',  'decay_based_v3']:
             #     indices = train_sampler.process_indices
@@ -275,7 +297,6 @@ class BaseExperiment:
             #     results = torch.tensor([ train_dataset.decay_model.fit_predict( train_dataset.global_scores2[idx], ) for idx in indices ])
             #     experiment.log_metric("solver_fails", train_dataset.decay_model.fail, epoch=iteration)
             #     experiment.log_metric("solver_total", train_dataset.decay_model.total, epoch=iteration)
-
             #     results = results.to(dtype=torch.float32)
             #     train_dataset.alphas[indices] = results[:,0]
             #     train_dataset.betas[indices] = results[:,1]
@@ -293,12 +314,12 @@ class BaseExperiment:
         del train_dataset, val_dataset
         del train_sampler, val_sampler
 
-        print('final validation')
+        # print('final validation')
 
-        if rank == 0:
-            clean_accuracy, robust_accuracy = self.final_validation(test_dataset, model, experiment, iteration, rank )
+        # if rank == 0:
+        #     clean_accuracy, robust_accuracy = self.final_validation(test_dataset, model, experiment, iteration, rank )
             
-            self.syn_results(clean_accuracy, robust_accuracy)
+        #     self.syn_results(clean_accuracy, robust_accuracy)
 
         experiment.end()
 
