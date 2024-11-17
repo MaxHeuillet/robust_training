@@ -70,7 +70,7 @@ def normalize_model(model: nn.Module, mean: Tuple[float, float, float],
 IMAGENET_MEAN = [c * 1. for c in (0.485, 0.456, 0.406)] #[np.array([0., 0., 0.]), np.array([0.485, 0.456, 0.406])][-1] * 255
 IMAGENET_STD = [c * 1. for c in (0.229, 0.224, 0.225)] #[np.array([1., 1., 1.]), np.array([0.229, 0.224, 0.225])][-1] * 255
 
-def load_architecture(args,):
+def load_architecture(args,N):
 
     equivalencies = { 'convnext_base':'convnext_base',
                       'convnext_base.fb_in22k':'convnext_base.fb_in22k', 
@@ -111,7 +111,7 @@ def load_architecture(args,):
         state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) )
         model.load_state_dict(state_dict)
 
-    model = change_head(args,model)
+    model = change_head(args,model,N)
 
     # model.forward = types.MethodType(custom_forward, model)
     # model.custom_forward = types.MethodType(custom_forward, model)
@@ -119,23 +119,23 @@ def load_architecture(args,):
     return model
 
 
-def change_head(args, model, ):
+def change_head(args, model, N):
 
     if "convnext" in args.backbone:
         num_features = model.head.fc.in_features
-        model.head.fc = nn.Linear(num_features, args.N)  
+        model.head.fc = nn.Linear(num_features, N)  
 
     elif "wideresnet" in args.backbone:
         num_features = model.logits.in_features
-        model.logits = nn.Linear(num_features, args.N)
+        model.logits = nn.Linear(num_features, N)
 
     elif "deit" in args.backbone:
         num_features = model.head.in_features
-        model.head = nn.Linear(num_features, args.N)
+        model.head = nn.Linear(num_features, N)
 
     elif "vit" in args.backbone:
         num_features = model.head.in_features
-        model.head = nn.Linear(num_features, args.N)
+        model.head = nn.Linear(num_features, N)
 
     return model
 

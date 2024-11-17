@@ -161,7 +161,7 @@ class BaseExperiment:
         # adjusted_epochs = adjust_epochs(original_data_size, pruned_data_size, batch_size, original_epochs)
         # experiment.log_parameter("adjusted_epochs", adjusted_epochs)
         
-        return trainloader, valloader, train_sampler, val_sampler
+        return trainloader, valloader, train_sampler, val_sampler, N
 
     def training(self, rank, ): 
 
@@ -172,11 +172,11 @@ class BaseExperiment:
 
         print('initialize dataset', rank,flush=True) 
 
-        trainloader, valloader, train_sampler, val_sampler = self.initialize_loaders(rank)
+        trainloader, valloader, train_sampler, val_sampler, N = self.initialize_loaders(rank)
 
         # print('N', self.args.N, flush=True)
 
-        model = load_architecture(self.args)
+        model = load_architecture(self.args, N)
         model = CustomModel(self.args, model)
         model.set_fine_tuning_strategy('full_fine_tuning')
         model.to(rank)
@@ -266,7 +266,6 @@ class BaseExperiment:
     def evaluate(self, rank, ):
 
         _, _, test_dataset, N, _, transform = load_data(self.args) 
-        self.args.N = N
 
         test_dataset = IndexedDataset(self.args, test_dataset, transform, N,)
 
@@ -279,7 +278,7 @@ class BaseExperiment:
                                pin_memory=True)
         
         # Re-instantiate the model
-        model_eval = load_architecture(self.args)
+        model_eval = load_architecture(self.args,N)
         model_eval = CustomModel(self.args, model_eval)
         model_eval.set_fine_tuning_strategy('full_fine_tuning')
         model_eval.to(rank)
