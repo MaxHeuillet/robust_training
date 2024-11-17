@@ -415,7 +415,7 @@ if __name__ == "__main__":
     experiment = BaseExperiment(args, world_size)
 
     queue = Queue()
-    torch.multiprocessing.spawn(experiment.training, args=(queue,), nprocs=experiment.world_size, join=True)
+    torch.multiprocessing.spawn(experiment.training, nprocs=experiment.world_size, join=True)
     print('start the loop 4')
     trained_state_dict = queue.get()  # Retrieve the result from rank 0
     print('start the loop 5')
