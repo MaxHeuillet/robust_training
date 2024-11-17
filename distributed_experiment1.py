@@ -262,7 +262,7 @@ class BaseExperiment:
             print(f'Rank {rank}, Iteration {iteration},', flush=True) 
 
 
-    def evaluate(self, rank, ):
+    def evaluation(self, rank, ):
 
         print('set up the distributed setup,', rank, flush=True)
         self.setup.distributed_setup(self.world_size, rank)
@@ -280,28 +280,47 @@ class BaseExperiment:
                                pin_memory=True)
         
         # Re-instantiate the model
-        model_eval = load_architecture(self.args, N, rank)
-        model_eval = CustomModel(self.args, model_eval)
-        model_eval.set_fine_tuning_strategy('full_fine_tuning')
-        model_eval.to(rank)
+        model = load_architecture(self.args, N, rank)
+        model = CustomModel(self.args, model)
+        model.set_fine_tuning_strategy('full_fine_tuning')
+        model.to(rank)
 
         map_location = {'cuda:%d' % 0: 'cuda:%d' % rank}
         trained_state_dict = torch.load('trained_model_{}.pt'.format(self.epx_id), map_location=map_location)
-        model_eval.load_state_dict(trained_state_dict)
+        model.load_state_dict(trained_state_dict)
 
-        model_eval.eval()
+        model.eval()
         
         # b_size = 2#self.setup.test_batch_size()
         # testloader = DataLoader( test_dataset, batch_size=2, shuffle=False, num_workers=0, pin_memory=False  )
 
         print('start AA accuracy')
-        total_correct_nat, total_correct_adv, total_examples = self.compute_AA_accuracy(testloader, model_eval, rank)
+        stats, stats_nat, stats_adv = self.test(testloader, model, rank)
         print('end AA accuracy')
 
-        clean_accuracy = self.sync_value(total_correct_nat, total_examples, rank)
-        robust_accuracy = self.sync_value(total_correct_adv, total_examples, rank)
+        clean_accuracy, _, _ = self.sync_value(stats['nb_correct_nat'], stats['nb_examples'], rank)
+        robust_accuracy, _, _ = self.sync_value(stats['nb_correct_adv'], stats['nb_examples'], rank)
 
-        self.log_results(clean_accuracy, robust_accuracy)
+        nat_zero_mean, _, _ = self.sync_value(stats_nat['zero_count'], stats_nat['total_neurons'], rank)
+        nat_dormant_mean, _, _ = self.sync_value(stats_nat['dormant_count'], stats_nat['total_neurons'], rank)
+        nat_overactive_mean, _, _ = self.sync_value(stats_adv['overactive_count'], stats_adv['total_neurons'], rank)
+
+        adv_zero_mean, _, _ = self.sync_value(stats_adv['zero_count'], stats_adv['total_neurons'], rank)
+        adv_dormant_mean, _, _ = self.sync_value(stats_nat['dormant_count'], stats_nat['total_neurons'], rank)
+        adv_overactive_mean, _, _ = self.sync_value(stats_adv['overactive_count'], stats_adv['total_neurons'], rank)
+
+        statistics = { 'clean_acc':clean_accuracy, 
+                       'robust_acc':robust_accuracy,
+                        'nat_zero_mean':nat_zero_mean,
+                        'nat_dormant_mean':nat_dormant_mean,
+                        'nat_overactive_mean':nat_overactive_mean,
+                        'adv_zero_mean':adv_zero_mean,
+                        'adv_dormant_mean':adv_dormant_mean,
+                        'adv_overactive_mean':adv_overactive_mean
+                        }
+        
+        self.log_results(statistics)
+
 
     def sync_value(self, value, nb_examples, rank):
 
@@ -315,21 +334,26 @@ class BaseExperiment:
         # Compute global averages
         avg_value = value_tensor.item() / nb_examples_tensor.item()
 
-        return avg_value
+        return avg_value, value_tensor.item(), nb_examples_tensor.item()
 
-    def compute_AA_accuracy(self, testloader, model, rank):
+    def test(self, testloader, model, rank):
+
+        from utils import ActivationTracker, register_hooks, compute_stats
+
+        tracker_nat = ActivationTracker()
+        tracker_adv = ActivationTracker()
+        model.current_tracker = 'nat'
+        handles = register_hooks(model, tracker_nat, tracker_adv)
 
         def forward_pass(x):
             return model(x)
         
-        norm = 'Linf'
-        epsilon = 8/255
-        adversary = AutoAttack(forward_pass, norm=norm, eps=epsilon, version='standard', device = rank)
+        adversary = AutoAttack(forward_pass, norm='Linf', eps=4/255, version='standard', device = rank)
         print('adversary instanciated')
         
-        total_correct_nat = 0
-        total_correct_adv = 0
-        total_examples = 0
+        stats = {'nb_correct_nat': 0, 'nb_correct_adv': 0, 'nb_examples': 0}
+        stats_nat = { "zero_count": 0, "dormant_count": 0, "overactive_count": 0, "total_neurons": 0 }
+        stats_adv = { "zero_count": 0, "dormant_count": 0, "overactive_count": 0, "total_neurons": 0 }
         
         for _, batch in enumerate( testloader ):
 
@@ -341,24 +365,44 @@ class BaseExperiment:
 
             batch_size = data.size(0)
 
-            x_adv = adversary.run_standard_evaluation(data, target, bs=batch_size )
+            x_adv = adversary.run_standard_evaluation(data, target, bs = batch_size )
             
+            # Evaluate the model on natural data
+            model.current_tracker = 'nat'  # Set the tracker to natural data
+            nat_outputs = model(data)
+            _, preds_nat = torch.max(nat_outputs.data, 1)
+
             # Evaluate the model on adversarial examples
+            model.current_tracker = 'adv'  # Set the tracker to adversarial data
             adv_outputs = model(x_adv)
             _, preds_adv = torch.max(adv_outputs.data, 1)
 
-            nat_outputs = model(data)
-            _, preds_nat = torch.max(nat_outputs.data, 1)
-            
-            total_correct_nat += (preds_nat == target).sum().item()
-            total_correct_adv += (preds_adv == target).sum().item()
-            total_examples += target.size(0)
+            stats['nb_correct_nat'] += (preds_nat == target).sum().item()
+            stats['nb_correct_adv'] += (preds_adv == target).sum().item()
+            stats['nb_examples'] += target.size(0)
+
+            # Compute neuron statistics
+            stats_nat = compute_stats(tracker_nat.activations)
+            stats_adv = compute_stats(tracker_adv.activations)
+
+            # Accumulate the statistics
+            for key in ["zero_count", "dormant_count", "overactive_count", "total_neurons"]:
+                stats_nat[key] += stats_nat[key]
+                stats_adv[key] += stats_adv[key]
+
+            # Clear activations for next batch
+            tracker_nat.activations.clear()
+            tracker_adv.activations.clear()
 
             break
 
-        return total_correct_nat, total_correct_adv, total_examples
+        # Remove hooks
+        for handle in handles:
+            handle.remove()
+
+        return stats, stats_nat, stats_adv
         
-    def log_results(self, clean_accuracy, robust_accuracy):
+    def log_results(self, statistics):
 
         cluster_name = os.environ.get('SLURM_CLUSTER_NAME', 'Unknown')
         data_path = './results/results_{}_{}.csv'.format(cluster_name, self.args.exp)
@@ -377,8 +421,7 @@ class BaseExperiment:
 
             self.current_experiment['id'] = self.epx_id        
             self.current_experiment['timestamp'] = generate_timestamp()
-            self.current_experiment['clean_acc'] = clean_accuracy
-            self.current_experiment['robust_acc'] = robust_accuracy
+            self.current_experiment = self.current_experiment | statistics
             
             new_row = pd.DataFrame([self.current_experiment], columns=self.current_experiment.keys() )
             
@@ -419,7 +462,7 @@ if __name__ == "__main__":
     torch.multiprocessing.spawn(experiment.training, nprocs=experiment.world_size, join=True)
     print('start the loop 4')
     
-    torch.multiprocessing.spawn(experiment.evaluate, nprocs=experiment.world_size, join=True)
+    torch.multiprocessing.spawn(experiment.evaluation, nprocs=experiment.world_size, join=True)
 
 
 

@@ -13,11 +13,13 @@ class Setup:
         self.args = args
         
     def distributed_setup(self, world_size, rank):
+        
         #Initialize the distributed environment.
         print( ' world size {}, rank {}'.format(world_size,rank) )
         print('set up the master adress and port')
         os.environ['MASTER_ADDR'] = 'localhost'
         os.environ['MASTER_PORT'] = '12354'
+
         #Set environment variables for offline usage of Hugging Face libraries
         os.environ['HF_DATASETS_OFFLINE'] = '1'
         os.environ['TRANSFORMERS_OFFLINE'] = '1'
