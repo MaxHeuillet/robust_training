@@ -185,8 +185,8 @@ class BaseExperiment:
         # torch.autograd.set_detect_anomaly(True)
 
         #self.validate(valloader, model, experiment, 0, rank)
-        #print('start the loop')
-
+        
+        print('start the loop')
         # self.fit(model, trainloader, train_sampler, logger, rank)
 
         dist.barrier() 
@@ -199,9 +199,11 @@ class BaseExperiment:
             # torch.save(model.state_dict(), "./state_dicts/{}.pt".format(self.config_name) )           
             # clean_accuracy, robust_accuracy = self.final_validation(test_dataset, model, experiment, iteration, rank )
             # self.syn_results(clean_accuracy, robust_accuracy)
-
+        print('start the loop 2')
         if queue is not None and rank == 0:
             queue.put(trained_state_dict)
+
+        print('start the loop 3')
 
         logger.end()
         self.setup.cleanup()
@@ -415,7 +417,9 @@ if __name__ == "__main__":
 
     queue = Queue()
     torch.multiprocessing.spawn(experiment.training, args=(queue,), nprocs=experiment.world_size, join=True)
+    print('start the loop 4')
     trained_state_dict = queue.get()  # Retrieve the result from rank 0
+    print('start the loop 5')
     experiment.trained_state_dict = trained_state_dict
     torch.multiprocessing.spawn(experiment.evaluate, nprocs=experiment.world_size, join=True)
 
