@@ -117,23 +117,22 @@ class BaseExperiment:
 
     def initialize_logger(self, rank):
 
-        experiment = Experiment(api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
+        logger = Experiment(api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
                                 project_name="robust_training",
                                 workspace="maxheuillet",
                                 auto_metric_logging=False,
                                 auto_output_logging=False)
         
-        experiment.log_parameter("run_id", os.getenv('SLURM_JOB_ID') )
-        experiment.log_parameter("global_process_rank", rank)
-        experiment.set_name( self.config_name )
-        experiment.log_parameters(self.args)
+        logger.log_parameter("run_id", os.getenv('SLURM_JOB_ID') )
+        logger.log_parameter("global_process_rank", rank)
+        logger.set_name( self.config_name )
+        logger.log_parameters(self.args)
 
         return experiment
 
     def initialize_loaders(self, rank):
 
         train_dataset, val_dataset, _, N, train_transform, transform = load_data(self.args) 
-        self.args.N = N
         
         train_dataset = WeightedDataset(self.args, train_dataset, train_transform, N, prune_ratio = self.args.pruning_ratio, )
         val_dataset = IndexedDataset(self.args, val_dataset, transform,  N,) 
@@ -169,7 +168,7 @@ class BaseExperiment:
         print('set up the distributed setup,', rank, flush=True)
         self.setup.distributed_setup(self.world_size, rank)
 
-        experiment = self.initialize_logger(rank)
+        logger = self.initialize_logger(rank)
 
         print('initialize dataset', rank,flush=True) 
 
@@ -188,12 +187,13 @@ class BaseExperiment:
         #self.validate(valloader, model, experiment, 0, rank)
         #print('start the loop')
 
-        # self.fit(model, trainloader, train_sampler, experiment, rank)
+        # self.fit(model, trainloader, train_sampler, logger, rank)
 
         dist.barrier() 
 
+        trained_state_dict = None
         if rank == 0:
-            self.trained_state_dict = model.module.state_dict()
+            trained_state_dict = model.module.state_dict()
             del model  # Remove DDP to ensure no synchronization is retained
             torch.cuda.empty_cache()  # Clear any leftover memory
             # torch.save(model.state_dict(), "./state_dicts/{}.pt".format(self.config_name) )           
@@ -203,7 +203,9 @@ class BaseExperiment:
         experiment.end()
         self.setup.cleanup()
 
-    def fit(self, model, trainloader, train_sampler, experiment, rank):
+        return trained_state_dict
+
+    def fit(self, model, trainloader, train_sampler, logger, rank):
 
         # Gradient accumulation:
         effective_batch_size = 1024
@@ -250,10 +252,10 @@ class BaseExperiment:
                     
                     gradient_norm = compute_gradient_norms(model)
                     current_lr = optimizer.param_groups[0]['lr']
-                    experiment.log_metric("global_step", global_step, epoch=iteration)
-                    experiment.log_metric("loss_value", loss.item() * accumulation_steps, epoch=iteration)
-                    experiment.log_metric("lr_schedule", current_lr, epoch=iteration)
-                    experiment.log_metric("gradient_norm", gradient_norm, epoch=iteration)
+                    logger.log_metric("global_step", global_step, epoch=iteration)
+                    logger.log_metric("loss_value", loss.item() * accumulation_steps, epoch=iteration)
+                    logger.log_metric("lr_schedule", current_lr, epoch=iteration)
+                    logger.log_metric("gradient_norm", gradient_norm, epoch=iteration)
 
             if self.args.sched == 'sched':
                 scheduler.step()
@@ -263,18 +265,8 @@ class BaseExperiment:
 
     def evaluate(self, rank, ):
 
-        print('N', self.args.N )
-
-        # Re-instantiate the model
-        model_eval = load_architecture(self.args)
-        model_eval = CustomModel(self.args, model_eval)
-        model_eval.set_fine_tuning_strategy('full_fine_tuning')
-        model_eval.to(rank)
-
-        model_eval.load_state_dict( self.trained_state_dict )
-        model_eval.eval()
-
-        _, _, test_dataset, _, _, transform = load_data(self.args) 
+        _, _, test_dataset, N, _, transform = load_data(self.args) 
+        self.args.N = N
 
         test_dataset = IndexedDataset(self.args, test_dataset, transform, N,)
 
@@ -286,7 +278,15 @@ class BaseExperiment:
                                num_workers=3,
                                pin_memory=True)
         
+        # Re-instantiate the model
+        model_eval = load_architecture(self.args)
+        model_eval = CustomModel(self.args, model_eval)
+        model_eval.set_fine_tuning_strategy('full_fine_tuning')
+        model_eval.to(rank)
 
+        model_eval.load_state_dict( self.trained_state_dict )
+        model_eval.eval()
+        
         # b_size = 2#self.setup.test_batch_size()
         # testloader = DataLoader( test_dataset, batch_size=2, shuffle=False, num_workers=0, pin_memory=False  )
 
@@ -411,7 +411,9 @@ if __name__ == "__main__":
 
     if args.task == "train":
         print('begin training')
-        torch.multiprocessing.spawn(experiment.training,  nprocs=experiment.world_size, join=True)
+        result = torch.multiprocessing.spawn(experiment.training,  nprocs=experiment.world_size, join=True)
+        trained_state_dict = result[0]
+        experiment.trained_state_dict = trained_state_dict
         torch.multiprocessing.spawn(experiment.evaluate,  nprocs=experiment.world_size, join=True)
 
 
