@@ -70,7 +70,7 @@ def normalize_model(model: nn.Module, mean: Tuple[float, float, float],
 IMAGENET_MEAN = [c * 1. for c in (0.485, 0.456, 0.406)] #[np.array([0., 0., 0.]), np.array([0.485, 0.456, 0.406])][-1] * 255
 IMAGENET_STD = [c * 1. for c in (0.229, 0.224, 0.225)] #[np.array([1., 1., 1.]), np.array([0.229, 0.224, 0.225])][-1] * 255
 
-def load_architecture(args,N):
+def load_architecture(args, N, rank):
 
     equivalencies = { 'convnext_base':'convnext_base',
                       'convnext_base.fb_in22k':'convnext_base.fb_in22k', 
@@ -90,25 +90,27 @@ def load_architecture(args,N):
                       'robust_vit_base_patch16_224': 'vit_base_patch16_224'
                            
                         }
+    
+    map_location = {'cuda:%d' % 0: 'cuda:%d' % rank}
 
     if 'convnext' in args.backbone:
         model = timm.create_model(equivalencies[args.backbone], pretrained=False)
-        state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) )
+        state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) , map_location=map_location)
         model.load_state_dict(state_dict)
 
     elif 'wideresnet' in args.backbone:
         model = wideresnet(depth = 28, widen = 10, act_fn = 'swish', num_classes = 200)
-        state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) )
+        state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) , map_location=map_location)
         model.load_state_dict(state_dict)
 
     elif 'deit' in args.backbone:
         model = timm.create_model(equivalencies[args.backbone], pretrained=False)
-        state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) )
+        state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) , map_location=map_location)
         model.load_state_dict(state_dict)
 
     elif 'vit' in args.backbone:
         model = timm.create_model(equivalencies[args.backbone], pretrained=False)
-        state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) )
+        state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) , map_location=map_location)
         model.load_state_dict(state_dict)
 
     model = change_head(args,model,N)
