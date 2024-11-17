@@ -322,7 +322,7 @@ class BaseExperiment:
                         'adv_overactive_mean':adv_overactive_mean
                         }
         
-        self.log_results(statistics)
+        # self.log_results(statistics)
 
 
     def sync_value(self, value, nb_examples, rank):

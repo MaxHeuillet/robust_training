@@ -67,7 +67,7 @@ class Setup:
 
         # Batch size recommendations based on the backbone
         if self.args.backbone == 'robust_wideresnet_28_10':
-            batch_size = 3 * base  # 8 = NOT OK,
+            batch_size = 4 * base  # 8 = NOT OK,
         elif self.args.backbone in ['deit_small_patch16_224.fb_in1k', 'robust_deit_small_patch16_224']:
             batch_size = 64 * base  # 16 = OK, 32 = OK, 64 = OK, 128 = NOT OK, 
         elif self.args.backbone in ['vit_base_patch16_224.augreg_in1k', 'vit_base_patch16_224.augreg_in21k', 'robust_vit_base_patch16_224']:
@@ -77,17 +77,4 @@ class Setup:
         elif self.args.backbone in ['convnext_tiny', 'convnext_tiny.fb_in22k', 'robust_convnext_tiny']:
             batch_size = 32 * base  # 16 = OK, 32 = OK, 64 = NOT OK,
         
-        # if os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'beluga' and self.args.backbone == 'robust_wideresnet_28_10':
-        #     batch_size = 16
-        # elif os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'beluga' and self.args.dataset in ['EuroSAT']:
-        #     batch_size = 128
-        # elif os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'narval' and self.args.dataset in ['EuroSAT']:
-        #     batch_size = 256
-        # elif os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'narval' and self.args.dataset in ['Aircraft']:
-        #     batch_size = 64
-        # elif os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'narval' and self.args.dataset in ['CIFAR10', 'CIFAR100']:
-        #     batch_size = 512
-        # else:
-        #     print('error')
-
         return batch_size
