@@ -257,6 +257,8 @@ class BaseExperiment:
                     logger.log_metric("lr_schedule", current_lr, epoch=iteration)
                     logger.log_metric("gradient_norm", gradient_norm, epoch=iteration)
 
+                break
+
             if self.args.sched == 'sched':
                 scheduler.step()
   
