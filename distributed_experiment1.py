@@ -176,7 +176,7 @@ class BaseExperiment:
 
         # print('N', self.args.N, flush=True)
 
-        model = load_architecture(self.args, N)
+        model = load_architecture(self.args, N, rank)
         model = CustomModel(self.args, model)
         model.set_fine_tuning_strategy('full_fine_tuning')
         model.to(rank)
@@ -279,7 +279,7 @@ class BaseExperiment:
                                pin_memory=True)
         
         # Re-instantiate the model
-        model_eval = load_architecture(self.args,N)
+        model_eval = load_architecture(self.args, N, rank)
         model_eval = CustomModel(self.args, model_eval)
         model_eval.set_fine_tuning_strategy('full_fine_tuning')
         model_eval.to(rank)
