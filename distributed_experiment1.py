@@ -163,7 +163,7 @@ class BaseExperiment:
         
         return trainloader, valloader, train_sampler, val_sampler, N
 
-    def training(self, rank, queue=None): 
+    def training(self, rank):  
 
         print('set up the distributed setup,', rank, flush=True)
         self.setup.distributed_setup(self.world_size, rank)
@@ -191,17 +191,13 @@ class BaseExperiment:
 
         dist.barrier() 
 
-        trained_state_dict = None
         if rank == 0:
             trained_state_dict = model.module.state_dict()
             del model  # Remove DDP to ensure no synchronization is retained
             torch.cuda.empty_cache()  # Clear any leftover memory
-            # torch.save(model.state_dict(), "./state_dicts/{}.pt".format(self.config_name) )           
-            # clean_accuracy, robust_accuracy = self.final_validation(test_dataset, model, experiment, iteration, rank )
-            # self.syn_results(clean_accuracy, robust_accuracy)
-        print('start the loop 2')
-        if queue is not None and rank == 0:
-            queue.put(trained_state_dict)
+            torch.save(trained_state_dict, 'trained_model_{}.pt'.format(self.epx_id))
+            print('Model saved by rank 0')
+        dist.barrier()
 
         print('start the loop 3')
 
@@ -288,7 +284,10 @@ class BaseExperiment:
         model_eval.set_fine_tuning_strategy('full_fine_tuning')
         model_eval.to(rank)
 
-        model_eval.load_state_dict( self.trained_state_dict )
+        map_location = {'cuda:%d' % 0: 'cuda:%d' % rank}
+        trained_state_dict = torch.load('trained_model_{}.pt'.format(self.epx_id), map_location=map_location)
+        model_eval.load_state_dict(trained_state_dict)
+
         model_eval.eval()
         
         # b_size = 2#self.setup.test_batch_size()
