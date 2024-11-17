@@ -204,8 +204,6 @@ class BaseExperiment:
         logger.end()
         self.setup.cleanup()
 
-        #return trained_state_dict
-
     def fit(self, model, trainloader, train_sampler, logger, rank):
 
         # Gradient accumulation:
@@ -266,6 +264,9 @@ class BaseExperiment:
 
     def evaluate(self, rank, ):
 
+        print('set up the distributed setup,', rank, flush=True)
+        self.setup.distributed_setup(self.world_size, rank)
+
         _, _, test_dataset, N, _, transform = load_data(self.args) 
 
         test_dataset = IndexedDataset(self.args, test_dataset, transform, N,)
@@ -301,6 +302,20 @@ class BaseExperiment:
         robust_accuracy = self.sync_value(total_correct_adv, total_examples, rank)
 
         self.log_results(clean_accuracy, robust_accuracy)
+
+    def sync_value(self, value, nb_examples, rank):
+
+        # Aggregate results across all processes
+        value_tensor = torch.tensor([value], dtype=torch.float32, device=rank)
+        nb_examples_tensor = torch.tensor([nb_examples], dtype=torch.float32, device=rank)
+
+        dist.all_reduce(value_tensor, op=dist.ReduceOp.SUM)
+        dist.all_reduce(nb_examples_tensor, op=dist.ReduceOp.SUM)
+
+        # Compute global averages
+        avg_value = value_tensor.item() / nb_examples_tensor.item()
+
+        return avg_value
 
     def compute_AA_accuracy(self, testloader, model, rank):
 
@@ -343,20 +358,6 @@ class BaseExperiment:
 
         return total_correct_nat, total_correct_adv, total_examples
         
-    def sync_value(self, value, nb_examples, rank):
-
-        # Aggregate results across all processes
-        value_tensor = torch.tensor([value], dtype=torch.float32, device=rank)
-        nb_examples_tensor = torch.tensor([nb_examples], dtype=torch.float32, device=rank)
-
-        dist.all_reduce(value_tensor, op=dist.ReduceOp.SUM)
-        dist.all_reduce(nb_examples_tensor, op=dist.ReduceOp.SUM)
-
-        # Compute global averages
-        avg_value = value_tensor.item() / nb_examples_tensor.item()
-
-        return avg_value
-    
     def log_results(self, clean_accuracy, robust_accuracy):
 
         cluster_name = os.environ.get('SLURM_CLUSTER_NAME', 'Unknown')
