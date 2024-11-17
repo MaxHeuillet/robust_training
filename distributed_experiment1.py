@@ -128,7 +128,7 @@ class BaseExperiment:
         logger.set_name( self.config_name )
         logger.log_parameters(self.args)
 
-        return experiment
+        return logger
 
     def initialize_loaders(self, rank):
 
@@ -200,7 +200,7 @@ class BaseExperiment:
             # clean_accuracy, robust_accuracy = self.final_validation(test_dataset, model, experiment, iteration, rank )
             # self.syn_results(clean_accuracy, robust_accuracy)
 
-        experiment.end()
+        logger.end()
         self.setup.cleanup()
 
         return trained_state_dict
@@ -335,6 +335,8 @@ class BaseExperiment:
             total_correct_nat += (preds_nat == target).sum().item()
             total_correct_adv += (preds_adv == target).sum().item()
             total_examples += target.size(0)
+
+            break
 
         return total_correct_nat, total_correct_adv, total_examples
         
