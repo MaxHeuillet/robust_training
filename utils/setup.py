@@ -32,8 +32,8 @@ class Setup:
 
     def test_batch_size(self,):
         
-        if os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'beluga' and self.args.dataset in ['CIFAR10', 'CIFAR100']:
-            batch_size = 256
+        if os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'beluga' and self.args.backbone == 'robust_wideresnet_28_10':
+            batch_size = 16
         elif os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'beluga' and self.args.dataset in ['EuroSAT']:
             batch_size = 128
         elif os.environ.get('SLURM_CLUSTER_NAME', 'Unknown') == 'narval' and self.args.dataset in ['EuroSAT']:
