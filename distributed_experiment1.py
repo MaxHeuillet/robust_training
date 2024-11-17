@@ -2,7 +2,7 @@ from comet_ml import Experiment
 from filelock import FileLock
 import pandas as pd
 
-
+from torch.multiprocessing import Queue
 
 import torch
 import torch.distributed as dist
@@ -163,7 +163,7 @@ class BaseExperiment:
         
         return trainloader, valloader, train_sampler, val_sampler, N
 
-    def training(self, rank, ): 
+    def training(self, rank, queue=None): 
 
         print('set up the distributed setup,', rank, flush=True)
         self.setup.distributed_setup(self.world_size, rank)
@@ -199,6 +199,9 @@ class BaseExperiment:
             # torch.save(model.state_dict(), "./state_dicts/{}.pt".format(self.config_name) )           
             # clean_accuracy, robust_accuracy = self.final_validation(test_dataset, model, experiment, iteration, rank )
             # self.syn_results(clean_accuracy, robust_accuracy)
+
+        if queue is not None and rank == 0:
+            queue.put(trained_state_dict)
 
         logger.end()
         self.setup.cleanup()
@@ -410,12 +413,11 @@ if __name__ == "__main__":
 
     experiment = BaseExperiment(args, world_size)
 
-    if args.task == "train":
-        print('begin training')
-        result = torch.multiprocessing.spawn(experiment.training,  nprocs=experiment.world_size, join=True)
-        trained_state_dict = result[0]
-        experiment.trained_state_dict = trained_state_dict
-        torch.multiprocessing.spawn(experiment.evaluate,  nprocs=experiment.world_size, join=True)
+    queue = Queue()
+    torch.multiprocessing.spawn(experiment.training, args=(queue,), nprocs=experiment.world_size, join=True)
+    trained_state_dict = queue.get()  # Retrieve the result from rank 0
+    experiment.trained_state_dict = trained_state_dict
+    torch.multiprocessing.spawn(experiment.evaluate, nprocs=experiment.world_size, join=True)
 
 
 
