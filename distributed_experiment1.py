@@ -274,7 +274,7 @@ class BaseExperiment:
         test_sampler = DistributedSampler(test_dataset, num_replicas=self.world_size, rank=rank, drop_last=False)
         
         testloader = DataLoader(test_dataset, 
-                               batch_size=16, #64
+                               batch_size=64, #64
                                sampler=test_sampler, 
                                num_workers=3,
                                pin_memory=True)
