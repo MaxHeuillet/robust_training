@@ -45,13 +45,13 @@ class Setup:
         if self.args.backbone == 'robust_wideresnet_28_10':
             batch_size = 8 * base  # 8 = OK, 16 = NOT OK, 12 NOT OK
         elif self.args.backbone in ['deit_small_patch16_224.fb_in1k', 'robust_deit_small_patch16_224']:
-            batch_size = 128 * base  # 16 = OK, 32 = OK, 64 = OK
+            batch_size = 256 * base  # 16 = OK, 32 = OK, 64 = OK, 128 = OK
         elif self.args.backbone in ['vit_base_patch16_224.augreg_in1k', 'vit_base_patch16_224.augreg_in21k', 'robust_vit_base_patch16_224']:
-            batch_size = 128 * base  # 16 = OK, 32 = OK, 64 = OK
+            batch_size = 64 * base  # 16 = OK, 32 = OK, 64 = OK, 128 = NOT OK
         elif self.args.backbone in ['convnext_base', 'convnext_base.fb_in22k', 'robust_convnext_base']:
             batch_size = 32 * base  # 16 = OK, 32 = OK, 64 = NOT OK
         elif self.args.backbone in ['convnext_tiny', 'convnext_tiny.fb_in22k', 'robust_convnext_tiny']:
-            batch_size = 128 * base  # 16 = OK, 32 = OK, 64 = OK
+            batch_size = 64 * base  # 16 = OK, 32 = OK, 64 = OK, 128 = NOT OK
 
         return batch_size
         
