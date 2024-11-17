@@ -138,6 +138,7 @@ class BaseExperiment:
         val_dataset = IndexedDataset(self.args, val_dataset, transform,  N,) 
 
         print('initialize sampler', rank,flush=True) 
+        args.batch_size = self.setup.train_batch_size()
         train_sampler = DistributedCustomSampler(self.args, train_dataset, num_replicas=self.world_size, rank=rank, drop_last=True)
         val_sampler = DistributedSampler(val_dataset, num_replicas=self.world_size, rank=rank, drop_last=False)
         
@@ -149,7 +150,7 @@ class BaseExperiment:
                                  pin_memory=True) 
         
         valloader = DataLoader(val_dataset, 
-                               batch_size=2, #64
+                               batch_size=self.setup.train_batch_size(), #64
                                sampler=val_sampler, 
                                num_workers=3,
                                pin_memory=True)
