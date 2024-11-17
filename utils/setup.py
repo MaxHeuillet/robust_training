@@ -37,22 +37,22 @@ class Setup:
         cluster_name = os.environ.get('SLURM_CLUSTER_NAME', 'Unknown')
         
         if cluster_name == 'narval':
-            # Batch size recommendations based on the backbone
-            if self.args.backbone == 'robust_wideresnet_28_10':
-                batch_size = 8  # WideResNet-28-10 is memory-intensive due to wide layers
-            elif self.args.backbone in ['deit_small_patch16_224.fb_in1k', 'robust_deit_small_patch16_224']:
-                batch_size = 128  # DeiT Small models are efficient
-            elif self.args.backbone in ['vit_base_patch16_224.augreg_in1k', 'vit_base_patch16_224.augreg_in21k', 'robust_vit_base_patch16_224']:
-                batch_size = 64  # ViT Base models have higher memory usage
-            elif self.args.backbone in ['convnext_base', 'convnext_base.fb_in22k', 'robust_convnext_base']:
-                batch_size = 64  # ConvNeXt Base models are sizable
-            elif self.args.backbone in ['convnext_tiny', 'convnext_tiny.fb_in22k', 'robust_convnext_tiny']:
-                batch_size = 128  # ConvNeXt Tiny models are lighter
-            else:
-                batch_size = 16  # Default for unknown backbones
-        else:
-            batch_size = 16  # Default for unknown clusters
-        
+            base = 2.5
+        elif cluster_name == 'beluga':
+            base = 1
+
+        # Batch size recommendations based on the backbone
+        if self.args.backbone == 'robust_wideresnet_28_10':
+            batch_size = 8 * base  # WideResNet-28-10 is memory-intensive due to wide layers
+        elif self.args.backbone in ['deit_small_patch16_224.fb_in1k', 'robust_deit_small_patch16_224']:
+            batch_size = 16 * base  # DeiT Small models are efficient
+        elif self.args.backbone in ['vit_base_patch16_224.augreg_in1k', 'vit_base_patch16_224.augreg_in21k', 'robust_vit_base_patch16_224']:
+            batch_size = 16 * base  # ViT Base models have higher memory usage
+        elif self.args.backbone in ['convnext_base', 'convnext_base.fb_in22k', 'robust_convnext_base']:
+            batch_size = 16 * base  # ConvNeXt Base models are sizable
+        elif self.args.backbone in ['convnext_tiny', 'convnext_tiny.fb_in22k', 'robust_convnext_tiny']:
+            batch_size = 16 * base  # ConvNeXt Tiny models are lighter
+
         return batch_size
         
     def test_batch_size(self,):
