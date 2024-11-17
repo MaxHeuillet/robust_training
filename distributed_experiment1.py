@@ -138,7 +138,7 @@ class BaseExperiment:
         val_dataset = IndexedDataset(self.args, val_dataset, transform,  N,) 
 
         print('initialize sampler', rank,flush=True) 
-        args.batch_size = self.setup.train_batch_size()
+        self.args.batch_size = self.setup.train_batch_size()
         train_sampler = DistributedCustomSampler(self.args, train_dataset, num_replicas=self.world_size, rank=rank, drop_last=True)
         val_sampler = DistributedSampler(val_dataset, num_replicas=self.world_size, rank=rank, drop_last=False)
         
@@ -462,7 +462,6 @@ if __name__ == "__main__":
     queue = Queue()
     torch.multiprocessing.spawn(experiment.training, nprocs=experiment.world_size, join=True)
     print('start the loop 4')
-    
     # torch.multiprocessing.spawn(experiment.evaluation, nprocs=experiment.world_size, join=True)
 
 
