@@ -188,7 +188,7 @@ class BaseExperiment:
         #self.validate(valloader, model, experiment, 0, rank)
         
         print('start the loop')
-        # self.fit(model, trainloader, train_sampler, logger, rank)
+        self.fit(model, trainloader, train_sampler, logger, rank)
 
         dist.barrier() 
 
@@ -463,7 +463,7 @@ if __name__ == "__main__":
     torch.multiprocessing.spawn(experiment.training, nprocs=experiment.world_size, join=True)
     print('start the loop 4')
     
-    torch.multiprocessing.spawn(experiment.evaluation, nprocs=experiment.world_size, join=True)
+    # torch.multiprocessing.spawn(experiment.evaluation, nprocs=experiment.world_size, join=True)
 
 
 
