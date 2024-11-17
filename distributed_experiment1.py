@@ -208,7 +208,7 @@ class BaseExperiment:
         logger.end()
         self.setup.cleanup()
 
-        return trained_state_dict
+        #return trained_state_dict
 
     def fit(self, model, trainloader, train_sampler, logger, rank):
 
