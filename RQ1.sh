@@ -39,42 +39,46 @@ for data in "${datas[@]}"; do
                 for fttype in "${ft_type[@]}"; do
                     
                   if [ "$CC_CLUSTER" = "beluga" ]; then
+
+                    echo "test1"
           
               ### Pretrained non robust
-              sbatch --export=ALL,\
-NITER=$iterations,\
-BCKBN=$bckbn,\
-FTTYPE=$fttype,\
-RATIO=$pruning_ratio,\
-PSTRAT=$pruning_strategy,\
-BSTRAT=$batch_strategy,\
-DATA=$data,\
-SEED=$id,\
-LOSS=$loss,\
-SCHED=$sched,\
-LR=$init_lr,\
-AUG=$aug,\
-EXP=$exp\
-./distributed_experiment_beluga.sh
+#               sbatch --export=ALL,\
+# NITER=$iterations,\
+# BCKBN=$bckbn,\
+# FTTYPE=$fttype,\
+# RATIO=$pruning_ratio,\
+# PSTRAT=$pruning_strategy,\
+# BSTRAT=$batch_strategy,\
+# DATA=$data,\
+# SEED=$id,\
+# LOSS=$loss,\
+# SCHED=$sched,\
+# LR=$init_lr,\
+# AUG=$aug,\
+# EXP=$exp\
+# ./distributed_experiment_beluga.sh
 
-                    else
+                  else
+
+                    echo "test2"
 
               ### Pretrained non robust
-              sbatch --export=ALL,\
-NITER=$iterations,\
-BCKBN=$bckbn,\
-FTTYPE=$fttype,\
-RATIO=$pruning_ratio,\
-PSTRAT=$pruning_strategy,\
-BSTRAT=$batch_strategy,\
-DATA=$data,\
-SEED=$id,\
-LOSS=$loss,\
-SCHED=$sched,\
-LR=$init_lr,\
-AUG=$aug,\
-EXP=$exp\
-./distributed_experiment_other.sh
+#               sbatch --export=ALL,\
+# NITER=$iterations,\
+# BCKBN=$bckbn,\
+# FTTYPE=$fttype,\
+# RATIO=$pruning_ratio,\
+# PSTRAT=$pruning_strategy,\
+# BSTRAT=$batch_strategy,\
+# DATA=$data,\
+# SEED=$id,\
+# LOSS=$loss,\
+# SCHED=$sched,\
+# LR=$init_lr,\
+# AUG=$aug,\
+# EXP=$exp\
+# ./distributed_experiment_other.sh
 
                     fi
 
