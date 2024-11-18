@@ -11,26 +11,24 @@ from torch.utils.data import DataLoader, DistributedSampler
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.amp import GradScaler,autocast
 
+from torch.optim import AdamW
+
 # from torch.optim.lr_scheduler import CosineAnnealingLR
 import os
 import torch
 
 import io
 
-import gzip
-
-import pickle as pkl
 
 import math
 from autoattack import AutoAttack
-import utils
 
 from torch.utils.data import DataLoader
 
 import torch.distributed as dist
 
 import sys
-import torch.nn as nn
+
 
 from utils import Setup
 
@@ -41,8 +39,7 @@ from losses import get_loss, get_eval_loss
 from utils import get_args, get_exp_name, set_seeds
 from cosine import CosineLR
 
-import numpy as np
-import tqdm
+
 import pandas as pd
 from datetime import datetime
 
@@ -50,7 +47,7 @@ import hashlib
 import json
 
 import pandas as pd
-import numpy as np
+
 
 def get_unique_id(args):
 
@@ -179,7 +176,7 @@ class BaseExperiment:
 
         model = load_architecture(self.args, N, rank)
         model = CustomModel(self.args, model)
-        model.set_fine_tuning_strategy('full_fine_tuning')
+        model.set_fine_tuning_strategy()
         model.to(rank)
         model = DDP(model, device_ids=[rank])
 
@@ -215,8 +212,9 @@ class BaseExperiment:
         print('effective batch size', effective_batch_size, 'per_gpu_batch_size', per_gpu_batch_size, 'accumulation steps', accumulation_steps)
 
         scaler = GradScaler()
-        print(self.args.init_lr, self.args.weight_decay, self.args.momentum) 
-        optimizer = torch.optim.SGD( model.parameters(),lr=self.args.init_lr, weight_decay=self.args.weight_decay, momentum=self.args.momentum, nesterov=True, )
+        # print(self.args.init_lr, self.args.weight_decay, self.args.momentum) 
+        # optimizer = torch.optim.SGD( model.parameters(),lr=self.args.init_lr, weight_decay=self.args.weight_decay, momentum=self.args.momentum, nesterov=True, )
+        optimizer = torch.optim.AdamW( model.parameters(), lr=self.args.init_lr, weight_decay=self.args.weight_decay, )
         scheduler = CosineLR( optimizer, max_lr=self.args.init_lr, epochs=int(self.args.iterations) )
         
         for iteration in range(self.args.iterations):
@@ -259,6 +257,8 @@ class BaseExperiment:
 
                 break
 
+            model.module.update_fine_tuning_strategy(iteration)
+                
             if self.args.sched == 'sched':
                 scheduler.step()
   

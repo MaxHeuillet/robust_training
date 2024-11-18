@@ -28,7 +28,6 @@ python3 ./distributed_experiment1.py \
     --init_lr ${LR} \
     --loss_function ${LOSS} \
     --sched ${SCHED} \
-    --task ${TASK} \
     --dataset ${DATA} \
     --seed ${SEED} \
     --iterations ${NITER} \
@@ -37,6 +36,5 @@ python3 ./distributed_experiment1.py \
     --batch_strategy ${BSTRAT} \
     --aug ${AUG} \
     --backbone ${BCKBN} \
-    --lora ${LORA} \
     --exp ${EXP} \
     > stdout_$SLURM_JOB_ID 2> stderr_$SLURM_JOB_ID
