@@ -2,22 +2,22 @@
 
 # Define variables
 seeds=1
-datas=( 'Flowers' ) # 'CIFAR100' 'EuroSAT' 'Aircraft' 'CIFAR10'  
-losses=( 'TRADES_v2'  ) # 'APGD'
+datas=( 'Flowers' 'CIFAR100' 'EuroSAT' 'Aircraft' 'CIFAR10'  ) #  
+losses=( 'TRADES_v2' 'APGD' ) # 
 sched='nosched'
-iterations=2
+iterations=30
 aug='aug'
 exp='RQ1'
 
-init_lrs=( 0.001 ) #0.0005 0.0001 
+init_lrs=( 0.001 0.0005 0.0001 ) #
 pruning_ratios=( 0 )
 pruning_strategies=( 'random' )
 batch_strategies=('random')
-backbones=( 'wideresnet_28_10' #'robust_wideresnet_28_10' 
-            'deit_small_patch16_224.fb_in1k' #'robust_deit_small_patch16_224' 
-            'vit_base_patch16_224.augreg_in1k' #'vit_base_patch16_224.augreg_in21k', 'robust_vit_base_patch16_224'
-            'convnext_base' #'convnext_base.fb_in22k' 'robust_convnext_base'
-            'convnext_tiny' #'convnext_tiny.fb_in22k' 'robust_convnext_tiny' 
+backbones=( 'wideresnet_28_10' 'robust_wideresnet_28_10' 
+            'deit_small_patch16_224.fb_in1k' 'robust_deit_small_patch16_224' 
+            'vit_base_patch16_224.augreg_in1k' 'vit_base_patch16_224.augreg_in21k', 'robust_vit_base_patch16_224'
+            'convnext_base' 'convnext_base.fb_in22k' 'robust_convnext_base'
+            'convnext_tiny' 'convnext_tiny.fb_in22k' 'robust_convnext_tiny' 
              ) 
 
 ft_type=( 'full_fine_tuning' ) #'lora' ,  'linear_probing'
