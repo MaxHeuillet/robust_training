@@ -39,10 +39,7 @@ for data in "${datas[@]}"; do
                 for fttype in "${ft_type[@]}"; do
                     
                   if [ "$CC_CLUSTER" = "beluga" ]; then
-
-                    echo "test1"
           
-                    ## Pretrained non robust
                     sbatch --export=ALL,\
 NITER=$iterations,\
 BCKBN=$bckbn,\
@@ -61,9 +58,6 @@ EXP=$exp \
 
                   else
 
-                    echo "test2"
-
-                    ## Pretrained non robust
                     sbatch --export=ALL,\
 NITER=$iterations,\
 BCKBN=$bckbn,\
