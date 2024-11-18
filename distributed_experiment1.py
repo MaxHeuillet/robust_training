@@ -255,7 +255,7 @@ class BaseExperiment:
                     logger.log_metric("lr_schedule", current_lr, epoch=iteration)
                     logger.log_metric("gradient_norm", gradient_norm, epoch=iteration)
 
-                break
+                # break
 
             model.module.update_fine_tuning_strategy(iteration)
                 
@@ -397,7 +397,7 @@ class BaseExperiment:
             tracker_nat.activations.clear()
             tracker_adv.activations.clear()
 
-            break
+            # break
 
         # Remove hooks
         for handle in handles:
