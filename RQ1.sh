@@ -56,7 +56,7 @@ LOSS=$loss,\
 SCHED=$sched,\
 LR=$init_lr,\
 AUG=$aug,\
-EXP=$exp
+EXP=$exp \
 ./distributed_experiment_beluga.sh
 
                   else
@@ -77,7 +77,7 @@ LOSS=$loss,\
 SCHED=$sched,\
 LR=$init_lr,\
 AUG=$aug,\
-EXP=$exp
+EXP=$exp \
 ./distributed_experiment_other.sh
 
                     fi
