@@ -185,7 +185,7 @@ class BaseExperiment:
         #self.validate(valloader, model, experiment, 0, rank)
         
         print('start the loop')
-        # self.fit(model, trainloader, train_sampler, logger, rank)
+        self.fit(model, trainloader, train_sampler, logger, rank)
 
         dist.barrier() 
 
