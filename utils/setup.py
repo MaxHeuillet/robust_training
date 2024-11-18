@@ -54,7 +54,7 @@ class Setup:
         elif self.args.backbone in ['convnext_tiny', 'convnext_tiny.fb_in22k', 'robust_convnext_tiny']:
             batch_size = 64 * base  # 16 = OK, 32 = OK, 64 = OK, 128 = NOT OK
 
-        return batch_size
+        return int(batch_size)
         
     def test_batch_size(self,):
 
@@ -77,4 +77,4 @@ class Setup:
         elif self.args.backbone in ['convnext_tiny', 'convnext_tiny.fb_in22k', 'robust_convnext_tiny']:
             batch_size = 32 * base  # 16 = OK, 32 = OK, 64 = NOT OK,
         
-        return batch_size
+        return int(batch_size)
