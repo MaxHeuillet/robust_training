@@ -42,7 +42,7 @@ for data in "${datas[@]}"; do
 
                     echo "test1"
           
-              ### Pretrained non robust
+                    ## Pretrained non robust
                     sbatch --export=ALL,\
 NITER=$iterations,\
 BCKBN=$bckbn,\
@@ -56,14 +56,14 @@ LOSS=$loss,\
 SCHED=$sched,\
 LR=$init_lr,\
 AUG=$aug,\
-EXP=$exp\
+EXP=$exp
 ./distributed_experiment_beluga.sh
 
                   else
 
                     echo "test2"
 
-              ### Pretrained non robust
+                    ## Pretrained non robust
                     sbatch --export=ALL,\
 NITER=$iterations,\
 BCKBN=$bckbn,\
@@ -77,11 +77,10 @@ LOSS=$loss,\
 SCHED=$sched,\
 LR=$init_lr,\
 AUG=$aug,\
-EXP=$exp\
+EXP=$exp
 ./distributed_experiment_other.sh
 
                     fi
-
                 done
               done
             done
