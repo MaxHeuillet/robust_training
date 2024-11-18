@@ -163,9 +163,6 @@ class BaseExperiment:
 
     def training(self, rank):  
 
-        print('set up the distributed setup,', rank, flush=True)
-        self.setup.distributed_setup(self.world_size, rank)
-
         logger = self.initialize_logger(rank)
 
         print('initialize dataset', rank,flush=True) 
@@ -200,7 +197,7 @@ class BaseExperiment:
         print('start the loop 3')
 
         logger.end()
-        self.setup.cleanup()
+        
 
     def fit(self, model, trainloader, train_sampler, logger, rank):
 
@@ -300,6 +297,8 @@ class BaseExperiment:
         print('start AA accuracy')
         stats, stats_nat, stats_adv = self.test(testloader, model, rank)
         print('end AA accuracy')
+
+        dist.barrier()
 
         clean_accuracy, _, _ = self.sync_value(stats['nb_correct_nat'], stats['nb_examples'], rank)
         robust_accuracy, _, _ = self.sync_value(stats['nb_correct_adv'], stats['nb_examples'], rank)
@@ -446,6 +445,24 @@ class BaseExperiment:
                     df.loc[match_mask, :] = new_row.values
 
             df.to_csv(data_path, header=True, index=False)
+
+    def training_and_evaluation(self, rank):
+        # Training Phase
+
+        print('set up the distributed setup,', rank, flush=True)
+        self.setup.distributed_setup(self.world_size, rank)
+
+        self.training(rank)
+        
+        # Ensure training processes have finished
+        dist.barrier()
+        
+        # Evaluation Phase
+        self.evaluation(rank)
+        
+        # Cleanup after evaluation
+        self.setup.cleanup()
+
     
 if __name__ == "__main__":
 
@@ -461,10 +478,7 @@ if __name__ == "__main__":
 
     experiment = BaseExperiment(args, world_size)
 
-    queue = Queue()
-    torch.multiprocessing.spawn(experiment.training, nprocs=experiment.world_size, join=True)
-    print('start the loop 4')
-    torch.multiprocessing.spawn(experiment.evaluation, nprocs=experiment.world_size, join=True)
+    torch.multiprocessing.spawn(experiment.training_and_evaluation, nprocs=experiment.world_size, join=True)
 
 
 
