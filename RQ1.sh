@@ -2,16 +2,14 @@
 
 # Define variables
 seeds=1
-#archs=( 'convnext' ) # 'resnet50' 'vitsmall'
-datas=( 'Flowers' ) # 'CIFAR100', 'EuroSAT', 'Aircraft'  'CIFAR10'
-task='train'
+datas=( 'Flowers' ) # 'CIFAR100', 'EuroSAT', 'Aircraft'  'CIFAR10' 
 losses=( 'TRADES_v2' ) # 'APGD' 
 sched='nosched'
 iterations=2 #50
 aug='aug'
 exp='RQ1'
 
-init_lrs=( 0.001  ) # 0.0005 0.0001
+init_lrs=( 0.001 0.0005 0.0001 ) 
 pruning_ratios=( 0 )
 pruning_strategies=( 'random' )
 batch_strategies=('random')
@@ -21,9 +19,6 @@ backbones=( 'robust_wideresnet_28_10',
             'convnext_base',  #'convnext_base.fb_in22k', 'robust_convnext_base',  
             'convnext_tiny',  #'convnext_tiny.fb_in22k', 'robust_convnext_tiny',
              ) 
-
-
-            
 
 ft_type=( 'full_fine_tuning' ) #'lora' ,  'linear_probing'
 
@@ -44,7 +39,6 @@ for data in "${datas[@]}"; do
               sbatch --export=ALL,\
 NITER=$iterations,\
 BCKBN=$bckbn,\
-TASK=$task,\
 RATIO=$pruning_ratio,\
 PSTRAT=$pruning_strategy,\
 BSTRAT=$batch_strategy,\
@@ -54,7 +48,6 @@ LOSS=$loss,\
 SCHED=$sched,\
 LR=$init_lr,\
 AUG=$aug,\
-LORA='nolora',\
 EXP=$exp \
 ./distributed_experiment_beluga.sh
 
@@ -64,7 +57,6 @@ EXP=$exp \
               sbatch --export=ALL,\
 NITER=$iterations,\
 BCKBN=$bckbn,\
-TASK=$task,\
 RATIO=$pruning_ratio,\
 PSTRAT=$pruning_strategy,\
 BSTRAT=$batch_strategy,\
@@ -74,7 +66,6 @@ LOSS=$loss,\
 SCHED=$sched,\
 LR=$init_lr,\
 AUG=$aug,\
-LORA='nolora',\
 EXP=$exp \
 ./distributed_experiment_other.sh
 
