@@ -39,6 +39,7 @@ for data in "${datas[@]}"; do
               sbatch --export=ALL,\
 NITER=$iterations,\
 BCKBN=$bckbn,\
+FTTYPE=$fttype,\
 RATIO=$pruning_ratio,\
 PSTRAT=$pruning_strategy,\
 BSTRAT=$batch_strategy,\
@@ -48,7 +49,7 @@ LOSS=$loss,\
 SCHED=$sched,\
 LR=$init_lr,\
 AUG=$aug,\
-EXP=$exp \
+EXP=$exp\
 ./distributed_experiment_beluga.sh
 
                     else
@@ -57,6 +58,7 @@ EXP=$exp \
               sbatch --export=ALL,\
 NITER=$iterations,\
 BCKBN=$bckbn,\
+FTTYPE=$fttype,\
 RATIO=$pruning_ratio,\
 PSTRAT=$pruning_strategy,\
 BSTRAT=$batch_strategy,\
@@ -66,7 +68,7 @@ LOSS=$loss,\
 SCHED=$sched,\
 LR=$init_lr,\
 AUG=$aug,\
-EXP=$exp \
+EXP=$exp\
 ./distributed_experiment_other.sh
 
                     fi
