@@ -167,15 +167,15 @@ class WideResNet(nn.Module):
 
         # Use adaptive pooling to reduce spatial dimensions to 1x1
         out = F.adaptive_avg_pool2d(out, (1, 1))
-        print('out', out.shape)
+        # print('out', out.shape)
 
         # Flatten while preserving batch size
         out = out.view(x.size(0), -1)
-        print('out', out.shape)
-        print("num channels", self.num_channels)
+        # print('out', out.shape)
+        # print("num channels", self.num_channels)
 
         final = self.logits(out)
-        print('final', final.shape)
+        # print('final', final.shape)
         return final
 
         # print('out', out.shape)
