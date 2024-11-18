@@ -264,9 +264,6 @@ class BaseExperiment:
 
     def evaluation(self, rank, ):
 
-        print('set up the distributed setup,', rank, flush=True)
-        self.setup.distributed_setup(self.world_size, rank)
-
         _, _, test_dataset, N, _, transform = load_data(self.args) 
 
         test_dataset = IndexedDataset(self.args, test_dataset, transform, N,)
