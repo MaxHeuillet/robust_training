@@ -43,7 +43,7 @@ class Setup:
             base = 1
 
         # Batch size recommendations based on the backbone
-        if self.args.backbone == 'robust_wideresnet_28_10':
+        if self.args.backbone in ['robust_wideresnet_28_10', 'wideresnet_28_10']:
             batch_size = 8 * base  # 8 = OK, 16 = NOT OK, 12 NOT OK
         elif self.args.backbone in ['deit_small_patch16_224.fb_in1k', 'robust_deit_small_patch16_224']:
             batch_size = 128 * base  # 16 = OK, 32 = OK, 64 = OK, 128 = OK, 256 = NOT OK
@@ -66,7 +66,7 @@ class Setup:
             base = 1
 
         # Batch size recommendations based on the backbone
-        if self.args.backbone == 'robust_wideresnet_28_10':
+        if self.args.backbone in ['robust_wideresnet_28_10', 'wideresnet_28_10']:
             batch_size = 4 * base  # 8 = NOT OK,
         elif self.args.backbone in ['deit_small_patch16_224.fb_in1k', 'robust_deit_small_patch16_224']:
             batch_size = 64 * base  # 16 = OK, 32 = OK, 64 = OK, 128 = NOT OK, 

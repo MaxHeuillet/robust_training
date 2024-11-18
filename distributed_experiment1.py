@@ -285,7 +285,7 @@ class BaseExperiment:
         # Re-instantiate the model
         model = load_architecture(self.args, N, rank)
         model = CustomModel(self.args, model)
-        model.set_fine_tuning_strategy('full_fine_tuning')
+        model.set_fine_tuning_strategy()
         model.to(rank)
 
         map_location = {'cuda:%d' % 0: 'cuda:%d' % rank}
