@@ -81,6 +81,7 @@ def load_architecture(args, N, rank):
                       'robust_convnext_tiny':'convnext_tiny',
 
                       'robust_wideresnet_28_10': 'robust_wideresnet_28_10',
+                      'wideresnet_28_10': 'wideresnet_28_10',
 
                       'deit_small_patch16_224.fb_in1k': 'deit_small_patch16_224.fb_in1k',
                       'robust_deit_small_patch16_224': 'deit_small_patch16_224',

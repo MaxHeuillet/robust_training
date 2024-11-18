@@ -18,11 +18,11 @@ class CustomModel(nn.Module):
 
     def set_fine_tuning_strategy(self, ):
 
-        if self.args.strategy == 'full_fine_tuning':
+        if self.args.ft_type == 'full_fine_tuning':
             self._freeze_backbone()
             self._unfreeze_last_layer()
 
-        elif self.args.strategy == 'linear_probing':
+        elif self.args.ft_type == 'linear_probing':
             self._freeze_backbone()
             self._unfreeze_last_layer()
 
@@ -31,11 +31,11 @@ class CustomModel(nn.Module):
         #     self._apply_lora_adapters()
 
         else:
-            raise ValueError(f"Unknown fine-tuning strategy: {self.args.strategy}")
+            raise ValueError(f"Unknown fine-tuning strategy: {self.args.ft_type}")
         
     def update_fine_tuning_strategy(self, iteration):
 
-        if self.args.strategy == 'full_fine_tuning' and iteration >= self.args.freeze_epochs and self.all_gradients_on==False:
+        if self.args.ft_type == 'full_fine_tuning' and iteration >= self.args.freeze_epochs and self.all_gradients_on==False:
             print('Unfreezing all layers')
             self._enable_all_gradients()
             

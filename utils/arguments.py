@@ -24,7 +24,7 @@ def get_exp_name(args):
 
 def get_args():
 
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(allow_abbrev=False)
 
     if "calculquebec" in os.uname().nodename:  # Check for a substring that is unique to the cluster
         default_data_dir = '~/scratch/data'
@@ -36,8 +36,8 @@ def get_args():
     # General options
     # parser.add_argument("--arch", default="resnet50",type=str, help="model architecture")
     # parser.add_argument("--pre_trained", type=str, help="load pretrained non robust model")
-    parser.add_argument("--backbone", type=str, help="load backbone")
-    parser.add_argument("--finetuning_type", type=str, help="fine tuning type")
+    parser.add_argument("--backbone", default = 'none', type=str, help="load backbone")
+    parser.add_argument("--ft_type", default = 'none', type=str, help="fine tuning type")
     parser.add_argument("--freeze_epochs", default=10, type=int, help="number of preliminary epochs where we only do linear probing")
 
     parser.add_argument('--dataset', default='CIFAR10', type=str, help='dataset: ' + ' (default: cifar10)')

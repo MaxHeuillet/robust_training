@@ -193,7 +193,7 @@ class BaseExperiment:
             trained_state_dict = model.module.state_dict()
             del model  # Remove DDP to ensure no synchronization is retained
             torch.cuda.empty_cache()  # Clear any leftover memory
-            torch.save(trained_state_dict, 'trained_model_{}.pt'.format(self.epx_id))
+            torch.save(trained_state_dict, './state_dicts/trained_model_{}.pt'.format(self.epx_id))
             print('Model saved by rank 0')
         dist.barrier()
 
@@ -289,7 +289,7 @@ class BaseExperiment:
         model.to(rank)
 
         map_location = {'cuda:%d' % 0: 'cuda:%d' % rank}
-        trained_state_dict = torch.load('trained_model_{}.pt'.format(self.epx_id), map_location=map_location)
+        trained_state_dict = torch.load('./state_dicts/trained_model_{}.pt'.format(self.epx_id), map_location=map_location)
         model.load_state_dict(trained_state_dict)
 
         model.eval()
@@ -322,7 +322,7 @@ class BaseExperiment:
                         'adv_overactive_mean':adv_overactive_mean
                         }
         
-        # self.log_results(statistics)
+        self.log_results(statistics)
 
 
     def sync_value(self, value, nb_examples, rank):

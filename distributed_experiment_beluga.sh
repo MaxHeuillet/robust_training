@@ -36,5 +36,6 @@ python3 ./distributed_experiment1.py \
     --batch_strategy ${BSTRAT} \
     --aug ${AUG} \
     --backbone ${BCKBN} \
+    --ft_type ${FTTYPE} \
     --exp ${EXP} \
     > stdout_$SLURM_JOB_ID 2> stderr_$SLURM_JOB_ID
