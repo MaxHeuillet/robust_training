@@ -5,7 +5,7 @@ seeds=1
 datas=( 'Flowers' 'CIFAR100' 'EuroSAT' 'Aircraft' 'CIFAR10'  ) #  
 losses=( 'TRADES_v2' 'APGD' ) # 
 sched='nosched'
-iterations=2#30
+iterations=2 #30
 aug='aug'
 exp='RQ1'
 
