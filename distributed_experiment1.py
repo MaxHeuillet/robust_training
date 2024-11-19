@@ -301,19 +301,6 @@ class BaseExperiment:
         stats, stats_nat, stats_adv = self.test(testloader, model, rank)
         print('end AA accuracy', flush=True) 
 
-        # dist.barrier()
-
-        # clean_accuracy, _, _ = self.sync_value(stats['nb_correct_nat'], stats['nb_examples'], rank)
-        # robust_accuracy, _, _ = self.sync_value(stats['nb_correct_adv'], stats['nb_examples'], rank)
-
-        # nat_zero_mean, _, _ = self.sync_value(stats_nat['zero_count'], stats_nat['total_neurons'], rank)
-        # nat_dormant_mean, _, _ = self.sync_value(stats_nat['dormant_count'], stats_nat['total_neurons'], rank)
-        # nat_overactive_mean, _, _ = self.sync_value(stats_adv['overactive_count'], stats_adv['total_neurons'], rank)
-
-        # adv_zero_mean, _, _ = self.sync_value(stats_adv['zero_count'], stats_adv['total_neurons'], rank)
-        # adv_dormant_mean, _, _ = self.sync_value(stats_nat['dormant_count'], stats_nat['total_neurons'], rank)
-        # adv_overactive_mean, _, _ = self.sync_value(stats_adv['overactive_count'], stats_adv['total_neurons'], rank)
-
         statistics = { 'stats': stats, 'stats_nat': stats_nat, 'stats_adv': stats_adv,}
         
         # Put results into the queue
