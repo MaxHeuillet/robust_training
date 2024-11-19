@@ -268,14 +268,22 @@ class BaseExperiment:
 
         test_dataset = IndexedDataset(self.args, test_dataset, transform, N,)
 
-        test_sampler = DistributedSampler(test_dataset, num_replicas=self.world_size, rank=rank, drop_last=False)
+        test_sampler = DistributedSampler(test_dataset, 
+                                          num_replicas=self.world_size, 
+                                          rank=rank, 
+                                          shuffle=False,  # Disable shuffling
+                                          drop_last=False)
         
         testloader = DataLoader(test_dataset, 
                                batch_size=self.setup.test_batch_size(), #64
                                sampler=test_sampler, 
-                               num_workers=3,
+                               num_workers=0,
                                pin_memory=True)
         
+        # Check the number of samples assigned to this process
+        num_samples = len(test_sampler)
+        print(f"Rank {rank}: Number of samples = {num_samples}")
+            
         # Re-instantiate the model
         model = load_architecture(self.args, N, rank)
         model = CustomModel(self.args, model)
