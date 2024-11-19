@@ -189,9 +189,12 @@ class BaseExperiment:
         if rank == 0:
             # Access the underlying model
             model_to_save = model.module
+            print(model_to_save)
             
             # Move the model to CPU
             model_to_save = model_to_save.cpu()
+            print(model_to_save)
+
             torch.save(model_to_save.state_dict(), './state_dicts/trained_model_{}.pt'.format(self.epx_id))
             print('Model saved by rank 0')
 
