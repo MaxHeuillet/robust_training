@@ -9,12 +9,12 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
-CIFAR10_MEAN = (0.4914, 0.4822, 0.4465)
-CIFAR10_STD = (0.2471, 0.2435, 0.2616)
-CIFAR100_MEAN = (0.5071, 0.4865, 0.4409)
-CIFAR100_STD = (0.2673, 0.2564, 0.2762)
-SVHN_MEAN = (0.5, 0.5, 0.5)
-SVHN_STD = (0.5, 0.5, 0.5)
+# CIFAR10_MEAN = (0.4914, 0.4822, 0.4465)
+# CIFAR10_STD = (0.2471, 0.2435, 0.2616)
+# CIFAR100_MEAN = (0.5071, 0.4865, 0.4409)
+# CIFAR100_STD = (0.2673, 0.2564, 0.2762)
+# SVHN_MEAN = (0.5, 0.5, 0.5)
+# SVHN_STD = (0.5, 0.5, 0.5)
 
 _ACTIVATION = {
     'relu': nn.ReLU,
@@ -112,16 +112,16 @@ class WideResNet(nn.Module):
                  depth: int = 28,
                  width: int = 10,
                  activation_fn: nn.Module = nn.ReLU,
-                 mean: Union[Tuple[float, ...], float] = CIFAR10_MEAN,
-                 std: Union[Tuple[float, ...], float] = CIFAR10_STD,
-                 padding: int = 0,
+                #  mean: Union[Tuple[float, ...], float] = CIFAR10_MEAN,
+                #  std: Union[Tuple[float, ...], float] = CIFAR10_STD,
+                #  padding: int = 0,
                  num_input_channels: int = 3):
         super().__init__()
-        self.mean = torch.tensor(mean).view(num_input_channels, 1, 1)
-        self.std = torch.tensor(std).view(num_input_channels, 1, 1)
-        self.mean_cuda = None
-        self.std_cuda = None
-        self.padding = padding
+        # self.mean = torch.tensor(mean).view(num_input_channels, 1, 1)
+        # self.std = torch.tensor(std).view(num_input_channels, 1, 1)
+        # self.mean_cuda = None
+        # self.std_cuda = None
+        # self.padding = padding
         num_channels = [16, 16 * width, 32 * width, 64 * width]
         assert (depth - 4) % 6 == 0
         num_blocks = (depth - 4) // 6
@@ -151,17 +151,18 @@ class WideResNet(nn.Module):
                 m.bias.data.zero_()
     
     def forward(self, x):
-        if self.padding > 0:
-            x = F.pad(x, (self.padding,) * 4)
-        if x.is_cuda:
-            if self.mean_cuda is None:
-                self.mean_cuda = self.mean.cuda()
-                self.std_cuda = self.std.cuda()
-            out = (x - self.mean_cuda) / self.std_cuda
-        else:
-            out = (x - self.mean) / self.std
+
+        # if self.padding > 0:
+        #     x = F.pad(x, (self.padding,) * 4)
+        # if x.is_cuda:
+        #     if self.mean_cuda is None:
+        #         self.mean_cuda = self.mean.cuda()
+        #         self.std_cuda = self.std.cuda()
+        #     out = (x - self.mean_cuda) / self.std_cuda
+        # else:
+        #     out = (x - self.mean) / self.std
         
-        out = self.init_conv(out)
+        out = self.init_conv(x)
         out = self.layer(out)
         out = self.relu(self.batchnorm(out))
 
