@@ -1,7 +1,5 @@
 from comet_ml import Experiment
 
-from torch.multiprocessing import Queue
-
 import torch
 import torch.distributed as dist
 from torch.utils.data import DataLoader, DistributedSampler
@@ -37,6 +35,13 @@ from architectures import load_architecture, CustomModel
 from losses import get_loss, get_eval_loss
 from utils import get_args, get_exp_name, set_seeds
 from cosine import CosineLR
+
+
+import torch
+from torch.utils.data import DataLoader
+from torch.utils.data.distributed import DistributedSampler
+import io
+import sys
 
 def get_unique_id(args):
 
@@ -75,6 +80,7 @@ def adjust_epochs(original_data_size, pruned_data_size, batch_size, original_epo
     
     return adjusted_epochs
 
+
 class BaseExperiment:
 
     def __init__(self, args, world_size, ):
@@ -85,7 +91,6 @@ class BaseExperiment:
         self.current_experiment = vars(self.args)
         self.epx_id = get_unique_id(self.current_experiment)
         self.setup = Setup(args, self.config_name, self.epx_id, self.current_experiment)
-        
 
     def initialize_logger(self, rank):
 
@@ -260,7 +265,6 @@ class BaseExperiment:
   
             print(f'Rank {rank}, Iteration {iteration},', flush=True) 
 
-
     def evaluation(self, rank, result_queue):
 
         _, _, test_dataset, N, _, transform = load_data(self.args) 
@@ -375,19 +379,15 @@ class BaseExperiment:
 
         return stats, stats_nat, stats_adv
         
-
-
         
 if __name__ == "__main__":
 
     print('begining of the execution')
 
-    from multiprocessing import Queue, Process
-    import torch
-    from torch.utils.data import DataLoader
-    from torch.utils.data.distributed import DistributedSampler
-    import io
-    import sys
+    import torch.multiprocessing as mp #import Queue
+    from multiprocessing import Queue #, Process
+
+    torch.multiprocessing.set_start_method("spawn", force=True)
 
     args = get_args()
 
@@ -399,9 +399,7 @@ if __name__ == "__main__":
 
     experiment = BaseExperiment(args, world_size)
 
-    torch.multiprocessing.spawn(experiment.training, nprocs=experiment.world_size, join=True)
-
-    # torch.multiprocessing.spawn(experiment.evaluation, nprocs=experiment.world_size, join=True)
+    mp.spawn(experiment.training, nprocs=experiment.world_size, join=True)
 
     # Create a Queue to gather results
     result_queue = Queue()
@@ -409,7 +407,7 @@ if __name__ == "__main__":
     # Launch evaluation processes
     processes = []
     for rank in range(experiment.world_size):
-        p = Process(target=experiment.evaluation, args=(rank, result_queue) )
+        p = mp.Process(target=experiment.evaluation, args=(rank, result_queue) )
         p.start()
         processes.append(p)
 
@@ -428,6 +426,8 @@ if __name__ == "__main__":
     # Log the aggregated results
     # experiment.log_results(all_statistics)
 
+
+    
 
 
 
