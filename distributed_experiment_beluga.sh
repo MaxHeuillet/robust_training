@@ -10,7 +10,7 @@
 #SBATCH --mail-type=ALL
 
 module --force purge
-module load StdEnv/2023 python/3.10 cuda scipy-stack httpproxy arrow
+module load StdEnv/2023 python/3.10 cuda torch scipy-stack httpproxy arrow
 source ~/scratch/MYENV4/bin/activate
 # pip install  -r requirements.txt
 
