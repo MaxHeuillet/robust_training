@@ -192,9 +192,7 @@ class BaseExperiment:
             torch.cuda.empty_cache()  # Clear any leftover memory
             torch.save(model_to_save.state_dict(), './state_dicts/trained_model_{}.pt'.format(self.epx_id))
             print('Model saved by rank 0')
-        else:
-            # Other ranks do not need to save the model
-            pass
+
         dist.barrier()
 
         print('start the loop 3')
@@ -478,11 +476,6 @@ class BaseExperiment:
 if __name__ == "__main__":
 
     print('begining of the execution')
-
-    import torch
-    print(torch.__version__)
-    print(torch.version.cuda)
-    print(torch.backends.cudnn.version())
 
     args = get_args()
 
