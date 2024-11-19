@@ -461,10 +461,10 @@ class BaseExperiment:
         print('set up the distributed setup,', rank, flush=True)
         self.setup.distributed_setup(self.world_size, rank)
 
-        self.training(rank)
+        # self.training(rank)
         
-        # Ensure training processes have finished
-        dist.barrier()
+        # # Ensure training processes have finished
+        # dist.barrier()
         
         # Evaluation Phase
         self.evaluation(rank)
