@@ -17,6 +17,10 @@ class Setup:
         # os.environ['NCCL_DEBUG'] = 'INFO'  # or 'TRACE' for more detailed logs
         # os.environ['NCCL_DEBUG_SUBSYS'] = 'ALL'
         # os.environ['NCCL_BLOCKING_WAIT'] = '1'
+
+        print('torch', torch.__version__)
+        print('cuda', torch.version.cuda)
+        print('cudnn', torch.backends.cudnn.version())
         
         #Initialize the distributed environment.
         print( ' world size {}, rank {}'.format(world_size,rank) )
