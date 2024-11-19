@@ -265,20 +265,24 @@ class BaseExperiment:
     def evaluation(self, rank, ):
 
         _, _, test_dataset, N, _, transform = load_data(self.args) 
+        print('loaded data')
 
         test_dataset = IndexedDataset(self.args, test_dataset, transform, N,)
+        print('indexed data')
 
         test_sampler = DistributedSampler(test_dataset, 
                                           num_replicas=self.world_size, 
                                           rank=rank, 
                                           shuffle=False,  # Disable shuffling
                                           drop_last=False)
+        print('distributed sampled')
         
         testloader = DataLoader(test_dataset, 
                                batch_size=self.setup.test_batch_size(), #64
                                sampler=test_sampler, 
                                num_workers=0,
                                pin_memory=True)
+        print('dataloader')
         
         # Check the number of samples assigned to this process
         num_samples = len(test_sampler)
