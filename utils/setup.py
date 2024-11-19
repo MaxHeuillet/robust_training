@@ -13,6 +13,10 @@ class Setup:
         self.args = args
         
     def distributed_setup(self, world_size, rank):
+
+        os.environ['NCCL_DEBUG'] = 'INFO'  # or 'TRACE' for more detailed logs
+        os.environ['NCCL_DEBUG_SUBSYS'] = 'ALL'
+        os.environ['NCCL_BLOCKING_WAIT'] = '1'
         
         #Initialize the distributed environment.
         print( ' world size {}, rank {}'.format(world_size,rank) )
