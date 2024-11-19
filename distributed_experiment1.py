@@ -294,9 +294,9 @@ class BaseExperiment:
         model.set_fine_tuning_strategy()
         model.to(rank)
 
-        map_location = {'cuda:%d' % 0: 'cuda:%d' % rank}
-        trained_state_dict = torch.load('./state_dicts/trained_model_{}.pt'.format(self.epx_id), map_location=map_location)
-        model.load_state_dict(trained_state_dict)
+        # map_location = {'cuda:%d' % 0: 'cuda:%d' % rank}
+        # trained_state_dict = torch.load('./state_dicts/trained_model_{}.pt'.format(self.epx_id), map_location=map_location)
+        # model.load_state_dict(trained_state_dict)
 
         model.eval()
         
@@ -330,7 +330,8 @@ class BaseExperiment:
                         'adv_overactive_mean':adv_overactive_mean
                         }
         
-        self.log_results(statistics)
+        if rank == 0:
+            self.log_results(statistics)
 
 
     def sync_value(self, value, nb_examples, rank):
@@ -359,7 +360,7 @@ class BaseExperiment:
         def forward_pass(x):
             return model(x)
         
-        adversary = AutoAttack(forward_pass, norm='Linf', eps=4/255, version='standard', device = rank)
+        adversary = AutoAttack(forward_pass, norm='Linf', eps=4/255, version='standard', verbose = False, device = rank)
         print('adversary instanciated')
         
         stats = {'nb_correct_nat': 0, 'nb_correct_adv': 0, 'nb_examples': 0}
