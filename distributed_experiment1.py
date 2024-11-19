@@ -189,11 +189,11 @@ class BaseExperiment:
         if rank == 0:
             # Access the underlying model
             model_to_save = model.module
-            print(model_to_save)
+            # print(model_to_save)
             
             # Move the model to CPU
             model_to_save = model_to_save.cpu()
-            print(model_to_save)
+            # print(model_to_save)
 
             torch.save(model_to_save.state_dict(), './state_dicts/trained_model_{}.pt'.format(self.epx_id))
             print('Model saved by rank 0')
@@ -271,10 +271,10 @@ class BaseExperiment:
     def evaluation(self, rank, ):
 
         _, _, test_dataset, N, _, transform = load_data(self.args) 
-        print('loaded data')
+        print('loaded data', flush=True) 
 
         test_dataset = IndexedDataset(self.args, test_dataset, transform, N,)
-        print('indexed data')
+        print('indexed data', flush=True) 
 
         test_sampler = DistributedSampler(test_dataset, 
                                           num_replicas=self.world_size, 
@@ -288,11 +288,11 @@ class BaseExperiment:
                                sampler=test_sampler, 
                                num_workers=0,
                                pin_memory=True)
-        print('dataloader')
+        print('dataloader', flush=True) 
         
         # Check the number of samples assigned to this process
         num_samples = len(test_sampler)
-        print(f"Rank {rank}: Number of samples = {num_samples}")
+        print(f"Rank {rank}: Number of samples = {num_samples}", flush=True) 
             
         # Re-instantiate the model
         model = load_architecture(self.args, N, rank)
@@ -307,9 +307,9 @@ class BaseExperiment:
         # b_size = 2#self.setup.test_batch_size()
         # testloader = DataLoader( test_dataset, batch_size=2, shuffle=False, num_workers=0, pin_memory=False  )
 
-        print('start AA accuracy')
+        print('start AA accuracy', flush=True) 
         stats, stats_nat, stats_adv = self.test(testloader, model, rank)
-        print('end AA accuracy')
+        print('end AA accuracy', flush=True) 
 
         dist.barrier()
 
@@ -365,7 +365,7 @@ class BaseExperiment:
             return model(x)
         
         adversary = AutoAttack(forward_pass, norm='Linf', eps=4/255, version='standard', verbose = False, device = rank)
-        print('adversary instanciated')
+        print('adversary instanciated', flush=True) 
         
         stats = {'nb_correct_nat': 0, 'nb_correct_adv': 0, 'nb_examples': 0}
         stats_nat = { "zero_count": 0, "dormant_count": 0, "overactive_count": 0, "total_neurons": 0 }
@@ -373,7 +373,7 @@ class BaseExperiment:
         
         for _, batch in enumerate( testloader ):
 
-            print('start batch iterations')
+            print('start batch iterations',rank, flush=True) 
 
             data, target, _ = batch
 
