@@ -161,8 +161,11 @@ class BaseExperiment:
         
         return trainloader, valloader, train_sampler, val_sampler, N
 
-    def training(self, rank):  
+    def training(self, rank):
 
+        print('set up the distributed setup,', rank, flush=True)
+        self.setup.distributed_setup(self.world_size, rank)
+        
         logger = self.initialize_logger(rank)
 
         print('initialize dataset', rank,flush=True) 
@@ -203,6 +206,7 @@ class BaseExperiment:
         print('start the loop 3')
 
         logger.end()
+        self.setup.cleanup()  
         
 
     def fit(self, model, trainloader, train_sampler, logger, rank):
@@ -268,7 +272,7 @@ class BaseExperiment:
             print(f'Rank {rank}, Iteration {iteration},', flush=True) 
 
 
-    def evaluation(self, rank, ):
+    def evaluation(self, rank, result_queue):
 
         _, _, test_dataset, N, _, transform = load_data(self.args) 
         print('loaded data', flush=True) 
@@ -303,40 +307,30 @@ class BaseExperiment:
         model.to(rank)
 
         model.eval()
-        
-        # b_size = 2#self.setup.test_batch_size()
-        # testloader = DataLoader( test_dataset, batch_size=2, shuffle=False, num_workers=0, pin_memory=False  )
 
         print('start AA accuracy', flush=True) 
         stats, stats_nat, stats_adv = self.test(testloader, model, rank)
         print('end AA accuracy', flush=True) 
 
-        dist.barrier()
+        # dist.barrier()
 
-        clean_accuracy, _, _ = self.sync_value(stats['nb_correct_nat'], stats['nb_examples'], rank)
-        robust_accuracy, _, _ = self.sync_value(stats['nb_correct_adv'], stats['nb_examples'], rank)
+        # clean_accuracy, _, _ = self.sync_value(stats['nb_correct_nat'], stats['nb_examples'], rank)
+        # robust_accuracy, _, _ = self.sync_value(stats['nb_correct_adv'], stats['nb_examples'], rank)
 
-        nat_zero_mean, _, _ = self.sync_value(stats_nat['zero_count'], stats_nat['total_neurons'], rank)
-        nat_dormant_mean, _, _ = self.sync_value(stats_nat['dormant_count'], stats_nat['total_neurons'], rank)
-        nat_overactive_mean, _, _ = self.sync_value(stats_adv['overactive_count'], stats_adv['total_neurons'], rank)
+        # nat_zero_mean, _, _ = self.sync_value(stats_nat['zero_count'], stats_nat['total_neurons'], rank)
+        # nat_dormant_mean, _, _ = self.sync_value(stats_nat['dormant_count'], stats_nat['total_neurons'], rank)
+        # nat_overactive_mean, _, _ = self.sync_value(stats_adv['overactive_count'], stats_adv['total_neurons'], rank)
 
-        adv_zero_mean, _, _ = self.sync_value(stats_adv['zero_count'], stats_adv['total_neurons'], rank)
-        adv_dormant_mean, _, _ = self.sync_value(stats_nat['dormant_count'], stats_nat['total_neurons'], rank)
-        adv_overactive_mean, _, _ = self.sync_value(stats_adv['overactive_count'], stats_adv['total_neurons'], rank)
+        # adv_zero_mean, _, _ = self.sync_value(stats_adv['zero_count'], stats_adv['total_neurons'], rank)
+        # adv_dormant_mean, _, _ = self.sync_value(stats_nat['dormant_count'], stats_nat['total_neurons'], rank)
+        # adv_overactive_mean, _, _ = self.sync_value(stats_adv['overactive_count'], stats_adv['total_neurons'], rank)
 
-        statistics = { 'clean_acc':clean_accuracy, 
-                       'robust_acc':robust_accuracy,
-                        'nat_zero_mean':nat_zero_mean,
-                        'nat_dormant_mean':nat_dormant_mean,
-                        'nat_overactive_mean':nat_overactive_mean,
-                        'adv_zero_mean':adv_zero_mean,
-                        'adv_dormant_mean':adv_dormant_mean,
-                        'adv_overactive_mean':adv_overactive_mean
-                        }
+        statistics = { 'stats': stats, 'stats_nat': stats_nat, 'stats_adv': stats_adv,}
         
-        if rank == 0:
-            self.log_results(statistics)
-
+        # Put results into the queue
+        result_queue.put((rank, statistics))
+        print(f"Rank {rank}: Results sent to queue", flush=True)
+        
 
     def sync_value(self, value, nb_examples, rank):
 
@@ -460,27 +454,17 @@ class BaseExperiment:
 
             df.to_csv(data_path, header=True, index=False)
 
-    def training_and_evaluation(self, rank):
-        # Training Phase
-
-        print('set up the distributed setup,', rank, flush=True)
-        self.setup.distributed_setup(self.world_size, rank)
-
-        self.training(rank)
         
-        # # Ensure training processes have finished
-        dist.barrier()
-        
-        # Evaluation Phase
-        self.evaluation(rank)
-        
-        # Cleanup after evaluation
-        self.setup.cleanup()
-
-    
 if __name__ == "__main__":
 
     print('begining of the execution')
+
+    from multiprocessing import Queue, Process
+    import torch
+    from torch.utils.data import DataLoader
+    from torch.utils.data.distributed import DistributedSampler
+    import io
+    import sys
 
     args = get_args()
 
@@ -492,7 +476,34 @@ if __name__ == "__main__":
 
     experiment = BaseExperiment(args, world_size)
 
-    torch.multiprocessing.spawn(experiment.training_and_evaluation, nprocs=experiment.world_size, join=True)
+    torch.multiprocessing.spawn(experiment.training, nprocs=experiment.world_size, join=True)
+
+    # torch.multiprocessing.spawn(experiment.evaluation, nprocs=experiment.world_size, join=True)
+
+    # Create a Queue to gather results
+    result_queue = Queue()
+
+    # Launch evaluation processes
+    processes = []
+    for rank in range(experiment.world_size):
+        p = Process(target=experiment.evaluation, args=(rank, result_queue) )
+        p.start()
+        processes.append(p)
+
+    # Wait for all processes to finish
+    for p in processes:
+        p.join()
+
+    # Gather results from the Queue
+    all_statistics = {}
+    while not result_queue.empty():
+        rank, stats = result_queue.get()
+        all_statistics[rank] = stats
+
+    print(all_statistics)
+
+    # Log the aggregated results
+    # experiment.log_results(all_statistics)
 
 
 
