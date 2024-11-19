@@ -4,12 +4,34 @@
 import os
 import torch
 import torch.distributed as dist
+from filelock import FileLock
+import pandas as pd
+from datetime import datetime
 
+
+
+
+
+def generate_timestamp():
+    return datetime.now().strftime('%y/%m/%d/%H/%M/%S')
+
+def check_unique_id(df1, df2, unique_id_col='unique_id'):
+
+    unique_id = df2[unique_id_col].iloc[0]
+    
+    matching_indices = df1[df1[unique_id_col] == unique_id].index
+
+    if not matching_indices.empty:
+        iloc_indices = [df1.index.get_loc(idx) for idx in matching_indices]
+        return True, iloc_indices
+    else:
+        return False, []
 
 class Setup:
 
-    def __init__(self, args, config_name):
+    def __init__(self, args, config_name, exp_id):
         self.config_name = config_name
+        self.exp_id = exp_id
         self.args = args
         
     def distributed_setup(self, world_size, rank):
@@ -86,3 +108,45 @@ class Setup:
             batch_size = 32 * base  # 16 = OK, 32 = OK, 64 = NOT OK,
         
         return int(batch_size)
+    
+    def log_results(self, statistics):
+
+        cluster_name = os.environ.get('SLURM_CLUSTER_NAME', 'Unknown')
+        data_path = './results/results_{}_{}.csv'.format(cluster_name, self.args.exp)
+        
+        lock = FileLock(data_path + '.lock')
+
+        with lock:
+            
+            columns = list(self.current_experiment.keys())
+            key_columns = columns.copy()
+
+            try:
+                df = pd.read_csv(data_path)
+            except FileNotFoundError:
+                df = pd.DataFrame(columns=key_columns + ['timestamp', 'clean_acc', 'robust_acc'])
+
+            self.current_experiment['id'] = self.epx_id        
+            self.current_experiment['timestamp'] = generate_timestamp()
+            self.current_experiment = self.current_experiment | statistics
+            
+            new_row = pd.DataFrame([self.current_experiment], columns=self.current_experiment.keys() )
+            
+            if df.empty:
+                df = pd.concat([df, new_row]) 
+                
+            else:
+                exists, match_mask = check_unique_id(df, new_row, 'id')
+                print('exists', exists, match_mask)
+
+                if not exists:
+                    print('experiment does not exist in the database')
+                    df = pd.concat([df, new_row])
+
+                else:
+                    print('experiment already exists in the database')
+                    # If the experiment exists, overwrite the existing row
+                    new_row = new_row[df.columns]
+                    df.loc[match_mask, :] = new_row.values
+
+            df.to_csv(data_path, header=True, index=False)

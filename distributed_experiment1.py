@@ -1,6 +1,4 @@
 from comet_ml import Experiment
-from filelock import FileLock
-import pandas as pd
 
 from torch.multiprocessing import Queue
 
@@ -28,26 +26,17 @@ from torch.utils.data import DataLoader
 import torch.distributed as dist
 
 import sys
-
+import hashlib
+import json
 
 from utils import Setup
 
 from samplers import DistributedCustomSampler
 from datasets import WeightedDataset, IndexedDataset, load_data
-from architectures import load_architecture, add_lora, set_lora_gradients, change_head, CustomModel
+from architectures import load_architecture, CustomModel
 from losses import get_loss, get_eval_loss
 from utils import get_args, get_exp_name, set_seeds
 from cosine import CosineLR
-
-
-import pandas as pd
-from datetime import datetime
-
-import hashlib
-import json
-
-import pandas as pd
-
 
 def get_unique_id(args):
 
@@ -57,20 +46,6 @@ def get_unique_id(args):
     
     return unique_id
 
-def generate_timestamp():
-    return datetime.now().strftime('%y/%m/%d/%H/%M/%S')
-
-def check_unique_id(df1, df2, unique_id_col='unique_id'):
-
-    unique_id = df2[unique_id_col].iloc[0]
-    
-    matching_indices = df1[df1[unique_id_col] == unique_id].index
-
-    if not matching_indices.empty:
-        iloc_indices = [df1.index.get_loc(idx) for idx in matching_indices]
-        return True, iloc_indices
-    else:
-        return False, []
 
 def compute_gradient_norms(model):
     total_norm = 0
@@ -85,7 +60,6 @@ def check_for_nans(tensors, tensor_names):
     for tensor, name in zip(tensors, tensor_names):
         if torch.isnan(tensor).any():
             print(f"{name} contains NaNs!")
-
 
 def adjust_epochs(original_data_size, pruned_data_size, batch_size, original_epochs):
 
@@ -107,10 +81,11 @@ class BaseExperiment:
 
         self.args = args
         self.config_name = get_exp_name(args)
-        self.setup = Setup(args, self.config_name)
+        self.epx_id = get_unique_id(self.current_experiment)
+        self.setup = Setup(args, self.config_name, self.epx_id)
         self.world_size = world_size
         self.current_experiment = vars(self.args)
-        self.epx_id = get_unique_id(self.current_experiment)
+        
 
     def initialize_logger(self, rank):
 
@@ -206,7 +181,21 @@ class BaseExperiment:
         print('start the loop 3')
 
         logger.end()
-        self.setup.cleanup()  
+        self.setup.cleanup() 
+
+    def sync_value(self, value, nb_examples, rank):
+
+        # Aggregate results across all processes
+        value_tensor = torch.tensor([value], dtype=torch.float32, device=rank)
+        nb_examples_tensor = torch.tensor([nb_examples], dtype=torch.float32, device=rank)
+
+        dist.all_reduce(value_tensor, op=dist.ReduceOp.SUM)
+        dist.all_reduce(nb_examples_tensor, op=dist.ReduceOp.SUM)
+
+        # Compute global averages
+        avg_value = value_tensor.item() / nb_examples_tensor.item()
+
+        return avg_value, value_tensor.item(), nb_examples_tensor.item() 
         
 
     def fit(self, model, trainloader, train_sampler, logger, rank):
@@ -331,21 +320,6 @@ class BaseExperiment:
         result_queue.put((rank, statistics))
         print(f"Rank {rank}: Results sent to queue", flush=True)
         
-
-    def sync_value(self, value, nb_examples, rank):
-
-        # Aggregate results across all processes
-        value_tensor = torch.tensor([value], dtype=torch.float32, device=rank)
-        nb_examples_tensor = torch.tensor([nb_examples], dtype=torch.float32, device=rank)
-
-        dist.all_reduce(value_tensor, op=dist.ReduceOp.SUM)
-        dist.all_reduce(nb_examples_tensor, op=dist.ReduceOp.SUM)
-
-        # Compute global averages
-        avg_value = value_tensor.item() / nb_examples_tensor.item()
-
-        return avg_value, value_tensor.item(), nb_examples_tensor.item()
-
     def test(self, testloader, model, rank):
 
         from utils import ActivationTracker, register_hooks, compute_stats
@@ -367,7 +341,7 @@ class BaseExperiment:
         
         for _, batch in enumerate( testloader ):
 
-            print('start batch iterations',rank, flush=True) 
+            print('start batch iterations',rank, _, len(testloader), flush=True) 
 
             data, target, _ = batch
 
@@ -377,15 +351,17 @@ class BaseExperiment:
 
             x_adv = adversary.run_standard_evaluation(data, target, bs = batch_size )
             
-            # Evaluate the model on natural data
+            print('Evaluate the model on natural data', rank, flush=True)
             model.current_tracker = 'nat'  # Set the tracker to natural data
             nat_outputs = model(data)
             _, preds_nat = torch.max(nat_outputs.data, 1)
 
-            # Evaluate the model on adversarial examples
+            print('Evaluate the model on adversarial examples', rank, flush=True)
             model.current_tracker = 'adv'  # Set the tracker to adversarial data
             adv_outputs = model(x_adv)
             _, preds_adv = torch.max(adv_outputs.data, 1)
+
+            print('Compute statitistics', rank, flush=True)
 
             stats['nb_correct_nat'] += (preds_nat == target).sum().item()
             stats['nb_correct_adv'] += (preds_adv == target).sum().item()
@@ -412,47 +388,7 @@ class BaseExperiment:
 
         return stats, stats_nat, stats_adv
         
-    def log_results(self, statistics):
 
-        cluster_name = os.environ.get('SLURM_CLUSTER_NAME', 'Unknown')
-        data_path = './results/results_{}_{}.csv'.format(cluster_name, self.args.exp)
-        
-        lock = FileLock(data_path + '.lock')
-
-        with lock:
-            
-            columns = list(self.current_experiment.keys())
-            key_columns = columns.copy()
-
-            try:
-                df = pd.read_csv(data_path)
-            except FileNotFoundError:
-                df = pd.DataFrame(columns=key_columns + ['timestamp', 'clean_acc', 'robust_acc'])
-
-            self.current_experiment['id'] = self.epx_id        
-            self.current_experiment['timestamp'] = generate_timestamp()
-            self.current_experiment = self.current_experiment | statistics
-            
-            new_row = pd.DataFrame([self.current_experiment], columns=self.current_experiment.keys() )
-            
-            if df.empty:
-                df = pd.concat([df, new_row]) 
-                
-            else:
-                exists, match_mask = check_unique_id(df, new_row, 'id')
-                print('exists', exists, match_mask)
-
-                if not exists:
-                    print('experiment does not exist in the database')
-                    df = pd.concat([df, new_row])
-
-                else:
-                    print('experiment already exists in the database')
-                    # If the experiment exists, overwrite the existing row
-                    new_row = new_row[df.columns]
-                    df.loc[match_mask, :] = new_row.values
-
-            df.to_csv(data_path, header=True, index=False)
 
         
 if __name__ == "__main__":
