@@ -187,11 +187,14 @@ class BaseExperiment:
         dist.barrier() 
 
         if rank == 0:
-            trained_state_dict = model.module.state_dict()
+            model_to_save = model.module.cpu()
             del model  # Remove DDP to ensure no synchronization is retained
             torch.cuda.empty_cache()  # Clear any leftover memory
-            torch.save(trained_state_dict, './state_dicts/trained_model_{}.pt'.format(self.epx_id))
+            torch.save(model_to_save.state_dict(), './state_dicts/trained_model_{}.pt'.format(self.epx_id))
             print('Model saved by rank 0')
+        else:
+            # Other ranks do not need to save the model
+            pass
         dist.barrier()
 
         print('start the loop 3')
