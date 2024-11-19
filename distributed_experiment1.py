@@ -295,11 +295,9 @@ class BaseExperiment:
         model = load_architecture(self.args, N, rank)
         model = CustomModel(self.args, model)
         model.set_fine_tuning_strategy()
+        trained_state_dict = torch.load('./state_dicts/trained_model_{}.pt'.format(self.epx_id), map_location='cpu')
+        model.load_state_dict(trained_state_dict)
         model.to(rank)
-
-        # map_location = {'cuda:%d' % 0: 'cuda:%d' % rank}
-        # trained_state_dict = torch.load('./state_dicts/trained_model_{}.pt'.format(self.epx_id), map_location=map_location)
-        # model.load_state_dict(trained_state_dict)
 
         model.eval()
         

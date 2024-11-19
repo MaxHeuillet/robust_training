@@ -92,26 +92,26 @@ def load_architecture(args, N, rank):
                            
                         }
     
-    map_location = {'cuda:%d' % 0: 'cuda:%d' % rank}
+
 
     if 'convnext' in args.backbone:
         model = timm.create_model(equivalencies[args.backbone], pretrained=False)
-        state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) , map_location=map_location)
+        state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) , map_location='cpu')
         model.load_state_dict(state_dict)
 
     elif 'wideresnet' in args.backbone:
         model = wideresnet(depth = 28, widen = 10, act_fn = 'swish', num_classes = 200)
-        state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) , map_location=map_location)
+        state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) , map_location='cpu')
         model.load_state_dict(state_dict)
 
     elif 'deit' in args.backbone:
         model = timm.create_model(equivalencies[args.backbone], pretrained=False)
-        state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) , map_location=map_location)
+        state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) , map_location='cpu')
         model.load_state_dict(state_dict)
 
     elif 'vit' in args.backbone:
         model = timm.create_model(equivalencies[args.backbone], pretrained=False)
-        state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) , map_location=map_location)
+        state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) , map_location='cpu')
         model.load_state_dict(state_dict)
 
     model = change_head(args,model,N)
