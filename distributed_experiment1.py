@@ -478,6 +478,11 @@ if __name__ == "__main__":
 
     print('begining of the execution')
 
+    import torch
+    print(torch.__version__)
+    print(torch.version.cuda)
+    print(torch.backends.cudnn.version())
+
     args = get_args()
 
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, write_through=True)
