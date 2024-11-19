@@ -29,10 +29,11 @@ def check_unique_id(df1, df2, unique_id_col='unique_id'):
 
 class Setup:
 
-    def __init__(self, args, config_name, exp_id):
+    def __init__(self, args, config_name, exp_id, current_experiment):
         self.config_name = config_name
         self.exp_id = exp_id
         self.args = args
+        self.current_experiment = current_experiment
         
     def distributed_setup(self, world_size, rank):
 
