@@ -81,10 +81,10 @@ class BaseExperiment:
 
         self.args = args
         self.config_name = get_exp_name(args)
-        self.epx_id = get_unique_id(self.current_experiment)
-        self.setup = Setup(args, self.config_name, self.epx_id)
         self.world_size = world_size
         self.current_experiment = vars(self.args)
+        self.epx_id = get_unique_id(self.current_experiment)
+        self.setup = Setup(args, self.config_name, self.epx_id, self.current_experiment)
         
 
     def initialize_logger(self, rank):
