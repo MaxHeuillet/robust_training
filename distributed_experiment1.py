@@ -89,8 +89,8 @@ class BaseExperiment:
         self.config_name = get_exp_name(args)
         self.world_size = world_size
         self.current_experiment = vars(self.args)
-        self.epx_id = get_unique_id(self.current_experiment)
-        self.setup = Setup(args, self.config_name, self.epx_id, self.current_experiment)
+        self.exp_id = get_unique_id(self.current_experiment)
+        self.setup = Setup(args, self.config_name, self.exp_id, self.current_experiment)
 
     def initialize_logger(self, rank):
 
@@ -289,7 +289,7 @@ class BaseExperiment:
         testloader = DataLoader(test_dataset, 
                                batch_size=self.setup.test_batch_size(), #64
                                sampler=test_sampler, 
-                               num_workers=0,
+                               num_workers=3,
                                pin_memory=True)
         print('dataloader', flush=True) 
         

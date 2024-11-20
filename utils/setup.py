@@ -181,7 +181,7 @@ class Setup:
             except FileNotFoundError:
                 df = pd.DataFrame(columns=key_columns + ['timestamp', 'clean_acc', 'robust_acc'])
 
-            self.current_experiment['id'] = self.epx_id        
+            self.current_experiment['id'] = self.exp_id        
             self.current_experiment['timestamp'] = generate_timestamp()
             self.current_experiment = self.current_experiment | statistics
             
