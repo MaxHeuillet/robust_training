@@ -388,6 +388,34 @@ class BaseExperiment:
             handle.remove()
 
         return stats, stats_nat, stats_adv
+    
+    def launch_evaluation(self,):
+        #Create a Queue to gather results
+        result_queue = Queue()
+
+        # Launch evaluation processes
+        processes = []
+        for rank in range(self.world_size):
+            p = mp.Process(target=self.evaluation, args=(rank, result_queue) )
+            p.start()
+            processes.append(p)
+
+        # Wait for all processes to finish
+        for p in processes:
+            p.join()
+
+        # Gather results from the Queue
+        all_statistics = {}
+        while not result_queue.empty():
+            rank, stats = result_queue.get()
+            all_statistics[rank] = stats
+
+        print(all_statistics)
+
+        # Log the aggregated results
+        statistics = self.setup.aggregate_results(all_statistics)
+
+        self.setup.log_results(statistics)
         
         
 if __name__ == "__main__":
@@ -411,32 +439,9 @@ if __name__ == "__main__":
 
     mp.spawn(experiment.training, nprocs=experiment.world_size, join=True)
 
-    # Create a Queue to gather results
-    result_queue = Queue()
+    # experiment.launch_evaluation()
 
-    # Launch evaluation processes
-    processes = []
-    for rank in range(experiment.world_size):
-        p = mp.Process(target=experiment.evaluation, args=(rank, result_queue) )
-        p.start()
-        processes.append(p)
 
-    # Wait for all processes to finish
-    for p in processes:
-        p.join()
-
-    # Gather results from the Queue
-    all_statistics = {}
-    while not result_queue.empty():
-        rank, stats = result_queue.get()
-        all_statistics[rank] = stats
-
-    print(all_statistics)
-
-    # Log the aggregated results
-    statistics = experiment.setup.aggregate_results(all_statistics)
-
-    experiment.setup.log_results(statistics)
 
 
     
