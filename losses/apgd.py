@@ -16,12 +16,12 @@ def check_oscillation(x, j, k, y5, k3=0.75):
 
 def apgd_attack(args, model, x, y, optimizer):
         
-    is_train=True
-    mixup=None
+    # is_train=True
+    # mixup=None
     use_rs=False
     n_iter= args.perturb_steps #10
     eps = args.epsilon #4/255
-    norm = 'Linf'
+    norm = args.distance #'Linf'
 
     # y = y.reshape( (-1,1) )
     # print(y.shape)
@@ -73,10 +73,10 @@ def apgd_attack(args, model, x, y, optimizer):
     loss_indiv.detach_()
     loss.detach_()
     
-    if mixup is not None:
-        acc = logits.detach().max(1)[1] == y.max(1)[1]
-    else:
-        acc = logits.detach().max(1)[1] == y
+    # if mixup is not None:
+    #     acc = logits.detach().max(1)[1] == y.max(1)[1]
+    # else:
+    acc = logits.detach().max(1)[1] == y
     
     acc_steps[0] = acc + 0
     loss_best = loss_indiv.detach().clone()
