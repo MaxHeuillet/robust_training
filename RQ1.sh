@@ -5,11 +5,11 @@ seeds=1
 datas=( 'Flowers'  'CIFAR100' 'EuroSAT' 'Aircraft' 'CIFAR10'  ) #  
 losses=( 'TRADES_v2' 'APGD'  ) # 
 sched='nosched'
-iterations=2 #30
+iterations=50
 aug='aug'
 exp='RQ1'
 
-init_lrs=( 0.001 ) # 0.0005 0.0001 
+init_lrs=( 0.001 0.0005 0.0001  ) # 
 pruning_ratios=( 0 )
 pruning_strategies=( 'random' )
 batch_strategies=('random')
