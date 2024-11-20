@@ -247,7 +247,7 @@ class BaseExperiment:
                 # Backward pass with gradient scaling
                 scaler.scale(loss).backward()
 
-                if (batch_id + 1) % accumulation_steps == 0 or (batch_id + 1) == len(trainloader):
+                if (batch_id + 1) % max(1,accumulation_steps) == 0 or (batch_id + 1) == len(trainloader):
                     scaler.step(optimizer)
                     scaler.update()
                     optimizer.zero_grad()  # Clear gradients after optimizer step
