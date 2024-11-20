@@ -33,7 +33,7 @@ def trades_loss_v2(args,
     
     x_adv = x_adv.clamp(0., 1.)
 
-    if args.distance == 'l_inf':
+    if args.distance == 'Linf':
         # print('init x_adv')
         for _ in range(args.perturb_steps):
 

@@ -25,7 +25,7 @@ def trades_loss(args,
     logits_nat = model(x_natural)
     x_adv = x_natural.detach() + 0.001 * torch.randn(x_natural.shape, device=x_natural.device).detach()
 
-    if args.distance == 'l_inf':
+    if args.distance == 'Linf':
 
         for _ in range(args.perturb_steps):
 
