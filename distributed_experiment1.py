@@ -178,7 +178,7 @@ class BaseExperiment:
             model_to_save = model_to_save.cpu()
             # print(model_to_save)
 
-            torch.save(model_to_save.state_dict(), './state_dicts/trained_model_{}.pt'.format(self.epx_id))
+            torch.save(model_to_save.state_dict(), './state_dicts/trained_model_{}.pt'.format(self.exp_id))
             print('Model saved by rank 0')
 
         dist.barrier()
@@ -301,7 +301,7 @@ class BaseExperiment:
         model = load_architecture(self.args, N, rank)
         model = CustomModel(self.args, model)
         model.set_fine_tuning_strategy()
-        trained_state_dict = torch.load('./state_dicts/trained_model_{}.pt'.format(self.epx_id), map_location='cpu')
+        trained_state_dict = torch.load('./state_dicts/trained_model_{}.pt'.format(self.exp_id), map_location='cpu')
         model.load_state_dict(trained_state_dict)
         model.to(rank)
 
