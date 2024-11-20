@@ -238,7 +238,7 @@ class BaseExperiment:
 
                 print(data.shape, target.shape)
 
-                data, target = cutmix_or_mixup(data, target)
+                data, target_one_hot = cutmix_or_mixup(data, target)
 
                 print(data.shape, target.shape)
 
