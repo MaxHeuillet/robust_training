@@ -18,7 +18,7 @@ def load_data(args):
 
     train_transform = transforms.Compose([transforms.RandomResizedCrop(224),  # Random crop to 224x224 pixels
                                           transforms.RandomHorizontalFlip(),  # Random horizontal flip
-                                          RandAugment(num_ops=9, magnitude=0.5),  # RandAugment with N=9, M=0.5
+                                          RandAugment(),  # RandAugment with N=9, M=0.5
                                           transforms.ToTensor(),
                                           transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ),])
 
