@@ -110,6 +110,60 @@ class Setup:
         
         return int(batch_size)
     
+    def aggregate_results(self,results):
+        # Initialize sums
+        total_correct_nat = 0
+        total_correct_adv = 0
+        total_examples = 0
+
+        total_neurons_nat = 0
+        total_zero_nat = 0
+        total_dormant_nat = 0
+        total_overactive_nat = 0
+
+        total_neurons_adv = 0
+        total_zero_adv = 0
+        total_dormant_adv = 0
+        total_overactive_adv = 0
+
+        # Sum up values from each process
+        for process_id, process_data in results.items():
+            total_correct_nat += process_data['stats']['nb_correct_nat']
+            total_correct_adv += process_data['stats']['nb_correct_adv']
+            total_examples += process_data['stats']['nb_examples']
+
+            total_zero_nat += process_data['stats_nat']['zero_count']
+            total_dormant_nat += process_data['stats_nat']['dormant_count']
+            total_overactive_nat += process_data['stats_nat']['overactive_count']
+            total_neurons_nat += process_data['stats_nat']['total_neurons']
+
+            total_zero_adv += process_data['stats_adv']['zero_count']
+            total_dormant_adv += process_data['stats_adv']['dormant_count']
+            total_overactive_adv += process_data['stats_adv']['overactive_count']
+            total_neurons_adv += process_data['stats_adv']['total_neurons']
+
+        # Calculate percentages
+        clean_accuracy = total_correct_nat / total_examples
+        robust_accuracy = total_correct_adv / total_examples
+        nat_zero_mean = total_zero_nat / total_neurons_nat
+        nat_dormant_mean = total_dormant_nat / total_neurons_nat
+        nat_overactive_mean = total_overactive_nat / total_neurons_nat
+        adv_zero_mean = total_zero_adv / total_neurons_adv
+        adv_dormant_mean = total_dormant_adv / total_neurons_adv
+        adv_overactive_mean = total_overactive_adv / total_neurons_adv
+
+        statistics = { 'clean_acc':clean_accuracy, 
+                       'robust_acc':robust_accuracy,
+                        'nat_zero_mean':nat_zero_mean,
+                        'nat_dormant_mean':nat_dormant_mean,
+                        'nat_overactive_mean':nat_overactive_mean,
+                        'adv_zero_mean':adv_zero_mean,
+                        'adv_dormant_mean':adv_dormant_mean,
+                        'adv_overactive_mean':adv_overactive_mean
+                        }
+
+        return statistics
+    
     def log_results(self, statistics):
 
         cluster_name = os.environ.get('SLURM_CLUSTER_NAME', 'Unknown')
