@@ -437,9 +437,13 @@ if __name__ == "__main__":
 
     experiment = BaseExperiment(args, world_size)
 
+    experiment.setup.pre_training_log()
+    
     mp.spawn(experiment.training, nprocs=experiment.world_size, join=True)
-
-    # experiment.launch_evaluation()
+    
+    experiment.setup.post_training_log()
+    
+    experiment.launch_evaluation()
 
 
 
