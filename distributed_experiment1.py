@@ -35,7 +35,7 @@ from architectures import load_architecture, CustomModel
 from losses import get_loss, get_eval_loss
 from utils import get_args, get_exp_name, set_seeds
 from cosine import CosineLR
-
+from torchvision.transforms import v2
 
 import torch
 from torch.utils.data import DataLoader
@@ -165,7 +165,7 @@ class BaseExperiment:
         #self.validate(valloader, model, experiment, 0, rank)
         
         print('start the loop')
-        self.fit(model, trainloader, train_sampler, logger, rank)
+        self.fit(model, trainloader, train_sampler, N, logger, rank)
 
         dist.barrier() 
 
@@ -203,7 +203,7 @@ class BaseExperiment:
         return avg_value, value_tensor.item(), nb_examples_tensor.item() 
         
 
-    def fit(self, model, trainloader, train_sampler, logger, rank):
+    def fit(self, model, trainloader, train_sampler, N, logger, rank):
 
         # Gradient accumulation:
         effective_batch_size = 1024
@@ -217,6 +217,10 @@ class BaseExperiment:
         # optimizer = torch.optim.SGD( model.parameters(),lr=self.args.init_lr, weight_decay=self.args.weight_decay, momentum=self.args.momentum, nesterov=True, )
         optimizer = torch.optim.AdamW( model.parameters(), lr=self.args.init_lr, weight_decay=self.args.weight_decay, )
         scheduler = CosineLR( optimizer, max_lr=self.args.init_lr, epochs=int(self.args.iterations) )
+
+        cutmix = v2.CutMix(num_classes=N)
+        mixup = v2.MixUp(num_classes=N)
+        cutmix_or_mixup = v2.RandomChoice([cutmix, mixup])
         
         for iteration in range(self.args.iterations):
 
@@ -231,6 +235,8 @@ class BaseExperiment:
                 data, target, idxs = batch
 
                 data, target = data.to(rank), target.to(rank) 
+
+                data, target = cutmix_or_mixup(data, target)
 
                 with torch.autocast(device_type='cuda'):
                     loss_values, logits = get_loss(self.args, model, data, target, optimizer)
