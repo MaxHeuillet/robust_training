@@ -164,6 +164,34 @@ class Setup:
 
         return statistics
     
+    def pre_training_log(self, ):
+
+        statistics = { 'clean_acc':-2, 
+                       'robust_acc':-2,
+                        'nat_zero_mean':-2,
+                        'nat_dormant_mean':-2,
+                        'nat_overactive_mean':-2,
+                        'adv_zero_mean':-2,
+                        'adv_dormant_mean':-2,
+                        'adv_overactive_mean':-2
+                        }
+        
+        self.log_results(statistics)
+
+    def post_training_log(self, ):
+
+        statistics = { 'clean_acc':-1, 
+                       'robust_acc':-1,
+                        'nat_zero_mean':-1,
+                        'nat_dormant_mean':-1,
+                        'nat_overactive_mean':-1,
+                        'adv_zero_mean':-1,
+                        'adv_dormant_mean':-1,
+                        'adv_overactive_mean':-1
+                        }
+        
+        self.log_results(statistics)
+    
     def log_results(self, statistics):
 
         cluster_name = os.environ.get('SLURM_CLUSTER_NAME', 'Unknown')
@@ -179,7 +207,7 @@ class Setup:
             try:
                 df = pd.read_csv(data_path)
             except FileNotFoundError:
-                df = pd.DataFrame(columns=key_columns + ['timestamp', 'clean_acc', 'robust_acc'])
+                df = pd.DataFrame(columns=key_columns + ['timestamp'] + list( statistics.keys() ) )
 
             self.current_experiment['id'] = self.exp_id        
             self.current_experiment['timestamp'] = generate_timestamp()
