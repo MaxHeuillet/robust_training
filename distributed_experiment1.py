@@ -262,7 +262,7 @@ class BaseExperiment:
                     logger.log_metric("lr_schedule", current_lr, epoch=iteration)
                     logger.log_metric("gradient_norm", gradient_norm, epoch=iteration)
 
-                # break
+                break
 
             model.module.update_fine_tuning_strategy(iteration)
                 
@@ -348,17 +348,17 @@ class BaseExperiment:
 
             x_adv = adversary.run_standard_evaluation(data, target, bs = batch_size )
             
-            print('Evaluate the model on natural data', rank, flush=True)
+            # print('Evaluate the model on natural data', rank, flush=True)
             model.current_tracker = 'nat'  # Set the tracker to natural data
             nat_outputs = model(data)
             _, preds_nat = torch.max(nat_outputs.data, 1)
 
-            print('Evaluate the model on adversarial examples', rank, flush=True)
+            # print('Evaluate the model on adversarial examples', rank, flush=True)
             model.current_tracker = 'adv'  # Set the tracker to adversarial data
             adv_outputs = model(x_adv)
             _, preds_adv = torch.max(adv_outputs.data, 1)
 
-            print('Compute statitistics', rank, flush=True)
+            # print('Compute statitistics', rank, flush=True)
 
             stats['nb_correct_nat'] += (preds_nat == target).sum().item()
             stats['nb_correct_adv'] += (preds_adv == target).sum().item()
@@ -377,7 +377,7 @@ class BaseExperiment:
             tracker_nat.activations.clear()
             tracker_adv.activations.clear()
 
-            # break
+            break
 
         # Remove hooks
         for handle in handles:
@@ -430,7 +430,9 @@ if __name__ == "__main__":
     print(all_statistics)
 
     # Log the aggregated results
-    # experiment.log_results(all_statistics)
+    statistics = experiment.setup.aggregate_results(all_statistics)
+
+    experiment.setup.log_results(statistics)
 
 
     
