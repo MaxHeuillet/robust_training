@@ -236,7 +236,11 @@ class BaseExperiment:
 
                 data, target = data.to(rank), target.to(rank) 
 
+                print(data.shape, target.shape)
+
                 data, target = cutmix_or_mixup(data, target)
+
+                print(data.shape, target.shape)
 
                 with torch.autocast(device_type='cuda'):
                     loss_values, logits = get_loss(self.args, model, data, target, optimizer)
@@ -262,7 +266,7 @@ class BaseExperiment:
                     logger.log_metric("lr_schedule", current_lr, epoch=iteration)
                     logger.log_metric("gradient_norm", gradient_norm, epoch=iteration)
 
-                break
+                # break
 
             model.module.update_fine_tuning_strategy(iteration)
                 
@@ -377,7 +381,7 @@ class BaseExperiment:
             tracker_nat.activations.clear()
             tracker_adv.activations.clear()
 
-            break
+            # break
 
         # Remove hooks
         for handle in handles:

@@ -3,9 +3,9 @@
 # Define variables
 seeds=1
 datas=( 'Flowers'  'CIFAR100' 'EuroSAT' 'Aircraft' 'CIFAR10'  ) #  
-losses=( 'TRADES_v2' 'APGD'  ) # 
+losses=( 'APGD'  ) # 'TRADES_v2'  
 sched='nosched'
-iterations=50
+iterations=2 #50
 aug='aug'
 exp='RQ1'
 
