@@ -47,7 +47,7 @@ def apgd_attack(args, model, x, y, optimizer):
     
     # set params
     # n_fts = math.prod( x.shape[1:] )
-    if norm in ['Linf', 'L2']:
+    if norm in ['L_inf', 'L2']:
         n_iter_2 = max(int(0.22 * n_iter), 1)
         n_iter_min = max(int(0.06 * n_iter), 1)
         size_decr = max(int(0.03 * n_iter), 1)
@@ -97,7 +97,7 @@ def apgd_attack(args, model, x, y, optimizer):
             
             a = 0.75 if i > 0 else 1.0
 
-            if norm == 'Linf':
+            if norm == 'L_inf':
                 x_adv_1 = x_adv + step_size * torch.sign(grad)
                 x_adv_1 = torch.clamp(torch.min(torch.max(x_adv_1, x - eps), x + eps), 0.0, 1.0)
                 x_adv_1 = torch.clamp(torch.min(torch.max(x_adv + (x_adv_1 - x_adv) * a + grad2 * (1 - a), x - eps), x + eps), 0.0, 1.0)
@@ -125,10 +125,10 @@ def apgd_attack(args, model, x, y, optimizer):
         loss_indiv.detach_()
         loss.detach_()
         
-        if mixup is not None:
-            pred = logits.detach().max(1)[1] == y.max(1)[1]
-        else:
-            pred = logits.detach().max(1)[1] == y
+        # if mixup is not None:
+        #     pred = logits.detach().max(1)[1] == y.max(1)[1]
+        # else:
+        pred = logits.detach().max(1)[1] == y
         
         acc = torch.min(acc, pred)
         acc_steps[i + 1] = acc + 0
@@ -155,7 +155,7 @@ def apgd_attack(args, model, x, y, optimizer):
           counter3 += 1
 
           if counter3 == k:
-              if norm in ['Linf', 'L2']:
+              if norm in ['L_inf', 'L2']:
                   fl_oscillation = check_oscillation(loss_steps, i, k, loss_best, k3=thr_decr)
                   fl_reduce_no_impr = (1. - reduced_last_check) * (
                       loss_best_last_check >= loss_best).float()
