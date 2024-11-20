@@ -9,28 +9,27 @@ import random
 from torch.utils.data import Subset
 from torch.utils.data import random_split
 from datasets.eurosat import EuroSATDataset
+from torchvision.transforms import RandAugment
+from torchvision.transforms.v2 import CutMix
 
 from sklearn.model_selection import train_test_split
 
 def load_data(args):
 
+    train_transform = transforms.Compose([transforms.RandomResizedCrop(224),  # Random crop to 224x224 pixels
+                                          transforms.RandomHorizontalFlip(),  # Random horizontal flip
+                                          RandAugment(num_ops=9, magnitude=0.5),  # RandAugment with N=9, M=0.5
+                                          transforms.ToTensor(),
+                                          transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ),])
+
+    transform = transforms.Compose([transforms.Resize((224, 224)),  # Resize images to 224x224
+                                    transforms.ToTensor(),
+                                    transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ),])
+
     if args.dataset == 'CIFAR10':
-
-
-        train_transform = transforms.Compose([
-                                        transforms.Resize((224, 224)),  # Resize images to 224x224
-                                        transforms.ToTensor(),
-                                        transforms.RandomCrop(224, padding=4), 
-                                        transforms.RandomHorizontalFlip(0.5), 
-                                        transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ),])
-
-        transform = transforms.Compose([transforms.Resize((224, 224)),  # Resize images to 224x224
-                                        transforms.ToTensor(),
-                                        transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ),])
         
         N = 10
         
-
         dataset = datasets.CIFAR10(root=args.data_dir, train=True, download=False, )
 
         train_size = int(0.95 * len(dataset))
@@ -43,19 +42,6 @@ def load_data(args):
 
     elif args.dataset == 'CIFAR100':
         
- 
-        train_transform = transforms.Compose([
-                                        transforms.Resize((224, 224)),  # Resize images to 224x224
-                                        transforms.ToTensor(),
-                                        transforms.RandomCrop(224, padding=4), 
-                                        transforms.RandomHorizontalFlip(0.5), 
-                                        transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ),])
-        
-        transform = transforms.Compose([transforms.Resize((224, 224)),  # Resize images to 224x224
-                                        transforms.ToTensor(),
-                                        transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ),])
-
-
         N = 10
         
         dataset = datasets.CIFAR100(root=args.data_dir, train=True, download=False, )
@@ -69,18 +55,6 @@ def load_data(args):
         test_dataset = datasets.CIFAR100(root=args.data_dir, train=False, download=True, )
 
     elif args.dataset == 'Aircraft':
-        
-        train_transform = transforms.Compose([
-                                        transforms.Resize((224, 224)),  # Resize images to 224x224
-                                        transforms.ToTensor(),
-                                        transforms.RandomCrop(224, padding=4), 
-                                        transforms.RandomHorizontalFlip(0.5), 
-                                        transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ),])
-        
-        transform = transforms.Compose([transforms.Resize((224, 224)),  # Resize images to 224x224
-                                        transforms.ToTensor(), 
-                                        transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ),])
-
 
         N = 100
         
@@ -89,18 +63,6 @@ def load_data(args):
         test_dataset = datasets.FGVCAircraft(root=args.data_dir, split='test', download=False, )
 
     elif args.dataset == 'EuroSAT':
-
-
-        train_transform = transforms.Compose([transforms.Resize((224, 224)),  # Resize images to 224x224
-                                        transforms.ToTensor(),
-                                        transforms.RandomCrop(224, padding=4), 
-                                        transforms.RandomHorizontalFlip(0.5), 
-                                        transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ),])
-        
-        transform = transforms.Compose([transforms.Resize((224, 224)),  
-                                        transforms.ToTensor(),
-                                        transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ),])
-
 
         # Load the dataset
         path = args.data_dir + '/2750'
@@ -127,20 +89,6 @@ def load_data(args):
         test_dataset = torch.utils.data.Subset(dataset, test_indices)
 
     elif args.dataset == 'Flowers':
-        # Define the transformations for training and testing
-        train_transform = transforms.Compose([
-                transforms.Resize((224, 224)),  # Resize images to 224x224
-                transforms.ToTensor(),
-                transforms.RandomCrop(224, padding=4),
-                transforms.RandomHorizontalFlip(0.5),
-                transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-            ])
-            
-        transform = transforms.Compose([
-                transforms.Resize((224, 224)),  # Resize images to 224x224
-                transforms.ToTensor(),
-                transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-            ])
             
         # Load the Flowers102 dataset
         N = 102
