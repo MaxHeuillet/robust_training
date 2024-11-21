@@ -13,7 +13,7 @@ init_lrs=( 0.001 0.0005 0.0001  ) #
 pruning_ratios=( 0 )
 pruning_strategies=( 'random' )
 batch_strategies=('random')
-backbones=( 'wideresnet_28_10' 'robust_wideresnet_28_10' 
+backbones=( #'wideresnet_28_10' 'robust_wideresnet_28_10' 
             'deit_small_patch16_224.fb_in1k' 'robust_deit_small_patch16_224' 
             'vit_base_patch16_224.augreg_in1k' 'vit_base_patch16_224.augreg_in21k', 'robust_vit_base_patch16_224'
             'convnext_base' 'convnext_base.fb_in22k' 'robust_convnext_base'
