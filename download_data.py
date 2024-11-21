@@ -1,6 +1,13 @@
 from torchvision import datasets
 
 
+# print ('download EuroSAT')
+
+import torchvision
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
+torchvision.datasets.EuroSAT('./data', download=True)
+
 # print('download aircraft')
 
 # datasets.FGVCAircraft(root='~/scratch/data', split='train', download=True, )
