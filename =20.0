@@ -1,0 +1,7 @@
+Collecting packaging
+  Obtaining dependency information for packaging from https://files.pythonhosted.org/packages/88/ef/eb23f262cca3c0c4eb7ab1933c3b1f03d021f2c48f54763065b6f0e321be/packaging-24.2-py3-none-any.whl.metadata
+  Downloading packaging-24.2-py3-none-any.whl.metadata (3.2 kB)
+Downloading packaging-24.2-py3-none-any.whl (65 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 65.5/65.5 kB 68.5 kB/s eta 0:00:00
+Installing collected packages: packaging
+Successfully installed packaging-24.2
