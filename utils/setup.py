@@ -72,6 +72,8 @@ class Setup:
             base = 2.5
         elif cluster_name == 'beluga':
             base = 1
+        else:
+            base = 1/8
 
         # Batch size recommendations based on the backbone
         if self.args.backbone in ['robust_wideresnet_28_10', 'wideresnet_28_10']:
@@ -95,6 +97,8 @@ class Setup:
             base = 2.5
         elif cluster_name == 'beluga':
             base = 1
+        else:
+            base = 1/8
 
         # Batch size recommendations based on the backbone
         if self.args.backbone in ['robust_wideresnet_28_10', 'wideresnet_28_10']:
