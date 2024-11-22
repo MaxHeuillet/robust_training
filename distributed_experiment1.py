@@ -29,7 +29,8 @@ import json
 
 from utils import Setup
 
-from samplers import DistributedCustomSampler
+# from samplers import DistributedCustomSampler
+from torch.utils.data.distributed import DistributedSampler
 from datasets import WeightedDataset, IndexedDataset, load_data
 from architectures import load_architecture, CustomModel
 from losses import get_loss, get_eval_loss
@@ -39,7 +40,7 @@ from torchvision.transforms import v2
 
 import torch
 from torch.utils.data import DataLoader
-from torch.utils.data.distributed import DistributedSampler
+# from torch.utils.data.distributed import DistributedSampler
 import io
 import sys
 
@@ -116,7 +117,8 @@ class BaseExperiment:
 
         print('initialize sampler', rank,flush=True) 
         self.args.batch_size = self.setup.train_batch_size()
-        train_sampler = DistributedCustomSampler(self.args, train_dataset, num_replicas=self.world_size, rank=rank, drop_last=True)
+        # train_sampler = DistributedCustomSampler(self.args, train_dataset, num_replicas=self.world_size, rank=rank, drop_last=True)
+        train_sampler = DistributedSampler(train_dataset, num_replicas=self.world_size, rank=rank, shuffle=True, drop_last=True)
         val_sampler = DistributedSampler(val_dataset, num_replicas=self.world_size, rank=rank, drop_last=False)
         
         print('initialize dataoader', rank,flush=True) 
