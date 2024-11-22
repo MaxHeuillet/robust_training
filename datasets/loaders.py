@@ -16,7 +16,8 @@ from sklearn.model_selection import train_test_split
 
 def load_data(args):
 
-    train_transform = transforms.Compose([transforms.RandomResizedCrop(224),  # Random crop to 224x224 pixels
+    train_transform = transforms.Compose([transforms.Resize((224, 224)),  # Resize images to 224x224
+                                          transforms.RandomCrop(224, padding=4), 
                                           transforms.RandomHorizontalFlip(),  # Random horizontal flip
                                           RandAugment(),  # RandAugment with N=9, M=0.5
                                           transforms.ToTensor(),
@@ -52,7 +53,7 @@ def load_data(args):
 
         generator1 = torch.Generator().manual_seed(42)
         train_dataset, val_dataset = random_split(dataset, [train_size, val_size], generator = generator1)  
-        test_dataset = datasets.CIFAR100(root=args.data_dir, train=False, download=True, )
+        test_dataset = datasets.CIFAR100(root=args.data_dir, train=False, download=False, )
 
     elif args.dataset == 'Aircraft':
 
@@ -65,8 +66,7 @@ def load_data(args):
     elif args.dataset == 'EuroSAT':
 
         # Load the dataset
-        path = args.data_dir + '/2750'
-        dataset = EuroSATDataset(root_dir=path)
+        dataset = datasets.EuroSAT(root=args.data_dir, download=False, )
 
         # Extract labels from the dataset
         labels = [label for _, label in dataset]
@@ -83,7 +83,6 @@ def load_data(args):
         # Create subsets for train, validation, and test
 
         N = 10
-
         train_dataset = torch.utils.data.Subset(dataset, train_indices)
         val_dataset = torch.utils.data.Subset(dataset, val_indices)
         test_dataset = torch.utils.data.Subset(dataset, test_indices)
