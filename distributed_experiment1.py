@@ -429,11 +429,11 @@ if __name__ == "__main__":
     import torch.multiprocessing as mp #import Queue
     from multiprocessing import Queue #, Process
 
-    # torch.multiprocessing.set_start_method("spawn", force=True)
+    torch.multiprocessing.set_start_method("spawn", force=True)
 
     args = get_args()
 
-    # sys.stdout = io.TextIOWrapper(sys.stdout.buffer, write_through=True)
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, write_through=True)
 
     world_size = torch.cuda.device_count()
     
@@ -441,10 +441,10 @@ if __name__ == "__main__":
 
     experiment = BaseExperiment(args, world_size)
 
-    # experiment.setup.pre_training_log()
+    experiment.setup.pre_training_log()
     
-    # mp.spawn(experiment.training, nprocs=experiment.world_size, join=True)
+    mp.spawn(experiment.training, nprocs=experiment.world_size, join=True)
     
-    # experiment.setup.post_training_log()
+    experiment.setup.post_training_log()
     
-    # experiment.launch_evaluation()
+    experiment.launch_evaluation()
