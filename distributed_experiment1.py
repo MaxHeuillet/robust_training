@@ -98,7 +98,7 @@ class BaseExperiment:
     def initialize_logger(self, rank):
 
         logger = Experiment(api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
-                                project_name="robust_training2",
+                                project_name="robust_training3",
                                 workspace="maxheuillet",
                                 auto_metric_logging=False,
                                 auto_output_logging=False)
@@ -160,7 +160,8 @@ class BaseExperiment:
 
         model = load_architecture(self.args, N, rank)
         model = CustomModel(self.args, model)
-        model.set_fine_tuning_strategy()
+        # model.set_fine_tuning_strategy()
+        model._enable_all_gradients()
         model.to(rank)
         model = DDP(model, device_ids=[rank])
 
@@ -272,7 +273,7 @@ class BaseExperiment:
 
                 # break
 
-            model.module.update_fine_tuning_strategy(iteration)
+            # model.module.update_fine_tuning_strategy(iteration)
                 
             if self.args.sched == 'sched':
                 scheduler.step()
