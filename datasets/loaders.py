@@ -43,7 +43,7 @@ def load_data(args):
 
     elif args.dataset == 'CIFAR100':
         
-        N = 10
+        N = 100
         
         dataset = datasets.CIFAR100(root=args.data_dir, train=True, download=False, )
 
