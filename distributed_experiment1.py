@@ -5,7 +5,9 @@ import torch.distributed as dist
 from torch.utils.data import DataLoader, DistributedSampler
 
 from torch.nn.parallel import DistributedDataParallel as DDP
-from torch.amp import GradScaler,autocast
+from torch.cuda.amp import GradScaler, autocast
+
+# from torch.amp import GradScaler,autocast
 
 from torch.optim import AdamW
 
@@ -96,7 +98,7 @@ class BaseExperiment:
     def initialize_logger(self, rank):
 
         logger = Experiment(api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
-                                project_name="robust_training",
+                                project_name="robust_training2",
                                 workspace="maxheuillet",
                                 auto_metric_logging=False,
                                 auto_output_logging=False)
@@ -253,7 +255,7 @@ class BaseExperiment:
                 # Backward pass with gradient scaling
                 scaler.scale(loss).backward()
 
-                if (batch_id + 1) % max(1,accumulation_steps) == 0 or (batch_id + 1) == len(trainloader):
+                if (batch_id + 1) % max(1, accumulation_steps) == 0 or (batch_id + 1) == len(trainloader):
                     scaler.step(optimizer)
                     scaler.update()
                     optimizer.zero_grad()  # Clear gradients after optimizer step
@@ -427,11 +429,11 @@ if __name__ == "__main__":
     import torch.multiprocessing as mp #import Queue
     from multiprocessing import Queue #, Process
 
-    torch.multiprocessing.set_start_method("spawn", force=True)
+    # torch.multiprocessing.set_start_method("spawn", force=True)
 
     args = get_args()
 
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, write_through=True)
+    # sys.stdout = io.TextIOWrapper(sys.stdout.buffer, write_through=True)
 
     world_size = torch.cuda.device_count()
     
@@ -439,10 +441,10 @@ if __name__ == "__main__":
 
     experiment = BaseExperiment(args, world_size)
 
-    experiment.setup.pre_training_log()
+    # experiment.setup.pre_training_log()
     
-    mp.spawn(experiment.training, nprocs=experiment.world_size, join=True)
+    # mp.spawn(experiment.training, nprocs=experiment.world_size, join=True)
     
-    experiment.setup.post_training_log()
+    # experiment.setup.post_training_log()
     
-    experiment.launch_evaluation()
+    # experiment.launch_evaluation()
