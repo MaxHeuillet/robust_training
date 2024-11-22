@@ -98,7 +98,7 @@ class BaseExperiment:
     def initialize_logger(self, rank):
 
         logger = Experiment(api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
-                                project_name="robust_training3",
+                                project_name="robust_training4",
                                 workspace="maxheuillet",
                                 auto_metric_logging=False,
                                 auto_output_logging=False)
@@ -251,25 +251,25 @@ class BaseExperiment:
                     loss_values, logits = get_loss(self.args, model, data, target, optimizer)
 
                 loss = loss_values.mean() #train_dataset.compute_loss(idxs, loss_values)
-                loss = loss / accumulation_steps  # Scale the loss
+                loss = loss #/ accumulation_steps  # Scale the loss
 
                 # Backward pass with gradient scaling
                 scaler.scale(loss).backward()
 
-                if (batch_id + 1) % max(1, accumulation_steps) == 0 or (batch_id + 1) == len(trainloader):
-                    scaler.step(optimizer)
-                    scaler.update()
-                    optimizer.zero_grad()  # Clear gradients after optimizer step
+                # if (batch_id + 1) % max(1, accumulation_steps) == 0 or (batch_id + 1) == len(trainloader):
+                scaler.step(optimizer)
+                scaler.update()
+                optimizer.zero_grad()  # Clear gradients after optimizer step
 
-                    # Log metrics
-                    global_step += 1
+                # Log metrics
+                global_step += 1
                     
-                    gradient_norm = compute_gradient_norms(model)
-                    current_lr = optimizer.param_groups[0]['lr']
-                    logger.log_metric("global_step", global_step, epoch=iteration)
-                    logger.log_metric("loss_value", loss.item() * accumulation_steps, epoch=iteration)
-                    logger.log_metric("lr_schedule", current_lr, epoch=iteration)
-                    logger.log_metric("gradient_norm", gradient_norm, epoch=iteration)
+                gradient_norm = compute_gradient_norms(model)
+                current_lr = optimizer.param_groups[0]['lr']
+                logger.log_metric("global_step", global_step, epoch=iteration)
+                logger.log_metric("loss_value", loss.item() * accumulation_steps, epoch=iteration)
+                logger.log_metric("lr_schedule", current_lr, epoch=iteration)
+                logger.log_metric("gradient_norm", gradient_norm, epoch=iteration)
 
                 # break
 
