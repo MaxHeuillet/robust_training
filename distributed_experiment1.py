@@ -236,13 +236,13 @@ class BaseExperiment:
 
                 data, target, idxs = batch
 
+                print(data.shape, target.shape, target)
+
                 data, target = data.to(rank), target.to(rank) 
 
-                # print(data.shape, target.shape)
+                print(data.shape, target.shape)
 
                 data, target_one_hot = cutmix_or_mixup(data, target)
-
-                print(data.shape, target.shape)
 
                 with torch.autocast(device_type='cuda'):
                     loss_values, logits = get_loss(self.args, model, data, target, optimizer)
