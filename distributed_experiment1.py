@@ -123,13 +123,13 @@ class BaseExperiment:
         
         print('initialize dataoader', rank,flush=True) 
         trainloader = DataLoader(train_dataset, 
-                                 batch_size=None, 
+                                 batch_size=self.args.batch_size, 
                                  sampler=train_sampler, 
                                  num_workers=3, 
                                  pin_memory=True) 
         
         valloader = DataLoader(val_dataset, 
-                               batch_size=self.setup.train_batch_size(), #64
+                               batch_size=self.args.batch_size, 
                                sampler=val_sampler, 
                                num_workers=3,
                                pin_memory=True)
