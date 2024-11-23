@@ -109,19 +109,36 @@ class BaseExperiment:
         logger.log_parameters(self.args)
 
         return logger
+    
+
+    def sync_value(self, value, nb_examples, rank):
+
+        # Aggregate results across all processes
+        value_tensor = torch.tensor([value], dtype=torch.float32, device=rank)
+        nb_examples_tensor = torch.tensor([nb_examples], dtype=torch.float32, device=rank)
+
+        dist.all_reduce(value_tensor, op=dist.ReduceOp.SUM)
+        dist.all_reduce(nb_examples_tensor, op=dist.ReduceOp.SUM)
+
+        # Compute global averages
+        avg_value = value_tensor.item() / nb_examples_tensor.item()
+
+        return avg_value, value_tensor.item(), nb_examples_tensor.item() 
 
     def initialize_loaders(self, rank):
 
-        train_dataset, val_dataset, _, N, train_transform, transform = load_data(self.args) 
+        train_dataset, val_dataset, test_dataset, N, train_transform, transform = load_data(self.args) 
         
         train_dataset = WeightedDataset(self.args, train_dataset, train_transform, N, prune_ratio = self.args.pruning_ratio, )
         val_dataset = IndexedDataset(self.args, val_dataset, transform,  N,) 
+        test_dataset = IndexedDataset(self.args, test_dataset, transform,  N,) 
 
         print('initialize sampler', rank,flush=True) 
         self.args.batch_size = self.setup.train_batch_size()
         # train_sampler = DistributedCustomSampler(self.args, train_dataset, num_replicas=self.world_size, rank=rank, drop_last=True)
         train_sampler = DistributedSampler(train_dataset, num_replicas=self.world_size, rank=rank, shuffle=True, drop_last=True)
         val_sampler = DistributedSampler(val_dataset, num_replicas=self.world_size, rank=rank, drop_last=False)
+        test_sampler = DistributedSampler(test_dataset, num_replicas=self.world_size, rank=rank, shuffle=True, drop_last=True)
         
         print('initialize dataoader', rank,flush=True) 
         trainloader = DataLoader(train_dataset, 
@@ -136,6 +153,12 @@ class BaseExperiment:
                                num_workers=3,
                                pin_memory=True)
         
+        testloader = DataLoader(test_dataset, 
+                               batch_size=self.args.batch_size, 
+                               sampler=test_sampler, 
+                               num_workers=3,
+                               pin_memory=True)
+        
         # original_data_size = len( train_dataset.global_indices )  # Size of original dataset
         # batch_size = self.args.batch_size             # Batch size for training
         # original_epochs = self.args.iterations        # Number of epochs for original dataset
@@ -143,7 +166,7 @@ class BaseExperiment:
         # adjusted_epochs = adjust_epochs(original_data_size, pruned_data_size, batch_size, original_epochs)
         # experiment.log_parameter("adjusted_epochs", adjusted_epochs)
         
-        return trainloader, valloader, train_sampler, val_sampler, N
+        return trainloader, valloader, testloader, train_sampler, val_sampler, test_sampler, N
 
     def training(self, rank):
 
@@ -154,14 +177,14 @@ class BaseExperiment:
 
         print('initialize dataset', rank,flush=True) 
 
-        trainloader, valloader, train_sampler, val_sampler, N = self.initialize_loaders(rank)
+        trainloader, valloader, testloader, train_sampler, val_sampler, test_sampler, N = self.initialize_loaders(rank)
 
         # print('N', self.args.N, flush=True)
 
         model = load_architecture(self.args, N, rank)
         model = CustomModel(self.args, model)
         # model.set_fine_tuning_strategy()
-        model._enable_all_gradients()
+        # model._enable_all_gradients()
         model.to(rank)
         model = DDP(model, device_ids=[rank])
 
@@ -170,7 +193,7 @@ class BaseExperiment:
         #self.validate(valloader, model, experiment, 0, rank)
         
         print('start the loop')
-        self.fit(model, trainloader, train_sampler, N, logger, rank)
+        self.fit(model, valloader, val_sampler, N, logger, rank)
 
         dist.barrier() 
 
@@ -192,22 +215,7 @@ class BaseExperiment:
 
         logger.end()
         self.setup.cleanup() 
-
-    def sync_value(self, value, nb_examples, rank):
-
-        # Aggregate results across all processes
-        value_tensor = torch.tensor([value], dtype=torch.float32, device=rank)
-        nb_examples_tensor = torch.tensor([nb_examples], dtype=torch.float32, device=rank)
-
-        dist.all_reduce(value_tensor, op=dist.ReduceOp.SUM)
-        dist.all_reduce(nb_examples_tensor, op=dist.ReduceOp.SUM)
-
-        # Compute global averages
-        avg_value = value_tensor.item() / nb_examples_tensor.item()
-
-        return avg_value, value_tensor.item(), nb_examples_tensor.item() 
         
-
     def fit(self, model, trainloader, train_sampler, N, logger, rank):
 
         # Gradient accumulation:
@@ -282,10 +290,11 @@ class BaseExperiment:
 
     def evaluation(self, rank, result_queue):
 
-        _, _, test_dataset, N, _, transform = load_data(self.args) 
+        _, val_dataset, test_dataset, N, _, transform = load_data(self.args) 
         print('loaded data', flush=True) 
 
-        test_dataset = IndexedDataset(self.args, test_dataset, transform, N,)
+        # test_dataset = IndexedDataset(self.args, test_dataset, transform, N,)
+        val_dataset = IndexedDataset(self.args, val_dataset, transform, N,)
         print('indexed data', flush=True) 
 
         test_sampler = DistributedSampler(test_dataset, 
@@ -293,9 +302,21 @@ class BaseExperiment:
                                           rank=rank, 
                                           shuffle=False,  # Disable shuffling
                                           drop_last=False)
+        
+        val_sampler = DistributedSampler(val_dataset, 
+                                          num_replicas=self.world_size, 
+                                          rank=rank, 
+                                          shuffle=False,  # Disable shuffling
+                                          drop_last=False)
         print('distributed sampled')
         
         testloader = DataLoader(test_dataset, 
+                               batch_size=self.setup.test_batch_size(), #64
+                               sampler=test_sampler, 
+                               num_workers=3,
+                               pin_memory=True)
+        
+        valloader = DataLoader(val_dataset, 
                                batch_size=self.setup.test_batch_size(), #64
                                sampler=test_sampler, 
                                num_workers=3,
@@ -309,7 +330,7 @@ class BaseExperiment:
         # Re-instantiate the model
         model = load_architecture(self.args, N, rank)
         model = CustomModel(self.args, model)
-        model.set_fine_tuning_strategy()
+        # model.set_fine_tuning_strategy()
         trained_state_dict = torch.load('./state_dicts/trained_model_{}.pt'.format(self.exp_id), map_location='cpu')
         model.load_state_dict(trained_state_dict)
         model.to(rank)
@@ -317,7 +338,7 @@ class BaseExperiment:
         model.eval()
 
         print('start AA accuracy', flush=True) 
-        stats, stats_nat, stats_adv = self.test(testloader, model, rank)
+        stats, stats_nat, stats_adv = self.test(valloader, model, rank)
         print('end AA accuracy', flush=True) 
 
         statistics = { 'stats': stats, 'stats_nat': stats_nat, 'stats_adv': stats_adv,}
