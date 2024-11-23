@@ -98,7 +98,7 @@ class BaseExperiment:
     def initialize_logger(self, rank):
 
         logger = Experiment(api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
-                                project_name="robust_training4",
+                                project_name="robust_training6",
                                 workspace="maxheuillet",
                                 auto_metric_logging=False,
                                 auto_output_logging=False)
@@ -251,7 +251,7 @@ class BaseExperiment:
 
                 data, target = data.to(rank), target.to(rank) 
 
-                #print(data.shape, target.shape)
+                print(data.shape, target.shape)
 
                 data, target_one_hot = cutmix_or_mixup(data, target)
 
@@ -318,7 +318,7 @@ class BaseExperiment:
         
         valloader = DataLoader(val_dataset, 
                                batch_size=self.setup.test_batch_size(), #64
-                               sampler=test_sampler, 
+                               sampler=val_sampler, 
                                num_workers=3,
                                pin_memory=True)
         print('dataloader', flush=True) 
