@@ -98,7 +98,7 @@ class BaseExperiment:
     def initialize_logger(self, rank):
 
         logger = Experiment(api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
-                                project_name="robust_training6",
+                                project_name="robust_training7",
                                 workspace="maxheuillet",
                                 auto_metric_logging=False,
                                 auto_output_logging=False)
@@ -231,9 +231,9 @@ class BaseExperiment:
         # optimizer = torch.optim.AdamW( model.parameters(), lr=self.args.init_lr, weight_decay=self.args.weight_decay, )
         scheduler = CosineLR( optimizer, max_lr=self.args.init_lr, epochs=int(self.args.iterations) )
 
-        cutmix = v2.CutMix(num_classes=N)
-        mixup = v2.MixUp(num_classes=N)
-        cutmix_or_mixup = v2.RandomChoice([cutmix, mixup])
+        # cutmix = v2.CutMix(num_classes=N)
+        # mixup = v2.MixUp(num_classes=N)
+        # cutmix_or_mixup = v2.RandomChoice([cutmix, mixup])
         
         for iteration in range(self.args.iterations):
 
@@ -253,7 +253,7 @@ class BaseExperiment:
 
                 print(data.shape, target.shape)
 
-                data, target_one_hot = cutmix_or_mixup(data, target)
+                # data, target_one_hot = cutmix_or_mixup(data, target)
 
                 with torch.autocast(device_type='cuda'):
                     loss_values, logits = get_loss(self.args, model, data, target, optimizer)
