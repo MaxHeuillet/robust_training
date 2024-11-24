@@ -98,7 +98,7 @@ class BaseExperiment:
     def initialize_logger(self, rank):
 
         logger = Experiment(api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
-                                project_name="robust_training8",
+                                project_name="robust_training10",
                                 workspace="maxheuillet",
                                 auto_metric_logging=False,
                                 auto_output_logging=False)
@@ -264,10 +264,10 @@ class BaseExperiment:
                 # Backward pass with gradient scaling
                 scaler.scale(loss).backward()
 
-                # if (batch_id + 1) % max(1, accumulation_steps) == 0 or (batch_id + 1) == len(trainloader):
-                scaler.step(optimizer)
-                scaler.update()
-                optimizer.zero_grad()  # Clear gradients after optimizer step
+                if (batch_id + 1) % max(1, accumulation_steps) == 0 or (batch_id + 1) == len(trainloader):
+                    scaler.step(optimizer)
+                    scaler.update()
+                    optimizer.zero_grad() # Clear gradients after optimizer step
 
                 # Log metrics
                 global_step += 1
