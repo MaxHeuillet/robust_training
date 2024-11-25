@@ -177,7 +177,7 @@ class BaseExperiment:
 
         print('initialize dataset', rank,flush=True) 
 
-        trainloader, valloader, testloader, train_sampler, val_sampler, test_sampler, N = self.initialize_loaders(rank)
+        trainloader, valloader, _, train_sampler, val_sampler, _, N = self.initialize_loaders(rank)
 
         # print('N', self.args.N, flush=True)
 
@@ -334,6 +334,7 @@ class BaseExperiment:
                 data, target, idxs = batch
 
                 data, target = data.to(rank), target.to(rank) 
+                print('shape validation batch', data.shape)
 
                 loss_values, _, _, logits_nat, logits_adv = get_eval_loss(self.args, model, data, target, )
 
