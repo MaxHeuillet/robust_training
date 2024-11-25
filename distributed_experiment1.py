@@ -182,6 +182,7 @@ class BaseExperiment:
         # print('N', self.args.N, flush=True)
 
         model = load_architecture(self.args, N, rank)
+        optimizer = load_optimizer(self.args, model,)   
         model = CustomModel(self.args, model)
         # model.set_fine_tuning_strategy()
         # model._enable_all_gradients()
@@ -193,7 +194,7 @@ class BaseExperiment:
         #self.validate(valloader, model, experiment, 0, rank)
         
         print('start the loop')
-        self.fit(model, trainloader, valloader, train_sampler, val_sampler, N, logger, rank)
+        self.fit(model, optimizer, trainloader, valloader, train_sampler, val_sampler, N, logger, rank)
 
         dist.barrier() 
 
@@ -216,7 +217,7 @@ class BaseExperiment:
         logger.end()
         self.setup.cleanup() 
         
-    def fit(self, model, trainloader, valloader, train_sampler, val_sampler, N, logger, rank):
+    def fit(self, model, optimizer, trainloader, valloader, train_sampler, val_sampler, N, logger, rank):
 
         # Gradient accumulation:
         effective_batch_size = 1024
@@ -225,8 +226,7 @@ class BaseExperiment:
         global_step = 0  # Track global iterations across accumulation steps
         print('effective batch size', effective_batch_size, 'per_gpu_batch_size', per_gpu_batch_size, 'accumulation steps', accumulation_steps)
 
-        scaler = GradScaler()
-        optimizer = load_optimizer(self.args, model,)     
+        scaler = GradScaler()  
         scheduler = CosineLR( optimizer, max_lr=self.args.init_lr, epochs=int(self.args.iterations) )
 
         # cutmix = v2.CutMix(num_classes=N)
@@ -350,11 +350,6 @@ class BaseExperiment:
 
         return total_loss, total_correct_nat, total_correct_adv, total_examples
     
-
-
-
-
-
 
 
     def test(self, rank, result_queue):
