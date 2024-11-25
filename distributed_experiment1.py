@@ -148,7 +148,7 @@ class BaseExperiment:
                                  pin_memory=True) 
         
         valloader = DataLoader(val_dataset, 
-                               batch_size=self.args.batch_size, 
+                               batch_size=int( 3/4 * self.args.batch_size ), 
                                sampler=val_sampler, 
                                num_workers=3,
                                pin_memory=True)
