@@ -84,7 +84,7 @@ class Setup:
             batch_size = 64 * base  # 16 = OK, 32 = OK, 64 = OK, 128 = NOT OK
         elif self.args.backbone in ['convnext_base', 'convnext_base.fb_in22k', 'robust_convnext_base']:
             batch_size = 32 * base  # 16 = OK, 32 = OK, 64 = NOT OK
-        elif self.args.backbone in ['convnext_tiny', 'convnext_tiny.fb_in22k', 'robust_convnext_tiny']:
+        elif self.args.backbone in ['convnext_tiny_random', 'convnext_tiny', 'convnext_tiny.fb_in22k', 'robust_convnext_tiny']:
             batch_size = 64 * base  # 16 = OK, 32 = OK, 64 = OK, 128 = NOT OK
 
         return int(batch_size)
@@ -109,7 +109,7 @@ class Setup:
             batch_size = 32 * base  # 16 = OK, 32 = OK, 64 = NOT OK,
         elif self.args.backbone in ['convnext_base', 'convnext_base.fb_in22k', 'robust_convnext_base']:
             batch_size = 16 * base  # 16 = OK, 32 = NOT OK,
-        elif self.args.backbone in ['convnext_tiny', 'convnext_tiny.fb_in22k', 'robust_convnext_tiny']:
+        elif self.args.backbone in ['convnext_tiny_random', 'convnext_tiny', 'convnext_tiny.fb_in22k', 'robust_convnext_tiny']:
             batch_size = 32 * base  # 16 = OK, 32 = OK, 64 = NOT OK,
         
         return int(batch_size)
