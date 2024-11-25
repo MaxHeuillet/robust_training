@@ -250,16 +250,13 @@ class BaseExperiment:
                 with torch.autocast(device_type='cuda'):
                     loss_values, logits = get_loss(self.args, model, data, target, optimizer)
 
+                print(loss_values, logits)
+
                 loss = loss_values.mean() #train_dataset.compute_loss(idxs, loss_values)
                 loss = loss / accumulation_steps  # Scale the loss
 
                 # Backward pass with gradient scaling
                 scaler.scale(loss).backward()
-
-                if (batch_id + 1) % max(1, accumulation_steps) == 0 or (batch_id + 1) == len(trainloader):
-                    scaler.step(optimizer)
-                    scaler.update()
-                    optimizer.zero_grad() # Clear gradients after optimizer step
 
                 # Log metrics
                 global_step += 1
@@ -271,6 +268,11 @@ class BaseExperiment:
                 logger.log_metric("loss_value", loss.item() * accumulation_steps, epoch=iteration)
                 logger.log_metric("lr_schedule", current_lr, epoch=iteration)
                 logger.log_metric("gradient_norm", gradient_norm, epoch=iteration)
+
+                if (batch_id + 1) % max(1, accumulation_steps) == 0 or (batch_id + 1) == len(trainloader):
+                    scaler.step(optimizer)
+                    scaler.update()
+                    optimizer.zero_grad() # Clear gradients after optimizer step
 
                 # break
 
