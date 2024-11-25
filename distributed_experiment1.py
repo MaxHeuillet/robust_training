@@ -251,7 +251,7 @@ class BaseExperiment:
                     loss_values, logits = get_loss(self.args, model, data, target, optimizer)
 
                 loss = loss_values.mean() #train_dataset.compute_loss(idxs, loss_values)
-                #loss = loss / accumulation_steps  # Scale the loss
+                loss = loss / accumulation_steps  # Scale the loss
 
                 # Backward pass with gradient scaling
                 scaler.scale(loss).backward()
