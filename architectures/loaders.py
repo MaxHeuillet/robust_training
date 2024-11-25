@@ -76,6 +76,7 @@ def load_architecture(args, N, rank):
                       'convnext_base.fb_in22k':'convnext_base.fb_in22k', 
                       'robust_convnext_base':'convnext_base',
                       
+                      'convnext_tiny_random':'convnext_tiny',
                       'convnext_tiny':'convnext_tiny',
                       'convnext_tiny.fb_in22k':'convnext_tiny.fb_in22k',
                       'robust_convnext_tiny':'convnext_tiny',
@@ -97,7 +98,8 @@ def load_architecture(args, N, rank):
     if 'convnext' in args.backbone:
         model = timm.create_model(equivalencies[args.backbone], pretrained=False)
         state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) , map_location='cpu')
-        model.load_state_dict(state_dict)
+        if 'random' not in args.backbone:
+            model.load_state_dict(state_dict)
 
     elif 'wideresnet' in args.backbone:
         model = wideresnet(depth = 28, widen = 10, act_fn = 'swish', num_classes = 200)
