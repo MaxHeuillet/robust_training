@@ -359,7 +359,7 @@ class BaseExperiment:
 
     def test(self, rank, result_queue):
 
-        _, val_dataset, test_dataset, N, _, transform = load_data(self.args) 
+        _, _, test_dataset, N, _, transform = load_data(self.args) 
         print('loaded data', flush=True) 
 
         # test_dataset = IndexedDataset(self.args, test_dataset, transform, N,)
@@ -371,12 +371,7 @@ class BaseExperiment:
                                           rank=rank, 
                                           shuffle=False,  # Disable shuffling
                                           drop_last=False)
-        
-        val_sampler = DistributedSampler(val_dataset, 
-                                          num_replicas=self.world_size, 
-                                          rank=rank, 
-                                          shuffle=False,  # Disable shuffling
-                                          drop_last=False)
+
         print('distributed sampled')
         
         testloader = DataLoader(test_dataset, 
@@ -385,11 +380,6 @@ class BaseExperiment:
                                num_workers=3,
                                pin_memory=True)
         
-        valloader = DataLoader(val_dataset, 
-                               batch_size=self.setup.test_batch_size(), #64
-                               sampler=val_sampler, 
-                               num_workers=3,
-                               pin_memory=True)
         print('dataloader', flush=True) 
         
         # Check the number of samples assigned to this process
@@ -407,7 +397,7 @@ class BaseExperiment:
         model.eval()
 
         print('start AA accuracy', flush=True) 
-        stats, stats_nat, stats_adv = self.test_loop(valloader, model, rank)
+        stats, stats_nat, stats_adv = self.test_loop(testloader, model, rank)
         print('end AA accuracy', flush=True) 
 
         statistics = { 'stats': stats, 'stats_nat': stats_nat, 'stats_adv': stats_adv,}
