@@ -292,13 +292,13 @@ class BaseExperiment:
             print(f'Rank {rank}, Iteration {iteration},', flush=True) 
 
 
-    def validate(self, valloader, model, experiment, iteration, rank):
+    def validate(self, valloader, model, logger, iteration, rank):
         total_loss, total_correct_nat, total_correct_adv, total_examples = self.validation_metrics(valloader, model, rank)
         dist.barrier() 
         avg_loss, clean_accuracy, robust_accuracy  = self.sync_validation_results(total_loss, total_correct_nat, total_correct_adv, total_examples, rank)
-        experiment.log_metric("val_loss", avg_loss, epoch=iteration)
-        experiment.log_metric("val_clean_accuracy", clean_accuracy, epoch=iteration)
-        experiment.log_metric("val_robust_accuracy", robust_accuracy, epoch=iteration)
+        logger.log_metric("val_loss", avg_loss, epoch=iteration)
+        logger.log_metric("val_clean_accuracy", clean_accuracy, epoch=iteration)
+        logger.log_metric("val_robust_accuracy", robust_accuracy, epoch=iteration)
     
     def sync_validation_results(self, total_loss, total_correct_nat, total_correct_adv, total_examples, rank):
 
@@ -346,7 +346,6 @@ class BaseExperiment:
                 total_correct_nat += (preds_nat == target).sum().item()
                 total_correct_adv += (preds_adv == target).sum().item()
                 total_examples += target.size(0)
-                break
 
         return total_loss, total_correct_nat, total_correct_adv, total_examples
     
