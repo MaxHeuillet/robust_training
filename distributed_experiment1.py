@@ -265,6 +265,11 @@ class BaseExperiment:
                 loss = loss_values.mean() #train_dataset.compute_loss(idxs, loss_values)
                 loss = loss / accumulation_steps  # Scale the loss
 
+                if torch.isnan(loss).any():
+                    print("Model loss contain NaN.")
+                elif  torch.isinf(loss).any():
+                    print("Model loss contain Inf.")
+
                 # Backward pass with gradient scaling
                 scaler.scale(loss).backward()
 
