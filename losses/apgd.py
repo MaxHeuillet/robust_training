@@ -17,9 +17,9 @@ def apgd_attack(args, model, x, y, optimizer):
     # is_train=True
     # mixup=None
     use_rs=False
-    n_iter= args.perturb_steps #10
-    eps = args.epsilon #4/255
-    norm = args.distance #'Linf'
+    n_iter= 10 #args.perturb_steps #
+    eps = 4/255 #args.epsilon #
+    norm = 'Linf' #args.distance #
 
     # y = y.reshape( (-1,1) )
     # print(y.shape)

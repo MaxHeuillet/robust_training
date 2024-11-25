@@ -55,7 +55,7 @@ def get_args():
     parser.add_argument("--init_lr", type=float,help="initial learning rate")
     parser.add_argument("--sched", default='sched',type=str, choices=['sched', 'nosched'], help="the scheduler")
     parser.add_argument("--momentum", "-m", type=float, default=0.9, help="momentum")
-    parser.add_argument("--weight_decay", "--wd", default=0.01, type=float, help="weight decay (default: 5e-4)")
+    parser.add_argument("--weight_decay", "--wd", default=0.0001, type=float, help="weight decay (default: 5e-4)")
     
     parser.add_argument('--seed', default=0, type=int, help="random seed")
 
