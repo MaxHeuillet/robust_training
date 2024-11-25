@@ -97,8 +97,9 @@ def load_architecture(args, N, rank):
 
     if 'convnext' in args.backbone:
         model = timm.create_model(equivalencies[args.backbone], pretrained=False)
-        state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) , map_location='cpu')
+        
         if 'random' not in args.backbone:
+            state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) , map_location='cpu')
             model.load_state_dict(state_dict)
 
     elif 'wideresnet' in args.backbone:
