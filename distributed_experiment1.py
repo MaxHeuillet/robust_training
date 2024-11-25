@@ -282,7 +282,7 @@ class BaseExperiment:
 
             if iteration % 5 == 0:
                 print('start validation') 
-                self.validate(valloader, model, experiment, iteration+1, rank)
+                self.validate(valloader, model, logger, iteration+1, rank)
 
             # model.module.update_fine_tuning_strategy(iteration)
                 
