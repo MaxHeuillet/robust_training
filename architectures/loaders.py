@@ -43,32 +43,31 @@ from collections import OrderedDict
 #         logits_adv = get_logits(x_adv)  # Get adversarial input logits if provided
     
 #     return logits_nat, logits_adv
+  
+# class ImageNormalizer(nn.Module):
+#     def __init__(self, mean: Tuple[float, float, float],
+#         std: Tuple[float, float, float],
+#         persistent: bool = True) -> None:
+#         super(ImageNormalizer, self).__init__()
 
-    
-class ImageNormalizer(nn.Module):
-    def __init__(self, mean: Tuple[float, float, float],
-        std: Tuple[float, float, float],
-        persistent: bool = True) -> None:
-        super(ImageNormalizer, self).__init__()
+#         self.register_buffer('mean', torch.as_tensor(mean).view(1, 3, 1, 1),
+#             persistent=persistent)
+#         self.register_buffer('std', torch.as_tensor(std).view(1, 3, 1, 1),
+#             persistent=persistent)
 
-        self.register_buffer('mean', torch.as_tensor(mean).view(1, 3, 1, 1),
-            persistent=persistent)
-        self.register_buffer('std', torch.as_tensor(std).view(1, 3, 1, 1),
-            persistent=persistent)
+#     def forward(self, input: Tensor) -> Tensor:
+#         return (input - self.mean) / self.std
 
-    def forward(self, input: Tensor) -> Tensor:
-        return (input - self.mean) / self.std
+# def normalize_model(model: nn.Module, mean: Tuple[float, float, float],
+#     std: Tuple[float, float, float]) -> nn.Module:
+#     layers = OrderedDict([
+#         ('normalize', ImageNormalizer(mean, std)),
+#         ('model', model)
+#     ])
+#     return nn.Sequential(layers)
 
-def normalize_model(model: nn.Module, mean: Tuple[float, float, float],
-    std: Tuple[float, float, float]) -> nn.Module:
-    layers = OrderedDict([
-        ('normalize', ImageNormalizer(mean, std)),
-        ('model', model)
-    ])
-    return nn.Sequential(layers)
-
-IMAGENET_MEAN = [c * 1. for c in (0.485, 0.456, 0.406)] #[np.array([0., 0., 0.]), np.array([0.485, 0.456, 0.406])][-1] * 255
-IMAGENET_STD = [c * 1. for c in (0.229, 0.224, 0.225)] #[np.array([1., 1., 1.]), np.array([0.229, 0.224, 0.225])][-1] * 255
+# IMAGENET_MEAN = [c * 1. for c in (0.485, 0.456, 0.406)] #[np.array([0., 0., 0.]), np.array([0.485, 0.456, 0.406])][-1] * 255
+# IMAGENET_STD = [c * 1. for c in (0.229, 0.224, 0.225)] #[np.array([1., 1., 1.]), np.array([0.229, 0.224, 0.225])][-1] * 255
 
 def load_architecture(args, N, rank):
 

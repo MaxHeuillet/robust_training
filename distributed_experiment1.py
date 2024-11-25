@@ -53,6 +53,10 @@ def compute_gradient_norms(model):
     for p in model.parameters():
         if p.grad is not None:
             param_norm = p.grad.data.norm(2)
+            if torch.isnan(param_norm):
+                print(f"Gradient contains NaN : {p}")
+            elif torch.isinf(param_norm):
+                print(f"Gradient contains Inf : {p}")
             total_norm += param_norm.item() ** 2
     total_norm = total_norm ** 0.5
     return total_norm
@@ -249,6 +253,12 @@ class BaseExperiment:
 
                 with torch.autocast(device_type='cuda'):
                     loss_values, logits = get_loss(self.args, model, data, target, optimizer)
+
+                if torch.isnan(logits).any():
+                    print("Model outputs contain NaN.")
+                elif  torch.isinf(logits).any():
+                    print("Model outputs contain Inf.")
+
 
                 print(loss_values, logits)
 
