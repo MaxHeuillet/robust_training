@@ -137,7 +137,7 @@ class BaseExperiment:
         self.args.batch_size = self.setup.train_batch_size()
         # train_sampler = DistributedCustomSampler(self.args, train_dataset, num_replicas=self.world_size, rank=rank, drop_last=True)
         train_sampler = DistributedSampler(train_dataset, num_replicas=self.world_size, rank=rank, shuffle=True, drop_last=True)
-        val_sampler = DistributedSampler(val_dataset, num_replicas=self.world_size, rank=rank, drop_last=False)
+        val_sampler = DistributedSampler(val_dataset, num_replicas=self.world_size, rank=rank, drop_last=True)
         test_sampler = DistributedSampler(test_dataset, num_replicas=self.world_size, rank=rank, shuffle=True, drop_last=True)
         
         print('initialize dataoader', rank,flush=True) 
@@ -335,8 +335,9 @@ class BaseExperiment:
 
                 data, target = data.to(rank), target.to(rank) 
                 print('shape validation batch', data.shape)
-
-                loss_values, _, _, logits_nat, logits_adv = get_eval_loss(self.args, model, data, target, )
+                
+                with torch.autocast(device_type='cuda'):
+                    loss_values, _, _, logits_nat, logits_adv = get_eval_loss(self.args, model, data, target, )
 
                 total_loss += loss_values.sum().item()
                 # Compute predictions
