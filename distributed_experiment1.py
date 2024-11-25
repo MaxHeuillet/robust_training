@@ -98,7 +98,7 @@ class BaseExperiment:
     def initialize_logger(self, rank):
 
         logger = Experiment(api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
-                                project_name="robust_training10",
+                                project_name="robust_training11",
                                 workspace="maxheuillet",
                                 auto_metric_logging=False,
                                 auto_output_logging=False)
