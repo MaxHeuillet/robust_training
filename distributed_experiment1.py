@@ -91,7 +91,7 @@ class BaseExperiment:
     def initialize_logger(self, rank):
 
         logger = Experiment(api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
-                                project_name="robust_training13",
+                                project_name="robust_training15",
                                 workspace="maxheuillet",
                                 auto_metric_logging=False,
                                 auto_output_logging=False)
@@ -265,7 +265,7 @@ class BaseExperiment:
                 global_step += 1
                     
                 gradient_norm = compute_gradient_norms(model)
-                print('gradient norm:', gradient_norm)
+                print('gradient norm:', gradient_norm, 'rank:', rank, 'loss', loss)
                 current_lr = optimizer.param_groups[0]['lr']
                 logger.log_metric("global_step", global_step, epoch=iteration)
                 logger.log_metric("loss_value", loss.item() * accumulation_steps, epoch=iteration)
@@ -328,7 +328,7 @@ class BaseExperiment:
                 data, target, idxs = batch
 
                 data, target = data.to(rank), target.to(rank) 
-                print('shape validation batch', data.shape)
+                # print('shape validation batch', data.shape)
                 
                 with torch.autocast(device_type='cuda'):
                     loss_values, _, _, logits_nat, logits_adv = get_eval_loss(self.args, model, data, target, )
