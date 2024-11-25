@@ -7,16 +7,14 @@ from torch.utils.data import DataLoader, DistributedSampler
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.cuda.amp import GradScaler, autocast
 
-# from torch.amp import GradScaler,autocast
-
-
-
-# from torch.optim.lr_scheduler import CosineAnnealingLR
+import torch.multiprocessing as mp 
+from multiprocessing import Queue 
 import os
+import sys
+
 import torch
 
 import io
-
 
 import math
 from autoattack import AutoAttack
@@ -25,7 +23,6 @@ from torch.utils.data import DataLoader
 
 import torch.distributed as dist
 
-import sys
 import hashlib
 import json
 
@@ -40,11 +37,7 @@ from utils import get_args, get_exp_name, set_seeds, load_optimizer
 from cosine import CosineLR
 from torchvision.transforms import v2
 
-import torch
-from torch.utils.data import DataLoader
-# from torch.utils.data.distributed import DistributedSampler
-import io
-import sys
+
 
 def get_unique_id(args):
 
@@ -272,6 +265,7 @@ class BaseExperiment:
                 global_step += 1
                     
                 gradient_norm = compute_gradient_norms(model)
+                print('gradient norm:', gradient_norm)
                 current_lr = optimizer.param_groups[0]['lr']
                 logger.log_metric("global_step", global_step, epoch=iteration)
                 logger.log_metric("loss_value", loss.item() * accumulation_steps, epoch=iteration)
@@ -503,9 +497,6 @@ if __name__ == "__main__":
 
     print('begining of the execution')
 
-    import torch.multiprocessing as mp #import Queue
-    from multiprocessing import Queue #, Process
-
     torch.multiprocessing.set_start_method("spawn", force=True)
 
     args = get_args()
@@ -524,4 +515,4 @@ if __name__ == "__main__":
     
     experiment.setup.post_training_log()
     
-    experiment.launch_evaluation()
+    # experiment.launch_test()
