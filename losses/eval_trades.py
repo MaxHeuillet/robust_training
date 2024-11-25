@@ -23,9 +23,9 @@ def trades_loss_eval(args,
     model.eval()
     x_adv = x_natural.detach() + 0.001 * torch.randn(x_natural.shape, device=x_natural.device).detach()
 
-    print(x_natural.shape, x_adv.shape, y.shape)
+    # print(x_natural.shape, x_adv.shape, y.shape)
 
-    if args.distance == 'l_inf':
+    if args.distance == 'Linf':
         # print('init x_adv')
         for _ in range(args.perturb_steps):
 
