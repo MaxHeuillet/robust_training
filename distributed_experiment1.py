@@ -9,7 +9,7 @@ from torch.cuda.amp import GradScaler, autocast
 
 # from torch.amp import GradScaler,autocast
 
-from torch.optim import AdamW
+
 
 # from torch.optim.lr_scheduler import CosineAnnealingLR
 import os
@@ -36,7 +36,7 @@ from torch.utils.data.distributed import DistributedSampler
 from datasets import WeightedDataset, IndexedDataset, load_data
 from architectures import load_architecture, CustomModel
 from losses import get_loss, get_eval_loss
-from utils import get_args, get_exp_name, set_seeds
+from utils import get_args, get_exp_name, set_seeds, load_optimizer
 from cosine import CosineLR
 from torchvision.transforms import v2
 
@@ -193,7 +193,7 @@ class BaseExperiment:
         #self.validate(valloader, model, experiment, 0, rank)
         
         print('start the loop')
-        self.fit(model, valloader, val_sampler, N, logger, rank)
+        self.fit(model, trainloader, valloader, train_sampler, val_sampler, N, logger, rank)
 
         dist.barrier() 
 
@@ -216,7 +216,7 @@ class BaseExperiment:
         logger.end()
         self.setup.cleanup() 
         
-    def fit(self, model, trainloader, train_sampler, N, logger, rank):
+    def fit(self, model, trainloader, valloader, train_sampler, val_sampler, N, logger, rank):
 
         # Gradient accumulation:
         effective_batch_size = 1024
@@ -226,9 +226,7 @@ class BaseExperiment:
         print('effective batch size', effective_batch_size, 'per_gpu_batch_size', per_gpu_batch_size, 'accumulation steps', accumulation_steps)
 
         scaler = GradScaler()
-        # print(self.args.init_lr, self.args.weight_decay, self.args.momentum) 
-        # optimizer = torch.optim.SGD( model.parameters(),lr=self.args.init_lr, weight_decay=self.args.weight_decay, momentum=self.args.momentum, nesterov=True, )
-        optimizer = torch.optim.AdamW( model.parameters(), lr=self.args.init_lr, weight_decay=self.args.weight_decay, )
+        optimizer = load_optimizer(self.args, model,)     
         scheduler = CosineLR( optimizer, max_lr=self.args.init_lr, epochs=int(self.args.iterations) )
 
         # cutmix = v2.CutMix(num_classes=N)
@@ -239,6 +237,7 @@ class BaseExperiment:
 
             model.train()
             train_sampler.set_epoch(iteration)
+            val_sampler.set_epoch(iteration)
             optimizer.zero_grad()
 
             print('start batches')
@@ -259,7 +258,7 @@ class BaseExperiment:
                     loss_values, logits = get_loss(self.args, model, data, target, optimizer)
 
                 loss = loss_values.mean() #train_dataset.compute_loss(idxs, loss_values)
-                loss = loss #/ accumulation_steps  # Scale the loss
+                #loss = loss / accumulation_steps  # Scale the loss
 
                 # Backward pass with gradient scaling
                 scaler.scale(loss).backward()
@@ -281,6 +280,10 @@ class BaseExperiment:
 
                 # break
 
+            if iteration % 5 == 0:
+                print('start validation') 
+                self.validate(valloader, model, experiment, iteration+1, rank)
+
             # model.module.update_fine_tuning_strategy(iteration)
                 
             if self.args.sched == 'sched':
@@ -288,7 +291,73 @@ class BaseExperiment:
   
             print(f'Rank {rank}, Iteration {iteration},', flush=True) 
 
-    def evaluation(self, rank, result_queue):
+
+    def validate(self, valloader, model, experiment, iteration, rank):
+        total_loss, total_correct_nat, total_correct_adv, total_examples = self.validation_metrics(valloader, model, rank)
+        dist.barrier() 
+        avg_loss, clean_accuracy, robust_accuracy  = self.sync_validation_results(total_loss, total_correct_nat, total_correct_adv, total_examples, rank)
+        experiment.log_metric("val_loss", avg_loss, epoch=iteration)
+        experiment.log_metric("val_clean_accuracy", clean_accuracy, epoch=iteration)
+        experiment.log_metric("val_robust_accuracy", robust_accuracy, epoch=iteration)
+    
+    def sync_validation_results(self, total_loss, total_correct_nat, total_correct_adv, total_examples, rank):
+
+        # Aggregate results across all processes
+        total_loss_tensor = torch.tensor([total_loss], dtype=torch.float32, device=rank)
+        total_correct_nat_tensor = torch.tensor([total_correct_nat], dtype=torch.float32, device=rank)
+        total_correct_adv_tensor = torch.tensor([total_correct_adv], dtype=torch.float32, device=rank)
+        total_examples_tensor = torch.tensor([total_examples], dtype=torch.float32, device=rank)
+
+        dist.all_reduce(total_loss_tensor, op=dist.ReduceOp.SUM)
+        dist.all_reduce(total_correct_nat_tensor, op=dist.ReduceOp.SUM)
+        dist.all_reduce(total_correct_adv_tensor, op=dist.ReduceOp.SUM)
+        dist.all_reduce(total_examples_tensor, op=dist.ReduceOp.SUM)
+
+        # Compute global averages
+        avg_loss = total_loss_tensor.item() / total_examples_tensor.item()
+        clean_accuracy = total_correct_nat_tensor.item() / total_examples_tensor.item()
+        robust_accuracy = total_correct_adv_tensor.item() / total_examples_tensor.item()
+
+        return avg_loss, clean_accuracy, robust_accuracy
+
+    def validation_metrics(self, valloader, model, rank):
+
+        model.eval()
+
+        total_loss = 0.0
+        total_correct_nat = 0
+        total_correct_adv = 0
+        total_examples = 0
+
+        for batch_id, batch in enumerate( valloader ):
+
+                data, target, idxs = batch
+
+                data, target = data.to(rank), target.to(rank) 
+
+                loss_values, _, _, logits_nat, logits_adv = get_eval_loss(self.args, model, data, target, )
+
+                total_loss += loss_values.sum().item()
+                # Compute predictions
+                preds_nat = torch.argmax(logits_nat, dim=1)  # Predicted classes for natural examples
+                preds_adv = torch.argmax(logits_adv, dim=1)  # Predicted classes for adversarial examples
+
+                # Accumulate correct predictions
+                total_correct_nat += (preds_nat == target).sum().item()
+                total_correct_adv += (preds_adv == target).sum().item()
+                total_examples += target.size(0)
+                break
+
+        return total_loss, total_correct_nat, total_correct_adv, total_examples
+    
+
+
+
+
+
+
+
+    def test(self, rank, result_queue):
 
         _, val_dataset, test_dataset, N, _, transform = load_data(self.args) 
         print('loaded data', flush=True) 
@@ -338,7 +407,7 @@ class BaseExperiment:
         model.eval()
 
         print('start AA accuracy', flush=True) 
-        stats, stats_nat, stats_adv = self.test(valloader, model, rank)
+        stats, stats_nat, stats_adv = self.test_loop(valloader, model, rank)
         print('end AA accuracy', flush=True) 
 
         statistics = { 'stats': stats, 'stats_nat': stats_nat, 'stats_adv': stats_adv,}
@@ -347,7 +416,7 @@ class BaseExperiment:
         result_queue.put((rank, statistics))
         print(f"Rank {rank}: Results sent to queue", flush=True)
         
-    def test(self, testloader, model, rank):
+    def test_loop(self, testloader, model, rank):
 
         from utils import ActivationTracker, register_hooks, compute_stats
 
@@ -415,14 +484,14 @@ class BaseExperiment:
 
         return stats, stats_nat, stats_adv
     
-    def launch_evaluation(self,):
+    def launch_test(self,):
         #Create a Queue to gather results
         result_queue = Queue()
 
         # Launch evaluation processes
         processes = []
         for rank in range(self.world_size):
-            p = mp.Process(target=self.evaluation, args=(rank, result_queue) )
+            p = mp.Process(target=self.test, args=(rank, result_queue) )
             p.start()
             processes.append(p)
 
