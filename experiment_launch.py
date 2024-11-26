@@ -11,7 +11,6 @@ from datasets import IndexedDataset
 import logging
 import time
 
-
 args = utils.get_args()
 
 # Set up logging

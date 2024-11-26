@@ -7,7 +7,7 @@ class CustomModel(nn.Module):
         super(CustomModel, self).__init__()
         self.args = args
         self.base_model = original_model
-
+        
     def forward(self, x_1, x_2=None):
 
         logits_1 = self.base_model(x_1)

@@ -177,16 +177,19 @@ class BaseExperiment:
         trainloader, valloader, _, train_sampler, val_sampler, _, N = self.initialize_loaders(rank)
 
         # print('N', self.args.N, flush=True)
+        from functools import partial
+        from attacks import apgd_attack
+        attack = partial(apgd_attack, args=self.args)
 
         model = load_architecture(self.args, N, rank)
         optimizer = load_optimizer(self.args, model,)   
-        model = CustomModel(self.args, model)
+        model = CustomModel(self.args, model, attack)
         # model.set_fine_tuning_strategy()
         # model._enable_all_gradients()
         model.to(rank)
 
-        for name, param in model.named_parameters():
-            print(f"Parameter: {name}, strides: {param.data.stride()}")
+        # for name, param in model.named_parameters():
+        #     print(f"Parameter: {name}, strides: {param.data.stride()}")
         model = DDP(model, device_ids=[rank])
 
         # torch.autograd.set_detect_anomaly(True)
@@ -229,16 +232,16 @@ class BaseExperiment:
         scaler = GradScaler()  
         scheduler = CosineLR( optimizer, max_lr=self.args.init_lr, epochs=int(self.args.iterations) )
 
+        model.train()
+
         # cutmix = v2.CutMix(num_classes=N)
         # mixup = v2.MixUp(num_classes=N)
         # cutmix_or_mixup = v2.RandomChoice([cutmix, mixup])
         
         for iteration in range(self.args.iterations):
 
-            model.train()
             train_sampler.set_epoch(iteration)
             val_sampler.set_epoch(iteration)
-            optimizer.zero_grad()
 
             print('start batches')
 
@@ -254,10 +257,10 @@ class BaseExperiment:
 
                 # data, target_one_hot = cutmix_or_mixup(data, target)
 
-                with torch.autocast(device_type='cuda'):
-                    print('comput loss')
-                    loss_values, logits = get_loss(self.args, model, data, target, optimizer)
-                    print(' loss computed')
+                # with torch.autocast(device_type='cuda'):
+                print('comput loss')
+                loss_values, logits = get_loss(self.args, model, data, target, optimizer)
+                print(' loss computed')
 
                 if torch.isnan(logits).any():
                     print("Model outputs contain NaN.")
