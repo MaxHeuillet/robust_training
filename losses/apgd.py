@@ -179,7 +179,7 @@ def apgd_attack(args, model, x, y):
 def apgd_loss(args, model, x_clean, y, optimizer):
 
     model.eval()
-    x_adv, acc, loss, best_adv = apgd_attack(args, model, x_clean, y, optimizer)
+    x_adv, acc, loss, best_adv = apgd_attack(args, model, x_clean, y)
 
     model.train()
     # optimizer.zero_grad()
