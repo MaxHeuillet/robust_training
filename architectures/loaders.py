@@ -18,29 +18,50 @@ from collections import OrderedDict
 
 def load_architecture(args, N, rank):
 
+    # equivalencies = { 'convnext_base.in1k':'convnext_base',
+    #                   'convnext_base.in21k':'convnext_base.fb_in22k', 
+    #                   'convnext_base.in1k.robust':'convnext_base',
+    #                   'convnext_base.in1k.random':'convnext_base',                      
+    #                   'convnext_tiny.in1k':'convnext_tiny',
+    #                   'convnext_tiny.in21k':'convnext_tiny.fb_in22k',
+    #                   'convnext_tiny.in1k.robust':'convnext_tiny',
+    #                   'convnext_tiny.random':'convnext_tiny',
+    #                   'deit_small_patch16_224.in1k': 'deit_small_patch16_224.fb_in1k',
+    #                   'deit_small_patch16_224.in1k.robust': 'deit_small_patch16_224',
+    #                   'deit_small_patch16_224.in1k.random': 'deit_small_patch16_224',
+    #                   'vit_base_patch16_224.in1k':'vit_base_patch16_224.augreg_in1k',
+    #                   'vit_base_patch16_224.in21k':'vit_base_patch16_224.augreg_in21k',
+    #                   'vit_base_patch16_224.in1k.robust': 'vit_base_patch16_224',
+    #                   'vit_base_patch16_224.in1k.random': 'vit_base_patch16_224',
+    #                   'robust_wideresnet_28_10': 'robust_wideresnet_28_10',
+    #                   'wideresnet_28_10': 'wideresnet_28_10',  }
+
     equivalencies = { 'convnext_base':'convnext_base',
                       'convnext_base.fb_in22k':'convnext_base.fb_in22k', 
                       'robust_convnext_base':'convnext_base',
+                      'random_convnext_base':'convnext_base',
                       
                       'convnext_tiny_random':'convnext_tiny',
                       'convnext_tiny':'convnext_tiny',
                       'convnext_tiny.fb_in22k':'convnext_tiny.fb_in22k',
                       'robust_convnext_tiny':'convnext_tiny',
+                      'random_convnext_tiny':'convnext_tiny',
 
                       'robust_wideresnet_28_10': 'robust_wideresnet_28_10',
                       'wideresnet_28_10': 'wideresnet_28_10',
 
                       'deit_small_patch16_224.fb_in1k': 'deit_small_patch16_224.fb_in1k',
                       'robust_deit_small_patch16_224': 'deit_small_patch16_224',
+                      'random_deit_small_patch16_224': 'deit_small_patch16_224',
 
                       'vit_base_patch16_224.augreg_in1k':'vit_base_patch16_224.augreg_in1k',
                       'vit_base_patch16_224.augreg_in21k':'vit_base_patch16_224.augreg_in21k',
-                      'robust_vit_base_patch16_224': 'vit_base_patch16_224'
-                           
-                        }
+                      'robust_vit_base_patch16_224': 'vit_base_patch16_224',
+                      'random_vit_base_patch16_224': 'vit_base_patch16_224',
+
+                          }
     
-
-
+    
     if 'convnext' in args.backbone:
         model = timm.create_model(equivalencies[args.backbone], pretrained=False)
         
@@ -48,20 +69,23 @@ def load_architecture(args, N, rank):
             state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) , map_location='cpu')
             model.load_state_dict(state_dict)
 
-    elif 'wideresnet' in args.backbone:
-        model = wideresnet(depth = 28, widen = 10, act_fn = 'swish', num_classes = 200)
-        state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) , map_location='cpu')
-        model.load_state_dict(state_dict)
-
     elif 'deit' in args.backbone:
         model = timm.create_model(equivalencies[args.backbone], pretrained=False)
-        state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) , map_location='cpu')
-        model.load_state_dict(state_dict)
+        if 'random' not in args.backbone:
+            state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) , map_location='cpu')
+            model.load_state_dict(state_dict)
 
     elif 'vit' in args.backbone:
         model = timm.create_model(equivalencies[args.backbone], pretrained=False)
-        state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) , map_location='cpu')
-        model.load_state_dict(state_dict)
+        if 'random' not in args.backbone:
+            state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) , map_location='cpu')
+            model.load_state_dict(state_dict)
+
+    elif 'wideresnet' in args.backbone:
+        model = wideresnet(depth = 28, widen = 10, act_fn = 'swish', num_classes = 200)
+        if 'random' not in args.backbone:
+            state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) , map_location='cpu')
+            model.load_state_dict(state_dict)
 
     # model = change_head(args,model,N)
 
