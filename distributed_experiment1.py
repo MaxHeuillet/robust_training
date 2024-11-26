@@ -95,7 +95,7 @@ class BaseExperiment:
     def initialize_logger(self, rank):
 
         logger = Experiment(api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
-                                project_name="robust_training17",
+                                project_name="robust_training20",
                                 workspace="maxheuillet",
                                 auto_metric_logging=False,
                                 auto_output_logging=False)
@@ -184,6 +184,9 @@ class BaseExperiment:
         # model.set_fine_tuning_strategy()
         # model._enable_all_gradients()
         model.to(rank)
+
+        for name, param in model.named_parameters():
+            print(f"Parameter: {name}, strides: {param.data.stride()}")
         model = DDP(model, device_ids=[rank])
 
         # torch.autograd.set_detect_anomaly(True)
@@ -252,7 +255,9 @@ class BaseExperiment:
                 # data, target_one_hot = cutmix_or_mixup(data, target)
 
                 with torch.autocast(device_type='cuda'):
+                    print('comput loss')
                     loss_values, logits = get_loss(self.args, model, data, target, optimizer)
+                    print(' loss computed')
 
                 if torch.isnan(logits).any():
                     print("Model outputs contain NaN.")
@@ -260,10 +265,13 @@ class BaseExperiment:
                     print("Model outputs contain Inf.")
 
 
-                print(loss_values, logits)
+                # print('loss values',loss_values, 'logits', logits)
 
+                print('average loss')
                 loss = loss_values.mean() #train_dataset.compute_loss(idxs, loss_values)
+                print('divide loss')
                 loss = loss / accumulation_steps  # Scale the loss
+                print('loss modification performed')
 
                 if torch.isnan(loss).any():
                     print("Model loss contain NaN.")
@@ -271,18 +279,22 @@ class BaseExperiment:
                     print("Model loss contain Inf.")
 
                 # Backward pass with gradient scaling
+                print('scale loss and backward')
+
                 scaler.scale(loss).backward()
+                
+                print('scale loss and backward done')
 
                 # Log metrics
                 global_step += 1
                     
-                gradient_norm = compute_gradient_norms(model)
-                print('gradient norm:', gradient_norm, 'rank:', rank, 'loss', loss)
-                current_lr = optimizer.param_groups[0]['lr']
-                logger.log_metric("global_step", global_step, epoch=iteration)
-                logger.log_metric("loss_value", loss.item() * accumulation_steps, epoch=iteration)
-                logger.log_metric("lr_schedule", current_lr, epoch=iteration)
-                logger.log_metric("gradient_norm", gradient_norm, epoch=iteration)
+                # gradient_norm = compute_gradient_norms(model)
+                # print('gradient norm:', gradient_norm, 'rank:', rank, 'loss', loss)
+                # current_lr = optimizer.param_groups[0]['lr']
+                # logger.log_metric("global_step", global_step, epoch=iteration)
+                # logger.log_metric("loss_value", loss.item() * accumulation_steps, epoch=iteration)
+                # logger.log_metric("lr_schedule", current_lr, epoch=iteration)
+                # logger.log_metric("gradient_norm", gradient_norm, epoch=iteration)
 
                 if (batch_id + 1) % max(1, accumulation_steps) == 0 or (batch_id + 1) == len(trainloader):
                     scaler.step(optimizer)

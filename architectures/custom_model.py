@@ -9,6 +9,7 @@ class CustomModel(nn.Module):
         self.base_model = original_model
 
     def forward(self, x_1, x_2=None):
+
         logits_1 = self.base_model(x_1)
         if x_2 is not None:
             logits_2 = self.base_model(x_2)
