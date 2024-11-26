@@ -10,11 +10,7 @@ def squared_l2_norm(x):
 def l2_norm(x):
     return squared_l2_norm(x).sqrt()
 
-def trades_loss_v2(args,
-                model,
-                x_nat,
-                y,
-                optimizer,):
+def trades_loss_v2(args,model,x_nat,y, ):
     
     model.eval()
 

@@ -254,7 +254,7 @@ class BaseExperiment:
 
                 # with torch.autocast(device_type='cuda'):
                 print('comput loss')
-                loss_values, logits = get_loss(self.args, model, data, target, optimizer)
+                loss_values, logits = get_loss(self.args, model, data, target, )
                 print(' loss computed')
 
                 if torch.isnan(logits).any():

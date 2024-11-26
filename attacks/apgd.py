@@ -10,7 +10,7 @@ def check_oscillation(x, j, k, y5, k3=0.75):
           t += (x[j - counter5] > x[j - counter5 - 1]).float()
         return (t <= k * k3 * torch.ones_like(t)).float()
 
-def apgd_attack(model, x, y, args):
+def apgd_attack(args, model, x, y):
         
     # is_train=True
     # mixup=None
@@ -22,7 +22,7 @@ def apgd_attack(model, x, y, args):
     # y = y.reshape( (-1,1) )
     # print(y.shape)
 
-    assert not model.training
+    # assert not model.training
     device = x.device
     ndims = len(x.shape) - 1
 
