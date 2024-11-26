@@ -12,7 +12,7 @@ def check_oscillation(x, j, k, y5, k3=0.75):
           t += (x[j - counter5] > x[j - counter5 - 1]).float()
         return (t <= k * k3 * torch.ones_like(t)).float()
 
-def apgd_attack(args, model, x, y, optimizer):
+def apgd_attack(args, model, x, y):
         
     # is_train=True
     # mixup=None
@@ -179,11 +179,10 @@ def apgd_attack(args, model, x, y, optimizer):
 def apgd_loss(args, model, x_clean, y, optimizer):
 
     model.eval()
-    
     x_adv, acc, loss, best_adv = apgd_attack(args, model, x_clean, y, optimizer)
 
     model.train()
-    optimizer.zero_grad()
+    # optimizer.zero_grad()
     logits_adv = model(x_adv)
     loss_values = F.cross_entropy(logits_adv, y, reduction='none')
 
