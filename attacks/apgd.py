@@ -1,8 +1,6 @@
-import time
 import torch
 import torch.nn.functional as F
-import math
-from autoattack import autopgd_base
+
 
 
 ## parts of this code are from: https://github.com/nmndeep/revisiting-at/tree/main
@@ -12,7 +10,7 @@ def check_oscillation(x, j, k, y5, k3=0.75):
           t += (x[j - counter5] > x[j - counter5 - 1]).float()
         return (t <= k * k3 * torch.ones_like(t)).float()
 
-def apgd_attack(args, model, x, y):
+def apgd_attack(model, x, y, args):
         
     # is_train=True
     # mixup=None
@@ -88,6 +86,7 @@ def apgd_attack(args, model, x, y):
     for i in range(n_iter):
         ### gradient step
         if True: #with torch.no_grad()
+
             x_adv = x_adv.detach()
             grad2 = x_adv - x_adv_old
             x_adv_old = x_adv.clone()
@@ -103,7 +102,6 @@ def apgd_attack(args, model, x, y):
             x_adv = x_adv_1 + 0.
             #return x_adv
             
-
         ### get gradient
         if i < n_iter - 1:
             x_adv.requires_grad_()
@@ -117,7 +115,9 @@ def apgd_attack(args, model, x, y):
         #grad += torch.autograd.grad(loss, [x_adv])[0].detach()
         if i < n_iter - 1:
             # save one backward pass
-            grad = torch.autograd.grad(loss, [x_adv])[0].detach()
+            # grad = torch.autograd.grad(loss, [x_adv])[0].detach()
+            loss.backward()
+            grad = x_adv.grad.detach()
         #grad /= float(self.eot_iter)
         x_adv.detach_()
         loss_indiv.detach_()
@@ -174,18 +174,3 @@ def apgd_attack(args, model, x, y):
                   k = max(k - size_decr, n_iter_min)
                           
     return x_best, acc, loss_best, x_best_adv
-
-
-def apgd_loss(args, model, x_clean, y, optimizer):
-
-    model.eval()
-    x_adv, acc, loss, best_adv = apgd_attack(args, model, x_clean, y)
-
-    model.train()
-    # optimizer.zero_grad()
-    logits_adv = model(x_adv)
-    loss_values = F.cross_entropy(logits_adv, y, reduction='none')
-
-    return loss_values, logits_adv
-
-

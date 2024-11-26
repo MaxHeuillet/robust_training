@@ -63,7 +63,7 @@ def load_architecture(args, N, rank):
         state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) , map_location='cpu')
         model.load_state_dict(state_dict)
 
-    model = change_head(args,model,N)
+    # model = change_head(args,model,N)
 
     # model.forward = types.MethodType(custom_forward, model)
     # model.custom_forward = types.MethodType(custom_forward, model)
