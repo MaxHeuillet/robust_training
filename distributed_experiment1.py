@@ -176,14 +176,9 @@ class BaseExperiment:
 
         trainloader, valloader, _, train_sampler, val_sampler, _, N = self.initialize_loaders(rank)
 
-        # print('N', self.args.N, flush=True)
-        from functools import partial
-        from attacks import apgd_attack
-        attack = partial(apgd_attack, args=self.args)
-
         model = load_architecture(self.args, N, rank)
         optimizer = load_optimizer(self.args, model,)   
-        model = CustomModel(self.args, model, attack)
+        model = CustomModel(self.args, model, )
         # model.set_fine_tuning_strategy()
         # model._enable_all_gradients()
         model.to(rank)
