@@ -1,8 +1,6 @@
-import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch.autograd import Variable
-import torch.optim as optim
+from attacks import pgd_attack, apgd_attack
 
 
 def squared_l2_norm(x):
@@ -14,51 +12,18 @@ def l2_norm(x):
 
 def trades_loss_v2(args,
                 model,
-                x_natural,
+                x_nat,
                 y,
                 optimizer,):
     
     model.eval()
 
-    use_rs = False
-
-    if not use_rs:
-        x_adv = x_natural.clone()
-    else:
-        raise NotImplemented
-    
-    x_adv = x_adv.clamp(0., 1.)
-
-    if args.distance == 'Linf':
-        # print('init x_adv')
-        for _ in range(args.perturb_steps):
-
-            x_adv = x_adv.requires_grad_()
-            with torch.enable_grad():
-                #print('infer')
-                logits_adv = model(x_adv)
-                #print('kl loss')
-                # loss_kl = nn.KLDivLoss(reduction='sum')( F.log_softmax(logits_adv, dim=1), F.softmax(logits_nat, dim=1) )
-                loss = F.cross_entropy( logits_adv, y)
-
-            # grad = torch.autograd.grad(loss, [x_adv])[0]
-            loss.backward()
-            grad = x_adv.grad.detach()
-
-            # print('other operations')
-            x_adv = x_adv.detach() + args.step_size * torch.sign(grad.detach())
-            x_adv = torch.min(torch.max(x_adv, x_natural - args.epsilon), x_natural + args.epsilon).detach()
-            x_adv = torch.clamp(x_adv, 0.0, 1.0).detach()
-
-    else:
-        print('attack distance misspecified')
-        # x_adv = torch.clamp(x_adv, 0.0, 1.0).detach()
+    # x_adv = pgd_attack(args, model, x_nat, y)
+    x_adv = apgd_attack(args, model, x_nat, y)
 
     model.train()
 
-    # optimizer.zero_grad()
-
-    logits_nat, logits_adv = model(x_natural, x_adv)
+    logits_nat, logits_adv = model(x_nat, x_adv)
         
     clean_values = F.cross_entropy(logits_nat, y, reduction='none')
         
