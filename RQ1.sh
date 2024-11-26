@@ -3,13 +3,13 @@
 # Define variables
 seeds=1
 datas=( 'Flowers'  'CIFAR100' 'EuroSAT' 'Aircraft' 'CIFAR10'  ) #  
-losses=( 'APGD' 'TRADES_v2' ) 
+losses=( 'CLASSIC_AT' 'TRADES_v2' ) 
 sched='nosched'
 iterations=50
 aug='aug'
 exp='RQ1'
 
-init_lrs=( 0.00001 0.0001 0.0005 0.001   ) # 
+init_lrs=( 0.0001 ) # 0.00001 0.0005 0.001 
 pruning_ratios=( 0 )
 pruning_strategies=( 'random' )
 batch_strategies=('random')
