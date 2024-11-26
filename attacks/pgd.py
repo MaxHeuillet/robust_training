@@ -27,8 +27,7 @@ def pgd_attack(args, model, x_nat, y):
                 loss = F.cross_entropy( logits_adv, y)
 
             # grad = torch.autograd.grad(loss, [x_adv])[0]
-            loss.backward()
-            grad = x_adv.grad.detach()
+            grad = torch.autograd.grad(loss, x_adv, create_graph=False)[0]
 
             # print('other operations')
             x_adv = x_adv.detach() + args.step_size * torch.sign(grad.detach())
