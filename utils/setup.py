@@ -34,6 +34,7 @@ class Setup:
         self.exp_id = exp_id
         self.args = args
         self.current_experiment = current_experiment
+        self.cluster_name = os.environ.get('SLURM_CLUSTER_NAME', 'Unknown')
         
     def distributed_setup(self, world_size, rank):
 
@@ -66,11 +67,11 @@ class Setup:
         
     def train_batch_size(self):
 
-        cluster_name = os.environ.get('SLURM_CLUSTER_NAME', 'Unknown')
         
-        if cluster_name == 'narval':
+        
+        if self.cluster_name == 'narval':
             base = 2.5
-        elif cluster_name == 'beluga':
+        elif self.cluster_name == 'beluga':
             base = 1
         else:
             base = 1/8
@@ -90,12 +91,10 @@ class Setup:
         return int(batch_size)
         
     def test_batch_size(self,):
-
-        cluster_name = os.environ.get('SLURM_CLUSTER_NAME', 'Unknown')
         
-        if cluster_name == 'narval':
+        if self.cluster_name == 'narval':
             base = 2.5
-        elif cluster_name == 'beluga':
+        elif self.cluster_name == 'beluga':
             base = 1
         else:
             base = 1/8
