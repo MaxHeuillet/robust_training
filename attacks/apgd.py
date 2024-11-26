@@ -115,9 +115,8 @@ def apgd_attack(model, x, y, args):
         #grad += torch.autograd.grad(loss, [x_adv])[0].detach()
         if i < n_iter - 1:
             # save one backward pass
-            # grad = torch.autograd.grad(loss, [x_adv])[0].detach()
-            loss.backward()
-            grad = x_adv.grad.detach()
+            grad = torch.autograd.grad(loss, [x_adv])[0].detach()
+
         #grad /= float(self.eot_iter)
         x_adv.detach_()
         loss_indiv.detach_()
@@ -173,4 +172,4 @@ def apgd_attack(model, x, y, args):
                   counter3 = 0
                   k = max(k - size_decr, n_iter_min)
                           
-    return x_best, acc, loss_best, x_best_adv
+    return x_best.detach() #, acc, loss_best, x_best_adv
