@@ -79,13 +79,13 @@ class Setup:
         # Batch size recommendations based on the backbone
         if self.args.backbone in ['robust_wideresnet_28_10', 'wideresnet_28_10']:
             batch_size = 8 * base  # 8 = OK, 16 = NOT OK, 12 NOT OK
-        elif self.args.backbone in ['deit_small_patch16_224.fb_in1k', 'robust_deit_small_patch16_224']:
+        elif self.args.backbone in ['deit_small_patch16_224.fb_in1k', 'robust_deit_small_patch16_224', 'random_deit_small_patch16_224']:
             batch_size = 128 * base  # 16 = OK, 32 = OK, 64 = OK, 128 = OK, 256 = NOT OK
-        elif self.args.backbone in ['vit_base_patch16_224.augreg_in1k', 'vit_base_patch16_224.augreg_in21k', 'robust_vit_base_patch16_224']:
+        elif self.args.backbone in ['vit_base_patch16_224.augreg_in1k', 'vit_base_patch16_224.augreg_in21k', 'robust_vit_base_patch16_224', 'random_vit_base_patch16_224']:
             batch_size = 64 * base  # 16 = OK, 32 = OK, 64 = OK, 128 = NOT OK
-        elif self.args.backbone in ['convnext_base', 'convnext_base.fb_in22k', 'robust_convnext_base']:
+        elif self.args.backbone in ['convnext_base', 'convnext_base.fb_in22k', 'robust_convnext_base', 'random_convnext_base']:
             batch_size = 32 * base  # 16 = OK, 32 = OK, 64 = NOT OK
-        elif self.args.backbone in ['convnext_tiny_random', 'convnext_tiny', 'convnext_tiny.fb_in22k', 'robust_convnext_tiny']:
+        elif self.args.backbone in ['convnext_tiny_random', 'convnext_tiny', 'convnext_tiny.fb_in22k', 'robust_convnext_tiny', 'random_convnext_tiny']:
             batch_size = 64 * base  # 16 = OK, 32 = OK, 64 = OK, 128 = NOT OK
 
         return int(batch_size)
@@ -102,13 +102,13 @@ class Setup:
         # Batch size recommendations based on the backbone
         if self.args.backbone in ['robust_wideresnet_28_10', 'wideresnet_28_10']:
             batch_size = 4 * base  # 8 = NOT OK,
-        elif self.args.backbone in ['deit_small_patch16_224.fb_in1k', 'robust_deit_small_patch16_224']:
+        elif self.args.backbone in ['deit_small_patch16_224.fb_in1k', 'robust_deit_small_patch16_224', 'random_deit_small_patch16_224']:
             batch_size = 64 * base  # 16 = OK, 32 = OK, 64 = OK, 128 = NOT OK, 
-        elif self.args.backbone in ['vit_base_patch16_224.augreg_in1k', 'vit_base_patch16_224.augreg_in21k', 'robust_vit_base_patch16_224']:
+        elif self.args.backbone in ['vit_base_patch16_224.augreg_in1k', 'vit_base_patch16_224.augreg_in21k', 'robust_vit_base_patch16_224', 'random_vit_base_patch16_224']:
             batch_size = 32 * base  # 16 = OK, 32 = OK, 64 = NOT OK,
-        elif self.args.backbone in ['convnext_base', 'convnext_base.fb_in22k', 'robust_convnext_base']:
+        elif self.args.backbone in ['convnext_base', 'convnext_base.fb_in22k', 'robust_convnext_base', 'random_convnext_base']:
             batch_size = 16 * base  # 16 = OK, 32 = NOT OK,
-        elif self.args.backbone in ['convnext_tiny_random', 'convnext_tiny', 'convnext_tiny.fb_in22k', 'robust_convnext_tiny']:
+        elif self.args.backbone in ['convnext_tiny_random', 'convnext_tiny', 'convnext_tiny.fb_in22k', 'robust_convnext_tiny', 'random_convnext_tiny']:
             batch_size = 32 * base  # 16 = OK, 32 = OK, 64 = NOT OK,
         
         return int(batch_size)
