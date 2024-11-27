@@ -2,7 +2,7 @@
 data/
 __pycache__/
 models/__pycache__/
-
+trained_model_*.pt
 # Ignore everything in the state_dicts folder
 state_dicts/*
 models/*

@@ -93,7 +93,7 @@ class Setup:
     def test_batch_size(self,):
         
         if self.cluster_name == 'narval':
-            base = 9/4
+            base = 2.5
         elif self.cluster_name == 'beluga':
             base = 1
         else:
