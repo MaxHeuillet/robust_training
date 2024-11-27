@@ -35,31 +35,41 @@ class Setup:
         self.args = args
         self.current_experiment = current_experiment
         self.cluster_name = os.environ.get('SLURM_CLUSTER_NAME', 'Unknown')
-        
-    def distributed_setup(self, world_size, rank):
 
-        # os.environ['NCCL_DEBUG'] = 'INFO'  # or 'TRACE' for more detailed logs
-        # os.environ['NCCL_DEBUG_SUBSYS'] = 'ALL'
-        # os.environ['NCCL_BLOCKING_WAIT'] = '1'
-
+    def distributed_setup(self):
+        # Initialize the distributed environment
         print('torch', torch.__version__)
         print('cuda', torch.version.cuda)
         print('cudnn', torch.backends.cudnn.version())
-        
-        #Initialize the distributed environment.
-        print( ' world size {}, rank {}'.format(world_size,rank) )
-        print('set up the master adress and port')
-        os.environ['MASTER_ADDR'] = 'localhost'
-        os.environ['MASTER_PORT'] = '12354'
 
-        #Set environment variables for offline usage of Hugging Face libraries
+        # Set up the master address and port if not set by Ray Tune
+        if 'MASTER_ADDR' not in os.environ:
+            os.environ['MASTER_ADDR'] = 'localhost'
+        if 'MASTER_PORT' not in os.environ:
+            os.environ['MASTER_PORT'] = '12354'  # Or any available port
+
+        # Set environment variables for offline usage of Hugging Face libraries
         os.environ['HF_DATASETS_OFFLINE'] = '1'
         os.environ['TRANSFORMERS_OFFLINE'] = '1'
-        
-        #Set up the local GPU for this process
-        torch.cuda.set_device(rank)
-        dist.init_process_group("nccl", rank=rank, world_size=world_size)
+
+        # Initialize the process group
+        dist.init_process_group(
+            backend='nccl',  # Use 'gloo' if 'nccl' is not available
+            init_method='env://'
+        )
         print('init process group ok')
+
+        # Retrieve rank and world size
+        rank = dist.get_rank()
+        world_size = dist.get_world_size()
+        print(f'World size: {world_size}, Rank: {rank}')
+
+        # Set up the local GPU for this process
+        torch.cuda.set_device(rank)
+
+        return rank, world_size
+            
+    
 
     def cleanup(self,):
         dist.destroy_process_group()
