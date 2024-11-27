@@ -95,7 +95,7 @@ class BaseExperiment:
     def initialize_logger(self, rank):
 
         logger = Experiment(api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
-                                project_name="robust_training_{}_1".format(self.setup.cluster_name),
+                                project_name="robust_training_{}_2".format(self.setup.cluster_name),
                                 workspace="maxheuillet",
                                 auto_metric_logging=False,
                                 auto_output_logging=False)
