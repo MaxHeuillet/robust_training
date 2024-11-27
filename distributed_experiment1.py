@@ -285,16 +285,19 @@ class BaseExperiment:
 
                 # Log metrics
                 global_step += 1
-                    
-                gradient_norm = compute_gradient_norms(model)
-                print('gradient norm:', gradient_norm, 'rank:', rank, 'loss', loss)
+
+                # print('gradient norm:', gradient_norm, 'rank:', rank, 'loss', loss)
                 current_lr = optimizer.param_groups[0]['lr']
                 logger.log_metric("global_step", global_step, epoch=iteration)
                 logger.log_metric("loss_value", loss.item() * accumulation_steps, epoch=iteration)
                 logger.log_metric("lr_schedule", current_lr, epoch=iteration)
-                logger.log_metric("gradient_norm", gradient_norm, epoch=iteration)
 
                 if (batch_id + 1) % max(1, accumulation_steps) == 0 or (batch_id + 1) == len(trainloader):
+
+                    scaler.unscale_(optimizer)
+                    gradient_norm = compute_gradient_norms(model)
+                    logger.log_metric("gradient_norm", gradient_norm, epoch=iteration)
+
                     scaler.step(optimizer)
                     scaler.update()
                     optimizer.zero_grad() # Clear gradients after optimizer step

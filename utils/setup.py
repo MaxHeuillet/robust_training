@@ -74,7 +74,7 @@ class Setup:
         elif self.cluster_name == 'beluga':
             base = 1
         else:
-            base = 1/8
+            return 8
 
         # Batch size recommendations based on the backbone
         if self.args.backbone in ['robust_wideresnet_28_10', 'wideresnet_28_10']:
@@ -87,6 +87,7 @@ class Setup:
             batch_size = 32 * base  # 16 = OK, 32 = OK, 64 = NOT OK
         elif self.args.backbone in ['convnext_tiny_random', 'convnext_tiny', 'convnext_tiny.fb_in22k', 'robust_convnext_tiny', 'random_convnext_tiny']:
             batch_size = 64 * base  # 16 = OK, 32 = OK, 64 = OK, 128 = NOT OK
+  
 
         return int(batch_size)
         
@@ -97,7 +98,7 @@ class Setup:
         elif self.cluster_name == 'beluga':
             base = 1
         else:
-            base = 1/8
+            return 8
 
         # Batch size recommendations based on the backbone
         if self.args.backbone in ['robust_wideresnet_28_10', 'wideresnet_28_10']:
