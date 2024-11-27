@@ -379,8 +379,8 @@ class BaseExperiment:
         _, _, test_dataset, N, _, transform = load_data(self.args) 
         print('loaded data', flush=True) 
 
-        # test_dataset = IndexedDataset(self.args, test_dataset, transform, N,)
-        val_dataset = IndexedDataset(self.args, val_dataset, transform, N,)
+        test_dataset = IndexedDataset(self.args, test_dataset, transform, N,)
+        # val_dataset = IndexedDataset(self.args, val_dataset, transform, N,)
         print('indexed data', flush=True) 
 
         test_sampler = DistributedSampler(test_dataset, 
