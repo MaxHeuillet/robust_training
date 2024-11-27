@@ -70,7 +70,7 @@ class Setup:
         
         
         if self.cluster_name == 'narval':
-            base = 2.5
+            base = 9/4
         elif self.cluster_name == 'beluga':
             base = 1
         else:
