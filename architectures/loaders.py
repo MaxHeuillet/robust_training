@@ -66,25 +66,25 @@ def load_architecture(args, N, rank):
         model = timm.create_model(equivalencies[args.backbone], pretrained=False)
         
         if 'random' not in args.backbone:
-            state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) , map_location='cpu')
+            state_dict = torch.load( args.statedict_dir + '/{}.pt'.format(args.backbone) , map_location='cpu')
             model.load_state_dict(state_dict)
 
     elif 'deit' in args.backbone:
         model = timm.create_model(equivalencies[args.backbone], pretrained=False)
         if 'random' not in args.backbone:
-            state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) , map_location='cpu')
+            state_dict = torch.load( args.statedict_dir + '/{}.pt'.format(args.backbone) , map_location='cpu')
             model.load_state_dict(state_dict)
 
     elif 'vit' in args.backbone:
         model = timm.create_model(equivalencies[args.backbone], pretrained=False)
         if 'random' not in args.backbone:
-            state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) , map_location='cpu')
+            state_dict = torch.load( args.statedict_dir + '/{}.pt'.format(args.backbone) , map_location='cpu')
             model.load_state_dict(state_dict)
 
     elif 'wideresnet' in args.backbone:
         model = wideresnet(depth = 28, widen = 10, act_fn = 'swish', num_classes = 200)
         if 'random' not in args.backbone:
-            state_dict = torch.load('./state_dicts/{}.pt'.format(args.backbone) , map_location='cpu')
+            state_dict = torch.load( args.statedict_dir + '/{}.pt'.format(args.backbone) , map_location='cpu')
             model.load_state_dict(state_dict)
 
     # model = change_head(args,model,N)

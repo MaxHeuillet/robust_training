@@ -40,6 +40,13 @@ from torchvision.transforms import v2
 from ray import tune
 from ray.tune.schedulers import ASHAScheduler
 
+from ray import tune
+from ray.air.config import RunConfig
+from ray.tune.tuner import Tuner
+from ray.tune.schedulers import ASHAScheduler
+from ray.train.torch import TorchTrainer
+from ray.train import ScalingConfig
+
 def get_unique_id(args):
 
     args_string = json.dumps(args, sort_keys=True)
@@ -128,7 +135,7 @@ class BaseExperiment:
 
         train_dataset, val_dataset, test_dataset, N, train_transform, transform = load_data(self.args) 
         
-        train_dataset = WeightedDataset(self.args, train_dataset, train_transform, N, prune_ratio = self.args.pruning_ratio, )
+        train_dataset = IndexedDataset(self.args, train_dataset, train_transform, N, ) #prune_ratio = self.args.pruning_ratio, )
         val_dataset = IndexedDataset(self.args, val_dataset, transform,  N,) 
         test_dataset = IndexedDataset(self.args, test_dataset, transform,  N,) 
 
@@ -168,18 +175,28 @@ class BaseExperiment:
         return trainloader, valloader, testloader, train_sampler, val_sampler, test_sampler, N
 
     def training(self, config, ):
+        from ray.train.torch import TorchTrainer, get_device, get_devices
 
-        print('set up the distributed setup,', rank, flush=True)
-        world_size, rank = self.setup.distributed_setup()
-        
-        #logger = self.initialize_logger(rank)
+        # device = get_device()
+        # self.world_size = len( get_devices() )
+        # rank = dist.get_rank()
+        # print(rank)
 
-        print('initialize dataset', rank,flush=True) 
+        # self.setup.distributed_setup(world_size, rank)
+
+        # Get rank and world size from Ray
+        from ray import train
+        rank = train.get_context().get_world_rank()
+        world_size = train.get_context().get_world_size()
+        device = train.torch.get_device()
+
+
+        print('initialize dataset', rank, flush=True) 
 
         trainloader, valloader, _, train_sampler, val_sampler, _, N = self.initialize_loaders(rank)
 
         model = load_architecture(self.args, N, rank)
-        optimizer = load_optimizer(self.args, model,)   
+        optimizer = load_optimizer(self.args, config, model,)   
         
         model = CustomModel(self.args, model, )
         # model.set_fine_tuning_strategy()
@@ -195,30 +212,77 @@ class BaseExperiment:
         #self.validate(valloader, model, experiment, 0, rank)
         
         print('start the loop')
-        scheduler = CosineLR( optimizer, max_lr=self.args.init_lr, epochs=int(self.args.iterations) )
+        scheduler = CosineLR( optimizer, max_lr=config['lr'], epochs=int(self.args.iterations) )
 
         self.fit(model, optimizer, scheduler, trainloader, valloader, train_sampler, val_sampler, N, rank,)
 
         dist.barrier() 
 
-        if rank == 0:
-            # Access the underlying model
-            model_to_save = model.module
-            # print(model_to_save)
+        # if rank == 0:
+        #     # Access the underlying model
+        #     model_to_save = model.module
+        #     # print(model_to_save)
             
-            # Move the model to CPU
-            model_to_save = model_to_save.cpu()
-            # print(model_to_save)
+        #     # Move the model to CPU
+        #     model_to_save = model_to_save.cpu()
+        #     # print(model_to_save)
 
-            torch.save(model_to_save.state_dict(), './state_dicts/trained_model_{}.pt'.format(self.exp_id))
-            print('Model saved by rank 0')
+        #     torch.save(model_to_save.state_dict(), './state_dicts/trained_model_{}.pt'.format(self.exp_id))
+        #     print('Model saved by rank 0')
 
-        dist.barrier()
+        # dist.barrier()
 
         print('start the loop 3')
 
         # logger.end()
         self.setup.cleanup() 
+
+    def hyperparameter_optimization(self, ):
+        # Define the hyperparameter search space
+        config = {
+            "lr": tune.loguniform(1e-5, 1e-1),
+            "weight_decay": tune.loguniform(1e-6, 1e-2),
+            "epochs": 5  # Fixed number of epochs for each trial
+        }
+
+        # Configure the scheduler WITHOUT metric and mode
+        scheduler = ASHAScheduler(
+            max_t=10,
+            grace_period=1,
+            reduction_factor=2
+        )
+
+        # Determine the number of workers and GPU usage
+        num_workers = torch.cuda.device_count()
+        use_gpu = num_workers > 0
+
+        # Initialize the TorchTrainer
+        trainer = TorchTrainer(
+            train_loop_per_worker=self.training,
+            scaling_config=ScalingConfig(num_workers=num_workers, use_gpu=use_gpu),
+        )
+
+        # Set up the Tuner with metric and mode specified
+        tuner = Tuner(
+            trainer,
+            param_space={"train_loop_config": config},
+            tune_config=tune.TuneConfig(
+                metric="loss",  # Specify the metric to optimize
+                mode="min",     # Specify the optimization direction
+                scheduler=scheduler,
+                num_samples=10,
+            ),
+            run_config=RunConfig(
+                name="training_experiment",
+            ),
+        )
+
+        # Execute the hyperparameter search
+        result_grid = tuner.fit()
+
+        # Retrieve the best result
+        best_result = result_grid.get_best_result()
+        print("Best hyperparameters found were: ", best_result.config)
         
     def fit(self, model, optimizer, scheduler, trainloader, valloader, train_sampler, val_sampler, N, rank, logger=None):
 
@@ -280,7 +344,7 @@ class BaseExperiment:
             val_loss, _, _ = self.validate(valloader, model, logger, iteration+1, rank)
 
             if rank == 0:
-                tune.report(loss=val_loss)
+                tune.report({"loss": val_loss})
 
             # model.module.update_fine_tuning_strategy(iteration)
                 
@@ -289,63 +353,9 @@ class BaseExperiment:
   
             print(f'Rank {rank}, Iteration {iteration},', flush=True) 
 
-    def hyperparameter_optimization(self,):
 
-        from ray.train.torch import TorchTrainer
-        from ray.train import ScalingConfig
 
-        config = {
-        "lr1": tune.loguniform(1e-5, 1e-1),  # Learning rate for the backbone
-        "lr2": tune.loguniform(1e-5, 1e-1),  # Learning rate for the classifier head
-        "weight_decay": tune.loguniform(1e-6, 1e-2),
-        "epochs": 5  # Fixed number of epochs for each trial
-        }
-
-        # Define ASHA Scheduler
-        scheduler = ASHAScheduler(
-            metric="loss",  # Metric to optimize
-            mode="min",     # Direction to optimize (minimize loss)
-            max_t=5,        # Maximum number of epochs
-            grace_period=1, # Minimum number of epochs before early stopping
-            reduction_factor=2  # Aggressiveness of early stopping
-        )
-
-        # Define the training function for TorchTrainer
-        def train_func(config):
-            # Call the training method with the configuration
-            self.training(config)
-
-        # Configure the TorchTrainer using the training function
-        trainer = TorchTrainer(
-            train_loop_per_worker=train_func,
-            train_loop_config={},  # No direct config for TorchTrainer (managed by Ray Tune)
-            scaling_config=ScalingConfig(
-                num_workers=torch.cuda.device_count(),  # Number of workers (equals the number of GPUs)
-                use_gpu=True    # Use GPUs for training
-            )
-        )
-
-        # Define the Ray Tune run
-        analysis = tune.run(
-            tune.with_resources(
-                trainer.as_trainable(),
-                resources={"cpu": 6, "gpu": 1}  # Per trial resource allocation
-            ),
-            config=config,        # Hyperparameter search space
-            name=self.exp_id,     # Experiment ID
-            num_samples=10,       # Number of hyperparameter samples
-            scheduler=scheduler,  # Early stopping scheduler
-            stop={"time_total_s": 3600}  # Total time allocated for optimization
-        )
-
-        # Retrieve and print the best hyperparameters
-        best_config = analysis.get_best_config(metric="loss", mode="min")
-        print("Best hyperparameters found: ", best_config)
-
-        # Optionally, return the best configuration for further use
-        return best_config
-
-        
+            
 
 
     def validate(self, valloader, model, logger, iteration, rank):

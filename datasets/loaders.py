@@ -32,11 +32,13 @@ def load_data(args):
                                     transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ),])
         
     if args.dataset == 'CIFAR10':
+
+        print('hey')
+        print(f"Current working directory: {os.getcwd()}")
         
         N = 10
         
         dataset = datasets.CIFAR10(root=args.data_dir, train=True, download=False, )
-
         train_size = int(0.95 * len(dataset))
         val_size = len(dataset) - train_size
         print("train size", train_size, "val size", val_size)
