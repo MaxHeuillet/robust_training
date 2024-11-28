@@ -254,14 +254,9 @@ class BaseExperiment:
 
         from ray.tune.search.bayesopt import BayesOptSearch
         # Set up the Bayesian optimization search algorithm
-        bayesopt = BayesOptSearch(
-        metric="loss",  # Metric to optimize
-        mode="min",     # Optimization direction
-        utility_kwargs={
-            "kind": "ucb",  # Upper Confidence Bound
-            "kappa": 2.5,   # Exploration/exploitation tradeoff
-            "xi": 0.0       # Minimum improvement threshold
-        }, )
+        scheduler = BayesOptSearch(
+            metric="loss",  # Metric to optimize
+            mode="min",      ) # Optimization direction
 
         # Determine the number of workers and GPU usage
         num_gpus = torch.cuda.device_count()
@@ -277,10 +272,7 @@ class BaseExperiment:
                 resources_per_worker={"CPU": 4, "GPU": 1},  # Resources per worker
             ),
         )
-
-
     
-
         # Set up the Tuner with metric and mode specified
         tuner = Tuner(
             trainer,
