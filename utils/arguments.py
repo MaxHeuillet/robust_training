@@ -83,10 +83,12 @@ def get_args2():
 
     if "calculquebec" in os.uname().nodename:  # Check for a substring that is unique to the cluster
         data_dir = '~/scratch/data'
-        statedict_dir = "./state_dicts"
+        # statedict_dir = "./state_dicts"
+        statedict_dir = "~/projects/def-adurand/mheuill/robust_training/state_dicts"
     elif "calcul.quebec" in os.uname().nodename:
         data_dir = '~/scratch/data'
-        statedict_dir = "./state_dicts"
+        # statedict_dir = "./state_dicts"
+        statedict_dir = "~/projects/def-adurand/mheuill/robust_training/state_dicts"
     else:
         data_dir = '/home/mheuillet/Desktop/robust_training/data' #'./data'
         statedict_dir = "/home/mheuillet/Desktop/robust_training/state_dicts"
