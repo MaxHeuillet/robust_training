@@ -255,7 +255,7 @@ class BaseExperiment:
         from ray.tune.search.bayesopt import BayesOptSearch
         # Set up the Bayesian optimization search algorithm
         scheduler = BayesOptSearch(
-            metric="loss",  # Metric to optimize
+            metric="mean_loss",  # Metric to optimize
             mode="min",      ) # Optimization direction
 
         # Determine the number of workers and GPU usage
