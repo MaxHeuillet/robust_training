@@ -252,23 +252,23 @@ class BaseExperiment:
             reduction_factor=2
         )
 
-        # Detect resources
-        total_cpus = 40  # Replace with the actual number of available CPUs on your system
-        total_gpus = torch.cuda.device_count()  # Detect available GPUs
+        # Determine the number of workers and GPU usage
+        num_gpus = torch.cuda.device_count()
+        print(num_gpus)
 
-        # Allocate resources per worker
-        cpus_per_worker = max(1, total_cpus // total_gpus)  # Distribute CPUs per GPU
-        num_workers = total_gpus  # Use one worker per GPU
-
+        # Initialize the TorchTrainer
         # Initialize the TorchTrainer
         trainer = TorchTrainer(
             train_loop_per_worker=self.training,
             scaling_config=ScalingConfig(
-                num_workers=num_workers,
-                use_gpu=True,
-                resources_per_worker={"CPU": cpus_per_worker, "GPU": 1},
+                num_workers=1,  # Number of workers
+                use_gpu=True,  # Use GPUs
+                resources_per_worker={"CPU": 4, "GPU": 1},  # Resources per worker
             ),
         )
+
+
+    
 
         # Set up the Tuner with metric and mode specified
         tuner = Tuner(
