@@ -1,0 +1,29 @@
+
+
+backbone: "convnext_tiny"  # load backbone
+dataset: "Flowers"  # dataset (default: cifar10)
+seed: 0  # random seed
+
+training:
+    loss_function: "TRADES_v2"  # the loss function
+    ft_type: "full_fine_tuning"  # fine tuning type
+    iterations: 50  # number of total iterations to run
+
+directories:
+    log_dir: None  # The directory used to save logs
+    statedict_dir: None  # The directory used to save state dics
+    data_dir: None  # Directory for data storage
+
+# arguments for TRADES loss function
+attack:
+  epsilon: 0.015686275  # epsilon of trades (4/255)
+  step_size: 0.007843137  # step size of trades (2/255)
+  perturb_steps: 10  # number of steps of trades
+  distance: "Linf"  # distance of trades
+
+trades:
+    beta: 1.0  # beta of trades
+
+# arguments for diffusion augmented learning
+exp: ""  # the experiment type
+
