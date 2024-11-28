@@ -246,11 +246,22 @@ class BaseExperiment:
         }
 
         # Configure the scheduler WITHOUT metric and mode
-        scheduler = ASHAScheduler(
-            max_t=10,
-            grace_period=1,
-            reduction_factor=2
-        )
+        # scheduler = ASHAScheduler(
+        #     max_t=10,
+        #     grace_period=1,
+        #     reduction_factor=2
+        # )
+
+        from ray.tune.search.bayesopt import BayesOptSearch
+        # Set up the Bayesian optimization search algorithm
+        bayesopt = BayesOptSearch(
+        metric="loss",  # Metric to optimize
+        mode="min",     # Optimization direction
+        utility_kwargs={
+            "kind": "ucb",  # Upper Confidence Bound
+            "kappa": 2.5,   # Exploration/exploitation tradeoff
+            "xi": 0.0       # Minimum improvement threshold
+        }, )
 
         # Determine the number of workers and GPU usage
         num_gpus = torch.cuda.device_count()
