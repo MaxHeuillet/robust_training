@@ -3,6 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.autograd import Variable
 import torch.optim as optim
+from attacks import pgd_attack, apgd_attack
 
 
 def squared_l2_norm(x):
@@ -16,37 +17,15 @@ def l2_norm(x):
 
 def trades_loss_eval(args,
                 model,
-                x_natural,
+                x_nat,
                 y,):
     
     step_size = args.epsilon / 4
     model.eval()
-    x_adv = x_natural.detach() + 0.001 * torch.randn(x_natural.shape, device=x_natural.device).detach()
+    
+    x_adv = apgd_attack(args, model, x_nat, y)
 
-    # print(x_natural.shape, x_adv.shape, y.shape)
-
-    if args.distance == 'Linf':
-        # print('init x_adv')
-        for _ in range(args.perturb_steps):
-
-            x_adv = x_adv.requires_grad_()
-            with torch.enable_grad():
-                #print('infer')
-                logits_adv = model(x_adv)
-                print(logits_adv.shape, y.shape)
-                loss = F.cross_entropy( logits_adv, y)
-
-
-            grad = torch.autograd.grad(loss, [x_adv])[0]
-            # print('other operations')
-            x_adv = x_adv.detach() + step_size * torch.sign(grad.detach())
-            x_adv = torch.min(torch.max(x_adv, x_natural - args.epsilon), x_natural + args.epsilon).detach()
-            x_adv = torch.clamp(x_adv, 0.0, 1.0).detach()
-    else:
-        print('attack distance misspecified')
-        # x_adv = torch.clamp(x_adv, 0.0, 1.0).detach()
-
-    logits_nat, logits_adv = model(x_natural, x_adv)
+    logits_nat, logits_adv = model(x_nat, x_adv)
     # logits_nat = model(x_natural)    
     # logits_adv = model(x_adv)
     # logits_nat, logits_adv = model(x_natural, x_adv)
