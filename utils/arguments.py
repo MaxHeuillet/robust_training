@@ -121,8 +121,9 @@ def get_args2():
     parser.add_argument("--epsilon", default=4/255, type=float, help="epsilon of trades") #8/255
     parser.add_argument("--step_size", default=2/255, type=float, help="step size of trades")
     parser.add_argument("--perturb_steps", default=10, type=int, help="number of steps of trades")
-    parser.add_argument("--beta", default=1.0, type=float, help="beta of trades")
     parser.add_argument("--distance", default='Linf', type=str, help="distance of trades")
+    parser.add_argument("--beta", default=1.0, type=float, help="beta of trades")
+    
 
     ### arguments for diffusion augmented learning:
     parser.add_argument("--exp", default='', type=str, help="the experiment type")
