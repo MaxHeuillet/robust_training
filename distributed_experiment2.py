@@ -426,10 +426,12 @@ if __name__ == "__main__":
 
     experiment = BaseExperiment(args, world_size)
 
-    experiment.setup.pre_training_log()
+    # experiment.setup.pre_training_log()
+
+    experiment.hyperparameter_optimization()
     
-    mp.spawn(experiment.training, nprocs=experiment.world_size, join=True)
+    # mp.spawn(experiment.training, nprocs=experiment.world_size, join=True)
     
-    experiment.setup.post_training_log()
+    # experiment.setup.post_training_log()
     
-    experiment.launch_test()
+    # experiment.launch_test()
