@@ -82,20 +82,24 @@ def get_args2():
     parser = argparse.ArgumentParser(allow_abbrev=False)
 
     if "calculquebec" in os.uname().nodename:  # Check for a substring that is unique to the cluster
-        default_data_dir = '~/scratch/data'
+        data_dir = '~/scratch/data'
+        statedict_dir = "./state_dicts"
     elif "calcul.quebec" in os.uname().nodename:
-        default_data_dir = '~/scratch/data'
+        data_dir = '~/scratch/data'
+        statedict_dir = "./state_dicts"
     else:
-        default_data_dir = './data'
+        data_dir = '/home/mheuillet/Desktop/robust_training/data' #'./data'
+        statedict_dir = "/home/mheuillet/Desktop/robust_training/state_dicts"
+
 
     # General options
     # parser.add_argument("--arch", default="resnet50",type=str, help="model architecture")
     # parser.add_argument("--pre_trained", type=str, help="load pretrained non robust model")
-    parser.add_argument("--backbone", default = 'none', type=str, help="load backbone")
+    parser.add_argument("--backbone", default = 'convnext_tiny', type=str, help="load backbone")
     parser.add_argument("--ft_type", default = 'none', type=str, help="fine tuning type")
     parser.add_argument("--freeze_epochs", default=10, type=int, help="number of preliminary epochs where we only do linear probing")
 
-    parser.add_argument('--dataset', default='CIFAR10', type=str, help='dataset: ' + ' (default: cifar10)')
+    parser.add_argument('--dataset', default='Flowers', type=str, help='dataset: ' + ' (default: cifar10)')
     
     parser.add_argument("--iterations", default=10, type=int, metavar="N", help="number of total iterations to run")
 
@@ -104,9 +108,8 @@ def get_args2():
     parser.add_argument('--seed', default=0, type=int, help="random seed")
 
     parser.add_argument("--log_dir", default="./logs", type=str, help="The directory used to save logs")
-    parser.add_argument("--statedict_dir", default="./state_dicts", type=str, help="The directory used to save state dics")
-    parser.add_argument('--data_dir', default=default_data_dir,type=str,)
-    print(default_data_dir)
+    parser.add_argument("--statedict_dir", default=statedict_dir, type=str, help="The directory used to save state dics")
+    parser.add_argument('--data_dir', default=data_dir,type=str,)
 
     parser.add_argument('--task', default='train',type=str, choices=['train', 'eval'], help="wether to train or to evaluate the model")
 
