@@ -34,7 +34,6 @@ from datasets import WeightedDataset, IndexedDataset, load_data
 from architectures import load_architecture, CustomModel
 from losses import get_loss, get_eval_loss
 from utils import get_args2, get_exp_name, set_seeds, load_optimizer
-from cosine import CosineLR
 from torchvision.transforms import v2
 
 from ray import tune
@@ -212,9 +211,10 @@ class BaseExperiment:
         #self.validate(valloader, model, experiment, 0, rank)
         
         print('start the loop')
-        scheduler = CosineLR( optimizer, max_lr=config['lr'], epochs=int(self.args.iterations) )
+        from torch.optim.lr_scheduler import CosineAnnealingLR
+        scheduler = CosineAnnealingLR( optimizer, T_max=config['epochs'], eta_min=0 )
 
-        self.fit(model, optimizer, scheduler, trainloader, valloader, train_sampler, val_sampler, N, rank,)
+        self.fit(config, model, optimizer, scheduler, trainloader, valloader, train_sampler, val_sampler, N, rank,)
 
         dist.barrier() 
 
@@ -240,7 +240,8 @@ class BaseExperiment:
     def hyperparameter_optimization(self, ):
         # Define the hyperparameter search space
         config = {
-            "lr": tune.loguniform(1e-5, 1e-1),
+            "lr1": tune.loguniform(1e-5, 1e-1),
+            "lr2": tune.loguniform(1e-5, 1e-1),
             "weight_decay": tune.loguniform(1e-6, 1e-2),
             "epochs": 5  # Fixed number of epochs for each trial
         }
@@ -284,7 +285,7 @@ class BaseExperiment:
         best_result = result_grid.get_best_result()
         print("Best hyperparameters found were: ", best_result.config)
         
-    def fit(self, model, optimizer, scheduler, trainloader, valloader, train_sampler, val_sampler, N, rank, logger=None):
+    def fit(self, config, model, optimizer, scheduler, trainloader, valloader, train_sampler, val_sampler, N, rank, logger=None):
 
         # Gradient accumulation:
         effective_batch_size = 1024
@@ -301,7 +302,7 @@ class BaseExperiment:
         # mixup = v2.MixUp(num_classes=N)
         # cutmix_or_mixup = v2.RandomChoice([cutmix, mixup])
         
-        for iteration in range(self.args.iterations):
+        for iteration in range(config['epochs']):
 
             train_sampler.set_epoch(iteration)
             val_sampler.set_epoch(iteration)
@@ -340,16 +341,23 @@ class BaseExperiment:
                     scaler.step(optimizer)
                     scaler.update()
                     optimizer.zero_grad() # Clear gradients after optimizer step
+                
+                break
 
             val_loss, _, _ = self.validate(valloader, model, logger, iteration+1, rank)
 
             if rank == 0:
-                tune.report({"loss": val_loss})
+                from ray.air import session
+                session.report({"loss": val_loss})
+                
 
             # model.module.update_fine_tuning_strategy(iteration)
                 
             if scheduler is not None:
                 scheduler.step()
+                for i, param_group in enumerate(optimizer.param_groups):
+                    print(f"Group {i}: Learning Rate = {param_group['lr']}, Parameters Count = {len(param_group['params'])}")
+
   
             print(f'Rank {rank}, Iteration {iteration},', flush=True) 
 
@@ -362,9 +370,10 @@ class BaseExperiment:
         total_loss, total_correct_nat, total_correct_adv, total_examples = self.validation_metrics(valloader, model, rank)
         dist.barrier() 
         avg_loss, clean_accuracy, robust_accuracy  = self.sync_validation_results(total_loss, total_correct_nat, total_correct_adv, total_examples, rank)
-        logger.log_metric("val_loss", avg_loss, epoch=iteration)
-        logger.log_metric("val_clean_accuracy", clean_accuracy, epoch=iteration)
-        logger.log_metric("val_robust_accuracy", robust_accuracy, epoch=iteration)
+        if logger is not None:
+            logger.log_metric("val_loss", avg_loss, epoch=iteration)
+            logger.log_metric("val_clean_accuracy", clean_accuracy, epoch=iteration)
+            logger.log_metric("val_robust_accuracy", robust_accuracy, epoch=iteration)
         return avg_loss, clean_accuracy, robust_accuracy
     
     def sync_validation_results(self, total_loss, total_correct_nat, total_correct_adv, total_examples, rank):
@@ -398,23 +407,25 @@ class BaseExperiment:
 
         for batch_id, batch in enumerate( valloader ):
 
-                data, target, idxs = batch
+            data, target, idxs = batch
 
-                data, target = data.to(rank), target.to(rank) 
-                # print('shape validation batch', data.shape)
+            data, target = data.to(rank), target.to(rank) 
+            # print('shape validation batch', data.shape)
                 
-                with torch.autocast(device_type='cuda'):
-                    loss_values, _, _, logits_nat, logits_adv = get_eval_loss(self.args, model, data, target, )
+            with torch.autocast(device_type='cuda'):
+                loss_values, _, _, logits_nat, logits_adv = get_eval_loss(self.args, model, data, target, )
 
-                total_loss += loss_values.sum().item()
-                # Compute predictions
-                preds_nat = torch.argmax(logits_nat, dim=1)  # Predicted classes for natural examples
-                preds_adv = torch.argmax(logits_adv, dim=1)  # Predicted classes for adversarial examples
+            total_loss += loss_values.sum().item()
+            # Compute predictions
+            preds_nat = torch.argmax(logits_nat, dim=1)  # Predicted classes for natural examples
+            preds_adv = torch.argmax(logits_adv, dim=1)  # Predicted classes for adversarial examples
 
-                # Accumulate correct predictions
-                total_correct_nat += (preds_nat == target).sum().item()
-                total_correct_adv += (preds_adv == target).sum().item()
-                total_examples += target.size(0)
+            # Accumulate correct predictions
+            total_correct_nat += (preds_nat == target).sum().item()
+            total_correct_adv += (preds_adv == target).sum().item()
+            total_examples += target.size(0)
+        
+            break
 
         return total_loss, total_correct_nat, total_correct_adv, total_examples
 
