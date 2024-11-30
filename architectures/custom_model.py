@@ -2,10 +2,10 @@ import torch.nn as nn
 from peft import LoraConfig,get_peft_model
 
 class CustomModel(nn.Module):
-    def __init__(self, args, original_model):
+    def __init__(self, config, original_model):
         
         super(CustomModel, self).__init__()
-        self.args = args
+        self.config = config
         self.base_model = original_model
         
     def forward(self, x_1, x_2=None):
@@ -19,11 +19,11 @@ class CustomModel(nn.Module):
 
     def set_fine_tuning_strategy(self, ):
 
-        if self.args.ft_type == 'full_fine_tuning':
+        if self.config.ft_type == 'full_fine_tuning':
             self._freeze_backbone()
             self._unfreeze_last_layer()
 
-        elif self.args.ft_type == 'linear_probing':
+        elif self.config.ft_type == 'linear_probing':
             self._freeze_backbone()
             self._unfreeze_last_layer()
 
@@ -32,16 +32,8 @@ class CustomModel(nn.Module):
         #     self._apply_lora_adapters()
 
         else:
-            raise ValueError(f"Unknown fine-tuning strategy: {self.args.ft_type}")
-        
-    def update_fine_tuning_strategy(self, iteration):
-
-        if self.args.ft_type == 'full_fine_tuning' and iteration >= self.args.freeze_epochs and self.all_gradients_on==False:
-            print('Unfreezing all layers')
-            self._enable_all_gradients()
+            raise ValueError(f"Unknown fine-tuning strategy: {self.config.ft_type}")
             
-
-
     def _enable_all_gradients(self):
         self.all_gradients_on = True
         for param in self.base_model.parameters():
@@ -58,6 +50,12 @@ class CustomModel(nn.Module):
         last_layer = list(self.base_model.children())[-1]
         for param in last_layer.parameters():
             param.requires_grad = True
+
+    # def update_fine_tuning_strategy(self, iteration):
+
+    #     if self.config.ft_type == 'full_fine_tuning' and iteration >= self.config.freeze_epochs and self.all_gradients_on==False:
+    #         print('Unfreezing all layers')
+    #         self._enable_all_gradients()
 
     # def _apply_lora_adapters(self):
 
