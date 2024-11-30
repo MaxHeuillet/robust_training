@@ -7,6 +7,8 @@ from .exp_decay_v2 import FitExpDecay_v2
 from .exp_decay_v3 import FitExpDecay_v3
 from .dormant_neurons import ActivationTracker, register_hooks, compute_stats
 from .optimizer_loader import load_optimizer
+from .hp_opt import Hp_opt
+from .paths import get_data_dir, get_state_dict_dir
 # from .auto_naming import get_exp_name
 # from .gradients import Adahessian
 # from .submodular import *

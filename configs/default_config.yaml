@@ -1,0 +1,22 @@
+dataset: "Flowers"  # dataset (default: cifar10)
+backbone: "convnext_tiny"  # load backbone
+ft_type: "full_fine_tuning"  # fine tuning type
+
+loss_function: "TRADES_v2"  # the loss function
+seed: 0  # random seed
+epochs: 5  # number of total iterations to run
+
+lr1: null
+lr2: null
+weight_decay: null
+
+use_rs: False
+epsilon: 0.015686275  # epsilon of trades (4/255)
+step_size: 0.007843137  # step size of trades (2/255)
+perturb_steps: 10  # number of steps of trades
+distance: "Linf"  # distance of trades
+beta: 1.0  # beta of trades
+
+# arguments for diffusion augmented learning
+exp: "RQ1" # the experiment type
+exp_id: null
