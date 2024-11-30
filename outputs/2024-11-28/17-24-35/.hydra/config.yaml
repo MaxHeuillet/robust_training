@@ -1,0 +1,18 @@
+dataset: Flowers
+backbone: convnext_tiny
+ft_type: full_fine_tuning
+loss_function: TRADES_v2
+seed: 0
+iterations: 50
+log_dir: ./logs
+statedict_dir: none
+data_dir: none
+task: train
+num_workers: 1
+trades:
+  epsilon: 0.015686275
+  step_size: 0.007843137
+  perturb_steps: 10
+  distance: Linf
+  beta: 1.0
+exp: ''

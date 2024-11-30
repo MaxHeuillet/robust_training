@@ -7,15 +7,13 @@ import torch.distributed as dist
 from filelock import FileLock
 import pandas as pd
 from datetime import datetime
-
-
-
-
+from omegaconf import OmegaConf
+import hashlib
 
 def generate_timestamp():
     return datetime.now().strftime('%y/%m/%d/%H/%M/%S')
 
-def check_unique_id(df1, df2, unique_id_col='unique_id'):
+def check_unique_id(df1, df2, unique_id_col):
 
     unique_id = df2[unique_id_col].iloc[0]
     
@@ -26,17 +24,31 @@ def check_unique_id(df1, df2, unique_id_col='unique_id'):
         return True, iloc_indices
     else:
         return False, []
+    
+def get_config_id(cfg) -> str:
+    # Convert the Hydra config to a dictionary and ensure ordering
+    config_dict = OmegaConf.to_container(cfg, resolve=True, enum_to_str=True)
+    
+    # Serialize the dictionary to a string (sorted keys for consistency)
+    serialized_config = str(sorted(config_dict.items()))
+    
+    # Generate a hash (MD5, SHA-256, etc.)
+    config_hash = hashlib.md5(serialized_config.encode()).hexdigest()  # Use SHA-256 if preferred
+
+    print('config_hash', config_hash)
+    return config_hash
 
 class Setup:
 
-    def __init__(self, args, config_name, exp_id, current_experiment):
-        self.config_name = config_name
-        self.exp_id = exp_id
-        self.args = args
-        self.current_experiment = current_experiment
+    def __init__(self, config, world_size):
+        self.config = config
+        self.exp_id = get_config_id(self.config)
+        self.world_size = world_size
+
         self.cluster_name = os.environ.get('SLURM_CLUSTER_NAME', 'Unknown')
 
-    def distributed_setup(self, world_size, rank):
+
+    def distributed_setup(self, ):
 
         # os.environ['NCCL_DEBUG'] = 'INFO'  # or 'TRACE' for more detailed logs
         # os.environ['NCCL_DEBUG_SUBSYS'] = 'ALL'
@@ -47,7 +59,6 @@ class Setup:
         print('cudnn', torch.backends.cudnn.version())
         
         #Initialize the distributed environment.
-        print( ' world size {}, rank {}'.format(world_size,rank) )
         print('set up the master adress and port')
         os.environ['MASTER_ADDR'] = 'localhost'
         os.environ['MASTER_PORT'] = '12354'
@@ -57,20 +68,29 @@ class Setup:
         os.environ['TRANSFORMERS_OFFLINE'] = '1'
         
         #Set up the local GPU for this process
-        torch.cuda.set_device(rank)
-        dist.init_process_group("nccl", rank=rank, world_size=world_size)
+        dist.init_process_group("nccl", )
         print('init process group ok')
+        
             
-    
-
     def cleanup(self,):
         dist.destroy_process_group()
 
+    def sync_value(self, value, nb_examples, rank):
+
+        # Aggregate results across all processes
+        value_tensor = torch.tensor([value], dtype=torch.float32, device=rank)
+        nb_examples_tensor = torch.tensor([nb_examples], dtype=torch.float32, device=rank)
+
+        dist.all_reduce(value_tensor, op=dist.ReduceOp.SUM)
+        dist.all_reduce(nb_examples_tensor, op=dist.ReduceOp.SUM)
+
+        # Compute global averages
+        avg_value = value_tensor.item() / nb_examples_tensor.item()
+
+        return avg_value, value_tensor.item(), nb_examples_tensor.item() 
         
     def train_batch_size(self):
 
-        
-        
         if self.cluster_name == 'narval':
             base = 9/4
         elif self.cluster_name == 'beluga':
@@ -79,18 +99,17 @@ class Setup:
             return 8
 
         # Batch size recommendations based on the backbone
-        if self.args.backbone in ['robust_wideresnet_28_10', 'wideresnet_28_10']:
+        if self.config.backbone in ['robust_wideresnet_28_10', 'wideresnet_28_10']:
             batch_size = 8 * base  # 8 = OK, 16 = NOT OK, 12 NOT OK
-        elif self.args.backbone in ['deit_small_patch16_224.fb_in1k', 'robust_deit_small_patch16_224', 'random_deit_small_patch16_224']:
+        elif self.config.backbone in ['deit_small_patch16_224.fb_in1k', 'robust_deit_small_patch16_224', 'random_deit_small_patch16_224']:
             batch_size = 128 * base  # 16 = OK, 32 = OK, 64 = OK, 128 = OK, 256 = NOT OK
-        elif self.args.backbone in ['vit_base_patch16_224.augreg_in1k', 'vit_base_patch16_224.augreg_in21k', 'robust_vit_base_patch16_224', 'random_vit_base_patch16_224']:
+        elif self.config.backbone in ['vit_base_patch16_224.augreg_in1k', 'vit_base_patch16_224.augreg_in21k', 'robust_vit_base_patch16_224', 'random_vit_base_patch16_224']:
             batch_size = 64 * base  # 16 = OK, 32 = OK, 64 = OK, 128 = NOT OK
-        elif self.args.backbone in ['convnext_base', 'convnext_base.fb_in22k', 'robust_convnext_base', 'random_convnext_base']:
+        elif self.config.backbone in ['convnext_base', 'convnext_base.fb_in22k', 'robust_convnext_base', 'random_convnext_base']:
             batch_size = 32 * base  # 16 = OK, 32 = OK, 64 = NOT OK
-        elif self.args.backbone in ['convnext_tiny_random', 'convnext_tiny', 'convnext_tiny.fb_in22k', 'robust_convnext_tiny', 'random_convnext_tiny']:
+        elif self.config.backbone in ['convnext_tiny_random', 'convnext_tiny', 'convnext_tiny.fb_in22k', 'robust_convnext_tiny', 'random_convnext_tiny']:
             batch_size = 64 * base  # 16 = OK, 32 = OK, 64 = OK, 128 = NOT OK
   
-
         return int(batch_size)
         
     def test_batch_size(self,):
@@ -103,15 +122,15 @@ class Setup:
             return 8
 
         # Batch size recommendations based on the backbone
-        if self.args.backbone in ['robust_wideresnet_28_10', 'wideresnet_28_10']:
+        if self.config.backbone in ['robust_wideresnet_28_10', 'wideresnet_28_10']:
             batch_size = 4 * base  # 8 = NOT OK,
-        elif self.args.backbone in ['deit_small_patch16_224.fb_in1k', 'robust_deit_small_patch16_224', 'random_deit_small_patch16_224']:
+        elif self.config.backbone in ['deit_small_patch16_224.fb_in1k', 'robust_deit_small_patch16_224', 'random_deit_small_patch16_224']:
             batch_size = 64 * base  # 16 = OK, 32 = OK, 64 = OK, 128 = NOT OK, 
-        elif self.args.backbone in ['vit_base_patch16_224.augreg_in1k', 'vit_base_patch16_224.augreg_in21k', 'robust_vit_base_patch16_224', 'random_vit_base_patch16_224']:
+        elif self.config.backbone in ['vit_base_patch16_224.augreg_in1k', 'vit_base_patch16_224.augreg_in21k', 'robust_vit_base_patch16_224', 'random_vit_base_patch16_224']:
             batch_size = 32 * base  # 16 = OK, 32 = OK, 64 = NOT OK,
-        elif self.args.backbone in ['convnext_base', 'convnext_base.fb_in22k', 'robust_convnext_base', 'random_convnext_base']:
+        elif self.config.backbone in ['convnext_base', 'convnext_base.fb_in22k', 'robust_convnext_base', 'random_convnext_base']:
             batch_size = 16 * base  # 16 = OK, 32 = NOT OK,
-        elif self.args.backbone in ['convnext_tiny_random', 'convnext_tiny', 'convnext_tiny.fb_in22k', 'robust_convnext_tiny', 'random_convnext_tiny']:
+        elif self.config.backbone in ['convnext_tiny_random', 'convnext_tiny', 'convnext_tiny.fb_in22k', 'robust_convnext_tiny', 'random_convnext_tiny']:
             batch_size = 32 * base  # 16 = OK, 32 = OK, 64 = NOT OK,
         
         return int(batch_size)
@@ -201,31 +220,31 @@ class Setup:
     def log_results(self, statistics):
 
         cluster_name = os.environ.get('SLURM_CLUSTER_NAME', 'Unknown')
-        data_path = './results/results_{}_{}.csv'.format(cluster_name, self.args.exp)
+        data_path = './results/results_{}.csv'.format( cluster_name )
+        current_experiment = OmegaConf.to_container(self.config, resolve=True)
         
         lock = FileLock(data_path + '.lock')
 
         with lock:
             
-            columns = list(self.current_experiment.keys())
+            columns = list(self.config.keys())
             key_columns = columns.copy()
 
             try:
                 df = pd.read_csv(data_path)
             except FileNotFoundError:
                 df = pd.DataFrame(columns=key_columns + ['timestamp'] + list( statistics.keys() ) )
-
-            self.current_experiment['id'] = self.exp_id        
-            self.current_experiment['timestamp'] = generate_timestamp()
-            self.current_experiment = self.current_experiment | statistics
+      
+            current_experiment['timestamp'] = generate_timestamp()
+            current_experiment.update(statistics)
             
-            new_row = pd.DataFrame([self.current_experiment], columns=self.current_experiment.keys() )
+            new_row = pd.DataFrame([current_experiment], columns=current_experiment.keys() )
             
             if df.empty:
                 df = pd.concat([df, new_row]) 
                 
             else:
-                exists, match_mask = check_unique_id(df, new_row, 'id')
+                exists, match_mask = check_unique_id(df, new_row, 'exp_id')
                 print('exists', exists, match_mask)
 
                 if not exists:

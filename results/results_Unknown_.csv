@@ -1,0 +1,2 @@
+dataset,backbone,ft_type,loss_function,seed,epochs,lr1,lr2,weight_decay,use_rs,epsilon,step_size,perturb_steps,distance,beta,exp,exp_id,timestamp,clean_acc,robust_acc,nat_zero_mean,nat_dormant_mean,nat_overactive_mean,adv_zero_mean,adv_dormant_mean,adv_overactive_mean
+Flowers,convnext_tiny,none,TRADES_v2,0,10,,,,False,0.015686275,0.007843137,10,Linf,1.0,,5e19fcc7bb72bdca9c73ecda18e1fbba,24/11/30/16/12/40,-2,-2,-2,-2,-2,-2,-2,-2
