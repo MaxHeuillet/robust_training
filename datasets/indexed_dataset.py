@@ -8,14 +8,12 @@ from datasets.loaders import load_data
     
 class IndexedDataset(Dataset): #Dataset
 
-    def __init__(self, args, dataset, transform, N): #, transform=None
+    def __init__(self, dataset, transform, N): #, transform=None
 
         super().__init__()
 
-        self.args = args
         self.dataset = dataset
         self.N = N
-        self.dataset_name = args.dataset
         self.global_indices = list(range(len(dataset)))
         self.transform = transform  # Add transform parameter
 
@@ -64,10 +62,10 @@ class IndexedDataset(Dataset): #Dataset
             return self._get_single_item(idx)
         
     def _get_single_item(self, idx):
-        if self.dataset_name == 'Imagenet1k':
-            image_data, label = self.get_item_skip(idx)
-        else:
-            image_data, label = self.get_item_noskip(idx)
+        # if self.dataset_name == 'Imagenet1k':
+        #     image_data, label = self.get_item_skip(idx)
+        # else:
+        image_data, label = self.get_item_noskip(idx)
 
 
         # Process the image data

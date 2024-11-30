@@ -13,12 +13,16 @@ from torchvision.transforms import RandAugment
 from torchvision.transforms.v2 import CutMix
 
 from sklearn.model_selection import train_test_split
+from utils import get_data_dir
 
 #   transforms.RandomCrop(224, padding=4), 
 #   transforms.RandomHorizontalFlip(),  # Random horizontal flip
 ##   RandAugment(),  # RandAugment with N=9, M=0.5
 
-def load_data(args):
+def load_data(hp_opt,config,):
+
+    dataset =config.dataset
+    datadir = get_data_dir(hp_opt,config)
 
     train_transform = transforms.Compose([transforms.Resize((224, 224)),  # Resize images to 224x224
                                           transforms.RandomHorizontalFlip(),
@@ -31,27 +35,27 @@ def load_data(args):
                                     transforms.ToTensor(),
                                     transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ),])
         
-    if args.dataset == 'CIFAR10':
+    if dataset == 'CIFAR10':
 
         print('hey')
         print(f"Current working directory: {os.getcwd()}")
         
         N = 10
         
-        dataset = datasets.CIFAR10(root=args.data_dir, train=True, download=False, )
+        dataset = datasets.CIFAR10(root=datadir, train=True, download=False, )
         train_size = int(0.95 * len(dataset))
         val_size = len(dataset) - train_size
         print("train size", train_size, "val size", val_size)
 
         generator1 = torch.Generator().manual_seed(42)
         train_dataset, val_dataset = random_split(dataset, [train_size, val_size], generator = generator1)  
-        test_dataset = datasets.CIFAR10(root=args.data_dir, train=False, download=True, )
+        test_dataset = datasets.CIFAR10(root=datadir, train=False, download=True, )
 
-    elif args.dataset == 'CIFAR100':
+    elif dataset == 'CIFAR100':
         
         N = 100
         
-        dataset = datasets.CIFAR100(root=args.data_dir, train=True, download=False, )
+        dataset = datasets.CIFAR100(root=datadir, train=True, download=False, )
 
         train_size = int(0.95 * len(dataset))
         val_size = len(dataset) - train_size
@@ -59,20 +63,20 @@ def load_data(args):
 
         generator1 = torch.Generator().manual_seed(42)
         train_dataset, val_dataset = random_split(dataset, [train_size, val_size], generator = generator1)  
-        test_dataset = datasets.CIFAR100(root=args.data_dir, train=False, download=False, )
+        test_dataset = datasets.CIFAR100(root=datadir, train=False, download=False, )
 
-    elif args.dataset == 'Aircraft':
+    elif dataset == 'Aircraft':
 
         N = 100
         
-        train_dataset = datasets.FGVCAircraft(root=args.data_dir, split='train', download=False, )
-        val_dataset =   datasets.FGVCAircraft(root=args.data_dir, split='val', download=False, )
-        test_dataset = datasets.FGVCAircraft(root=args.data_dir, split='test', download=False, )
+        train_dataset = datasets.FGVCAircraft(root=datadir, split='train', download=False, )
+        val_dataset =   datasets.FGVCAircraft(root=datadir, split='val', download=False, )
+        test_dataset = datasets.FGVCAircraft(root=datadir, split='test', download=False, )
 
-    elif args.dataset == 'EuroSAT':
+    elif dataset == 'EuroSAT':
 
         # Load the dataset
-        dataset = datasets.EuroSAT(root=args.data_dir, download=False, )
+        dataset = datasets.EuroSAT(root=datadir, download=False, )
 
         # Extract labels from the dataset
         labels = [label for _, label in dataset]
@@ -93,13 +97,13 @@ def load_data(args):
         val_dataset = torch.utils.data.Subset(dataset, val_indices)
         test_dataset = torch.utils.data.Subset(dataset, test_indices)
 
-    elif args.dataset == 'Flowers':
+    elif dataset == 'Flowers':
             
         # Load the Flowers102 dataset
         N = 102
-        train_dataset = datasets.Flowers102(root=args.data_dir, split='train', download=False)
-        val_dataset = datasets.Flowers102(root=args.data_dir, split='val', download=False)
-        test_dataset = datasets.Flowers102(root=args.data_dir, split='test', download=False)        
+        train_dataset = datasets.Flowers102(root=datadir, split='train', download=False)
+        val_dataset = datasets.Flowers102(root=datadir, split='val', download=False)
+        test_dataset = datasets.Flowers102(root=datadir, split='test', download=False)        
         
     return train_dataset, val_dataset, test_dataset, N, train_transform, transform
 
