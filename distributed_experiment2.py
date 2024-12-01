@@ -337,9 +337,9 @@ if __name__ == "__main__":
 
     # experiment.setup.pre_training_log()
 
-    # experiment.hyperparameter_optimization()
+    experiment.hyperparameter_optimization()
     
-    mp.spawn(experiment.training, nprocs=experiment.world_size, join=True)
+    mp.spawn(experiment.training, nprocs=world_size, join=True)
     
     # experiment.setup.post_training_log()
     
