@@ -133,10 +133,8 @@ class BaseExperiment:
             logger = None
             
         else:
-            self.setup.distributed_setup()
+            rank = self.setup.distributed_setup()
             logger = self.initialize_logger(rank)
-
-        rank = dist.get_rank()
 
         print('initialize dataset', rank, flush=True) 
 
