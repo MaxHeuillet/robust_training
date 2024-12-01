@@ -341,8 +341,15 @@ if __name__ == "__main__":
     # experiment.setup.pre_training_log()
 
     experiment.hyperparameter_optimization()
+       # Spawn processes for distributed training
+    try:
+        mp.spawn(experiment.training, nprocs=world_size, join=True)
+    finally:
+        experiment.setup.cleanup()
     
-    mp.spawn(experiment.training, nprocs=world_size, join=True)
+
+ 
+    #mp.spawn(experiment.training, nprocs=world_size, join=True)
     
     # experiment.setup.post_training_log()
     
