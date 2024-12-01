@@ -66,9 +66,15 @@ class Setup:
         #Set environment variables for offline usage of Hugging Face libraries
         os.environ['HF_DATASETS_OFFLINE'] = '1'
         os.environ['TRANSFORMERS_OFFLINE'] = '1'
+
+        rank = int(os.getenv('RANK', 0))
+        world_size = int(os.getenv('WORLD_SIZE', 1))
+
+        # Initialize the process group
+        dist.init_process_group("nccl", rank=rank, world_size=world_size)
         
         #Set up the local GPU for this process
-        dist.init_process_group("nccl", )
+        # dist.init_process_group("nccl", )
         print('init process group ok')
         
             
