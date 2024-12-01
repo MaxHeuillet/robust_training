@@ -76,6 +76,8 @@ class Setup:
         #Set up the local GPU for this process
         # dist.init_process_group("nccl", )
         print('init process group ok')
+
+        return rank
         
             
     def cleanup(self,):
