@@ -19,4 +19,3 @@ beta: 1.0  # beta of trades
 
 # arguments for diffusion augmented learning
 exp: "RQ1" # the experiment type
-exp_id: null

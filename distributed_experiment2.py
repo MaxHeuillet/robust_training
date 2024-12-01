@@ -181,9 +181,9 @@ class BaseExperiment:
 
         ray.init()
 
-
         hp_search = Hp_opt()
-        tuner = hp_search.get_tuner( self.training )
+        print('epochs in the HP function', self.setup.config.epochs)
+        tuner = hp_search.get_tuner( self.setup.config.epochs, self.training )
         result_grid = tuner.fit()
 
         best_result = result_grid.get_best_result()
