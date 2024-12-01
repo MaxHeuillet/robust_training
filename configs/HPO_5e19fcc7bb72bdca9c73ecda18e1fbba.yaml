@@ -1,0 +1,17 @@
+dataset: Flowers
+backbone: convnext_tiny
+ft_type: none
+loss_function: TRADES_v2
+seed: 0
+epochs: 10
+lr1: 0.07155682161754859
+lr2: 0.000341795291206101
+weight_decay: 0.0014685885989200863
+use_rs: false
+epsilon: 0.015686275
+step_size: 0.007843137
+perturb_steps: 10
+distance: Linf
+beta: 1.0
+exp: ''
+exp_id: null

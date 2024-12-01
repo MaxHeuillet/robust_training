@@ -44,11 +44,11 @@ class Setup:
         self.config = config
         self.exp_id = get_config_id(self.config)
         self.world_size = world_size
-
+        self.hp_opt = False
         self.cluster_name = os.environ.get('SLURM_CLUSTER_NAME', 'Unknown')
 
 
-    def distributed_setup(self, ):
+    def distributed_setup(self, rank):
 
         # os.environ['NCCL_DEBUG'] = 'INFO'  # or 'TRACE' for more detailed logs
         # os.environ['NCCL_DEBUG_SUBSYS'] = 'ALL'
@@ -67,11 +67,8 @@ class Setup:
         os.environ['HF_DATASETS_OFFLINE'] = '1'
         os.environ['TRANSFORMERS_OFFLINE'] = '1'
 
-        rank = int(os.getenv('RANK', 0))
-        world_size = int(os.getenv('WORLD_SIZE', 1))
-
         # Initialize the process group
-        dist.init_process_group("nccl", rank=rank, world_size=world_size)
+        dist.init_process_group("nccl", rank=rank, world_size=self.world_size)
         
         #Set up the local GPU for this process
         # dist.init_process_group("nccl", )

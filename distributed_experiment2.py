@@ -125,7 +125,7 @@ class BaseExperiment:
         
         return trainloader, valloader, testloader, train_sampler, val_sampler, test_sampler, N
 
-    def training(self, update_config, ):
+    def training(self, update_config, rank=None ):
 
         if self.setup.hp_opt:
             config = OmegaConf.merge(self.setup.config, update_config)
@@ -133,8 +133,9 @@ class BaseExperiment:
             logger = None
             
         else:
-            rank = self.setup.distributed_setup()
+            self.setup.distributed_setup(rank)
             logger = self.initialize_logger(rank)
+            config = OmegaConf.load("./configs/HPO_{}.yaml".format(self.setup.exp_id) )
 
         print('initialize dataset', rank, flush=True) 
 
@@ -191,20 +192,8 @@ class BaseExperiment:
         self.setup.hp_opt = False
 
         # Extract relevant data (configurations and metrics) from result_grid
-        extractable_data = [
-            {
-                "config": trial.config,  # Hyperparameters
-                "metrics": trial.metrics,  # Performance metrics
-            }
-            for trial in result_grid
-        ]
-
-        final_data = { 'best_result':best_result,  'extractable_data':extractable_data } 
-        
-        import pickle
-        # Serialize only the extracted data
-        with open("./results/HPO/result_grid_{}.pkl".format(self.setup.exp_id), "wb") as f:
-            pickle.dump(final_data, f)
+        best_config = OmegaConf.merge(self.setup.config, best_result.config['train_loop_config'] )
+        OmegaConf.save(best_config, './configs/HPO_{}.yaml'.format(self.setup.exp_id) )
 
         ray.shutdown()
 
@@ -221,6 +210,8 @@ class BaseExperiment:
         scaler = GradScaler()  
         
         model.train()
+
+        print('epochs', config.epochs)
         
         for iteration in range(config.epochs):
 
@@ -319,6 +310,10 @@ class BaseExperiment:
         return total_loss, total_correct_nat, total_correct_adv, total_examples
 
         
+def training_wrapper(rank, experiment, config ):
+    hpo_config = OmegaConf.load("./configs/HPO_{}.yaml".format(experiment.setup.exp_id) )
+    hpo_config = OmegaConf.merge(config, hpo_config)
+    experiment.training(hpo_config, rank=rank)
 
 if __name__ == "__main__":
 
@@ -340,12 +335,14 @@ if __name__ == "__main__":
 
     # experiment.setup.pre_training_log()
 
+
+
     experiment.hyperparameter_optimization()
        # Spawn processes for distributed training
-    try:
-        mp.spawn(experiment.training, nprocs=world_size, join=True)
-    finally:
-        experiment.setup.cleanup()
+    # try:
+    mp.spawn(training_wrapper, args=(experiment, config), nprocs=world_size, join=True)
+    # finally:
+        # experiment.setup.cleanup()
     
 
  
@@ -356,26 +353,3 @@ if __name__ == "__main__":
     # experiment.launch_test()
 
 
-
-    # avg_loss, clean_accuracy, adv_acc  = self.sync_validation_results(total_loss, total_correct_nat, total_correct_adv, total_examples, rank)
-
-    
-    # def sync_validation_results(self, total_loss, total_correct_nat, total_correct_adv, total_examples, rank):
-
-    #     # Aggregate results across all processes
-    #     total_loss_tensor = torch.tensor([total_loss], dtype=torch.float32, device=rank)
-    #     total_correct_nat_tensor = torch.tensor([total_correct_nat], dtype=torch.float32, device=rank)
-    #     total_correct_adv_tensor = torch.tensor([total_correct_adv], dtype=torch.float32, device=rank)
-    #     total_examples_tensor = torch.tensor([total_examples], dtype=torch.float32, device=rank)
-
-    #     dist.all_reduce(total_loss_tensor, op=dist.ReduceOp.SUM)
-    #     dist.all_reduce(total_correct_nat_tensor, op=dist.ReduceOp.SUM)
-    #     dist.all_reduce(total_correct_adv_tensor, op=dist.ReduceOp.SUM)
-    #     dist.all_reduce(total_examples_tensor, op=dist.ReduceOp.SUM)
-
-    #     # Compute global averages
-    #     avg_loss = total_loss_tensor.item() / total_examples_tensor.item()
-    #     clean_accuracy = total_correct_nat_tensor.item() / total_examples_tensor.item()
-    #     robust_accuracy = total_correct_adv_tensor.item() / total_examples_tensor.item()
-
-    #     return avg_loss, clean_accuracy, robust_accuracy
