@@ -178,6 +178,9 @@ class BaseExperiment:
 
         self.setup.hp_opt = True 
 
+        ray.init()
+
+
         hp_search = Hp_opt()
         tuner = hp_search.get_tuner( self.training )
         result_grid = tuner.fit()
@@ -202,6 +205,8 @@ class BaseExperiment:
         # Serialize only the extracted data
         with open("./results/HPO/result_grid_{}.pkl".format(self.setup.exp_id), "wb") as f:
             pickle.dump(final_data, f)
+
+        ray.shutdown()
 
                 
     def fit(self, config, model, optimizer, scheduler, trainloader, valloader, train_sampler, val_sampler, N, rank, logger=None):
