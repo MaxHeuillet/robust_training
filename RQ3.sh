@@ -4,7 +4,6 @@
 seeds=1
 datas=( 'Flowers' ) # 'CIFAR100' 'EuroSAT' 'Aircraft' 'CIFAR10'  
 losses=( 'CLASSIC_AT' ) #'TRADES_v2' 
-iterations=50
 exp='RQ1'
 
 backbones=( 
@@ -26,36 +25,22 @@ for data in "${datas[@]}"; do
             if [ "$CC_CLUSTER" = "beluga" ]; then
           
                     sbatch --export=ALL,\
-NITER=$iterations,\
 BCKBN=$bckbn,\
 FTTYPE=$fttype,\
-RATIO=$pruning_ratio,\
-PSTRAT=$pruning_strategy,\
-BSTRAT=$batch_strategy,\
 DATA=$data,\
 SEED=$id,\
 LOSS=$loss,\
-SCHED=$sched,\
-LR=$init_lr,\
-AUG=$aug,\
 EXP=$exp \
 ./distributed_experiment_beluga.sh
 
             else
 
                     sbatch --export=ALL,\
-NITER=$iterations,\
 BCKBN=$bckbn,\
 FTTYPE=$fttype,\
-RATIO=$pruning_ratio,\
-PSTRAT=$pruning_strategy,\
-BSTRAT=$batch_strategy,\
 DATA=$data,\
 SEED=$id,\
 LOSS=$loss,\
-SCHED=$sched,\
-LR=$init_lr,\
-AUG=$aug,\
 EXP=$exp \
 ./distributed_experiment_other.sh
 

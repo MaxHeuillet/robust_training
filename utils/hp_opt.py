@@ -32,11 +32,11 @@ class Hp_opt:
 
         return tune_config
 
-    def get_scheduler(self,):
+    def get_scheduler(self, epochs):
 
         # Configure the scheduler WITHOUT metric and mode
         scheduler = ASHAScheduler(
-            max_t=10,
+            max_t=epochs,
             grace_period=1,
             reduction_factor=2
         )
@@ -62,10 +62,10 @@ class Hp_opt:
 
         return trainer
     
-    def get_tuner(self, training_func):
+    def get_tuner(self, epochs, training_func):
 
         update_config = self.get_config()
-        scheduler = self.get_scheduler()
+        scheduler = self.get_scheduler(epochs)
         trainer = self.get_trainer( training_func )
     
         # Set up the Tuner with metric and mode specified
