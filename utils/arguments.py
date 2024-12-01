@@ -85,13 +85,13 @@ def get_args2():
     parser.add_argument('--dataset', default='Flowers', type=str, help='dataset: ' + ' (default: cifar10)')
     parser.add_argument("--loss_function", default="TRADES_v2", type=str, help="the loss function")
     parser.add_argument('--seed', default=0, type=int, help="random seed")
-    parser.add_argument("--exp", default='', type=str, help="the experiment type")
+    parser.add_argument("--ft_type", default = 'full_fine_tuning', type=str, help="fine tuning type")
     
 
     # General options
     # parser.add_argument("--arch", default="resnet50",type=str, help="model architecture")
     # parser.add_argument("--pre_trained", type=str, help="load pretrained non robust model")
-    # parser.add_argument("--ft_type", default = 'none', type=str, help="fine tuning type")
+    # 
 
     # parser.add_argument("--epochs", default=10, type=int, metavar="N", help="number of total iterations to run")
     # parser.add_argument("--log_dir", default="./logs", type=str, help="The directory used to save logs")

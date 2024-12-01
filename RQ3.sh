@@ -4,7 +4,6 @@
 seeds=1
 datas=( 'Flowers' ) # 'CIFAR100' 'EuroSAT' 'Aircraft' 'CIFAR10'  
 losses=( 'CLASSIC_AT' ) #'TRADES_v2' 
-exp='RQ1'
 
 backbones=( 
             #'deit_small_patch16_224.fb_in1k' 'robust_deit_small_patch16_224' 'random_deit_small_patch16_224' 
@@ -29,8 +28,7 @@ BCKBN=$bckbn,\
 FTTYPE=$fttype,\
 DATA=$data,\
 SEED=$id,\
-LOSS=$loss,\
-EXP=$exp \
+LOSS=$loss \
 ./distributed_experiment_beluga.sh
 
             else
@@ -40,8 +38,7 @@ BCKBN=$bckbn,\
 FTTYPE=$fttype,\
 DATA=$data,\
 SEED=$id,\
-LOSS=$loss,\
-EXP=$exp \
+LOSS=$loss \
 ./distributed_experiment_other.sh
 
           fi
