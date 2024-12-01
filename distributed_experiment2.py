@@ -33,7 +33,7 @@ from torch.utils.data.distributed import DistributedSampler
 from datasets import WeightedDataset, IndexedDataset, load_data
 from architectures import load_architecture, CustomModel
 from losses import get_loss, get_eval_loss
-from utils import get_args2, get_exp_name, set_seeds, load_optimizer
+from utils import get_args2, get_exp_name, set_seeds, load_optimizer, get_state_dict_dir
 from torchvision.transforms import v2
 from torch.optim.lr_scheduler import CosineAnnealingLR
 from ray.air import session
@@ -169,7 +169,7 @@ class BaseExperiment:
         if not self.setup.hp_opt and rank == 0:
             model_to_save = model.module
             model_to_save = model_to_save.cpu()
-            torch.save(model_to_save.state_dict(), self.setup.get_statedictdir() +'trained_model_{}.pt'.format(self.setup.exp_id) )
+            torch.save(model_to_save.state_dict(), get_state_dict_dir(self.setup.hp_opt,config) +'trained_model_{}.pt'.format(self.setup.exp_id) )
             print('Model saved by rank 0')
             logger.end()
         
@@ -335,21 +335,14 @@ if __name__ == "__main__":
 
     # experiment.setup.pre_training_log()
 
-
-
     experiment.hyperparameter_optimization()
        # Spawn processes for distributed training
     # try:
     mp.spawn(training_wrapper, args=(experiment, config), nprocs=world_size, join=True)
     # finally:
         # experiment.setup.cleanup()
-    
-
- 
-    #mp.spawn(experiment.training, nprocs=world_size, join=True)
-    
     # experiment.setup.post_training_log()
     
-    # experiment.launch_test()
+    experiment.launch_test()
 
 
