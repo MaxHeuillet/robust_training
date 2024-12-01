@@ -28,7 +28,6 @@ python3 ./distributed_experiment2.py \
     --loss_function ${LOSS} \
     --dataset ${DATA} \
     --seed ${SEED} \
-    --iterations ${NITER} \
     --backbone ${BCKBN} \
     --ft_type ${FTTYPE} \
     --exp ${EXP} \
