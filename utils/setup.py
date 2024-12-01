@@ -61,7 +61,7 @@ class Setup:
         #Initialize the distributed environment.
         print('set up the master adress and port')
         os.environ['MASTER_ADDR'] = 'localhost'
-        os.environ['MASTER_PORT'] = '12354'
+        os.environ['MASTER_PORT'] = '12345'
 
         #Set environment variables for offline usage of Hugging Face libraries
         os.environ['HF_DATASETS_OFFLINE'] = '1'
