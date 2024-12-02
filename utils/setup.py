@@ -223,28 +223,40 @@ class Setup:
         self.log_results(statistics)
 
 
-    def log_results(self, statistics):
 
-        import pickle 
+    def log_results(self, hpo_results=None, statistics=None):
+        import pickle
         data_path = './results/results.pkl'
-        
-        # Prepare the current experiment details
-        current_experiment = OmegaConf.load("./configs/HPO_{}.yaml".format(self.exp_id) )
-        current_experiment.update(statistics)
-        
+
+        # Load the current experiment configuration
+        current_experiment_config = OmegaConf.load(f"./configs/HPO_{self.exp_id}.yaml")
+
         # Use a file lock to prevent concurrent access
         lock = FileLock(data_path + '.lock')
 
         with lock:
-  
+            # Load existing results if the file exists
             if os.path.exists(data_path):
                 with open(data_path, 'rb') as f:
                     results_dict = pickle.load(f)
             else:
                 results_dict = {}
-            
-            # Add or overwrite the entry for the current experiment
-            results_dict[self.exp_id] = current_experiment
+
+            # Ensure the current experiment's structure
+            if self.exp_id not in results_dict:
+                results_dict[self.exp_id] = {
+                    "config": {},
+                    "statistics": {},
+                    "hpo_results": {}
+                }
+
+            # Update the dictionary with the respective sections
+            results_dict[self.exp_id]["config"].update(current_experiment_config)
+            if statistics:
+                results_dict[self.exp_id]["statistics"].update(statistics)
+            if hpo_results:
+                results_dict[self.exp_id]["hpo_results"] = hpo_results
+                print(hpo_results)
 
             # Save the updated dictionary back to the file
             with open(data_path, 'wb') as f:

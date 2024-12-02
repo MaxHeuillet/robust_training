@@ -192,8 +192,10 @@ class BaseExperiment:
         self.setup.hp_opt = False
 
         # Extract relevant data (configurations and metrics) from result_grid
-        best_config = OmegaConf.merge(self.setup.config, best_result.config['train_loop_config'] )
+        best_config = OmegaConf.merge(self.setup.config, best_result.config['train_loop_config']  )
         OmegaConf.save(best_config, './configs/HPO_{}.yaml'.format(self.setup.exp_id) )
+
+        self.setup.log_results(hpo_results = result_grid)
 
         ray.shutdown()
 
@@ -435,9 +437,9 @@ class BaseExperiment:
         print(all_statistics)
 
         # Log the aggregated results
-        statistics = self.setup.aggregate_results(all_statistics)
+        stats= self.setup.aggregate_results(all_statistics)
 
-        self.setup.log_results(statistics)
+        self.setup.log_results(statistics = stats)
 
         
 def training_wrapper(rank, experiment, config ):
