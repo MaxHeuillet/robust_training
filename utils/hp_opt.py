@@ -67,7 +67,11 @@ class Hp_opt:
         update_config = self.get_config()
         scheduler = self.get_scheduler(epochs)
         trainer = self.get_trainer( training_func )
-    
+
+        # Define maximum runtime in seconds
+        from datetime import timedelta
+        max_runtime_seconds = timedelta(minutes=170).total_seconds()
+
         # Set up the Tuner with metric and mode specified
         tuner = Tuner(
             trainer,
@@ -77,9 +81,11 @@ class Hp_opt:
                 mode="min",     # Specify the optimization direction
                 scheduler=scheduler,
                 num_samples=3,
-            ),
+                ),
             run_config=RunConfig(
-                name="hpo_experiment", ),
+                name="hpo_experiment",
+                #stop={"time_total_s": max_runtime_seconds},  # Stop after the specified time 
+                  ),
         )
 
         return tuner
