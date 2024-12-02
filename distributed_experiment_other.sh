@@ -25,17 +25,11 @@ fi
 echo 'HZ: start python3 ./distributed_experiment1.py ..at '; date
 
 
-python3 ./distributed_experiment1.py \
-    --init_lr ${LR} \
+python3 ./distributed_experiment2.py \
+    --task ${TASK} \
     --loss_function ${LOSS} \
-    --sched ${SCHED} \
     --dataset ${DATA} \
     --seed ${SEED} \
-    --iterations ${NITER} \
-    --pruning_ratio ${RATIO} \
-    --pruning_strategy ${PSTRAT} \
-    --batch_strategy ${BSTRAT} \
-    --aug ${AUG} \
     --backbone ${BCKBN} \
     --ft_type ${FTTYPE} \
     --exp ${EXP} \

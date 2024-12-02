@@ -25,6 +25,7 @@ echo 'HZ: start python3 ./distributed_experiment1.py ..at '; date
 
 
 python3 ./distributed_experiment2.py \
+    --task ${TASK} \
     --loss_function ${LOSS} \
     --dataset ${DATA} \
     --seed ${SEED} \
