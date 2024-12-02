@@ -225,8 +225,8 @@ class Setup:
 
 
     def log_results(self, hpo_results=None, statistics=None):
-        import pickle
-        data_path = './results/results.pkl'
+        import cloudpickle as pickle
+        data_path = './results/results_{}.pkl'.format( self.cluster_name )
 
         # Load the current experiment configuration
         current_experiment_config = OmegaConf.load(f"./configs/HPO_{self.exp_id}.yaml")

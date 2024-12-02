@@ -80,7 +80,7 @@ class Hp_opt:
                 metric="loss",  # Specify the metric to optimize
                 mode="min",     # Specify the optimization direction
                 scheduler=scheduler,
-                # num_samples=3,
+                num_samples=10,
                 ),
             run_config=RunConfig(
                 name="hpo_experiment",
