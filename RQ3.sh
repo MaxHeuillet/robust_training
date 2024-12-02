@@ -13,7 +13,7 @@ backbones=(
            ) # 'wideresnet_28_10' 'robust_wideresnet_28_10' 
 
 ft_type=( 'full_fine_tuning' ) #'lora' ,  'linear_probing'
-tasks = ( 'HPO', 'train', 'test' )
+tasks=( 'HPO' 'train' 'test' )
 
 # Loop over architectures, pruning ratios, strategies, and learning rates
 for task in "${tasks[@]}"; do
