@@ -308,6 +308,136 @@ class BaseExperiment:
             break
 
         return total_loss, total_correct_nat, total_correct_adv, total_examples
+    
+
+    def test(self, rank, result_queue):
+
+        config = OmegaConf.load("./configs/HPO_{}.yaml".format(self.setup.exp_id) )
+
+        _, _, testloader, _, _, test_sampler, N = self.initialize_loaders(config, rank)
+        
+        print('dataloader', flush=True) 
+        
+        # Check the number of samples assigned to this process
+        num_samples = len(test_sampler)
+        print(f"Rank {rank}: Number of samples = {num_samples}", flush=True) 
+
+        model = load_architecture(self.setup.hp_opt, config, N, )
+
+        model = CustomModel(config, model, )
+        # model.set_fine_tuning_strategy()
+        # trained_state_dict = torch.load('./state_dicts/trained_model_{}.pt'.format(self.setup.exp_id), map_location='cpu')
+        # model.load_state_dict(trained_state_dict)
+        model.to(rank)
+
+        model.eval()
+
+        print('start AA accuracy', flush=True) 
+        stats, stats_nat, stats_adv = self.test_loop(testloader, config, model, rank)
+        print('end AA accuracy', flush=True) 
+
+        statistics = { 'stats': stats, 'stats_nat': stats_nat, 'stats_adv': stats_adv,}
+        
+        # Put results into the queue
+        result_queue.put((rank, statistics))
+        print(f"Rank {rank}: Results sent to queue", flush=True)
+        
+    def test_loop(self, testloader, config, model, rank):
+
+        from utils import ActivationTracker, register_hooks, compute_stats
+
+        tracker_nat = ActivationTracker()
+        tracker_adv = ActivationTracker()
+        model.current_tracker = 'nat'
+        handles = register_hooks(model, tracker_nat, tracker_adv)
+
+        def forward_pass(x):
+            return model(x)
+        
+        adversary = AutoAttack(forward_pass, norm=config.distance, eps=config.epsilon, version='standard', verbose = False, device = rank)
+        print('adversary instanciated', flush=True) 
+        
+        stats = {'nb_correct_nat': 0, 'nb_correct_adv': 0, 'nb_examples': 0}
+        stats_nat = { "zero_count": 0, "dormant_count": 0, "overactive_count": 0, "total_neurons": 0 }
+        stats_adv = { "zero_count": 0, "dormant_count": 0, "overactive_count": 0, "total_neurons": 0 }
+        
+        for _, batch in enumerate( testloader ):
+
+            print('start batch iterations',rank, _, len(testloader), flush=True) 
+
+            data, target, _ = batch
+
+            data, target = data.to(rank), target.to(rank) 
+
+            batch_size = data.size(0)
+
+            x_adv = adversary.run_standard_evaluation(data, target, bs = batch_size )
+            
+            # print('Evaluate the model on natural data', rank, flush=True)
+            model.current_tracker = 'nat'  # Set the tracker to natural data
+            nat_outputs = model(data)
+            _, preds_nat = torch.max(nat_outputs.data, 1)
+
+            # print('Evaluate the model on adversarial examples', rank, flush=True)
+            model.current_tracker = 'adv'  # Set the tracker to adversarial data
+            adv_outputs = model(x_adv)
+            _, preds_adv = torch.max(adv_outputs.data, 1)
+
+            # print('Compute statitistics', rank, flush=True)
+
+            stats['nb_correct_nat'] += (preds_nat == target).sum().item()
+            stats['nb_correct_adv'] += (preds_adv == target).sum().item()
+            stats['nb_examples'] += target.size(0)
+
+            # Compute neuron statistics
+            stats_nat = compute_stats(tracker_nat.activations)
+            stats_adv = compute_stats(tracker_adv.activations)
+
+            # Accumulate the statistics
+            for key in ["zero_count", "dormant_count", "overactive_count", "total_neurons"]:
+                stats_nat[key] += stats_nat[key]
+                stats_adv[key] += stats_adv[key]
+
+            # Clear activations for next batch
+            tracker_nat.activations.clear()
+            tracker_adv.activations.clear()
+
+            # if _ == 3:
+            break
+
+        # Remove hooks
+        for handle in handles:
+            handle.remove()
+
+        return stats, stats_nat, stats_adv
+    
+    def launch_test(self,):
+        #Create a Queue to gather results
+        result_queue = Queue()
+
+        # Launch evaluation processes
+        processes = []
+        for rank in range(self.setup.world_size):
+            p = mp.Process(target=self.test, args=(rank, result_queue) )
+            p.start()
+            processes.append(p)
+
+        # Wait for all processes to finish
+        for p in processes:
+            p.join()
+
+        # Gather results from the Queue
+        all_statistics = {}
+        while not result_queue.empty():
+            rank, stats = result_queue.get()
+            all_statistics[rank] = stats
+
+        print(all_statistics)
+
+        # Log the aggregated results
+        statistics = self.setup.aggregate_results(all_statistics)
+
+        self.setup.log_results(statistics)
 
         
 def training_wrapper(rank, experiment, config ):
