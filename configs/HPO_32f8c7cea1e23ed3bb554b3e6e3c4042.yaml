@@ -1,5 +1,17 @@
 dataset: Flowers
 backbone: convnext_tiny
+<<<<<<< HEAD
+<<<<<<< HEAD
+ft_type: full_fine_tuning
+loss_function: TRADES_v2
+seed: 0
+epochs: 5
+lr1: 0.0004950159553733187
+lr2: 0.003833332156156657
+weight_decay: 5.6279320474151585e-05
+=======
+=======
+>>>>>>> 95fb973514bb7fc919bc8e206f751762e9197f73
 ft_type: none
 loss_function: TRADES_v2
 seed: 0
@@ -7,11 +19,24 @@ epochs: 10
 lr1: 0.0015676677195506057
 lr2: 0.007257005721594274
 weight_decay: 0.00025766385746135907
+<<<<<<< HEAD
+>>>>>>> 95fb973514bb7fc919bc8e206f751762e9197f73
+=======
+>>>>>>> 95fb973514bb7fc919bc8e206f751762e9197f73
 use_rs: false
 epsilon: 0.015686275
 step_size: 0.007843137
 perturb_steps: 10
 distance: Linf
 beta: 1.0
+<<<<<<< HEAD
+<<<<<<< HEAD
+exp: RQ1
+=======
 exp: ''
 exp_id: null
+>>>>>>> 95fb973514bb7fc919bc8e206f751762e9197f73
+=======
+exp: ''
+exp_id: null
+>>>>>>> 95fb973514bb7fc919bc8e206f751762e9197f73
