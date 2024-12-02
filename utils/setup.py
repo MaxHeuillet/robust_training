@@ -221,45 +221,73 @@ class Setup:
                         }
         
         self.log_results(statistics)
-    
+
+
     def log_results(self, statistics):
 
-        cluster_name = os.environ.get('SLURM_CLUSTER_NAME', 'Unknown')
-        data_path = './results/results_{}.csv'.format( cluster_name )
-        current_experiment = OmegaConf.to_container(self.config, resolve=True)
+        import pickle 
+        data_path = './results/results.pkl'
         
+        # Prepare the current experiment details
+        current_experiment = OmegaConf.load("./configs/HPO_{}.yaml".format(self.exp_id) )
+        current_experiment.update(statistics)
+        
+        # Use a file lock to prevent concurrent access
         lock = FileLock(data_path + '.lock')
 
         with lock:
-            
-            columns = list(self.config.keys())
-            key_columns = columns.copy()
-
-            try:
-                df = pd.read_csv(data_path)
-            except FileNotFoundError:
-                df = pd.DataFrame(columns=key_columns + ['timestamp'] + list( statistics.keys() ) )
-      
-            current_experiment['timestamp'] = generate_timestamp()
-            current_experiment.update(statistics)
-            
-            new_row = pd.DataFrame([current_experiment], columns=current_experiment.keys() )
-            
-            if df.empty:
-                df = pd.concat([df, new_row]) 
-                
+  
+            if os.path.exists(data_path):
+                with open(data_path, 'rb') as f:
+                    results_dict = pickle.load(f)
             else:
-                exists, match_mask = check_unique_id(df, new_row, 'exp_id')
-                print('exists', exists, match_mask)
+                results_dict = {}
+            
+            # Add or overwrite the entry for the current experiment
+            results_dict[self.exp_id] = current_experiment
 
-                if not exists:
-                    print('experiment does not exist in the database')
-                    df = pd.concat([df, new_row])
+            # Save the updated dictionary back to the file
+            with open(data_path, 'wb') as f:
+                pickle.dump(results_dict, f)
+    
+    # def log_results(self, statistics):
 
-                else:
-                    print('experiment already exists in the database')
-                    # If the experiment exists, overwrite the existing row
-                    new_row = new_row[df.columns]
-                    df.loc[match_mask, :] = new_row.values
+    #     cluster_name = os.environ.get('SLURM_CLUSTER_NAME', 'Unknown')
+    #     data_path = './results/results_{}.csv'.format( cluster_name )
+    #     current_experiment = OmegaConf.to_container(self.config, resolve=True)
+        
+    #     lock = FileLock(data_path + '.lock')
 
-            df.to_csv(data_path, header=True, index=False)
+    #     with lock:
+            
+    #         columns = list(self.config.keys())
+    #         key_columns = columns.copy()
+
+    #         try:
+    #             df = pd.read_csv(data_path)
+    #         except FileNotFoundError:
+    #             df = pd.DataFrame(columns=key_columns + ['timestamp'] + list( statistics.keys() ) )
+      
+    #         current_experiment['timestamp'] = generate_timestamp()
+    #         current_experiment.update(statistics)
+            
+    #         new_row = pd.DataFrame([current_experiment], columns=current_experiment.keys() )
+            
+    #         if df.empty:
+    #             df = pd.concat([df, new_row]) 
+                
+    #         else:
+    #             exists, match_mask = check_unique_id(df, new_row, 'exp_id')
+    #             print('exists', exists, match_mask)
+
+    #             if not exists:
+    #                 print('experiment does not exist in the database')
+    #                 df = pd.concat([df, new_row])
+
+    #             else:
+    #                 print('experiment already exists in the database')
+    #                 # If the experiment exists, overwrite the existing row
+    #                 new_row = new_row[df.columns]
+    #                 df.loc[match_mask, :] = new_row.values
+
+    #         df.to_csv(data_path, header=True, index=False)
