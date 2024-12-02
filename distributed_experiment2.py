@@ -455,6 +455,8 @@ if __name__ == "__main__":
     initialize(config_path="configs", version_base=None)
     config = compose(config_name="default_config")  # Store Hydra config in a variable
     args_dict = get_args2()
+    task = args_dict['task']
+    del args_dict["task"]
     config = OmegaConf.merge(config, args_dict)
     
     set_seeds(config.seed)
@@ -464,15 +466,10 @@ if __name__ == "__main__":
     experiment = BaseExperiment(setup)
 
     # experiment.setup.pre_training_log()
-
-    experiment.hyperparameter_optimization()
-       # Spawn processes for distributed training
-    # try:
-    mp.spawn(training_wrapper, args=(experiment, config), nprocs=world_size, join=True)
-    # finally:
-        # experiment.setup.cleanup()
-    # experiment.setup.post_training_log()
-    
-    experiment.launch_test()
-
+    if task == 'HPO':
+        experiment.hyperparameter_optimization()
+    elif task == 'train':
+        mp.spawn(training_wrapper, args=(experiment, config), nprocs=world_size, join=True)
+    elif task == 'test':
+        experiment.launch_test()
 

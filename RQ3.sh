@@ -13,36 +13,40 @@ backbones=(
            ) # 'wideresnet_28_10' 'robust_wideresnet_28_10' 
 
 ft_type=( 'full_fine_tuning' ) #'lora' ,  'linear_probing'
+tasks = ( 'HPO', 'train', 'test' )
 
 # Loop over architectures, pruning ratios, strategies, and learning rates
-for data in "${datas[@]}"; do
-  for loss in "${losses[@]}"; do
-    for id in $(seq 1 $seeds); do
-      for bckbn in "${backbones[@]}"; do
-        for fttype in "${ft_type[@]}"; do
-                    
-            if [ "$CC_CLUSTER" = "beluga" ]; then
-          
-                    sbatch --export=ALL,\
-BCKBN=$bckbn,\
-FTTYPE=$fttype,\
-DATA=$data,\
-SEED=$id,\
-LOSS=$loss \
-./distributed_experiment_beluga.sh
+for task in "${tasks[@]}"; do
+  for data in "${datas[@]}"; do
+    for loss in "${losses[@]}"; do
+      for id in $(seq 1 $seeds); do
+        for bckbn in "${backbones[@]}"; do
+          for fttype in "${ft_type[@]}"; do
+                      
+              if [ "$CC_CLUSTER" = "beluga" ]; then
+            
+                      sbatch --export=ALL,\
+  TASK=$task,\
+  BCKBN=$bckbn,\
+  FTTYPE=$fttype,\
+  DATA=$data,\
+  SEED=$id,\
+  LOSS=$loss \
+  ./distributed_experiment_beluga.sh
 
-            else
+              else
 
-                    sbatch --export=ALL,\
-BCKBN=$bckbn,\
-FTTYPE=$fttype,\
-DATA=$data,\
-SEED=$id,\
-LOSS=$loss \
-./distributed_experiment_other.sh
+                      sbatch --export=ALL,\
+  TASK=$task,\
+  BCKBN=$bckbn,\
+  FTTYPE=$fttype,\
+  DATA=$data,\
+  SEED=$id,\
+  LOSS=$loss \
+  ./distributed_experiment_other.sh
 
-          fi
-
+            fi
+          done
         done
       done
     done
