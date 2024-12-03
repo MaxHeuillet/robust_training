@@ -4,7 +4,7 @@ ft_type: "full_fine_tuning"  # fine tuning type
 
 loss_function: "TRADES_v2"  # the loss function
 seed: 0  # random seed
-epochs: 5  # number of total iterations to run
+epochs: 50  # number of total iterations to run
 
 lr1: null
 lr2: null
