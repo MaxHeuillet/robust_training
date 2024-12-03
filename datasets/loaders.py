@@ -103,6 +103,7 @@ def load_data(hp_opt,config,):
     elif dataset == 'Imagenette':
 
         N = 10
+        print(datadir)
         train_dataset = datasets.Imagenette(root=datadir, split='train', download=False, )
         dataset = datasets.Imagenette(root=datadir, split='val', download=False, )
         labels = [label for _, label in dataset]
