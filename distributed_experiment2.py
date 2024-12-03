@@ -237,7 +237,7 @@ class BaseExperiment:
                 
                 global_step += 1
 
-                if self.setup.hp_opt == False:
+                if not self.setup.hp_opt:
                     metrics = { "global_step": global_step, "loss_value": loss.item() * accumulation_steps, }
                     logger.log_metrics(metrics, epoch=iteration)
 
@@ -274,7 +274,7 @@ class BaseExperiment:
         if self.setup.hp_opt and rank == 0:
             print('val loss', val_loss)
             session.report({"loss": val_loss})
-        else:
+        elif not self.setup.hp_opt:
             metrics = { "val_loss": val_loss, "val_nat_accuracy": nat_acc, "val_adv_accuracy": adv_acc }
             logger.log_metrics(metrics, epoch=iteration)
 
