@@ -6,7 +6,7 @@ datas=( 'Imagenette' ) # 'CIFAR10' 'CIFAR100' 'Flowers' 'EuroSAT' 'Aircraft'
 losses=( 'CLASSIC_AT' 'TRADES_v2' )
 
 backbones=(
-  'convnext_tiny' 'robust_convnext_tiny' 'convnext_tiny.fb_in22k' 'random_convnext_tiny'
+  'convnext_tiny' 'robust_convnext_tiny' 'random_convnext_tiny' #'convnext_tiny.fb_in22k'
 ) 
 
 ft_type=( 'full_fine_tuning' )
