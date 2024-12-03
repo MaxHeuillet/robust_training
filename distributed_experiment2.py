@@ -138,6 +138,7 @@ class BaseExperiment:
             config = OmegaConf.load("./configs/HPO_{}.yaml".format(self.setup.exp_id) )
 
         print('initialize dataset', rank, flush=True) 
+        print(config)
 
         trainloader, valloader, _, train_sampler, val_sampler, _, N = self.initialize_loaders(config, rank)
 
