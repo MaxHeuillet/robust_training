@@ -107,7 +107,7 @@ def load_data(hp_opt,config,):
         dataset = datasets.Imagenette(root='./data', split='val', download=False, )
         labels = [label for _, label in dataset]
 
-        val_indices, test_indices = train_test_split( range(len(labels)), test_size=0.25, stratify=labels, random_state=42 )  
+        test_indices, val_indices = train_test_split( range(len(labels)), test_size=0.25, stratify=labels, random_state=42 )  
 
         val_dataset = torch.utils.data.Subset(dataset, val_indices)
         test_dataset = torch.utils.data.Subset(dataset, test_indices)

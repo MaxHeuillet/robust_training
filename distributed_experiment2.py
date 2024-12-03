@@ -253,7 +253,7 @@ class BaseExperiment:
                     scaler.update()
                     optimizer.zero_grad() # Clear gradients after optimizer step
                 
-                # break
+                break
             if self.setup.hp_opt:
                 self.validation( valloader, model, logger, iteration+1, rank)
             elif not self.setup.hp_opt and iteration % 10 == 0:
@@ -308,7 +308,7 @@ class BaseExperiment:
             total_correct_adv += (preds_adv == target).sum().item()
             total_examples += target.size(0)
         
-            # break
+            break
 
         return total_loss, total_correct_nat, total_correct_adv, total_examples
     
@@ -406,7 +406,7 @@ class BaseExperiment:
             tracker_adv.activations.clear()
 
             # if _ == 3:
-            # break
+            break
 
         # Remove hooks
         for handle in handles:
