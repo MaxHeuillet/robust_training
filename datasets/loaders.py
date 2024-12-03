@@ -103,8 +103,8 @@ def load_data(hp_opt,config,):
     elif dataset == 'Imagenette':
 
         N = 10
-        train_dataset = datasets.Imagenette(root='./data', split='train', download=False, )
-        dataset = datasets.Imagenette(root='./data', split='val', download=False, )
+        train_dataset = datasets.Imagenette(root=datadir, split='train', download=False, )
+        dataset = datasets.Imagenette(root=datadir, split='val', download=False, )
         labels = [label for _, label in dataset]
 
         test_indices, val_indices = train_test_split( range(len(labels)), test_size=0.25, stratify=labels, random_state=42 )  
