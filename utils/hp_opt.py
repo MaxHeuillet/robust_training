@@ -70,7 +70,7 @@ class Hp_opt:
 
         # Define maximum runtime in seconds
         from datetime import timedelta
-        max_runtime_seconds = timedelta(minutes=160).total_seconds()
+        max_runtime_seconds = timedelta(minutes=120).total_seconds()
 
         # Set up the Tuner with metric and mode specified
         tuner = Tuner(
@@ -80,11 +80,11 @@ class Hp_opt:
                 metric="loss",  # Specify the metric to optimize
                 mode="min",     # Specify the optimization direction
                 scheduler=scheduler,
-                num_samples=10,
+                num_samples=-1,
+                time_budget_s=max_runtime_seconds,
                 ),
             run_config=RunConfig(
                 name="hpo_experiment",
-                stop={"time_total_s": max_runtime_seconds},  # Stop after the specified time 
                   ),
         )
 

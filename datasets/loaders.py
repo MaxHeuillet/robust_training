@@ -37,15 +37,11 @@ def load_data(hp_opt,config,):
         
     if dataset == 'CIFAR10':
 
-        print('hey')
-        print(f"Current working directory: {os.getcwd()}")
-        
         N = 10
         
         dataset = datasets.CIFAR10(root=datadir, train=True, download=False, )
         train_size = int(0.95 * len(dataset))
         val_size = len(dataset) - train_size
-        print("train size", train_size, "val size", val_size)
 
         generator1 = torch.Generator().manual_seed(42)
         train_dataset, val_dataset = random_split(dataset, [train_size, val_size], generator = generator1)  
@@ -59,7 +55,6 @@ def load_data(hp_opt,config,):
 
         train_size = int(0.95 * len(dataset))
         val_size = len(dataset) - train_size
-        print("train size", train_size, "val size", val_size)
 
         generator1 = torch.Generator().manual_seed(42)
         train_dataset, val_dataset = random_split(dataset, [train_size, val_size], generator = generator1)  
@@ -103,8 +98,20 @@ def load_data(hp_opt,config,):
         N = 102
         train_dataset = datasets.Flowers102(root=datadir, split='train', download=False)
         val_dataset = datasets.Flowers102(root=datadir, split='val', download=False)
-        test_dataset = datasets.Flowers102(root=datadir, split='test', download=False)        
-        
+        test_dataset = datasets.Flowers102(root=datadir, split='test', download=False) 
+
+    elif dataset == 'Imagenette':
+
+        N = 10
+        train_dataset = datasets.Imagenette(root='./data', split='train', download=False, )
+        dataset = datasets.Imagenette(root='./data', split='val', download=False, )
+        labels = [label for _, label in dataset]
+
+        val_indices, test_indices = train_test_split( range(len(labels)), test_size=0.25, stratify=labels, random_state=42 )  
+
+        val_dataset = torch.utils.data.Subset(dataset, val_indices)
+        test_dataset = torch.utils.data.Subset(dataset, test_indices)
+                 
     return train_dataset, val_dataset, test_dataset, N, train_transform, transform
 
 def to_rgb(x):
