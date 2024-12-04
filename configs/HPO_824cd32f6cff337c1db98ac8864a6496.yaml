@@ -1,12 +1,12 @@
 dataset: Flowers
-backbone: convnext_tiny
+backbone: convnext_tiny.fb_in22k
 ft_type: full_fine_tuning
 loss_function: CLASSIC_AT
 seed: 1
 epochs: 5
-lr1: 0.00046689498537088876
-lr2: 0.0017169565852473844
-weight_decay: 3.643743139281255e-06
+lr1: 0.000465680463791956
+lr2: 0.007608481233714785
+weight_decay: 1.0010539860510488e-06
 use_rs: false
 epsilon: 0.015686275
 step_size: 0.007843137
