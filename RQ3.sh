@@ -2,7 +2,7 @@
 
 # Define variables
 seeds=1
-datas=( 'Imagenette' ) # 'CIFAR10' 'CIFAR100' 'Flowers' 'EuroSAT' 'Aircraft'
+datas=( 'Imagenette' 'Aircraft' 'Flowers' ) # 'CIFAR10' 'CIFAR100'  'EuroSAT' 
 losses=( 'CLASSIC_AT' 'TRADES_v2' )
 
 backbones=(
