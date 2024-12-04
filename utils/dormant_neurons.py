@@ -48,12 +48,14 @@ def _get_masks(activations, tau: float, ineq_type: str) -> torch.Tensor:
         normalized_score = score / (score.mean() + 1e-9)
         layer_mask = torch.zeros_like(normalized_score, dtype=torch.bool)
 
-        if tau > 0.0 and ineq_type == 'leq':
-            layer_mask[normalized_score <= tau] = 1
-        elif tau > 0.0 and ineq_type == 'geq':
-            layer_mask[normalized_score >= tau] = 1
+        if ineq_type == 'leq':
+            layer_mask[normalized_score <= tau] = True
+        elif ineq_type == 'geq':
+            layer_mask[normalized_score >= tau] = True
+        elif ineq_type == 'eq':
+            layer_mask[torch.isclose(normalized_score, torch.zeros_like(normalized_score))] = True
         else:
-            layer_mask[torch.isclose(normalized_score, torch.zeros_like(normalized_score))] = 1
+            raise ValueError(f"Invalid inequality type: {ineq_type}")
 
         masks.append(layer_mask)
 
@@ -62,23 +64,30 @@ def _get_masks(activations, tau: float, ineq_type: str) -> torch.Tensor:
 @torch.inference_mode()
 def compute_stats(activations):
     # Masks for tau=0 logging
-    zero_masks = _get_masks(activations, 0.0, 'leq')
-    total_neurons = sum([torch.numel(mask) for mask in zero_masks])
-    zero_count = sum([torch.sum(mask) for mask in zero_masks])
 
-    # Masks for dormant neurons (tau=0.1)
-    dormant_masks = _get_masks(activations, 0.1, 'leq')
-    dormant_count = sum([torch.sum(mask) for mask in dormant_masks])
 
-    # Masks for overactive neurons (tau=3)
-    overactive_masks = _get_masks(activations, 3, 'geq')
-    overactive_count = sum([torch.sum(mask) for mask in overactive_masks])
+    # Compute zero masks (neurons with zero normalized activation)
+    zero_masks = _get_masks(activations, 0.0, 'eq')
+    zero_count = sum([torch.sum(mask).item() for mask in zero_masks])
+
+    # Compute dormant masks (excluding zero neurons)
+    dormant_masks = _get_masks(activations, 0.01, 'leq')
+    # Exclude zero neurons from dormant neurons
+    adjusted_dormant_masks = [dormant_mask & (~zero_mask) for dormant_mask, zero_mask in zip(dormant_masks, zero_masks)]
+    dormant_count = sum([torch.sum(mask).item() for mask in adjusted_dormant_masks])
+
+    # Compute overactive masks
+    overactive_masks = _get_masks(activations, 3.0, 'geq')
+    overactive_count = sum([torch.sum(mask).item() for mask in overactive_masks])
+
+    # Compute total neurons
+    total_neurons = sum([mask.numel() for mask in zero_masks])
 
     return {
         "total_neurons": total_neurons,
-        "zero_count": zero_count.item(),
-        "dormant_count": dormant_count.item(),
-        "overactive_count": overactive_count.item(),
+        "zero_count": zero_count,
+        "dormant_count": dormant_count,
+        "overactive_count": overactive_count,
     }
 
 

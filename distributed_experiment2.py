@@ -363,7 +363,7 @@ class BaseExperiment:
         tracker_nat = ActivationTracker()
         tracker_adv = ActivationTracker()
         model.current_tracker = 'nat'
-        handles = register_hooks(model, tracker_nat, tracker_adv)
+        handles = register_hooks(model, tracker_nat, None)
 
         def forward_pass(x):
             return model(x)

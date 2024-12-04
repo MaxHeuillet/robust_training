@@ -6,11 +6,11 @@ datas=( 'Imagenette' 'Aircraft' 'Flowers' ) # 'CIFAR10' 'CIFAR100'  'EuroSAT'
 losses=( 'CLASSIC_AT' 'TRADES_v2' )
 
 backbones=(
-  'convnext_tiny' 'robust_convnext_tiny' 'random_convnext_tiny' #'convnext_tiny.fb_in22k'
+  'convnext_tiny' 'robust_convnext_tiny' 'random_convnext_tiny' #'convnext_tiny.fb_in22k' 
 ) 
 
 ft_type=( 'full_fine_tuning' )
-tasks=( 'train'  ) # 'HPO' 'test'
+tasks=( 'test' ) # 'HPO' 'train'  
 
 # Get the project name as the current date in yy-mm-dd-hh format
 PRNM=$(date +"%y-%m-%d-%H")
