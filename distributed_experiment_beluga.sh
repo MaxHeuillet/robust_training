@@ -31,5 +31,6 @@ python3 ./distributed_experiment2.py \
     --seed ${SEED} \
     --backbone ${BCKBN} \
     --ft_type ${FTTYPE} \
+    --project_name ${PRNM} \
     --exp ${EXP} \
     > stdout_$SLURM_JOB_ID 2> stderr_$SLURM_JOB_ID

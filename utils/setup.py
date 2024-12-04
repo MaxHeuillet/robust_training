@@ -9,6 +9,7 @@ import pandas as pd
 from datetime import datetime
 from omegaconf import OmegaConf
 import hashlib
+import datetime
 
 def generate_timestamp():
     return datetime.now().strftime('%y/%m/%d/%H/%M/%S')
@@ -31,12 +32,13 @@ def get_config_id(cfg) -> str:
     
     # Serialize the dictionary to a string (sorted keys for consistency)
     serialized_config = str(sorted(config_dict.items()))
+    print('serialized_config', serialized_config)
     
     # Generate a hash (MD5, SHA-256, etc.)
-    config_hash = hashlib.md5(serialized_config.encode()).hexdigest()  # Use SHA-256 if preferred
+    # config_hash = hashlib.md5( serialized_config.encode() ).hexdigest()  # Use SHA-256 if preferred
 
-    print('config_hash', config_hash)
-    return config_hash
+    # print('config_hash', config_hash)
+    return serialized_config
 
 class Setup:
 
@@ -46,8 +48,8 @@ class Setup:
         self.world_size = world_size
         self.hp_opt = False
         self.cluster_name = os.environ.get('SLURM_CLUSTER_NAME', 'Unknown')
-
-
+        self.project_name = config.project_name
+        
     def distributed_setup(self, rank):
 
         # os.environ['NCCL_DEBUG'] = 'INFO'  # or 'TRACE' for more detailed logs
@@ -226,7 +228,8 @@ class Setup:
 
     def log_results(self, hpo_results=None, statistics=None):
         import cloudpickle as pickle
-        data_path = './results/results_{}.pkl'.format( self.cluster_name )
+
+        data_path = './results/results_{}_{}.pkl'.format( self.cluster_name, self.project_name  )
 
         # Load the current experiment configuration
         current_experiment_config = OmegaConf.load(f"./configs/HPO_{self.exp_id}.yaml")
@@ -252,11 +255,14 @@ class Setup:
 
             # Update the dictionary with the respective sections
             results_dict[self.exp_id]["config"].update(current_experiment_config)
-            if statistics:
-                results_dict[self.exp_id]["statistics"].update(statistics)
+            
             if hpo_results:
                 results_dict[self.exp_id]["hpo_results"] = hpo_results
                 print(hpo_results)
+
+            if statistics:
+                results_dict[self.exp_id]["statistics"].update(statistics)
+            
 
             # Save the updated dictionary back to the file
             with open(data_path, 'wb') as f:

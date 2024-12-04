@@ -18,4 +18,4 @@ distance: "Linf"  # distance of trades
 beta: 1.0  # beta of trades
 
 # arguments for diffusion augmented learning
-exp: "RQ1" # the experiment type
+project_name: null # the experiment type
