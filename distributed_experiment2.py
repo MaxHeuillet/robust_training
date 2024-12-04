@@ -57,11 +57,11 @@ def compute_gradient_norms(model):
     for p in model.parameters():
         if p.grad is not None:
             param_norm = p.grad.detach().data.norm(2).item()
-            if torch.isnan(param_norm):
-                print(f"Gradient contains NaN : {p}")
-            elif torch.isinf(param_norm):
-                print(f"Gradient contains Inf : {p}")
-            total_norm += param_norm.item() ** 2
+            # if torch.isnan(param_norm):
+            #     print(f"Gradient contains NaN : {p}")
+            # elif torch.isinf(param_norm):
+            #     print(f"Gradient contains Inf : {p}")
+            total_norm += param_norm ** 2
     total_norm = total_norm ** 0.5
     return total_norm
 
