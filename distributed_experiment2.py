@@ -230,14 +230,19 @@ class BaseExperiment:
 
                 data, target = data.to(rank), target.to(rank) 
 
-                print('get loss', rank, flush=True)
+                # print('get loss', rank, flush=True)
 
-                loss_values, logits = get_loss(self.setup, model, data, target, )
+                # Use autocast for mixed precision during forward pass
+                with autocast():
+                    loss_values, logits = get_loss(self.setup, model, data, target)
+                    loss = loss_values.mean()
+                    loss = loss / accumulation_steps  # Scale the loss
 
-                loss = loss_values.mean() #train_dataset.compute_loss(idxs, loss_values)
-                loss = loss / accumulation_steps  # Scale the loss
+                # loss_values, logits = get_loss(self.setup, model, data, target, )
+                # loss = loss_values.mean() #train_dataset.compute_loss(idxs, loss_values)
+                # loss = loss / accumulation_steps  # Scale the loss
 
-                print('scale loss', rank, flush=True)
+                # print('scale loss', rank, flush=True)
 
                 scaler.scale(loss).backward()
                 
@@ -250,7 +255,7 @@ class BaseExperiment:
                 if (batch_id + 1) % max(1, accumulation_steps) == 0 or (batch_id + 1) == len(trainloader):
 
                     if not self.setup.hp_opt:
-                        print('unscale', rank, flush=True)
+                        # print('unscale', rank, flush=True)
                         scaler.unscale_(optimizer)
                         gradient_norm = compute_gradient_norms(model)
                         logger.log_metric("gradient_norm", float(gradient_norm), epoch=iteration)
