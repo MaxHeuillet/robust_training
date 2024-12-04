@@ -56,7 +56,7 @@ def compute_gradient_norms(model):
     total_norm = 0
     for p in model.parameters():
         if p.grad is not None:
-            param_norm = p.grad.data.norm(2)
+            param_norm = p.grad.detach().data.norm(2).item()
             if torch.isnan(param_norm):
                 print(f"Gradient contains NaN : {p}")
             elif torch.isinf(param_norm):
@@ -229,10 +229,14 @@ class BaseExperiment:
 
                 data, target = data.to(rank), target.to(rank) 
 
+                print('get loss', rank, flush=True)
+
                 loss_values, logits = get_loss(self.setup, model, data, target, )
 
                 loss = loss_values.mean() #train_dataset.compute_loss(idxs, loss_values)
                 loss = loss / accumulation_steps  # Scale the loss
+
+                print('scale loss', rank, flush=True)
 
                 scaler.scale(loss).backward()
                 
@@ -245,9 +249,10 @@ class BaseExperiment:
                 if (batch_id + 1) % max(1, accumulation_steps) == 0 or (batch_id + 1) == len(trainloader):
 
                     if not self.setup.hp_opt:
+                        print('unscale', rank, flush=True)
                         scaler.unscale_(optimizer)
                         gradient_norm = compute_gradient_norms(model)
-                        logger.log_metric("gradient_norm", gradient_norm, epoch=iteration)
+                        logger.log_metric("gradient_norm", float(gradient_norm), epoch=iteration)
 
                     scaler.step(optimizer)
                     scaler.update()

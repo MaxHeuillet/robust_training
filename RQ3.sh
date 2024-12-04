@@ -10,7 +10,7 @@ backbones=(
 ) 
 
 ft_type=( 'full_fine_tuning' )
-tasks=( 'HPO' 'train' 'test' )
+tasks=( 'train' 'test' ) #'HPO'
 
 # Loop over architectures, pruning ratios, strategies, and learning rates
 for task in "${tasks[@]}"; do
