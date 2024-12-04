@@ -27,18 +27,19 @@ def check_unique_id(df1, df2, unique_id_col):
         return False, []
     
 def get_config_id(cfg) -> str:
-    # Convert the Hydra config to a dictionary and ensure ordering
-    config_dict = OmegaConf.to_container(cfg, resolve=True, enum_to_str=True)
-    
-    # Serialize the dictionary to a string (sorted keys for consistency)
-    serialized_config = str(sorted(config_dict.items()))
-    print('serialized_config', serialized_config)
-    
-    # Generate a hash (MD5, SHA-256, etc.)
-    # config_hash = hashlib.md5( serialized_config.encode() ).hexdigest()  # Use SHA-256 if preferred
 
-    # print('config_hash', config_hash)
-    return serialized_config
+    # Convert the Hydra config to a dictionary and ensure ordering
+    # config_dict = OmegaConf.to_container(cfg, resolve=True, enum_to_str=True)
+    
+    # Get sorted list of values
+    # sorted_items = sorted(config_dict.items())
+    # values_list = [str(value) for key, value in sorted_items]
+    
+    # Join the values into a string
+    serialized_values = cfg.backbone + '_' + cfg.dataset + '_' + cfg.loss_function
+    print('serialized_values', serialized_values)
+    
+    return serialized_values
 
 class Setup:
 

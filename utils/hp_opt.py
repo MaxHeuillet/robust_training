@@ -70,7 +70,7 @@ class Hp_opt:
 
         # Define maximum runtime in seconds
         from datetime import timedelta
-        max_runtime_seconds = timedelta(minutes=150).total_seconds()
+        max_runtime_seconds = timedelta(minutes=150).total_seconds() #
 
         # Set up the Tuner with metric and mode specified
         tuner = Tuner(
