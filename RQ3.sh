@@ -10,7 +10,7 @@ backbones=(
 ) 
 
 ft_type=( 'full_fine_tuning' )
-tasks=( 'train' 'test' ) # 'HPO'
+tasks=( 'train'  ) # 'HPO' 'test'
 
 # Get the project name as the current date in yy-mm-dd-hh format
 PRNM=$(date +"%y-%m-%d-%H")
