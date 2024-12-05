@@ -2,18 +2,19 @@
 
 # Define variables
 seeds=1
-datas=( 'Imagenette' 'Flowers' ) # 'Aircraft' 'CIFAR10' 'CIFAR100'  'EuroSAT' 
-losses=( 'CLASSIC_AT' 'TRADES_v2' )
+datas=( 'Imagenette'  ) # 'Flowers' 'Aircraft' 'CIFAR10' 'CIFAR100'  'EuroSAT' 
+losses=(  'TRADES_v2' ) #'CLASSIC_AT'
 
 backbones=(
-  'convnext_tiny' 'robust_convnext_tiny' 'random_convnext_tiny' #'convnext_tiny.fb_in22k' 
+  'convnext_tiny' #'robust_convnext_tiny' 'convnext_tiny.fb_in22k' # 'random_convnext_tiny'
 ) 
 
 ft_type=( 'full_fine_tuning' )
-tasks=( 'test' ) # 'HPO' 'train'  'dormant'
+
+tasks=( 'train'  ) # 'HPO'  'test' 'dormant'
 
 # Get the project name as the current date in yy-mm-dd-hh format
-PRNM=$(date +"%y-%m-%d-%H")
+PRNM=$1
 
 # Loop over architectures, datasets, losses, seeds, backbones, and fine-tuning types
 for task in "${tasks[@]}"; do

@@ -34,6 +34,7 @@ from datasets import WeightedDataset, IndexedDataset, load_data
 from architectures import load_architecture, CustomModel
 from losses import get_loss, get_eval_loss
 from utils import get_args2, get_exp_name, set_seeds, load_optimizer, get_state_dict_dir
+from utils import ActivationTracker, register_hooks, compute_stats
 from torchvision.transforms import v2
 from torch.optim.lr_scheduler import CosineAnnealingLR
 from ray.air import session
@@ -136,7 +137,6 @@ class BaseExperiment:
         else:
             self.setup.distributed_setup(rank)
             logger = self.initialize_logger(rank)
-            config = OmegaConf.load("./configs/HPO_{}.yaml".format(self.setup.exp_id) )
 
         print('initialize dataset', rank, flush=True) 
         print(config)
@@ -158,7 +158,7 @@ class BaseExperiment:
 
         # torch.autograd.set_detect_anomaly(True)
 
-        #self.validation(valloader, model, experiment, 0, rank)
+        self.validation( valloader, model, logger, 0, rank)
         
         print('start the loop')
         
@@ -171,7 +171,7 @@ class BaseExperiment:
         if not self.setup.hp_opt and rank == 0:
             model_to_save = model.module
             model_to_save = model_to_save.cpu()
-            torch.save(model_to_save.state_dict(), get_state_dict_dir(self.setup.hp_opt,config) +'trained_model_{}.pt'.format(self.setup.exp_id) )
+            torch.save(model_to_save.state_dict(), get_state_dict_dir(self.setup.hp_opt, config) +'trained_model_{}.pt'.format(self.setup.exp_id) )
             print('Model saved by rank 0')
             logger.end()
         
@@ -217,7 +217,7 @@ class BaseExperiment:
 
         print('epochs', config.epochs)
         
-        for iteration in range(config.epochs):
+        for iteration in range(1, config.epochs+1):
 
             train_sampler.set_epoch(iteration)
             val_sampler.set_epoch(iteration)
@@ -266,9 +266,9 @@ class BaseExperiment:
                 
                 # break
             if self.setup.hp_opt:
-                self.validation( valloader, model, logger, iteration+1, rank)
+                self.validation( valloader, model, logger, iteration, rank)
             elif not self.setup.hp_opt and iteration % 10 == 0:
-                self.validation( valloader, model, logger, iteration+1, rank)
+                self.validation( valloader, model, logger, iteration, rank)
                 
             if scheduler is not None: scheduler.step()
 
@@ -276,28 +276,37 @@ class BaseExperiment:
 
     def validation(self, valloader, model, logger, iteration, rank):
 
-        total_loss, total_correct_nat, total_correct_adv, total_examples = self.validation_loop(valloader, model, rank)
+        total_loss, total_correct_nat, total_correct_adv, total_examples, stats_nat = self.validation_loop(valloader, model, rank)
         
         dist.barrier() 
         val_loss, _, _ = self.setup.sync_value(total_loss, total_examples, rank)
         nat_acc, _, _ = self.setup.sync_value(total_correct_nat, total_examples, rank)
         adv_acc, _, _ = self.setup.sync_value(total_correct_adv, total_examples, rank)
 
+        zero, _, _ = self.setup.sync_value(stats_nat['zero_count'], stats_nat['total_neurons'], rank)
+        dormant, _, _ = self.setup.sync_value(stats_nat['dormant_count'], stats_nat['total_neurons'], rank)
+        overact, _, _ = self.setup.sync_value(stats_nat['overactive_count'], stats_nat['total_neurons'], rank)
+
         if self.setup.hp_opt and rank == 0:
             print('val loss', val_loss)
             session.report({"loss": val_loss})
         elif not self.setup.hp_opt:
-            metrics = { "val_loss": val_loss, "val_nat_accuracy": nat_acc, "val_adv_accuracy": adv_acc }
+            metrics = { "val_loss": val_loss, "val_nat_accuracy": nat_acc, "val_adv_accuracy": adv_acc,
+                        "zero_count": zero, "dormant_count": dormant, "overactive_count": overact, }
             logger.log_metrics(metrics, epoch=iteration)
 
     def validation_loop(self, valloader, model, rank):
 
         model.eval()
 
+        tracker_nat = ActivationTracker()
+        handles = register_hooks(model, tracker_nat,)
+
         total_loss = 0.0
         total_correct_nat = 0
         total_correct_adv = 0
         total_examples = 0
+        stats_nat = { "zero_count": 0, "dormant_count": 0, "overactive_count": 0, "total_neurons": 0 }
 
         for batch_id, batch in enumerate( valloader ):
 
@@ -310,7 +319,7 @@ class BaseExperiment:
                 loss_values, _, _, logits_nat, logits_adv = get_eval_loss(self.setup, model, data, target, )
 
             total_loss += loss_values.sum().item()
-            # Compute predictions
+
             preds_nat = torch.argmax(logits_nat, dim=1)  # Predicted classes for natural examples
             preds_adv = torch.argmax(logits_adv, dim=1)  # Predicted classes for adversarial examples
 
@@ -318,10 +327,21 @@ class BaseExperiment:
             total_correct_nat += (preds_nat == target).sum().item()
             total_correct_adv += (preds_adv == target).sum().item()
             total_examples += target.size(0)
-        
-            # break
 
-        return total_loss, total_correct_nat, total_correct_adv, total_examples
+            # Compute neuron statistics
+            stats_nat = compute_stats(tracker_nat.activations)
+
+            # Accumulate the statistics
+            for key in ["zero_count", "dormant_count", "overactive_count", "total_neurons"]:
+                stats_nat[key] += stats_nat[key]
+
+            # break
+        
+        # Remove hooks
+        for handle in handles:
+            handle.remove()
+
+        return total_loss, total_correct_nat, total_correct_adv, total_examples, stats_nat
     
 
     def test(self, rank, result_queue):
@@ -354,8 +374,6 @@ class BaseExperiment:
         print(f"Rank {rank}: Results sent to queue", flush=True)
         
     def test_loop(self, testloader, config, model, rank):
-
-        from utils import ActivationTracker, register_hooks, compute_stats
 
         tracker_nat = ActivationTracker()
         handles = register_hooks(model, tracker_nat,)
@@ -467,6 +485,43 @@ class BaseExperiment:
 
         self.setup.log_results(statistics=stats)
 
+def training_wrapper(rank, experiment, config ):
+    hpo_config = OmegaConf.load("./configs/HPO_{}.yaml".format(experiment.setup.exp_id) )
+    hpo_config = OmegaConf.merge(config, hpo_config)
+    experiment.training(hpo_config, rank=rank)
+
+if __name__ == "__main__":
+
+    print('begining of the execution')
+
+    torch.multiprocessing.set_start_method("spawn", force=True)
+
+    # Initialize Hydra configuration
+    initialize(config_path="configs", version_base=None)
+    config = compose(config_name="default_config")  # Store Hydra config in a variable
+    args_dict = get_args2()
+    task = args_dict['task']
+    del args_dict["task"]
+    config = OmegaConf.merge(config, args_dict)
+    
+    set_seeds(config.seed)
+
+    world_size = torch.cuda.device_count()
+    setup = Setup(config, world_size)
+    experiment = BaseExperiment(setup)
+
+    # experiment.setup.pre_training_log()
+    if task == 'HPO':
+        experiment.hyperparameter_optimization()
+    elif task == 'train':
+        mp.spawn(training_wrapper, args=(experiment, config), nprocs=world_size, join=True)
+    elif task == 'test':
+        experiment.launch_test()
+    # elif task == 'dormant':
+    #     experiment.launch_dormant()
+
+
+
 
     # def dormant(self, rank, result_queue):
 
@@ -556,39 +611,3 @@ class BaseExperiment:
     #     dorms = self.setup.aggregate_results2(all_statistics)
 
     #     self.setup.log_results(dormants = dorms)
-
-def training_wrapper(rank, experiment, config ):
-    hpo_config = OmegaConf.load("./configs/HPO_{}.yaml".format(experiment.setup.exp_id) )
-    hpo_config = OmegaConf.merge(config, hpo_config)
-    experiment.training(hpo_config, rank=rank)
-
-if __name__ == "__main__":
-
-    print('begining of the execution')
-
-    torch.multiprocessing.set_start_method("spawn", force=True)
-
-    # Initialize Hydra configuration
-    initialize(config_path="configs", version_base=None)
-    config = compose(config_name="default_config")  # Store Hydra config in a variable
-    args_dict = get_args2()
-    task = args_dict['task']
-    del args_dict["task"]
-    config = OmegaConf.merge(config, args_dict)
-    
-    set_seeds(config.seed)
-
-    world_size = torch.cuda.device_count()
-    setup = Setup(config, world_size)
-    experiment = BaseExperiment(setup)
-
-    # experiment.setup.pre_training_log()
-    if task == 'HPO':
-        experiment.hyperparameter_optimization()
-    elif task == 'train':
-        mp.spawn(training_wrapper, args=(experiment, config), nprocs=world_size, join=True)
-    elif task == 'test':
-        experiment.launch_test()
-    # elif task == 'dormant':
-    #     experiment.launch_dormant()
-

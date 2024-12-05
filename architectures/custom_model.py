@@ -7,14 +7,19 @@ class CustomModel(nn.Module):
         super(CustomModel, self).__init__()
         self.config = config
         self.base_model = original_model
+        self.current_tracker = None
+        self.current_task = None
         
     def forward(self, x_1, x_2=None):
 
+        self.current_tracker = 'nat'
         logits_1 = self.base_model(x_1)
+        self.current_tracker = None
         if x_2 is not None:
             logits_2 = self.base_model(x_2)
             return logits_1, logits_2
         else:
+            
             return logits_1
 
     def set_fine_tuning_strategy(self, ):
