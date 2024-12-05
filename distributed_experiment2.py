@@ -94,11 +94,11 @@ class BaseExperiment:
         
     def initialize_loaders(self, config, rank):
 
-        train_dataset, val_dataset, test_dataset, N, train_transform, transform = load_data(self.setup.hp_opt, config) 
+        train_dataset, val_dataset, test_dataset, N, train_transform, _ = load_data(self.setup.hp_opt, config) 
         
-        train_dataset = IndexedDataset(train_dataset, train_transform, N, ) #prune_ratio = self.args.pruning_ratio, )
-        val_dataset = IndexedDataset(val_dataset, transform,  N,) 
-        test_dataset = IndexedDataset(test_dataset, transform,  N,) 
+        # train_dataset = IndexedDataset(train_dataset, train_transform, N, ) #prune_ratio = self.args.pruning_ratio, )
+        # val_dataset = IndexedDataset(val_dataset, transform,  N,) 
+        # test_dataset = IndexedDataset(test_dataset, transform,  N,) 
 
         # train_sampler = DistributedCustomSampler(self.args, train_dataset, num_replicas=self.world_size, rank=rank, drop_last=True)
         train_sampler = DistributedSampler(train_dataset, num_replicas=self.setup.world_size, rank=rank, shuffle=True, drop_last=True)
@@ -423,7 +423,7 @@ class BaseExperiment:
         return stats, stats_nat
     
     def launch_test(self):
-        import psutil  # Requires: pip install psutil
+        # import psutil  # Requires: pip install psutil
         # Create a Queue to gather results
         result_queue = Queue()
 
@@ -443,7 +443,7 @@ class BaseExperiment:
             p.start()
 
             # Set the CPU affinity for the process
-            process = psutil.Process(p.pid)
+            # process = psutil.Process(p.pid)
             # process.cpu_affinity(core_groups[rank])
 
             # print(f"Process {p.pid} assigned to cores: {core_groups[rank]}", flush=True)

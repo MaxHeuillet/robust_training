@@ -38,74 +38,77 @@ def load_data(hp_opt,config,):
     if dataset == 'CIFAR10':
 
         N = 10
-        
-        dataset = datasets.CIFAR10(root=datadir, train=True, download=False, )
-        train_size = int(0.95 * len(dataset))
-        val_size = len(dataset) - train_size
+        print('datadir', datadir)
+        train_dataset = datasets.CIFAR10(root=datadir, train=True, download=False, transform=train_transform)
+        dataset = datasets.CIFAR10(root=datadir, train=False, download=False, transform=transform)
+        labels = [label for _, label in dataset]
 
-        generator1 = torch.Generator().manual_seed(42)
-        train_dataset, val_dataset = random_split(dataset, [train_size, val_size], generator = generator1)  
-        test_dataset = datasets.CIFAR10(root=datadir, train=False, download=True, )
+        test_indices, val_indices = train_test_split( range(len(labels)), test_size=0.25, stratify=labels, random_state=42 )  
+
+        val_dataset = torch.utils.data.Subset(dataset, val_indices)
+        test_dataset = torch.utils.data.Subset(dataset, test_indices) 
 
     elif dataset == 'CIFAR100':
-        
+
         N = 100
+        print('datadir', datadir)
+        train_dataset = datasets.CIFAR100(root=datadir, train=True, download=False, transform=train_transform)
+        dataset = datasets.CIFAR100(root=datadir, train=False, download=False, transform=transform)
+        labels = [label for _, label in dataset]
+
+        test_indices, val_indices = train_test_split( range(len(labels)), test_size=0.25, stratify=labels, random_state=42 )  
+
+        val_dataset = torch.utils.data.Subset(dataset, val_indices)
+        test_dataset = torch.utils.data.Subset(dataset, test_indices) 
         
-        dataset = datasets.CIFAR100(root=datadir, train=True, download=False, )
-
-        train_size = int(0.95 * len(dataset))
-        val_size = len(dataset) - train_size
-
-        generator1 = torch.Generator().manual_seed(42)
-        train_dataset, val_dataset = random_split(dataset, [train_size, val_size], generator = generator1)  
-        test_dataset = datasets.CIFAR100(root=datadir, train=False, download=False, )
 
     elif dataset == 'Aircraft':
 
         N = 100
         
-        train_dataset = datasets.FGVCAircraft(root=datadir, split='train', download=False, )
-        val_dataset =   datasets.FGVCAircraft(root=datadir, split='val', download=False, )
-        test_dataset = datasets.FGVCAircraft(root=datadir, split='test', download=False, )
+        train_dataset = datasets.FGVCAircraft(root=datadir, split='train', download=False, transform=train_transform)
+        val_dataset =   datasets.FGVCAircraft(root=datadir, split='val', download=False, transform=transform)
+        test_dataset = datasets.FGVCAircraft(root=datadir, split='test', download=False, transform=transform)
 
     elif dataset == 'EuroSAT':
+        pass
 
-        # Load the dataset
-        dataset = datasets.EuroSAT(root=datadir, download=False, )
+        # # Load the dataset
+        # dataset = datasets.EuroSAT(root=datadir, download=False, )
 
-        # Extract labels from the dataset
-        labels = [label for _, label in dataset]
+        # # Extract labels from the dataset
+        # labels = [label for _, label in dataset]
 
-        # Split the dataset into train+val and test, keeping stratification
-        train_val_indices, test_indices = train_test_split( range(len(labels)), test_size=0.2, stratify=labels, random_state=42 )
+        # # Split the dataset into train+val and test, keeping stratification
+        # train_val_indices, test_indices = train_test_split( range(len(labels)), test_size=0.2, stratify=labels, random_state=42 )
 
-        # Extract labels for the train+val set for further stratification
-        train_val_labels = [labels[i] for i in train_val_indices]
+        # # Extract labels for the train+val set for further stratification
+        # train_val_labels = [labels[i] for i in train_val_indices]
 
-        # Split the train+val set into train and validation, keeping stratification
-        train_indices, val_indices = train_test_split( train_val_indices, test_size=0.15, stratify=train_val_labels, random_state=42 )  # 0.25 * 0.8 = 0.2 of the dataset
+        # # Split the train+val set into train and validation, keeping stratification
+        # train_indices, val_indices = train_test_split( train_val_indices, test_size=0.15, stratify=train_val_labels, random_state=42 )  # 0.25 * 0.8 = 0.2 of the dataset
 
-        # Create subsets for train, validation, and test
+        # # Create subsets for train, validation, and test
 
-        N = 10
-        train_dataset = torch.utils.data.Subset(dataset, train_indices)
-        val_dataset = torch.utils.data.Subset(dataset, val_indices)
-        test_dataset = torch.utils.data.Subset(dataset, test_indices)
+        # N = 10
+        # train_dataset = torch.utils.data.Subset(dataset, train_indices)
+        # val_dataset = torch.utils.data.Subset(dataset, val_indices)
+        # test_dataset = torch.utils.data.Subset(dataset, test_indices)
 
     elif dataset == 'Flowers':
             
         # Load the Flowers102 dataset
         N = 102
-        train_dataset = datasets.Flowers102(root=datadir, split='train', download=False)
-        val_dataset = datasets.Flowers102(root=datadir, split='val', download=False)
-        test_dataset = datasets.Flowers102(root=datadir, split='test', download=False) 
+        train_dataset = datasets.Flowers102(root=datadir, split='train', download=False, transform=train_transform)
+        val_dataset = datasets.Flowers102(root=datadir, split='val', download=False, transform=transform)
+        test_dataset = datasets.Flowers102(root=datadir, split='test', download=False,  transform=transform)
 
     elif dataset == 'Imagenette':
 
         N = 10
         print('datadir', datadir)
-        train_dataset = datasets.Imagenette(root=datadir, split='train', download=False, )
-        dataset = datasets.Imagenette(root=datadir, split='val', download=False, )
+        train_dataset = datasets.Imagenette(root=datadir, split='train', download=False,  transform=train_transform)
+        dataset = datasets.Imagenette(root=datadir, split='val', download=False,  transform=transform)
         labels = [label for _, label in dataset]
 
         test_indices, val_indices = train_test_split( range(len(labels)), test_size=0.25, stratify=labels, random_state=42 )  
