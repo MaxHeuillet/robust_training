@@ -16,6 +16,12 @@ tasks=( 'train'  ) # 'HPO'  'test' 'dormant'
 # Get the project name as the current date in yy-mm-dd-hh format
 PRNM=$1
 
+# Check if PRNM is set
+if [ -z "$PRNM" ]; then
+  echo "Error: Project name (PRNM) is not set. Please provide it as the first argument."
+  exit 1
+fi
+
 # Loop over architectures, datasets, losses, seeds, backbones, and fine-tuning types
 for task in "${tasks[@]}"; do
   for data in "${datas[@]}"; do

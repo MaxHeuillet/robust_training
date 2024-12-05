@@ -135,6 +135,7 @@ class BaseExperiment:
             logger = None
             
         else:
+            config = update_config
             self.setup.distributed_setup(rank)
             logger = self.initialize_logger(rank)
 
