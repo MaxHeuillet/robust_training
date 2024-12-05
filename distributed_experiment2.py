@@ -436,7 +436,7 @@ class BaseExperiment:
             process = psutil.Process(p.pid)
             process.cpu_affinity(core_groups[rank])
 
-            print(f"Process {p.pid} assigned to cores: {core_groups[rank]}")
+            print(f"Process {p.pid} assigned to cores: {core_groups[rank]}", flush=True)
             processes.append(p)
 
         # Wait for all processes to finish
