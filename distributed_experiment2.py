@@ -374,7 +374,7 @@ class BaseExperiment:
 
             print('start batch iterations',rank, _, len(testloader), flush=True) 
 
-            data, target, _ = batch
+            data, target = batch
 
             data, target = data.to(rank), target.to(rank) 
 
