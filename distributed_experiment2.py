@@ -328,7 +328,7 @@ class BaseExperiment:
 
         config = OmegaConf.load("./configs/HPO_{}.yaml".format(self.setup.exp_id) )
 
-        _, _, testloader, _, _, test_sampler, N = self.initialize_loaders(config, rank)
+        _, _, testloader, _, _, _, N = self.initialize_loaders(config, rank)
         # test_sampler.set_epoch(0)  
         print('dataloader', flush=True) 
         
@@ -380,17 +380,17 @@ class BaseExperiment:
 
             batch_size = data.size(0)
 
-            print('prepare attack', flush=True)
+            # print('prepare attack', flush=True)
 
             x_adv = adversary.run_standard_evaluation(data, target, bs = batch_size )
 
-            print('predict clean', flush=True)
+            # print('predict clean', flush=True)
             
             # print('Evaluate the model on natural data', rank, flush=True)
             nat_outputs = model(data)
             _, preds_nat = torch.max(nat_outputs.data, 1)
 
-            print('predict adv', flush=True)
+            # print('predict adv', flush=True)
 
             # print('Evaluate the model on adversarial examples', rank, flush=True)
             adv_outputs = model(x_adv)
@@ -398,7 +398,7 @@ class BaseExperiment:
 
             # print('Compute statitistics', rank, flush=True)
 
-            print('update', flush=True)
+            # print('update', flush=True)
 
             stats['nb_correct_nat'] += (preds_nat == target).sum().item()
             stats['nb_correct_adv'] += (preds_adv == target).sum().item()
@@ -438,7 +438,7 @@ class BaseExperiment:
         # Launch evaluation processes
         processes = []
 
-        for rank in range(1): # self.setup.world_size
+        for rank in range(self.setup.world_size): # 
 
             p = mp.Process(target=self.test, args=(rank, result_queue))
             p.start()
