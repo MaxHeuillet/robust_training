@@ -379,17 +379,25 @@ class BaseExperiment:
 
             batch_size = data.size(0)
 
+            print('prepare attack', flush=True)
+
             x_adv = adversary.run_standard_evaluation(data, target, bs = batch_size )
+
+            print('predict clean', flush=True)
             
             # print('Evaluate the model on natural data', rank, flush=True)
             nat_outputs = model(data)
             _, preds_nat = torch.max(nat_outputs.data, 1)
+
+            print('predict adv', flush=True)
 
             # print('Evaluate the model on adversarial examples', rank, flush=True)
             adv_outputs = model(x_adv)
             _, preds_adv = torch.max(adv_outputs.data, 1)
 
             # print('Compute statitistics', rank, flush=True)
+
+            print('update', flush=True)
 
             stats['nb_correct_nat'] += (preds_nat == target).sum().item()
             stats['nb_correct_adv'] += (preds_adv == target).sum().item()
@@ -420,11 +428,11 @@ class BaseExperiment:
         result_queue = Queue()
 
         # Define core groups (6 cores per process)
-        num_cores_per_process = 6
-        core_groups = [
-            list(range(i * num_cores_per_process, (i + 1) * num_cores_per_process))
-            for i in range(self.setup.world_size)
-        ]
+        # num_cores_per_process = 6
+        # core_groups = [
+        #     list(range(i * num_cores_per_process, (i + 1) * num_cores_per_process))
+        #     for i in range(self.setup.world_size)
+        # ]
 
         # Launch evaluation processes
         processes = []
@@ -436,9 +444,9 @@ class BaseExperiment:
 
             # Set the CPU affinity for the process
             process = psutil.Process(p.pid)
-            process.cpu_affinity(core_groups[rank])
+            # process.cpu_affinity(core_groups[rank])
 
-            print(f"Process {p.pid} assigned to cores: {core_groups[rank]}", flush=True)
+            # print(f"Process {p.pid} assigned to cores: {core_groups[rank]}", flush=True)
             processes.append(p)
 
         # Wait for all processes to finish
