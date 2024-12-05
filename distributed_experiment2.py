@@ -344,10 +344,10 @@ class BaseExperiment:
         model.eval()
 
         print('start AA accuracy', flush=True) 
-        stats, stats_nat, stats_adv = self.test_loop(testloader, config, model, rank)
+        stats, stats_nat = self.test_loop(testloader, config, model, rank)
         print('end AA accuracy', flush=True) 
 
-        statistics = { 'stats': stats, 'stats_nat': stats_nat, 'stats_adv': stats_adv,}
+        statistics = { 'stats': stats, 'stats_nat': stats_nat, }
         
         # Put results into the queue
         result_queue.put((rank, statistics))
