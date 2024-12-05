@@ -154,11 +154,6 @@ class Setup:
         total_dormant_nat = 0
         total_overactive_nat = 0
 
-        total_neurons_adv = 0
-        total_zero_adv = 0
-        total_dormant_adv = 0
-        total_overactive_adv = 0
-
         # Sum up values from each process
         for process_id, process_data in results.items():
             total_correct_nat += process_data['stats']['nb_correct_nat']
@@ -170,64 +165,51 @@ class Setup:
             total_overactive_nat += process_data['stats_nat']['overactive_count']
             total_neurons_nat += process_data['stats_nat']['total_neurons']
 
-            total_zero_adv += process_data['stats_adv']['zero_count']
-            total_dormant_adv += process_data['stats_adv']['dormant_count']
-            total_overactive_adv += process_data['stats_adv']['overactive_count']
-            total_neurons_adv += process_data['stats_adv']['total_neurons']
-
         # Calculate percentages
         clean_accuracy = total_correct_nat / total_examples
         robust_accuracy = total_correct_adv / total_examples
         nat_zero_mean = total_zero_nat / total_neurons_nat
         nat_dormant_mean = total_dormant_nat / total_neurons_nat
         nat_overactive_mean = total_overactive_nat / total_neurons_nat
-        adv_zero_mean = total_zero_adv / total_neurons_adv
-        adv_dormant_mean = total_dormant_adv / total_neurons_adv
-        adv_overactive_mean = total_overactive_adv / total_neurons_adv
 
         statistics = { 'clean_acc':clean_accuracy, 
                        'robust_acc':robust_accuracy,
                         'nat_zero_mean':nat_zero_mean,
                         'nat_dormant_mean':nat_dormant_mean,
                         'nat_overactive_mean':nat_overactive_mean,
-                        'adv_zero_mean':adv_zero_mean,
-                        'adv_dormant_mean':adv_dormant_mean,
-                        'adv_overactive_mean':adv_overactive_mean
                         }
 
         return statistics
     
-    def pre_training_log(self, ):
-
-        statistics = { 'clean_acc':-2, 
-                       'robust_acc':-2,
-                        'nat_zero_mean':-2,
-                        'nat_dormant_mean':-2,
-                        'nat_overactive_mean':-2,
-                        'adv_zero_mean':-2,
-                        'adv_dormant_mean':-2,
-                        'adv_overactive_mean':-2
-                        }
+    def aggregate_results2(self,results):
         
-        self.log_results(statistics)
+        total_neurons_nat = 0
+        total_zero_nat = 0
+        total_dormant_nat = 0
+        total_overactive_nat = 0
 
-    def post_training_log(self, ):
+        # Sum up values from each process
+        for process_id, process_data in results.items():
 
-        statistics = { 'clean_acc':-1, 
-                       'robust_acc':-1,
-                        'nat_zero_mean':-1,
-                        'nat_dormant_mean':-1,
-                        'nat_overactive_mean':-1,
-                        'adv_zero_mean':-1,
-                        'adv_dormant_mean':-1,
-                        'adv_overactive_mean':-1
+            total_zero_nat += process_data['zero_count']
+            total_dormant_nat += process_data['dormant_count']
+            total_overactive_nat += process_data['overactive_count']
+            total_neurons_nat += process_data['total_neurons']
+
+        nat_zero_mean = total_zero_nat / total_neurons_nat
+        nat_dormant_mean = total_dormant_nat / total_neurons_nat
+        nat_overactive_mean = total_overactive_nat / total_neurons_nat
+
+        statistics = { 'zero_mean':nat_zero_mean,
+                        'dormant_mean':nat_dormant_mean,
+                        'overactive_mean':nat_overactive_mean,
                         }
-        
-        self.log_results(statistics)
+
+        return statistics
+    
 
 
-
-    def log_results(self, hpo_results=None, statistics=None):
+    def log_results(self, hpo_results=None, statistics=None, dormants = None):
         import cloudpickle as pickle
 
         data_path = './results/results_{}_{}.pkl'.format( self.cluster_name, self.project_name  )
@@ -264,10 +246,44 @@ class Setup:
             if statistics:
                 results_dict[self.exp_id]["statistics"].update(statistics)
             
+            if dormants:
+                results_dict[self.exp_id]["dormants"].update(dormants)
+            
 
             # Save the updated dictionary back to the file
             with open(data_path, 'wb') as f:
                 pickle.dump(results_dict, f)
+
+
+
+    # def pre_training_log(self, ):
+
+    #     statistics = { 'clean_acc':-2, 
+    #                    'robust_acc':-2,
+    #                     'nat_zero_mean':-2,
+    #                     'nat_dormant_mean':-2,
+    #                     'nat_overactive_mean':-2,
+    #                     'adv_zero_mean':-2,
+    #                     'adv_dormant_mean':-2,
+    #                     'adv_overactive_mean':-2
+    #                     }
+        
+    #     self.log_results(statistics)
+
+    # def post_training_log(self, ):
+
+    #     statistics = { 'clean_acc':-1, 
+    #                    'robust_acc':-1,
+    #                     'nat_zero_mean':-1,
+    #                     'nat_dormant_mean':-1,
+    #                     'nat_overactive_mean':-1,
+    #                     'adv_zero_mean':-1,
+    #                     'adv_dormant_mean':-1,
+    #                     'adv_overactive_mean':-1
+    #                     }
+        
+    #     self.log_results(statistics)
+
     
     # def log_results(self, statistics):
 

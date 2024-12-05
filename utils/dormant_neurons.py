@@ -9,7 +9,7 @@ class ActivationTracker:
         self.activations = {}
 
 # Register hooks
-def register_hooks(model, tracker_nat, tracker_adv):
+def register_hooks(model, tracker_nat, ):
     
     handles = []
     for name, module in model.named_modules():
@@ -20,10 +20,8 @@ def register_hooks(model, tracker_nat, tracker_adv):
             def get_activation(module, model):
                 def hook(module, input, output):
                     name = module._name
-                    if model.current_tracker == 'nat':
-                        tracker_nat.activations[name] = F.relu(output)
-                    elif model.current_tracker == 'adv':
-                        tracker_adv.activations[name] = F.relu(output)
+                    tracker_nat.activations[name] = F.relu(output)
+
                 return hook
 
             handle = module.register_forward_hook(get_activation(module, model))

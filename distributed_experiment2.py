@@ -329,12 +329,9 @@ class BaseExperiment:
         config = OmegaConf.load("./configs/HPO_{}.yaml".format(self.setup.exp_id) )
 
         _, _, testloader, _, _, test_sampler, N = self.initialize_loaders(config, rank)
-        
+        test_sampler.set_epoch(0)  
         print('dataloader', flush=True) 
         
-        # Check the number of samples assigned to this process
-        num_samples = len(test_sampler)
-        print(f"Rank {rank}: Number of samples = {num_samples}", flush=True) 
 
         model = load_architecture(self.setup.hp_opt, config, N, )
 
@@ -361,9 +358,7 @@ class BaseExperiment:
         from utils import ActivationTracker, register_hooks, compute_stats
 
         tracker_nat = ActivationTracker()
-        tracker_adv = ActivationTracker()
-        model.current_tracker = 'nat'
-        handles = register_hooks(model, tracker_nat, tracker_adv)
+        handles = register_hooks(model, tracker_nat,)
 
         def forward_pass(x):
             return model(x)
@@ -373,7 +368,6 @@ class BaseExperiment:
         
         stats = {'nb_correct_nat': 0, 'nb_correct_adv': 0, 'nb_examples': 0}
         stats_nat = { "zero_count": 0, "dormant_count": 0, "overactive_count": 0, "total_neurons": 0 }
-        stats_adv = { "zero_count": 0, "dormant_count": 0, "overactive_count": 0, "total_neurons": 0 }
         
         for _, batch in enumerate( testloader ):
 
@@ -388,33 +382,27 @@ class BaseExperiment:
             x_adv = adversary.run_standard_evaluation(data, target, bs = batch_size )
             
             # print('Evaluate the model on natural data', rank, flush=True)
-            model.current_tracker = 'nat'  # Set the tracker to natural data
             nat_outputs = model(data)
             _, preds_nat = torch.max(nat_outputs.data, 1)
 
             # print('Evaluate the model on adversarial examples', rank, flush=True)
-            model.current_tracker = 'adv'  # Set the tracker to adversarial data
             adv_outputs = model(x_adv)
             _, preds_adv = torch.max(adv_outputs.data, 1)
 
             # print('Compute statitistics', rank, flush=True)
 
             stats['nb_correct_nat'] += (preds_nat == target).sum().item()
-            stats['nb_correct_adv'] += (preds_adv == target).sum().item()
             stats['nb_examples'] += target.size(0)
 
             # Compute neuron statistics
             stats_nat = compute_stats(tracker_nat.activations)
-            stats_adv = compute_stats(tracker_adv.activations)
 
             # Accumulate the statistics
             for key in ["zero_count", "dormant_count", "overactive_count", "total_neurons"]:
                 stats_nat[key] += stats_nat[key]
-                stats_adv[key] += stats_adv[key]
 
             # Clear activations for next batch
             tracker_nat.activations.clear()
-            tracker_adv.activations.clear()
 
             # if _ == 3:
             # break
@@ -423,7 +411,7 @@ class BaseExperiment:
         for handle in handles:
             handle.remove()
 
-        return stats, stats_nat, stats_adv
+        return stats, stats_nat
     
     def launch_test(self,):
         #Create a Queue to gather results
@@ -453,7 +441,96 @@ class BaseExperiment:
 
         self.setup.log_results(statistics = stats)
 
+
+    def dormant(self, rank, result_queue):
+
+        config = OmegaConf.load("./configs/HPO_{}.yaml".format(self.setup.exp_id) )
+
+        _, _, _, _, _, _, N = self.initialize_loaders(config, rank)
+
+        model = load_architecture(self.setup.hp_opt, config, N, )
+        model = CustomModel(config, model, )
+        trained_state_dict = torch.load('./state_dicts/trained_model_{}.pt'.format(self.setup.exp_id), map_location='cpu')
+        model.load_state_dict(trained_state_dict)
+        model.to(rank)
+
+        config.dataset = 'Imagenette'
+        _, _, testloader, _, _, test_sampler, _ = self.initialize_loaders(config, rank)
+        test_sampler.set_epoch(0)    
+
+        model.eval()
+
+        stats_nat = self.dormant_loop(testloader, model, rank)
+
+        result_queue.put( (rank, stats_nat) )
+            
+    def dormant_loop(self, testloader, model, rank):
+
+        from utils import ActivationTracker, register_hooks, compute_stats
+
+        tracker_nat = ActivationTracker()
+        tracker_adv = ActivationTracker()
+        model.current_tracker = 'nat'
+        handles = register_hooks(model, tracker_nat, tracker_adv)
+
+        stats_nat = { "zero_count": 0, "dormant_count": 0, "overactive_count": 0, "total_neurons": 0 }
+
+        for _, batch in enumerate( testloader ):
+
+            print('start batch iterations',rank, _, len(testloader), flush=True) 
+
+            data, target, _ = batch
+
+            data, target = data.to(rank), target.to(rank) 
+
+            # print('Evaluate the model on natural data', rank, flush=True)
+            model.current_tracker = 'nat'  # Set the tracker to natural data
+            _ = model(data)
+
+            # Compute neuron statistics
+            stats_nat = compute_stats(tracker_nat.activations)
+
+            # Accumulate the statistics
+            for key in ["zero_count", "dormant_count", "overactive_count", "total_neurons"]:
+                stats_nat[key] += stats_nat[key]
+
+            # Clear activations for next batch
+            tracker_nat.activations.clear()
+
+            # break
+
+        # Remove hooks
+        for handle in handles:
+            handle.remove()
+
+        return stats_nat
         
+    def launch_dormant(self,):
+        #Create a Queue to gather results
+        result_queue = Queue()
+
+        # Launch evaluation processes
+        processes = []
+        for rank in range(self.setup.world_size):
+            p = mp.Process(target=self.dormant, args=(rank, result_queue) )
+            p.start()
+            processes.append(p)
+
+        # Wait for all processes to finish
+        for p in processes:
+            p.join()
+
+        # Gather results from the Queue
+        all_statistics = {}
+        while not result_queue.empty():
+            rank, stats = result_queue.get()
+            all_statistics[rank] = stats
+
+        # Log the aggregated results
+        dorms = self.setup.aggregate_results2(all_statistics)
+
+        self.setup.log_results(dormants = dorms)
+
 def training_wrapper(rank, experiment, config ):
     hpo_config = OmegaConf.load("./configs/HPO_{}.yaml".format(experiment.setup.exp_id) )
     hpo_config = OmegaConf.merge(config, hpo_config)
@@ -485,5 +562,7 @@ if __name__ == "__main__":
     elif task == 'train':
         mp.spawn(training_wrapper, args=(experiment, config), nprocs=world_size, join=True)
     elif task == 'test':
+        experiment.launch_test()
+    elif task == 'dormant':
         experiment.launch_test()
 
