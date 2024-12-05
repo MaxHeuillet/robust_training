@@ -428,7 +428,9 @@ class BaseExperiment:
 
         # Launch evaluation processes
         processes = []
-        for rank in range(self.setup.world_size):
+
+        for rank in range(1): # self.setup.world_size
+            
             p = mp.Process(target=self.test, args=(rank, result_queue))
             p.start()
 
