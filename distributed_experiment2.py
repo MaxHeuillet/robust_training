@@ -120,7 +120,7 @@ class BaseExperiment:
         
         testloader = DataLoader(test_dataset, 
                                batch_size=self.setup.test_batch_size(), 
-                               sampler=test_sampler, 
+                               #sampler=test_sampler, 
                                num_workers=3,
                                pin_memory=True)
         
@@ -329,7 +329,7 @@ class BaseExperiment:
         config = OmegaConf.load("./configs/HPO_{}.yaml".format(self.setup.exp_id) )
 
         _, _, testloader, _, _, test_sampler, N = self.initialize_loaders(config, rank)
-        test_sampler.set_epoch(0)  
+        # test_sampler.set_epoch(0)  
         print('dataloader', flush=True) 
         
 
@@ -430,7 +430,7 @@ class BaseExperiment:
         processes = []
 
         for rank in range(1): # self.setup.world_size
-            
+
             p = mp.Process(target=self.test, args=(rank, result_queue))
             p.start()
 
