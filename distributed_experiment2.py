@@ -414,15 +414,29 @@ class BaseExperiment:
 
         return stats, stats_nat
     
-    def launch_test(self,):
-        #Create a Queue to gather results
+    def launch_test(self):
+        import psutil  # Requires: pip install psutil
+        # Create a Queue to gather results
         result_queue = Queue()
+
+        # Define core groups (6 cores per process)
+        num_cores_per_process = 6
+        core_groups = [
+            list(range(i * num_cores_per_process, (i + 1) * num_cores_per_process))
+            for i in range(self.setup.world_size)
+        ]
 
         # Launch evaluation processes
         processes = []
         for rank in range(self.setup.world_size):
-            p = mp.Process(target=self.test, args=(rank, result_queue) )
+            p = mp.Process(target=self.test, args=(rank, result_queue))
             p.start()
+
+            # Set the CPU affinity for the process
+            process = psutil.Process(p.pid)
+            process.cpu_affinity(core_groups[rank])
+
+            print(f"Process {p.pid} assigned to cores: {core_groups[rank]}")
             processes.append(p)
 
         # Wait for all processes to finish
@@ -438,9 +452,9 @@ class BaseExperiment:
         print(all_statistics)
 
         # Log the aggregated results
-        stats= self.setup.aggregate_results(all_statistics)
+        stats = self.setup.aggregate_results(all_statistics)
 
-        self.setup.log_results(statistics = stats)
+        self.setup.log_results(statistics=stats)
 
 
     # def dormant(self, rank, result_queue):
