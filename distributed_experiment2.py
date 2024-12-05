@@ -363,7 +363,8 @@ class BaseExperiment:
         def forward_pass(x):
             return model(x)
         
-        adversary = AutoAttack(forward_pass, norm=config.distance, eps=config.epsilon, version='standard', verbose = False, device = rank)
+        device = torch.device(f"cuda:{rank}")
+        adversary = AutoAttack(forward_pass, norm=config.distance, eps=config.epsilon, version='standard', verbose = False, device = device)
         print('adversary instanciated', flush=True) 
         
         stats = {'nb_correct_nat': 0, 'nb_correct_adv': 0, 'nb_examples': 0}
