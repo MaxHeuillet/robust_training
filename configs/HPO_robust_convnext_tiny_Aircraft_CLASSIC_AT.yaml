@@ -1,0 +1,16 @@
+dataset: Aircraft
+backbone: robust_convnext_tiny
+ft_type: full_fine_tuning
+loss_function: CLASSIC_AT
+seed: 1
+epochs: 50
+lr1: 3.863879405158726e-05
+lr2: 2.340746480576746e-05
+weight_decay: 5.559565426712562e-06
+use_rs: false
+epsilon: 0.015686275
+step_size: 0.007843137
+perturb_steps: 10
+distance: Linf
+beta: 1.0
+project_name: 24-12-04-11
