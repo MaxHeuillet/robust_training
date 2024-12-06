@@ -268,7 +268,7 @@ class BaseExperiment:
                     scaler.update()
                     optimizer.zero_grad() # Clear gradients after optimizer step
                 
-                # break
+                break
             if self.setup.hp_opt:
                 self.validation( valloader, model, logger, iteration, rank)
             elif not self.setup.hp_opt and iteration % 10 == 0:
@@ -281,6 +281,8 @@ class BaseExperiment:
     def validation(self, valloader, model, logger, iteration, rank):
 
         total_loss, total_correct_nat, total_correct_adv, total_examples, stats_nat = self.validation_loop(valloader, model, rank)
+
+        print(stats_nat)
         
         dist.barrier() 
         val_loss, _, _ = self.setup.sync_value(total_loss, total_examples, rank)
@@ -335,11 +337,13 @@ class BaseExperiment:
             # Compute neuron statistics
             stats_nat = compute_stats(tracker_nat.activations)
 
+            print(stats_nat)
+
             # Accumulate the statistics
             for key in ["zero_count", "dormant_count", "overactive_count", "total_neurons"]:
                 stats_nat[key] += stats_nat[key]
 
-            # break
+            break
         
         # Remove hooks
         for handle in handles:

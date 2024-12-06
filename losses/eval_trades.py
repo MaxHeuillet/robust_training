@@ -22,11 +22,13 @@ def trades_loss_eval(setup,
     
     model.eval()
     
+    # print('generate attack')
     x_adv = apgd_attack(setup, model, x_nat, y)
 
-    model.current_task = 'infer'
+    model.module.current_task = 'infer'
+    # print('infer')
     logits_nat, logits_adv = model(x_nat, x_adv)
-    model.current_task = None
+    model.module.current_task = None
 
     # logits_nat = model(x_natural)    
     # logits_adv = model(x_adv)

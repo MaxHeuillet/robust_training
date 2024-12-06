@@ -20,7 +20,9 @@ def register_hooks(model, tracker_nat, ):
             def get_activation(module, model):
                 def hook(module, input, output):
                     name = module._name
+                    # print('hook called', model.module.current_tracker, model.module.current_task)
                     if model.module.current_tracker == 'nat' and model.module.current_task == 'infer':
+                        # print('hook activated')
                         tracker_nat.activations[name] = F.relu(output)
                     
                 return hook
