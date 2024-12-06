@@ -273,7 +273,7 @@ class BaseExperiment:
                     scaler.update()
                     optimizer.zero_grad() # Clear gradients after optimizer step
                 
-                break
+                # break
             if self.setup.hp_opt:
                 self.validation( valloader, model, logger, iteration, rank)
             elif not self.setup.hp_opt and iteration % 10 == 0:
@@ -350,7 +350,7 @@ class BaseExperiment:
             for key in ["zero_count", "dormant_count", "overactive_count", "total_neurons"]:
                 stats_nat[key] += res[key]
 
-            break
+            # break
         
         # Remove hooks
         for handle in handles:
