@@ -136,6 +136,8 @@ class BaseExperiment:
             config = OmegaConf.merge(self.setup.config, update_config)
             rank = train.get_context().get_world_rank()
             logger = None
+            resources = session.get_trial_resources()
+            print(f"Trial resource allocation: {resources}")
             
         else:
             config = OmegaConf.load( "./configs/HPO_{}.yaml".format(self.setup.exp_id) )
@@ -518,12 +520,12 @@ if __name__ == "__main__":
     experiment = BaseExperiment(setup)
 
     # experiment.setup.pre_training_log()
-    if task == 'HPO':
-        experiment.hyperparameter_optimization()
-    elif task == 'train':
-        mp.spawn(training_wrapper, args=(experiment, config), nprocs=world_size, join=True)
-    elif task == 'test':
-        experiment.launch_test()
+    # if task == 'HPO':
+    experiment.hyperparameter_optimization()
+    # elif task == 'train':
+    #     mp.spawn(training_wrapper, args=(experiment, config), nprocs=world_size, join=True)
+    # elif task == 'test':
+    #     experiment.launch_test()
     # elif task == 'dormant':
     #     experiment.launch_dormant()
 
