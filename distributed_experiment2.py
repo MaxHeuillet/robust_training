@@ -138,7 +138,7 @@ class BaseExperiment:
             logger = None
             
         else:
-            config = OmegaConf.load("./configs/HPO_{}.yaml".format(self.setup.exp_id) )
+            config = OmegaConf.load( "./configs/HPO_{}.yaml".format(self.setup.exp_id) )
             self.setup.distributed_setup(rank)
             logger = self.initialize_logger(rank)
 
@@ -230,7 +230,7 @@ class BaseExperiment:
 
             for batch_id, batch in enumerate( trainloader ) :
 
-                data, target, idxs = batch
+                data, target = batch
 
                 data, target = data.to(rank), target.to(rank) 
 
@@ -314,7 +314,7 @@ class BaseExperiment:
 
         for batch_id, batch in enumerate( valloader ):
 
-            data, target, idxs = batch
+            data, target = batch
 
             data, target = data.to(rank), target.to(rank) 
             # print('shape validation batch', data.shape)
