@@ -239,15 +239,15 @@ class Setup:
             # Update the dictionary with the respective sections
             results_dict[self.exp_id]["config"].update(current_experiment_config)
             
-            if hpo_results:
-                results_dict[self.exp_id]["hpo_results"] = hpo_results
-                print(hpo_results)
+            # if hpo_results:
+            #     results_dict[self.exp_id]["hpo_results"] = hpo_results
+            #     print(hpo_results)
 
             if statistics:
                 results_dict[self.exp_id]["statistics"].update(statistics)
             
-            if dormants:
-                results_dict[self.exp_id]["dormants"].update(dormants)
+            # if dormants:
+            #     results_dict[self.exp_id]["dormants"].update(dormants)
             
 
             # Save the updated dictionary back to the file

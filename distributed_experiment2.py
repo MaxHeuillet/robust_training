@@ -294,7 +294,7 @@ class BaseExperiment:
 
         print(zero, dormant, overact)
 
-        if self.setup.hp_opt and rank == 0:
+        if self.setup.hp_opt:
             print('val loss', val_loss)
             session.report({"loss": val_loss})
         elif not self.setup.hp_opt and rank == 0:
@@ -442,7 +442,7 @@ class BaseExperiment:
             tracker_nat.activations.clear()
 
             # if _ == 3:
-            # break
+            break
 
         # Remove hooks
         for handle in handles:
