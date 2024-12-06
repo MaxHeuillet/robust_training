@@ -163,8 +163,8 @@ class BaseExperiment:
         model = DDP(model, device_ids=[rank])
 
         # torch.autograd.set_detect_anomaly(True)
-
-        self.validation( valloader, model, logger, 0, rank)
+        if not self.setup.hp_opt:
+            self.validation( valloader, model, logger, 0, rank)
         
         print('start the loop')
         
