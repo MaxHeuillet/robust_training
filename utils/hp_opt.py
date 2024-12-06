@@ -54,7 +54,7 @@ class Hp_opt:
             train_loop_per_worker=training_func,
 
             scaling_config=ScalingConfig(
-                # num_workers=4,  # Number of workers
+                #num_workers=4,  # Number of workers
                 use_gpu=True,  # Use GPUs
                 #resources_per_worker={"CPU": 4, "GPU": 1},  # Resources per worker
             ),

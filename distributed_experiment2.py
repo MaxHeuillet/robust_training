@@ -139,56 +139,59 @@ class BaseExperiment:
         logging.basicConfig(level=logging.INFO)
         print(f"Rank {rank}: Logging this message")
 
-        if self.setup.hp_opt:
-            config = OmegaConf.merge(self.setup.config, update_config)
-            rank = train.get_context().get_world_rank()
-            logger = None
-            resources = session.get_trial_resources()
-            print(f"Trial resource allocation: {resources}")
+        if train.get_context().get_world_rank() == 1:
+            print("Worker 1")
+
+        # if self.setup.hp_opt:
+        #     config = OmegaConf.merge(self.setup.config, update_config)
+        #     rank = train.get_context().get_world_rank()
+        #     logger = None
+        #     resources = session.get_trial_resources()
+        #     print(f"Trial resource allocation: {resources}")
             
-        else:
-            config = OmegaConf.load( "./configs/HPO_{}.yaml".format(self.setup.exp_id) )
-            self.setup.distributed_setup(rank)
-            logger = self.initialize_logger(rank)
+        # else:
+        #     config = OmegaConf.load( "./configs/HPO_{}.yaml".format(self.setup.exp_id) )
+        #     self.setup.distributed_setup(rank)
+        #     logger = self.initialize_logger(rank)
 
-        print('initialize dataset', rank, flush=True) 
-        print(config, rank, flush=True) 
+        # print('initialize dataset', rank, flush=True) 
+        # print(config, rank, flush=True) 
 
-        trainloader, valloader, _, train_sampler, val_sampler, _, N = self.initialize_loaders(config, rank)
+        # trainloader, valloader, _, train_sampler, val_sampler, _, N = self.initialize_loaders(config, rank)
 
-        model = load_architecture(self.setup.hp_opt, config, N, )
+        # model = load_architecture(self.setup.hp_opt, config, N, )
 
-        optimizer = load_optimizer(config, model,)   
+        # optimizer = load_optimizer(config, model,)   
         
-        model = CustomModel(config, model, )
-        # model.set_fine_tuning_strategy()
-        # model._enable_all_gradients()
-        model.to(rank)
+        # model = CustomModel(config, model, )
+        # # model.set_fine_tuning_strategy()
+        # # model._enable_all_gradients()
+        # model.to(rank)
 
-        # for name, param in model.named_parameters():
-        #     print(f"Parameter: {name}, strides: {param.data.stride()}")
-        model = DDP(model, device_ids=[rank])
+        # # for name, param in model.named_parameters():
+        # #     print(f"Parameter: {name}, strides: {param.data.stride()}")
+        # model = DDP(model, device_ids=[rank])
 
-        # torch.autograd.set_detect_anomaly(True)
-        if not self.setup.hp_opt:
-            self.validation( valloader, model, logger, 0, rank)
+        # # torch.autograd.set_detect_anomaly(True)
+        # if not self.setup.hp_opt:
+        #     self.validation( valloader, model, logger, 0, rank)
         
-        print('start the loop')
+        # print('start the loop')
         
-        scheduler = CosineAnnealingLR( optimizer, T_max=config.epochs, eta_min=0 )
+        # scheduler = CosineAnnealingLR( optimizer, T_max=config.epochs, eta_min=0 )
 
-        self.fit(config, model, optimizer, scheduler, trainloader, valloader, train_sampler, val_sampler, N, rank, logger)
+        # self.fit(config, model, optimizer, scheduler, trainloader, valloader, train_sampler, val_sampler, N, rank, logger)
 
-        dist.barrier() 
+        # dist.barrier() 
 
-        if not self.setup.hp_opt and rank == 0:
-            model_to_save = model.module
-            model_to_save = model_to_save.cpu()
-            torch.save(model_to_save.state_dict(), get_state_dict_dir(self.setup.hp_opt, config) +'trained_model_{}_{}.pt'.format(self.setup.project_name, self.setup.exp_id) )
-            print('Model saved by rank 0')
-            logger.end()
+        # if not self.setup.hp_opt and rank == 0:
+        #     model_to_save = model.module
+        #     model_to_save = model_to_save.cpu()
+        #     torch.save(model_to_save.state_dict(), get_state_dict_dir(self.setup.hp_opt, config) +'trained_model_{}_{}.pt'.format(self.setup.project_name, self.setup.exp_id) )
+        #     print('Model saved by rank 0')
+        #     logger.end()
         
-        self.setup.cleanup() 
+        # self.setup.cleanup() 
 
     def hyperparameter_optimization(self, ):  
 
