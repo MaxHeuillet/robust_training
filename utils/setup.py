@@ -212,10 +212,10 @@ class Setup:
     def log_results(self, hpo_results=None, statistics=None, dormants = None):
         import cloudpickle as pickle
 
-        data_path = './results/results_{}_{}.pkl'.format( self.cluster_name, self.project_name  )
+        data_path = './results/results_{}_{}.pkl'.format( self.project_name, self.exp_id  )
 
         # Load the current experiment configuration
-        current_experiment_config = OmegaConf.load(f"./configs/HPO_{self.exp_id}.yaml")
+        current_experiment_config = OmegaConf.load("./configs/HPO_{}_{}.yaml".format(self.project_name, self.exp_id) )
 
         # Use a file lock to prevent concurrent access
         lock = FileLock(data_path + '.lock')

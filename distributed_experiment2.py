@@ -175,7 +175,7 @@ class BaseExperiment:
         if not self.setup.hp_opt and rank == 0:
             model_to_save = model.module
             model_to_save = model_to_save.cpu()
-            torch.save(model_to_save.state_dict(), get_state_dict_dir(self.setup.hp_opt, config) +'trained_model_{}.pt'.format(self.setup.exp_id) )
+            torch.save(model_to_save.state_dict(), get_state_dict_dir(self.setup.hp_opt, config) +'trained_model_{}_{}.pt'.format(self.setup.project_name, self.setup.exp_id) )
             print('Model saved by rank 0')
             logger.end()
         
@@ -199,7 +199,7 @@ class BaseExperiment:
 
         # Extract relevant data (configurations and metrics) from result_grid
         best_config = OmegaConf.merge(self.setup.config, best_result.config['train_loop_config']  )
-        OmegaConf.save(best_config, './configs/HPO_{}.yaml'.format(self.setup.exp_id) )
+        OmegaConf.save(best_config, './configs/HPO_{}_{}.yaml'.format(self.setup.project_name, self.setup.exp_id) )
 
         self.setup.log_results(hpo_results = result_grid)
 
@@ -353,7 +353,7 @@ class BaseExperiment:
 
     def test(self, rank, result_queue):
 
-        config = OmegaConf.load("./configs/HPO_{}.yaml".format(self.setup.exp_id) )
+        config = OmegaConf.load("./configs/HPO_{}_{}.yaml".format(self.setup.project_name, self.setup.exp_id) )
 
         _, _, testloader, _, _, _, N = self.initialize_loaders(config, rank)
         # test_sampler.set_epoch(0)  
@@ -364,7 +364,7 @@ class BaseExperiment:
 
         model = CustomModel(config, model, )
         # model.set_fine_tuning_strategy()
-        trained_state_dict = torch.load('./state_dicts/trained_model_{}.pt'.format(self.setup.exp_id), map_location='cpu')
+        trained_state_dict = torch.load('./state_dicts/trained_model_{}_{}.pt'.format(self.setup.project_name, self.setup.exp_id), map_location='cpu')
         model.load_state_dict(trained_state_dict)
         model.to(rank)
 
@@ -493,8 +493,8 @@ class BaseExperiment:
         self.setup.log_results(statistics=stats)
 
 def training_wrapper(rank, experiment, config ):
-    hpo_config = OmegaConf.load("./configs/HPO_{}.yaml".format(experiment.setup.exp_id) )
-    hpo_config = OmegaConf.merge(config, hpo_config)
+    hpo_config = OmegaConf.load("./configs/HPO_{}_{}.yaml".format(experiment.setup.project_name, experiment.setup.exp_id) )
+    # hpo_config = OmegaConf.merge(config, hpo_config)
     experiment.training(hpo_config, rank=rank)
 
 if __name__ == "__main__":
@@ -518,12 +518,12 @@ if __name__ == "__main__":
     experiment = BaseExperiment(setup)
 
     # experiment.setup.pre_training_log()
-    # if task == 'HPO':
-    #     experiment.hyperparameter_optimization()
-    # elif task == 'train':
-    mp.spawn(training_wrapper, args=(experiment, config), nprocs=world_size, join=True)
-    # elif task == 'test':
-    #     experiment.launch_test()
+    if task == 'HPO':
+        experiment.hyperparameter_optimization()
+    elif task == 'train':
+        mp.spawn(training_wrapper, args=(experiment, config), nprocs=world_size, join=True)
+    elif task == 'test':
+        experiment.launch_test()
     # elif task == 'dormant':
     #     experiment.launch_dormant()
 
