@@ -152,7 +152,7 @@ class BaseExperiment:
 
         if self.setup.hp_opt:
             config = OmegaConf.merge(self.setup.config, update_config)
-            rank = os.environ.get("CUDA_VISIBLE_DEVICES", "No GPU assigned")
+            rank = int( os.environ.get("CUDA_VISIBLE_DEVICES", "No GPU assigned") ) 
             logger = None
             resources = session.get_trial_resources()
             print(f"Trial resource allocation: {resources}")
