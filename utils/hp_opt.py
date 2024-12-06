@@ -70,7 +70,7 @@ class Hp_opt:
 
         # Define maximum runtime in seconds
         from datetime import timedelta
-        max_runtime_seconds = timedelta(minutes=2).total_seconds() #150
+        max_runtime_seconds = timedelta(minutes=5).total_seconds() #150
 
         # Set up the Tuner with metric and mode specified
         tuner = Tuner(
@@ -80,7 +80,7 @@ class Hp_opt:
                 metric="loss",  # Specify the metric to optimize
                 mode="min",     # Specify the optimization direction
                 scheduler=scheduler,
-                num_samples=2,
+                num_samples=5,
                 time_budget_s=max_runtime_seconds,
                 ),
             run_config=RunConfig(
