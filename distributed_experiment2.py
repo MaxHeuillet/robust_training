@@ -143,7 +143,7 @@ class BaseExperiment:
             print(f"Trial resource allocation: {resources}")
             
         else:
-            config = OmegaConf.load( "./configs/HPO_{}.yaml".format(self.setup.exp_id) )
+            config = OmegaConf.load( "./configs/HPO_{}_{}.yaml".format(self.setup.project_name, self.setup.exp_id) )
             self.setup.distributed_setup(rank)
             logger = self.initialize_logger(rank)
 
@@ -448,7 +448,7 @@ class BaseExperiment:
             tracker_nat.activations.clear()
 
             # if _ == 3:
-            break
+            # break
 
         # Remove hooks
         for handle in handles:
