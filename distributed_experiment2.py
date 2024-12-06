@@ -187,6 +187,8 @@ class BaseExperiment:
 
         self.setup.hp_opt = True 
         import logging
+        import os
+        os.environ["RAY_DEDUP_LOGS"] = "0"
 
         ray.init(logging_level=logging.DEBUG)
 
