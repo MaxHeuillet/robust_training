@@ -200,7 +200,7 @@ class BaseExperiment:
         import os
         os.environ["RAY_DEDUP_LOGS"] = "0"
 
-        ray.init(logging_level=logging.DEBUG)
+        ray.init() #logging_level=logging.DEBUG
 
         hp_search = Hp_opt()
         print('epochs in the HP function', self.setup.config.epochs)
