@@ -2,7 +2,7 @@
 
 # Define variables
 seeds=1
-datas=(  'Aircraft' ) #'Imagenette' 'Flowers'  'CIFAR10' 'CIFAR100'  'EuroSAT' 
+datas=( 'Imagenette' 'Flowers' 'Aircraft' ) #  'CIFAR10' 'CIFAR100'  'EuroSAT' 
 losses=(  'TRADES_v2' 'CLASSIC_AT' ) #
 
 backbones=(
@@ -11,7 +11,7 @@ backbones=(
 
 ft_type=( 'full_fine_tuning' )
 
-tasks=(  'HPO'  ) #  'test' 'dormant'
+tasks=(  'train'  ) #  'HPO' 'test' 'dormant'
 
 # Get the project name as the current date in yy-mm-dd-hh format
 PRNM=$1
