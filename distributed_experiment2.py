@@ -139,6 +139,9 @@ class BaseExperiment:
         logging.basicConfig(level=logging.INFO)
         print(f"Rank {rank}: Logging this message")
 
+        rank = os.getpid() % 4  # Simulate rank based on PID (example)
+        print(f"Simulated Rank: {rank}")
+
         if train.get_context().get_world_rank() == 1:
             print("Worker 1")
 
