@@ -145,6 +145,11 @@ class BaseExperiment:
         if train.get_context().get_world_rank() == 1:
             print("Worker 1")
 
+        print('world size', self.setup.world_size, flush=True)
+
+        gpu_id = os.environ.get("CUDA_VISIBLE_DEVICES", "No GPU assigned")
+        print(f"Worker GPU ID: {gpu_id}")
+
         # if self.setup.hp_opt:
         #     config = OmegaConf.merge(self.setup.config, update_config)
         #     rank = train.get_context().get_world_rank()
