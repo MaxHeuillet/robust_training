@@ -2,11 +2,11 @@
 
 # Define variables
 seeds=1
-datas=( 'Imagenette'  ) # 'Flowers' 'Aircraft' 'CIFAR10' 'CIFAR100'  'EuroSAT' 
-losses=(  'TRADES_v2' ) #'CLASSIC_AT'
+datas=( 'Imagenette' 'Flowers' 'Aircraft' ) #  'CIFAR10' 'CIFAR100'  'EuroSAT' 
+losses=(  'TRADES_v2' 'CLASSIC_AT' ) #
 
 backbones=(
-  'convnext_tiny' #'robust_convnext_tiny' 'convnext_tiny.fb_in22k' # 'random_convnext_tiny'
+  'convnext_tiny' 'robust_convnext_tiny' 'convnext_tiny.fb_in22k' # 'random_convnext_tiny'
 ) 
 
 ft_type=( 'full_fine_tuning' )
