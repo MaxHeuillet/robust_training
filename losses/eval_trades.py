@@ -27,7 +27,7 @@ def trades_loss_eval(setup,
     model.current_task = 'infer'
     logits_nat, logits_adv = model(x_nat, x_adv)
     model.current_task = None
-    
+
     # logits_nat = model(x_natural)    
     # logits_adv = model(x_adv)
     # logits_nat, logits_adv = model(x_natural, x_adv)
