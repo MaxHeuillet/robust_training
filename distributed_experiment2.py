@@ -228,7 +228,6 @@ class BaseExperiment:
         model.train()
 
         print('epochs', config.epochs)
-        step_nb = 0
         
         for iteration in range(1, config.epochs+1):
 
@@ -259,7 +258,7 @@ class BaseExperiment:
 
                 if not self.setup.hp_opt and rank == 0:
                     metrics = { "global_step": global_step, "loss_value": loss.item() * accumulation_steps, }
-                    logger.log_metrics(metrics, epoch=iteration, step=step_nb)
+                    logger.log_metrics(metrics, epoch=iteration, )
 
                 if (batch_id + 1) % max(1, accumulation_steps) == 0 or (batch_id + 1) == len(trainloader):
 
