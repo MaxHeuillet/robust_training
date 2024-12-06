@@ -138,7 +138,7 @@ class BaseExperiment:
             logger = None
             
         else:
-            config = update_config
+            config = OmegaConf.load("./configs/HPO_{}.yaml".format(self.setup.exp_id) )
             self.setup.distributed_setup(rank)
             logger = self.initialize_logger(rank)
 
