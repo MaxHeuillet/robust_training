@@ -134,25 +134,10 @@ class BaseExperiment:
         return trainloader, valloader, testloader, train_sampler, val_sampler, test_sampler, N
 
     def training(self, update_config, rank=None ):
-        # import logging
-        # rank = os.environ.get("RANK", "unknown")  # Retrieve rank
-        # logging.basicConfig(level=logging.INFO)
-        # print(f"Rank {rank}: Logging this message")
-
-        # rank = os.getpid() % 4  # Simulate rank based on PID (example)
-        # print(f"Simulated Rank: {rank}")
-
-        # if train.get_context().get_world_rank() == 1:
-        #     print("Worker 1")
-
-        # print('world size', self.setup.world_size, flush=True)
-
-        # gpu_id = 
-        # print(f"Worker GPU ID: {gpu_id}")
 
         if self.setup.hp_opt:
             config = OmegaConf.merge(self.setup.config, update_config)
-            rank = int( os.environ.get("CUDA_VISIBLE_DEVICES", "No GPU assigned") ) 
+            rank = train.get_context().get_world_rank()
             logger = None
             resources = session.get_trial_resources()
             print(f"Trial resource allocation: {resources}")
