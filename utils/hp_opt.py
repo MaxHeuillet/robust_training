@@ -56,7 +56,7 @@ class Hp_opt:
             scaling_config=ScalingConfig(
                 # num_workers=4,  # Number of workers
                 use_gpu=True,  # Use GPUs
-                resources_per_worker={"CPU": 10, "GPU": 1},  # Resources per worker
+                resources_per_worker={"CPU": 6, "GPU": 1},  # Resources per worker
             ),
         )
 
