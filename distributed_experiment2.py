@@ -78,18 +78,21 @@ class BaseExperiment:
         self.setup = setup
 
     def initialize_logger(self, rank):
-        
 
-        logger = Experiment(api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
-                                project_name=self.setup.project_name,
-                                workspace="maxheuillet",
-                                auto_metric_logging=False,
-                                auto_output_logging=False)
+        logger = None
         
-        logger.log_parameter("run_id", os.getenv('SLURM_JOB_ID') )
-        logger.log_parameter("global_process_rank", rank)
-        logger.set_name( self.setup.exp_id )
-        logger.log_parameters(self.setup.config)
+        if rank == 0:
+            logger = Experiment(api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
+                                    project_name=self.setup.project_name,
+                                    workspace="maxheuillet",
+                                    auto_metric_logging=False,
+                                    auto_output_logging=False)
+            
+            logger.set_name( self.setup.exp_id )
+            
+            logger.log_parameter("run_id", os.getenv('SLURM_JOB_ID') )
+            logger.log_parameter("global_process_rank", rank)
+            logger.log_parameters(self.setup.config)
 
         return logger
         
@@ -249,13 +252,13 @@ class BaseExperiment:
                 
                 global_step += 1
 
-                if not self.setup.hp_opt:
+                if not self.setup.hp_opt and rank == 0:
                     metrics = { "global_step": global_step, "loss_value": loss.item() * accumulation_steps, }
                     logger.log_metrics(metrics, epoch=iteration)
 
                 if (batch_id + 1) % max(1, accumulation_steps) == 0 or (batch_id + 1) == len(trainloader):
 
-                    if not self.setup.hp_opt:
+                    if not self.setup.hp_opt and rank == 0:
                         # print('unscale', rank, flush=True)
                         scaler.unscale_(optimizer)
                         gradient_norm = compute_gradient_norms(model)
@@ -291,7 +294,7 @@ class BaseExperiment:
         if self.setup.hp_opt and rank == 0:
             print('val loss', val_loss)
             session.report({"loss": val_loss})
-        elif not self.setup.hp_opt:
+        elif not self.setup.hp_opt and rank == 0:
             metrics = { "val_loss": val_loss, "val_nat_accuracy": nat_acc, "val_adv_accuracy": adv_acc,
                         "zero_count": zero, "dormant_count": dormant, "overactive_count": overact, }
             logger.log_metrics(metrics, epoch=iteration)
