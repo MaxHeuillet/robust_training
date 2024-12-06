@@ -134,6 +134,11 @@ class BaseExperiment:
         return trainloader, valloader, testloader, train_sampler, val_sampler, test_sampler, N
 
     def training(self, update_config, rank=None ):
+        import logging
+        rank = os.environ.get("RANK", "unknown")  # Retrieve rank
+        logging.basicConfig(level=logging.INFO)
+        logging.info(f"Rank {rank}: Starting training with config {config}")
+        print(f"Rank {rank}: Logging this message")
 
         if self.setup.hp_opt:
             config = OmegaConf.merge(self.setup.config, update_config)
