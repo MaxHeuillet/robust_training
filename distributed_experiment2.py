@@ -220,6 +220,7 @@ class BaseExperiment:
         model.train()
 
         print('epochs', config.epochs)
+        step_nb = 0
         
         for iteration in range(1, config.epochs+1):
 
@@ -242,10 +243,6 @@ class BaseExperiment:
                     loss = loss_values.mean()
                     loss = loss / accumulation_steps  # Scale the loss
 
-                # loss_values, logits = get_loss(self.setup, model, data, target, )
-                # loss = loss_values.mean() #train_dataset.compute_loss(idxs, loss_values)
-                # loss = loss / accumulation_steps  # Scale the loss
-
                 # print('scale loss', rank, flush=True)
 
                 scaler.scale(loss).backward()
@@ -254,7 +251,7 @@ class BaseExperiment:
 
                 if not self.setup.hp_opt and rank == 0:
                     metrics = { "global_step": global_step, "loss_value": loss.item() * accumulation_steps, }
-                    logger.log_metrics(metrics, epoch=iteration)
+                    logger.log_metrics(metrics, epoch=iteration, step=step_nb)
 
                 if (batch_id + 1) % max(1, accumulation_steps) == 0 or (batch_id + 1) == len(trainloader):
 
@@ -292,6 +289,8 @@ class BaseExperiment:
         zero, _, _ = self.setup.sync_value(stats_nat['zero_count'], stats_nat['total_neurons'], rank)
         dormant, _, _ = self.setup.sync_value(stats_nat['dormant_count'], stats_nat['total_neurons'], rank)
         overact, _, _ = self.setup.sync_value(stats_nat['overactive_count'], stats_nat['total_neurons'], rank)
+
+        print(zero, dormant, overact)
 
         if self.setup.hp_opt and rank == 0:
             print('val loss', val_loss)
@@ -335,13 +334,13 @@ class BaseExperiment:
             total_examples += target.size(0)
 
             # Compute neuron statistics
-            stats_nat = compute_stats(tracker_nat.activations)
+            res = compute_stats(tracker_nat.activations)
 
             print(stats_nat)
 
             # Accumulate the statistics
             for key in ["zero_count", "dormant_count", "overactive_count", "total_neurons"]:
-                stats_nat[key] += stats_nat[key]
+                stats_nat[key] += res[key]
 
             break
         
@@ -431,11 +430,11 @@ class BaseExperiment:
             stats['nb_examples'] += target.size(0)
 
             # Compute neuron statistics
-            stats_nat = compute_stats(tracker_nat.activations)
+            res = compute_stats(tracker_nat.activations)
 
             # Accumulate the statistics
             for key in ["zero_count", "dormant_count", "overactive_count", "total_neurons"]:
-                stats_nat[key] += stats_nat[key]
+                stats_nat[key] += res[key]
 
             # Clear activations for next batch
             tracker_nat.activations.clear()
