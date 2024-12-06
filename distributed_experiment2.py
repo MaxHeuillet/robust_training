@@ -186,8 +186,9 @@ class BaseExperiment:
     def hyperparameter_optimization(self, ):  
 
         self.setup.hp_opt = True 
+        import logging
 
-        ray.init()
+        ray.init(logging_level=logging.DEBUG)
 
         hp_search = Hp_opt()
         print('epochs in the HP function', self.setup.config.epochs)
