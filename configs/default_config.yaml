@@ -2,7 +2,7 @@ dataset: "Flowers"  # dataset (default: cifar10)
 backbone: "convnext_tiny"  # load backbone
 ft_type: "full_fine_tuning"  # fine tuning type
 
-loss_function: "TRADES_v2"  # the loss function
+loss_function: "CLASSIC_AT"  # TRADES_v2
 seed: 0  # random seed
 epochs: 50  # number of total iterations to run
 
