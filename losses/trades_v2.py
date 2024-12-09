@@ -19,6 +19,7 @@ def trades_loss_v2(setup, model, x_nat, y, ):
 
     model.train()
 
+    model.module.current_task = 'infer'
     logits_nat, logits_adv = model(x_nat, x_adv)
         
     clean_values = F.cross_entropy(logits_nat, y, reduction='none')

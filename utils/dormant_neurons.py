@@ -9,8 +9,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class ActivationTrackerAggregated:
-    def __init__(self):
+    def __init__(self, train):
         # For each layer: store cumulative sums and counts of activations
+        self.train = train
         self.sums = {}   # Will hold accumulated sums of absolute activations
         self.counts = {} # Will hold total counts of elements processed per neuron
         self.is_conv = {} # Keep track if layer is Conv (for dimension handling)
@@ -66,17 +67,34 @@ def register_hooks_aggregated(model, tracker_nat, tracker_adv):
         if isinstance(module, nn.Conv2d) or isinstance(module, nn.Linear):
             module._name = name
 
-            def get_activation(mod, model):
-                def hook(mod, input, output):
-                    name = mod._name
-                    if model.module.current_tracker == 'nat' and model.module.current_task == 'infer':
-                        tracker_nat.accumulate(name, F.relu(output))
-                    if model.module.current_tracker == 'adv' and model.module.current_task == 'infer':
-                        tracker_adv.accumulate(name, F.relu(output))
-                return hook
+            if tracker_nat.train and tracker_adv.train:
 
-            handle = module.register_forward_hook(get_activation(module, model))
-            handles.append(handle)
+                def get_activation(mod, model):
+                    def hook(mod, input, output):
+                        name = mod._name
+                        if model.module.current_tracker == 'nat' and model.module.current_task == 'infer':
+                            tracker_nat.accumulate(name, F.relu(output))
+                        if model.module.current_tracker == 'adv' and model.module.current_task == 'infer':
+                            tracker_adv.accumulate(name, F.relu(output))
+                    return hook
+
+                handle = module.register_forward_hook(get_activation(module, model))
+                handles.append(handle)
+            
+            elif not tracker_nat.train and not tracker_adv.train:
+
+                def get_activation(mod, model):
+                    def hook(mod, input, output):
+                        name = mod._name
+                        if model.module.current_tracker == 'nat' and model.module.current_task == 'val_infer':
+                            tracker_nat.accumulate(name, F.relu(output))
+                        if model.module.current_tracker == 'adv' and model.module.current_task == 'val_infer':
+                            tracker_adv.accumulate(name, F.relu(output))
+                    return hook
+
+                handle = module.register_forward_hook(get_activation(module, model))
+                handles.append(handle)
+
     return handles
 
 @torch.inference_mode()

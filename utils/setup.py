@@ -190,13 +190,13 @@ class Setup:
         statistics = {  'clean_acc':clean_accuracy, 
                         'robust_acc':robust_accuracy,
                         
-                        'nat_zero_mean':nat_zero_mean,
-                        'nat_dormant_mean':nat_dormant_mean,
-                        'nat_overactive_mean':nat_overactive_mean,
+                        'zero_nat_test':nat_zero_mean,
+                        'dormant_nat_test':nat_dormant_mean,
+                        'overactive_nat_test':nat_overactive_mean,
                         
-                        'adv_zero_mean':adv_zero_mean,
-                        'adv_dormant_mean':adv_dormant_mean,
-                        'adv_overactive_mean':adv_overactive_mean,
+                        'zero_adv_test':adv_zero_mean,
+                        'dormant_adv_test':adv_dormant_mean,
+                        'overactive_adv_test':adv_overactive_mean,
                         
                         }
 

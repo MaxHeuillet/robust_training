@@ -14,6 +14,7 @@ def classic_at_loss(args, model, x_nat, y):
     # optimizer.zero_grad()
     
     model.train()
+    model.module.current_task = 'infer'
     logits_adv = model(x_adv)
     loss_values = F.cross_entropy(logits_adv, y, reduction='none')
 

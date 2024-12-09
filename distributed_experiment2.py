@@ -228,6 +228,10 @@ class BaseExperiment:
         scaler = GradScaler() 
 
         # mixup_fn = mixup.Mixup(mixup_alpha=0.2, cutmix_alpha=0, label_smoothing=0.1, num_classes=N )
+
+        tracker_nat = ActivationTrackerAggregated(train=True)
+        tracker_adv = ActivationTrackerAggregated(train=True)
+        handles = register_hooks_aggregated(model, tracker_nat, tracker_adv)
          
         model.train()
 
@@ -264,20 +268,39 @@ class BaseExperiment:
                 global_step += 1
 
                 if not self.setup.hp_opt and rank == 0:
-                    metrics = { "global_step": global_step, "loss_value": loss.item() * accumulation_steps, }
+                    metrics = { "global_step": global_step, 
+                                "loss_value": loss.item() * accumulation_steps, }
                     logger.log_metrics(metrics, epoch=iteration, )
 
-                if (batch_id + 1) % max(1, accumulation_steps) == 0 or (batch_id + 1) == len(trainloader):
+                # if (batch_id + 1) % max(1, accumulation_steps) == 0 or (batch_id + 1) == len(trainloader):
 
-                    if not self.setup.hp_opt and rank == 0:
-                        # print('unscale', rank, flush=True)
-                        scaler.unscale_(optimizer)
-                        gradient_norm = compute_gradient_norms(model)
-                        logger.log_metric("gradient_norm", float(gradient_norm), epoch=iteration)
+                if not self.setup.hp_opt and rank == 0:
+                    # print('unscale', rank, flush=True)
+                    scaler.unscale_(optimizer)
+                        
+                    gradient_norm = compute_gradient_norms(model)
+                        
+                    res_nat = compute_stats_aggregated(tracker_nat)
+                    res_adv = compute_stats_aggregated(tracker_adv)
 
-                    scaler.step(optimizer)
-                    scaler.update()
-                    optimizer.zero_grad() # Clear gradients after optimizer step
+                    metrics = { "gradient_norm": float(gradient_norm),
+                                    "zero_nat_train": res_nat['zero_count'] / res_nat['total_neurons'],
+                                    "dormant_nat_train":res_nat['dormant_count'] / res_nat['total_neurons'], 
+                                    "overactive_nat_train":res_nat['overactive_count'] / res_nat['total_neurons'], 
+                                    "zero_adv_train": res_adv['zero_count'] / res_adv['total_neurons'],
+                                    "dormant_adv_train":res_adv['zero_count'] / res_adv['total_neurons'], 
+                                    "overactive_adv_train":res_adv['zero_count'] / res_adv['total_neurons'],  }
+                        
+                    logger.log_metrics(metrics, epoch=iteration, )
+
+                    tracker_nat.clear()
+                    tracker_adv.clear()
+
+                scaler.step(optimizer)
+                scaler.update()
+                optimizer.zero_grad() # Clear gradients after optimizer step
+
+                    
                 
                 break
             if self.setup.hp_opt:
@@ -288,6 +311,10 @@ class BaseExperiment:
             if scheduler is not None: scheduler.step()
 
             print(f'Rank {rank}, Iteration {iteration},', flush=True) 
+                            
+        # Remove hooks
+        for handle in handles:
+            handle.remove()
 
     def validation(self, valloader, model, logger, iteration, rank):
 
@@ -315,16 +342,16 @@ class BaseExperiment:
 
         elif not self.setup.hp_opt and rank == 0:
             metrics = { "val_loss": val_loss, "val_nat_accuracy": nat_acc, "val_adv_accuracy": adv_acc,
-                        "nat_zero": nat_zero, "nat_dormant": nat_dormant, "nat_overactive": nat_overact,
-                        "adv_zero": adv_zero, "adv_dormant": adv_dormant, "adv_overactive": adv_overact, }
+                        "zero_nat_val": nat_zero, "dormant_nat_val": nat_dormant, "overactive_nat_val": nat_overact,
+                        "zero_adv_val": adv_zero, "dormant_adv_val": adv_dormant, "overactive_adv_val": adv_overact, }
             logger.log_metrics(metrics, epoch=iteration)
 
     def validation_loop(self, valloader, model, rank):
 
         model.eval()
 
-        tracker_nat = ActivationTrackerAggregated()
-        tracker_adv = ActivationTrackerAggregated()
+        tracker_nat = ActivationTrackerAggregated(train=False)
+        tracker_adv = ActivationTrackerAggregated(train=False)
 
         handles = register_hooks_aggregated(model, tracker_nat, tracker_adv)
 
@@ -360,7 +387,9 @@ class BaseExperiment:
             # Compute neuron statistics
         res_nat = compute_stats_aggregated(tracker_nat)
         res_adv = compute_stats_aggregated(tracker_adv)
-                    
+
+        tracker_nat.clear()
+        tracker_adv.clear()   
         # Remove hooks
         for handle in handles:
             handle.remove()
@@ -399,8 +428,8 @@ class BaseExperiment:
         
     def test_loop(self, testloader, config, model, rank):
 
-        tracker_nat = ActivationTrackerAggregated()
-        tracker_adv = ActivationTrackerAggregated()
+        tracker_nat = ActivationTrackerAggregated(train=False)
+        tracker_adv = ActivationTrackerAggregated(train=False)
         handles = register_hooks_aggregated(model, tracker_nat, tracker_adv)
 
         def forward_pass(x):
@@ -451,6 +480,8 @@ class BaseExperiment:
         res_nat = compute_stats_aggregated(tracker_nat)
         res_adv = compute_stats_aggregated(tracker_adv)
 
+        tracker_nat.clear()
+        tracker_adv.clear()
         # Remove hooks
         for handle in handles:
             handle.remove()
