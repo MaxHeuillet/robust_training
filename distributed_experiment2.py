@@ -279,17 +279,25 @@ class BaseExperiment:
                     scaler.unscale_(optimizer)
                         
                     gradient_norm = compute_gradient_norms(model)
+
+                    print(tracker_nat.counts, data.shape)
                         
                     res_nat = compute_stats_aggregated(tracker_nat)
                     res_adv = compute_stats_aggregated(tracker_adv)
 
-                    metrics = { "gradient_norm": float(gradient_norm),
+                    if self.setup.config.loss_function == 'TRADES_v2':
+                        metrics = { "gradient_norm": float(gradient_norm),
                                     "zero_nat_train": res_nat['zero_count'] / res_nat['total_neurons'],
                                     "dormant_nat_train":res_nat['dormant_count'] / res_nat['total_neurons'], 
                                     "overactive_nat_train":res_nat['overactive_count'] / res_nat['total_neurons'], 
                                     "zero_adv_train": res_adv['zero_count'] / res_adv['total_neurons'],
-                                    "dormant_adv_train":res_adv['zero_count'] / res_adv['total_neurons'], 
-                                    "overactive_adv_train":res_adv['zero_count'] / res_adv['total_neurons'],  }
+                                    "dormant_adv_train":res_adv['dormant_count'] / res_adv['total_neurons'], 
+                                    "overactive_adv_train":res_adv['overactive_count'] / res_adv['total_neurons'],  }
+                    elif config.loss_function == 'CLASSIC_AT':
+                        metrics = { "gradient_norm": float(gradient_norm), 
+                                    "zero_adv_train": res_adv['zero_count'] / res_adv['total_neurons'],
+                                    "dormant_adv_train":res_adv['dormant_count'] / res_adv['total_neurons'], 
+                                    "overactive_adv_train":res_adv['overactive_count'] / res_adv['total_neurons'],  }
                         
                     logger.log_metrics(metrics, epoch=iteration, )
 
@@ -328,9 +336,10 @@ class BaseExperiment:
         nat_acc, _, _ = self.setup.sync_value(total_correct_nat, total_examples, rank)
         adv_acc, _, _ = self.setup.sync_value(total_correct_adv, total_examples, rank)
 
-        nat_zero, _, _ = self.setup.sync_value(res_nat['zero_count'], res_nat['total_neurons'], rank)
-        nat_dormant, _, _ = self.setup.sync_value(res_nat['dormant_count'], res_nat['total_neurons'], rank)
-        nat_overact, _, _ = self.setup.sync_value(res_nat['overactive_count'], res_nat['total_neurons'], rank)
+        if self.setup.config.loss_function == 'TRADES_v2':
+            nat_zero, _, _ = self.setup.sync_value(res_nat['zero_count'], res_nat['total_neurons'], rank)
+            nat_dormant, _, _ = self.setup.sync_value(res_nat['dormant_count'], res_nat['total_neurons'], rank)
+            nat_overact, _, _ = self.setup.sync_value(res_nat['overactive_count'], res_nat['total_neurons'], rank)
 
         adv_zero, _, _ = self.setup.sync_value(res_adv['zero_count'], res_adv['total_neurons'], rank)
         adv_dormant, _, _ = self.setup.sync_value(res_adv['dormant_count'], res_adv['total_neurons'], rank)
@@ -341,9 +350,15 @@ class BaseExperiment:
             session.report({"loss": val_loss})
 
         elif not self.setup.hp_opt and rank == 0:
-            metrics = { "val_loss": val_loss, "val_nat_accuracy": nat_acc, "val_adv_accuracy": adv_acc,
-                        "zero_nat_val": nat_zero, "dormant_nat_val": nat_dormant, "overactive_nat_val": nat_overact,
-                        "zero_adv_val": adv_zero, "dormant_adv_val": adv_dormant, "overactive_adv_val": adv_overact, }
+
+            if self.setup.config.loss_function == 'TRADES_v2':
+                metrics = { "val_loss": val_loss, "val_nat_accuracy": nat_acc, "val_adv_accuracy": adv_acc,
+                            "zero_nat_val": nat_zero, "dormant_nat_val": nat_dormant, "overactive_nat_val": nat_overact,
+                            "zero_adv_val": adv_zero, "dormant_adv_val": adv_dormant, "overactive_adv_val": adv_overact, }
+            else:
+                metrics = { "val_loss": val_loss, "val_nat_accuracy": nat_acc, "val_adv_accuracy": adv_acc,
+                            "zero_adv_val": adv_zero, "dormant_adv_val": adv_dormant, "overactive_adv_val": adv_overact, }
+                
             logger.log_metrics(metrics, epoch=iteration)
 
     def validation_loop(self, valloader, model, rank):

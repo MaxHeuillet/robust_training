@@ -10,18 +10,35 @@ class CustomModel(nn.Module):
         self.current_tracker = None
         self.current_task = None
         
-    def forward(self, x_1, x_2=None):
+    def forward(self, x_1=None, x_2=None):
 
-        self.current_tracker = 'nat'
-        logits_1 = self.base_model(x_1)
-        self.current_tracker = None
-        if x_2 is not None:
+        
+        if x_1 is not None and x_2 is not None:
+
+            self.current_tracker = 'nat'
+            logits_1 = self.base_model(x_1)
+            self.current_tracker = None
+
             self.current_tracker = 'adv'
             logits_2 = self.base_model(x_2)
             self.current_tracker = None
+
             return logits_1, logits_2
-        else:
-            
+        
+        elif x_1 is None and x_2 is not None:
+
+            self.current_tracker = 'adv'
+            logits_2 = self.base_model(x_2)
+            self.current_tracker = None
+
+            return None, logits_2
+        
+        else:  
+
+            self.current_tracker = 'nat'
+            logits_1 = self.base_model(x_1)
+            self.current_tracker = None
+
             return logits_1
 
     def set_fine_tuning_strategy(self, ):
