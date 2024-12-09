@@ -154,6 +154,11 @@ class Setup:
         total_dormant_nat = 0
         total_overactive_nat = 0
 
+        total_neurons_adv = 0
+        total_zero_adv = 0
+        total_dormant_adv = 0
+        total_overactive_adv = 0
+
         # Sum up values from each process
         for process_id, process_data in results.items():
             total_correct_nat += process_data['stats']['nb_correct_nat']
@@ -165,50 +170,38 @@ class Setup:
             total_overactive_nat += process_data['stats_nat']['overactive_count']
             total_neurons_nat += process_data['stats_nat']['total_neurons']
 
+            total_zero_adv += process_data['stats_adv']['zero_count']
+            total_dormant_adv += process_data['stats_adv']['dormant_count']
+            total_overactive_adv += process_data['stats_adv']['overactive_count']
+            total_neurons_adv += process_data['stats_adv']['total_neurons']
+
         # Calculate percentages
         clean_accuracy = total_correct_nat / total_examples
         robust_accuracy = total_correct_adv / total_examples
+        
         nat_zero_mean = total_zero_nat / total_neurons_nat
         nat_dormant_mean = total_dormant_nat / total_neurons_nat
         nat_overactive_mean = total_overactive_nat / total_neurons_nat
 
-        statistics = { 'clean_acc':clean_accuracy, 
-                       'robust_acc':robust_accuracy,
+        adv_zero_mean = total_zero_adv / total_neurons_adv
+        adv_dormant_mean = total_dormant_adv / total_neurons_adv
+        adv_overactive_mean = total_overactive_adv / total_neurons_adv
+
+        statistics = {  'clean_acc':clean_accuracy, 
+                        'robust_acc':robust_accuracy,
+                        
                         'nat_zero_mean':nat_zero_mean,
                         'nat_dormant_mean':nat_dormant_mean,
                         'nat_overactive_mean':nat_overactive_mean,
+                        
+                        'adv_zero_mean':adv_zero_mean,
+                        'adv_dormant_mean':adv_dormant_mean,
+                        'adv_overactive_mean':adv_overactive_mean,
+                        
                         }
 
         return statistics
     
-    def aggregate_results2(self,results):
-        
-        total_neurons_nat = 0
-        total_zero_nat = 0
-        total_dormant_nat = 0
-        total_overactive_nat = 0
-
-        # Sum up values from each process
-        for process_id, process_data in results.items():
-
-            total_zero_nat += process_data['zero_count']
-            total_dormant_nat += process_data['dormant_count']
-            total_overactive_nat += process_data['overactive_count']
-            total_neurons_nat += process_data['total_neurons']
-
-        nat_zero_mean = total_zero_nat / total_neurons_nat
-        nat_dormant_mean = total_dormant_nat / total_neurons_nat
-        nat_overactive_mean = total_overactive_nat / total_neurons_nat
-
-        statistics = { 'zero_mean':nat_zero_mean,
-                        'dormant_mean':nat_dormant_mean,
-                        'overactive_mean':nat_overactive_mean,
-                        }
-
-        return statistics
-    
-
-
     def log_results(self, hpo_results=None, statistics=None, dormants = None):
         import cloudpickle as pickle
 

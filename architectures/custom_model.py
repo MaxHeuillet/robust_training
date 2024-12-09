@@ -16,7 +16,9 @@ class CustomModel(nn.Module):
         logits_1 = self.base_model(x_1)
         self.current_tracker = None
         if x_2 is not None:
+            self.current_tracker = 'adv'
             logits_2 = self.base_model(x_2)
+            self.current_tracker = None
             return logits_1, logits_2
         else:
             

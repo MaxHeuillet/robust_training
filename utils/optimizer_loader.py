@@ -6,7 +6,8 @@ def load_optimizer(config, model):
     backbone = config.backbone
     lr1 = config.lr1
     lr2 = config.lr2
-    weight_decay = config.weight_decay
+    weight_decay1 = config.weight_decay1
+    weight_decay2 = config.weight_decay2
 
     def get_param_groups(model, head_module_name):
         decay = []
@@ -54,7 +55,7 @@ def load_optimizer(config, model):
         {
             'params': decay,
             'lr': lr1,
-            'weight_decay': weight_decay,
+            'weight_decay': weight_decay1,
             'betas': (0.9, 0.95)
         },
         # Backbone parameters without weight decay
@@ -68,7 +69,7 @@ def load_optimizer(config, model):
         {
             'params': head_decay,
             'lr': lr2,
-            'weight_decay': weight_decay,
+            'weight_decay': weight_decay2,
             'betas': (0.9, 0.95)
         },
         # Head parameters without weight decay

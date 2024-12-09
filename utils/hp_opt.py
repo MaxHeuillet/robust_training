@@ -27,7 +27,8 @@ class Hp_opt:
         tune_config = {
             "lr1": tune.loguniform(1e-5, 1e-1),
             "lr2": tune.loguniform(1e-5, 1e-1),
-            "weight_decay": tune.loguniform(1e-6, 1e-2)
+            "weight_decay1": tune.loguniform(1e-6, 1e-2),
+            "weight_decay2": tune.loguniform(1e-6, 1e-2)
         }
 
         return tune_config
@@ -70,7 +71,7 @@ class Hp_opt:
 
         # Define maximum runtime in seconds
         from datetime import timedelta
-        max_runtime_seconds = timedelta(minutes=150).total_seconds() #150
+        max_runtime_seconds = timedelta(minutes=2).total_seconds() #150
 
         # Set up the Tuner with metric and mode specified
         tuner = Tuner(
@@ -80,7 +81,7 @@ class Hp_opt:
                 metric="loss",  # Specify the metric to optimize
                 mode="min",     # Specify the optimization direction
                 scheduler=scheduler,
-                num_samples=15,
+                num_samples=2, #100
                 time_budget_s=max_runtime_seconds,
                 ),
             run_config=RunConfig(

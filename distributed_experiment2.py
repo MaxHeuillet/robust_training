@@ -37,7 +37,7 @@ from datasets import WeightedDataset, IndexedDataset, load_data
 from architectures import load_architecture, CustomModel
 from losses import get_loss, get_eval_loss
 from utils import get_args2, get_exp_name, set_seeds, load_optimizer, get_state_dict_dir
-from utils import ActivationTracker, register_hooks, compute_stats
+from utils import ActivationTrackerAggregated, register_hooks_aggregated, compute_stats_aggregated
 from torchvision.transforms import v2
 from torch.optim.lr_scheduler import CosineAnnealingLR
 from ray.air import session
@@ -55,6 +55,8 @@ import numpy as np
 
 import ray
 from ray import train, tune
+
+import timm.data.mixup as mixup
 
 def compute_gradient_norms(model):
     total_norm = 0
@@ -223,8 +225,10 @@ class BaseExperiment:
         global_step = 0  # Track global iterations across accumulation steps
         print('effective batch size', effective_batch_size, 'per_gpu_batch_size', per_gpu_batch_size, 'accumulation steps', accumulation_steps)
 
-        scaler = GradScaler()  
-        
+        scaler = GradScaler() 
+
+        # mixup_fn = mixup.Mixup(mixup_alpha=0.2, cutmix_alpha=0, label_smoothing=0.1, num_classes=N )
+         
         model.train()
 
         print('epochs', config.epochs)
@@ -241,6 +245,9 @@ class BaseExperiment:
                 data, target = batch
 
                 data, target = data.to(rank), target.to(rank) 
+
+                # Apply mixup from timm
+                # data, target = mixup_fn(data, target)
 
                 # print('get loss', rank, flush=True)
 
@@ -272,7 +279,7 @@ class BaseExperiment:
                     scaler.update()
                     optimizer.zero_grad() # Clear gradients after optimizer step
                 
-                # break
+                break
             if self.setup.hp_opt:
                 self.validation( valloader, model, logger, iteration, rank)
             elif not self.setup.hp_opt and iteration % 10 == 0:
@@ -284,41 +291,49 @@ class BaseExperiment:
 
     def validation(self, valloader, model, logger, iteration, rank):
 
-        total_loss, total_correct_nat, total_correct_adv, total_examples, stats_nat = self.validation_loop(valloader, model, rank)
+        total_loss, total_correct_nat, total_correct_adv, total_examples, res_nat, res_adv = self.validation_loop(valloader, model, rank)
 
-        print(stats_nat)
+        print(res_nat, rank, flush=True)
+        print(res_adv, rank, flush=True)
         
         dist.barrier() 
         val_loss, _, _ = self.setup.sync_value(total_loss, total_examples, rank)
         nat_acc, _, _ = self.setup.sync_value(total_correct_nat, total_examples, rank)
         adv_acc, _, _ = self.setup.sync_value(total_correct_adv, total_examples, rank)
 
-        zero, _, _ = self.setup.sync_value(stats_nat['zero_count'], stats_nat['total_neurons'], rank)
-        dormant, _, _ = self.setup.sync_value(stats_nat['dormant_count'], stats_nat['total_neurons'], rank)
-        overact, _, _ = self.setup.sync_value(stats_nat['overactive_count'], stats_nat['total_neurons'], rank)
+        nat_zero, _, _ = self.setup.sync_value(res_nat['zero_count'], res_nat['total_neurons'], rank)
+        nat_dormant, _, _ = self.setup.sync_value(res_nat['dormant_count'], res_nat['total_neurons'], rank)
+        nat_overact, _, _ = self.setup.sync_value(res_nat['overactive_count'], res_nat['total_neurons'], rank)
 
-        print(zero, dormant, overact)
+        adv_zero, _, _ = self.setup.sync_value(res_adv['zero_count'], res_adv['total_neurons'], rank)
+        adv_dormant, _, _ = self.setup.sync_value(res_adv['dormant_count'], res_adv['total_neurons'], rank)
+        adv_overact, _, _ = self.setup.sync_value(res_adv['overactive_count'], res_adv['total_neurons'], rank)
 
         if self.setup.hp_opt:
             print('val loss', val_loss)
             session.report({"loss": val_loss})
+
         elif not self.setup.hp_opt and rank == 0:
             metrics = { "val_loss": val_loss, "val_nat_accuracy": nat_acc, "val_adv_accuracy": adv_acc,
-                        "zero_count": zero, "dormant_count": dormant, "overactive_count": overact, }
+                        "nat_zero": nat_zero, "nat_dormant": nat_dormant, "nat_overactive": nat_overact,
+                        "adv_zero": adv_zero, "adv_dormant": adv_dormant, "adv_overactive": adv_overact, }
             logger.log_metrics(metrics, epoch=iteration)
 
     def validation_loop(self, valloader, model, rank):
 
         model.eval()
 
-        tracker_nat = ActivationTracker()
-        handles = register_hooks(model, tracker_nat,)
+        tracker_nat = ActivationTrackerAggregated()
+        tracker_adv = ActivationTrackerAggregated()
+
+        handles = register_hooks_aggregated(model, tracker_nat, tracker_adv)
 
         total_loss = 0.0
         total_correct_nat = 0
         total_correct_adv = 0
         total_examples = 0
-        stats_nat = { "zero_count": 0, "dormant_count": 0, "overactive_count": 0, "total_neurons": 0 }
+        # stats_nat = { "zero_count": 0, "dormant_count": 0, "overactive_count": 0, "total_neurons": 0 }
+        # stats_adv = { "zero_count": 0, "dormant_count": 0, "overactive_count": 0, "total_neurons": 0 }
 
         for batch_id, batch in enumerate( valloader ):
 
@@ -340,22 +355,17 @@ class BaseExperiment:
             total_correct_adv += (preds_adv == target).sum().item()
             total_examples += target.size(0)
 
+            break
+
             # Compute neuron statistics
-            res = compute_stats(tracker_nat.activations)
-
-            print(stats_nat)
-
-            # Accumulate the statistics
-            for key in ["zero_count", "dormant_count", "overactive_count", "total_neurons"]:
-                stats_nat[key] += res[key]
-
-            # break
-        
+        res_nat = compute_stats_aggregated(tracker_nat)
+        res_adv = compute_stats_aggregated(tracker_adv)
+                    
         # Remove hooks
         for handle in handles:
             handle.remove()
 
-        return total_loss, total_correct_nat, total_correct_adv, total_examples, stats_nat
+        return total_loss, total_correct_nat, total_correct_adv, total_examples, res_nat, res_adv
     
 
     def test(self, rank, result_queue):
@@ -378,10 +388,10 @@ class BaseExperiment:
         model.eval()
 
         print('start AA accuracy', flush=True) 
-        stats, stats_nat = self.test_loop(testloader, config, model, rank)
+        stats, res_nat, res_adv = self.test_loop(testloader, config, model, rank)
         print('end AA accuracy', flush=True) 
 
-        statistics = { 'stats': stats, 'stats_nat': stats_nat, }
+        statistics = { 'stats': stats, 'stats_nat': res_nat, 'stats_adv': res_adv, }
         
         # Put results into the queue
         result_queue.put((rank, statistics))
@@ -389,8 +399,9 @@ class BaseExperiment:
         
     def test_loop(self, testloader, config, model, rank):
 
-        tracker_nat = ActivationTracker()
-        handles = register_hooks(model, tracker_nat,)
+        tracker_nat = ActivationTrackerAggregated()
+        tracker_adv = ActivationTrackerAggregated()
+        handles = register_hooks_aggregated(model, tracker_nat, tracker_adv)
 
         def forward_pass(x):
             return model(x)
@@ -400,8 +411,7 @@ class BaseExperiment:
         print('adversary instanciated', flush=True) 
         
         stats = {'nb_correct_nat': 0, 'nb_correct_adv': 0, 'nb_examples': 0}
-        stats_nat = { "zero_count": 0, "dormant_count": 0, "overactive_count": 0, "total_neurons": 0 }
-        
+
         for _, batch in enumerate( testloader ):
 
             print('start batch iterations',rank, _, len(testloader), flush=True) 
@@ -436,24 +446,16 @@ class BaseExperiment:
             stats['nb_correct_adv'] += (preds_adv == target).sum().item()
             stats['nb_examples'] += target.size(0)
 
-            # Compute neuron statistics
-            res = compute_stats(tracker_nat.activations)
+            break
 
-            # Accumulate the statistics
-            for key in ["zero_count", "dormant_count", "overactive_count", "total_neurons"]:
-                stats_nat[key] += res[key]
-
-            # Clear activations for next batch
-            tracker_nat.activations.clear()
-
-            # if _ == 3:
-            # break
+        res_nat = compute_stats_aggregated(tracker_nat)
+        res_adv = compute_stats_aggregated(tracker_adv)
 
         # Remove hooks
         for handle in handles:
             handle.remove()
 
-        return stats, stats_nat
+        return stats, res_nat, res_adv
     
     def launch_test(self):
         # import psutil  # Requires: pip install psutil
@@ -525,12 +527,12 @@ if __name__ == "__main__":
     experiment = BaseExperiment(setup)
 
     # experiment.setup.pre_training_log()
-    if task == 'HPO':
-        experiment.hyperparameter_optimization()
-    elif task == 'train':
-        mp.spawn(training_wrapper, args=(experiment, config), nprocs=world_size, join=True)
-    elif task == 'test':
-        experiment.launch_test()
+    # if task == 'HPO':
+    # experiment.hyperparameter_optimization()
+    # elif task == 'train':
+    mp.spawn(training_wrapper, args=(experiment, config), nprocs=world_size, join=True)
+    # elif task == 'test':
+        # experiment.launch_test()
     # elif task == 'dormant':
     #     experiment.launch_dormant()
 
