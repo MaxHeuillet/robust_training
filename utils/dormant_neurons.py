@@ -23,6 +23,7 @@ class ActivationTrackerAggregated:
         # Check if it's a conv layer or linear layer by dimensions
         # Conv: (B, C, H, W)
         # Linear: (B, C)
+
         if activation.ndim == 4:
             # Conv layer
             # sum over batch, height, and width: result is shape (C,)
@@ -30,24 +31,26 @@ class ActivationTrackerAggregated:
             # count how many elements per channel
             b, c, h, w = activation.shape
             elem_count = b * h * w
-            if name not in self.sums:
-                self.sums[name] = torch.zeros(c, dtype=torch.float32)
-                self.counts[name] = 0
-                self.is_conv[name] = True
-            self.sums[name] += abs_sum
-            self.counts[name] += elem_count
+            
+        elif activation.ndim == 3:
+            # This is likely the ViT qkv output: (B, N, C)
+            # Treat it similarly to a linear layer by merging B and N
+            b, n, c = activation.shape
+            abs_sum = activation.abs().sum(dim=(0, 1))  # sum over batch and tokens, leaving (C,)
+            elem_count = b * n
 
         else:
             # Linear layer: (B, C)
             abs_sum = activation.abs().sum(dim=0)  # shape (C,)
             b, c = activation.shape
             elem_count = b
-            if name not in self.sums:
-                self.sums[name] = torch.zeros(c, dtype=torch.float32)
-                self.counts[name] = 0
-                self.is_conv[name] = False
-            self.sums[name] += abs_sum
-            self.counts[name] += elem_count
+
+        if name not in self.sums:
+            self.sums[name] = torch.zeros(c, dtype=torch.float32)
+            self.counts[name] = 0
+            self.is_conv[name] = False
+        self.sums[name] += abs_sum
+        self.counts[name] += elem_count
 
     def get_activations_mean(self):
         # Compute mean absolute activation per neuron
