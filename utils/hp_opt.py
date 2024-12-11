@@ -15,11 +15,19 @@ import numpy as np
 import ray
 from ray import train, tune
 from ray.air.integrations.wandb import WandbLoggerCallback, setup_wandb
+import os
 
 class Hp_opt:
 
-    def __init__(self,):
-        pass
+    def __init__(self,setup):
+        self.setup = setup
+        cluster_name = os.environ.get('SLURM_CLUSTER_NAME', 'Unknown')
+        if cluster_name == 'narval' or cluster_name == 'beluga':
+            self.minutes = 150
+            self.trials = 1000
+        else:
+            self.minutes = 2
+            self.trials = 2
 
     def get_config(self, ):
 
@@ -71,7 +79,7 @@ class Hp_opt:
 
         # Define maximum runtime in seconds
         from datetime import timedelta
-        max_runtime_seconds = timedelta(minutes=150).total_seconds() #150
+        max_runtime_seconds = timedelta(minutes=self.minutes).total_seconds() #150
 
         # Set up the Tuner with metric and mode specified
         tuner = Tuner(
@@ -81,11 +89,11 @@ class Hp_opt:
                 metric="loss",  # Specify the metric to optimize
                 mode="min",     # Specify the optimization direction
                 scheduler=scheduler,
-                num_samples=1000, #
+                num_samples=self.trials, #
                 time_budget_s=max_runtime_seconds,
                 ),
             run_config=RunConfig(
-                name="hpo_experiment",
+                name="{}_{}".format(self.setup.project_name, self.setup.exp_id),
                   ),
         )
 

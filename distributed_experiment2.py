@@ -189,7 +189,7 @@ class BaseExperiment:
 
         ray.init() #logging_level=logging.DEBUG
 
-        hp_search = Hp_opt()
+        hp_search = Hp_opt(self.setup)
         print('epochs in the HP function', self.setup.config.epochs)
         tuner = hp_search.get_tuner( self.setup.config.epochs, self.training )
         result_grid = tuner.fit()
@@ -302,7 +302,7 @@ class BaseExperiment:
                     update_step += 1
 
                     
-                # break
+                break
             if self.setup.hp_opt:
                 self.validation( valloader, model, logger, iteration, rank)
             elif not self.setup.hp_opt and iteration % 10 == 0:
@@ -391,7 +391,7 @@ class BaseExperiment:
             total_correct_adv += (preds_adv == target).sum().item()
             total_examples += target.size(0)
 
-            # break
+            break
 
             # Compute neuron statistics
         res_nat = compute_stats_aggregated(tracker_nat)
