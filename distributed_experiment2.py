@@ -105,11 +105,6 @@ class BaseExperiment:
 
         train_dataset, val_dataset, test_dataset, N, train_transform, _ = load_data(self.setup.hp_opt, config) 
         
-        # train_dataset = IndexedDataset(train_dataset, train_transform, N, ) #prune_ratio = self.args.pruning_ratio, )
-        # val_dataset = IndexedDataset(val_dataset, transform,  N,) 
-        # test_dataset = IndexedDataset(test_dataset, transform,  N,) 
-
-        # train_sampler = DistributedCustomSampler(self.args, train_dataset, num_replicas=self.world_size, rank=rank, drop_last=True)
         train_sampler = DistributedSampler(train_dataset, num_replicas=self.setup.world_size, rank=rank, shuffle=True, drop_last=True)
         val_sampler = DistributedSampler(val_dataset, num_replicas=self.setup.world_size, rank=rank, drop_last=True)
         test_sampler = DistributedSampler(test_dataset, num_replicas=self.setup.world_size, rank=rank, shuffle=True, drop_last=True)
@@ -191,9 +186,6 @@ class BaseExperiment:
     def hyperparameter_optimization(self, ):  
 
         self.setup.hp_opt = True 
-        import logging
-        import os
-        os.environ["RAY_DEDUP_LOGS"] = "0"
 
         ray.init() #logging_level=logging.DEBUG
 
@@ -236,6 +228,8 @@ class BaseExperiment:
         model.train()
 
         print('epochs', config.epochs)
+        batch_step = 0
+        update_step = 0
         
         for iteration in range(1, config.epochs+1):
 
@@ -249,11 +243,6 @@ class BaseExperiment:
                 data, target = batch
 
                 data, target = data.to(rank), target.to(rank) 
-
-                # Apply mixup from timm
-                # data, target = mixup_fn(data, target)
-
-                # print('get loss', rank, flush=True)
 
                 # Use autocast for mixed precision during forward pass
                 with autocast():
@@ -270,43 +259,47 @@ class BaseExperiment:
                 if not self.setup.hp_opt and rank == 0:
                     metrics = { "global_step": global_step, 
                                 "loss_value": loss.item() * accumulation_steps, }
-                    logger.log_metrics(metrics, epoch=iteration, )
+                    logger.log_metrics(metrics, epoch=iteration, step = batch_step )
 
-                # if (batch_id + 1) % max(1, accumulation_steps) == 0 or (batch_id + 1) == len(trainloader):
+                batch_step += 1
 
-                if not self.setup.hp_opt and rank == 0:
-                    # print('unscale', rank, flush=True)
-                    scaler.unscale_(optimizer)
-                        
-                    gradient_norm = compute_gradient_norms(model)
+                if (batch_id + 1) % max(1, accumulation_steps) == 0 or (batch_id + 1) == len(trainloader):
 
-                    # print(tracker_nat.counts, data.shape)
-                        
-                    res_nat = compute_stats_aggregated(tracker_nat)
-                    res_adv = compute_stats_aggregated(tracker_adv)
+                    if not self.setup.hp_opt and rank == 0:
+                        # print('unscale', rank, flush=True)
+                        scaler.unscale_(optimizer)
+                            
+                        gradient_norm = compute_gradient_norms(model)
 
-                    if self.setup.config.loss_function == 'TRADES_v2':
-                        metrics = { "gradient_norm": float(gradient_norm),
-                                    "zero_nat_train": res_nat['zero_count'] / res_nat['total_neurons'],
-                                    "dormant_nat_train":res_nat['dormant_count'] / res_nat['total_neurons'], 
-                                    "overactive_nat_train":res_nat['overactive_count'] / res_nat['total_neurons'], 
-                                    "zero_adv_train": res_adv['zero_count'] / res_adv['total_neurons'],
-                                    "dormant_adv_train":res_adv['dormant_count'] / res_adv['total_neurons'], 
-                                    "overactive_adv_train":res_adv['overactive_count'] / res_adv['total_neurons'],  }
-                    elif config.loss_function == 'CLASSIC_AT':
-                        metrics = { "gradient_norm": float(gradient_norm), 
-                                    "zero_adv_train": res_adv['zero_count'] / res_adv['total_neurons'],
-                                    "dormant_adv_train":res_adv['dormant_count'] / res_adv['total_neurons'], 
-                                    "overactive_adv_train":res_adv['overactive_count'] / res_adv['total_neurons'],  }
-                        
-                    logger.log_metrics(metrics, epoch=iteration, )
+                        # print(tracker_nat.counts, data.shape)
+                            
+                        res_nat = compute_stats_aggregated(tracker_nat)
+                        res_adv = compute_stats_aggregated(tracker_adv)
 
-                    tracker_nat.clear()
-                    tracker_adv.clear()
+                        if self.setup.config.loss_function == 'TRADES_v2':
+                            metrics = { "gradient_norm": float(gradient_norm),
+                                        "zero_nat_train": res_nat['zero_count'] / res_nat['total_neurons'],
+                                        "dormant_nat_train":res_nat['dormant_count'] / res_nat['total_neurons'], 
+                                        "overactive_nat_train":res_nat['overactive_count'] / res_nat['total_neurons'], 
+                                        "zero_adv_train": res_adv['zero_count'] / res_adv['total_neurons'],
+                                        "dormant_adv_train":res_adv['dormant_count'] / res_adv['total_neurons'], 
+                                        "overactive_adv_train":res_adv['overactive_count'] / res_adv['total_neurons'],  }
+                        elif config.loss_function == 'CLASSIC_AT':
+                            metrics = { "gradient_norm": float(gradient_norm), 
+                                        "zero_adv_train": res_adv['zero_count'] / res_adv['total_neurons'],
+                                        "dormant_adv_train":res_adv['dormant_count'] / res_adv['total_neurons'], 
+                                        "overactive_adv_train":res_adv['overactive_count'] / res_adv['total_neurons'],  }
+                            
+                        logger.log_metrics(metrics, epoch=iteration, step=update_step, )
 
-                scaler.step(optimizer)
-                scaler.update()
-                optimizer.zero_grad() # Clear gradients after optimizer step
+                        tracker_nat.clear()
+                        tracker_adv.clear()
+
+                    scaler.step(optimizer)
+                    scaler.update()
+                    optimizer.zero_grad() # Clear gradients after optimizer step
+
+                    update_step += 1
 
                     
                 # break
@@ -349,6 +342,8 @@ class BaseExperiment:
             session.report({"loss": val_loss})
 
         elif not self.setup.hp_opt and rank == 0:
+
+            print('hey', flush=True)
 
             if self.setup.config.loss_function == 'TRADES_v2':
                 metrics = { "val_loss": val_loss, "val_nat_accuracy": nat_acc, "val_adv_accuracy": adv_acc,
@@ -419,7 +414,6 @@ class BaseExperiment:
         # test_sampler.set_epoch(0)  
         print('dataloader', flush=True) 
         
-
         model = load_architecture(self.setup.hp_opt, config, N, )
 
         model = CustomModel(config, model, )

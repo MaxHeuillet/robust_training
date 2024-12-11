@@ -1,10 +1,10 @@
 #!/bin/bash
 
 
-#SBATCH --account=def-adurand
+#SBATCH --account=rrg-csubakan
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=24
-#SBATCH --gpus-per-node=4
+#SBATCH --gres=gpu:a100_4g.20gb:4
 #SBATCH --mem-per-cpu=4000M
 #SBATCH --time=02:59:59
 #SBATCH --mail-user=maxime.heuillet.1@ulaval.ca
