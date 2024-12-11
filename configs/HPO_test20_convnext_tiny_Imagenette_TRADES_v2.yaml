@@ -1,0 +1,17 @@
+dataset: Imagenette
+backbone: convnext_tiny
+ft_type: full_fine_tuning
+loss_function: TRADES_v2
+seed: 1
+epochs: 50
+lr1: 9.950589878295442e-05
+lr2: 7.53479847661302e-05
+weight_decay1: 0.0015799500249515967
+weight_decay2: 0.00010223039141233027
+use_rs: false
+epsilon: 0.015686275
+step_size: 0.007843137
+perturb_steps: 10
+distance: Linf
+beta: 1.0
+project_name: test20
