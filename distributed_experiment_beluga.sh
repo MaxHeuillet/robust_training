@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --account=rrg-adurand
+#SBATCH --account=rrg-csubakan 
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=24
 #SBATCH --gpus-per-node=4
