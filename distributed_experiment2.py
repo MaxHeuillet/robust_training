@@ -302,7 +302,7 @@ class BaseExperiment:
                     update_step += 1
 
                     
-                break
+                # break
             if self.setup.hp_opt:
                 self.validation( valloader, model, logger, iteration, rank)
             elif not self.setup.hp_opt and iteration % 10 == 0:
@@ -391,7 +391,7 @@ class BaseExperiment:
             total_correct_adv += (preds_adv == target).sum().item()
             total_examples += target.size(0)
 
-            break
+            # break
 
             # Compute neuron statistics
         res_nat = compute_stats_aggregated(tracker_nat)
