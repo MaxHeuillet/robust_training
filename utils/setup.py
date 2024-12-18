@@ -202,7 +202,7 @@ class Setup:
 
         return statistics
     
-    def log_results(self, hpo_results=None, statistics=None, dormants = None):
+    def log_results(self, hpo_results=None, statistics=None, ):
         import cloudpickle as pickle
 
         data_path = './results/results_{}_{}.pkl'.format( self.project_name, self.exp_id  )
@@ -233,6 +233,18 @@ class Setup:
             results_dict[self.exp_id]["config"].update(current_experiment_config)
             
             if hpo_results:
+                
+                trial_id = 0
+                dfs = []
+                for result in hpo_results:
+                    df = result.metrics_dataframe
+                    df['trial_id'] = trial_id
+                    dfs.append(df)
+                    trial_id += 1
+
+                # Concatenate all DataFrames into a single DataFrame
+                combined_df = pd.concat(dfs, ignore_index=True)
+                ##todo
                 results_dict[self.exp_id]["hpo_results"] = hpo_results
 
             if statistics:

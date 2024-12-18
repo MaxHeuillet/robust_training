@@ -26,7 +26,7 @@ class Hp_opt:
             self.minutes = 150
             self.trials = 1000
         else:
-            self.minutes = 2
+            self.minutes = 5
             self.trials = 2
 
     def get_config(self, ):
@@ -82,18 +82,22 @@ class Hp_opt:
         max_runtime_seconds = timedelta(minutes=self.minutes).total_seconds() #150
 
         # Set up the Tuner with metric and mode specified
+
+        full_path = os.path.abspath("./hpo_results")
+
         tuner = Tuner(
             trainer,
             param_space={"train_loop_config": update_config},
             tune_config=tune.TuneConfig(
                 metric="loss",  # Specify the metric to optimize
                 mode="min",     # Specify the optimization direction
-                scheduler=scheduler,
+                #scheduler=scheduler,
                 num_samples=self.trials, #
                 time_budget_s=max_runtime_seconds,
                 ),
             run_config=RunConfig(
                 name="{}_{}".format(self.setup.project_name, self.setup.exp_id),
+                storage_path=f"file://{full_path}",
                   ),
         )
 

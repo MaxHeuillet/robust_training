@@ -1,0 +1,17 @@
+dataset: Flowers
+backbone: deit_small_patch16_224.fb_in1k
+ft_type: full_fine_tuning
+loss_function: CLASSIC_AT
+seed: 0
+epochs: 10
+lr1: 0.0004950159553733192
+lr2: 0.0038333321561566606
+weight_decay1: 5.62793204741517e-05
+weight_decay2: 0.0036905577292137615
+use_rs: false
+epsilon: 0.015686275
+step_size: 0.007843137
+perturb_steps: 10
+distance: Linf
+beta: 1.0
+project_name: '0001'
