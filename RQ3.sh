@@ -7,7 +7,7 @@ losses=(  'TRADES_v2' 'CLASSIC_AT' ) #
 
 backbones=(
   'convnext_tiny' 'robust_convnext_tiny' 'convnext_tiny.fb_in22k' 
-  # 'deit_small_patch16_224.fb_in1k', 'robust_deit_small_patch16_224',
+  #'deit_small_patch16_224.fb_in1k', 'robust_deit_small_patch16_224',
 ) 
 
 ft_type=( 'full_fine_tuning' )
