@@ -56,6 +56,8 @@ for dataset in ['Aircraft', 'Flowers', 'Imagenette' ]:
 
             print( result_grid.get_best_result() )
 
+            print(result_grid)
+
             print()
 
             ax = None
