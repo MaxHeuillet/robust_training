@@ -24,11 +24,11 @@ class Hp_opt:
         self.setup = setup
         cluster_name = os.environ.get('SLURM_CLUSTER_NAME', 'Unknown')
         if cluster_name == 'narval' or cluster_name == 'beluga':
-            self.minutes = 150
-            self.trials = 1000
+            self.minutes = 5
+            self.trials = 5
         else:
             self.minutes = 5
-            self.trials = 2
+            self.trials = 5
 
     def get_config(self, ):
 
@@ -89,7 +89,6 @@ class Hp_opt:
 
         full_path = os.path.abspath("./hpo_results")
 
-        search_alg = BasicVariantGenerator(random_state_seed=42)
 
         tuner = Tuner(
             trainer,
@@ -100,7 +99,6 @@ class Hp_opt:
                 #scheduler=scheduler,
                 num_samples=self.trials, #
                 time_budget_s=max_runtime_seconds,
-                search_alg=search_alg
                 ),
             run_config=RunConfig(
                 name="{}_{}".format(self.setup.project_name, self.setup.exp_id),

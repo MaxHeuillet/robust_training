@@ -77,4 +77,4 @@ for dataset in ['Aircraft', 'Flowers', 'Imagenette' ]:
             ax.set_title("Loss vs. Training Iteration for All Trials")
             ax.set_ylabel("Loss")
 
-            ax.figure.savefig("./results/{}_{}_{}.png".format(project_name, backbone, dataset, loss), dpi=300)
+            ax.figure.savefig("./results/{}_{}_{}_{}.png".format(project_name, backbone, dataset, loss), dpi=300)
