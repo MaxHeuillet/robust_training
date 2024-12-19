@@ -2,13 +2,17 @@
 
 # Define variables
 seeds=1
-datas=( 'Flowers' 'Aircraft' 'Imagenette' ) #  'CIFAR10' 'CIFAR100'  'EuroSAT' 
-losses=(  'TRADES_v2' 'CLASSIC_AT' ) #
+datas=( 'Flowers' 'Aircraft' 'Imagenette' ) #'CIFAR10' 'CIFAR100' 'EuroSAT'  
+losses=(  'TRADES_v2' 'CLASSIC_AT' ) 
 
 backbones=(
   'convnext_tiny' 'robust_convnext_tiny' 'convnext_tiny.fb_in22k' 
-  'deit_small_patch16_224.fb_in1k', 'robust_deit_small_patch16_224',
-) 
+  'deit_small_patch16_224.fb_in1k' 'robust_deit_small_patch16_224'
+  'convnext_base' 'convnext_base.fb_in22k' 'robust_convnext_base' 
+  'convnext_base.clip_laion2b' 'convnext_base.clip_laion2b_augreg'
+  'vit_base_patch16_224.orig_in21k' 'vit_base_patch16_224.augreg_in1k' 'vit_base_patch16_224.augreg_in21k',
+  'vit_base_patch16_224.dino' 'vit_base_patch16_224.mae' 
+  'vit_base_patch16_224.sam_in1k' 'vit_base_patch16_224_miil.in21k' ) 
 
 ft_type=( 'full_fine_tuning' )
 

@@ -547,7 +547,7 @@ def training_wrapper(rank, experiment, config ):
 
 if __name__ == "__main__":
 
-    print('begining of the execution')
+    print('begining of the execution', flush=True)
 
     torch.multiprocessing.set_start_method("spawn", force=True)
 
@@ -565,12 +565,12 @@ if __name__ == "__main__":
     setup = Setup(config, world_size)
     experiment = BaseExperiment(setup)
 
-    # experiment.setup.pre_training_log()
     if task == 'HPO':
+        print('HPO', flush=True)
         experiment.hyperparameter_optimization()
-    elif task == 'train':
+        # elif task == 'train':
+        print('TRAIN', flush=True)
         mp.spawn(training_wrapper, args=(experiment, config), nprocs=world_size, join=True)
+    
     elif task == 'test':
         experiment.launch_test()
-    # elif task == 'dormant':
-    #     experiment.launch_dormant()
