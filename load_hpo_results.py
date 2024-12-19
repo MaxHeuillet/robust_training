@@ -62,17 +62,19 @@ for dataset in ['Aircraft', 'Flowers', 'Imagenette' ]:
 
             ax = None
             for result in result_grid:
-                print(result.metrics_dataframe)
-                res = result.config['train_loop_config']
-                # print(res)
-                print()
-                label = f"lr1={res['lr1']:.3f}, lr2={res['lr2']}"
-                if ax is None:
-                    ax = result.metrics_dataframe.plot("training_iteration", "loss", label=label)
-                else:
-                    result.metrics_dataframe.plot("training_iteration", "loss", ax=ax, label=label)
-                    
-            ax.set_title("Loss vs. Training Iteration for All Trials")
-            ax.set_ylabel("Loss")
 
-            ax.figure.savefig("./results/{}_{}_{}.png".format(project_name, backbone, dataset, loss), dpi=300)
+                if not result.metrics_dataframe.empty:
+                    print(result.metrics_dataframe)
+                    res = result.config['train_loop_config']
+                    # print(res)
+                    print()
+                    label = f"lr1={res['lr1']:.3f}, lr2={res['lr2']}"
+                    if ax is None:
+                        ax = result.metrics_dataframe.plot("training_iteration", "loss", label=label)
+                    else:
+                        result.metrics_dataframe.plot("training_iteration", "loss", ax=ax, label=label)
+                        
+                ax.set_title("Loss vs. Training Iteration for All Trials")
+                ax.set_ylabel("Loss")
+
+                ax.figure.savefig("./results/{}_{}_{}.png".format(project_name, backbone, dataset, loss), dpi=300)

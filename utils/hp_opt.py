@@ -16,6 +16,7 @@ import ray
 from ray import train, tune
 from ray.air.integrations.wandb import WandbLoggerCallback, setup_wandb
 import os
+from ray.tune.search.basic_variant import BasicVariantGenerator
 
 class Hp_opt:
 
@@ -88,6 +89,8 @@ class Hp_opt:
 
         full_path = os.path.abspath("./hpo_results")
 
+        search_alg = BasicVariantGenerator(random_state_seed=42)
+
         tuner = Tuner(
             trainer,
             param_space={"train_loop_config": update_config},
@@ -97,6 +100,7 @@ class Hp_opt:
                 #scheduler=scheduler,
                 num_samples=self.trials, #
                 time_budget_s=max_runtime_seconds,
+                search_alg=search_alg
                 ),
             run_config=RunConfig(
                 name="{}_{}".format(self.setup.project_name, self.setup.exp_id),
