@@ -74,7 +74,7 @@ for dataset in ['Aircraft', 'Flowers', 'Imagenette' ]:
                     else:
                         result.metrics_dataframe.plot("training_iteration", "loss", ax=ax, label=label)
                         
-                ax.set_title("Loss vs. Training Iteration for All Trials")
-                ax.set_ylabel("Loss")
+            ax.set_title("Loss vs. Training Iteration for All Trials")
+            ax.set_ylabel("Loss")
 
-                ax.figure.savefig("./results/{}_{}_{}.png".format(project_name, backbone, dataset, loss), dpi=300)
+            ax.figure.savefig("./results/{}_{}_{}.png".format(project_name, backbone, dataset, loss), dpi=300)
