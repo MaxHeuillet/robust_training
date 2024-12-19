@@ -36,8 +36,11 @@ class Hp_opt:
             "lr1": tune.loguniform(1e-5, 1e-1),
             "lr2": tune.loguniform(1e-5, 1e-1),
             "weight_decay1": tune.loguniform(1e-6, 1e-2),
-            "weight_decay2": tune.loguniform(1e-6, 1e-2)
+            "weight_decay2": tune.loguniform(1e-6, 1e-2),
+            #"use_scheduler": tune.choice([True, False])
         }
+
+        # add the choice of the learning rate, add the choice of scheduler
 
         return tune_config
 
