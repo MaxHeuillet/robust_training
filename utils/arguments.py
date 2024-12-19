@@ -27,26 +27,7 @@ def get_args2():
     parser.add_argument("--ft_type", default = 'full_fine_tuning', type=str, help="fine tuning type")
     parser.add_argument("--task", default = 'HPO', type=str, help="task")
     parser.add_argument("--project_name", default = '0001', type=str, help="task")
-    
-
-    # General options
-    # parser.add_argument("--arch", default="resnet50",type=str, help="model architecture")
-    # parser.add_argument("--pre_trained", type=str, help="load pretrained non robust model")
-    # 
-
-    # parser.add_argument("--epochs", default=10, type=int, metavar="N", help="number of total iterations to run")
-    # parser.add_argument("--log_dir", default="./logs", type=str, help="The directory used to save logs")
-    # parser.add_argument("--statedict_dir", default=statedict_dir, type=str, help="The directory used to save state dics")
-    # parser.add_argument('--data_dir', default=data_dir,type=str,)
-
-    ### arguments for TRADES loss function:
-    # parser.add_argument("--epsilon", default=4/255, type=float, help="epsilon of trades") #8/255
-    # parser.add_argument("--step_size", default=2/255, type=float, help="step size of trades")
-    # parser.add_argument("--perturb_steps", default=10, type=int, help="number of steps of trades")
-    # parser.add_argument("--distance", default='Linf', type=str, help="distance of trades")
-    # parser.add_argument("--beta", default=1.0, type=float, help="beta of trades")
-
-    
+        
     args, unknown = parser.parse_known_args()
     args_dict = vars(args)
 

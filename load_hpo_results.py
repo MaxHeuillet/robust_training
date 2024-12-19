@@ -59,3 +59,5 @@ tuner = tune.Tuner.restore('{}/{}_{}_{}_{}'.format(full_path, project_name, back
 # tuner = tune.Tuner.restore('{}/0001_deit_small_patch16_224.fb_in1k_Flowers_CLASSIC_AT'.format(full_path, project_name, backbone, dataset, loss), trainable=trainer)
 
 result_grid = tuner.get_results()
+
+print( result_grid.get_best_result() )
