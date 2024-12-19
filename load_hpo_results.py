@@ -13,7 +13,7 @@ from utils import load_optimizer, get_args2, set_seeds, Hp_opt
 
 import torch
 
-# initialize(config_path="configs", version_base=None)
+initialize(config_path="configs", version_base=None)
 
 from utils import Setup
 from distributed_experiment2 import BaseExperiment
