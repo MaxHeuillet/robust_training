@@ -25,42 +25,52 @@ full_path = os.path.abspath("./hpo_results")
 
 project_name = 'test30'
 
-dataset = 'Aircraft'
-loss = 'CLASSIC_AT'
-backbone = 'convnext_tiny.fb_in22k'
+for dataset in ['Aircraft', 'Flowers', 'Imagenette' ]:
+
+    for loss in ['CLASSIC_AT', 'TRADES_v2']:
+
+        for backbone in [ 'convnext_tiny.fb_in22k', 'convnext_tiny', 'robust_convnext_tiny', ]:
             
-config = OmegaConf.load("./configs/default_config.yaml")
+            config = OmegaConf.load("./configs/default_config.yaml")
 
-config = compose(config_name="default_config")  # Store Hydra config in a variable
+            config = compose(config_name="default_config")  # Store Hydra config in a variable
 
-config.dataset = dataset
-config.backbone = backbone
-config.loss_function = loss
-config.project_name = 'test30'
+            config.dataset = dataset
+            config.backbone = backbone
+            config.loss_function = loss
+            config.project_name = project_name
 
-set_seeds(config.seed)
+            set_seeds(config.seed)
 
-print(config)
+            setup = Setup(config, world_size)
+            experiment = BaseExperiment(setup)
+            
+            hp_search = Hp_opt(setup)
+            trainer = hp_search.get_trainer(experiment.training)
 
-setup = Setup(config, world_size)
-experiment = BaseExperiment(setup)
- 
-hp_search = Hp_opt(setup)
-trainer = hp_search.get_trainer(experiment.training)
+            tuner = tune.Tuner.restore('{}/{}_{}_{}_{}'.format(full_path, project_name, backbone, dataset, loss), trainable=trainer)
 
+            result_grid = tuner.get_results()
 
-# tune.Tuner.can_restore( '{}/{}_{}_{}_{}'.format(full_path, project_name, backbone, dataset, loss) )
+            print()
 
-# tune.Tuner.
+            print( result_grid.get_best_result() )
 
-tuner = tune.Tuner.restore('{}/{}_{}_{}_{}'.format(full_path, project_name, backbone, dataset, loss), trainable=trainer)
+            print()
 
+            ax = None
+            for result in result_grid:
+                print(result.metrics_dataframe)
+                res = result.config['train_loop_config']
+                # print(res)
+                print()
+                label = f"lr1={res['lr1']:.3f}, lr2={res['lr2']}"
+                if ax is None:
+                    ax = result.metrics_dataframe.plot("training_iteration", "loss", label=label)
+                else:
+                    result.metrics_dataframe.plot("training_iteration", "loss", ax=ax, label=label)
+                    
+            ax.set_title("Loss vs. Training Iteration for All Trials")
+            ax.set_ylabel("Loss")
 
-# tuner = tune.Tuner.restore('{}/0001_deit_small_patch16_224.fb_in1k_Flowers_CLASSIC_AT'.format(full_path, project_name, backbone, dataset, loss), trainable=trainer)
-
-result_grid = tuner.get_results()
-
-print()
-print( result_grid.get_best_result() )
-
-print()
+            ax.figure.savefig("./results/{}_{}_{}.png".format(project_name, backbone, dataset, loss), dpi=300)
