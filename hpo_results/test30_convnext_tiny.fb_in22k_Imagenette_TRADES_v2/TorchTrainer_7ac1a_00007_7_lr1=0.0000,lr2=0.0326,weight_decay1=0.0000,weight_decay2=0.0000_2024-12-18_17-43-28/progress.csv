@@ -1,0 +1,3 @@
+loss,timestamp,checkpoint_dir_name,done,training_iteration,trial_id,date,time_this_iter_s,time_total_s,pid,hostname,node_ip,time_since_restore,iterations_since_restore
+1.4927168865593112,1734569814,,False,1,7ac1a_00007,2024-12-18_19-56-54,990.9846248626709,990.9846248626709,3362745,bg12201.int.ets1.calculquebec.ca,10.70.22.101,990.9846248626709,1
+0.8245928083147321,1734570344,,False,2,7ac1a_00007,2024-12-18_20-05-44,529.6817903518677,1520.6664152145386,3362745,bg12201.int.ets1.calculquebec.ca,10.70.22.101,1520.6664152145386,2

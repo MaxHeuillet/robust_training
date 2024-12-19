@@ -1,0 +1,17 @@
+dataset: Aircraft
+backbone: convnext_tiny.fb_in22k
+ft_type: full_fine_tuning
+loss_function: CLASSIC_AT
+seed: 1
+epochs: 10
+lr1: 4.778831065857693e-05
+lr2: 0.03255142562491927
+weight_decay1: 2.4739295913040137e-06
+weight_decay2: 4.835378777285511e-05
+use_rs: false
+epsilon: 0.015686275
+step_size: 0.007843137
+perturb_steps: 10
+distance: Linf
+beta: 1.0
+project_name: test30
