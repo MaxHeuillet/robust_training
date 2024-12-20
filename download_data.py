@@ -1,7 +1,11 @@
 from torchvision import datasets
 
 print('load1')
-datasets.StanfordCars(root='~/scratch/data',  download=True, )
+# datasets.StanfordCars(root='~/scratch/data',  download=True, )
+
+import kaggle
+# you need to configure API key through https://www.kaggle.com/docs/api
+kaggle.api.dataset_download_files('rickyyyyyyy/torchvision-stanford-cars', path='~/scratch/data', unzip=True)
 
 
 print('load2')
