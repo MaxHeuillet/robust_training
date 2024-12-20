@@ -573,4 +573,4 @@ if __name__ == "__main__":
     mp.spawn(training_wrapper, args=(experiment, config), nprocs=world_size, join=True)
     
     # elif task == 'test':
-    experiment.launch_test()
+    # experiment.launch_test()
