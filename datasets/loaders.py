@@ -70,30 +70,40 @@ def load_data(hp_opt,config,):
         val_dataset =   datasets.FGVCAircraft(root=datadir, split='val', download=False, transform=transform)
         test_dataset = datasets.FGVCAircraft(root=datadir, split='test', download=False, transform=transform)
 
+    elif dataset == 'DTD':
+
+        N = 100
+        
+        train_dataset = datasets.DTD(root=datadir, split='train', download=False, transform=train_transform)
+        val_dataset =   datasets.DTD(root=datadir, split='val', download=False, transform=transform)
+        test_dataset = datasets.DTD(root=datadir, split='test', download=False, transform=transform)
+
     elif dataset == 'EuroSAT':
-        pass
 
-        # # Load the dataset
-        # dataset = datasets.EuroSAT(root=datadir, download=False, )
+        dataset_train_full = datasets.EuroSAT(root=datadir, download=False, transform=train_transform)
+        dataset_val_test_full = datasets.EuroSAT(root=datadir, download=False, transform=transform)
 
-        # # Extract labels from the dataset
-        # labels = [label for _, label in dataset]
+        labels = [label for _, label in dataset_train_full]
 
-        # # Split the dataset into train+val and test, keeping stratification
-        # train_val_indices, test_indices = train_test_split( range(len(labels)), test_size=0.2, stratify=labels, random_state=42 )
+        train_val_indices, test_indices = train_test_split(
+            range(len(labels)),
+            test_size=0.2,
+            stratify=labels,
+            random_state=42
+        )
 
-        # # Extract labels for the train+val set for further stratification
-        # train_val_labels = [labels[i] for i in train_val_indices]
+        train_val_labels = [labels[i] for i in train_val_indices]
 
-        # # Split the train+val set into train and validation, keeping stratification
-        # train_indices, val_indices = train_test_split( train_val_indices, test_size=0.15, stratify=train_val_labels, random_state=42 )  # 0.25 * 0.8 = 0.2 of the dataset
+        train_indices, val_indices = train_test_split(
+            train_val_indices,
+            test_size=0.15,  # 0.15 * 0.8 = 0.12 -> 12% for validation
+            stratify=train_val_labels,
+            random_state=42
+        )
 
-        # # Create subsets for train, validation, and test
-
-        # N = 10
-        # train_dataset = torch.utils.data.Subset(dataset, train_indices)
-        # val_dataset = torch.utils.data.Subset(dataset, val_indices)
-        # test_dataset = torch.utils.data.Subset(dataset, test_indices)
+        train_dataset = torch.utils.data.Subset(dataset_train_full, train_indices)
+        val_dataset = torch.utils.data.Subset(dataset_val_test_full, val_indices)
+        test_dataset = torch.utils.data.Subset(dataset_val_test_full, test_indices)
 
     elif dataset == 'Flowers':
             
@@ -115,6 +125,120 @@ def load_data(hp_opt,config,):
 
         val_dataset = torch.utils.data.Subset(dataset, val_indices)
         test_dataset = torch.utils.data.Subset(dataset, test_indices)
+
+    elif dataset == 'Caltech101':
+
+        N = 101
+        dataset_train_full = datasets.Caltech101(root=datadir, download=False, transform=train_transform)
+        dataset_val_test_full = datasets.Caltech101(root=datadir, download=False, transform=transform)
+
+        labels = [label for _, label in dataset_train_full]
+
+        train_val_indices, test_indices = train_test_split(
+            range(len(labels)),
+            test_size=0.2,
+            stratify=labels,
+            random_state=42
+        )
+
+        train_val_labels = [labels[i] for i in train_val_indices]
+
+        train_indices, val_indices = train_test_split(
+            train_val_indices,
+            test_size=0.15,  # 0.15 * 0.8 = 0.12 -> 12% for validation
+            stratify=train_val_labels,
+            random_state=42
+        )
+
+        train_dataset = torch.utils.data.Subset(dataset_train_full, train_indices)
+        val_dataset = torch.utils.data.Subset(dataset_val_test_full, val_indices)
+        test_dataset = torch.utils.data.Subset(dataset_val_test_full, test_indices)
+
+    elif dataset == 'OxfordIIITPet':
+
+        # Step 1: Load the 'trainval' split twice with different transforms
+        dataset_train_val_full_train = datasets.OxfordIIITPet(
+            root=datadir,
+            split='trainval',
+            download=False,
+            transform=train_transform
+        )
+
+        dataset_train_val_full_val = datasets.OxfordIIITPet(
+            root=datadir,
+            split='trainval',
+            download=False,
+            transform=transform
+        )
+
+        # Step 2: Load the 'test' split with transform
+        dataset_test_full = datasets.OxfordIIITPet(
+            root=datadir,
+            split='test',
+            download=False,
+            transform=transform
+        )
+
+        # Step 3: Extract labels from the 'trainval' split
+        labels = [label for _, label in dataset_train_val_full_train]
+
+        # Step 4: Split 'trainval' into 'train' and 'val' using stratified sampling
+        train_indices, val_indices = train_test_split(
+            range(len(labels)),
+            test_size=0.15,  # 15% for validation
+            stratify=labels,
+            random_state=42
+        )
+
+        # Step 5: Create training and validation subsets with appropriate transforms
+        train_dataset = torch.utils.data.Subset(dataset_train_val_full_train, train_indices)
+        val_dataset = torch.utils.data.Subset(dataset_train_val_full_val, val_indices)
+        test_dataset = dataset_test_full
+
+    elif 'StanfordCars':
+
+        N = 196
+        print('datadir', datadir)
+
+        # Step 1: Load the 'train' split with train_transform
+        dataset_train_full_train = datasets.StanfordCars(
+            root=datadir,
+            split='train',
+            download=False,
+            transform=train_transform
+        )
+
+        # Step 2: Load the 'train' split again with transform for validation
+        dataset_train_full_val = datasets.StanfordCars(
+            root=datadir,
+            split='train',
+            download=False,
+            transform=transform
+        )
+
+        # Step 3: Load the 'test' split with transform
+        dataset_test_full = datasets.StanfordCars(
+            root=datadir,
+            split='test',
+            download=False,
+            transform=transform
+        )
+
+        # Step 4: Extract labels from the 'train' split
+        labels = [label for _, label in dataset_train_full_train]
+
+        # Step 5: Split 'train' into 'train' and 'val' using stratified sampling
+        train_indices, val_indices = train_test_split(
+            range(len(labels)),
+            test_size=0.15,  # 15% for validation
+            stratify=labels,
+            random_state=42
+        )
+
+        # Step 6: Create training and validation subsets with appropriate transforms
+        train_dataset = torch.utils.data.Subset(dataset_train_full_train, train_indices)
+        val_dataset = torch.utils.data.Subset(dataset_train_full_val, val_indices)
+        test_dataset = dataset_test_full
                  
     return train_dataset, val_dataset, test_dataset, N, train_transform, transform
 

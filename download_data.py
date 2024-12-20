@@ -1,13 +1,24 @@
 from torchvision import datasets
 
 
+datasets.StanfordCars(root='~/scratch/data',  download=True, )
+
+datasets.OxfordIIITPet(root='~/scratch/data',  download=True, )
+
+datasets.Caltech101(root='~/scratch/data',  download=True, )
+
+datasets.DTD(root='~/scratch/data',  download=True, )
+
+
+
+
 # print ('download EuroSAT')
 
-import torchvision
-import ssl
-import pandas as pd
-ssl._create_default_https_context = ssl._create_unverified_context
-torchvision.datasets.EuroSAT('./data', download=True)
+# import torchvision
+# import ssl
+# import pandas as pd
+# ssl._create_default_https_context = ssl._create_unverified_context
+# torchvision.datasets.EuroSAT('./data', download=True)
 
 # print('download aircraft')
 
