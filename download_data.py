@@ -1,12 +1,19 @@
 from torchvision import datasets
 
-
+print('load1')
 datasets.StanfordCars(root='~/scratch/data',  download=True, )
 
+
+print('load2')
 datasets.OxfordIIITPet(root='~/scratch/data',  download=True, )
+
+
+print('load3')
 
 datasets.Caltech101(root='~/scratch/data',  download=True, )
 
+
+print('load4')
 datasets.DTD(root='~/scratch/data',  download=True, )
 
 
