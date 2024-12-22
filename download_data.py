@@ -1,6 +1,6 @@
 from torchvision import datasets
 
-print('load1')
+# print('load1')
 # datasets.StanfordCars(root='~/scratch/data',  download=True, )
 
 # import kaggle
@@ -8,17 +8,17 @@ print('load1')
 # kaggle.api.dataset_download_files('rickyyyyyyy/torchvision-stanford-cars', path='~/scratch/data', unzip=True)
 
 
-print('load2')
+# print('load2')
 # datasets.OxfordIIITPet(root='~/scratch/data',  download=True, )
 
 
-print('load3')
+# print('load3')
 
 # datasets.Caltech101(root='~/scratch/data',  download=True, )
 
 
-print('load4')
-datasets.DTD(root='~/scratch/data',  download=True, )
+# print('load4')
+# datasets.DTD(root='~/scratch/data',  download=True, )
 
 
 
@@ -66,3 +66,21 @@ datasets.DTD(root='~/scratch/data',  download=True, )
 # dataset = load_dataset('imagenet-1k',  cache_dir='/home/mheuill/scratch')
 # print('save')
 # dataset.save_to_disk('/home/mheuill/scratch/imagenet-1k')
+
+
+from omegaconf import OmegaConf
+from datasets import load_data
+import numpy as np
+config = OmegaConf.load("./configs/default_config.yaml")
+
+for dataset in ['Imagenette', 'Flowers', 
+                'EuroSAT', 'Aircraft',
+                'CIFAR10', 'CIFAR100',
+                'StanfordCars', 'OxfordIIITPet', 
+                'Caltech101', 'DTD' ]:
+    
+    config.dataset = dataset
+    train_dataset, val_dataset, test_dataset, N, train_transform, transform = load_data(False, config) 
+    image, label = val_dataset[0]  # Extract the image and label
+    pixels = np.array(image)
+    print(dataset, len(train_dataset), len(val_dataset), len(test_dataset), min(pixels[0][0]),  max(pixels[0][0]), N)
