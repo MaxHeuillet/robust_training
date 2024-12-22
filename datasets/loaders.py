@@ -80,6 +80,8 @@ def load_data(hp_opt,config,):
 
     elif dataset == 'EuroSAT':
 
+        N = 10
+
         dataset_train_full = datasets.EuroSAT(root=datadir, download=False, transform=train_transform)
         dataset_val_test_full = datasets.EuroSAT(root=datadir, download=False, transform=transform)
 

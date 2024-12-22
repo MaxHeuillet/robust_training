@@ -21,6 +21,10 @@ if [ "${DATA}" = "Imagenet1k" ]; then
     echo 'imagenet unzipped'
 fi
 
+# mkdir -p $SLURM_TMPDIR/data
+# mv ~/scratch/data/* "$SLURM_TMPDIR/data/"
+
+
 echo 'HZ: start python3 ./distributed_experiment1.py ..at '; date
 
 
