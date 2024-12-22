@@ -19,12 +19,22 @@ from utils import get_data_dir
 #   transforms.RandomHorizontalFlip(),  # Random horizontal flip
 ##   RandAugment(),  # RandAugment with N=9, M=0.5
 
+
+#Change Grayscale Image to RGB for the shape
+class GrayscaleToRGB(object):
+    def __call__(self, img):
+        if img.mode == 'L':
+            img = img.convert("RGB")
+        return img
+    
+
 def load_data(hp_opt,config,):
 
     dataset =config.dataset
     datadir = get_data_dir(hp_opt,config)
 
     train_transform = transforms.Compose([transforms.Resize((224, 224)),  # Resize images to 224x224
+                                          GrayscaleToRGB(),
                                           transforms.RandomHorizontalFlip(),
                                           transforms.ColorJitter(.25,.25,.25),
                                           transforms.RandomRotation(2),
@@ -32,6 +42,7 @@ def load_data(hp_opt,config,):
                                           transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ),])
 
     transform = transforms.Compose([transforms.Resize((224, 224)),  # Resize images to 224x224
+                                    GrayscaleToRGB(),
                                     transforms.ToTensor(),
                                     transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ),])
         
