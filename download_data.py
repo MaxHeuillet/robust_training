@@ -79,6 +79,8 @@ for dataset in ['StanfordCars', 'OxfordIIITPet',
                 'EuroSAT', 'Aircraft',
                 'CIFAR10', 'CIFAR100',  ]:
     
+    print(dataset)
+    
     config.dataset = dataset
     train_dataset, val_dataset, test_dataset, N, train_transform, transform = load_data(False, config) 
     image, label = val_dataset[0]  # Extract the image and label

@@ -72,7 +72,7 @@ def load_data(hp_opt,config,):
 
     elif dataset == 'DTD':
 
-        N = 100
+        N = 47
         
         train_dataset = datasets.DTD(root=datadir, split='train', download=False, transform=train_transform)
         val_dataset =   datasets.DTD(root=datadir, split='val', download=False, transform=transform)
@@ -157,6 +157,8 @@ def load_data(hp_opt,config,):
         test_dataset = torch.utils.data.Subset(dataset_val_test_full, test_indices)
 
     elif dataset == 'OxfordIIITPet':
+
+        N = 37
 
         # Step 1: Load the 'trainval' split twice with different transforms
         dataset_train_val_full_train = datasets.OxfordIIITPet(
