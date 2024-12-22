@@ -73,11 +73,11 @@ from datasets import load_data
 import numpy as np
 config = OmegaConf.load("./configs/default_config.yaml")
 
-for dataset in ['Imagenette', 'Flowers', 
+for dataset in ['StanfordCars', 'OxfordIIITPet', 
+                'Caltech101', 'DTD',
+                 'Imagenette', 'Flowers', 
                 'EuroSAT', 'Aircraft',
-                'CIFAR10', 'CIFAR100',
-                'StanfordCars', 'OxfordIIITPet', 
-                'Caltech101', 'DTD' ]:
+                'CIFAR10', 'CIFAR100',  ]:
     
     config.dataset = dataset
     train_dataset, val_dataset, test_dataset, N, train_transform, transform = load_data(False, config) 
