@@ -17,6 +17,8 @@ source ~/scratch/MYENV4/bin/activate
 
 echo "Processing dataset: ${DATA}"
 
+mkdir -p $SLURM_TMPDIR/data
+
 tar -I zstd -xf ~/scratch/${DATA}.tar.zst -C $SLURM_TMPDIR/data
     
 # Check if extraction was successful
