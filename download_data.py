@@ -8,8 +8,8 @@ from torchvision import datasets
 # kaggle.api.dataset_download_files('rickyyyyyyy/torchvision-stanford-cars', path='~/scratch/data', unzip=True)
 
 
-# print('load2')
-# datasets.OxfordIIITPet(root='~/scratch/data',  download=True, )
+print('load2')
+datasets.OxfordIIITPet(root='$SLURM_TMPDIR/data',  download=True, )
 
 
 # print('load3')
@@ -68,21 +68,21 @@ from torchvision import datasets
 # dataset.save_to_disk('/home/mheuill/scratch/imagenet-1k')
 
 
-from omegaconf import OmegaConf
-from datasets import load_data
-import numpy as np
-config = OmegaConf.load("./configs/default_config.yaml")
+# from omegaconf import OmegaConf
+# from datasets import load_data
+# import numpy as np
+# config = OmegaConf.load("./configs/default_config.yaml")
 
-for dataset in ['StanfordCars', 'OxfordIIITPet', 
-                'Caltech101', 'DTD',
-                 'Imagenette', 'Flowers', 
-                'EuroSAT', 'Aircraft',
-                'CIFAR10', 'CIFAR100',  ]:
+# for dataset in ['StanfordCars', 'OxfordIIITPet', 
+#                 'Caltech101', 'DTD',
+#                  'Imagenette', 'Flowers', 
+#                 'EuroSAT', 'Aircraft',
+#                 'CIFAR10', 'CIFAR100',  ]:
     
-    print(dataset)
+#     print(dataset)
     
-    config.dataset = dataset
-    train_dataset, val_dataset, test_dataset, N, train_transform, transform = load_data(False, config) 
-    image, label = val_dataset[0]  # Extract the image and label
-    pixels = np.array(image)
-    print(dataset, len(train_dataset), len(val_dataset), len(test_dataset), min(pixels[0][0]),  max(pixels[0][0]), N)
+#     config.dataset = dataset
+#     train_dataset, val_dataset, test_dataset, N, train_transform, transform = load_data(False, config) 
+#     image, label = val_dataset[0]  # Extract the image and label
+#     pixels = np.array(image)
+#     print(dataset, len(train_dataset), len(val_dataset), len(test_dataset), min(pixels[0][0]),  max(pixels[0][0]), N)
