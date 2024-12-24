@@ -1,13 +1,26 @@
 import os
 
-def get_data_dir(hp_opt,config):
-
-    if "calculquebec" in os.uname().nodename or "calcul.quebec" in os.uname().nodename: 
-        data_dir = '$SLURM_TMPDIR/data'
-        if hp_opt:
-            data_dir = '$SLURM_TMPDIR/data'
+def get_data_dir(hp_opt, config):
+    # Retrieve the node name
+    nodename = os.uname().nodename.lower()
+    
+    # Define keywords to identify the cluster environment
+    cluster_keywords = ["calculquebec", "calcul.quebec"]
+    
+    # Check if the node is part of the Calcul Québec cluster
+    if any(keyword in nodename for keyword in cluster_keywords):
+        # Retrieve the SLURM_TMPDIR environment variable
+        slurm_tmpdir = os.environ.get('SLURM_TMPDIR')
+        
+        if not slurm_tmpdir:
+            raise EnvironmentError("SLURM_TMPDIR is not set. Please ensure you're running within a SLURM job.")
+        
+        # Construct the data directory path
+        data_dir = os.path.join(slurm_tmpdir, 'data')
     else:
+        # Define the default data directory for non-cluster environments
         data_dir = '/home/mheuillet/Desktop/robust_training/data'
+    
     return data_dir
 
     
