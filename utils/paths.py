@@ -3,9 +3,9 @@ import os
 def get_data_dir(hp_opt,config):
 
     if "calculquebec" in os.uname().nodename or "calcul.quebec" in os.uname().nodename: 
-        data_dir = '~/scratch/data'
+        data_dir = '$SLURM_TMPDIR/data'
         if hp_opt:
-            data_dir = '/home/mheuill/scratch/data'
+            data_dir = '$SLURM_TMPDIR/data'
     else:
         data_dir = '/home/mheuillet/Desktop/robust_training/data'
     return data_dir

@@ -73,7 +73,7 @@ def load_data(hp_opt,config,):
         test_dataset = torch.utils.data.Subset(dataset, test_indices) 
         
 
-    elif dataset == 'Aircraft':
+    elif dataset == 'fgvc-aircraft-2013b': #fgvc-aircraft-2013b
 
         N = 100
         
@@ -81,7 +81,7 @@ def load_data(hp_opt,config,):
         val_dataset =   datasets.FGVCAircraft(root=datadir, split='val', download=False, transform=transform)
         test_dataset = datasets.FGVCAircraft(root=datadir, split='test', download=False, transform=transform)
 
-    elif dataset == 'DTD':
+    elif dataset == 'dtd':
 
         N = 47
         
@@ -89,7 +89,7 @@ def load_data(hp_opt,config,):
         val_dataset =   datasets.DTD(root=datadir, split='val', download=False, transform=transform)
         test_dataset = datasets.DTD(root=datadir, split='test', download=False, transform=transform)
 
-    elif dataset == 'EuroSAT':
+    elif dataset == 'eurosat':
 
         N = 10
 
@@ -118,7 +118,7 @@ def load_data(hp_opt,config,):
         val_dataset = torch.utils.data.Subset(dataset_val_test_full, val_indices)
         test_dataset = torch.utils.data.Subset(dataset_val_test_full, test_indices)
 
-    elif dataset == 'Flowers':
+    elif dataset == 'flowers-102':
             
         # Load the Flowers102 dataset
         N = 102
@@ -126,7 +126,7 @@ def load_data(hp_opt,config,):
         val_dataset = datasets.Flowers102(root=datadir, split='val', download=False, transform=transform)
         test_dataset = datasets.Flowers102(root=datadir, split='test', download=False,  transform=transform)
 
-    elif dataset == 'Imagenette':
+    elif dataset == 'imagenette2':
 
         N = 10
         print('datadir', datadir)
@@ -139,7 +139,7 @@ def load_data(hp_opt,config,):
         val_dataset = torch.utils.data.Subset(dataset, val_indices)
         test_dataset = torch.utils.data.Subset(dataset, test_indices)
 
-    elif dataset == 'Caltech101':
+    elif dataset == 'caltech101':
 
         N = 101
         dataset_train_full = datasets.Caltech101(root=datadir, download=False, transform=train_transform)
@@ -167,7 +167,7 @@ def load_data(hp_opt,config,):
         val_dataset = torch.utils.data.Subset(dataset_val_test_full, val_indices)
         test_dataset = torch.utils.data.Subset(dataset_val_test_full, test_indices)
 
-    elif dataset == 'OxfordIIITPet':
+    elif dataset == 'oxford-iiit-pet':
 
         N = 37
 
@@ -210,7 +210,7 @@ def load_data(hp_opt,config,):
         val_dataset = torch.utils.data.Subset(dataset_train_val_full_val, val_indices)
         test_dataset = dataset_test_full
 
-    elif 'StanfordCars':
+    elif 'stanford_cars':
 
         N = 196
         print('datadir', datadir)
