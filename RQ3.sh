@@ -2,20 +2,25 @@
 
 # Define variables
 seeds=1
-datas=( 'Flowers' 'Aircraft' 'Imagenette' 'EuroSAT'
-        'StanfordCars' 'OxfordIIITPet' 
-        'Caltech101' 'DTD' )  #'CIFAR10' 'CIFAR100' 
+# datas=( 'Flowers' 'Aircraft' 'Imagenette' 'EuroSAT'
+#         'StanfordCars' 'OxfordIIITPet' 
+#         'Caltech101' 'DTD' )  #'CIFAR10' 'CIFAR100' 
+
+datas=( 'caltech101' 'dtd eurosat' 
+          'fgvc-aircraft-2013b' 'flowers-102'
+          'imagenette2' 'oxford-iiit-pet' 'stanford_cars' )
 
 losses=(  'TRADES_v2' 'CLASSIC_AT' ) 
 
 backbones=(
-  'convnext_tiny' 'robust_convnext_tiny' 'convnext_tiny.fb_in22k' 
-  'deit_small_patch16_224.fb_in1k' 'robust_deit_small_patch16_224'
-  'convnext_base' 'convnext_base.fb_in22k' 'robust_convnext_base' 
-  'convnext_base.clip_laion2b' 'convnext_base.clip_laion2b_augreg'
-  'vit_base_patch16_224.orig_in21k' 'vit_base_patch16_224.augreg_in1k' 'vit_base_patch16_224.augreg_in21k',
-  'vit_base_patch16_224.dino' 'vit_base_patch16_224.mae' 
-  'vit_base_patch16_224.sam_in1k' 'vit_base_patch16_224_miil.in21k' ) 
+  'convnext_tiny' )
+  #  'robust_convnext_tiny' 'convnext_tiny.fb_in22k' 
+  # 'deit_small_patch16_224.fb_in1k' 'robust_deit_small_patch16_224'
+  # 'convnext_base' 'convnext_base.fb_in22k' 'robust_convnext_base' 
+  # 'convnext_base.clip_laion2b' 'convnext_base.clip_laion2b_augreg'
+  # 'vit_base_patch16_224.orig_in21k' 'vit_base_patch16_224.augreg_in1k' 'vit_base_patch16_224.augreg_in21k',
+  # 'vit_base_patch16_224.dino' 'vit_base_patch16_224.mae' 
+  # 'vit_base_patch16_224.sam_in1k' 'vit_base_patch16_224_miil.in21k' ) 
 
 ft_type=( 'full_fine_tuning' )
 
