@@ -5,13 +5,41 @@ from torchvision import datasets
 #
 import os
 
-# Verify environment variables
-print("KAGGLE_USERNAME:", os.getenv('KAGGLE_USERNAME'))
-print("KAGGLE_KEY:", os.getenv('KAGGLE_KEY'))
-
+import os
 import kaggle
-# you need to configure API key through https://www.kaggle.com/docs/api
-kaggle.api.dataset_download_files('rickyyyyyyy/torchvision-stanford-cars', path='~/scratch/data', unzip=True)
+
+# Ensure environment variables are set
+username = os.getenv('KAGGLE_USERNAME')
+key = os.getenv('KAGGLE_KEY')
+
+if not username or not key:
+    raise ValueError("KAGGLE_USERNAME and KAGGLE_KEY must be set as environment variables.")
+
+# Authenticate using environment variables
+os.environ['KAGGLE_USERNAME'] = username
+os.environ['KAGGLE_KEY'] = key
+
+# Define dataset and download path
+dataset = 'zillow/zecon'  # Replace with your desired dataset identifier
+download_path = 'data/'    # Replace with your desired download path
+
+# Create download directory if it doesn't exist
+os.makedirs(download_path, exist_ok=True)
+
+# Download and unzip the dataset
+kaggle.api.dataset_download_files(dataset, path=download_path, unzip=True)
+
+print(f"Dataset '{dataset}' downloaded and extracted to '{download_path}'.")
+
+
+
+# # Verify environment variables
+# print("KAGGLE_USERNAME:", os.getenv('KAGGLE_USERNAME'))
+# print("KAGGLE_KEY:", os.getenv('KAGGLE_KEY'))
+
+# import kaggle
+# # you need to configure API key through https://www.kaggle.com/docs/api
+# kaggle.api.dataset_download_files('rickyyyyyyy/torchvision-stanford-cars', path='~/scratch/data', unzip=True)
 
 
 # print('load2')
