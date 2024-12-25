@@ -1,0 +1,17 @@
+dataset: dtd
+backbone: convnext_tiny
+ft_type: full_fine_tuning
+loss_function: TRADES_v2
+seed: 1
+epochs: 10
+lr1: 0.0003864291653552646
+lr2: 0.0014297724879798373
+weight_decay1: 4.750923721030606e-05
+weight_decay2: 0.0005506529897945988
+use_rs: false
+epsilon: 0.015686275
+step_size: 0.007843137
+perturb_steps: 10
+distance: Linf
+beta: 1.0
+project_name: zzz
