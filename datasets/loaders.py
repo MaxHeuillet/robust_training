@@ -76,7 +76,6 @@ def load_data(hp_opt,config,):
     elif dataset == 'fgvc-aircraft-2013b': #fgvc-aircraft-2013b
 
         N = 100
-        
         train_dataset = datasets.FGVCAircraft(root=datadir, split='train', download=False, transform=train_transform)
         val_dataset =   datasets.FGVCAircraft(root=datadir, split='val', download=False, transform=transform)
         test_dataset = datasets.FGVCAircraft(root=datadir, split='test', download=False, transform=transform)
@@ -84,7 +83,6 @@ def load_data(hp_opt,config,):
     elif dataset == 'dtd':
 
         N = 47
-        
         train_dataset = datasets.DTD(root=datadir, split='train', download=False, transform=train_transform)
         val_dataset =   datasets.DTD(root=datadir, split='val', download=False, transform=transform)
         test_dataset = datasets.DTD(root=datadir, split='test', download=False, transform=transform)
@@ -92,7 +90,6 @@ def load_data(hp_opt,config,):
     elif dataset == 'eurosat':
 
         N = 10
-
         dataset_train_full = datasets.EuroSAT(root=datadir, download=False, transform=train_transform)
         dataset_val_test_full = datasets.EuroSAT(root=datadir, download=False, transform=transform)
 

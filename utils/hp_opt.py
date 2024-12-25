@@ -87,8 +87,7 @@ class Hp_opt:
 
         # Set up the Tuner with metric and mode specified
 
-        full_path = os.path.abspath("./hpo_results")
-
+        # full_path = os.path.abspath("./hpo_results")
 
         tuner = Tuner(
             trainer,
@@ -102,7 +101,7 @@ class Hp_opt:
                 ),
             run_config=RunConfig(
                 name="{}_{}".format(self.setup.project_name, self.setup.exp_id),
-                storage_path=f"file://{full_path}",
+                # storage_path=f"file://{full_path}",
                   ),
         )
 
