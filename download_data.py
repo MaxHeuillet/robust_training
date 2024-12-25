@@ -3,6 +3,12 @@ from torchvision import datasets
 # print('load1')
 # datasets.StanfordCars(root='./data',  download=False, )
 #
+import os
+
+# Verify environment variables
+print("KAGGLE_USERNAME:", os.getenv('KAGGLE_USERNAME'))
+print("KAGGLE_KEY:", os.getenv('KAGGLE_KEY'))
+
 import kaggle
 # you need to configure API key through https://www.kaggle.com/docs/api
 kaggle.api.dataset_download_files('rickyyyyyyy/torchvision-stanford-cars', path='~/scratch/data', unzip=True)
