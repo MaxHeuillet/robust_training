@@ -1,15 +1,15 @@
 from torchvision import datasets
 
 # print('load1')
-# datasets.StanfordCars(root='~/scratch/data',  download=True, )
+datasets.StanfordCars(root='./data',  download=False, )
 
 # import kaggle
 # you need to configure API key through https://www.kaggle.com/docs/api
-# kaggle.api.dataset_download_files('rickyyyyyyy/torchvision-stanford-cars', path='~/scratch/data', unzip=True)
+# kaggle.api.dataset_download_files('rickyyyyyyy/torchvision-stanford-cars', path='//data', unzip=True)
 
 
-print('load2')
-datasets.OxfordIIITPet(root='$SLURM_TMPDIR/data',  download=True, )
+# print('load2')
+# datasets.OxfordIIITPet(root='$SLURM_TMPDIR/data',  download=True, )
 
 
 # print('load3')

@@ -10,7 +10,7 @@ datas=( 'caltech101' 'dtd' 'eurosat'
           'fgvc-aircraft-2013b' 'flowers-102'
           'imagenette2' 'oxford-iiit-pet' 'stanford_cars' )
 
-losses=(  'TRADES_v2' 'CLASSIC_AT' ) 
+losses=(  'TRADES_v2'  ) #'CLASSIC_AT' 
 
 backbones=(
   'convnext_tiny' )

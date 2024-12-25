@@ -96,7 +96,7 @@ class Hp_opt:
             tune_config=tune.TuneConfig(
                 metric="loss",  # Specify the metric to optimize
                 mode="min",     # Specify the optimization direction
-                #scheduler=scheduler,
+                scheduler=scheduler,
                 num_samples=self.trials, #
                 time_budget_s=max_runtime_seconds,
                 ),
