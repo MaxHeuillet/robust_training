@@ -11,9 +11,7 @@
 
 # Purge all loaded modules and load necessary ones
 module --force purge
-module load StdEnv/2023 python/3.11 cuda scipy-stack arrow httpproxy
-
-# Activate the Python virtual environment
+module load StdEnv/2023 python/3.10 cuda scipy-stack arrow httpproxy
 source ~/scratch/MYENV4/bin/activate
 
 # Uncomment the following line if you need to install requirements
@@ -64,13 +62,13 @@ echo "Extraction of ${DATA} archive completed successfully at $(date)."
 echo 'HZ: start python3 ./distributed_experiment1.py ..at '; date
 
 # Run the Python experiment script with appropriate arguments
-python3 ./distributed_experiment2.py \
-    --task "${TASK}" \
-    --loss_function "${LOSS}" \
-    --dataset "${DATA}" \
-    --seed "${SEED}" \
-    --backbone "${BCKBN}" \
-    --ft_type "${FTTYPE}" \
-    --project_name "${PRNM}" \
-    --exp "${EXP}" \
-    > stdout_"$SLURM_JOB_ID" 2> stderr_"$SLURM_JOB_ID"
+# python3 ./distributed_experiment2.py \
+#     --task "${TASK}" \
+#     --loss_function "${LOSS}" \
+#     --dataset "${DATA}" \
+#     --seed "${SEED}" \
+#     --backbone "${BCKBN}" \
+#     --ft_type "${FTTYPE}" \
+#     --project_name "${PRNM}" \
+#     --exp "${EXP}" \
+#     > stdout_"$SLURM_JOB_ID" 2> stderr_"$SLURM_JOB_ID"

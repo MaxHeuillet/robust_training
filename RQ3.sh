@@ -2,9 +2,6 @@
 
 # Define variables
 seeds=1
-# datas=( 'Flowers' 'Aircraft' 'Imagenette' 'EuroSAT'
-#         'StanfordCars' 'OxfordIIITPet' 
-#         'Caltech101' 'DTD' )  #'CIFAR10' 'CIFAR100' 
 
 datas=( 'stanford_cars' 'caltech101' 'dtd' 'eurosat' 
           'fgvc-aircraft-2013b' 'flowers-102'
