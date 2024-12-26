@@ -9,27 +9,27 @@ import os
 import kaggle
 
 # Ensure environment variables are set
-username = os.getenv('KAGGLE_USERNAME')
-key = os.getenv('KAGGLE_KEY')
+# username = os.getenv('KAGGLE_USERNAME')
+# key = os.getenv('KAGGLE_KEY')
 
-if not username or not key:
-    raise ValueError("KAGGLE_USERNAME and KAGGLE_KEY must be set as environment variables.")
+# if not username or not key:
+#     raise ValueError("KAGGLE_USERNAME and KAGGLE_KEY must be set as environment variables.")
 
-# Authenticate using environment variables
-os.environ['KAGGLE_USERNAME'] = username
-os.environ['KAGGLE_KEY'] = key
+# # Authenticate using environment variables
+# os.environ['KAGGLE_USERNAME'] = username
+# os.environ['KAGGLE_KEY'] = key
 
-# Define dataset and download path
-dataset = 'zillow/zecon'  # Replace with your desired dataset identifier
-download_path = 'data/'    # Replace with your desired download path
+# # Define dataset and download path
+# dataset = 'zillow/zecon'  # Replace with your desired dataset identifier
+# download_path = 'data/'    # Replace with your desired download path
 
-# Create download directory if it doesn't exist
-os.makedirs(download_path, exist_ok=True)
+# # Create download directory if it doesn't exist
+# os.makedirs(download_path, exist_ok=True)
 
-# Download and unzip the dataset
-kaggle.api.dataset_download_files(dataset, path=download_path, unzip=True)
+# # Download and unzip the dataset
+# kaggle.api.dataset_download_files(dataset, path=download_path, unzip=True)
 
-print(f"Dataset '{dataset}' downloaded and extracted to '{download_path}'.")
+# print(f"Dataset '{dataset}' downloaded and extracted to '{download_path}'.")
 
 
 
@@ -102,21 +102,21 @@ print(f"Dataset '{dataset}' downloaded and extracted to '{download_path}'.")
 # dataset.save_to_disk('/home/mheuill/scratch/imagenet-1k')
 
 
-# from omegaconf import OmegaConf
-# from datasets import load_data
-# import numpy as np
-# config = OmegaConf.load("./configs/default_config.yaml")
+from omegaconf import OmegaConf
+from datasets import load_data
+import numpy as np
+config = OmegaConf.load("./configs/default_config.yaml")
 
-# for dataset in ['StanfordCars', 'OxfordIIITPet', 
-#                 'Caltech101', 'DTD',
-#                  'Imagenette', 'Flowers', 
-#                 'EuroSAT', 'Aircraft',
-#                 'CIFAR10', 'CIFAR100',  ]:
+for dataset in ['StanfordCars', 'OxfordIIITPet', 
+                'Caltech101', 'DTD',
+                 'Imagenette', 'Flowers', 
+                'EuroSAT', 'Aircraft',
+                'CIFAR10', 'CIFAR100',  ]:
     
-#     print(dataset)
+    print(dataset)
     
-#     config.dataset = dataset
-#     train_dataset, val_dataset, test_dataset, N, train_transform, transform = load_data(False, config) 
-#     image, label = val_dataset[0]  # Extract the image and label
-#     pixels = np.array(image)
-#     print(dataset, len(train_dataset), len(val_dataset), len(test_dataset), min(pixels[0][0]),  max(pixels[0][0]), N)
+    config.dataset = dataset
+    train_dataset, val_dataset, test_dataset, N, train_transform, transform = load_data(False, config) 
+    image, label = val_dataset[0]  # Extract the image and label
+    pixels = np.array(image)
+    print(dataset, len(train_dataset), len(val_dataset), len(test_dataset), min(pixels[0][0]),  max(pixels[0][0]), N)

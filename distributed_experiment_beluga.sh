@@ -9,49 +9,68 @@
 #SBATCH --mail-user=maxime.heuillet.1@ulaval.ca
 #SBATCH --mail-type=ALL
 
+# Purge all loaded modules and load necessary ones
 module --force purge
 module load StdEnv/2023 python/3.11 cuda scipy-stack arrow httpproxy
-source ~/scratch/MYENV4/bin/activate
-# pip install  -r requirements.txt
 
+# Activate the Python virtual environment
+source ~/scratch/MYENV4/bin/activate
+
+# Uncomment the following line if you need to install requirements
+# pip install -r requirements.txt
 
 echo "Processing dataset: ${DATA}"
 
+# Create a temporary data directory
 mkdir -p $SLURM_TMPDIR/data
 
-tar -I zstd -xf ~/scratch/data/${DATA}.tar.zst -C $SLURM_TMPDIR/data
-    
+# Define the path to the dataset archive
+ARCHIVE_PATH=~/scratch/data/${DATA}
+
+# Function to extract .tar.zst archives
+extract_tar_zst() {
+    local archive="${ARCHIVE_PATH}.tar.zst"
+    tar -I zstd -xf "$archive" -C "$SLURM_TMPDIR/data"
+}
+
+# Function to extract .zip archives
+extract_zip() {
+    local archive="${ARCHIVE_PATH}.zip"
+    unzip "$archive" -d "$SLURM_TMPDIR/data"
+}
+
+# Determine the extraction method based on the dataset
+if [ "$DATA" == "stanford_cars" ]; then
+    echo "Dataset is stanford_cars. Using unzip to extract."
+    # Check if unzip is available
+    if ! command -v unzip &> /dev/null; then
+        echo "Error: unzip command not found. Please install unzip or load it via modules." >&2
+        exit 1
+    fi
+    extract_zip
+else
+    echo "Dataset is not stanford_cars. Using tar with zstd to extract."
+    extract_tar_zst
+fi
+
 # Check if extraction was successful
 if [ $? -ne 0 ]; then
-    echo "Error: Failed to extract ${DATA}.tar.zst" >&2
+    echo "Error: Failed to extract ${DATA} archive." >&2
     exit 1
 fi
-    echo "Extraction of ${DATA}.tar.zst completed successfully at $(date)."
 
+echo "Extraction of ${DATA} archive completed successfully at $(date)."
 
 echo 'HZ: start python3 ./distributed_experiment1.py ..at '; date
 
-
+# Run the Python experiment script with appropriate arguments
 python3 ./distributed_experiment2.py \
-    --task ${TASK} \
-    --loss_function ${LOSS} \
-    --dataset ${DATA} \
-    --seed ${SEED} \
-    --backbone ${BCKBN} \
-    --ft_type ${FTTYPE} \
-    --project_name ${PRNM} \
-    --exp ${EXP} \
-    > stdout_$SLURM_JOB_ID 2> stderr_$SLURM_JOB_ID
-
-
-
-
-# mv ~/scratch/data/* "$SLURM_TMPDIR/data/"
-
-
-# if [ "${DATA}" = "Imagenet1k" ]; then
-#     echo 'unzip imagenet'
-#     mkdir -p $SLURM_TMPDIR/data
-#     tar xf ~/scratch/imagenet.tar.gz -C $SLURM_TMPDIR/data
-#     echo 'imagenet unzipped'
-# fi
+    --task "${TASK}" \
+    --loss_function "${LOSS}" \
+    --dataset "${DATA}" \
+    --seed "${SEED}" \
+    --backbone "${BCKBN}" \
+    --ft_type "${FTTYPE}" \
+    --project_name "${PRNM}" \
+    --exp "${EXP}" \
+    > stdout_"$SLURM_JOB_ID" 2> stderr_"$SLURM_JOB_ID"
