@@ -6,9 +6,9 @@ seeds=1
 #         'StanfordCars' 'OxfordIIITPet' 
 #         'Caltech101' 'DTD' )  #'CIFAR10' 'CIFAR100' 
 
-datas=( 'caltech101' 'dtd' 'eurosat' 
+datas=( 'stanford_cars' 'caltech101' 'dtd' 'eurosat' 
           'fgvc-aircraft-2013b' 'flowers-102'
-          'imagenette2' 'oxford-iiit-pet' 'stanford_cars' )
+          'imagenette2' 'oxford-iiit-pet' )
 
 losses=(  'TRADES_v2'  ) #'CLASSIC_AT' 
 
