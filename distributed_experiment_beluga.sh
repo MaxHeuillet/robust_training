@@ -34,7 +34,7 @@ extract_tar_zst() {
 # Function to extract .zip archives
 extract_zip() {
     local archive="${ARCHIVE_PATH}.zip"
-    unzip "$archive" -d "$SLURM_TMPDIR/data"
+    unzip "~/scratch/data/archive.zip" -d "$SLURM_TMPDIR/data"
 }
 
 # Determine the extraction method based on the dataset
