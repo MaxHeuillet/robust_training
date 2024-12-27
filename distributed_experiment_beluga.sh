@@ -5,7 +5,7 @@
 #SBATCH --cpus-per-task=24
 #SBATCH --gpus-per-node=4
 #SBATCH --mem-per-cpu=4000M
-#SBATCH --time=02:58:59
+#SBATCH --time=00:20:59
 #SBATCH --mail-user=maxime.heuillet.1@ulaval.ca
 #SBATCH --mail-type=ALL
 
@@ -54,7 +54,7 @@ fi
 echo "Extraction of ${DATA} archive completed successfully at $(date)."
 
 # Run the Python experiment script with appropriate arguments
-python3 ./distributed_experiment2.py \
+python -u ./distributed_experiment2.py \
     --task "${TASK}" \
     --loss_function "${LOSS}" \
     --dataset "${DATA}" \
