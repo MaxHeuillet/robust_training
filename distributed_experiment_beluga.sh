@@ -56,13 +56,13 @@ echo "Extraction of ${DATA} archive completed successfully at $(date)."
 echo 'HZ: start python3 ./distributed_experiment1.py ..at '; date
 
 # Run the Python experiment script with appropriate arguments
-# python3 ./distributed_experiment2.py \
-#     --task "${TASK}" \
-#     --loss_function "${LOSS}" \
-#     --dataset "${DATA}" \
-#     --seed "${SEED}" \
-#     --backbone "${BCKBN}" \
-#     --ft_type "${FTTYPE}" \
-#     --project_name "${PRNM}" \
-#     --exp "${EXP}" \
-#     > stdout_"$SLURM_JOB_ID" 2> stderr_"$SLURM_JOB_ID"
+python3 ./distributed_experiment2.py \
+    --task "${TASK}" \
+    --loss_function "${LOSS}" \
+    --dataset "${DATA}" \
+    --seed "${SEED}" \
+    --backbone "${BCKBN}" \
+    --ft_type "${FTTYPE}" \
+    --project_name "${PRNM}" \
+    --exp "${EXP}" \
+    > stdout_"$SLURM_JOB_ID" 2> stderr_"$SLURM_JOB_ID"
