@@ -17,6 +17,8 @@ source ~/scratch/MYENV4/bin/activate
 # Uncomment the following line if you need to install requirements
 # pip install -r requirements.txt
 
+export PYTHONUNBUFFERED=1
+
 echo "Processing dataset: ${DATA}"
 
 # Create a temporary data directory
@@ -54,7 +56,7 @@ fi
 echo "Extraction of ${DATA} archive completed successfully at $(date)."
 
 # Run the Python experiment script with appropriate arguments
-python -u ./distributed_experiment2.py \
+python ./distributed_experiment2.py \
     --task "${TASK}" \
     --loss_function "${LOSS}" \
     --dataset "${DATA}" \
