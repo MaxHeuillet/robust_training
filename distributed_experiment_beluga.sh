@@ -54,7 +54,7 @@ fi
 echo "Extraction of ${DATA} archive completed successfully at $(date)."
 
 # Run the Python experiment script with appropriate arguments
-python -u ./distributed_experiment2.py \
+python3 ./distributed_experiment2.py \
     --task "${TASK}" \
     --loss_function "${LOSS}" \
     --dataset "${DATA}" \
