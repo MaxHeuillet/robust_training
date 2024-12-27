@@ -56,7 +56,7 @@ echo "Extraction of ${DATA} archive completed successfully at $(date)."
 echo 'HZ: start python3 ./distributed_experiment1.py ..at '; date
 
 # Run the Python experiment script with appropriate arguments
-python3 ./distributed_experiment2.py \
+python3 -u ./distributed_experiment2.py \
     --task "${TASK}" \
     --loss_function "${LOSS}" \
     --dataset "${DATA}" \
