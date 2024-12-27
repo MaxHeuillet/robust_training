@@ -11,7 +11,7 @@
 
 # Purge all loaded modules and load necessary ones
 module --force purge
-module load StdEnv/2023 python/3.10 cuda scipy-stack arrow httpproxy
+module load StdEnv/2023 python/3.11 cuda scipy-stack arrow httpproxy
 source ~/scratch/MYENV4/bin/activate
 
 # Uncomment the following line if you need to install requirements
@@ -52,8 +52,6 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Extraction of ${DATA} archive completed successfully at $(date)."
-
-echo 'HZ: start python3 ./distributed_experiment1.py ..at '; date
 
 # Run the Python experiment script with appropriate arguments
 python -u ./distributed_experiment2.py \
