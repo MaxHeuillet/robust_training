@@ -33,18 +33,12 @@ extract_tar_zst() {
 
 # Function to extract .zip archives
 extract_zip() {
-    local archive="${ARCHIVE_PATH}.zip"
-    unzip "~/scratch/data/archive.zip" -d "$SLURM_TMPDIR/data"
+    unzip "$HOME/scratch/data/archive.zip" -d "$SLURM_TMPDIR/data"
 }
 
 # Determine the extraction method based on the dataset
 if [ "$DATA" == "stanford_cars" ]; then
     echo "Dataset is stanford_cars. Using unzip to extract."
-    # Check if unzip is available
-    if ! command -v unzip &> /dev/null; then
-        echo "Error: unzip command not found. Please install unzip or load it via modules." >&2
-        exit 1
-    fi
     extract_zip
 else
     echo "Dataset is not stanford_cars. Using tar with zstd to extract."
