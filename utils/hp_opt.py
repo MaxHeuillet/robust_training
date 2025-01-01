@@ -87,7 +87,7 @@ class Hp_opt:
 
         # Set up the Tuner with metric and mode specified
 
-        # full_path = os.path.abspath("./hpo_results")
+        full_path = os.path.abspath("./hpo_results")
 
         tuner = Tuner(
             trainer,
