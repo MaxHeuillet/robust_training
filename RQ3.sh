@@ -4,8 +4,7 @@
 seeds=1
 
 datas=( 'stanford_cars' 'caltech101' 'dtd' 'eurosat' 
-          'fgvc-aircraft-2013b' 'flowers-102'
-          'imagenette2' 'oxford-iiit-pet' )
+        'fgvc-aircraft-2013b' 'flowers-102' 'oxford-iiit-pet' ) #'imagenette2'
 
 losses=(  'TRADES_v2' 'CLASSIC_AT' ) 
 
