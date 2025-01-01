@@ -11,7 +11,6 @@ class CustomModel(nn.Module):
         self.current_task = None
         
     def forward(self, x_1=None, x_2=None):
-
         
         if x_1 is not None and x_2 is not None:
 

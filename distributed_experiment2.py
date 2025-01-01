@@ -565,11 +565,11 @@ if __name__ == "__main__":
     experiment = BaseExperiment(setup)
 
     # if task == 'HPO':
-    print('HPO', flush=True)
-    # experiment.hyperparameter_optimization()
+    # print('HPO', flush=True)
+    experiment.hyperparameter_optimization()
         # elif task == 'train':
         
-    # mp.spawn(training_wrapper, args=(experiment, config), nprocs=world_size, join=True)
+    mp.spawn(training_wrapper, args=(experiment, config), nprocs=world_size, join=True)
     
     # elif task == 'test':
     # experiment.launch_test()
