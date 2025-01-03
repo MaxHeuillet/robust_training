@@ -26,7 +26,6 @@ def trades_loss_eval(setup,
     x_adv = apgd_attack(setup, model, x_nat, y)
 
     model.module.current_task = 'val_infer'
-    # print('infer')
     logits_nat, logits_adv = model(x_nat, x_adv)
     model.module.current_task = None
 

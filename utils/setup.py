@@ -105,10 +105,10 @@ class Setup:
         # -------------------------
         # These are "safe but reasonably large" total batch sizes for 4 GPUs on 224x224 images.
         baselines = {
-            'convnext_tiny': 128,   # total, i.e. 16 per GPU
-            'convnext_base': 64,   # total, i.e. 8  per GPU
-            'deit_small_patch16_224': 128,
-            'vit_base_patch16_224': 64 }
+            'convnext_tiny': 256,   # total, i.e. 16 per GPU
+            'convnext_base': 128,   # total, i.e. 8  per GPU
+            'deit_small_patch16_224': 256,
+            'vit_base_patch16_224': 128 }
         base_bs = baselines.get(self.config.backbone, 32)  # fallback if unknown arch
 
         # -------------------------
@@ -173,15 +173,15 @@ class Setup:
         total_correct_adv = 0
         total_examples = 0
 
-        total_neurons_nat = 0
-        total_zero_nat = 0
-        total_dormant_nat = 0
-        total_overactive_nat = 0
+        # total_neurons_nat = 0
+        # total_zero_nat = 0
+        # total_dormant_nat = 0
+        # total_overactive_nat = 0
 
-        total_neurons_adv = 0
-        total_zero_adv = 0
-        total_dormant_adv = 0
-        total_overactive_adv = 0
+        # total_neurons_adv = 0
+        # total_zero_adv = 0
+        # total_dormant_adv = 0
+        # total_overactive_adv = 0
 
         # Sum up values from each process
         for process_id, process_data in results.items():
@@ -189,38 +189,38 @@ class Setup:
             total_correct_adv += process_data['stats']['nb_correct_adv']
             total_examples += process_data['stats']['nb_examples']
 
-            total_zero_nat += process_data['stats_nat']['zero_count']
-            total_dormant_nat += process_data['stats_nat']['dormant_count']
-            total_overactive_nat += process_data['stats_nat']['overactive_count']
-            total_neurons_nat += process_data['stats_nat']['total_neurons']
+            # total_zero_nat += process_data['stats_nat']['zero_count']
+            # total_dormant_nat += process_data['stats_nat']['dormant_count']
+            # total_overactive_nat += process_data['stats_nat']['overactive_count']
+            # total_neurons_nat += process_data['stats_nat']['total_neurons']
 
-            total_zero_adv += process_data['stats_adv']['zero_count']
-            total_dormant_adv += process_data['stats_adv']['dormant_count']
-            total_overactive_adv += process_data['stats_adv']['overactive_count']
-            total_neurons_adv += process_data['stats_adv']['total_neurons']
+            # total_zero_adv += process_data['stats_adv']['zero_count']
+            # total_dormant_adv += process_data['stats_adv']['dormant_count']
+            # total_overactive_adv += process_data['stats_adv']['overactive_count']
+            # total_neurons_adv += process_data['stats_adv']['total_neurons']
 
         # Calculate percentages
         clean_accuracy = total_correct_nat / total_examples
         robust_accuracy = total_correct_adv / total_examples
         
-        nat_zero_mean = total_zero_nat / total_neurons_nat
-        nat_dormant_mean = total_dormant_nat / total_neurons_nat
-        nat_overactive_mean = total_overactive_nat / total_neurons_nat
+        # nat_zero_mean = total_zero_nat / total_neurons_nat
+        # nat_dormant_mean = total_dormant_nat / total_neurons_nat
+        # nat_overactive_mean = total_overactive_nat / total_neurons_nat
 
-        adv_zero_mean = total_zero_adv / total_neurons_adv
-        adv_dormant_mean = total_dormant_adv / total_neurons_adv
-        adv_overactive_mean = total_overactive_adv / total_neurons_adv
+        # adv_zero_mean = total_zero_adv / total_neurons_adv
+        # adv_dormant_mean = total_dormant_adv / total_neurons_adv
+        # adv_overactive_mean = total_overactive_adv / total_neurons_adv
 
         statistics = {  'clean_acc':clean_accuracy, 
                         'robust_acc':robust_accuracy,
                         
-                        'zero_nat_test':nat_zero_mean,
-                        'dormant_nat_test':nat_dormant_mean,
-                        'overactive_nat_test':nat_overactive_mean,
+                        # 'zero_nat_test':nat_zero_mean,
+                        # 'dormant_nat_test':nat_dormant_mean,
+                        # 'overactive_nat_test':nat_overactive_mean,
                         
-                        'zero_adv_test':adv_zero_mean,
-                        'dormant_adv_test':adv_dormant_mean,
-                        'overactive_adv_test':adv_overactive_mean,
+                        # 'zero_adv_test':adv_zero_mean,
+                        # 'dormant_adv_test':adv_dormant_mean,
+                        # 'overactive_adv_test':adv_overactive_mean,
                         
                         }
 

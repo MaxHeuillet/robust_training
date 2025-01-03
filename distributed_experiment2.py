@@ -428,7 +428,7 @@ class BaseExperiment:
         print('end AA accuracy', flush=True) 
 
         statistics = { 'stats': stats, 'stats_nat': res_nat, 'stats_adv': res_adv, }
-        print(statistics)
+        print(statistics, flush=True)
         
         # Put results into the queue
         result_queue.put((rank, statistics))
@@ -436,9 +436,9 @@ class BaseExperiment:
         
     def test_loop(self, testloader, config, model, rank):
 
-        tracker_nat = ActivationTrackerAggregated(train=False)
-        tracker_adv = ActivationTrackerAggregated(train=False)
-        handles = register_hooks_aggregated(model, tracker_nat, tracker_adv)
+        # tracker_nat = ActivationTrackerAggregated(train=False)
+        # tracker_adv = ActivationTrackerAggregated(train=False)
+        # handles = register_hooks_aggregated(model, tracker_nat, tracker_adv)
 
         def forward_pass(x):
             return model(x)
@@ -447,57 +447,64 @@ class BaseExperiment:
         adversary = AutoAttack(forward_pass, norm=config.distance, eps=config.epsilon, version='standard', verbose = False, device = device)
         print('adversary instanciated', flush=True) 
         
-        stats = {'nb_correct_nat': 0, 'nb_correct_adv': 0, 'nb_examples': 0}
-        print('stats',stats)
+        nb_correct_nat = 0
+        nb_correct_adv = 0
+        nb_examples = 0
+
+        print('stats', nb_correct_nat, nb_correct_adv, nb_examples, flush=True)
 
         for _, batch in enumerate( testloader ):
 
-            
+            x_nat, target = batch
 
-            data, target = batch
+            x_nat, target = x_nat.to(rank), target.to(rank) 
 
-            data, target = data.to(rank), target.to(rank) 
-
-            batch_size = data.size(0)
+            batch_size = x_nat.size(0)
 
             print('start batch iterations', rank, _,batch_size, len(testloader), flush=True) 
 
             # print('prepare attack', flush=True)
 
-            x_adv = adversary.run_standard_evaluation(data, target, bs = batch_size )
+            x_adv = adversary.run_standard_evaluation(x_nat, target, bs = batch_size )
 
             # print('predict clean', flush=True)
-            
-            # print('Evaluate the model on natural data', rank, flush=True)
-            nat_outputs = model(data)
-            _, preds_nat = torch.max(nat_outputs.data, 1)
 
-            # print('predict adv', flush=True)
+            # model.module.current_task = 'val_infer'
+            logits_nat, logits_adv = model(x_nat, x_adv)
+            # model.module.current_task = None
 
-            # print('Evaluate the model on adversarial examples', rank, flush=True)
-            adv_outputs = model(x_adv)
-            _, preds_adv = torch.max(adv_outputs.data, 1)
+            _, preds_nat = torch.argmax(logits_nat, dim=1)
+            _, preds_adv = torch.argmax(logits_adv, dim=1)
 
             # print('Compute statitistics', rank, flush=True)
 
             # print('update', flush=True)
 
-            stats['nb_correct_nat'] += (preds_nat == target).sum().item()
-            stats['nb_correct_adv'] += (preds_adv == target).sum().item()
-            stats['nb_examples'] += target.size(0)
+            nb_correct_nat += (preds_nat == target).sum().item()
+            nb_correct_adv += (preds_adv == target).sum().item()
+            nb_examples += target.size(0)
 
             break
 
-        print('stats2',stats)
+        print('stats2', nb_correct_nat, nb_correct_adv, nb_examples, flush=True)
 
-        res_nat = compute_stats_aggregated(tracker_nat)
-        res_adv = compute_stats_aggregated(tracker_adv)
+        stats = { 'nb_correct_nat':nb_correct_nat,
+                  'nb_correct_adv':nb_correct_adv,
+                  'nb_examples':nb_examples }
+        
+        print('stats dict, rank', stats, rank, flush=True)
 
-        tracker_nat.clear()
-        tracker_adv.clear()
+        # res_nat = compute_stats_aggregated(tracker_nat)
+        # res_adv = compute_stats_aggregated(tracker_adv)
+
+        res_nat = {}
+        res_adv = {}
+
+        # tracker_nat.clear()
+        # tracker_adv.clear()
         # Remove hooks
-        for handle in handles:
-            handle.remove()
+        # for handle in handles:
+        #     handle.remove()
 
         return stats, res_nat, res_adv
     
@@ -506,12 +513,6 @@ class BaseExperiment:
         # Create a Queue to gather results
         result_queue = Queue()
 
-        # Define core groups (6 cores per process)
-        # num_cores_per_process = 6
-        # core_groups = [
-        #     list(range(i * num_cores_per_process, (i + 1) * num_cores_per_process))
-        #     for i in range(self.setup.world_size)
-        # ]
 
         # Launch evaluation processes
         processes = []
@@ -520,10 +521,6 @@ class BaseExperiment:
 
             p = mp.Process(target=self.test, args=(rank, result_queue))
             p.start()
-
-            # Set the CPU affinity for the process
-            # process = psutil.Process(p.pid)
-            # process.cpu_affinity(core_groups[rank])
 
             # print(f"Process {p.pid} assigned to cores: {core_groups[rank]}", flush=True)
             processes.append(p)
