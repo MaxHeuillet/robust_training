@@ -96,50 +96,72 @@ class Setup:
         avg_value = value_tensor.item() / nb_examples_tensor.item()
 
         return avg_value, value_tensor.item(), nb_examples_tensor.item() 
-        
-    def train_batch_size(self):
+    
 
-        if self.cluster_name == 'narval':
-            base = 9/4
-        elif self.cluster_name == 'beluga':
-            base = 3/4
+    def train_batch_size(self): #(arch: str, dataset: str, loss_fn: str) -> int
+
+        # -------------------------
+        # 1) BASELINES PER ARCH
+        # -------------------------
+        # These are "safe but reasonably large" total batch sizes for 4 GPUs on 224x224 images.
+        baselines = {
+            'convnext_tiny': 64,   # total, i.e. 16 per GPU
+            'convnext_base': 32,   # total, i.e. 8  per GPU
+            'deit_small_patch16_224': 64,
+            'vit_base_patch16_224': 32 }
+        base_bs = baselines.get(self.config.backbone, 32)  # fallback if unknown arch
+
+        # -------------------------
+        # 2) DATASET → #CLASSES
+        # -------------------------
+        # Approximate #classes for each dataset
+        dataset_nclasses = {
+            'stanford_cars':         196,
+            'caltech101':            101,
+            'dtd':                   47,
+            'eurosat':               10,
+            'fgvc-aircraft-2013b':   100,
+            'flowers-102':           102,
+            'oxford-iiit-pet':       37
+        }
+        n_classes = dataset_nclasses.get(self.config.dataset, 100)  # fallback if unknown
+
+        # -------------------------
+        # 3) SCALE BY #CLASSES
+        # -------------------------
+        # More classes => slightly larger last layer => slightly higher memory usage.
+        # You can tune these multipliers further if you see OOM or leftover memory.
+        if n_classes <= 10:
+            class_scale = 1.00
+        elif n_classes <= 50:
+            class_scale = 0.85
+        elif n_classes <= 105:
+            class_scale = 0.75
+        elif n_classes <= 200:
+            class_scale = 0.65
         else:
-            return 8
+            class_scale = 0.50  # if dataset has more than ~200 classes
 
-        # Batch size recommendations based on the backbone
-        if self.config.backbone in ['robust_wideresnet_28_10', 'wideresnet_28_10']:
-            batch_size = 8 * base  # 8 = OK, 16 = NOT OK, 12 NOT OK
-        elif 'deit_small_patch16_224' in self.config.backbone:
-            batch_size = 128 * base  # 16 = OK, 32 = OK, 64 = OK, 128 = OK, 256 = NOT OK
-        elif 'vit_base_patch16_224' in self.config.backbone:
-            batch_size = 64 * base  # 16 = OK, 32 = OK, 64 = OK, 128 = NOT OK
-        elif 'convnext_base' in self.config.backbone:
-            batch_size = 32 * base  # 16 = OK, 32 = OK, 64 = NOT OK
-        elif 'convnext_tiny' in self.config.backbone:
-            batch_size = 64 * base  # 16 = OK, 32 = OK, 64 = OK, 128 = NOT OK
-  
-        return int(batch_size)
+        # -------------------------
+        # 4) SCALE FOR TRADES
+        # -------------------------
+        # TRADES effectively does ~2 forward passes => ~2x memory usage.
+        if self.config.loss_function == 'TRADES_v2':
+            loss_scale = 0.50
+        else:
+            loss_scale = 1.00
+
+        # -------------------------
+        # 5) FINAL BATCH SIZE
+        # -------------------------
+        batch_size = int(base_bs * class_scale * loss_scale)
+
+        return batch_size
+
         
     def test_batch_size(self,):
         
-        if self.cluster_name == 'narval':
-            base = 9/4
-        elif self.cluster_name == 'beluga':
-            base = 3/4
-        else:
-            return 8
-
-        # Batch size recommendations based on the backbone
-        if self.config.backbone in ['robust_wideresnet_28_10', 'wideresnet_28_10']:
-            batch_size = 4 * base  # 8 = NOT OK,
-        elif 'deit_small_patch16_224' in self.config.backbone:
-            batch_size = 64 * base  # 16 = OK, 32 = OK, 64 = OK, 128 = NOT OK, 
-        elif 'vit_base_patch16_224' in self.config.backbone:
-            batch_size = 32 * base  # 16 = OK, 32 = OK, 64 = NOT OK,
-        elif 'convnext_base' in self.config.backbone:
-            batch_size = 16 * base  # 16 = OK, 32 = NOT OK,
-        elif 'convnext_tiny' in self.config.backbone:
-            batch_size = 32 * base  # 16 = OK, 32 = OK, 64 = NOT OK,
+        batch_size = self.train_batch_size() / 2
         
         return int(batch_size)
     
@@ -241,3 +263,45 @@ class Setup:
             # Save the updated dictionary back to the file
             with open(data_path, 'wb') as f:
                 pickle.dump(results_dict, f)
+
+
+
+# EXAMPLE USAGE
+# -------------
+# Suppose we're training convnext_tiny on 'stanford_cars' with TRADES:
+#   arch      = 'convnext_tiny'
+#   dataset   = 'stanford_cars'
+#   loss_fn   = 'trades'
+#   batchsize = get_safe_batch_size(arch, dataset, loss_fn)
+#
+# This gives us the total batch size across 4 GPUs (16GB each). 
+# If you do DDP, you'll set per-GPU batch size to batchsize // 4 (rounded).
+
+        
+    # def train_batch_size(self):
+
+    #     if self.cluster_name == 'narval':
+    #         base = 9/4
+    #     elif self.cluster_name == 'beluga':
+    #         base = 3/4
+    #     else:
+    #         return 8
+        
+    #     if self.config.loss_function == 'TRADES_v2':
+    #         loss_base = 0.5
+    #     else:
+    #         loss_base = 1
+
+    #     # Batch size recommendations based on the backbone
+    #     # if self.config.backbone in ['robust_wideresnet_28_10', 'wideresnet_28_10']:
+    #     #     batch_size = 8 * base  # 8 = OK, 16 = NOT OK, 12 NOT OK
+    #     if 'deit_small_patch16_224' in self.config.backbone:
+    #         batch_size = 128 * base  # 16 = OK, 32 = OK, 64 = OK, 128 = OK, 256 = NOT OK
+    #     elif 'vit_base_patch16_224' in self.config.backbone:
+    #         batch_size = 64 * base  # 16 = OK, 32 = OK, 64 = OK, 128 = NOT OK
+    #     elif 'convnext_base' in self.config.backbone:
+    #         batch_size = 32 * base  # 16 = OK, 32 = OK, 64 = NOT OK
+    #     elif 'convnext_tiny' in self.config.backbone:
+    #         batch_size = 64 * base  # 16 = OK, 32 = OK, 64 = OK, 128 = NOT OK
+  
+    #     return int(batch_size)

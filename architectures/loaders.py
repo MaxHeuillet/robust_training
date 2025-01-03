@@ -26,6 +26,8 @@ def load_architecture(hp_opt,config, N, ):
                       'convnext_base.fb_in22k':'convnext_base.fb_in22k', 
                       'robust_convnext_base':'convnext_base',
                       'random_convnext_base':'convnext_base',
+                      'convnext_base.clip_laion2b':'convnext_base.clip_laion2b',
+                      'convnext_base.clip_laion2b_augreg':'convnext_base.clip_laion2b_augreg',
                       
                       'convnext_tiny_random':'convnext_tiny',
                       'convnext_tiny':'convnext_tiny',
@@ -44,8 +46,11 @@ def load_architecture(hp_opt,config, N, ):
                       'vit_base_patch16_224.augreg_in21k':'vit_base_patch16_224.augreg_in21k',
                       'robust_vit_base_patch16_224': 'vit_base_patch16_224',
                       'random_vit_base_patch16_224': 'vit_base_patch16_224',
-
-                          }
+                      'vit_base_patch16_224.orig_in21k':'vit_base_patch16_224.orig_in21k',
+                      'vit_base_patch16_224.dino':'vit_base_patch16_224.dino',
+                      'vit_base_patch16_224.mae':'vit_base_patch16_224.mae', 
+                      'vit_base_patch16_224.sam_in1k':'vit_base_patch16_224.sam_in1k',
+                      'vit_base_patch16_224_miil.in21k':'vit_base_patch16_224_miil.in21k' }
     
     
     if 'convnext' in backbone:
