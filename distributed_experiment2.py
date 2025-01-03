@@ -473,8 +473,8 @@ class BaseExperiment:
             logits_nat, logits_adv = model(x_nat, x_adv)
             # model.module.current_task = None
 
-            _, preds_nat = torch.argmax(logits_nat, dim=1)
-            _, preds_adv = torch.argmax(logits_adv, dim=1)
+            preds_nat = torch.argmax(logits_nat, dim=1)
+            preds_adv = torch.argmax(logits_adv, dim=1)
 
             # print('Compute statitistics', rank, flush=True)
 
