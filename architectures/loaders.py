@@ -100,7 +100,8 @@ def change_head(backbone, model, N):
     elif "vit" in backbone:
 
         if isinstance(model.head, nn.Identity):
-            model.head = nn.Linear(768, N)
+            num_features = 768
+            model.head = nn.Linear(num_features, N)
 
         num_features = model.head.in_features
         model.head = nn.Linear(num_features, N)
