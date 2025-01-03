@@ -428,6 +428,7 @@ class BaseExperiment:
         print('end AA accuracy', flush=True) 
 
         statistics = { 'stats': stats, 'stats_nat': res_nat, 'stats_adv': res_adv, }
+        print(statistics)
         
         # Put results into the queue
         result_queue.put((rank, statistics))
@@ -447,16 +448,19 @@ class BaseExperiment:
         print('adversary instanciated', flush=True) 
         
         stats = {'nb_correct_nat': 0, 'nb_correct_adv': 0, 'nb_examples': 0}
+        print('stats',stats)
 
         for _, batch in enumerate( testloader ):
 
-            print('start batch iterations',rank, _, len(testloader), flush=True) 
+            
 
             data, target = batch
 
             data, target = data.to(rank), target.to(rank) 
 
             batch_size = data.size(0)
+
+            print('start batch iterations', rank, _,batch_size, len(testloader), flush=True) 
 
             # print('prepare attack', flush=True)
 
@@ -484,7 +488,7 @@ class BaseExperiment:
 
             break
 
-        print(stats)
+        print('stats2',stats)
 
         res_nat = compute_stats_aggregated(tracker_nat)
         res_adv = compute_stats_aggregated(tracker_adv)
