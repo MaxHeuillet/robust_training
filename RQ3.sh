@@ -13,10 +13,12 @@ backbones=(
   'deit_small_patch16_224.fb_in1k' 'robust_deit_small_patch16_224'
   'convnext_base' 'convnext_base.fb_in22k' 'robust_convnext_base' 
   'convnext_base.clip_laion2b' 'convnext_base.clip_laion2b_augreg'
-  'vit_base_patch16_224.orig_in21k' 'vit_base_patch16_224.augreg_in1k' 'vit_base_patch16_224.augreg_in21k',
-  'vit_base_patch16_224.dino' 'vit_base_patch16_224.mae' 
+  'vit_base_patch16_224.augreg_in1k' 'vit_base_patch16_224.augreg_in21k',
+  'vit_base_patch16_224.dino' 'vit_base_patch16_224.mae' 'vit_base_patch16_224.orig_in21k'
   'vit_base_patch16_224.sam_in1k' 'vit_base_patch16_224_miil.in21k'
     ) 
+
+
 
 ft_type=( 'full_fine_tuning' )
 
