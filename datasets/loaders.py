@@ -105,9 +105,9 @@ def load_data(hp_opt,config,):
     elif dataset == 'dtd':
 
         N = 47
-        train_dataset = datasets.DTD(root=datadir, split='train', download=True, transform=train_transform)
-        val_dataset =   datasets.DTD(root=datadir, split='val', download=True, transform=transform)
-        test_dataset = datasets.DTD(root=datadir, split='test', download=True, transform=transform)
+        train_dataset = datasets.DTD(root=datadir, split='train', download=False, transform=train_transform)
+        val_dataset =   datasets.DTD(root=datadir, split='val', download=False, transform=transform)
+        test_dataset = datasets.DTD(root=datadir, split='test', download=False, transform=transform)
 
     elif dataset == 'eurosat':
 
@@ -194,14 +194,14 @@ def load_data(hp_opt,config,):
         dataset_train_val_full_train = datasets.OxfordIIITPet(
             root=datadir,
             split='trainval',
-            download=True,
+            download=False,
             transform=train_transform
         )
 
         dataset_train_val_full_val = datasets.OxfordIIITPet(
             root=datadir,
             split='trainval',
-            download=True,
+            download=False,
             transform=transform
         )
 
@@ -209,7 +209,7 @@ def load_data(hp_opt,config,):
         dataset_test_full = datasets.OxfordIIITPet(
             root=datadir,
             split='test',
-            download=True,
+            download=False,
             transform=transform
         )
 
