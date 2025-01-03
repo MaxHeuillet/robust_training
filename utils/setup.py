@@ -106,13 +106,13 @@ class Setup:
         # These are "safe but reasonably large" total batch sizes for 4 GPUs on 224x224 images.
 
         if 'convnext_tiny' in self.config.backbone:
-            base_bs = 256
+            base_bs = 224
         elif 'convnext_base' in self.config.backbone:
-            base_bs = 128
+            base_bs = 96
         elif 'deit_small' in self.config.backbone:
-            base_bs = 256
+            base_bs = 224
         elif 'vit_base' in self.config.backbone:
-            base_bs = 128
+            base_bs = 96
 
         # -------------------------
         # 2) DATASET → #CLASSES
@@ -158,6 +158,8 @@ class Setup:
         # 5) FINAL BATCH SIZE
         # -------------------------
         batch_size = int(base_bs * class_scale * loss_scale)
+
+        print('BATCH SIZE', batch_size)
 
         return batch_size
 

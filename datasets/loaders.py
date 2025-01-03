@@ -27,6 +27,28 @@ class GrayscaleToRGB(object):
             img = img.convert("RGB")
         return img
     
+def stratified_subsample(dataset, sample_size=1500):
+    """
+    Subsample the given dataset to `sample_size` using stratification. 
+    If `dataset` has fewer than `sample_size` samples, return dataset unchanged.
+    """
+    if len(dataset) < sample_size:
+        print(f"Warning: test dataset has only {len(dataset)} samples. No subsampling performed.")
+        return dataset
+    
+    # Extract labels for stratification
+    labels = [label for _, label in dataset]
+
+    # Perform stratified split to get exactly `sample_size` samples
+    indices_subsample, _ = train_test_split(
+        range(len(labels)),
+        train_size=sample_size,
+        stratify=labels,
+        random_state=0
+    )
+
+    return Subset(dataset, indices_subsample)
+
 
 def load_data(hp_opt,config,):
 
@@ -83,9 +105,9 @@ def load_data(hp_opt,config,):
     elif dataset == 'dtd':
 
         N = 47
-        train_dataset = datasets.DTD(root=datadir, split='train', download=False, transform=train_transform)
-        val_dataset =   datasets.DTD(root=datadir, split='val', download=False, transform=transform)
-        test_dataset = datasets.DTD(root=datadir, split='test', download=False, transform=transform)
+        train_dataset = datasets.DTD(root=datadir, split='train', download=True, transform=train_transform)
+        val_dataset =   datasets.DTD(root=datadir, split='val', download=True, transform=transform)
+        test_dataset = datasets.DTD(root=datadir, split='test', download=True, transform=transform)
 
     elif dataset == 'eurosat':
 
@@ -172,14 +194,14 @@ def load_data(hp_opt,config,):
         dataset_train_val_full_train = datasets.OxfordIIITPet(
             root=datadir,
             split='trainval',
-            download=False,
+            download=True,
             transform=train_transform
         )
 
         dataset_train_val_full_val = datasets.OxfordIIITPet(
             root=datadir,
             split='trainval',
-            download=False,
+            download=True,
             transform=transform
         )
 
@@ -187,7 +209,7 @@ def load_data(hp_opt,config,):
         dataset_test_full = datasets.OxfordIIITPet(
             root=datadir,
             split='test',
-            download=False,
+            download=True,
             transform=transform
         )
 
@@ -251,13 +273,13 @@ def load_data(hp_opt,config,):
         train_dataset = torch.utils.data.Subset(dataset_train_full_train, train_indices)
         val_dataset = torch.utils.data.Subset(dataset_train_full_val, val_indices)
         test_dataset = dataset_test_full
+
+    test_dataset = stratified_subsample(test_dataset, sample_size=1500)
                  
     return train_dataset, val_dataset, test_dataset, N, train_transform, transform
 
-def to_rgb(x):
-    return x.convert("RGB")
-
-
+# def to_rgb(x):
+#     return x.convert("RGB")
 
     # if args.dataset == 'MNIST':
 
