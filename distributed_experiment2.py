@@ -484,6 +484,8 @@ class BaseExperiment:
 
             break
 
+        print(stats)
+
         res_nat = compute_stats_aggregated(tracker_nat)
         res_adv = compute_stats_aggregated(tracker_adv)
 

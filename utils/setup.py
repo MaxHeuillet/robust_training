@@ -166,6 +166,8 @@ class Setup:
         return int(batch_size)
     
     def aggregate_results(self,results):
+
+        print(results)
         # Initialize sums
         total_correct_nat = 0
         total_correct_adv = 0
