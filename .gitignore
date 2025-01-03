@@ -17,6 +17,6 @@ stderr*
 
 logs/
 submodlib/
-
+*.lock
 
 hpo_results/

@@ -1,7 +1,0 @@
-arch,batch_size,dataset,init_lr,iterations,loss_function,pruning_ratio,pruning_strategy,sched,aug,pre_trained,adv_acc,nat_acc
-convnext,1042,CIFAR10,0.0001,50,TRADES_v2,0.0,random,nosched,aug,non_robust,0.3707,0.6754
-convnext,1042,CIFAR10,0.0001,50,TRADES_v2,0.0,random,nosched,aug,robust,0.2436,0.4388
-convnext,1042,CIFAR10,0.001,50,TRADES_v2,0.0,random,nosched,aug,non_robust,0.5445,0.8065
-convnext,1042,CIFAR10,0.001,50,TRADES_v2,0.0,random,nosched,aug,robust,0.36575,0.5834
-convnext,1042,CIFAR10,0.01,50,TRADES_v2,0.0,random,nosched,aug,non_robust,0.5267,0.7566
-convnext,1042,CIFAR10,0.01,50,TRADES_v2,0.0,random,nosched,aug,robust,0.5239,0.7489

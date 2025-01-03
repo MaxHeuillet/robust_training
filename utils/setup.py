@@ -104,12 +104,15 @@ class Setup:
         # 1) BASELINES PER ARCH
         # -------------------------
         # These are "safe but reasonably large" total batch sizes for 4 GPUs on 224x224 images.
-        baselines = {
-            'convnext_tiny': 256,   # total, i.e. 16 per GPU
-            'convnext_base': 128,   # total, i.e. 8  per GPU
-            'deit_small_patch16_224': 256,
-            'vit_base_patch16_224': 128 }
-        base_bs = baselines.get(self.config.backbone, 32)  # fallback if unknown arch
+
+        if 'convnext_tiny' in self.config.backbone:
+            base_bs = 256
+        elif 'convnext_base' in self.config.backbone:
+            base_bs = 128
+        elif 'deit_small' in self.config.backbone:
+            base_bs = 256
+        elif 'vit_base' in self.config.backbone:
+            base_bs = 128
 
         # -------------------------
         # 2) DATASET → #CLASSES
@@ -137,7 +140,7 @@ class Setup:
             class_scale = 0.85
         elif n_classes <= 105:
             class_scale = 0.75
-        elif n_classes <= 200:
+        elif n_classes <= 150:
             class_scale = 0.65
         else:
             class_scale = 0.50  # if dataset has more than ~200 classes
