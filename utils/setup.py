@@ -105,10 +105,10 @@ class Setup:
         # -------------------------
         # These are "safe but reasonably large" total batch sizes for 4 GPUs on 224x224 images.
         baselines = {
-            'convnext_tiny': 64,   # total, i.e. 16 per GPU
-            'convnext_base': 32,   # total, i.e. 8  per GPU
-            'deit_small_patch16_224': 64,
-            'vit_base_patch16_224': 32 }
+            'convnext_tiny': 128,   # total, i.e. 16 per GPU
+            'convnext_base': 64,   # total, i.e. 8  per GPU
+            'deit_small_patch16_224': 128,
+            'vit_base_patch16_224': 64 }
         base_bs = baselines.get(self.config.backbone, 32)  # fallback if unknown arch
 
         # -------------------------
