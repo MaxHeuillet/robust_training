@@ -106,11 +106,11 @@ class Setup:
         # These are "safe but reasonably large" total batch sizes for 4 GPUs on 224x224 images.
 
         if 'convnext_tiny' in self.config.backbone:
-            base_bs = 168
+            base_bs = 124
         elif 'convnext_base' in self.config.backbone:
-            base_bs = 64
+            base_bs = 52
         elif 'deit_small' in self.config.backbone:
-            base_bs = 224
+            base_bs = 212
         elif 'vit_base' in self.config.backbone:
             base_bs = 96
 
