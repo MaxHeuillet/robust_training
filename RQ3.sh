@@ -3,9 +3,8 @@
 # Define variables
 seeds=1
 
-datas=( 'caltech101' 
-        'dtd' 'fgvc-aircraft-2013b' 
-        'flowers-102' 'oxford-iiit-pet' 'stanford_cars' ) #'imagenette2' 'eurosat' 
+datas=( 'dtd' 'fgvc-aircraft-2013b' 
+        'flowers-102' 'oxford-iiit-pet' 'stanford_cars' 'caltech101' ) #'imagenette2' 'eurosat' 
 
 losses=(  'TRADES_v2' 'CLASSIC_AT' ) 
 
