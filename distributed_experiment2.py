@@ -211,7 +211,8 @@ class BaseExperiment:
 
         # Gradient accumulation:
         effective_batch_size = 1024
-        per_gpu_batch_size = self.setup.train_batch_size() # Choose a batch size that fits in memory
+        loss_scale = 0.50 if self.setup.config.loss_function == 'TRADES_v2' else 1.00
+        per_gpu_batch_size = int( self.setup.train_batch_size() * loss_scale ) # Choose a batch size that fits in memory
         accumulation_steps = effective_batch_size // (self.setup.world_size * per_gpu_batch_size)
         global_step = 0  # Track global iterations across accumulation steps
         print('effective batch size', effective_batch_size, 'per_gpu_batch_size', per_gpu_batch_size, 'accumulation steps', accumulation_steps)

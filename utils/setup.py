@@ -100,66 +100,16 @@ class Setup:
 
     def train_batch_size(self): #(arch: str, dataset: str, loss_fn: str) -> int
 
-        # -------------------------
-        # 1) BASELINES PER ARCH
-        # -------------------------
-        # These are "safe but reasonably large" total batch sizes for 4 GPUs on 224x224 images.
-
         if 'convnext_tiny' in self.config.backbone:
-            base_bs = 224
+            base_bs = 192
         elif 'convnext_base' in self.config.backbone:
-            base_bs = 96
+            base_bs = 72
         elif 'deit_small' in self.config.backbone:
             base_bs = 224
         elif 'vit_base' in self.config.backbone:
             base_bs = 96
 
-        # -------------------------
-        # 2) DATASET → #CLASSES
-        # -------------------------
-        # Approximate #classes for each dataset
-        dataset_nclasses = {
-            'stanford_cars':         196,
-            'caltech101':            101,
-            'dtd':                   47,
-            'eurosat':               10,
-            'fgvc-aircraft-2013b':   100,
-            'flowers-102':           102,
-            'oxford-iiit-pet':       37
-        }
-        n_classes = dataset_nclasses.get(self.config.dataset, 100)  # fallback if unknown
-
-        # -------------------------
-        # 3) SCALE BY #CLASSES
-        # -------------------------
-        # More classes => slightly larger last layer => slightly higher memory usage.
-        # You can tune these multipliers further if you see OOM or leftover memory.
-        if n_classes <= 10:
-            class_scale = 1.00
-        elif n_classes <= 50:
-            class_scale = 0.85
-        elif n_classes <= 105:
-            class_scale = 0.75
-        elif n_classes <= 150:
-            class_scale = 0.65
-        else:
-            class_scale = 0.50  # if dataset has more than ~200 classes
-
-        # -------------------------
-        # 4) SCALE FOR TRADES
-        # -------------------------
-        # TRADES effectively does ~2 forward passes => ~2x memory usage.
-        if self.config.loss_function == 'TRADES_v2':
-            loss_scale = 0.50
-        else:
-            loss_scale = 1.00
-
-        # -------------------------
-        # 5) FINAL BATCH SIZE
-        # -------------------------
-        batch_size = int(base_bs * class_scale * loss_scale)
-
-        print('BATCH SIZE', batch_size)
+        batch_size = int(base_bs) 
 
         return batch_size
 
