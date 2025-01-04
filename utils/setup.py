@@ -136,7 +136,7 @@ class Setup:
         # You can tune these multipliers further if you see OOM or leftover memory.
         if n_classes <= 10:
             class_scale = 1.00
-        elif n_classes <= 50:
+        elif n_classes <= 35:
             class_scale = 0.85
         elif n_classes <= 105:
             class_scale = 0.75
