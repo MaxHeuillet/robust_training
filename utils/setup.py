@@ -106,13 +106,13 @@ class Setup:
         # These are "safe but reasonably large" total batch sizes for 4 GPUs on 224x224 images.
 
         if 'convnext_tiny' in self.config.backbone:
-            base_bs = 124
+            base_bs = 64 #124
         elif 'convnext_base' in self.config.backbone:
-            base_bs = 40
+            base_bs = 32 #40
         elif 'deit_small' in self.config.backbone:
-            base_bs = 212
+            base_bs = 128 #212
         elif 'vit_base' in self.config.backbone:
-            base_bs = 96
+            base_bs = 64 #96
 
         # -------------------------
         # 2) DATASET → #CLASSES
@@ -141,9 +141,7 @@ class Setup:
         elif n_classes <= 105:
             class_scale = 0.75
         elif n_classes <= 150:
-            class_scale = 0.95
-        else:
-            class_scale = 0.50  # if dataset has more than ~200 classes
+            class_scale = 0.65
 
         # -------------------------
         # 4) SCALE FOR TRADES
