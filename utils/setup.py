@@ -151,7 +151,7 @@ class Setup:
         # -------------------------
         # 5) FINAL BATCH SIZE
         # -------------------------
-        batch_size = int(base_bs * class_scale) 
+        batch_size = int(base_bs * class_scale) * 3/4
 
         return batch_size
 

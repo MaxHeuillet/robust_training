@@ -3,19 +3,29 @@
 # Define variables
 seeds=1
 
-datas=( 'dtd' 'fgvc-aircraft-2013b' 
-        'flowers-102' 'oxford-iiit-pet' 'stanford_cars' 'caltech101' ) #'imagenette2' 'eurosat' 
+datas=( 'dtd' )
+      #  'fgvc-aircraft-2013b' 'flowers-102' 'oxford-iiit-pet' 'stanford_cars' 'caltech101' ) #'imagenette2' 'eurosat' 
 
 losses=(  'TRADES_v2' 'CLASSIC_AT' ) 
 
+# backbones=(
+#   'convnext_tiny' 'robust_convnext_tiny' 'convnext_tiny.fb_in22k' 
+#   'deit_small_patch16_224.fb_in1k' 'robust_deit_small_patch16_224'
+#   'convnext_base' 'convnext_base.fb_in22k' 'robust_convnext_base' 
+#   'convnext_base.clip_laion2b' 'convnext_base.clip_laion2b_augreg'
+#   'vit_base_patch16_224.augreg_in1k' 'vit_base_patch16_224.augreg_in21k',
+#   'vit_base_patch16_224.dino' 'vit_base_patch16_224.mae' 'vit_base_patch16_224.orig_in21k'
+#   'vit_base_patch16_224.sam_in1k' 'vit_base_patch16_224_miil.in21k'
+#     ) 
+
 backbones=(
-  'convnext_tiny' 'robust_convnext_tiny' 'convnext_tiny.fb_in22k' 
-  'deit_small_patch16_224.fb_in1k' 'robust_deit_small_patch16_224'
-  'convnext_base' 'convnext_base.fb_in22k' 'robust_convnext_base' 
-  'convnext_base.clip_laion2b' 'convnext_base.clip_laion2b_augreg'
-  'vit_base_patch16_224.augreg_in1k' 'vit_base_patch16_224.augreg_in21k',
-  'vit_base_patch16_224.dino' 'vit_base_patch16_224.mae' 'vit_base_patch16_224.orig_in21k'
-  'vit_base_patch16_224.sam_in1k' 'vit_base_patch16_224_miil.in21k'
+
+  'convnext_tiny.fb_in22k'
+  'robust_deit_small_patch16_224'
+  'deit_small_patch16_224.fb_in1k'
+  'convnext_base'
+  'convnext_base.clip_laion2b_augreg'
+  'vit_base_patch16_224.dino'
     ) 
 
 

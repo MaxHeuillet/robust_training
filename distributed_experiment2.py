@@ -123,7 +123,7 @@ class BaseExperiment:
         
         testloader = DataLoader(test_dataset, 
                                batch_size=self.setup.test_batch_size(), 
-                               #sampler=test_sampler, 
+                               sampler=test_sampler, 
                                num_workers=3,
                                pin_memory=True)
         
