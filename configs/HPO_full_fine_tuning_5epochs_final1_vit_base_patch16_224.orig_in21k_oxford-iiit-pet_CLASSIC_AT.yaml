@@ -1,0 +1,17 @@
+dataset: oxford-iiit-pet
+backbone: vit_base_patch16_224.orig_in21k
+ft_type: full_fine_tuning
+loss_function: CLASSIC_AT
+seed: 1
+epochs: 5
+lr1: 0.00031649297418592337
+lr2: 0.026911505643878234
+weight_decay1: 0.0003008478813859885
+weight_decay2: 1.0189017790115789e-05
+use_rs: false
+epsilon: 0.015686275
+step_size: 0.007843137
+perturb_steps: 10
+distance: Linf
+beta: 1.0
+project_name: full_fine_tuning_5epochs_final1

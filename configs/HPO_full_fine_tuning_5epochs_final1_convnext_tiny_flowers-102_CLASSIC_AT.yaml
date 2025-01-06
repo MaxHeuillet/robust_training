@@ -1,0 +1,17 @@
+dataset: flowers-102
+backbone: convnext_tiny
+ft_type: full_fine_tuning
+loss_function: CLASSIC_AT
+seed: 1
+epochs: 5
+lr1: 1.3298296907035825e-05
+lr2: 0.007370800464276532
+weight_decay1: 0.003665015512489759
+weight_decay2: 1.2857273847939522e-06
+use_rs: false
+epsilon: 0.015686275
+step_size: 0.007843137
+perturb_steps: 10
+distance: Linf
+beta: 1.0
+project_name: full_fine_tuning_5epochs_final1

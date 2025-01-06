@@ -1,0 +1,17 @@
+dataset: dtd
+backbone: robust_convnext_base
+ft_type: full_fine_tuning
+loss_function: CLASSIC_AT
+seed: 1
+epochs: 5
+lr1: 0.001293051771568685
+lr2: 0.009126624291383906
+weight_decay1: 3.9785602537577566e-06
+weight_decay2: 0.0001600842835767298
+use_rs: false
+epsilon: 0.015686275
+step_size: 0.007843137
+perturb_steps: 10
+distance: Linf
+beta: 1.0
+project_name: full_fine_tuning_5epochs_final

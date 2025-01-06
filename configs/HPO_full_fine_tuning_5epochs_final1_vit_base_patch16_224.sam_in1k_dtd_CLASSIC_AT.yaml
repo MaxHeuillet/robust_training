@@ -1,0 +1,17 @@
+dataset: dtd
+backbone: vit_base_patch16_224.sam_in1k
+ft_type: full_fine_tuning
+loss_function: CLASSIC_AT
+seed: 1
+epochs: 5
+lr1: 0.000451175657602829
+lr2: 0.018424938516660473
+weight_decay1: 5.502012757804251e-06
+weight_decay2: 0.0006419572663502056
+use_rs: false
+epsilon: 0.015686275
+step_size: 0.007843137
+perturb_steps: 10
+distance: Linf
+beta: 1.0
+project_name: full_fine_tuning_5epochs_final1

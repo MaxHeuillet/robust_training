@@ -1,0 +1,17 @@
+dataset: fgvc-aircraft-2013b
+backbone: vit_base_patch16_224.augreg_in1k
+ft_type: full_fine_tuning
+loss_function: CLASSIC_AT
+seed: 1
+epochs: 5
+lr1: 0.0024913872099823703
+lr2: 1.153806821371421e-05
+weight_decay1: 0.00023655145995647608
+weight_decay2: 5.428819421170256e-05
+use_rs: false
+epsilon: 0.015686275
+step_size: 0.007843137
+perturb_steps: 10
+distance: Linf
+beta: 1.0
+project_name: full_fine_tuning_5epochs_final1
