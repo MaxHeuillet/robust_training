@@ -116,7 +116,7 @@ class BaseExperiment:
                                  pin_memory=True) 
         
         valloader = DataLoader(val_dataset, 
-                               batch_size=int( 3/4 * self.setup.train_batch_size() ), 
+                               batch_size=int( 0.65 * self.setup.train_batch_size() ), 
                                sampler=val_sampler, 
                                num_workers=3,
                                pin_memory=True)
@@ -277,6 +277,7 @@ class BaseExperiment:
                         res_adv = compute_stats_aggregated(tracker_adv)
 
                         if self.setup.config.loss_function == 'TRADES_v2':
+
                             metrics = { "gradient_norm": float(gradient_norm),
                                         "zero_nat_train": res_nat['zero_count'] / res_nat['total_neurons'],
                                         "dormant_nat_train":res_nat['dormant_count'] / res_nat['total_neurons'], 
