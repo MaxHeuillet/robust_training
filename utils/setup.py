@@ -110,7 +110,7 @@ class Setup:
         elif 'convnext_base' in self.config.backbone:
             base_bs = 32 #40
         elif 'deit_small' in self.config.backbone:
-            base_bs = 128 #212
+            base_bs = 96 #212
         elif 'vit_base' in self.config.backbone:
             base_bs = 64 #96
 
