@@ -140,8 +140,10 @@ class Setup:
             class_scale = 0.85
         elif n_classes <= 105:
             class_scale = 0.75
-        elif n_classes <= 150:
+        elif n_classes <= 200:
             class_scale = 0.65
+        else:
+            print('undefined')
 
         # -------------------------
         # 4) SCALE FOR TRADES
@@ -151,7 +153,7 @@ class Setup:
         # -------------------------
         # 5) FINAL BATCH SIZE
         # -------------------------
-        batch_size = int(base_bs * class_scale) * 3/4
+        batch_size = int(base_bs * class_scale * 3/4 ) 
 
         return batch_size
 
