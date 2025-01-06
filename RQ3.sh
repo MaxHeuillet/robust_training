@@ -6,7 +6,7 @@ seeds=1
 datas=( 'fgvc-aircraft-2013b' )
       # 'dtd'  'flowers-102' 'oxford-iiit-pet' 'stanford_cars' 'caltech101' ) #'imagenette2' 'eurosat' 
 
-losses=( 'CLASSIC_AT' 'TRADES_v2' ) # 
+losses=( 'TRADES_v2' ) #  'CLASSIC_AT'
 
 # backbones=(
 #   'convnext_tiny' 'robust_convnext_tiny' 'convnext_tiny.fb_in22k' 
@@ -19,8 +19,12 @@ losses=( 'CLASSIC_AT' 'TRADES_v2' ) #
 #     ) 
 
 backbones=(
-  'deit_small_patch16_224.fb_in1k'
-  'convnext_base.fb_in22k'
+  'convnext_tiny.fb_in22k'
+  'robust_convnext_base'
+  'convnext_base'
+  'convnext_base.clip_laion2b_augreg'
+  'vit_base_patch16_224.orig_in21k'
+
     ) 
 
 
