@@ -4,9 +4,9 @@
 seeds=1
 
 datas=( 'dtd' )
-      # 'stanford_cars' 'caltech101' 'fgvc-aircraft-2013b'   'flowers-102' 'oxford-iiit-pet'  ) #'imagenette2' 'eurosat' 
+      # 'flowers-102' 'stanford_cars' 'caltech101' 'fgvc-aircraft-2013b'    'oxford-iiit-pet'  ) #'imagenette2' 'eurosat' 
 
-losses=( 'TRADES_v2' ) #'CLASSIC_AT'   
+losses=( 'CLASSIC_AT' ) # 'TRADES_v2' 
 
 # backbones=(
 #   'convnext_tiny' 'robust_convnext_tiny' 'convnext_tiny.fb_in22k' 
@@ -19,11 +19,11 @@ losses=( 'TRADES_v2' ) #'CLASSIC_AT'
 #     ) 
 
 backbones=(
-  'deit_small_patch16_224.fb_in1k_dtd_TRADES_v2'
-  'robust_deit_small_patch16_224_dtd_TRADES_v2'
-  'convnext_base.clip_laion2b_augreg_dtd_TRADES_v2'
-  'vit_base_patch16_224.dino_dtd_TRADES_v2'
-  'vit_base_patch16_224_miil.in21k_dtd_TRADES_v2'  ) 
+  'deit_small_patch16_224.fb_in1k'
+  'robust_deit_small_patch16_224'
+  'convnext_base.clip_laion2b_augreg'
+  'vit_base_patch16_224.dino'
+  'vit_base_patch16_224_miil.in21k'  ) 
 
 
 
