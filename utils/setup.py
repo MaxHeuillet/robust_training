@@ -108,11 +108,11 @@ class Setup:
         if 'convnext_tiny' in self.config.backbone:
             base_bs = 64 #124
         elif 'convnext_base' in self.config.backbone:
-            base_bs = 26 #40
+            base_bs = 22 #40
         elif 'deit_small' in self.config.backbone:
-            base_bs = 96 #212
+            base_bs = 88 #212
         elif 'vit_base' in self.config.backbone:
-            base_bs = 56 #96
+            base_bs = 50 #96
 
         # -------------------------
         # 2) DATASET → #CLASSES
