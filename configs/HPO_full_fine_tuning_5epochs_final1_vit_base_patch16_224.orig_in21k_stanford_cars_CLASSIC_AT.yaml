@@ -1,0 +1,17 @@
+dataset: stanford_cars
+backbone: vit_base_patch16_224.orig_in21k
+ft_type: full_fine_tuning
+loss_function: CLASSIC_AT
+seed: 1
+epochs: 5
+lr1: 8.87376495235677e-05
+lr2: 0.041069373912929495
+weight_decay1: 0.0001971142158600765
+weight_decay2: 1.026789238084491e-06
+use_rs: false
+epsilon: 0.015686275
+step_size: 0.007843137
+perturb_steps: 10
+distance: Linf
+beta: 1.0
+project_name: full_fine_tuning_5epochs_final1
