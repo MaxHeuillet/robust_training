@@ -1,0 +1,17 @@
+dataset: caltech101
+backbone: robust_convnext_tiny
+ft_type: full_fine_tuning
+loss_function: TRADES_v2
+seed: 1
+epochs: 50
+lr1: 0.00018283634209844478
+lr2: 0.005571905096939259
+weight_decay1: 0.002180231889298852
+weight_decay2: 1.1834587074410592e-06
+use_rs: false
+epsilon: 0.015686275
+step_size: 0.007843137
+perturb_steps: 10
+distance: Linf
+beta: 1.0
+project_name: full_fine_tuning_50epochs_final1
