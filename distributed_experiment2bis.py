@@ -307,7 +307,8 @@ class BaseExperiment:
                 # break
             if self.setup.hp_opt:
                 self.validation( valloader, model, logger, iteration, rank)
-            elif not self.setup.hp_opt and iteration % 2 == 0:
+            
+            elif not self.setup.hp_opt and iteration in [10, 25, 40]:
                 self.validation( valloader, model, logger, iteration, rank)
                 
             if scheduler is not None: scheduler.step()
