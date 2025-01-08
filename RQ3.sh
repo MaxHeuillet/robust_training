@@ -3,8 +3,8 @@
 # Define variables
 seeds=1
 
-datas=(  'oxford-iiit-pet' )
-      # 'flowers-102'  'dtd' 'stanford_cars' 'caltech101' 'fgvc-aircraft-2013b'     ) #'imagenette2' 'eurosat' 
+datas=(  'caltech101' )
+      # 'oxford-iiit-pet' 'flowers-102'  'dtd' 'stanford_cars'  'fgvc-aircraft-2013b'     ) #'imagenette2' 'eurosat' 
 
 losses=( 'TRADES_v2' ) #'CLASSIC_AT'  
 
@@ -19,19 +19,7 @@ losses=( 'TRADES_v2' ) #'CLASSIC_AT'
 #     ) 
 
 backbones=(
-  'deit_small_patch16_224.fb_in1k'
-  'convnext_tiny.fb_in22k'
-  'robust_deit_small_patch16_224'
-  'convnext_base.fb_in22k'
-  'convnext_base.clip_laion2b'
-  'robust_convnext_base'
-  'vit_base_patch16_224.augreg_in21k'
-  'vit_base_patch16_224.dino'
-  'vit_base_patch16_224.mae'
-  'vit_base_patch16_224.orig_in21k'
-  'vit_base_patch16_224.sam_in1k'
-  'vit_base_patch16_224_miil.in21k'
-  'convnext_base'
+  'vit_base_patch16_224.sam_in1k' 
    ) 
 
 
