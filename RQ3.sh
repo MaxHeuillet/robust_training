@@ -19,14 +19,19 @@ losses=( 'TRADES_v2' ) #'CLASSIC_AT'
 #     ) 
 
 backbones=(
-  'convnext_tiny.fb_in22k'
   'deit_small_patch16_224.fb_in1k'
-  'convnext_base'
+  'convnext_tiny.fb_in22k'
+  'robust_deit_small_patch16_224'
   'convnext_base.fb_in22k'
-  'vit_base_patch16_224.orig_in21k'
-  'vit_base_patch16_224_miil.in21k'
+  'convnext_base.clip_laion2b'
   'robust_convnext_base'
+  'vit_base_patch16_224.augreg_in21k'
+  'vit_base_patch16_224.dino'
+  'vit_base_patch16_224.mae'
+  'vit_base_patch16_224.orig_in21k'
   'vit_base_patch16_224.sam_in1k'
+  'vit_base_patch16_224_miil.in21k'
+  'convnext_base'
    ) 
 
 
