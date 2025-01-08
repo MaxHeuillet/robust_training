@@ -112,7 +112,7 @@ class Setup:
         elif 'deit_small' in self.config.backbone:
             base_bs = 88 #212
         elif 'vit_base' in self.config.backbone:
-            base_bs = 50 #96
+            base_bs = 40 #96
 
         # -------------------------
         # 2) DATASET → #CLASSES
