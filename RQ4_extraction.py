@@ -46,40 +46,55 @@ def result_grid_analysis(result_grid):
 
     max_len = max(len(d['loss_list']) for d in data)
 
-    # 2) Pad each loss_list to ensure they all have the same length
     for d in data:
         d['loss_list'] += [None] * (max_len - len(d['loss_list']))
 
-    # 3) Expand each entry in loss_list into separate columns (loss_0, loss_1, etc.)
     for d in data:
         for i, val in enumerate(d['loss_list']):
             d[f'loss_{i}'] = val
-        # Optionally delete the original loss_list if you don’t need it anymore
         del d['loss_list']
 
-    # 4) Create the DataFrame
     df = pd.DataFrame(data)
     
-    # 1. Inner Variability: Standard Deviation and Mean Absolute Change (per time series)
     loss_columns = [col for col in df.columns if col.startswith('loss_')]
 
-    df = df.fillna(0)
-    # Compute standard deviation and mean absolute change per time series
-    df['std_dev'] = df[loss_columns].std(axis=1, skipna=True)
-    df['mean_abs_change'] = df[loss_columns].diff(axis=1).abs().mean(axis=1, skipna=True)
+    non_nan_counts = {"count_"+col: int(df[col].isna().sum())/df.shape[0] for col in loss_columns}
 
-    filled_data = df[loss_columns].fillna(0).to_numpy()
+    df['Std_dev'] = df[loss_columns].std(axis=1, skipna=True)
+    df['Mean_abs_change'] = df[loss_columns].diff(axis=1).abs().mean(axis=1, skipna=True)
+
+    df[loss_columns] = df[loss_columns].apply(lambda col: col.fillna(col.mean()), axis=0)
+
+    filled_data = df[loss_columns].to_numpy()
 
     pairwise_distances = pdist(filled_data, metric='euclidean')
-    mean_pairwise_distance = np.mean(pairwise_distances)
-    variance_pairwise_distance = np.var(pairwise_distances)
 
-    return { "MeanPairwiseDistance": mean_pairwise_distance,
-             "VariancePairwiseDistance": variance_pairwise_distance,
-             "MeanSTD": np.mean(df['std_dev']), 
-             "VarianceSTD":np.std(df['std_dev']),
-             "MeanAbsChange": np.mean(df['mean_abs_change']), 
-             "VarianceAbsChange":np.std(df['mean_abs_change'])  }
+    # Initialize stats dictionary
+    stats = {}
+
+    # Add pairwise distance statistics
+    stats.update({
+        "PairwiseDistance_Mean": np.mean(pairwise_distances),
+        "PairwiseDistance_Median": np.median(pairwise_distances),
+        "PairwiseDistance_25%": np.percentile(pairwise_distances, 25),
+        "PairwiseDistance_75%": np.percentile(pairwise_distances, 75),
+        "PairwiseDistance_Std": np.std(pairwise_distances),
+    })
+
+    # Add quantiles, mean, median, and std for std_dev and mean_abs_change
+    for metric in ['Std_dev', 'Mean_abs_change']:
+        stats.update({
+            f"{metric}_25%": np.percentile(df[metric], 25),
+            f"{metric}_Mean": np.mean(df[metric]),
+            f"{metric}_Median": np.median(df[metric]),
+            f"{metric}_75%": np.percentile(df[metric], 75),
+            f"{metric}_Std": np.std(df[metric]),
+        })
+    
+    # Update with counts of zeros
+    stats.update(non_nan_counts)
+
+    return df, stats
 
 world_size = torch.cuda.device_count()
 
@@ -137,7 +152,7 @@ for backbone in backbones:
                 restored_tuner = tune.Tuner.restore(experiment_path, trainable=trainer)
                 result_grid = restored_tuner.get_results()
 
-                stats = result_grid_analysis(result_grid)
+                df, stats = result_grid_analysis(result_grid)
 
                 statistics.update(stats)
                 final_data.append(statistics)
