@@ -83,10 +83,9 @@ def result_grid_analysis(result_grid):
 
 world_size = torch.cuda.device_count()
 
-full_path = os.path.abspath("/home/mheuillet/Desktop/hpo_results")
+full_path = os.path.abspath("~/scratch/hpo_results")
 
 project_name = 'full_fine_tuning_5epochs_final1'
-
 
 datas=( 'stanford_cars', 'caltech101', 'fgvc-aircraft-2013b', 'dtd', 'flowers-102', 'oxford-iiit-pet'  ) #'imagenette2' 'eurosat' 
 
@@ -131,7 +130,7 @@ for backbone in backbones:
             hp_search = Hp_opt(setup)
             trainer = hp_search.get_trainer(experiment.training)
 
-            experiment_path = "/home/mheuillet/Desktop/hpo_results/{}_{}".format(setup.project_name, setup.exp_id)
+            experiment_path = "~/scratch/hpo_results/{}_{}".format(setup.project_name, setup.exp_id)
 
             try:
 
@@ -155,4 +154,4 @@ for backbone in backbones:
 
 
 final_data = pd.DataFrame(final_data)
-final_data.to_csv("~/projects/def-adurand/mheuill/robust_training/RQ4_final_data.csv")
+final_data.to_csv( "~/projects/def-adurand/mheuill/robust_training/RQ4_final_data_{}.csv".format(project_name) )
