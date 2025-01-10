@@ -1,0 +1,17 @@
+dataset: flowers-102
+backbone: vit_base_patch16_224.dino
+ft_type: full_fine_tuning
+loss_function: TRADES_v2
+seed: 1
+epochs: 50
+lr1: 0.00020257208916786367
+lr2: 0.0012830169947033794
+weight_decay1: 0.0034975859625264783
+weight_decay2: 2.6858332130184032e-05
+use_rs: false
+epsilon: 0.015686275
+step_size: 0.007843137
+perturb_steps: 10
+distance: Linf
+beta: 1.0
+project_name: full_fine_tuning_50epochs_final1
