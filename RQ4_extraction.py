@@ -47,13 +47,11 @@ def result_grid_analysis(result_grid):
 
     # Fill NaN with column means
     loss_columns = [col for col in df.columns if col.startswith('loss_')]
-    loss_means = df[loss_columns].mean(axis=0, skipna=True)
-    df[loss_columns] = df[loss_columns].fillna(loss_means)
+    # loss_means = df[loss_columns].mean(axis=0, skipna=True)
+    df[loss_columns] = df[loss_columns].fillna(0)
 
     # Compute std_dev
     df['std_dev'] = df[loss_columns].std(axis=1, skipna=True)
-
-    # Compute mean_abs_change
     df['mean_abs_change'] = df[loss_columns].diff(axis=1).abs().mean(axis=1, skipna=True)
 
     # Compute statistics
