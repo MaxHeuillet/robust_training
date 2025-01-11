@@ -36,6 +36,9 @@ def result_grid_analysis(result_grid):
             res['loss_list'] = loss_list
             data.append(res)
 
+    if not data:
+        raise ValueError("No valid results in result_grid.")
+
     # Pre-allocate DataFrame
     max_len = max(len(d['loss_list']) for d in data)
     df = pd.DataFrame([{**d, **{f'loss_{i}': d['loss_list'][i] if i < len(d['loss_list']) else None
@@ -47,6 +50,12 @@ def result_grid_analysis(result_grid):
     loss_means = df[loss_columns].mean(axis=0, skipna=True)
     df[loss_columns] = df[loss_columns].fillna(loss_means)
 
+    # Compute std_dev
+    df['std_dev'] = df[loss_columns].std(axis=1, skipna=True)
+
+    # Compute mean_abs_change
+    df['mean_abs_change'] = df[loss_columns].diff(axis=1).abs().mean(axis=1, skipna=True)
+
     # Compute statistics
     pairwise_distances = pdist(df[loss_columns].values, metric='euclidean')
     stats = {
@@ -57,6 +66,7 @@ def result_grid_analysis(result_grid):
         "PairwiseDistance_Std": np.std(pairwise_distances),
     }
 
+    # Add std_dev and mean_abs_change statistics
     for metric in ['std_dev', 'mean_abs_change']:
         stats.update({
             f"{metric}_25%": np.percentile(df[metric], 25),
