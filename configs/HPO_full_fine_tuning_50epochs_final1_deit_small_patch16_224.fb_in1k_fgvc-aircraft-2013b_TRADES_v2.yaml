@@ -1,0 +1,17 @@
+dataset: fgvc-aircraft-2013b
+backbone: deit_small_patch16_224.fb_in1k
+ft_type: full_fine_tuning
+loss_function: TRADES_v2
+seed: 1
+epochs: 50
+lr1: 0.00047509237210306064
+lr2: 0.005506529897945982
+weight_decay1: 6.573686655138338e-06
+weight_decay2: 0.0032543911150884836
+use_rs: false
+epsilon: 0.015686275
+step_size: 0.007843137
+perturb_steps: 10
+distance: Linf
+beta: 1.0
+project_name: full_fine_tuning_50epochs_final1
