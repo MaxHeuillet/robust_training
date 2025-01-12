@@ -19,8 +19,8 @@ losses=( 'CLASSIC_AT' ) #  'TRADES_v2'
 #     ) 
 
 backbones=(
-  'vit_base_patch16_224.mae	'
-  'vit_base_patch16_224.orig_in21k	'
+  'vit_base_patch16_224.mae'
+  'vit_base_patch16_224.orig_in21k'
    ) 
 
 
