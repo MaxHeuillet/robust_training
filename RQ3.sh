@@ -6,7 +6,7 @@ seeds=1
 datas=( 'stanford_cars'      )
       # 'oxford-iiit-pet' 'flowers-102' 'caltech101' 'oxford-iiit-pet'  'dtd'  'fgvc-aircraft-2013b'   ) #'imagenette2' 'eurosat' 
 
-losses=( 'CLASSIC_AT' ) #  'TRADES_v2'
+losses=( 'TRADES_v2' ) #  'TRADES_v2'
 
 # backbones=(
 #   'convnext_tiny' 'robust_convnext_tiny' 'convnext_tiny.fb_in22k' 
