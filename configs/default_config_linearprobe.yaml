@@ -1,0 +1,22 @@
+dataset: "Flowers"  # dataset (default: cifar10)
+backbone: "deit_small_patch16_224.fb_in1k"  # load backbone
+ft_type: "linear_probing"  # fine tuning type
+
+loss_function: "CLASSIC_AT"  # TRADES_v2
+seed: 0  # random seed
+epochs: 50  # number of total iterations to run
+
+lr1: null
+lr2: null
+weight_decay1: null
+weight_decay2: null
+
+use_rs: False
+epsilon: 0.015686275  # epsilon of trades (4/255)
+step_size: 0.007843137  # step size of trades (2/255)
+perturb_steps: 10  # number of steps of trades
+distance: "Linf"  # distance of trades
+beta: 1.0  # beta of trades
+
+# arguments for diffusion augmented learning
+project_name: null # the experiment type

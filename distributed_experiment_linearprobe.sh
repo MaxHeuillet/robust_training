@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --account=rrg-adurand 
+#SBATCH --account=rrg-csubakan
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=24
 #SBATCH --gpus-per-node=4
@@ -56,7 +56,7 @@ fi
 echo "Extraction of ${DATA} archive completed successfully at $(date)."
 
 # Run the Python experiment script with appropriate arguments
-python ./distributed_experiment_linearprobe.py \
+python ./distributed_experiment2bis.py \
     --task "${TASK}" \
     --loss_function "${LOSS}" \
     --dataset "${DATA}" \
