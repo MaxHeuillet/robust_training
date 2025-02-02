@@ -1,0 +1,18 @@
+architecture,pre_training_algorithm,pre_training_dataset
+convnext_tiny,standard,ImageNet-1k
+robust_convnext_tiny,robust training,ImageNet-1k
+convnext_tiny.fb_in22k,standard,ImageNet-22k
+deit_small_patch16_224.fb_in1k,DeiT (Distilled Training),ImageNet-1k
+robust_deit_small_patch16_224,robust training,ImageNet-1k
+convnext_base,standard,ImageNet-1k
+convnext_base.fb_in22k,standard,ImageNet-22k
+robust_convnext_base,robust training,ImageNet-1k
+convnext_base.clip_laion2b,CLIP,LAION-2B
+convnext_base.clip_laion2b_augreg,CLIP + AugReg,LAION-2B
+vit_base_patch16_224.augreg_in1k,AugReg,ImageNet-1k
+vit_base_patch16_224.augreg_in21k,AugReg,ImageNet-21k
+vit_base_patch16_224.dino,DINO (Self-Supervised),ImageNet-1k
+vit_base_patch16_224.mae,MAE (Masked Autoencoding),ImageNet-1k
+vit_base_patch16_224.orig_in21k,standard,ImageNet-21k
+vit_base_patch16_224.sam_in1k,SAM (Sharpness-Aware Minimization),ImageNet-1k
+vit_base_patch16_224_miil.in21k,MIIL (Training from Mid-Level Features),ImageNet-21k

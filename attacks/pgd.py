@@ -31,7 +31,7 @@ def pgd_attack(setup, model, x_nat, y):
 
             # print('other operations')
             x_adv = x_adv.detach() + setup.config.step_size * torch.sign(grad.detach())
-            x_adv = torch.min(torch.max(x_adv, x_nat - setup.config.epsilon), x_nat + setup.config.epsilon).detach()
+            x_adv = torch.min( torch.max(x_adv, x_nat - setup.config.epsilon ), x_nat + setup.config.epsilon ).detach()
             x_adv = torch.clamp(x_adv, 0.0, 1.0).detach()
 
     else:
