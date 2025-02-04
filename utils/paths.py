@@ -19,7 +19,7 @@ def get_data_dir(hp_opt, config):
         data_dir = os.path.join(slurm_tmpdir, 'data')
     else:
         # Define the default data directory for non-cluster environments
-        data_dir = '/home/mheuillet/Desktop/robust_training/data'
+        data_dir = './data'
     
     return data_dir
 

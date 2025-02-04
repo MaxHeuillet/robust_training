@@ -67,37 +67,8 @@ def load_data(hp_opt,config,):
                                     GrayscaleToRGB(),
                                     transforms.ToTensor(),
                                     transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ) ])
-    
-    
-        
-    if dataset == 'CIFAR10':
-
-        N = 10
-        print('datadir', datadir)
-        train_dataset = datasets.CIFAR10(root=datadir, train=True, download=False, transform=train_transform)
-        dataset = datasets.CIFAR10(root=datadir, train=False, download=False, transform=transform)
-        labels = [label for _, label in dataset]
-
-        test_indices, val_indices = train_test_split( range(len(labels)), test_size=0.25, stratify=labels, random_state=42 )  
-
-        val_dataset = torch.utils.data.Subset(dataset, val_indices)
-        test_dataset = torch.utils.data.Subset(dataset, test_indices) 
-
-    elif dataset == 'CIFAR100':
-
-        N = 100
-        print('datadir', datadir)
-        train_dataset = datasets.CIFAR100(root=datadir, train=True, download=False, transform=train_transform)
-        dataset = datasets.CIFAR100(root=datadir, train=False, download=False, transform=transform)
-        labels = [label for _, label in dataset]
-
-        test_indices, val_indices = train_test_split( range(len(labels)), test_size=0.25, stratify=labels, random_state=42 )  
-
-        val_dataset = torch.utils.data.Subset(dataset, val_indices)
-        test_dataset = torch.utils.data.Subset(dataset, test_indices) 
-        
-
-    elif dataset == 'fgvc-aircraft-2013b': #fgvc-aircraft-2013b
+                
+    if dataset == 'fgvc-aircraft-2013b': #fgvc-aircraft-2013b
 
         N = 100
         train_dataset = datasets.FGVCAircraft(root=datadir, split='train', download=False, transform=train_transform)
@@ -279,6 +250,33 @@ def load_data(hp_opt,config,):
     test_dataset = stratified_subsample(test_dataset, sample_size=1500)
                  
     return train_dataset, val_dataset, test_dataset, N, train_transform, transform
+
+
+    # if dataset == 'CIFAR10':
+
+    #     N = 10
+    #     print('datadir', datadir)
+    #     train_dataset = datasets.CIFAR10(root=datadir, train=True, download=False, transform=train_transform)
+    #     dataset = datasets.CIFAR10(root=datadir, train=False, download=False, transform=transform)
+    #     labels = [label for _, label in dataset]
+
+    #     test_indices, val_indices = train_test_split( range(len(labels)), test_size=0.25, stratify=labels, random_state=42 )  
+
+    #     val_dataset = torch.utils.data.Subset(dataset, val_indices)
+    #     test_dataset = torch.utils.data.Subset(dataset, test_indices) 
+
+    # elif dataset == 'CIFAR100':
+
+    #     N = 100
+    #     print('datadir', datadir)
+    #     train_dataset = datasets.CIFAR100(root=datadir, train=True, download=False, transform=train_transform)
+    #     dataset = datasets.CIFAR100(root=datadir, train=False, download=False, transform=transform)
+    #     labels = [label for _, label in dataset]
+
+    #     test_indices, val_indices = train_test_split( range(len(labels)), test_size=0.25, stratify=labels, random_state=42 )  
+
+    #     val_dataset = torch.utils.data.Subset(dataset, val_indices)
+    #     test_dataset = torch.utils.data.Subset(dataset, test_indices) 
 
 # def to_rgb(x):
 #     return x.convert("RGB")
