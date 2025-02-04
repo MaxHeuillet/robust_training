@@ -32,3 +32,5 @@ avalanche-lib
 #functools
 # pickle5
 #cuda-python
+
+# pip3 install imagecorruptions
