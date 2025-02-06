@@ -6,6 +6,8 @@ import torch
 from datasets.semisupervised_dataset import SemiSupervisedDataset
 from torch.utils.data import TensorDataset
 import random
+import numpy as np
+from PIL import Image
 from torch.utils.data import Subset
 from torch.utils.data import random_split
 from datasets.eurosat import EuroSATDataset
@@ -15,10 +17,11 @@ from torchvision.transforms.v2 import CutMix
 from sklearn.model_selection import train_test_split
 from utils import get_data_dir
 
+from imagecorruptions import get_corruption_names, corrupt
+
 #   transforms.RandomCrop(224, padding=4), 
 #   transforms.RandomHorizontalFlip(),  # Random horizontal flip
 ##   RandAugment(),  # RandAugment with N=9, M=0.5
-
 
 #Change Grayscale Image to RGB for the shape
 class GrayscaleToRGB(object):
@@ -49,8 +52,80 @@ def stratified_subsample(dataset, sample_size=1500):
 
     return Subset(dataset, indices_subsample)
 
+# def apply_corruption(img, corruption_type, severity=3):
+#     """Applies a specific corruption from imagecorruptions package."""
+#     corrupted_img = corrupt(np.array(img), corruption_name=corruption_type, severity=severity)
+#     return transforms.functional.to_pil_image(corrupted_img)
 
-def load_data(hp_opt,config,):
+SAFE_CORRUPTIONS = [
+    # "gaussian_noise",
+    "shot_noise",
+    "impulse_noise",
+    "defocus_blur",
+    # "glass_blur",
+    "motion_blur",
+    "zoom_blur",
+    "snow",
+    "frost",
+    # "fog",
+    "brightness",
+    "contrast",
+    "elastic_transform",
+    "pixelate",
+    "jpeg_compression"
+]
+
+DEFAULT_TRANSFORM = transforms.Compose([
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+])
+
+def apply_corruption(img, corruption_type, severity=3, max_attempts=3):
+    """Ensures image is in the correct format before applying corruption."""
+
+    
+    if isinstance(img, torch.Tensor):
+        img = img.cpu().numpy()  
+        img = np.transpose(img, (1, 2, 0))  
+    
+    if isinstance(img, Image.Image):
+        img = np.array(img)
+
+    if img.dtype != np.uint8:
+        img = (img * 255).astype(np.uint8)  # Convert from [0,1] to [0,255] range
+
+    if corruption_type not in SAFE_CORRUPTIONS:
+        # print(f"Warning: '{corruption_type}' is not in the safe list. Selecting a valid corruption...")
+        corruption_type = random.choice(SAFE_CORRUPTIONS)
+
+    # print(f"Applying corruption '{corruption_type}' with severity {severity}...")
+
+    corrupted_img = corrupt(img, corruption_name=corruption_type, severity=severity)
+
+    return DEFAULT_TRANSFORM(Image.fromarray(corrupted_img))
+
+# Function to distribute corruptions across dataset
+def apply_portfolio_of_corruptions(dataset, severity=3):
+    """
+    Applies a diversified portfolio of corruptions across the dataset.
+    Each image receives exactly one type of corruption.
+    """
+    corruption_types = get_corruption_names() 
+    num_corruptions = len(corruption_types)  
+
+    num_samples = len(dataset)
+    step_size = num_samples // num_corruptions 
+
+    corrupted_data = []
+    for i in range(num_samples):
+        corruption_type = corruption_types[i // step_size % num_corruptions]  # Cycle through corruption types
+        img, label = dataset[i]
+        corrupted_img = apply_corruption(img, corruption_type, severity=severity)
+        corrupted_data.append((corrupted_img, label))
+
+    return corrupted_data  # Returns a list of (corrupted_image, label) pairs
+
+def load_data(hp_opt, config, apply_corruptions=False):
 
     dataset =config.dataset
     datadir = get_data_dir(hp_opt,config)
@@ -62,11 +137,15 @@ def load_data(hp_opt,config,):
                                           transforms.RandomRotation(2),
                                           transforms.ToTensor(),
                                           transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ),])
+    
+    test_transform = [transforms.Resize((224, 224)),  # Resize images to 224x224
+                       GrayscaleToRGB(),
+                       transforms.ToTensor()]
+    
+    if not apply_corruptions:
+        test_transform.append([transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] )])
 
-    transform = transforms.Compose([transforms.Resize((224, 224)),  # Resize images to 224x224
-                                    GrayscaleToRGB(),
-                                    transforms.ToTensor(),
-                                    transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ) ])
+    transform = transforms.Compose(test_transform)
                 
     if dataset == 'fgvc-aircraft-2013b': #fgvc-aircraft-2013b
 
@@ -248,6 +327,9 @@ def load_data(hp_opt,config,):
         test_dataset = dataset_test_full
 
     test_dataset = stratified_subsample(test_dataset, sample_size=1500)
+
+    if apply_corruptions:
+        test_dataset = apply_portfolio_of_corruptions(test_dataset, severity=3)
                  
     return train_dataset, val_dataset, test_dataset, N, train_transform, transform
 
