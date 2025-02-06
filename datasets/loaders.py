@@ -143,7 +143,7 @@ def load_data(hp_opt, config, apply_corruptions=False):
                        transforms.ToTensor()]
     
     if not apply_corruptions:
-        test_transform.append([transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] )])
+        test_transform.append(transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ))
 
     transform = transforms.Compose(test_transform)
                 
