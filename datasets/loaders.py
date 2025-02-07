@@ -3,16 +3,18 @@ from torchvision import datasets, transforms
 from torchvision.transforms.functional import InterpolationMode
 import os
 import torch
-from datasets.semisupervised_dataset import SemiSupervisedDataset
+# from datasets.semisupervised_dataset import SemiSupervisedDataset
+# from datasets.eurosat import EuroSATDataset
+# from torchvision.transforms import RandAugment
+# from torchvision.transforms.v2 import CutMix
+
 from torch.utils.data import TensorDataset
 import random
 import numpy as np
 from PIL import Image
 from torch.utils.data import Subset
 from torch.utils.data import random_split
-from datasets.eurosat import EuroSATDataset
-from torchvision.transforms import RandAugment
-from torchvision.transforms.v2 import CutMix
+
 
 from sklearn.model_selection import train_test_split
 from utils import get_data_dir
@@ -82,7 +84,6 @@ DEFAULT_TRANSFORM = transforms.Compose([
 
 def apply_corruption(img, corruption_type, severity=3, max_attempts=3):
     """Ensures image is in the correct format before applying corruption."""
-
     
     if isinstance(img, torch.Tensor):
         img = img.cpu().numpy()  
@@ -146,8 +147,65 @@ def load_data(hp_opt, config, common_corruption=False):
         test_transform.append(transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ))
 
     transform = transforms.Compose(test_transform)
+
+    if dataset == 'uc-merced-land-use-dataset':
+        N = 21
+        path = datadir +'/UCMerced_LandUse/Images'
+
+        dataset_train_full = datasets.ImageFolder( root=path, transform=train_transform )
+        dataset_val_test_full = datasets.ImageFolder( root=path,  transform=transform )
+
+        labels = [label for _, label in dataset_train_full]
+
+        train_val_indices, test_indices = train_test_split(
+            range(len(labels)),
+            test_size=0.2,
+            stratify=labels,
+            random_state=42
+        )
+
+        train_val_labels = [labels[i] for i in train_val_indices]
+
+        train_indices, val_indices = train_test_split(
+            train_val_indices,
+            test_size=0.15,  # 0.15 * 0.8 = 0.12 -> 12% for validation
+            stratify=train_val_labels,
+            random_state=42
+        )
+
+        train_dataset = torch.utils.data.Subset(dataset_train_full, train_indices)
+        val_dataset = torch.utils.data.Subset(dataset_val_test_full, val_indices)
+        test_dataset = torch.utils.data.Subset(dataset_val_test_full, test_indices)
+
+    elif dataset == 'kvasir-dataset':
+        N = 8
+        path = datadir+'/kvasir-dataset'
+        dataset_train_full = datasets.ImageFolder( root=path, transform=train_transform )
+        dataset_val_test_full = datasets.ImageFolder( root=path,  transform=transform )
+
+        labels = [label for _, label in dataset_train_full]
+
+        train_val_indices, test_indices = train_test_split(
+            range(len(labels)),
+            test_size=0.2,
+            stratify=labels,
+            random_state=42
+        )
+
+        train_val_labels = [labels[i] for i in train_val_indices]
+
+        train_indices, val_indices = train_test_split(
+            train_val_indices,
+            test_size=0.15,  # 0.15 * 0.8 = 0.12 -> 12% for validation
+            stratify=train_val_labels,
+            random_state=42
+        )
+
+        train_dataset = torch.utils.data.Subset(dataset_train_full, train_indices)
+        val_dataset = torch.utils.data.Subset(dataset_val_test_full, val_indices)
+        test_dataset = torch.utils.data.Subset(dataset_val_test_full, test_indices)
                 
-    if dataset == 'fgvc-aircraft-2013b': #fgvc-aircraft-2013b
+    elif dataset == 'fgvc-aircraft-2013b': #fgvc-aircraft-2013b
 
         N = 100
         train_dataset = datasets.FGVCAircraft(root=datadir, split='train', download=False, transform=train_transform)
@@ -281,7 +339,7 @@ def load_data(hp_opt, config, common_corruption=False):
         val_dataset = torch.utils.data.Subset(dataset_train_val_full_val, val_indices)
         test_dataset = dataset_test_full
 
-    elif 'stanford_cars':
+    elif dataset == 'stanford_cars':
 
         N = 196
         print('datadir', datadir)

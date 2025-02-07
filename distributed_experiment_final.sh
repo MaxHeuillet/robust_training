@@ -14,9 +14,6 @@ module --force purge
 module load StdEnv/2023 python/3.10 cuda scipy-stack arrow httpproxy
 source ~/scratch/MYENV4/bin/activate
 
-# Uncomment the following line if you need to install requirements
-# pip install -r requirements.txt
-
 export PYTHONUNBUFFERED=1
 
 echo "Processing dataset: ${DATA}"
@@ -24,26 +21,31 @@ echo "Processing dataset: ${DATA}"
 # Create a temporary data directory
 mkdir -p $SLURM_TMPDIR/data
 
-# Define the path to the dataset archive
+# Define the path to the dataset archive (without extension)
 ARCHIVE_PATH=~/scratch/data/${DATA}
 
 # Function to extract .tar.zst archives
 extract_tar_zst() {
     local archive="${ARCHIVE_PATH}.tar.zst"
+    echo "Extracting ${archive} with tar + zstd..."
     tar -I zstd -xf "$archive" -C "$SLURM_TMPDIR/data"
 }
 
 # Function to extract .zip archives
 extract_zip() {
-    unzip "$HOME/scratch/data/archive.zip" -d "$SLURM_TMPDIR/data"
+    local archive="${ARCHIVE_PATH}.zip"
+    echo "Extracting ${archive} with unzip..."
+    unzip -q "$archive" -d "$SLURM_TMPDIR/data"
 }
 
-# Determine the extraction method based on the dataset
-if [ "$DATA" == "stanford_cars" ]; then
-    echo "Dataset is stanford_cars. Using unzip to extract."
+# If your dataset is zipped, add its name to the OR list below.
+if [ "$DATA" == "stanford_cars" ] || \
+   [ "$DATA" == "uc-merced-land-use-dataset" ] || \
+   [ "$DATA" == "kvasir-dataset" ]; then
+    echo "Dataset is $DATA. Using unzip to extract."
     extract_zip
 else
-    echo "Dataset is not stanford_cars. Using tar with zstd to extract."
+    echo "Dataset is not in the zip list. Using tar.zst to extract."
     extract_tar_zst
 fi
 

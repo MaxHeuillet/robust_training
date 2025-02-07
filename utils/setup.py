@@ -1,5 +1,7 @@
 
 # from comet_ml import Experiment
+# import cloudpickle as pickle
+
 
 import os
 import torch
@@ -10,7 +12,6 @@ from datetime import datetime
 from omegaconf import OmegaConf
 import hashlib
 import datetime
-import cloudpickle as pickle
 
 def generate_timestamp():
     return datetime.now().strftime('%y/%m/%d/%H/%M/%S')
