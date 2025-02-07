@@ -16,12 +16,12 @@ import kaggle
 ######### KVASIR DATASET #########  
 
 KAGGLE_DATASET = "meetnagadia/kvasir-dataset"
-kaggle.api.dataset_download_files(KAGGLE_DATASET, path="~/scratch/data", unzip=False)
+kaggle.api.dataset_download_files(KAGGLE_DATASET, path='~/scratch/data', unzip=False)
 
 ########## UC MERCED LAND USE DATASET #########
 
 KAGGLE_DATASET = "abdulhasibuddin/uc-merced-land-use-dataset"
-kaggle.api.dataset_download_files(KAGGLE_DATASET, path="~/scratch/data", unzip=False)
+kaggle.api.dataset_download_files(KAGGLE_DATASET, path='~/scratch/data', unzip=False)
 
 
 
