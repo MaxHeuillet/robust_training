@@ -125,7 +125,7 @@ def apply_portfolio_of_corruptions(dataset, severity=3):
 
     return corrupted_data  # Returns a list of (corrupted_image, label) pairs
 
-def load_data(hp_opt, config, apply_corruptions=False):
+def load_data(hp_opt, config, common_corruption=False):
 
     dataset =config.dataset
     datadir = get_data_dir(hp_opt,config)
@@ -142,7 +142,7 @@ def load_data(hp_opt, config, apply_corruptions=False):
                        GrayscaleToRGB(),
                        transforms.ToTensor()]
     
-    if not apply_corruptions:
+    if not common_corruption:
         test_transform.append(transforms.Normalize( mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225] ))
 
     transform = transforms.Compose(test_transform)
@@ -328,147 +328,7 @@ def load_data(hp_opt, config, apply_corruptions=False):
 
     test_dataset = stratified_subsample(test_dataset, sample_size=1500)
 
-    if apply_corruptions:
+    if common_corruption:
         test_dataset = apply_portfolio_of_corruptions(test_dataset, severity=3)
                  
     return train_dataset, val_dataset, test_dataset, N, train_transform, transform
-
-
-    # if dataset == 'CIFAR10':
-
-    #     N = 10
-    #     print('datadir', datadir)
-    #     train_dataset = datasets.CIFAR10(root=datadir, train=True, download=False, transform=train_transform)
-    #     dataset = datasets.CIFAR10(root=datadir, train=False, download=False, transform=transform)
-    #     labels = [label for _, label in dataset]
-
-    #     test_indices, val_indices = train_test_split( range(len(labels)), test_size=0.25, stratify=labels, random_state=42 )  
-
-    #     val_dataset = torch.utils.data.Subset(dataset, val_indices)
-    #     test_dataset = torch.utils.data.Subset(dataset, test_indices) 
-
-    # elif dataset == 'CIFAR100':
-
-    #     N = 100
-    #     print('datadir', datadir)
-    #     train_dataset = datasets.CIFAR100(root=datadir, train=True, download=False, transform=train_transform)
-    #     dataset = datasets.CIFAR100(root=datadir, train=False, download=False, transform=transform)
-    #     labels = [label for _, label in dataset]
-
-    #     test_indices, val_indices = train_test_split( range(len(labels)), test_size=0.25, stratify=labels, random_state=42 )  
-
-    #     val_dataset = torch.utils.data.Subset(dataset, val_indices)
-    #     test_dataset = torch.utils.data.Subset(dataset, test_indices) 
-
-# def to_rgb(x):
-#     return x.convert("RGB")
-
-    # if args.dataset == 'MNIST':
-
-    #     # Load the dataset
-    #     transform = transforms.Compose([
-    #         transforms.ToTensor(),
-    #         transforms.Normalize((0.1307,), (0.3081,))    ])
-
-    #     N = 10
-        
-    #     dataset = datasets.MNIST(root=args.data_dir, train=True, download=True, )
-
-    #     train_size = int(0.95 * len(dataset))
-    #     val_size = len(dataset) - train_size
-
-    #     train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
-    #     test_dataset = datasets.MNIST(root=args.data_dir, train=False, download=True, )
-
-    # elif args.dataset == 'CIFAR10s':
-
-    #     if args.aug == 'aug':
-    #         transform = transforms.Compose([transforms.ToTensor(),
-    #                                     transforms.RandomCrop(32, padding=4), 
-    #                                     transforms.RandomHorizontalFlip(0.5), 
-    #                                     transforms.Normalize( mean=(0.4914, 0.4822, 0.4465), std=(0.2471, 0.2435, 0.2616) ),])
-    #     elif args.aug == 'noaug':
-    #         transform = transforms.Compose([transforms.ToTensor(),
-    #                                     transforms.Normalize( mean=(0.4914, 0.4822, 0.4465), std=(0.2471, 0.2435, 0.2616) ),])
-    #     else: 
-    #         print('undefined augmentation')
-
-    #     # transform = transforms.Compose([
-    #     #         transforms.ToTensor(),
-    #     #          ])
-
-    #     if train:
-    #         dataset = SemiSupervisedDataset(args, train=True, )
-    #     else:
-    #         dataset = SemiSupervisedDataset(args, train=False, )
-
-    #     N = 10
-
-
-            
-    # elif args.dataset == 'Imagenet1k':
-
-    #     transform = transforms.Compose([
-    #             transforms.Lambda(to_rgb),
-    #             transforms.Resize(232, interpolation=InterpolationMode.BILINEAR),  # Resize the image to 232x232
-    #             transforms.CenterCrop(224),  # Crop the center of the image to make it 224x224
-    #             transforms.ToTensor(),  # Convert the image to a tensor
-    #             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  ])
-
-    #     if train:
-    #         dataset = datasets.ImageFolder(os.path.join(os.environ['SLURM_TMPDIR'], 'data/imagenet/train'))
-    #     else:
-    #         dataset = datasets.ImageFolder(os.path.join(os.environ['SLURM_TMPDIR'], 'data/imagenet/val'))
-
-    #         # Set the seed for reproducibility
-    #         seed = 42  # You can choose any seed value
-    #         random.seed(seed)
-
-    #         all_indices = list(range(len(dataset)))
-
-    #         # Randomly sample 10,000 indices from the dataset
-    #         sampled_indices = random.sample(all_indices, 10000)
-
-    #         # Create a subset using the randomly sampled indices
-    #         dataset = Subset(dataset, sampled_indices)
-
-
-    #     # pool_dataset = IndexedDataset('Imagenet1k', train_folder, transform= transform ) 
-    #     # test_dataset = IndexedDataset('Imagenet1k', test_folder, transform= transform) 
-    #     N = 1000
-
-    #     print('load dataloader')
-
-    # elif args.dataset == 'random':
-
-    #     transform = None
-        
-    #     # Create 10 unique integers as observations
-    #     observations = torch.arange(10)
-
-    #     # Create corresponding labels (for example, labels can be the same as observations, or any other related value)
-    #     labels = observations.clone()  # Here, labels are the same as observations for simplicity
-
-    #     # Combine observations and labels into a TensorDataset
-    #     dataset = TensorDataset(observations.view(-1, 1), labels.view(-1, 1))
-    #     N = 10
-            
-
-
-    # elif self.data == 'Imagenette':
-
-    #     transform = transforms.Compose([
-    #             transforms.Lambda(to_rgb),
-    #             transforms.Resize(232, interpolation=InterpolationMode.BILINEAR),  
-    #             transforms.CenterCrop(224),  
-    #             transforms.ToTensor(), 
-    #             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  ])
-
-    #     dataset = load_dataset("frgfm/imagenette", "full_size", cache_dir='/home/mheuill/scratch')
-    #     dataset = load_from_disk('/home/mheuill/scratch/imagenette')
-    #     train_dataset, test_dataset = dataset['train'], dataset['validation']
-
-    #     # pool_dataset = IndexedDataset('Imagenette', dataset['train'], transform= transform )
-    #     # test_dataset = IndexedDataset('Imagenette', dataset['validation'], transform= transform )
-
-    #     print('load dataloader')

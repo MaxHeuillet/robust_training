@@ -1,12 +1,34 @@
 from torchvision import datasets
+import os
+import os
+import kaggle
+
+
+###################
+### KVASIR DATASET
+###################
+
+import os
+import tarfile
+import zipfile
+import kaggle
+
+######### KVASIR DATASET #########  
+
+KAGGLE_DATASET = "meetnagadia/kvasir-dataset"
+kaggle.api.dataset_download_files(KAGGLE_DATASET, path="./data", unzip=False)
+
+########## UC MERCED LAND USE DATASET #########
+
+KAGGLE_DATASET = "abdulhasibuddin/uc-merced-land-use-dataset"
+kaggle.api.dataset_download_files(KAGGLE_DATASET, path="./data", unzip=False)
+
+
+
 
 # print('load1')
 # datasets.StanfordCars(root='./data',  download=False, )
 #
-import os
-
-import os
-import kaggle
 
 # Ensure environment variables are set
 # username = os.getenv('KAGGLE_USERNAME')
@@ -102,21 +124,21 @@ import kaggle
 # dataset.save_to_disk('/home/mheuill/scratch/imagenet-1k')
 
 
-from omegaconf import OmegaConf
-from datasets import load_data
-import numpy as np
-config = OmegaConf.load("./configs/default_config.yaml")
+# from omegaconf import OmegaConf
+# from datasets import load_data
+# import numpy as np
+# config = OmegaConf.load("./configs/default_config.yaml")
 
-for dataset in ['StanfordCars', 'OxfordIIITPet', 
-                'Caltech101', 'DTD',
-                 'Imagenette', 'Flowers', 
-                'EuroSAT', 'Aircraft',
-                'CIFAR10', 'CIFAR100',  ]:
+# for dataset in ['StanfordCars', 'OxfordIIITPet', 
+#                 'Caltech101', 'DTD',
+#                  'Imagenette', 'Flowers', 
+#                 'EuroSAT', 'Aircraft',
+#                 'CIFAR10', 'CIFAR100',  ]:
     
-    print(dataset)
+#     print(dataset)
     
-    config.dataset = dataset
-    train_dataset, val_dataset, test_dataset, N, train_transform, transform = load_data(False, config) 
-    image, label = val_dataset[0]  # Extract the image and label
-    pixels = np.array(image)
-    print(dataset, len(train_dataset), len(val_dataset), len(test_dataset), min(pixels[0][0]),  max(pixels[0][0]), N)
+#     config.dataset = dataset
+#     train_dataset, val_dataset, test_dataset, N, train_transform, transform = load_data(False, config) 
+#     image, label = val_dataset[0]  # Extract the image and label
+#     pixels = np.array(image)
+#     print(dataset, len(train_dataset), len(val_dataset), len(test_dataset), min(pixels[0][0]),  max(pixels[0][0]), N)

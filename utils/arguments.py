@@ -22,7 +22,6 @@ def get_args2():
     parser.add_argument("--loss_function", default="TRADES_v2", type=str, help="the loss function")
     parser.add_argument('--seed', default=0, type=int, help="random seed")
     parser.add_argument("--ft_type", default = 'full_fine_tuning', type=str, help="fine tuning type")
-    parser.add_argument("--task", default = 'HPO', type=str, help="task")
     parser.add_argument("--project_name", default = '0001', type=str, help="task")
         
     args, unknown = parser.parse_known_args()

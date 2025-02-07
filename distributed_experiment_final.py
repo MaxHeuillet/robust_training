@@ -101,9 +101,12 @@ class BaseExperiment:
 
         return logger
         
-    def initialize_loaders(self, config, rank):
+    def initialize_loaders(self, config, rank, common_corruption = False):
 
-        train_dataset, val_dataset, test_dataset, N, train_transform, _ = load_data(self.setup.hp_opt, config) 
+        if common_corruption:
+            train_dataset, val_dataset, test_dataset, N, _, _ = load_data(self.setup.hp_opt, config, common_corruption=True)
+        else:
+            train_dataset, val_dataset, test_dataset, N, _, _ = load_data(self.setup.hp_opt, config, common_corruption=False) 
         
         train_sampler = DistributedSampler(train_dataset, num_replicas=self.setup.world_size, rank=rank, shuffle=True, drop_last=True)
         val_sampler = DistributedSampler(val_dataset, num_replicas=self.setup.world_size, rank=rank, drop_last=True)
@@ -409,11 +412,12 @@ class BaseExperiment:
         return total_loss, total_correct_nat, total_correct_adv, total_examples, res_nat, res_adv
     
 
-    def test(self, rank, result_queue, robust_type):
+    def test(self, rank, result_queue, corruption_type):
 
         config = OmegaConf.load("./configs/HPO_{}_{}.yaml".format(self.setup.project_name, self.setup.exp_id) )
 
-        _, _, testloader, _, _, _, N = self.initialize_loaders(config, rank)
+        common_corruption = True if corruption_type == 'common' else False
+        _, _, testloader, _, _, _, N = self.initialize_loaders(config, rank, common_corruption)
         # test_sampler.set_epoch(0)  
         print('dataloader', flush=True) 
         
@@ -428,30 +432,25 @@ class BaseExperiment:
         model.eval()
 
         print('start AA accuracy', flush=True) 
-        stats = self.test_loop(testloader, config, model, rank, robust_type)
+        stats_nat, stats_adv = self.test_loop(testloader, config, model, rank, corruption_type)
         print('end AA accuracy', flush=True) 
 
-        statistics = { 'stats': stats  }
-        print(statistics, flush=True)
-        
-        # Put results into the queue
-        result_queue.put((rank, statistics))
+        result_queue.put( (rank, stats_nat, stats_adv) )
         print(f"Rank {rank}: Results sent to queue", flush=True)
         
-    def test_loop(self, testloader, config, model, rank, robust_type):
+    def test_loop(self, testloader, config, model, rank, corruption_type):
 
         def forward_pass(x):
             return model(x)
         
         device = torch.device(f"cuda:{rank}")
 
-        nb_correct_nat = 0
-        nb_correct_adv = 0
-        nb_examples = 0
+        if corruption_type in ['Linf' , 'L2' , 'L1']:
 
-        print('stats', nb_correct_nat, nb_correct_adv, nb_examples, flush=True)
-
-        if robust_type in ['Linf' , 'L2' , 'L1']:
+            nb_correct_nat = 0
+            nb_correct_adv = 0
+            nb_examples = 0
+            print('stats', nb_correct_nat, nb_correct_adv, nb_examples, flush=True)
 
             adversary = AutoAttack(forward_pass, norm=config.distance, eps=config.epsilon, version='standard', verbose = False, device = device)
             print('adversary instanciated', flush=True) 
@@ -477,32 +476,48 @@ class BaseExperiment:
                 nb_correct_adv += (preds_adv == target).sum().item()
                 nb_examples += target.size(0)
 
+            stats_nat = { 'nb_correct':nb_correct_nat, 'nb_examples':nb_examples }
+            stats_adv = { 'nb_correct':nb_correct_adv, 'nb_examples':nb_examples }
+
         else:
-            pass
 
+            nb_correct_adv = 0
+            nb_examples = 0
+            print('stats', nb_correct_nat, nb_correct_adv, nb_examples, flush=True)
+            
+            for _, batch in enumerate( testloader ):
 
-        print('stats2', nb_correct_nat, nb_correct_adv, nb_examples, flush=True)
+                x_adv, target = batch
 
-        stats = { 'nb_correct_nat':nb_correct_nat,
-                  'nb_correct_adv':nb_correct_adv,
-                  'nb_examples':nb_examples }
+                x_adv, target = x_adv.to(rank), target.to(rank) 
+
+                batch_size = x_adv.size(0)
+                
+                print('start batch iterations', rank, _,batch_size, len(testloader), flush=True) 
+
+                logits_nat, logits_adv = model(x_adv, x_adv)
+
+                preds_adv = torch.argmax(logits_adv, dim=1)
+
+                nb_correct_adv += (preds_adv == target).sum().item()
+                nb_examples += target.size(0)
+            
+            stats_nat = { 'nb_correct':None, 'nb_examples':None }
+            stats_adv = { 'nb_correct':nb_correct_adv, 'nb_examples':nb_examples }
         
-        print('stats dict, rank', stats, rank, flush=True)
-
-        return stats
+        return stats_nat, stats_adv
     
-    def launch_test(self, robust_type):
+    def launch_test(self, corruption_type):
         # import psutil  # Requires: pip install psutil
         # Create a Queue to gather results
         result_queue = Queue()
-
 
         # Launch evaluation processes
         processes = []
 
         for rank in range(self.setup.world_size): # 
 
-            p = mp.Process(target=self.test, args=(rank, result_queue, robust_type))
+            p = mp.Process(target=self.test, args=(rank, result_queue, corruption_type))
             p.start()
 
             # print(f"Process {p.pid} assigned to cores: {core_groups[rank]}", flush=True)
@@ -513,21 +528,26 @@ class BaseExperiment:
             p.join()
 
         # Gather results from the Queue
-        all_statistics = {}
+        statistics_nat = {}
+        statistics_adv = {}
         while not result_queue.empty():
-            rank, stats = result_queue.get()
-            all_statistics[rank] = stats
-
-        print(all_statistics)
+            rank, stats_nat, stats_adv = result_queue.get()
+            statistics_nat[rank] = stats_nat
+            statistics_adv[rank] = stats_adv
 
         # Log the aggregated results
-        stats = self.setup.aggregate_results(all_statistics, robust_type)
-
-        self.setup.log_results(statistics=stats)
+        if corruption_type == 'Linf':
+            statistic = self.setup.aggregate_results(statistics_nat, 'clean')
+            self.setup.log_results(statistics=statistic)
+            statistic = self.setup.aggregate_results(statistics_adv, corruption_type)
+            self.setup.log_results(statistics=statistic)
+        else:
+            statistic = self.setup.aggregate_results(statistics_adv, corruption_type)
+            self.setup.log_results(statistics=statistic)
+        
 
 def training_wrapper(rank, experiment, config ):
     hpo_config = OmegaConf.load("./configs/HPO_{}_{}.yaml".format(experiment.setup.project_name, experiment.setup.exp_id) )
-    # hpo_config = OmegaConf.merge(config, hpo_config)
     experiment.training(hpo_config, rank=rank)
 
 if __name__ == "__main__":
@@ -536,12 +556,20 @@ if __name__ == "__main__":
 
     torch.multiprocessing.set_start_method("spawn", force=True)
 
-    # Initialize Hydra configuration
     initialize(config_path="configs", version_base=None)
-    config = compose(config_name="default_config_linearprobe")  # Store Hydra config in a variable
+
     args_dict = get_args2()
-    task = args_dict['task']
-    del args_dict["task"]
+
+    if 'linearprobe50' in args_dict['project_name']:
+        config = compose(config_name="default_config_linearprobe50")  # Store Hydra config in a variable
+    elif 'fullfinetuning5' in args_dict['project_name']:
+        config = compose(config_name="default_config_fullfinetuning5")  # Store Hydra config in a variable
+    elif 'fullfinetuning50' in args_dict['project_name']:
+        config = compose(config_name="default_config_fullfinetuning50")  # Store Hydra config in a variable
+    else:
+        print('error in the experiment name', flush=True)
+    
+    
     config = OmegaConf.merge(config, args_dict)
     
     set_seeds(config.seed)
@@ -550,15 +578,12 @@ if __name__ == "__main__":
     setup = Setup(config, world_size)
     experiment = BaseExperiment(setup)
 
-    # if task == 'HPO':
     print('HPO', flush=True)
     experiment.hyperparameter_optimization()
-    # elif task == 'train':
     
     print('train', flush=True)  
     mp.spawn(training_wrapper, args=(experiment, config), nprocs=world_size, join=True)
     
-    # elif task == 'test':
     print('test Linf', flush=True)
     experiment.launch_test('Linf')
     print('test L1', flush=True)
@@ -566,4 +591,4 @@ if __name__ == "__main__":
     print('test L2', flush=True)
     experiment.launch_test('L2')
     print('test common corruptions', flush=True)
-    experiment.launch_test('common_corruptions')
+    experiment.launch_test('common')

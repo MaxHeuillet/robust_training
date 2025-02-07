@@ -10,6 +10,7 @@ from datetime import datetime
 from omegaconf import OmegaConf
 import hashlib
 import datetime
+import cloudpickle as pickle
 
 def generate_timestamp():
     return datetime.now().strftime('%y/%m/%d/%H/%M/%S')
@@ -103,7 +104,6 @@ class Setup:
         # -------------------------
         # 1) BASELINES PER ARCH
         # -------------------------
-        # These are "safe but reasonably large" total batch sizes for 4 GPUs on 224x224 images.
 
         if 'convnext_tiny' in self.config.backbone:
             base_bs = 64 #124
@@ -117,7 +117,7 @@ class Setup:
         # -------------------------
         # 2) DATASET → #CLASSES
         # -------------------------
-        # Approximate #classes for each dataset
+
         dataset_nclasses = {
             'stanford_cars':         196,
             'caltech101':            101,
@@ -132,8 +132,7 @@ class Setup:
         # -------------------------
         # 3) SCALE BY #CLASSES
         # -------------------------
-        # More classes => slightly larger last layer => slightly higher memory usage.
-        # You can tune these multipliers further if you see OOM or leftover memory.
+
         if n_classes <= 10:
             class_scale = 1.00
         elif n_classes <= 35:
@@ -146,14 +145,10 @@ class Setup:
             print('undefined')
 
         # -------------------------
-        # 4) SCALE FOR TRADES
-        # -------------------------
-        # TRADES effectively does ~2 forward passes => ~2x memory usage.
-
-        # -------------------------
         # 5) FINAL BATCH SIZE
         # -------------------------
-        batch_size = int(base_bs * class_scale * 3/4 ) 
+        
+        batch_size = 2 * int(base_bs * class_scale * 3/4 ) 
 
         return batch_size
 
@@ -164,36 +159,29 @@ class Setup:
         
         return int(batch_size)
     
-    def aggregate_results(self, results, robust_type):
+    def aggregate_results(self, results, corruption_type):
 
-        print(results)
-        # Initialize sums
-        total_correct_nat = 0
-        total_correct_adv = 0
+        total_correct = 0
         total_examples = 0
 
         # Sum up values from each process
         for process_id, process_data in results.items():
-            total_correct_nat += process_data['stats']['nb_correct_nat']
-            total_correct_adv += process_data['stats']['nb_correct_adv']
-            total_examples += process_data['stats']['nb_examples']
+            total_correct += process_data['nb_correct']
+            total_examples += process_data['nb_examples']
 
         # Calculate percentages
-        clean_accuracy = total_correct_nat / total_examples
-        robust_accuracy = total_correct_adv / total_examples
+        accuracy = total_correct / total_examples
+        
+        statistic = { corruption_type+'_acc': accuracy  }
 
-        statistics = {  'clean_acc':clean_accuracy, 
-                        'robust_acc':robust_accuracy,  }
+        return statistic
 
-        return statistics
-    
-    def log_results(self, hpo_results=None, statistics=None, ):
-        import cloudpickle as pickle
+    def log_results(self, hpo_results=None, statistic=None):
 
-        data_path = './results/results_{}_{}.pkl'.format( self.project_name, self.exp_id  )
+        data_path = './results/results_{}_{}.pkl'.format(self.project_name, self.exp_id)
 
-        # Load the current experiment configuration
-        current_experiment_config = OmegaConf.load("./configs/HPO_{}_{}.yaml".format(self.project_name, self.exp_id) )
+        # Load the current experiment configuration only once when first saving
+        current_experiment_config = OmegaConf.load("./configs/HPO_{}_{}.yaml".format(self.project_name, self.exp_id))
 
         # Use a file lock to prevent concurrent access
         lock = FileLock(data_path + '.lock')
@@ -209,62 +197,17 @@ class Setup:
             # Ensure the current experiment's structure
             if self.exp_id not in results_dict:
                 results_dict[self.exp_id] = {
-                    "config": {},
-                    "statistics": {},
+                    "config": current_experiment_config,  # Set config once when first initializing
+                    "statistics": {'clean_acc': None, 'Linf_acc': None, 'L2_acc': None, 'L1_acc': None},
                     "hpo_results": {}
                 }
 
-            # Update the dictionary with the respective sections
-            results_dict[self.exp_id]["config"].update(current_experiment_config)
-            
             if hpo_results:
                 results_dict[self.exp_id]["hpo_results"] = hpo_results
 
-            if statistics:
-                results_dict[self.exp_id]["statistics"].update(statistics)
-            
+            if statistic:
+                results_dict[self.exp_id]["statistics"].update(statistic)
+
             # Save the updated dictionary back to the file
             with open(data_path, 'wb') as f:
                 pickle.dump(results_dict, f)
-
-
-
-# EXAMPLE USAGE
-# -------------
-# Suppose we're training convnext_tiny on 'stanford_cars' with TRADES:
-#   arch      = 'convnext_tiny'
-#   dataset   = 'stanford_cars'
-#   loss_fn   = 'trades'
-#   batchsize = get_safe_batch_size(arch, dataset, loss_fn)
-#
-# This gives us the total batch size across 4 GPUs (16GB each). 
-# If you do DDP, you'll set per-GPU batch size to batchsize // 4 (rounded).
-
-        
-    # def train_batch_size(self):
-
-    #     if self.cluster_name == 'narval':
-    #         base = 9/4
-    #     elif self.cluster_name == 'beluga':
-    #         base = 3/4
-    #     else:
-    #         return 8
-        
-    #     if self.config.loss_function == 'TRADES_v2':
-    #         loss_base = 0.5
-    #     else:
-    #         loss_base = 1
-
-    #     # Batch size recommendations based on the backbone
-    #     # if self.config.backbone in ['robust_wideresnet_28_10', 'wideresnet_28_10']:
-    #     #     batch_size = 8 * base  # 8 = OK, 16 = NOT OK, 12 NOT OK
-    #     if 'deit_small_patch16_224' in self.config.backbone:
-    #         batch_size = 128 * base  # 16 = OK, 32 = OK, 64 = OK, 128 = OK, 256 = NOT OK
-    #     elif 'vit_base_patch16_224' in self.config.backbone:
-    #         batch_size = 64 * base  # 16 = OK, 32 = OK, 64 = OK, 128 = NOT OK
-    #     elif 'convnext_base' in self.config.backbone:
-    #         batch_size = 32 * base  # 16 = OK, 32 = OK, 64 = NOT OK
-    #     elif 'convnext_tiny' in self.config.backbone:
-    #         batch_size = 64 * base  # 16 = OK, 32 = OK, 64 = OK, 128 = NOT OK
-  
-    #     return int(batch_size)
