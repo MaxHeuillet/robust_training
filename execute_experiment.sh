@@ -38,14 +38,14 @@ for data in "${datas[@]}"; do
       for bckbn in "${backbones[@]}"; do
 
               
-              if [ "$CC_CLUSTER" = "beluga" ]; then
+        if [ "$CC_CLUSTER" = "beluga" ]; then
                   sbatch --export=ALL,\
 BCKBN="$bckbn",\
 DATA="$data",\
 SEED="$id",\
 LOSS="$loss",\
 PRNM="$PRNM" \
-./distributed_experiment_beluga.sh
+./distributed_experiment_final.sh
               else
                   sbatch --export=ALL,\
 BCKBN="$bckbn",\
@@ -53,7 +53,7 @@ DATA="$data",\
 SEED="$id",\
 LOSS="$loss",\
 PRNM="$PRNM" \
-./distributed_experiment_other.sh
+./distributed_experiment_final.sh
               fi
 
       done
