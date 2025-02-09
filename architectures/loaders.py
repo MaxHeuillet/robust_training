@@ -57,25 +57,25 @@ def load_architecture(hp_opt,config, N, ):
         model = timm.create_model(equivalencies[backbone], pretrained=False)
         
         if 'random' not in backbone:
-            state_dict = torch.load( statedict_dir + '/{}.pt'.format(backbone) , map_location='cpu')
+            state_dict = torch.load( statedict_dir + '/{}.pt'.format(backbone) , weights_only=True, map_location='cpu')
             model.load_state_dict(state_dict)
 
     elif 'deit' in backbone:
         model = timm.create_model(equivalencies[backbone], pretrained=False)
         if 'random' not in backbone:
-            state_dict = torch.load( statedict_dir + '/{}.pt'.format(backbone) , map_location='cpu')
+            state_dict = torch.load( statedict_dir + '/{}.pt'.format(backbone) ,weights_only=True, map_location='cpu')
             model.load_state_dict(state_dict)
 
     elif 'vit' in backbone:
         model = timm.create_model(equivalencies[backbone], pretrained=False)
         if 'random' not in backbone:
-            state_dict = torch.load( statedict_dir + '/{}.pt'.format(backbone) , map_location='cpu')
+            state_dict = torch.load( statedict_dir + '/{}.pt'.format(backbone) ,weights_only=True, map_location='cpu')
             model.load_state_dict(state_dict)
 
     elif 'wideresnet' in backbone:
         model = wideresnet(depth = 28, widen = 10, act_fn = 'swish', num_classes = 200)
         if 'random' not in backbone:
-            state_dict = torch.load( statedict_dir + '/{}.pt'.format(backbone) , map_location='cpu')
+            state_dict = torch.load( statedict_dir + '/{}.pt'.format(backbone) ,weights_only=True, map_location='cpu')
             model.load_state_dict(state_dict)
 
     model = change_head(backbone, model, N)

@@ -105,26 +105,46 @@ def apply_corruption(img, corruption_type, severity=3, max_attempts=3):
 
     return DEFAULT_TRANSFORM(Image.fromarray(corrupted_img))
 
-# Function to distribute corruptions across dataset
 def apply_portfolio_of_corruptions(dataset, severity=3):
     """
     Applies a diversified portfolio of corruptions across the dataset.
-    Each image receives exactly one type of corruption.
+    Each image receives exactly one type of corruption, based on index.
+    Returns a TensorDataset for efficient sampling.
     """
-    corruption_types = get_corruption_names() 
-    num_corruptions = len(corruption_types)  
-
+    corruption_types = get_corruption_names()
+    num_corruptions = len(corruption_types)
+    
     num_samples = len(dataset)
-    step_size = num_samples // num_corruptions 
+    if num_samples == 0:
+        raise ValueError("Dataset has 0 samples.")
 
-    corrupted_data = []
+    step_size = max(1, num_samples // num_corruptions)  # avoid div-by-zero
+
+    # 1) Figure out the shape of the first sample so we can pre-allocate
+    first_img, _ = dataset[0]
+    if isinstance(first_img, torch.Tensor):
+        # E.g., shape = (C, H, W)
+        _, H, W = first_img.shape
+        C = first_img.shape[0]
+    else:
+        # Convert to Tensor just to inspect shape
+        first_img = DEFAULT_TRANSFORM(first_img)
+        C, H, W = first_img.shape
+
+    # 2) Pre-allocate large tensors for images and labels
+    images = torch.empty((num_samples, C, H, W), dtype=torch.float32)
+    labels = torch.empty((num_samples,), dtype=torch.long)
+
+    # 3) Fill these tensors with corrupted data
     for i in range(num_samples):
-        corruption_type = corruption_types[i // step_size % num_corruptions]  # Cycle through corruption types
+        corruption_type = corruption_types[(i // step_size) % num_corruptions]
         img, label = dataset[i]
         corrupted_img = apply_corruption(img, corruption_type, severity=severity)
-        corrupted_data.append((corrupted_img, label))
+        images[i] = corrupted_img
+        labels[i] = label
 
-    return corrupted_data  # Returns a list of (corrupted_image, label) pairs
+    # 4) Wrap in a TensorDataset so it's a valid PyTorch Dataset
+    return TensorDataset(images, labels)
 
 def load_data(hp_opt, config, common_corruption=False):
 
@@ -383,6 +403,9 @@ def load_data(hp_opt, config, common_corruption=False):
         train_dataset = torch.utils.data.Subset(dataset_train_full_train, train_indices)
         val_dataset = torch.utils.data.Subset(dataset_train_full_val, val_indices)
         test_dataset = dataset_test_full
+    
+    else:
+        raise ValueError(f"Unknown dataset '{dataset}'")
 
     test_dataset = stratified_subsample(test_dataset, sample_size=1500)
 

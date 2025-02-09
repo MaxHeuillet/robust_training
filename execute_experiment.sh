@@ -3,34 +3,23 @@
 # Define variables
 seeds=1
 
-datas=( 'uc-merced-land-use-dataset' 'kvasir-dataset' 'caltech101' 'oxford-iiit-pet' 'flowers-102' 'stanford_cars' 'oxford-iiit-pet'  'dtd'  'fgvc-aircraft-2013b' )
+datas=( 'uc-merced-land-use-dataset' 'kvasir-dataset' 
+        'caltech101' 'oxford-iiit-pet' 'flowers-102' 
+        'stanford_cars' 'oxford-iiit-pet'  
+        'dtd'  'fgvc-aircraft-2013b' )
 
 
 losses=( 'CLASSIC_AT' 'TRADES_v2' )  
 
-# backbones=(
-#   'convnext_tiny' 'robust_convnext_tiny' 'convnext_tiny.fb_in22k' 
-#   'deit_small_patch16_224.fb_in1k' 'robust_deit_small_patch16_224'
-#   'convnext_base' 'convnext_base.fb_in22k' 'robust_convnext_base' 
-#   'convnext_base.clip_laion2b' 'convnext_base.clip_laion2b_augreg'
-#   'vit_base_patch16_224.augreg_in1k' 'vit_base_patch16_224.augreg_in21k',
-#   'vit_base_patch16_224.dino' 'vit_base_patch16_224.mae' 'vit_base_patch16_224.orig_in21k'
-#   'vit_base_patch16_224.sam_in1k' 'vit_base_patch16_224_miil.in21k'
-#     ) 
-
 backbones=(
-  'convnext_base.clip_laion2b_augreg'
-  'convnext_base.clip_laion2b'
-  'robust_convnext_base'
-  'convnext_base.fb_in22k'
-  'convnext_base'
-   ) 
-
-
-
-ft_type=( 'full_fine_tuning' )
-
-tasks=( 'HPO' ) # 'train' 'test'
+  'convnext_tiny' 'robust_convnext_tiny' 'convnext_tiny.fb_in22k' 
+  'deit_small_patch16_224.fb_in1k' 'robust_deit_small_patch16_224'
+  'convnext_base' 'convnext_base.fb_in22k' 'robust_convnext_base' 
+  'convnext_base.clip_laion2b' 'convnext_base.clip_laion2b_augreg'
+  'vit_base_patch16_224.augreg_in1k' 'vit_base_patch16_224.augreg_in21k',
+  'vit_base_patch16_224.dino' 'vit_base_patch16_224.mae' 'vit_base_patch16_224.orig_in21k'
+  'vit_base_patch16_224.sam_in1k' 'vit_base_patch16_224_miil.in21k' 'robust_vit_base_patch16_224'
+    ) 
 
 # Get the project name as the current date in yy-mm-dd-hh format
 PRNM=$1
@@ -51,9 +40,7 @@ for task in "${tasks[@]}"; do
               
               if [ "$CC_CLUSTER" = "beluga" ]; then
                   sbatch --export=ALL,\
-TASK="$task",\
 BCKBN="$bckbn",\
-FTTYPE="$fttype",\
 DATA="$data",\
 SEED="$id",\
 LOSS="$loss",\
@@ -61,9 +48,7 @@ PRNM="$PRNM" \
 ./distributed_experiment_beluga.sh
               else
                   sbatch --export=ALL,\
-TASK="$task",\
 BCKBN="$bckbn",\
-FTTYPE="$fttype",\
 DATA="$data",\
 SEED="$id",\
 LOSS="$loss",\

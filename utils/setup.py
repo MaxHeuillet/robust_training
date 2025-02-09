@@ -10,7 +10,7 @@ from filelock import FileLock
 import pandas as pd
 from datetime import datetime
 from omegaconf import OmegaConf
-import hashlib
+import pickle
 import datetime
 
 def generate_timestamp():
@@ -149,7 +149,14 @@ class Setup:
         # 5) FINAL BATCH SIZE
         # -------------------------
         
-        batch_size = 2 * int(base_bs * class_scale * 3/4 ) 
+        cluster_keywords = ["calculquebec", "calcul.quebec"]
+        nodename = os.uname().nodename.lower()
+        # Check if the node is part of the Calcul Québec cluster
+        if any(keyword in nodename for keyword in cluster_keywords):
+            batch_size = 2 * int(base_bs * class_scale * 3/4 ) 
+        else:
+            # Define the default data directory for non-cluster environments
+            batch_size = 2
 
         return batch_size
 

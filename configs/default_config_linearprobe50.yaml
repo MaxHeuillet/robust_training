@@ -6,10 +6,10 @@ loss_function: "CLASSIC_AT"  # TRADES_v2
 seed: 0  # random seed
 epochs: 50  # number of total iterations to run
 
-lr1: null
-lr2: null
-weight_decay1: null
-weight_decay2: null
+lr1: 0.01
+lr2: 0.01
+weight_decay1: 0.99
+weight_decay2: 0.99
 
 use_rs: False
 epsilon: 0.015686275  # epsilon of trades (4/255)

@@ -27,8 +27,8 @@ class Hp_opt:
             self.minutes = 150
             self.trials = 1000
         else:
-            self.minutes = 5
-            self.trials = 5
+            self.minutes = 2
+            self.trials = 2
 
     def get_config(self, ):
 

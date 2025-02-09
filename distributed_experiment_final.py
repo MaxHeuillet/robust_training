@@ -13,30 +13,23 @@ from torch.cuda.amp import GradScaler, autocast
 import torch.multiprocessing as mp 
 from multiprocessing import Queue 
 import os
-import sys
 
 import torch
 
-import io
-
-import math
 from autoattack import AutoAttack
 
 from torch.utils.data import DataLoader
 
 import torch.distributed as dist
 
-import hashlib
-import json
-
 from utils import Setup
 
 # from samplers import DistributedCustomSampler
 from torch.utils.data.distributed import DistributedSampler
-from datasets import WeightedDataset, IndexedDataset, load_data
+from datasets import load_data
 from architectures import load_architecture, CustomModel
 from losses import get_loss, get_eval_loss
-from utils import get_args2, get_exp_name, set_seeds, load_optimizer, get_state_dict_dir
+from utils import get_args2, set_seeds, load_optimizer, get_state_dict_dir
 from utils import ActivationTrackerAggregated, register_hooks_aggregated, compute_stats_aggregated
 from torchvision.transforms import v2
 from torch.optim.lr_scheduler import CosineAnnealingLR
@@ -45,18 +38,15 @@ from ray.air import session
 from hydra import initialize, compose
 from omegaconf import OmegaConf
 
-from omegaconf import DictConfig, OmegaConf
+from omegaconf import OmegaConf
 from utils import Hp_opt
 from ray import train
 
 import os
-from ray import tune
-import numpy as np
+
 
 import ray
-from ray import train, tune
 
-import timm.data.mixup as mixup
 
 def compute_gradient_norms(model):
     total_norm = 0
@@ -112,23 +102,25 @@ class BaseExperiment:
         val_sampler = DistributedSampler(val_dataset, num_replicas=self.setup.world_size, rank=rank, drop_last=True)
         test_sampler = DistributedSampler(test_dataset, num_replicas=self.setup.world_size, rank=rank, shuffle=True, drop_last=True)
         
+        nb_workers = 3 if torch.cuda.device_count() > 1 else 1
+
         print('initialize dataoader', rank,flush=True) 
         trainloader = DataLoader(train_dataset, 
                                  batch_size=self.setup.train_batch_size(), 
                                  sampler=train_sampler, 
-                                 num_workers=3, 
+                                 num_workers=nb_workers, 
                                  pin_memory=True) 
         
         valloader = DataLoader(val_dataset, 
                                batch_size=int( 0.65 * self.setup.train_batch_size() ), 
                                sampler=val_sampler, 
-                               num_workers=3,
+                               num_workers=nb_workers,
                                pin_memory=True)
         
         testloader = DataLoader(test_dataset, 
                                batch_size=self.setup.test_batch_size(), 
                                sampler=test_sampler, 
-                               num_workers=3,
+                               num_workers=nb_workers,
                                pin_memory=True)
         
         return trainloader, valloader, testloader, train_sampler, val_sampler, test_sampler, N
@@ -202,7 +194,6 @@ class BaseExperiment:
 
         self.setup.hp_opt = False
 
-        # Extract relevant data (configurations and metrics) from result_grid
         best_config = OmegaConf.merge(self.setup.config, best_result.config['train_loop_config']  )
         OmegaConf.save(best_config, './configs/HPO_{}_{}.yaml'.format(self.setup.project_name, self.setup.exp_id) )
 
@@ -308,11 +299,12 @@ class BaseExperiment:
 
                     
                 # break
+
             if self.setup.hp_opt:
                 self.validation( valloader, model, logger, iteration, rank)
             
-            elif not self.setup.hp_opt and iteration in [10, 40]: #25,
-                self.validation( valloader, model, logger, iteration, rank)
+            # elif not self.setup.hp_opt and iteration in [10, 40]: #25,
+            #     self.validation( valloader, model, logger, iteration, rank)
                 
             if scheduler is not None: scheduler.step()
 
@@ -425,7 +417,7 @@ class BaseExperiment:
 
         model = CustomModel(config, model, )
         model.set_fine_tuning_strategy()
-        trained_state_dict = torch.load('./state_dicts/trained_model_{}_{}.pt'.format(self.setup.project_name, self.setup.exp_id), map_location='cpu')
+        trained_state_dict = torch.load('./state_dicts/trained_model_{}_{}.pt'.format(self.setup.project_name, self.setup.exp_id), weights_only=True, map_location='cpu')
         model.load_state_dict(trained_state_dict)
         model.to(rank)
 
@@ -476,6 +468,8 @@ class BaseExperiment:
                 nb_correct_adv += (preds_adv == target).sum().item()
                 nb_examples += target.size(0)
 
+                # break
+
             stats_nat = { 'nb_correct':nb_correct_nat, 'nb_examples':nb_examples }
             stats_adv = { 'nb_correct':nb_correct_adv, 'nb_examples':nb_examples }
 
@@ -483,7 +477,7 @@ class BaseExperiment:
 
             nb_correct_adv = 0
             nb_examples = 0
-            print('stats', nb_correct_nat, nb_correct_adv, nb_examples, flush=True)
+            print('stats', nb_correct_adv, nb_examples, flush=True)
             
             for _, batch in enumerate( testloader ):
 
@@ -501,6 +495,8 @@ class BaseExperiment:
 
                 nb_correct_adv += (preds_adv == target).sum().item()
                 nb_examples += target.size(0)
+
+                # break
             
             stats_nat = { 'nb_correct':None, 'nb_examples':None }
             stats_adv = { 'nb_correct':nb_correct_adv, 'nb_examples':nb_examples }
@@ -535,15 +531,17 @@ class BaseExperiment:
             statistics_nat[rank] = stats_nat
             statistics_adv[rank] = stats_adv
 
+        print(statistics_nat, statistics_adv, flush=True)
+
         # Log the aggregated results
         if corruption_type == 'Linf':
             statistic = self.setup.aggregate_results(statistics_nat, 'clean')
-            self.setup.log_results(statistics=statistic)
+            self.setup.log_results(statistic=statistic)
             statistic = self.setup.aggregate_results(statistics_adv, corruption_type)
-            self.setup.log_results(statistics=statistic)
+            self.setup.log_results(statistic=statistic)
         else:
             statistic = self.setup.aggregate_results(statistics_adv, corruption_type)
-            self.setup.log_results(statistics=statistic)
+            self.setup.log_results(statistic=statistic)
         
 
 def training_wrapper(rank, experiment, config ):
@@ -560,15 +558,14 @@ if __name__ == "__main__":
 
     args_dict = get_args2()
 
-    if 'linearprobe50' in args_dict['project_name']:
+    if 'linearprobe_50epochs' in args_dict['project_name']:
         config = compose(config_name="default_config_linearprobe50")  # Store Hydra config in a variable
-    elif 'fullfinetuning5' in args_dict['project_name']:
+    elif 'fullfinetuning_5epochs' in args_dict['project_name']:
         config = compose(config_name="default_config_fullfinetuning5")  # Store Hydra config in a variable
-    elif 'fullfinetuning50' in args_dict['project_name']:
+    elif 'fullfinetuning_50epochs' in args_dict['project_name']:
         config = compose(config_name="default_config_fullfinetuning50")  # Store Hydra config in a variable
     else:
         print('error in the experiment name', flush=True)
-    
     
     config = OmegaConf.merge(config, args_dict)
     
