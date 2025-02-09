@@ -21,7 +21,7 @@ backbones=(
   'vit_base_patch16_224.sam_in1k' 'vit_base_patch16_224_miil.in21k' 'robust_vit_base_patch16_224'
     ) 
 
-# Get the project name as the current date in yy-mm-dd-hh format
+# Get the project name 
 PRNM=$1
 
 # Check if PRNM is set
@@ -31,12 +31,12 @@ if [ -z "$PRNM" ]; then
 fi
 
 # Loop over architectures, datasets, losses, seeds, backbones, and fine-tuning types
-for task in "${tasks[@]}"; do
-  for data in "${datas[@]}"; do
-    for loss in "${losses[@]}"; do
-      for id in $(seq 1 $seeds); do
-        for bckbn in "${backbones[@]}"; do
-          for fttype in "${ft_type[@]}"; do
+
+for data in "${datas[@]}"; do
+  for loss in "${losses[@]}"; do
+    for id in $(seq 1 $seeds); do
+      for bckbn in "${backbones[@]}"; do
+
               
               if [ "$CC_CLUSTER" = "beluga" ]; then
                   sbatch --export=ALL,\
@@ -56,9 +56,8 @@ PRNM="$PRNM" \
 ./distributed_experiment_other.sh
               fi
 
-          done
-        done
       done
     done
   done
 done
+

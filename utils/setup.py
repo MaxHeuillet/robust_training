@@ -2,7 +2,6 @@
 # from comet_ml import Experiment
 # import cloudpickle as pickle
 
-
 import os
 import torch
 import torch.distributed as dist
@@ -13,30 +12,9 @@ from omegaconf import OmegaConf
 import pickle
 import datetime
 
-def generate_timestamp():
-    return datetime.now().strftime('%y/%m/%d/%H/%M/%S')
 
-def check_unique_id(df1, df2, unique_id_col):
-
-    unique_id = df2[unique_id_col].iloc[0]
-    
-    matching_indices = df1[df1[unique_id_col] == unique_id].index
-
-    if not matching_indices.empty:
-        iloc_indices = [df1.index.get_loc(idx) for idx in matching_indices]
-        return True, iloc_indices
-    else:
-        return False, []
-    
 def get_config_id(cfg) -> str:
 
-    # Convert the Hydra config to a dictionary and ensure ordering
-    # config_dict = OmegaConf.to_container(cfg, resolve=True, enum_to_str=True)
-    
-    # Get sorted list of values
-    # sorted_items = sorted(config_dict.items())
-    # values_list = [str(value) for key, value in sorted_items]
-    
     # Join the values into a string
     serialized_values = cfg.backbone + '_' + cfg.dataset + '_' + cfg.loss_function
     print('serialized_values', serialized_values)
@@ -54,10 +32,6 @@ class Setup:
         self.project_name = config.project_name
         
     def distributed_setup(self, rank):
-
-        # os.environ['NCCL_DEBUG'] = 'INFO'  # or 'TRACE' for more detailed logs
-        # os.environ['NCCL_DEBUG_SUBSYS'] = 'ALL'
-        # os.environ['NCCL_BLOCKING_WAIT'] = '1'
 
         print('torch', torch.__version__)
         print('cuda', torch.version.cuda)
@@ -219,3 +193,20 @@ class Setup:
             # Save the updated dictionary back to the file
             with open(data_path, 'wb') as f:
                 pickle.dump(results_dict, f)
+
+
+# def generate_timestamp():
+#     return datetime.now().strftime('%y/%m/%d/%H/%M/%S')
+
+# def check_unique_id(df1, df2, unique_id_col):
+
+#     unique_id = df2[unique_id_col].iloc[0]
+    
+#     matching_indices = df1[df1[unique_id_col] == unique_id].index
+
+#     if not matching_indices.empty:
+#         iloc_indices = [df1.index.get_loc(idx) for idx in matching_indices]
+#         return True, iloc_indices
+#     else:
+#         return False, []
+    
