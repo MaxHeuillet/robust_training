@@ -2,6 +2,9 @@
 import torch
 import timm
 from timm.models import create_model
+import os
+
+save_path = os.path.expanduser('~/scratch/state_dicts')
 
 
 model = timm.create_model('resnet50', pretrained=True)

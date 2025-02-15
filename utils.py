@@ -15,7 +15,7 @@ import time
 import random
 import numpy as np
 import os
-import losses.trades as trades
+import old_files.trades as trades
 
 # from transformers import set_seed as hf_set_seed  # Hugging Face specific seed setter
 

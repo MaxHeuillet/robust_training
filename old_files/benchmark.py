@@ -18,8 +18,8 @@ import torch.nn.utils.parametrize as parametrize
 import architectures.lora as lora 
 
 from torch.utils.data import Subset
-import losses.trades as trades
-import active
+import old_files.trades as trades
+import old_files.active as active
 import torch.optim as optim
 from torch import nn
 

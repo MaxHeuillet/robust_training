@@ -1,5 +1,5 @@
 
-from losses.trades import trades_loss
+# from old_files.trades import trades_loss
 from losses.trades_v2 import trades_loss_v2
 from losses.classic_at import classic_at_loss
 # from losses.trades_v3 import trades_loss_v3
@@ -9,10 +9,10 @@ def get_loss(setup, model, x_nat, y, ):
 
     loss_function = setup.config.loss_function
 
-    if loss_function == 'TRADES':
-        # print('returns TRADES loss')
-        return trades_loss(setup, model, x_nat, y, )
-    elif loss_function == 'TRADES_v2':
+    # if loss_function == 'TRADES':
+    #     # print('returns TRADES loss')
+    #     return trades_loss(setup, model, x_nat, y, )
+    if loss_function == 'TRADES_v2':
         # print('returns TRADES_v2 loss')
         return trades_loss_v2(setup, model, x_nat, y, )
     elif loss_function == 'CLASSIC_AT':

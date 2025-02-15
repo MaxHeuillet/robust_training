@@ -34,7 +34,7 @@ from datasets import WeightedDataset, IndexedDataset, load_data
 from architectures import load_architecture, CustomModel
 from losses import get_loss, get_eval_loss
 from utils import get_args, get_exp_name, set_seeds, load_optimizer
-from cosine import CosineLR
+from old_files.cosine import CosineLR
 from torchvision.transforms import v2
 
 
