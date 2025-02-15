@@ -1,9 +1,4 @@
 import torch
-from architectures.resnet_cifar10 import ResNet_cifar10, Bottleneck_cifar10
-from architectures.resnet_imagenet import ResNet_imagenet, Bottleneck_imagenet
-from architectures.LeNet import LeNet5
-from architectures.wideresnetswish import wideresnet
-
 
 import timm
 from timm.models import create_model
@@ -72,11 +67,6 @@ def load_architecture(hp_opt,config, N, ):
             state_dict = torch.load( statedict_dir + '/{}.pt'.format(backbone) ,weights_only=True, map_location='cpu')
             model.load_state_dict(state_dict)
 
-    elif 'wideresnet' in backbone:
-        model = wideresnet(depth = 28, widen = 10, act_fn = 'swish', num_classes = 200)
-        if 'random' not in backbone:
-            state_dict = torch.load( statedict_dir + '/{}.pt'.format(backbone) ,weights_only=True, map_location='cpu')
-            model.load_state_dict(state_dict)
 
     model = change_head(backbone, model, N)
     
@@ -88,10 +78,6 @@ def change_head(backbone, model, N):
     if "convnext" in backbone:
         num_features = model.head.fc.in_features
         model.head.fc = nn.Linear(num_features, N)  
-
-    elif "wideresnet" in backbone:
-        num_features = model.logits.in_features
-        model.logits = nn.Linear(num_features, N)
 
     elif "deit" in backbone:
         num_features = model.head.in_features
