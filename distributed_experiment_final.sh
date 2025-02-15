@@ -11,9 +11,7 @@
 
 # Purge all loaded modules and load necessary ones
 module --force purge
-module load StdEnv/2023 python/3.12
-
-# module load StdEnv/2023 gcc/12.3 cuda/12.2 opencv/4.10.0 python/3.12 arrow/18.1.0 scipy-stack/2024a httpproxy
+module load StdEnv/2023 gcc/12.3 cuda/12.2 opencv/4.10.0 python/3.12 arrow/18.1.0 scipy-stack/2024a httpproxy
 source ~/scratch/MYENV4/bin/activate
 
 export PYTHONUNBUFFERED=1
