@@ -127,7 +127,7 @@ class Setup:
         nodename = os.uname().nodename.lower()
         # Check if the node is part of the Calcul Québec cluster
         if any(keyword in nodename for keyword in cluster_keywords):
-            batch_size = 2 * int(base_bs * class_scale * 3/4 ) 
+            batch_size = int(base_bs * class_scale * 3/4 ) # * 2
         else:
             # Define the default data directory for non-cluster environments
             batch_size = 2

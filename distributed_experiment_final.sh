@@ -3,7 +3,7 @@
 #SBATCH --account=rrg-csubakan
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=24
-#SBATCH --gpus-per-node=2
+#SBATCH --gpus-per-node=4
 #SBATCH --mem-per-cpu=4000M
 #SBATCH --time=11:58:59
 #SBATCH --mail-user=maxime.heuillet.1@ulaval.ca
@@ -11,7 +11,7 @@
 
 # Purge all loaded modules and load necessary ones
 module --force purge
-module load StdEnv/2023 python/3.10 cuda scipy-stack arrow httpproxy
+module load StdEnv/2023 python/3.10 cuda scipy-stack arrow opencv httpproxy
 source ~/scratch/MYENV4/bin/activate
 
 export PYTHONUNBUFFERED=1
