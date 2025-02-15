@@ -560,9 +560,9 @@ if __name__ == "__main__":
 
     if 'linearprobe_50epochs' in args_dict['project_name']:
         config = compose(config_name="default_config_linearprobe50")  # Store Hydra config in a variable
-    elif 'fullfinetuning_5epochs' in args_dict['project_name']:
+    elif 'full_fine_tuning_5epochs' in args_dict['project_name']:
         config = compose(config_name="default_config_fullfinetuning5")  # Store Hydra config in a variable
-    elif 'fullfinetuning_50epochs' in args_dict['project_name']:
+    elif 'full_fine_tuning_50epochs' in args_dict['project_name']:
         config = compose(config_name="default_config_fullfinetuning50")  # Store Hydra config in a variable
     else:
         print('error in the experiment name', flush=True)
