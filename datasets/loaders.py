@@ -5,10 +5,6 @@ from imagecorruptions import get_corruption_names, corrupt
 from torchvision import datasets, transforms
 
 import torch
-# from datasets.semisupervised_dataset import SemiSupervisedDataset
-# from datasets.eurosat import EuroSATDataset
-# from torchvision.transforms import RandAugment
-# from torchvision.transforms.v2 import CutMix
 
 from torch.utils.data import TensorDataset
 import random

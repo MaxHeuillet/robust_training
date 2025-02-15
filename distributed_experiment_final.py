@@ -1,4 +1,12 @@
+
+# Force cv2 (and imagecorruptions) to load before anything else.
+from imagecorruptions import get_corruption_names, corrupt
+import cv2
+print("cv2 loaded from:", cv2.__file__)
+print(cv2.getBuildInformation())
+
 import os
+print("LD_LIBRARY_PATH:", os.environ.get("LD_LIBRARY_PATH"))
 
 os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
 from comet_ml import Experiment
@@ -12,7 +20,6 @@ from torch.cuda.amp import GradScaler, autocast
 
 import torch.multiprocessing as mp 
 from multiprocessing import Queue 
-import os
 
 import torch
 
@@ -42,8 +49,6 @@ from utils import Hp_opt
 from ray import train
 
 import os
-
-
 import ray
 
 
@@ -589,4 +594,8 @@ if __name__ == "__main__":
     # print('test common corruptions', flush=True)
     # experiment.launch_test('common')
 
+
+
+
+os.environ['LD_LIBRARY_PATH']
 
