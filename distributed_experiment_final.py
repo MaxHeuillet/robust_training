@@ -131,6 +131,13 @@ class BaseExperiment:
 
     def training(self, update_config, rank=None ):
 
+        from imagecorruptions import get_corruption_names, corrupt
+        import cv2
+        print("Worker cv2 loaded from:", cv2.__file__)
+        # Optionally print LD_LIBRARY_PATH to verify environment
+        import os
+        print("LD_LIBRARY_PATH:", os.environ.get("LD_LIBRARY_PATH"))
+
         if self.setup.hp_opt:
             config = OmegaConf.merge(self.setup.config, update_config)
             rank = train.get_context().get_world_rank()
