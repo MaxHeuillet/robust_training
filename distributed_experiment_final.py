@@ -1,13 +1,5 @@
 
-# Force cv2 (and imagecorruptions) to load before anything else.
-from imagecorruptions import get_corruption_names, corrupt
-import cv2
-print("cv2 loaded from:", cv2.__file__)
-print(cv2.getBuildInformation())
-
 import os
-print("LD_LIBRARY_PATH:", os.environ.get("LD_LIBRARY_PATH"))
-
 os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
 from comet_ml import Experiment
 
@@ -130,13 +122,6 @@ class BaseExperiment:
         return trainloader, valloader, testloader, train_sampler, val_sampler, test_sampler, N
 
     def training(self, update_config, rank=None ):
-
-        from imagecorruptions import get_corruption_names, corrupt
-        import cv2
-        print("Worker cv2 loaded from:", cv2.__file__)
-        # Optionally print LD_LIBRARY_PATH to verify environment
-        import os
-        print("LD_LIBRARY_PATH:", os.environ.get("LD_LIBRARY_PATH"))
 
         if self.setup.hp_opt:
             config = OmegaConf.merge(self.setup.config, update_config)
