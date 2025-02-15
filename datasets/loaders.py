@@ -1,7 +1,9 @@
 
+from imagecorruptions import get_corruption_names, corrupt
+
+
 from torchvision import datasets, transforms
-from torchvision.transforms.functional import InterpolationMode
-import os
+
 import torch
 # from datasets.semisupervised_dataset import SemiSupervisedDataset
 # from datasets.eurosat import EuroSATDataset
@@ -19,11 +21,6 @@ from torch.utils.data import random_split
 from sklearn.model_selection import train_test_split
 from utils import get_data_dir
 
-from imagecorruptions import get_corruption_names, corrupt
-
-#   transforms.RandomCrop(224, padding=4), 
-#   transforms.RandomHorizontalFlip(),  # Random horizontal flip
-##   RandAugment(),  # RandAugment with N=9, M=0.5
 
 #Change Grayscale Image to RGB for the shape
 class GrayscaleToRGB(object):

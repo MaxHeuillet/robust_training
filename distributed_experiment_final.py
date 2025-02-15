@@ -1,588 +1,587 @@
-# import os
+import os
 
-# os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
-# from comet_ml import Experiment
+os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
+from comet_ml import Experiment
 
-# import torch
-# import torch.distributed as dist
-# from torch.utils.data import DataLoader, DistributedSampler
+import torch
+import torch.distributed as dist
+from torch.utils.data import DataLoader, DistributedSampler
 
-# from torch.nn.parallel import DistributedDataParallel as DDP
-# from torch.cuda.amp import GradScaler, autocast
+from torch.nn.parallel import DistributedDataParallel as DDP
+from torch.cuda.amp import GradScaler, autocast
 
-# import torch.multiprocessing as mp 
-# from multiprocessing import Queue 
-# import os
+import torch.multiprocessing as mp 
+from multiprocessing import Queue 
+import os
 
-# import torch
+import torch
 
-# from autoattack import AutoAttack
+from autoattack import AutoAttack
 
-# from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader
 
-# import torch.distributed as dist
+import torch.distributed as dist
 
-# from utils import Setup
+from utils import Setup
 
-# # from samplers import DistributedCustomSampler
-# from torch.utils.data.distributed import DistributedSampler
-# from datasets import load_data
-# from architectures import load_architecture, CustomModel
-# from losses import get_loss, get_eval_loss
-# from utils import get_args2, set_seeds, load_optimizer, get_state_dict_dir
-# from utils import ActivationTrackerAggregated, register_hooks_aggregated, compute_stats_aggregated
-# from torchvision.transforms import v2
-# from torch.optim.lr_scheduler import CosineAnnealingLR
-# from ray.air import session
+# from samplers import DistributedCustomSampler
+from torch.utils.data.distributed import DistributedSampler
+from datasets import load_data
+from architectures import load_architecture, CustomModel
+from losses import get_loss, get_eval_loss
+from utils import get_args2, set_seeds, load_optimizer, get_state_dict_dir
+from utils import ActivationTrackerAggregated, register_hooks_aggregated, compute_stats_aggregated
+from torch.optim.lr_scheduler import CosineAnnealingLR
+from ray.air import session
 
-# from hydra import initialize, compose
-# from omegaconf import OmegaConf
+from hydra import initialize, compose
+from omegaconf import OmegaConf
 
-# from omegaconf import OmegaConf
-# from utils import Hp_opt
-# from ray import train
+from omegaconf import OmegaConf
+from utils import Hp_opt
+from ray import train
 
-# import os
-
-
-# import ray
+import os
 
 
-# def compute_gradient_norms(model):
-#     total_norm = 0
-#     for p in model.parameters():
-#         if p.grad is not None:
-#             param_norm = p.grad.detach().data.norm(2).item()
-#             # if torch.isnan(param_norm):
-#             #     print(f"Gradient contains NaN : {p}")
-#             # elif torch.isinf(param_norm):
-#             #     print(f"Gradient contains Inf : {p}")
-#             total_norm += param_norm ** 2
-#     total_norm = total_norm ** 0.5
-#     return total_norm
+import ray
 
-# def check_for_nans(tensors, tensor_names):
-#     for tensor, name in zip(tensors, tensor_names):
-#         if torch.isnan(tensor).any():
-#             print(f"{name} contains NaNs!")
 
-# class BaseExperiment:
+def compute_gradient_norms(model):
+    total_norm = 0
+    for p in model.parameters():
+        if p.grad is not None:
+            param_norm = p.grad.detach().data.norm(2).item()
+            # if torch.isnan(param_norm):
+            #     print(f"Gradient contains NaN : {p}")
+            # elif torch.isinf(param_norm):
+            #     print(f"Gradient contains Inf : {p}")
+            total_norm += param_norm ** 2
+    total_norm = total_norm ** 0.5
+    return total_norm
 
-#     def __init__(self, setup, ):
+def check_for_nans(tensors, tensor_names):
+    for tensor, name in zip(tensors, tensor_names):
+        if torch.isnan(tensor).any():
+            print(f"{name} contains NaNs!")
 
-#         self.setup = setup
+class BaseExperiment:
 
-#     def initialize_logger(self, rank):
+    def __init__(self, setup, ):
 
-#         logger = None
+        self.setup = setup
+
+    def initialize_logger(self, rank):
+
+        logger = None
         
-#         if rank == 0:
-#             logger = Experiment(api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
-#                                     project_name=self.setup.project_name,
-#                                     workspace="maxheuillet",
-#                                     auto_metric_logging=False,
-#                                     auto_output_logging=False)
+        if rank == 0:
+            logger = Experiment(api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
+                                    project_name=self.setup.project_name,
+                                    workspace="maxheuillet",
+                                    auto_metric_logging=False,
+                                    auto_output_logging=False)
             
-#             logger.set_name( self.setup.exp_id )
+            logger.set_name( self.setup.exp_id )
             
-#             logger.log_parameter("run_id", os.getenv('SLURM_JOB_ID') )
-#             logger.log_parameter("global_process_rank", rank)
-#             logger.log_parameters(self.setup.config)
+            logger.log_parameter("run_id", os.getenv('SLURM_JOB_ID') )
+            logger.log_parameter("global_process_rank", rank)
+            logger.log_parameters(self.setup.config)
 
-#         return logger
+        return logger
         
-#     def initialize_loaders(self, config, rank, common_corruption = False):
+    def initialize_loaders(self, config, rank, common_corruption = False):
 
-#         if common_corruption:
-#             train_dataset, val_dataset, test_dataset, N, _, _ = load_data(self.setup.hp_opt, config, common_corruption=True)
-#         else:
-#             train_dataset, val_dataset, test_dataset, N, _, _ = load_data(self.setup.hp_opt, config, common_corruption=False) 
+        if common_corruption:
+            train_dataset, val_dataset, test_dataset, N, _, _ = load_data(self.setup.hp_opt, config, common_corruption=True)
+        else:
+            train_dataset, val_dataset, test_dataset, N, _, _ = load_data(self.setup.hp_opt, config, common_corruption=False) 
         
-#         train_sampler = DistributedSampler(train_dataset, num_replicas=self.setup.world_size, rank=rank, shuffle=True, drop_last=True)
-#         val_sampler = DistributedSampler(val_dataset, num_replicas=self.setup.world_size, rank=rank, drop_last=True)
-#         test_sampler = DistributedSampler(test_dataset, num_replicas=self.setup.world_size, rank=rank, shuffle=True, drop_last=True)
+        train_sampler = DistributedSampler(train_dataset, num_replicas=self.setup.world_size, rank=rank, shuffle=True, drop_last=True)
+        val_sampler = DistributedSampler(val_dataset, num_replicas=self.setup.world_size, rank=rank, drop_last=True)
+        test_sampler = DistributedSampler(test_dataset, num_replicas=self.setup.world_size, rank=rank, shuffle=True, drop_last=True)
         
-#         nb_workers = 3 if torch.cuda.device_count() > 1 else 1
+        nb_workers = 3 if torch.cuda.device_count() > 1 else 1
 
-#         print('initialize dataoader', rank,flush=True) 
-#         trainloader = DataLoader(train_dataset, 
-#                                  batch_size=self.setup.train_batch_size(), 
-#                                  sampler=train_sampler, 
-#                                  num_workers=nb_workers, 
-#                                  pin_memory=True) 
+        print('initialize dataoader', rank,flush=True) 
+        trainloader = DataLoader(train_dataset, 
+                                 batch_size=self.setup.train_batch_size(), 
+                                 sampler=train_sampler, 
+                                 num_workers=nb_workers, 
+                                 pin_memory=True) 
         
-#         valloader = DataLoader(val_dataset, 
-#                                batch_size=int( 0.65 * self.setup.train_batch_size() ), 
-#                                sampler=val_sampler, 
-#                                num_workers=nb_workers,
-#                                pin_memory=True)
+        valloader = DataLoader(val_dataset, 
+                               batch_size=int( 0.65 * self.setup.train_batch_size() ), 
+                               sampler=val_sampler, 
+                               num_workers=nb_workers,
+                               pin_memory=True)
         
-#         testloader = DataLoader(test_dataset, 
-#                                batch_size=self.setup.test_batch_size(), 
-#                                sampler=test_sampler, 
-#                                num_workers=nb_workers,
-#                                pin_memory=True)
+        testloader = DataLoader(test_dataset, 
+                               batch_size=self.setup.test_batch_size(), 
+                               sampler=test_sampler, 
+                               num_workers=nb_workers,
+                               pin_memory=True)
         
-#         return trainloader, valloader, testloader, train_sampler, val_sampler, test_sampler, N
+        return trainloader, valloader, testloader, train_sampler, val_sampler, test_sampler, N
 
-#     def training(self, update_config, rank=None ):
+    def training(self, update_config, rank=None ):
 
-#         if self.setup.hp_opt:
-#             config = OmegaConf.merge(self.setup.config, update_config)
-#             rank = train.get_context().get_world_rank()
-#             logger = None
-#             resources = session.get_trial_resources()
-#             print(f"Trial resource allocation: {resources}")
+        if self.setup.hp_opt:
+            config = OmegaConf.merge(self.setup.config, update_config)
+            rank = train.get_context().get_world_rank()
+            logger = None
+            resources = session.get_trial_resources()
+            print(f"Trial resource allocation: {resources}")
             
-#         else:
-#             config = OmegaConf.load( "./configs/HPO_{}_{}.yaml".format(self.setup.project_name, self.setup.exp_id) )
-#             self.setup.distributed_setup(rank)
-#             logger = self.initialize_logger(rank)
+        else:
+            config = OmegaConf.load( "./configs/HPO_{}_{}.yaml".format(self.setup.project_name, self.setup.exp_id) )
+            self.setup.distributed_setup(rank)
+            logger = self.initialize_logger(rank)
 
-#         print('initialize dataset', rank, flush=True) 
-#         print(config, rank, flush=True) 
+        print('initialize dataset', rank, flush=True) 
+        print(config, rank, flush=True) 
 
-#         trainloader, valloader, _, train_sampler, val_sampler, _, N = self.initialize_loaders(config, rank)
+        trainloader, valloader, _, train_sampler, val_sampler, _, N = self.initialize_loaders(config, rank)
 
-#         model = load_architecture(self.setup.hp_opt, config, N, )
+        model = load_architecture(self.setup.hp_opt, config, N, )
 
-#         optimizer = load_optimizer(config, model,)   
+        optimizer = load_optimizer(config, model,)   
         
-#         model = CustomModel(config, model, )
-#         model.set_fine_tuning_strategy()
-#         # model._enable_all_gradients()
-#         model.to(rank)
+        model = CustomModel(config, model, )
+        model.set_fine_tuning_strategy()
+        # model._enable_all_gradients()
+        model.to(rank)
 
-#         # for name, param in model.named_parameters():
-#         #     print(f"Parameter: {name}, strides: {param.data.stride()}")
-#         model = DDP(model, device_ids=[rank])
+        # for name, param in model.named_parameters():
+        #     print(f"Parameter: {name}, strides: {param.data.stride()}")
+        model = DDP(model, device_ids=[rank])
 
-#         # torch.autograd.set_detect_anomaly(True)
-#         if not self.setup.hp_opt:
-#             self.validation( valloader, model, logger, 0, rank)
+        # torch.autograd.set_detect_anomaly(True)
+        if not self.setup.hp_opt:
+            self.validation( valloader, model, logger, 0, rank)
         
-#         print('start the loop')
+        print('start the loop')
         
-#         scheduler = CosineAnnealingLR( optimizer, T_max=config.epochs, eta_min=0 )
+        scheduler = CosineAnnealingLR( optimizer, T_max=config.epochs, eta_min=0 )
 
-#         self.fit(config, model, optimizer, scheduler, trainloader, valloader, train_sampler, val_sampler, N, rank, logger)
+        self.fit(config, model, optimizer, scheduler, trainloader, valloader, train_sampler, val_sampler, N, rank, logger)
 
-#         dist.barrier() 
+        dist.barrier() 
 
-#         if not self.setup.hp_opt and rank == 0:
-#             model_to_save = model.module
-#             model_to_save = model_to_save.cpu()
-#             torch.save(model_to_save.state_dict(), get_state_dict_dir(self.setup.hp_opt, config) +'trained_model_{}_{}.pt'.format(self.setup.project_name, self.setup.exp_id) )
-#             print('Model saved by rank 0')
-#             logger.end()
+        if not self.setup.hp_opt and rank == 0:
+            model_to_save = model.module
+            model_to_save = model_to_save.cpu()
+            torch.save(model_to_save.state_dict(), get_state_dict_dir(self.setup.hp_opt, config) +'trained_model_{}_{}.pt'.format(self.setup.project_name, self.setup.exp_id) )
+            print('Model saved by rank 0')
+            logger.end()
         
-#         self.setup.cleanup() 
+        self.setup.cleanup() 
 
-#     def hyperparameter_optimization(self, ):  
+    def hyperparameter_optimization(self, ):  
 
-#         self.setup.hp_opt = True 
+        self.setup.hp_opt = True 
 
-#         ray.init() #logging_level=logging.DEBUG
+        ray.init() #logging_level=logging.DEBUG
 
-#         hp_search = Hp_opt(self.setup)
-#         print('epochs in the HP function', self.setup.config.epochs)
-#         tuner = hp_search.get_tuner( self.setup.config.epochs, self.training )
-#         result_grid = tuner.fit()
+        hp_search = Hp_opt(self.setup)
+        print('epochs in the HP function', self.setup.config.epochs)
+        tuner = hp_search.get_tuner( self.setup.config.epochs, self.training )
+        result_grid = tuner.fit()
 
-#         best_result = result_grid.get_best_result()
-#         print("Best hyperparameters found were: ", best_result.config)
+        best_result = result_grid.get_best_result()
+        print("Best hyperparameters found were: ", best_result.config)
 
-#         self.setup.hp_opt = False
+        self.setup.hp_opt = False
 
-#         best_config = OmegaConf.merge(self.setup.config, best_result.config['train_loop_config']  )
-#         OmegaConf.save(best_config, './configs/HPO_{}_{}.yaml'.format(self.setup.project_name, self.setup.exp_id) )
+        best_config = OmegaConf.merge(self.setup.config, best_result.config['train_loop_config']  )
+        OmegaConf.save(best_config, './configs/HPO_{}_{}.yaml'.format(self.setup.project_name, self.setup.exp_id) )
 
-#         self.setup.log_results(hpo_results = result_grid)
+        self.setup.log_results(hpo_results = result_grid)
 
-#         ray.shutdown()
+        ray.shutdown()
 
                 
-#     def fit(self, config, model, optimizer, scheduler, trainloader, valloader, train_sampler, val_sampler, N, rank, logger=None):
+    def fit(self, config, model, optimizer, scheduler, trainloader, valloader, train_sampler, val_sampler, N, rank, logger=None):
 
-#         # Gradient accumulation:
-#         effective_batch_size = 1024
-#         loss_scale = 0.50 if self.setup.config.loss_function == 'TRADES_v2' else 1.00
-#         per_gpu_batch_size = int( self.setup.train_batch_size() * loss_scale ) # Choose a batch size that fits in memory
-#         accumulation_steps = effective_batch_size // (self.setup.world_size * per_gpu_batch_size)
-#         global_step = 0  # Track global iterations across accumulation steps
-#         print('effective batch size', effective_batch_size, 'per_gpu_batch_size', per_gpu_batch_size, 'accumulation steps', accumulation_steps)
+        # Gradient accumulation:
+        effective_batch_size = 1024
+        loss_scale = 0.50 if self.setup.config.loss_function == 'TRADES_v2' else 1.00
+        per_gpu_batch_size = int( self.setup.train_batch_size() * loss_scale ) # Choose a batch size that fits in memory
+        accumulation_steps = effective_batch_size // (self.setup.world_size * per_gpu_batch_size)
+        global_step = 0  # Track global iterations across accumulation steps
+        print('effective batch size', effective_batch_size, 'per_gpu_batch_size', per_gpu_batch_size, 'accumulation steps', accumulation_steps)
 
-#         scaler = GradScaler() 
+        scaler = GradScaler() 
 
-#         # mixup_fn = mixup.Mixup(mixup_alpha=0.2, cutmix_alpha=0, label_smoothing=0.1, num_classes=N )
+        # mixup_fn = mixup.Mixup(mixup_alpha=0.2, cutmix_alpha=0, label_smoothing=0.1, num_classes=N )
 
-#         tracker_nat = ActivationTrackerAggregated(train=True)
-#         tracker_adv = ActivationTrackerAggregated(train=True)
-#         handles = register_hooks_aggregated(model, tracker_nat, tracker_adv)
+        tracker_nat = ActivationTrackerAggregated(train=True)
+        tracker_adv = ActivationTrackerAggregated(train=True)
+        handles = register_hooks_aggregated(model, tracker_nat, tracker_adv)
          
-#         model.train()
+        model.train()
 
-#         print('epochs', config.epochs)
-#         batch_step = 0
-#         update_step = 0
+        print('epochs', config.epochs)
+        batch_step = 0
+        update_step = 0
         
-#         for iteration in range(1, config.epochs+1):
+        for iteration in range(1, config.epochs+1):
 
-#             train_sampler.set_epoch(iteration)
-#             val_sampler.set_epoch(iteration)
+            train_sampler.set_epoch(iteration)
+            val_sampler.set_epoch(iteration)
 
-#             print('start batches')
+            print('start batches')
 
-#             for batch_id, batch in enumerate( trainloader ) :
+            for batch_id, batch in enumerate( trainloader ) :
 
-#                 data, target = batch
+                data, target = batch
 
-#                 data, target = data.to(rank), target.to(rank) 
+                data, target = data.to(rank), target.to(rank) 
 
-#                 # Use autocast for mixed precision during forward pass
-#                 with autocast():
-#                     loss_values, logits = get_loss(self.setup, model, data, target)
-#                     loss = loss_values.mean()
-#                     loss = loss / accumulation_steps  # Scale the loss
+                # Use autocast for mixed precision during forward pass
+                with autocast():
+                    loss_values, logits = get_loss(self.setup, model, data, target)
+                    loss = loss_values.mean()
+                    loss = loss / accumulation_steps  # Scale the loss
 
-#                 # print('scale loss', rank, flush=True)
+                # print('scale loss', rank, flush=True)
 
-#                 scaler.scale(loss).backward()
+                scaler.scale(loss).backward()
                 
-#                 global_step += 1
+                global_step += 1
 
-#                 if not self.setup.hp_opt and rank == 0:
-#                     metrics = { "global_step": global_step, 
-#                                 "loss_value": loss.item() * accumulation_steps, }
-#                     logger.log_metrics(metrics, epoch=iteration, step = batch_step )
+                if not self.setup.hp_opt and rank == 0:
+                    metrics = { "global_step": global_step, 
+                                "loss_value": loss.item() * accumulation_steps, }
+                    logger.log_metrics(metrics, epoch=iteration, step = batch_step )
 
-#                 batch_step += 1
+                batch_step += 1
 
-#                 if (batch_id + 1) % max(1, accumulation_steps) == 0 or (batch_id + 1) == len(trainloader):
+                if (batch_id + 1) % max(1, accumulation_steps) == 0 or (batch_id + 1) == len(trainloader):
 
-#                     if not self.setup.hp_opt and rank == 0:
-#                         # print('unscale', rank, flush=True)
-#                         scaler.unscale_(optimizer)
+                    if not self.setup.hp_opt and rank == 0:
+                        # print('unscale', rank, flush=True)
+                        scaler.unscale_(optimizer)
                             
-#                         gradient_norm = compute_gradient_norms(model)
+                        gradient_norm = compute_gradient_norms(model)
 
-#                         # print(tracker_nat.counts, data.shape)
+                        # print(tracker_nat.counts, data.shape)
                             
-#                         res_nat = compute_stats_aggregated(tracker_nat)
-#                         res_adv = compute_stats_aggregated(tracker_adv)
+                        res_nat = compute_stats_aggregated(tracker_nat)
+                        res_adv = compute_stats_aggregated(tracker_adv)
 
-#                         if self.setup.config.loss_function == 'TRADES_v2':
-#                             metrics = { "gradient_norm": float(gradient_norm),
-#                                         "zero_nat_train": res_nat['zero_count'] / res_nat['total_neurons'],
-#                                         "dormant_nat_train":res_nat['dormant_count'] / res_nat['total_neurons'], 
-#                                         "overactive_nat_train":res_nat['overactive_count'] / res_nat['total_neurons'], 
-#                                         "zero_adv_train": res_adv['zero_count'] / res_adv['total_neurons'],
-#                                         "dormant_adv_train":res_adv['dormant_count'] / res_adv['total_neurons'], 
-#                                         "overactive_adv_train":res_adv['overactive_count'] / res_adv['total_neurons'],  }
+                        if self.setup.config.loss_function == 'TRADES_v2':
+                            metrics = { "gradient_norm": float(gradient_norm),
+                                        "zero_nat_train": res_nat['zero_count'] / res_nat['total_neurons'],
+                                        "dormant_nat_train":res_nat['dormant_count'] / res_nat['total_neurons'], 
+                                        "overactive_nat_train":res_nat['overactive_count'] / res_nat['total_neurons'], 
+                                        "zero_adv_train": res_adv['zero_count'] / res_adv['total_neurons'],
+                                        "dormant_adv_train":res_adv['dormant_count'] / res_adv['total_neurons'], 
+                                        "overactive_adv_train":res_adv['overactive_count'] / res_adv['total_neurons'],  }
                             
-#                         elif config.loss_function == 'CLASSIC_AT':
-#                             metrics = { "gradient_norm": float(gradient_norm), 
-#                                         "zero_adv_train": res_adv['zero_count'] / res_adv['total_neurons'],
-#                                         "dormant_adv_train":res_adv['dormant_count'] / res_adv['total_neurons'], 
-#                                         "overactive_adv_train":res_adv['overactive_count'] / res_adv['total_neurons'],  }
+                        elif config.loss_function == 'CLASSIC_AT':
+                            metrics = { "gradient_norm": float(gradient_norm), 
+                                        "zero_adv_train": res_adv['zero_count'] / res_adv['total_neurons'],
+                                        "dormant_adv_train":res_adv['dormant_count'] / res_adv['total_neurons'], 
+                                        "overactive_adv_train":res_adv['overactive_count'] / res_adv['total_neurons'],  }
                             
-#                         logger.log_metrics(metrics, epoch=iteration, step=update_step, )
+                        logger.log_metrics(metrics, epoch=iteration, step=update_step, )
 
-#                         tracker_nat.clear()
-#                         tracker_adv.clear()
+                        tracker_nat.clear()
+                        tracker_adv.clear()
 
-#                     scaler.step(optimizer)
-#                     scaler.update()
-#                     optimizer.zero_grad() # Clear gradients after optimizer step
+                    scaler.step(optimizer)
+                    scaler.update()
+                    optimizer.zero_grad() # Clear gradients after optimizer step
 
-#                     update_step += 1
+                    update_step += 1
 
                     
-#                 # break
+                # break
 
-#             if self.setup.hp_opt:
-#                 self.validation( valloader, model, logger, iteration, rank)
+            if self.setup.hp_opt:
+                self.validation( valloader, model, logger, iteration, rank)
             
-#             # elif not self.setup.hp_opt and iteration in [10, 40]: #25,
-#             #     self.validation( valloader, model, logger, iteration, rank)
+            # elif not self.setup.hp_opt and iteration in [10, 40]: #25,
+            #     self.validation( valloader, model, logger, iteration, rank)
                 
-#             if scheduler is not None: scheduler.step()
+            if scheduler is not None: scheduler.step()
 
-#             print(f'Rank {rank}, Iteration {iteration},', flush=True) 
+            print(f'Rank {rank}, Iteration {iteration},', flush=True) 
                             
-#         # Remove hooks
-#         for handle in handles:
-#             handle.remove()
+        # Remove hooks
+        for handle in handles:
+            handle.remove()
 
-#     def validation(self, valloader, model, logger, iteration, rank):
+    def validation(self, valloader, model, logger, iteration, rank):
 
-#         total_loss, total_correct_nat, total_correct_adv, total_examples, res_nat, res_adv = self.validation_loop(valloader, model, rank)
+        total_loss, total_correct_nat, total_correct_adv, total_examples, res_nat, res_adv = self.validation_loop(valloader, model, rank)
 
-#         print(res_nat, rank, flush=True)
-#         print(res_adv, rank, flush=True)
+        print(res_nat, rank, flush=True)
+        print(res_adv, rank, flush=True)
         
-#         dist.barrier() 
-#         val_loss, _, _ = self.setup.sync_value(total_loss, total_examples, rank)
-#         nat_acc, _, _ = self.setup.sync_value(total_correct_nat, total_examples, rank)
-#         adv_acc, _, _ = self.setup.sync_value(total_correct_adv, total_examples, rank)
+        dist.barrier() 
+        val_loss, _, _ = self.setup.sync_value(total_loss, total_examples, rank)
+        nat_acc, _, _ = self.setup.sync_value(total_correct_nat, total_examples, rank)
+        adv_acc, _, _ = self.setup.sync_value(total_correct_adv, total_examples, rank)
 
-#         if self.setup.config.loss_function == 'TRADES_v2':
-#             nat_zero, _, _ = self.setup.sync_value(res_nat['zero_count'], res_nat['total_neurons'], rank)
-#             nat_dormant, _, _ = self.setup.sync_value(res_nat['dormant_count'], res_nat['total_neurons'], rank)
-#             nat_overact, _, _ = self.setup.sync_value(res_nat['overactive_count'], res_nat['total_neurons'], rank)
+        if self.setup.config.loss_function == 'TRADES_v2':
+            nat_zero, _, _ = self.setup.sync_value(res_nat['zero_count'], res_nat['total_neurons'], rank)
+            nat_dormant, _, _ = self.setup.sync_value(res_nat['dormant_count'], res_nat['total_neurons'], rank)
+            nat_overact, _, _ = self.setup.sync_value(res_nat['overactive_count'], res_nat['total_neurons'], rank)
 
-#         adv_zero, _, _ = self.setup.sync_value(res_adv['zero_count'], res_adv['total_neurons'], rank)
-#         adv_dormant, _, _ = self.setup.sync_value(res_adv['dormant_count'], res_adv['total_neurons'], rank)
-#         adv_overact, _, _ = self.setup.sync_value(res_adv['overactive_count'], res_adv['total_neurons'], rank)
+        adv_zero, _, _ = self.setup.sync_value(res_adv['zero_count'], res_adv['total_neurons'], rank)
+        adv_dormant, _, _ = self.setup.sync_value(res_adv['dormant_count'], res_adv['total_neurons'], rank)
+        adv_overact, _, _ = self.setup.sync_value(res_adv['overactive_count'], res_adv['total_neurons'], rank)
 
-#         if self.setup.hp_opt:
-#             print('val loss', val_loss)
-#             session.report({"loss": val_loss})
+        if self.setup.hp_opt:
+            print('val loss', val_loss)
+            session.report({"loss": val_loss})
 
-#         elif not self.setup.hp_opt and rank == 0:
+        elif not self.setup.hp_opt and rank == 0:
 
-#             print('hey', flush=True)
+            print('hey', flush=True)
 
-#             if self.setup.config.loss_function == 'TRADES_v2':
-#                 metrics = { "val_loss": val_loss, "val_nat_accuracy": nat_acc, "val_adv_accuracy": adv_acc,
-#                             "zero_nat_val": nat_zero, "dormant_nat_val": nat_dormant, "overactive_nat_val": nat_overact,
-#                             "zero_adv_val": adv_zero, "dormant_adv_val": adv_dormant, "overactive_adv_val": adv_overact, }
-#             else:
-#                 metrics = { "val_loss": val_loss, "val_nat_accuracy": nat_acc, "val_adv_accuracy": adv_acc,
-#                             "zero_adv_val": adv_zero, "dormant_adv_val": adv_dormant, "overactive_adv_val": adv_overact, }
+            if self.setup.config.loss_function == 'TRADES_v2':
+                metrics = { "val_loss": val_loss, "val_nat_accuracy": nat_acc, "val_adv_accuracy": adv_acc,
+                            "zero_nat_val": nat_zero, "dormant_nat_val": nat_dormant, "overactive_nat_val": nat_overact,
+                            "zero_adv_val": adv_zero, "dormant_adv_val": adv_dormant, "overactive_adv_val": adv_overact, }
+            else:
+                metrics = { "val_loss": val_loss, "val_nat_accuracy": nat_acc, "val_adv_accuracy": adv_acc,
+                            "zero_adv_val": adv_zero, "dormant_adv_val": adv_dormant, "overactive_adv_val": adv_overact, }
                 
-#             logger.log_metrics(metrics, epoch=iteration)
+            logger.log_metrics(metrics, epoch=iteration)
 
-#     def validation_loop(self, valloader, model, rank):
+    def validation_loop(self, valloader, model, rank):
 
-#         model.eval()
+        model.eval()
 
-#         tracker_nat = ActivationTrackerAggregated(train=False)
-#         tracker_adv = ActivationTrackerAggregated(train=False)
+        tracker_nat = ActivationTrackerAggregated(train=False)
+        tracker_adv = ActivationTrackerAggregated(train=False)
 
-#         handles = register_hooks_aggregated(model, tracker_nat, tracker_adv)
+        handles = register_hooks_aggregated(model, tracker_nat, tracker_adv)
 
-#         total_loss = 0.0
-#         total_correct_nat = 0
-#         total_correct_adv = 0
-#         total_examples = 0
-#         # stats_nat = { "zero_count": 0, "dormant_count": 0, "overactive_count": 0, "total_neurons": 0 }
-#         # stats_adv = { "zero_count": 0, "dormant_count": 0, "overactive_count": 0, "total_neurons": 0 }
+        total_loss = 0.0
+        total_correct_nat = 0
+        total_correct_adv = 0
+        total_examples = 0
+        # stats_nat = { "zero_count": 0, "dormant_count": 0, "overactive_count": 0, "total_neurons": 0 }
+        # stats_adv = { "zero_count": 0, "dormant_count": 0, "overactive_count": 0, "total_neurons": 0 }
 
-#         for batch_id, batch in enumerate( valloader ):
+        for batch_id, batch in enumerate( valloader ):
 
-#             data, target = batch
+            data, target = batch
 
-#             data, target = data.to(rank), target.to(rank) 
-#             # print('shape validation batch', data.shape)
+            data, target = data.to(rank), target.to(rank) 
+            # print('shape validation batch', data.shape)
                 
-#             with torch.autocast(device_type='cuda'):
-#                 loss_values, _, _, logits_nat, logits_adv = get_eval_loss(self.setup, model, data, target, )
+            with torch.autocast(device_type='cuda'):
+                loss_values, _, _, logits_nat, logits_adv = get_eval_loss(self.setup, model, data, target, )
 
-#             total_loss += loss_values.sum().item()
+            total_loss += loss_values.sum().item()
 
-#             preds_nat = torch.argmax(logits_nat, dim=1)  # Predicted classes for natural examples
-#             preds_adv = torch.argmax(logits_adv, dim=1)  # Predicted classes for adversarial examples
+            preds_nat = torch.argmax(logits_nat, dim=1)  # Predicted classes for natural examples
+            preds_adv = torch.argmax(logits_adv, dim=1)  # Predicted classes for adversarial examples
 
-#             # Accumulate correct predictions
-#             total_correct_nat += (preds_nat == target).sum().item()
-#             total_correct_adv += (preds_adv == target).sum().item()
-#             total_examples += target.size(0)
+            # Accumulate correct predictions
+            total_correct_nat += (preds_nat == target).sum().item()
+            total_correct_adv += (preds_adv == target).sum().item()
+            total_examples += target.size(0)
 
-#             # break
+            # break
 
-#             # Compute neuron statistics
-#         res_nat = compute_stats_aggregated(tracker_nat)
-#         res_adv = compute_stats_aggregated(tracker_adv)
+            # Compute neuron statistics
+        res_nat = compute_stats_aggregated(tracker_nat)
+        res_adv = compute_stats_aggregated(tracker_adv)
 
-#         tracker_nat.clear()
-#         tracker_adv.clear()   
-#         # Remove hooks
-#         for handle in handles:
-#             handle.remove()
+        tracker_nat.clear()
+        tracker_adv.clear()   
+        # Remove hooks
+        for handle in handles:
+            handle.remove()
 
-#         return total_loss, total_correct_nat, total_correct_adv, total_examples, res_nat, res_adv
+        return total_loss, total_correct_nat, total_correct_adv, total_examples, res_nat, res_adv
     
 
-#     def test(self, rank, result_queue, corruption_type):
+    def test(self, rank, result_queue, corruption_type):
 
-#         config = OmegaConf.load("./configs/HPO_{}_{}.yaml".format(self.setup.project_name, self.setup.exp_id) )
+        config = OmegaConf.load("./configs/HPO_{}_{}.yaml".format(self.setup.project_name, self.setup.exp_id) )
 
-#         common_corruption = True if corruption_type == 'common' else False
-#         _, _, testloader, _, _, _, N = self.initialize_loaders(config, rank, common_corruption)
-#         # test_sampler.set_epoch(0)  
-#         print('dataloader', flush=True) 
+        common_corruption = True if corruption_type == 'common' else False
+        _, _, testloader, _, _, _, N = self.initialize_loaders(config, rank, common_corruption)
+        # test_sampler.set_epoch(0)  
+        print('dataloader', flush=True) 
         
-#         model = load_architecture(self.setup.hp_opt, config, N, )
+        model = load_architecture(self.setup.hp_opt, config, N, )
 
-#         model = CustomModel(config, model, )
-#         model.set_fine_tuning_strategy()
-#         trained_state_dict = torch.load('./state_dicts/trained_model_{}_{}.pt'.format(self.setup.project_name, self.setup.exp_id), weights_only=True, map_location='cpu')
-#         model.load_state_dict(trained_state_dict)
-#         model.to(rank)
+        model = CustomModel(config, model, )
+        model.set_fine_tuning_strategy()
+        trained_state_dict = torch.load('./state_dicts/trained_model_{}_{}.pt'.format(self.setup.project_name, self.setup.exp_id), weights_only=True, map_location='cpu')
+        model.load_state_dict(trained_state_dict)
+        model.to(rank)
 
-#         model.eval()
+        model.eval()
 
-#         print('start AA accuracy', flush=True) 
-#         stats_nat, stats_adv = self.test_loop(testloader, config, model, rank, corruption_type)
-#         print('end AA accuracy', flush=True) 
+        print('start AA accuracy', flush=True) 
+        stats_nat, stats_adv = self.test_loop(testloader, config, model, rank, corruption_type)
+        print('end AA accuracy', flush=True) 
 
-#         result_queue.put( (rank, stats_nat, stats_adv) )
-#         print(f"Rank {rank}: Results sent to queue", flush=True)
+        result_queue.put( (rank, stats_nat, stats_adv) )
+        print(f"Rank {rank}: Results sent to queue", flush=True)
         
-#     def test_loop(self, testloader, config, model, rank, corruption_type):
+    def test_loop(self, testloader, config, model, rank, corruption_type):
 
-#         def forward_pass(x):
-#             return model(x)
+        def forward_pass(x):
+            return model(x)
         
-#         device = torch.device(f"cuda:{rank}")
+        device = torch.device(f"cuda:{rank}")
 
-#         if corruption_type in ['Linf' , 'L2' , 'L1']:
+        if corruption_type in ['Linf' , 'L2' , 'L1']:
 
-#             nb_correct_nat = 0
-#             nb_correct_adv = 0
-#             nb_examples = 0
-#             print('stats', nb_correct_nat, nb_correct_adv, nb_examples, flush=True)
+            nb_correct_nat = 0
+            nb_correct_adv = 0
+            nb_examples = 0
+            print('stats', nb_correct_nat, nb_correct_adv, nb_examples, flush=True)
 
-#             adversary = AutoAttack(forward_pass, norm=config.distance, eps=config.epsilon, version='standard', verbose = False, device = device)
-#             print('adversary instanciated', flush=True) 
+            adversary = AutoAttack(forward_pass, norm=config.distance, eps=config.epsilon, version='standard', verbose = False, device = device)
+            print('adversary instanciated', flush=True) 
             
-#             for _, batch in enumerate( testloader ):
+            for _, batch in enumerate( testloader ):
 
-#                 x_nat, target = batch
+                x_nat, target = batch
 
-#                 x_nat, target = x_nat.to(rank), target.to(rank) 
+                x_nat, target = x_nat.to(rank), target.to(rank) 
 
-#                 batch_size = x_nat.size(0)
+                batch_size = x_nat.size(0)
 
-#                 print('start batch iterations', rank, _,batch_size, len(testloader), flush=True) 
+                print('start batch iterations', rank, _,batch_size, len(testloader), flush=True) 
 
-#                 x_adv = adversary.run_standard_evaluation(x_nat, target, bs = batch_size )
+                x_adv = adversary.run_standard_evaluation(x_nat, target, bs = batch_size )
 
-#                 logits_nat, logits_adv = model(x_nat, x_adv)
+                logits_nat, logits_adv = model(x_nat, x_adv)
 
-#                 preds_nat = torch.argmax(logits_nat, dim=1)
-#                 preds_adv = torch.argmax(logits_adv, dim=1)
+                preds_nat = torch.argmax(logits_nat, dim=1)
+                preds_adv = torch.argmax(logits_adv, dim=1)
 
-#                 nb_correct_nat += (preds_nat == target).sum().item()
-#                 nb_correct_adv += (preds_adv == target).sum().item()
-#                 nb_examples += target.size(0)
+                nb_correct_nat += (preds_nat == target).sum().item()
+                nb_correct_adv += (preds_adv == target).sum().item()
+                nb_examples += target.size(0)
 
-#                 # break
+                # break
 
-#             stats_nat = { 'nb_correct':nb_correct_nat, 'nb_examples':nb_examples }
-#             stats_adv = { 'nb_correct':nb_correct_adv, 'nb_examples':nb_examples }
+            stats_nat = { 'nb_correct':nb_correct_nat, 'nb_examples':nb_examples }
+            stats_adv = { 'nb_correct':nb_correct_adv, 'nb_examples':nb_examples }
 
-#         else:
+        else:
 
-#             nb_correct_adv = 0
-#             nb_examples = 0
-#             print('stats', nb_correct_adv, nb_examples, flush=True)
+            nb_correct_adv = 0
+            nb_examples = 0
+            print('stats', nb_correct_adv, nb_examples, flush=True)
             
-#             for _, batch in enumerate( testloader ):
+            for _, batch in enumerate( testloader ):
 
-#                 x_adv, target = batch
+                x_adv, target = batch
 
-#                 x_adv, target = x_adv.to(rank), target.to(rank) 
+                x_adv, target = x_adv.to(rank), target.to(rank) 
 
-#                 batch_size = x_adv.size(0)
+                batch_size = x_adv.size(0)
                 
-#                 print('start batch iterations', rank, _,batch_size, len(testloader), flush=True) 
+                print('start batch iterations', rank, _,batch_size, len(testloader), flush=True) 
 
-#                 logits_nat, logits_adv = model(x_adv, x_adv)
+                logits_nat, logits_adv = model(x_adv, x_adv)
 
-#                 preds_adv = torch.argmax(logits_adv, dim=1)
+                preds_adv = torch.argmax(logits_adv, dim=1)
 
-#                 nb_correct_adv += (preds_adv == target).sum().item()
-#                 nb_examples += target.size(0)
+                nb_correct_adv += (preds_adv == target).sum().item()
+                nb_examples += target.size(0)
 
-#                 # break
+                # break
             
-#             stats_nat = { 'nb_correct':None, 'nb_examples':None }
-#             stats_adv = { 'nb_correct':nb_correct_adv, 'nb_examples':nb_examples }
+            stats_nat = { 'nb_correct':None, 'nb_examples':None }
+            stats_adv = { 'nb_correct':nb_correct_adv, 'nb_examples':nb_examples }
         
-#         return stats_nat, stats_adv
+        return stats_nat, stats_adv
     
-#     def launch_test(self, corruption_type):
-#         # import psutil  # Requires: pip install psutil
-#         # Create a Queue to gather results
-#         result_queue = Queue()
+    def launch_test(self, corruption_type):
+        # import psutil  # Requires: pip install psutil
+        # Create a Queue to gather results
+        result_queue = Queue()
 
-#         # Launch evaluation processes
-#         processes = []
+        # Launch evaluation processes
+        processes = []
 
-#         for rank in range(self.setup.world_size): # 
+        for rank in range(self.setup.world_size): # 
 
-#             p = mp.Process(target=self.test, args=(rank, result_queue, corruption_type))
-#             p.start()
+            p = mp.Process(target=self.test, args=(rank, result_queue, corruption_type))
+            p.start()
 
-#             # print(f"Process {p.pid} assigned to cores: {core_groups[rank]}", flush=True)
-#             processes.append(p)
+            # print(f"Process {p.pid} assigned to cores: {core_groups[rank]}", flush=True)
+            processes.append(p)
 
-#         # Wait for all processes to finish
-#         for p in processes:
-#             p.join()
+        # Wait for all processes to finish
+        for p in processes:
+            p.join()
 
-#         # Gather results from the Queue
-#         statistics_nat = {}
-#         statistics_adv = {}
-#         while not result_queue.empty():
-#             rank, stats_nat, stats_adv = result_queue.get()
-#             statistics_nat[rank] = stats_nat
-#             statistics_adv[rank] = stats_adv
+        # Gather results from the Queue
+        statistics_nat = {}
+        statistics_adv = {}
+        while not result_queue.empty():
+            rank, stats_nat, stats_adv = result_queue.get()
+            statistics_nat[rank] = stats_nat
+            statistics_adv[rank] = stats_adv
 
-#         print(statistics_nat, statistics_adv, flush=True)
+        print(statistics_nat, statistics_adv, flush=True)
 
-#         # Log the aggregated results
-#         if corruption_type == 'Linf':
-#             statistic = self.setup.aggregate_results(statistics_nat, 'clean')
-#             self.setup.log_results(statistic=statistic)
-#             statistic = self.setup.aggregate_results(statistics_adv, corruption_type)
-#             self.setup.log_results(statistic=statistic)
-#         else:
-#             statistic = self.setup.aggregate_results(statistics_adv, corruption_type)
-#             self.setup.log_results(statistic=statistic)
+        # Log the aggregated results
+        if corruption_type == 'Linf':
+            statistic = self.setup.aggregate_results(statistics_nat, 'clean')
+            self.setup.log_results(statistic=statistic)
+            statistic = self.setup.aggregate_results(statistics_adv, corruption_type)
+            self.setup.log_results(statistic=statistic)
+        else:
+            statistic = self.setup.aggregate_results(statistics_adv, corruption_type)
+            self.setup.log_results(statistic=statistic)
         
 
-# def training_wrapper(rank, experiment, config ):
-#     hpo_config = OmegaConf.load("./configs/HPO_{}_{}.yaml".format(experiment.setup.project_name, experiment.setup.exp_id) )
-#     experiment.training(hpo_config, rank=rank)
+def training_wrapper(rank, experiment, config ):
+    hpo_config = OmegaConf.load("./configs/HPO_{}_{}.yaml".format(experiment.setup.project_name, experiment.setup.exp_id) )
+    experiment.training(hpo_config, rank=rank)
 
-# if __name__ == "__main__":
+if __name__ == "__main__":
 
-#     print('begining of the execution', flush=True)
+    print('begining of the execution', flush=True)
 
-#     torch.multiprocessing.set_start_method("spawn", force=True)
+    torch.multiprocessing.set_start_method("spawn", force=True)
 
-#     initialize(config_path="configs", version_base=None)
+    initialize(config_path="configs", version_base=None)
 
-#     args_dict = get_args2()
+    args_dict = get_args2()
 
-#     if 'linearprobe_50epochs' in args_dict['project_name']:
-#         config = compose(config_name="default_config_linearprobe50")  # Store Hydra config in a variable
-#     elif 'full_fine_tuning_5epochs' in args_dict['project_name']:
-#         config = compose(config_name="default_config_fullfinetuning5")  # Store Hydra config in a variable
-#     elif 'full_fine_tuning_50epochs' in args_dict['project_name']:
-#         config = compose(config_name="default_config_fullfinetuning50")  # Store Hydra config in a variable
-#     else:
-#         print('error in the experiment name', flush=True)
+    if 'linearprobe_50epochs' in args_dict['project_name']:
+        config = compose(config_name="default_config_linearprobe50")  # Store Hydra config in a variable
+    elif 'full_fine_tuning_5epochs' in args_dict['project_name']:
+        config = compose(config_name="default_config_fullfinetuning5")  # Store Hydra config in a variable
+    elif 'full_fine_tuning_50epochs' in args_dict['project_name']:
+        config = compose(config_name="default_config_fullfinetuning50")  # Store Hydra config in a variable
+    else:
+        print('error in the experiment name', flush=True)
     
-#     config = OmegaConf.merge(config, args_dict)
+    config = OmegaConf.merge(config, args_dict)
     
-#     set_seeds(config.seed)
+    set_seeds(config.seed)
 
-#     world_size = torch.cuda.device_count()
-#     setup = Setup(config, world_size)
-#     experiment = BaseExperiment(setup)
+    world_size = torch.cuda.device_count()
+    setup = Setup(config, world_size)
+    experiment = BaseExperiment(setup)
 
-#     print('HPO', flush=True)
-#     experiment.hyperparameter_optimization()
+    print('HPO', flush=True)
+    experiment.hyperparameter_optimization()
     
-#     print('train', flush=True)  
-#     mp.spawn(training_wrapper, args=(experiment, config), nprocs=world_size, join=True)
+    print('train', flush=True)  
+    mp.spawn(training_wrapper, args=(experiment, config), nprocs=world_size, join=True)
     
-#     print('test Linf', flush=True)
-#     experiment.launch_test('Linf')
+    print('test Linf', flush=True)
+    experiment.launch_test('Linf')
     # print('test L1', flush=True)
     # experiment.launch_test('L1')
     # print('test L2', flush=True)
@@ -591,9 +590,3 @@
     # experiment.launch_test('common')
 
 
-import cv2
-print(cv2.__file__)
-print(cv2.getBuildInformation())
-
-
-from imagecorruptions import get_corruption_names, corrupt
