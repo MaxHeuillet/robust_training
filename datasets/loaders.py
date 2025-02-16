@@ -8,7 +8,7 @@ import numpy as np
 from PIL import Image
 from torch.utils.data import Subset
 from torch.utils.data import random_split
-
+from imagecorruptions import get_corruption_names, corrupt
 
 from sklearn.model_selection import train_test_split
 from utils import get_data_dir
@@ -399,7 +399,7 @@ def load_data(hp_opt, config, common_corruption=False):
     test_dataset = stratified_subsample(test_dataset, sample_size=1500)
 
     if common_corruption:
-        from imagecorruptions import get_corruption_names, corrupt
+        
         test_dataset = apply_portfolio_of_corruptions(test_dataset, severity=3)
                  
     return train_dataset, val_dataset, test_dataset, N, train_transform, transform
