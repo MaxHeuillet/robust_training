@@ -3,16 +3,19 @@
 # Define variables
 seeds=1
 
-datas=( 'caltech101'  ) 
-        # 'stanford_cars' 'flowers-102'   
+datas=( 'stanford_cars'   ) 
+        #  'flowers-102' 'caltech101'   
         # 'oxford-iiit-pet' 'oxford-iiit-pet'  'dtd'  'fgvc-aircraft-2013b'  'uc-merced-land-use-dataset' 'kvasir-dataset' 
 
 
-losses=( 'CLASSIC_AT' )  # 'TRADES_v2'
+losses=( 'CLASSIC_AT' 'TRADES_v2' )  # 
 
-backbones=(
-  'vit_base_patch16_224.mae' 'vit_base_patch16_224.orig_in21k'
-  'vit_base_patch16_224.sam_in1k' 'vit_base_patch16_224_miil.in21k' )
+backbones=( 'convnext_base' 
+            'convnext_base.clip_laion2b' 
+            'convnext_base.clip_laion2b_augreg'	
+            'convnext_base.fb_in22k'
+            'robust_convnext_base'
+ )
 
 #'convnext_tiny' 'robust_convnext_tiny' 'convnext_tiny.fb_in22k' 
 #  'deit_small_patch16_224.fb_in1k' 'robust_deit_small_patch16_224'
@@ -21,6 +24,9 @@ backbones=(
 #  'vit_base_patch16_224.augreg_in1k' 'vit_base_patch16_224.augreg_in21k',
 #  'vit_base_patch16_224.dino'
 # 'robust_vit_base_patch16_224' 
+#  'vit_base_patch16_224.mae' 'vit_base_patch16_224.orig_in21k'
+#  'vit_base_patch16_224.sam_in1k' 'vit_base_patch16_224_miil.in21k'
+
 
 # Get the project name 
 PRNM=$1
