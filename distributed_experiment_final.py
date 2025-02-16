@@ -294,7 +294,7 @@ class BaseExperiment:
                     update_step += 1
 
                     
-                # break
+                break
 
             if self.setup.hp_opt:
                 self.validation( valloader, model, logger, iteration, rank)
@@ -385,7 +385,7 @@ class BaseExperiment:
             total_correct_adv += (preds_adv == target).sum().item()
             total_examples += target.size(0)
 
-            # break
+            break
 
             # Compute neuron statistics
         res_nat = compute_stats_aggregated(tracker_nat)
@@ -464,7 +464,7 @@ class BaseExperiment:
                 nb_correct_adv += (preds_adv == target).sum().item()
                 nb_examples += target.size(0)
 
-                # break
+                break
 
             stats_nat = { 'nb_correct':nb_correct_nat, 'nb_examples':nb_examples }
             stats_adv = { 'nb_correct':nb_correct_adv, 'nb_examples':nb_examples }
@@ -492,7 +492,7 @@ class BaseExperiment:
                 nb_correct_adv += (preds_adv == target).sum().item()
                 nb_examples += target.size(0)
 
-                # break
+                break
             
             stats_nat = { 'nb_correct':None, 'nb_examples':None }
             stats_adv = { 'nb_correct':nb_correct_adv, 'nb_examples':nb_examples }
@@ -583,11 +583,11 @@ if __name__ == "__main__":
     # experiment.launch_test('L1')
     # print('test L2', flush=True)
     # experiment.launch_test('L2')
-    # print('test common corruptions', flush=True)
-    # experiment.launch_test('common')
+    print('test common corruptions', flush=True)
+    experiment.launch_test('common')
 
 
 
 
-os.environ['LD_LIBRARY_PATH']
+# os.environ['LD_LIBRARY_PATH']
 
