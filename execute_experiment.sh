@@ -3,15 +3,15 @@
 # Define variables
 seeds=1
 
-datas=( 'caltech101' 'oxford-iiit-pet' 'flowers-102' 
-        'stanford_cars' 'oxford-iiit-pet'  
-        'dtd'  'fgvc-aircraft-2013b' ) #'uc-merced-land-use-dataset' 'kvasir-dataset' 
+datas=( 'flowers-102' ) 
+        # 'stanford_cars' 'oxford-iiit-pet'  
+        # 'caltech101' 'oxford-iiit-pet'  'dtd'  'fgvc-aircraft-2013b'  'uc-merced-land-use-dataset' 'kvasir-dataset' 
 
 
-losses=( 'CLASSIC_AT' 'TRADES_v2' )  
+losses=( 'TRADES_v2' )  #'CLASSIC_AT' 
 
 backbones=(
- 'robust_vit_base_patch16_224'
+ 'vit_base_patch16_224.mae'
     ) 
 
   # 'convnext_tiny' 'robust_convnext_tiny' 'convnext_tiny.fb_in22k' 
