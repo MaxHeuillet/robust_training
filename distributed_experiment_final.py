@@ -294,7 +294,7 @@ class BaseExperiment:
                     update_step += 1
 
                     
-                break
+                # break
 
             if self.setup.hp_opt:
                 self.validation( valloader, model, logger, iteration, rank)
@@ -385,7 +385,7 @@ class BaseExperiment:
             total_correct_adv += (preds_adv == target).sum().item()
             total_examples += target.size(0)
 
-            break
+            # break
 
             # Compute neuron statistics
         res_nat = compute_stats_aggregated(tracker_nat)
@@ -464,7 +464,7 @@ class BaseExperiment:
                 nb_correct_adv += (preds_adv == target).sum().item()
                 nb_examples += target.size(0)
 
-                break
+                # break
 
             stats_nat = { 'nb_correct':nb_correct_nat, 'nb_examples':nb_examples }
             stats_adv = { 'nb_correct':nb_correct_adv, 'nb_examples':nb_examples }
@@ -492,7 +492,7 @@ class BaseExperiment:
                 nb_correct_adv += (preds_adv == target).sum().item()
                 nb_examples += target.size(0)
 
-                break
+                # break
             
             stats_nat = { 'nb_correct':None, 'nb_examples':None }
             stats_adv = { 'nb_correct':nb_correct_adv, 'nb_examples':nb_examples }
@@ -502,36 +502,6 @@ class BaseExperiment:
     def launch_test(self, corruption_type):
         # import psutil  # Requires: pip install psutil
         # Create a Queue to gather results
-
-        if corruption_type == 'common':
-            import ctypes
-            # Preload some core OpenCV libraries in the proper order
-            ctypes.CDLL(
-                "/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/CUDA/gcc12/cuda12.2/"
-                "opencv/4.10.0/lib64/libopencv_core.so.410",
-                mode=ctypes.RTLD_GLOBAL,
-            )
-            ctypes.CDLL(
-                "/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/CUDA/gcc12/cuda12.2/"
-                "opencv/4.10.0/lib64/libopencv_imgproc.so.410",
-                mode=ctypes.RTLD_GLOBAL, )
-
-            # Then load the CUDA-specific libraries
-            ctypes.CDLL(
-                "/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/CUDA/gcc12/cuda12.2/"
-                "opencv/4.10.0/lib64/libopencv_cudaarithm.so.410",
-                mode=ctypes.RTLD_GLOBAL,
-            )
-            ctypes.CDLL(
-                "/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/CUDA/gcc12/cuda12.2/"
-                "opencv/4.10.0/lib64/libopencv_cudaimgproc.so.410",
-                mode=ctypes.RTLD_GLOBAL,
-            )
-            ctypes.CDLL(
-                "/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/CUDA/gcc12/cuda12.2/"
-                "opencv/4.10.0/lib64/libopencv_cudafeatures2d.so.410",
-                mode=ctypes.RTLD_GLOBAL,
-            )
 
         result_queue = Queue()
 
@@ -602,20 +572,20 @@ if __name__ == "__main__":
     setup = Setup(config, world_size)
     experiment = BaseExperiment(setup)
 
-    # print('HPO', flush=True)
-    # experiment.hyperparameter_optimization()
+    print('HPO', flush=True)
+    experiment.hyperparameter_optimization()
     
-    # print('train', flush=True)  
-    # mp.spawn(training_wrapper, args=(experiment, config), nprocs=world_size, join=True)
+    print('train', flush=True)  
+    mp.spawn(training_wrapper, args=(experiment, config), nprocs=world_size, join=True)
     
-    # print('test Linf', flush=True)
-    # experiment.launch_test('Linf')
+    print('test Linf', flush=True)
+    experiment.launch_test('Linf')
     # print('test L1', flush=True)
     # experiment.launch_test('L1')
     # print('test L2', flush=True)
     # experiment.launch_test('L2')
-    print('test common corruptions', flush=True)
-    experiment.launch_test('common')
+    # print('test common corruptions', flush=True)
+    # experiment.launch_test('common')
 
 
 
