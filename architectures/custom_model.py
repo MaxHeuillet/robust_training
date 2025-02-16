@@ -43,8 +43,7 @@ class CustomModel(nn.Module):
     def set_fine_tuning_strategy(self, ):
 
         if self.config.ft_type == 'full_fine_tuning':
-            self._freeze_backbone()
-            self._unfreeze_last_layer()
+            self._enable_all_gradients()
 
         elif self.config.ft_type == 'linear_probing':
             self._freeze_backbone()

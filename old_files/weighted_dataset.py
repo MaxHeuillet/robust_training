@@ -13,7 +13,7 @@ import random
 from datasets.indexed_dataset import IndexedDataset
 from collections import defaultdict
 
-from utils.exp_decay import FitExpDecay
+from old_files.exp_decay import FitExpDecay
 # from utils.exp_decay_v2 import FitExpDecay_v2
 # from utils.exp_decay_v3 import FitExpDecay_v3
 
