@@ -79,7 +79,9 @@ class Hp_opt:
         # Check if experiment path exists and delete it before starting a new run
         if os.path.exists(experiment_path):
             print(f"Deleting existing experiment directory: {experiment_path}")
-            shutil.rmtree(experiment_path)
+            # shutil.rmtree(experiment_path)
+            import subprocess
+            subprocess.run(["rm", "-rf", experiment_path], check=True)
 
         os.makedirs(experiment_path, exist_ok=True)
 
