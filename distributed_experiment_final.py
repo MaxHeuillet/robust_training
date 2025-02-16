@@ -502,6 +502,20 @@ class BaseExperiment:
     def launch_test(self, corruption_type):
         # import psutil  # Requires: pip install psutil
         # Create a Queue to gather results
+
+        if corruption_type == 'common':
+            import ctypes
+            ctypes.CDLL(
+                "/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/CUDA/gcc12/cuda12.2/"
+                "opencv/4.10.0/lib64/libopencv_cudaimgproc.so.410",
+                mode=ctypes.RTLD_GLOBAL,
+            )
+            ctypes.CDLL(
+                "/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/CUDA/gcc12/cuda12.2/"
+                "opencv/4.10.0/lib64/libopencv_cudafeatures2d.so.410",
+                mode=ctypes.RTLD_GLOBAL,
+            )
+
         result_queue = Queue()
 
         # Launch evaluation processes
@@ -571,14 +585,14 @@ if __name__ == "__main__":
     setup = Setup(config, world_size)
     experiment = BaseExperiment(setup)
 
-    print('HPO', flush=True)
-    experiment.hyperparameter_optimization()
+    # print('HPO', flush=True)
+    # experiment.hyperparameter_optimization()
     
-    print('train', flush=True)  
-    mp.spawn(training_wrapper, args=(experiment, config), nprocs=world_size, join=True)
+    # print('train', flush=True)  
+    # mp.spawn(training_wrapper, args=(experiment, config), nprocs=world_size, join=True)
     
-    print('test Linf', flush=True)
-    experiment.launch_test('Linf')
+    # print('test Linf', flush=True)
+    # experiment.launch_test('Linf')
     # print('test L1', flush=True)
     # experiment.launch_test('L1')
     # print('test L2', flush=True)
