@@ -419,9 +419,9 @@ class BaseExperiment:
 
         model.eval()
 
-        print('start AA accuracy', flush=True) 
+        print('start test loop', flush=True) 
         stats_nat, stats_adv = self.test_loop(testloader, config, model, rank, corruption_type)
-        print('end AA accuracy', flush=True) 
+        print('end test loop', flush=True) 
 
         result_queue.put( (rank, stats_nat, stats_adv) )
         print(f"Rank {rank}: Results sent to queue", flush=True)
