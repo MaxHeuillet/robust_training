@@ -1,5 +1,5 @@
-dataset: oxford-iiit-pet
-backbone: convnext_base.fb_in22k
+dataset: stanford_cars
+backbone: robust_vit_base_patch16_224
 ft_type: full_fine_tuning
 loss_function: TRADES_v2
 seed: 1
