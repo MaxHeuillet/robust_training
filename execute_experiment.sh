@@ -3,24 +3,26 @@
 # Define variables
 seeds=1
 
-datas=(  'oxford-iiit-pet'   ) 
+datas=( 'stanford_cars' ) 
         #'uc-merced-land-use-dataset' 'kvasir-dataset' 
-        #'caltech101' 'stanford_cars' 'flowers-102' 
-        #  'oxford-iiit-pet'  'dtd'  'fgvc-aircraft-2013b'
+        #'caltech101'  'flowers-102' 
+        #  'oxford-iiit-pet'  'dtd'  'fgvc-aircraft-2013b' 'oxford-iiit-pet' 
 
-losses=( 'TRADES_v2' )  # 'CLASSIC_AT' 
+losses=( 'TRADES_v2' 'CLASSIC_AT' )  # 
 
 backbones=( 
    'convnext_tiny' 'robust_convnext_tiny' 'convnext_tiny.fb_in22k' 
-   'deit_small_patch16_224.fb_in1k' 'robust_deit_small_patch16_224'
-   'convnext_base' 'convnext_base.fb_in22k' 'robust_convnext_base' 
-   'convnext_base.clip_laion2b' 'convnext_base.clip_laion2b_augreg'
-   'vit_base_patch16_224.augreg_in1k' 'vit_base_patch16_224.augreg_in21k'
-  'vit_base_patch16_224.dino' 'vit_base_patch16_224.mae' 'vit_base_patch16_224.orig_in21k'
-  'vit_base_patch16_224.sam_in1k' 'vit_base_patch16_224_miil.in21k' 'robust_vit_base_patch16_224'
+    'robust_convnext_base' 
+
  
  )
 
+#'deit_small_patch16_224.fb_in1k' 'robust_deit_small_patch16_224'
+#   'convnext_base' 'convnext_base.fb_in22k'
+#   'convnext_base.clip_laion2b' 'convnext_base.clip_laion2b_augreg'
+#   'vit_base_patch16_224.augreg_in1k' 'vit_base_patch16_224.augreg_in21k'
+#  'vit_base_patch16_224.dino' 'vit_base_patch16_224.mae' 'vit_base_patch16_224.orig_in21k'
+#  'vit_base_patch16_224.sam_in1k' 'vit_base_patch16_224_miil.in21k' 'robust_vit_base_patch16_224'
 
 
 # Get the project name 
