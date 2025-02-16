@@ -57,7 +57,7 @@ SAFE_CORRUPTIONS = [
     "motion_blur",
     "zoom_blur",
     "snow",
-    "frost",
+    # "frost",
     # "fog",
     "brightness",
     "contrast",
