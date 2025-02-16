@@ -505,6 +505,23 @@ class BaseExperiment:
 
         if corruption_type == 'common':
             import ctypes
+            # Preload some core OpenCV libraries in the proper order
+            ctypes.CDLL(
+                "/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/CUDA/gcc12/cuda12.2/"
+                "opencv/4.10.0/lib64/libopencv_core.so.410",
+                mode=ctypes.RTLD_GLOBAL,
+            )
+            ctypes.CDLL(
+                "/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/CUDA/gcc12/cuda12.2/"
+                "opencv/4.10.0/lib64/libopencv_imgproc.so.410",
+                mode=ctypes.RTLD_GLOBAL, )
+
+            # Then load the CUDA-specific libraries
+            ctypes.CDLL(
+                "/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/CUDA/gcc12/cuda12.2/"
+                "opencv/4.10.0/lib64/libopencv_cudaarithm.so.410",
+                mode=ctypes.RTLD_GLOBAL,
+            )
             ctypes.CDLL(
                 "/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/CUDA/gcc12/cuda12.2/"
                 "opencv/4.10.0/lib64/libopencv_cudaimgproc.so.410",
