@@ -81,6 +81,8 @@ class Hp_opt:
             print(f"Deleting existing experiment directory: {experiment_path}")
             shutil.rmtree(experiment_path)
 
+        os.makedirs(experiment_path, exist_ok=True)
+
         # Set up the Tuner
         tuner = Tuner(
             trainer,
