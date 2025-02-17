@@ -4,10 +4,10 @@ ft_type: full_fine_tuning
 loss_function: CLASSIC_AT
 seed: 1
 epochs: 50
-lr1: 0.0019809629608084425
-lr2: 0.00024885730228466177
-weight_decay1: 1.689886738959708e-06
-weight_decay2: 8.227249801177554e-06
+lr1: 0.00514284654421088
+lr2: 6.227009864501827e-05
+weight_decay1: 5.091011023284046e-05
+weight_decay2: 2.3625714912312524e-05
 use_rs: false
 epsilon: 0.015686275
 step_size: 0.007843137
