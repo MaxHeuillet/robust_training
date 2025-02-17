@@ -100,7 +100,9 @@ class Setup:
             'eurosat':               10,
             'fgvc-aircraft-2013b':   100,
             'flowers-102':           102,
-            'oxford-iiit-pet':       37
+            'oxford-iiit-pet':       37,
+            'uc-merced-land-use-dataset': 21,
+            'kvasir-dataset': 8
         }
         n_classes = dataset_nclasses.get(self.config.dataset, 100)  # fallback if unknown
 
