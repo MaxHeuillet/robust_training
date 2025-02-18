@@ -1,0 +1,17 @@
+dataset: uc-merced-land-use-dataset
+backbone: robust_convnext_tiny
+ft_type: full_fine_tuning
+loss_function: TRADES_v2
+seed: 1
+epochs: 5
+lr1: 0.00020135352967528772
+lr2: 0.0274130452816768
+weight_decay1: 0.00017142186024413222
+weight_decay2: 0.0005766489062865485
+use_rs: false
+epsilon: 0.015686275
+step_size: 0.007843137
+perturb_steps: 10
+distance: Linf
+beta: 1.0
+project_name: full_fine_tuning_5epochs_final1

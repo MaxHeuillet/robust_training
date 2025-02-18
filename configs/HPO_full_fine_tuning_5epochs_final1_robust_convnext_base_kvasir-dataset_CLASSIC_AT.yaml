@@ -1,0 +1,17 @@
+dataset: kvasir-dataset
+backbone: robust_convnext_base
+ft_type: full_fine_tuning
+loss_function: CLASSIC_AT
+seed: 1
+epochs: 5
+lr1: 0.0006910684453876739
+lr2: 0.0015324533542860515
+weight_decay1: 0.0015646397687913254
+weight_decay2: 1.3895539302750286e-05
+use_rs: false
+epsilon: 0.015686275
+step_size: 0.007843137
+perturb_steps: 10
+distance: Linf
+beta: 1.0
+project_name: full_fine_tuning_5epochs_final1
