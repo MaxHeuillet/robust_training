@@ -3,8 +3,8 @@
 # Define variables
 seeds=1
 
-datas=( 'uc-merced-land-use-dataset' 'kvasir-dataset'  ) 
-        #  'stanford_cars' 'flowers-102' 'caltech101'
+datas=( 'stanford_cars'   ) 
+        #   'flowers-102' 'caltech101' 'uc-merced-land-use-dataset' 'kvasir-dataset'
         #  'oxford-iiit-pet'  'dtd'  'fgvc-aircraft-2013b' 'oxford-iiit-pet' 
 
 losses=( 'CLASSIC_AT' 'TRADES_v2'  )  #   
