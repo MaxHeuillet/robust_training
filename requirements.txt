@@ -1,8 +1,9 @@
-ipykernel
-scikit-learn
 torch 
 torchvision 
 torchaudio
+
+ipykernel
+scikit-learn
 pandas
 matplotlib
 multiprocess
@@ -22,16 +23,13 @@ timm
 peft
 avalanche-lib
 
-#other packages to be installed manually:
-#pip install git+https://github.com/fra31/auto-attack
-#logging
-#pip install -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ submodlib==1.1.5
-# pip install torchdatasets
-# kaggle
-#robustness
-#multiprocessing
-#os-sys
-#functools
-# pickle5
-#cuda-python
-# pip3 install imagecorruptions
+kaggle
+multiprocessing
+pickle5
+torchdatasets
+os-sys
+functools
+pickle5
+
+git+https://github.com/fra31/auto-attack
+

@@ -2,6 +2,8 @@
 
 0/ Install requirements
 
+The code runs with Python 3.11.
+
 pip install -r requirements.txt
 
 1/ Downloading the architecutres
