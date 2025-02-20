@@ -322,7 +322,6 @@ class BaseExperiment:
 
         tracker_nat = ActivationTrackerAggregated(train=False)
         tracker_adv = ActivationTrackerAggregated(train=False)
-
         handles = register_hooks_aggregated(model, tracker_nat, tracker_adv)
 
         total_loss = 0.0
@@ -340,7 +339,7 @@ class BaseExperiment:
             # print('shape validation batch', data.shape)
                 
             with torch.autocast(device_type='cuda'):
-                loss_values, _, _, logits_nat, logits_adv = get_eval_loss(self.setup, model, data, target, )
+                loss_values, logits_nat, logits_adv = get_eval_loss(self.setup, model, data, target, )
 
             total_loss += loss_values.sum().item()
 
