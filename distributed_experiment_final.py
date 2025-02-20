@@ -156,7 +156,7 @@ class BaseExperiment:
         
         print('start the loop')
         
-        scheduler = CosineAnnealingLR( optimizer, T_max=config.epochs, eta_min=0 )
+        scheduler = CosineAnnealingLR( optimizer, T_max=config.epochs, eta_min=0 ) if config.scheduler else None
 
         self.fit(config, model, optimizer, scheduler, trainloader, valloader, train_sampler, val_sampler, N, rank, logger)
 

@@ -10,6 +10,7 @@ lr1: null
 lr2: null
 weight_decay1: null
 weight_decay2: null
+scheduler: null
 
 use_rs: False
 epsilon: 0.015686275  # epsilon of trades (4/255)

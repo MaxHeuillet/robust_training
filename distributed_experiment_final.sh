@@ -16,7 +16,6 @@ source ~/scratch/MYENV4/bin/activate
 
 # export LD_PRELOAD="/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/CUDA/gcc12/cuda12.2/opencv/4.10.0/lib64/libopencv_cudaimgproc.so.410:/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/CUDA/gcc12/cuda12.2/opencv/4.10.0/lib64/libopencv_cudafeatures2d.so.410"
 
-
 export PYTHONUNBUFFERED=1
 
 echo "Processing dataset: ${DATA}"
