@@ -553,7 +553,3 @@ if __name__ == "__main__":
     # experiment.launch_test('common')
 
 
-
-
-# os.environ['LD_LIBRARY_PATH']
-
