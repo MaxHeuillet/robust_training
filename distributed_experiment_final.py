@@ -89,11 +89,8 @@ class BaseExperiment:
         
     def initialize_loaders(self, config, rank, common_corruption = False):
 
-        if common_corruption:
-            train_dataset, val_dataset, test_dataset, N, _, _ = load_data(self.setup.hp_opt, config, common_corruption=True)
-        else:
-            train_dataset, val_dataset, test_dataset, N, _, _ = load_data(self.setup.hp_opt, config, common_corruption=False) 
-        
+        train_dataset, val_dataset, test_dataset, N = load_data(self.setup.hp_opt, config, common_corruption)
+
         train_sampler = DistributedSampler(train_dataset, num_replicas=self.setup.world_size, rank=rank, shuffle=True, drop_last=True)
         val_sampler = DistributedSampler(val_dataset, num_replicas=self.setup.world_size, rank=rank, drop_last=True)
         test_sampler = DistributedSampler(test_dataset, num_replicas=self.setup.world_size, rank=rank, shuffle=True, drop_last=True)
@@ -102,22 +99,22 @@ class BaseExperiment:
 
         print('initialize dataoader', rank,flush=True) 
         trainloader = DataLoader(train_dataset, 
-                                 batch_size=self.setup.train_batch_size(), 
-                                 sampler=train_sampler, 
-                                 num_workers=nb_workers, 
-                                 pin_memory=True) 
+                                    batch_size=self.setup.train_batch_size(), 
+                                    sampler=train_sampler, 
+                                    num_workers=nb_workers, 
+                                    pin_memory=True) 
         
         valloader = DataLoader(val_dataset, 
-                               batch_size=int( 0.65 * self.setup.train_batch_size() ), 
-                               sampler=val_sampler, 
-                               num_workers=nb_workers,
-                               pin_memory=True)
+                                    batch_size=int( 0.65 * self.setup.train_batch_size() ), 
+                                    sampler=val_sampler, 
+                                    num_workers=nb_workers,
+                                    pin_memory=True)
         
         testloader = DataLoader(test_dataset, 
-                               batch_size=self.setup.test_batch_size(), 
-                               sampler=test_sampler, 
-                               num_workers=nb_workers,
-                               pin_memory=True)
+                                    batch_size=self.setup.test_batch_size(), 
+                                    sampler=test_sampler, 
+                                    num_workers=nb_workers,
+                                    pin_memory=True)
         
         return trainloader, valloader, testloader, train_sampler, val_sampler, test_sampler, N
 
@@ -197,7 +194,6 @@ class BaseExperiment:
 
         ray.shutdown()
 
-                
     def fit(self, config, model, optimizer, scheduler, trainloader, valloader, train_sampler, val_sampler, N, rank, logger=None):
 
         # Gradient accumulation:
@@ -209,8 +205,6 @@ class BaseExperiment:
         print('effective batch size', effective_batch_size, 'per_gpu_batch_size', per_gpu_batch_size, 'accumulation steps', accumulation_steps)
 
         scaler = GradScaler() 
-
-        # mixup_fn = mixup.Mixup(mixup_alpha=0.2, cutmix_alpha=0, label_smoothing=0.1, num_classes=N )
 
         tracker_nat = ActivationTrackerAggregated(train=True)
         tracker_adv = ActivationTrackerAggregated(train=True)
@@ -261,26 +255,12 @@ class BaseExperiment:
                         scaler.unscale_(optimizer)
                             
                         gradient_norm = compute_gradient_norms(model)
-
-                        # print(tracker_nat.counts, data.shape)
                             
-                        res_nat = compute_stats_aggregated(tracker_nat)
                         res_adv = compute_stats_aggregated(tracker_adv)
-
-                        if self.setup.config.loss_function == 'TRADES_v2':
-                            metrics = { "gradient_norm": float(gradient_norm),
-                                        "zero_nat_train": res_nat['zero_count'] / res_nat['total_neurons'],
-                                        "dormant_nat_train":res_nat['dormant_count'] / res_nat['total_neurons'], 
-                                        "overactive_nat_train":res_nat['overactive_count'] / res_nat['total_neurons'], 
-                                        "zero_adv_train": res_adv['zero_count'] / res_adv['total_neurons'],
-                                        "dormant_adv_train":res_adv['dormant_count'] / res_adv['total_neurons'], 
-                                        "overactive_adv_train":res_adv['overactive_count'] / res_adv['total_neurons'],  }
-                            
-                        elif config.loss_function == 'CLASSIC_AT':
-                            metrics = { "gradient_norm": float(gradient_norm), 
-                                        "zero_adv_train": res_adv['zero_count'] / res_adv['total_neurons'],
-                                        "dormant_adv_train":res_adv['dormant_count'] / res_adv['total_neurons'], 
-                                        "overactive_adv_train":res_adv['overactive_count'] / res_adv['total_neurons'],  }
+                        metrics = { "gradient_norm": float(gradient_norm), 
+                                    "zero_adv_train": res_adv['zero_count'] / res_adv['total_neurons'],
+                                    "dormant_adv_train":res_adv['dormant_count'] / res_adv['total_neurons'], 
+                                    "overactive_adv_train":res_adv['overactive_count'] / res_adv['total_neurons'],  }
                             
                         logger.log_metrics(metrics, epoch=iteration, step=update_step, )
 
@@ -312,20 +292,12 @@ class BaseExperiment:
 
     def validation(self, valloader, model, logger, iteration, rank):
 
-        total_loss, total_correct_nat, total_correct_adv, total_examples, res_nat, res_adv = self.validation_loop(valloader, model, rank)
+        total_loss, total_correct_nat, total_correct_adv, total_examples, _, res_adv = self.validation_loop(valloader, model, rank)
 
-        print(res_nat, rank, flush=True)
-        print(res_adv, rank, flush=True)
-        
         dist.barrier() 
         val_loss, _, _ = self.setup.sync_value(total_loss, total_examples, rank)
         nat_acc, _, _ = self.setup.sync_value(total_correct_nat, total_examples, rank)
         adv_acc, _, _ = self.setup.sync_value(total_correct_adv, total_examples, rank)
-
-        if self.setup.config.loss_function == 'TRADES_v2':
-            nat_zero, _, _ = self.setup.sync_value(res_nat['zero_count'], res_nat['total_neurons'], rank)
-            nat_dormant, _, _ = self.setup.sync_value(res_nat['dormant_count'], res_nat['total_neurons'], rank)
-            nat_overact, _, _ = self.setup.sync_value(res_nat['overactive_count'], res_nat['total_neurons'], rank)
 
         adv_zero, _, _ = self.setup.sync_value(res_adv['zero_count'], res_adv['total_neurons'], rank)
         adv_dormant, _, _ = self.setup.sync_value(res_adv['dormant_count'], res_adv['total_neurons'], rank)
@@ -339,12 +311,7 @@ class BaseExperiment:
 
             print('hey', flush=True)
 
-            if self.setup.config.loss_function == 'TRADES_v2':
-                metrics = { "val_loss": val_loss, "val_nat_accuracy": nat_acc, "val_adv_accuracy": adv_acc,
-                            "zero_nat_val": nat_zero, "dormant_nat_val": nat_dormant, "overactive_nat_val": nat_overact,
-                            "zero_adv_val": adv_zero, "dormant_adv_val": adv_dormant, "overactive_adv_val": adv_overact, }
-            else:
-                metrics = { "val_loss": val_loss, "val_nat_accuracy": nat_acc, "val_adv_accuracy": adv_acc,
+            metrics = { "val_loss": val_loss, "val_nat_accuracy": nat_acc, "val_adv_accuracy": adv_acc,
                             "zero_adv_val": adv_zero, "dormant_adv_val": adv_dormant, "overactive_adv_val": adv_overact, }
                 
             logger.log_metrics(metrics, epoch=iteration)
@@ -388,7 +355,6 @@ class BaseExperiment:
             # break
 
             # Compute neuron statistics
-        res_nat = compute_stats_aggregated(tracker_nat)
         res_adv = compute_stats_aggregated(tracker_adv)
 
         tracker_nat.clear()
@@ -397,7 +363,7 @@ class BaseExperiment:
         for handle in handles:
             handle.remove()
 
-        return total_loss, total_correct_nat, total_correct_adv, total_examples, res_nat, res_adv
+        return total_loss, total_correct_nat, total_correct_adv, total_examples, None, res_adv
     
 
     def test(self, rank, result_queue, corruption_type):

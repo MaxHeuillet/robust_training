@@ -1,6 +1,6 @@
 import torch.nn as nn
 import torch.nn.functional as F
-from attacks import pgd_attack, apgd_attack
+from corruptions import apgd_attack
 
 
 def squared_l2_norm(x):

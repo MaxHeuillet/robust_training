@@ -2,7 +2,7 @@ import time
 import torch
 import torch.nn.functional as F
 import math
-from attacks import apgd_attack, pgd_attack
+from corruptions import apgd_attack
 
 def classic_at_loss(args, model, x_nat, y):
 

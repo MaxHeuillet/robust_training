@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.autograd import Variable
 import torch.optim as optim
-from attacks import pgd_attack, apgd_attack
+from corruptions import apgd_attack
 
 
 def squared_l2_norm(x):
