@@ -194,6 +194,8 @@ def load_data(hp_opt, config, common_corruption=False):
 
         labels = [label for _, label in dataset_train_full]
 
+        print( labels )
+
         train_val_indices, test_indices = train_test_split(
             range(len(labels)),
             test_size=0.2,
@@ -228,34 +230,6 @@ def load_data(hp_opt, config, common_corruption=False):
         val_dataset =   datasets.DTD(root=datadir, split='val', download=False, transform=transform)
         test_dataset = datasets.DTD(root=datadir, split='test', download=False, transform=transform)
 
-    elif dataset == 'eurosat':
-
-        N = 10
-        dataset_train_full = datasets.EuroSAT(root=datadir, download=False, transform=train_transform)
-        dataset_val_test_full = datasets.EuroSAT(root=datadir, download=False, transform=transform)
-
-        labels = [label for _, label in dataset_train_full]
-
-        train_val_indices, test_indices = train_test_split(
-            range(len(labels)),
-            test_size=0.2,
-            stratify=labels,
-            random_state=42
-        )
-
-        train_val_labels = [labels[i] for i in train_val_indices]
-
-        train_indices, val_indices = train_test_split(
-            train_val_indices,
-            test_size=0.15,  # 0.15 * 0.8 = 0.12 -> 12% for validation
-            stratify=train_val_labels,
-            random_state=42
-        )
-
-        train_dataset = torch.utils.data.Subset(dataset_train_full, train_indices)
-        val_dataset = torch.utils.data.Subset(dataset_val_test_full, val_indices)
-        test_dataset = torch.utils.data.Subset(dataset_val_test_full, test_indices)
-
     elif dataset == 'flowers-102':
             
         # Load the Flowers102 dataset
@@ -263,19 +237,6 @@ def load_data(hp_opt, config, common_corruption=False):
         train_dataset = datasets.Flowers102(root=datadir, split='train', download=False, transform=train_transform)
         val_dataset = datasets.Flowers102(root=datadir, split='val', download=False, transform=transform)
         test_dataset = datasets.Flowers102(root=datadir, split='test', download=False,  transform=transform)
-
-    elif dataset == 'imagenette2':
-
-        N = 10
-        print('datadir', datadir)
-        train_dataset = datasets.Imagenette(root=datadir, split='train', download=False,  transform=train_transform)
-        dataset = datasets.Imagenette(root=datadir, split='val', download=False,  transform=transform)
-        labels = [label for _, label in dataset]
-
-        test_indices, val_indices = train_test_split( range(len(labels)), test_size=0.25, stratify=labels, random_state=42 )  
-
-        val_dataset = torch.utils.data.Subset(dataset, val_indices)
-        test_dataset = torch.utils.data.Subset(dataset, test_indices)
 
     elif dataset == 'caltech101':
 
@@ -403,3 +364,46 @@ def load_data(hp_opt, config, common_corruption=False):
         test_dataset = apply_portfolio_of_corruptions(test_dataset, severity=3)
                  
     return train_dataset, val_dataset, test_dataset, N, train_transform, transform
+
+
+
+    # elif dataset == 'eurosat':
+
+    #     N = 10
+    #     dataset_train_full = datasets.EuroSAT(root=datadir, download=False, transform=train_transform)
+    #     dataset_val_test_full = datasets.EuroSAT(root=datadir, download=False, transform=transform)
+
+    #     labels = [label for _, label in dataset_train_full]
+
+    #     train_val_indices, test_indices = train_test_split(
+    #         range(len(labels)),
+    #         test_size=0.2,
+    #         stratify=labels,
+    #         random_state=42
+    #     )
+
+    #     train_val_labels = [labels[i] for i in train_val_indices]
+
+    #     train_indices, val_indices = train_test_split(
+    #         train_val_indices,
+    #         test_size=0.15,  # 0.15 * 0.8 = 0.12 -> 12% for validation
+    #         stratify=train_val_labels,
+    #         random_state=42
+    #     )
+
+    #     train_dataset = torch.utils.data.Subset(dataset_train_full, train_indices)
+    #     val_dataset = torch.utils.data.Subset(dataset_val_test_full, val_indices)
+    #     test_dataset = torch.utils.data.Subset(dataset_val_test_full, test_indices)
+
+        # elif dataset == 'imagenette2':
+
+        # N = 10
+        # print('datadir', datadir)
+        # train_dataset = datasets.Imagenette(root=datadir, split='train', download=False,  transform=train_transform)
+        # dataset = datasets.Imagenette(root=datadir, split='val', download=False,  transform=transform)
+        # labels = [label for _, label in dataset]
+
+        # test_indices, val_indices = train_test_split( range(len(labels)), test_size=0.25, stratify=labels, random_state=42 )  
+
+        # val_dataset = torch.utils.data.Subset(dataset, val_indices)
+        # test_dataset = torch.utils.data.Subset(dataset, test_indices)
