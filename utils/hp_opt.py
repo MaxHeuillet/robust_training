@@ -29,16 +29,15 @@ class Hp_opt:
             self.minutes = 2
             self.trials = 2
 
-def get_config(self):
-    # Ray Tune hyperparameter search space
-    tune_config = {
-        "lr1": tune.loguniform(1e-5, 1e-1),
-        "lr2": tune.loguniform(1e-5, 1e-1),
-        "weight_decay1": tune.loguniform(1e-6, 1e-2),
-        "weight_decay2": tune.loguniform(1e-6, 1e-2),
-        "scheduler": tune.choice([True, False])  # Binary selection
-    }
-    return tune_config
+    def get_config(self):
+        # Ray Tune hyperparameter search space
+        tune_config = {
+            "lr1": tune.loguniform(1e-5, 1e-1),
+            "lr2": tune.loguniform(1e-5, 1e-1),
+            "weight_decay1": tune.loguniform(1e-6, 1e-2),
+            "weight_decay2": tune.loguniform(1e-6, 1e-2),
+            "scheduler": tune.choice([True, False])   }
+        return tune_config
 
     def get_scheduler(self, epochs):
         # Configure the scheduler WITHOUT metric and mode
