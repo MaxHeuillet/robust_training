@@ -117,7 +117,7 @@ class Setup:
         elif n_classes <= 105:
             class_scale = 0.75
         elif n_classes <= 200:
-            class_scale = 0.65
+            class_scale = 0.7
         else:
             print('undefined')
 
