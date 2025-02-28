@@ -4,7 +4,7 @@ import timm
 from timm.models import create_model
 import os
 
-save_path = os.path.expanduser('~/scratch/state_dicts')
+save_path = os.path.expanduser('~/projects/def-adurand/mheuill/robust_training/state_dicts')
 
 
 backbones=(
