@@ -274,7 +274,7 @@ class BaseExperiment:
                     update_step += 1
 
                     
-                # break
+                break
 
             if self.setup.hp_opt:
                 self.validation( valloader, model, logger, iteration, rank)
@@ -285,6 +285,8 @@ class BaseExperiment:
             if scheduler is not None: scheduler.step()
 
             print(f'Rank {rank}, Iteration {iteration},', flush=True) 
+
+            break
                             
         # Remove hooks
         for handle in handles:
@@ -351,7 +353,7 @@ class BaseExperiment:
             total_correct_adv += (preds_adv == target).sum().item()
             total_examples += target.size(0)
 
-            # break
+            break
 
             # Compute neuron statistics
         res_adv = compute_stats_aggregated(tracker_adv)
@@ -385,13 +387,13 @@ class BaseExperiment:
         model.eval()
 
         print('start test loop', flush=True) 
-        stats_nat, stats_adv = self.test_loop(testloader, config, model, rank, corruption_type)
+        stats_nat, stats_adv = self.test_loop(testloader, config, model, N, rank, corruption_type)
         print('end test loop', flush=True) 
 
         result_queue.put( (rank, stats_nat, stats_adv) )
         print(f"Rank {rank}: Results sent to queue", flush=True)
         
-    def test_loop(self, testloader, config, model, rank, corruption_type):
+    def test_loop(self, testloader, config, model, N, rank, corruption_type):
 
         def forward_pass(x):
             return model(x)
@@ -405,7 +407,7 @@ class BaseExperiment:
             nb_examples = 0
             print('stats', nb_correct_nat, nb_correct_adv, nb_examples, flush=True)
 
-            adversary = AutoAttack(forward_pass, norm=config.distance, eps=config.epsilon, version='standard', verbose = False, device = device)
+            adversary = AutoAttack(forward_pass, norm=config.distance, eps=config.epsilon, n_classes = N, version='standard', verbose = False, device = device)
             print('adversary instanciated', flush=True) 
             
             for _, batch in enumerate( testloader ):
@@ -537,11 +539,11 @@ if __name__ == "__main__":
     setup = Setup(config, world_size)
     experiment = BaseExperiment(setup)
 
-    print('HPO', flush=True)
-    experiment.hyperparameter_optimization()
+    # print('HPO', flush=True)
+    # experiment.hyperparameter_optimization()
     
-    print('train', flush=True)  
-    mp.spawn(training_wrapper, args=(experiment, config), nprocs=world_size, join=True)
+    # print('train', flush=True)  
+    # mp.spawn(training_wrapper, args=(experiment, config), nprocs=world_size, join=True)
     
     print('test Linf', flush=True)
     experiment.launch_test('Linf')

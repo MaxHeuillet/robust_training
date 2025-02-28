@@ -8,13 +8,18 @@ save_path = os.path.expanduser('~/scratch/state_dicts')
 
 
 backbones=(
-  'convnext_tiny', 'convnext_tiny.fb_in22k', 
-  'deit_small_patch16_224.fb_in1k', 
-  'convnext_base', 'convnext_base.fb_in22k', 
-  'convnext_base.clip_laion2b', 'convnext_base.clip_laion2b_augreg',
-  'vit_base_patch16_224.augreg_in1k', 'vit_base_patch16_224.augreg_in21k',
-  'vit_base_patch16_224.dino', 'vit_base_patch16_224.mae', 'vit_base_patch16_224.orig_in21k',
-  'vit_base_patch16_224.sam_in1k', 'vit_base_patch16_224_miil.in21k', )  
+  # 'convnext_tiny', 'convnext_tiny.fb_in22k', 
+  # 'deit_small_patch16_224.fb_in1k', 
+  # 'convnext_base', 'convnext_base.fb_in22k', 
+  # 'convnext_base.clip_laion2b', 'convnext_base.clip_laion2b_augreg',
+  # 'vit_base_patch16_224.augreg_in1k', 'vit_base_patch16_224.augreg_in21k',
+  # 'vit_base_patch16_224.dino', 'vit_base_patch16_224.mae', 'vit_base_patch16_224.orig_in21k',
+  # 'vit_base_patch16_224.sam_in1k', 'vit_base_patch16_224_miil.in21k', 
+
+  "swinv2_base_window12to16_192to256.ms_in22k_ft_in1k", "swinv2_cr_small_224.sw_in1k",
+  "swinv2_cr_tiny_ns_224.sw_in1k", "swinv2_large_window12to16_192to256.ms_in22k_ft_in1k",
+
+  "resnet50.a1_in1k", "resnet50.clip_cc12", "resnet50.clip_openai", "resnet50.fb_swsl_ig1b_ft_in1k"  )  
 
 
 for backbone in backbones:

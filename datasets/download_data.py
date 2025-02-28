@@ -10,10 +10,6 @@ import kaggle
 
 save_path = os.path.expanduser('~/scratch/data')
 
-######### KVASIR DATASET #########  
-KAGGLE_DATASET = "meetnagadia/kvasir-dataset"
-kaggle.api.dataset_download_files(KAGGLE_DATASET, path=save_path, unzip=False)
-
 ########## UC MERCED LAND USE DATASET #########
 KAGGLE_DATASET = "abdulhasibuddin/uc-merced-land-use-dataset"
 kaggle.api.dataset_download_files(KAGGLE_DATASET, path=save_path, unzip=False)

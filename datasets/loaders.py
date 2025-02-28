@@ -18,13 +18,6 @@ def load_data(hp_opt, config, common_corruption=False):
         dataset_train_full = datasets.ImageFolder( root=path )
         train_dataset, val_dataset, test_dataset = process_trainvaltest(dataset_train_full, )
  
-    elif dataset == 'kvasir-dataset':
-
-        N = 8
-        path = datadir+'/kvasir-dataset'
-        dataset_train_full = datasets.ImageFolder( root=path  )
-        train_dataset, val_dataset, test_dataset = process_trainvaltest(dataset_train_full, )
-
     elif dataset == 'caltech101':
 
         N = 101
@@ -83,9 +76,6 @@ def load_data(hp_opt, config, common_corruption=False):
         train_dataset.dataset.transform = train_transform
         val_dataset.dataset.transform = transform
         test_dataset.dataset.transform = transform
-
-
-
       
                  
     return train_dataset, val_dataset, test_dataset, N

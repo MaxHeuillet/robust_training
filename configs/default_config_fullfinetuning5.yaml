@@ -1,5 +1,5 @@
-dataset: "Flowers"  # dataset (default: cifar10)
-backbone: "deit_small_patch16_224.fb_in1k"  # load backbone
+dataset: "kvasir-dataset"  # dataset (default: cifar10)
+backbone: "convnext_tiny"  # load backbone
 ft_type: "full_fine_tuning"  # fine tuning type
 
 loss_function: "CLASSIC_AT"  # TRADES_v2
@@ -21,3 +21,5 @@ beta: 1.0  # beta of trades
 
 # arguments for diffusion augmented learning
 project_name: null # the experiment type
+
+
