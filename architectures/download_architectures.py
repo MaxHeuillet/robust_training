@@ -1,12 +1,13 @@
 # from transformers import AutoImageProcessor, ResNetModel
 import torch
-import timm
-from timm.models import create_model
 import os
+from timm import create_model
+from huggingface_hub import hf_hub_download
 
 save_path = os.path.expanduser('~/scratch/state_dicts_share')
+os.makedirs(save_path, exist_ok=True)
 
-backbones=(
+backbones = (
     'timm/vit_base_patch16_224.dino',
     'timm/vit_base_patch16_224.mae',
     'timm/vit_base_patch16_224.sam_in1k',
@@ -22,20 +23,40 @@ backbones=(
 
     'laion/CLIP-convnext_base_w-laion2B-s13B-b82K',
     'laion/CLIP-convnext_base_w-laion_aesthetic-s13B-b82K',
+
     'timm/convnext_base.fb_in1k',
     'timm/convnext_base.fb_in22k',
 
     'timm/convnext_tiny.fb_in22k',
     'timm/convnext_tiny.fb_in1k',
 
-    'timm/resnet50.a1_in1k', )  
-
+    'timm/resnet50.a1_in1k',
+)
 
 for backbone in backbones:
     parts = backbone.split("/")
+    model_source = parts[0]
+    model_name = parts[1]
 
-    model = timm.create_model(backbone, pretrained=True)
-    torch.save(model.state_dict(), '{}/{}.pt'.format(save_path, parts[1]) )
+    save_file = os.path.join(save_path, f"{model_name}.pt")
+
+    if model_source == "timm":
+        model = create_model(backbone, pretrained=True)
+        torch.save(model.state_dict(), save_file)
+
+    elif model_source == "laion":
+        # For HF Hub models, download directly the model weights (usually .safetensors or .bin)
+        # This assumes weights are stored in a file named 'pytorch_model.bin'
+        try:
+            local_file = hf_hub_download(repo_id=backbone, filename="pytorch_model.bin")
+            # Optionally: Load using torch.load and re-save if you want consistency
+            state_dict = torch.load(local_file, map_location="cpu")
+            torch.save(state_dict, save_file)
+        except Exception as e:
+            print(f"❌ Failed to download {backbone}: {e}")
+    else:
+        print(f"⚠ Unknown source for backbone: {backbone}")
+
 
 ######################################################################################################################
 #### To download the robust checkpoints trained on imagenet ('robust_convnext_tiny', 'robust_deit_small_patch16_224', 'robust_convnext_base', 'robust_vit_base_patch16_224' )
