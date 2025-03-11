@@ -9,7 +9,6 @@ pandas
 matplotlib
 multiprocess
 scipy
-PuLP
 matplotlib
 scikit-image
 tqdm
@@ -21,20 +20,15 @@ datasets
 
 timm
 peft
-avalanche-lib
 
-kaggle
 multiprocessing
-pickle5
 torchdatasets
 os-sys
 functools
 pickle5
 
-
-
-wandb
 comet_ml
+kaggle
 
 
 git+https://github.com/fra31/auto-attack
