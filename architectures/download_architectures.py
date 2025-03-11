@@ -8,9 +8,9 @@ save_path = os.path.expanduser('~/scratch/state_dicts_share')
 os.makedirs(save_path, exist_ok=True)
 
 backbones = (
-    'timm/vit_base_patch16_224.dino',
-    'timm/vit_base_patch16_224.mae',
-    'timm/vit_base_patch16_224.sam_in1k',
+    # 'timm/vit_base_patch16_224.dino',
+    # 'timm/vit_base_patch16_224.mae',
+    # 'timm/vit_base_patch16_224.sam_in1k',
     'timm/vit_base_patch16_clip_224.laion400m_e32',
     'timm/vit_base_patch16_clip_224.laion2b',
     'timm/vit_base_patch16_224.augreg_in21k',
