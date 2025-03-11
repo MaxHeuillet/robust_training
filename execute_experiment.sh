@@ -10,13 +10,13 @@ datas=( 'uc-merced-land-use-dataset' )
 losses=( 'CLASSIC_AT' 'TRADES_v2'   )  #  
 
 backbones=(
-  
+  'convnext_tiny.fb_in1k' #this is where we will put all the list of backbones
    )  
 
 
 
 # Get the project name 
-PRNM=$1
+PRNM=$1 #you need to set a project name
 
 # Check if PRNM is set
 if [ -z "$PRNM" ]; then
