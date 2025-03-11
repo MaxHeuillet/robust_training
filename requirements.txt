@@ -7,7 +7,7 @@ ipykernel
 scikit-learn
 pandas
 matplotlib
-multiprocess
+
 scipy
 matplotlib
 scikit-image
@@ -21,15 +21,17 @@ datasets
 timm
 peft
 
-multiprocessing
+multiprocess
+
 torchdatasets
-os-sys
-functools
-pickle5
 
 comet_ml
 kaggle
 
-
 git+https://github.com/fra31/auto-attack
 
+
+# os-sys
+# functools
+# pickle5
+# multiprocessing
