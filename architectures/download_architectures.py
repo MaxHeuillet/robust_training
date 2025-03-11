@@ -32,9 +32,10 @@ backbones=(
 
 
 for backbone in backbones:
+    parts = backbone.split("/")
 
     model = timm.create_model(backbone, pretrained=True)
-    torch.save(model.state_dict(), '{}/{}.pt'.format(save_path, backbone) )
+    torch.save(model.state_dict(), '{}/{}.pt'.format(save_path, parts[1]) )
 
 ######################################################################################################################
 #### To download the robust checkpoints trained on imagenet ('robust_convnext_tiny', 'robust_deit_small_patch16_224', 'robust_convnext_base', 'robust_vit_base_patch16_224' )
