@@ -3,34 +3,36 @@ import torch
 import os
 from timm import create_model
 from huggingface_hub import hf_hub_download
+import safetensors.torch
 
-save_path = os.path.expanduser('~/scratch/state_dicts_share')
+
+save_path = os.path.expanduser('/home/mheuillet/Desktop/state_dicts_share')
 os.makedirs(save_path, exist_ok=True)
 
 backbones = (
     # 'timm/vit_base_patch16_224.dino',
     # 'timm/vit_base_patch16_224.mae',
     # 'timm/vit_base_patch16_224.sam_in1k',
-    'timm/vit_base_patch16_clip_224.laion400m_e32',
-    'timm/vit_base_patch16_clip_224.laion2b',
-    'timm/vit_base_patch16_224.augreg_in21k',
-    'timm/vit_base_patch16_224.augreg_in1k',
+    # 'timm/vit_base_patch16_clip_224.laion400m_e32',
+    # 'timm/vit_base_patch16_clip_224.laion2b',
+    # 'timm/vit_base_patch16_224.augreg_in21k',
+    # 'timm/vit_base_patch16_224.augreg_in1k',
 
-    'timm/vit_small_patch16_224.dino',
-    'timm/vit_small_patch16_224.augreg_in21k',
-    'timm/vit_small_patch16_224.augreg_in1k',
-    'timm/deit_small_patch16_224.fb_in1k',
+    # 'timm/vit_small_patch16_224.dino',
+    # 'timm/vit_small_patch16_224.augreg_in21k',
+    # 'timm/vit_small_patch16_224.augreg_in1k',
+    # 'timm/deit_small_patch16_224.fb_in1k',
 
     'laion/CLIP-convnext_base_w-laion2B-s13B-b82K',
     'laion/CLIP-convnext_base_w-laion_aesthetic-s13B-b82K',
 
-    'timm/convnext_base.fb_in1k',
-    'timm/convnext_base.fb_in22k',
+    # 'timm/convnext_base.fb_in1k',
+    # 'timm/convnext_base.fb_in22k',
 
-    'timm/convnext_tiny.fb_in22k',
-    'timm/convnext_tiny.fb_in1k',
+    # 'timm/convnext_tiny.fb_in22k',
+    # 'timm/convnext_tiny.fb_in1k',
 
-    'timm/resnet50.a1_in1k',
+    # 'timm/resnet50.a1_in1k',
 )
 
 for backbone in backbones:
@@ -48,10 +50,10 @@ for backbone in backbones:
         # For HF Hub models, download directly the model weights (usually .safetensors or .bin)
         # This assumes weights are stored in a file named 'pytorch_model.bin'
         try:
-            local_file = hf_hub_download(repo_id=backbone, filename="pytorch_model.bin")
-            # Optionally: Load using torch.load and re-save if you want consistency
-            state_dict = torch.load(local_file, map_location="cpu")
+            file = hf_hub_download(repo_id=backbone, filename="open_clip_pytorch_model.bin")
+            state_dict = torch.load(file, map_location="cpu")
             torch.save(state_dict, save_file)
+
         except Exception as e:
             print(f"❌ Failed to download {backbone}: {e}")
     else:

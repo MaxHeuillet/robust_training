@@ -24,6 +24,7 @@ echo "Processing dataset: ${DATA}"
 mkdir -p $SLURM_TMPDIR/data
 
 # Define the path to the dataset archive (without extension)
+# this is the directory with all the dataset archives
 ARCHIVE_PATH=~/scratch/data/${DATA}
 
 # Function to extract .tar.zst archives
