@@ -36,5 +36,5 @@ def get_state_dict_dir(hp_opt,config):
             statedict_dir = os.path.expanduser(statedict_dir)
     else:
         # this is if you run prototypes locally
-        statedict_dir = "/home/mheuillet/Desktop/robust_training/state_dicts/"
+        statedict_dir = "/home/mheuillet/Desktop/state_dicts_share/"
     return statedict_dir

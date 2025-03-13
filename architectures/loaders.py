@@ -11,50 +11,18 @@ def load_architecture(hp_opt,config, N, ):
     backbone = config.backbone
     statedict_dir = get_state_dict_dir(hp_opt,config)
 
-    equivalencies = { 'convnext_base':'convnext_base',
-                      'convnext_base.fb_in22k':'convnext_base.fb_in22k', 
-                      'robust_convnext_base':'convnext_base',
-                      'random_convnext_base':'convnext_base',
-                      'convnext_base.clip_laion2b':'convnext_base.clip_laion2b',
-                      'convnext_base.clip_laion2b_augreg':'convnext_base.clip_laion2b_augreg',
-                      
-                      'convnext_tiny_random':'convnext_tiny',
-                      'convnext_tiny':'convnext_tiny',
-                      'convnext_tiny.fb_in22k':'convnext_tiny.fb_in22k',
+    equivalencies = { 'robust_convnext_base':'convnext_base',
                       'robust_convnext_tiny':'convnext_tiny',
-                      'random_convnext_tiny':'convnext_tiny',
-
-                      'robust_wideresnet_28_10': 'robust_wideresnet_28_10',
-                      'wideresnet_28_10': 'wideresnet_28_10',
-
-                      'resnet50_linf_eps4.0':'resnet50',
-
-                      'deit_small_patch16_224.fb_in1k': 'deit_small_patch16_224.fb_in1k',
+                      'robust_resnet50':'resnet50',
                       'robust_deit_small_patch16_224': 'deit_small_patch16_224',
-                      'random_deit_small_patch16_224': 'deit_small_patch16_224',
-
-                      'vit_base_patch16_224.augreg_in1k':'vit_base_patch16_224.augreg_in1k',
-                      'vit_base_patch16_224.augreg_in21k':'vit_base_patch16_224.augreg_in21k',
-                      'robust_vit_base_patch16_224': 'vit_base_patch16_224',
-                      'random_vit_base_patch16_224': 'vit_base_patch16_224',
-                      'vit_base_patch16_224.orig_in21k':'vit_base_patch16_224.orig_in21k',
-                      'vit_base_patch16_224.dino':'vit_base_patch16_224.dino',
-                      'vit_base_patch16_224.mae':'vit_base_patch16_224.mae', 
-                      'vit_base_patch16_224.sam_in1k':'vit_base_patch16_224.sam_in1k',
-                      'vit_base_patch16_224_miil.in21k':'vit_base_patch16_224_miil.in21k',
-                       
-                      "swinv2_base_window12to16_192to256.ms_in22k_ft_in1k":"swinv2_base_window12to16_192to256.ms_in22k_ft_in1k",
-                      "swinv2_cr_small_224.sw_in1k":"swinv2_cr_small_224.sw_in1k",
-                      "swinv2_cr_tiny_ns_224.sw_in1k":"swinv2_cr_tiny_ns_224.sw_in1k",
-                      "swinv2_large_window12to16_192to256.ms_in22k_ft_in1k":"swinv2_large_window12to16_192to256.ms_in22k_ft_in1k",
-
-                      "resnet50.a1_in1k":"resnet50.a1_in1k",
-                      "resnet50.clip_cc12":"resnet50.clip_cc12",
-                      "resnet50.clip_openai":"resnet50.clip_openai",
-                      "resnet50.fb_swsl_ig1b_ft_in1k":"resnet50.fb_swsl_ig1b_ft_in1k"    }
+                      'robust_vit_base_patch16_224': 'vit_base_patch16_224',   }
     
-    
-    model = timm.create_model(equivalencies[backbone], pretrained=False)     
+    if equivalencies.get(backbone):
+        model_name = equivalencies[backbone]
+    else:
+        model_name = backbone
+    print('model_name', model_name)
+    model = timm.create_model(model_name, pretrained=False)     
     state_dict = torch.load( statedict_dir + '/{}.pt'.format(backbone) , weights_only=True, map_location='cpu')
     model.load_state_dict(state_dict)
 
