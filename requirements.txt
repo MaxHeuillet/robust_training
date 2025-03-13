@@ -24,6 +24,7 @@ peft
 multiprocess
 
 torchdatasets
+open_clip_torch
 
 comet_ml
 kaggle

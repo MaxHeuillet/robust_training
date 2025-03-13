@@ -5,7 +5,6 @@ from timm import create_model
 from huggingface_hub import hf_hub_download
 import safetensors.torch
 
-
 save_path = os.path.expanduser('/home/mheuillet/Desktop/state_dicts_share')
 os.makedirs(save_path, exist_ok=True)
 

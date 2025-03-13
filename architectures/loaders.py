@@ -5,42 +5,104 @@ from timm.models import create_model
 import torch.nn as nn
 
 from utils import get_state_dict_dir
+from architectures.clip_wrapper import CLIPConvNeXtClassifier
 
-def load_architecture(hp_opt,config, N, ):
+import os
+import torch
+import timm
+import open_clip
 
+def load_architecture(hp_opt, config, N):
     backbone = config.backbone
-    statedict_dir = get_state_dict_dir(hp_opt,config)
+    statedict_dir = get_state_dict_dir(hp_opt, config)
 
-    equivalencies = { 'robust_convnext_base':'convnext_base',
-                      'robust_convnext_tiny':'convnext_tiny',
-                      'robust_resnet50':'resnet50',
-                      'robust_deit_small_patch16_224': 'deit_small_patch16_224',
-                      'robust_vit_base_patch16_224': 'vit_base_patch16_224',   }
-    
-    if equivalencies.get(backbone):
-        model_name = equivalencies[backbone]
+    # Determine if it's an OpenCLIP model
+    openclip_models = {
+        'CLIP-convnext_base_w-laion2B-s13B-b82K': 'convnext_base_w',
+        'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K': 'convnext_base_w',
+    }
+
+    if backbone in openclip_models:
+        
+
+        model_name = openclip_models[backbone]
+        print('Loading OpenCLIP model:', model_name)
+
+        model, _, _ = open_clip.create_model_and_transforms(
+            model_name,
+            pretrained=None  # you're loading your own weights
+        )
+
+        checkpoint_path = os.path.join(statedict_dir, f'{backbone}.pt')
+        state_dict = torch.load(checkpoint_path, map_location='cpu')
+
+        if 'state_dict' in state_dict:
+            state_dict = state_dict['state_dict']  # Handle wrapped checkpoints
+
+        model.load_state_dict(state_dict, strict=False)
+
     else:
-        model_name = backbone
-    print('model_name', model_name)
-    model = timm.create_model(model_name, pretrained=False)     
-    state_dict = torch.load( statedict_dir + '/{}.pt'.format(backbone) , weights_only=True, map_location='cpu')
-    model.load_state_dict(state_dict)
+        # Use timm model
+        equivalencies = {
+            'robust_convnext_base': 'convnext_base',
+            'robust_convnext_tiny': 'convnext_tiny',
+            'robust_resnet50': 'resnet50',
+            'robust_deit_small_patch16_224': 'deit_small_patch16_224',
+            'robust_vit_base_patch16_224': 'vit_base_patch16_224',
+        }
 
+        model_name = equivalencies.get(backbone, backbone)
+        print('Loading timm model:', model_name)
+
+        model = timm.create_model(model_name, pretrained=False)
+
+        checkpoint_path = os.path.join(statedict_dir, f'{backbone}.pt')
+        state_dict = torch.load(checkpoint_path, weights_only=True, map_location='cpu')
+        model.load_state_dict(state_dict)
+
+    # Replace classification head if needed
     model = change_head(backbone, model, N)
-    
+
     return model
+
+
+# def load_architecture(hp_opt,config, N, ):
+
+#     backbone = config.backbone
+#     statedict_dir = get_state_dict_dir(hp_opt,config)
+
+#     equivalencies = { 'robust_convnext_base':'convnext_base',
+#                       'robust_convnext_tiny':'convnext_tiny',
+#                       'robust_resnet50':'resnet50',
+#                       'robust_deit_small_patch16_224': 'deit_small_patch16_224',
+#                       'robust_vit_base_patch16_224': 'vit_base_patch16_224',   }
+    
+#     if equivalencies.get(backbone):
+#         model_name = equivalencies[backbone]
+#     else:
+#         model_name = backbone
+#     print('model_name', model_name)
+#     model = timm.create_model(model_name, pretrained=False)     
+#     state_dict = torch.load( statedict_dir + '/{}.pt'.format(backbone) , weights_only=True, map_location='cpu')
+#     model.load_state_dict(state_dict)
+
+#     model = change_head(backbone, model, N)
+    
+#     return model
 
 
 def change_head(backbone, model, N):
 
-    if "convnext" in backbone or 'swinv2' in backbone: 
+    if 'CLIP-convnext' in backbone:
+        model = CLIPConvNeXtClassifier(model, num_classes=N)
+
+    elif "convnext" in backbone or 'swinv2' in backbone: 
         num_features = model.head.fc.in_features
         model.head.fc = nn.Linear(num_features, N)
 
     elif "resnet" in backbone:
         num_features = model.fc.in_features
         model.fc = nn.Linear(num_features, N)
-
 
     elif "deit" in backbone:
         num_features = model.head.in_features
@@ -54,6 +116,7 @@ def change_head(backbone, model, N):
 
         num_features = model.head.in_features
         model.head = nn.Linear(num_features, N)
+
 
     return model
 
