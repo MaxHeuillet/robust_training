@@ -11,7 +11,6 @@ datas=( 'stanford_cars'
         'uc-merced-land-use-dataset' 
         ) # 'dtd' 
  
-
 losses=( 'CLASSIC_AT' 'TRADES_v2'   )  #  
 
 backbones=(
@@ -29,29 +28,18 @@ fi
 
 # Loop over architectures, datasets, losses, seeds, backbones, and fine-tuning types
 
-for data in "${datas[@]}"; do
-  for loss in "${losses[@]}"; do
-    for id in $(seq 1 $seeds); do
-      for bckbn in "${backbones[@]}"; do
+for id in $(seq 1 $seeds); do
+  for data in "${datas[@]}"; do
+    for bckbn in "${backbones[@]}"; do
+      for loss in "${losses[@]}"; do
 
-              
-        if [ "$CC_CLUSTER" = "beluga" ]; then
-                  sbatch --export=ALL,\
-BCKBN="$bckbn",\
-DATA="$data",\
-SEED="$id",\
-LOSS="$loss",\
-PRNM="$PRNM" \
-./distributed_experiment_final.sh
-              else
-                  sbatch --export=ALL,\
-BCKBN="$bckbn",\
-DATA="$data",\
-SEED="$id",\
-LOSS="$loss",\
-PRNM="$PRNM" \
-./distributed_experiment_final.sh
-              fi
+          sbatch --export=ALL,\
+  BCKBN="$bckbn",\
+  DATA="$data",\
+  SEED="$id",\
+  LOSS="$loss",\
+  PRNM="$PRNM" \
+  ./distributed_experiment_final.sh
 
       done
     done

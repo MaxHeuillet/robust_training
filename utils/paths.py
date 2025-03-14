@@ -37,5 +37,5 @@ def get_state_dict_dir(hp_opt, config):
         #     statedict_dir = os.path.expanduser(statedict_dir)
     else:
         # this is if you run prototypes locally
-        statedict_dir = config.local_statedict_path 
+        statedict_dir = os.path.expanduser(config.local_statedict_path)  
     return statedict_dir

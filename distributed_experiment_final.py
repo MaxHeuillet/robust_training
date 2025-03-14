@@ -527,19 +527,19 @@ if __name__ == "__main__":
     setup = Setup(config, world_size)
     experiment = BaseExperiment(setup)
 
-    # print('HPO', flush=True)
-    # experiment.hyperparameter_optimization()
+    print('HPO', flush=True)
+    experiment.hyperparameter_optimization()
     
-    # print('train', flush=True)  
-    # mp.spawn(training_wrapper, args=(experiment, config), nprocs=world_size, join=True)
+    print('train', flush=True)  
+    mp.spawn(training_wrapper, args=(experiment, config), nprocs=world_size, join=True)
     
     print('test Linf', flush=True)
     experiment.launch_test('Linf')
-    # print('test L1', flush=True)
-    # experiment.launch_test('L1')
-    # print('test L2', flush=True)
-    # experiment.launch_test('L2')
-    # print('test common corruptions', flush=True)
-    # experiment.launch_test('common')
+    print('test L1', flush=True)
+    experiment.launch_test('L1')
+    print('test L2', flush=True)
+    experiment.launch_test('L2')
+    print('test common corruptions', flush=True)
+    experiment.launch_test('common')
 
 
