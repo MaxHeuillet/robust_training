@@ -5,7 +5,7 @@ import torch.nn as nn
 import os
 import open_clip
 
-from utils import get_state_dict_dir
+# from utils import get_state_dict_dir
 from architectures.clip_wrapper import CLIPConvNeXtClassifier
 
 
