@@ -174,9 +174,9 @@ class BaseExperiment:
 
         ray.init() #logging_level=logging.DEBUG
 
-        hp_search = Hp_opt(self.setup)
+        hp_search = Hp_opt(config)
 
-        tuner = hp_search.get_tuner( config.epochs, self.training )
+        tuner = hp_search.get_tuner( self.training )
 
         result_grid = tuner.fit()
 
