@@ -21,8 +21,8 @@ from utils import Setup, Hp_opt
 from datasets import load_data
 from architectures import load_architecture, CustomModel
 from losses import get_loss, get_eval_loss
-from utils import get_args2, set_seeds, load_optimizer, get_state_dict_dir
-from utils import ActivationTrackerAggregated, register_hooks_aggregated, compute_stats_aggregated
+from utils import get_args2, set_seeds, load_optimizer
+# from utils import ActivationTrackerAggregated, register_hooks_aggregated, compute_stats_aggregated
 
 from hydra import initialize, compose
 from omegaconf import OmegaConf
