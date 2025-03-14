@@ -1,6 +1,4 @@
-import torch
 import torch.nn as nn
-import open_clip
 
 class CLIPConvNeXtClassifier(nn.Module):
     def __init__(self, clip_model, num_classes, dropout=0.0):

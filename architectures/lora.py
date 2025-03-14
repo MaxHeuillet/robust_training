@@ -5,13 +5,8 @@ https://github.com/microsoft/LoRA/blob/main/loralib/layers.py
 """
 
 from torch import nn
-
 import torch
-
-from functools import partial
-
 import torch.nn.utils.parametrize as parametrize
-
 from peft import LoraConfig, get_peft_model
 
 class LoRA(nn.Module):
@@ -67,9 +62,6 @@ def set_lora_gradients(args, model, layers):
   
   return model
   
-
-
-
 def add_lora(args, model, layers):
 
   if args.arch == 'resnet50':

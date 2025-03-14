@@ -3,17 +3,20 @@
 # Define variables
 seeds=1
 
-datas=( 'uc-merced-land-use-dataset' ) 
-        # 'caltech101' 'stanford_cars' 'flowers-102' 
-        #  'oxford-iiit-pet'  'dtd'  'fgvc-aircraft-2013b' 'oxford-iiit-pet' 
+datas=( 'stanford_cars'
+        'oxford-iiit-pet'
+        'caltech101' 
+        'flowers-102' 
+        'fgvc-aircraft-2013b'
+        'uc-merced-land-use-dataset' 
+        ) # 'dtd' 
+ 
 
 losses=( 'CLASSIC_AT' 'TRADES_v2'   )  #  
 
 backbones=(
   'convnext_tiny.fb_in1k' #this is where we will put all the list of backbones
    )  
-
-
 
 # Get the project name 
 PRNM=$1 #you need to set a project name

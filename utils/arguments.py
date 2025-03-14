@@ -1,6 +1,4 @@
 import argparse
-import torch
-import os
 
 def get_exp_name(args):
     # Access all attributes of args as a dictionary

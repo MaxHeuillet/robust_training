@@ -1,8 +1,7 @@
 import os
 
-from ray import train, tune
+from ray import tune
 from ray.tune.examples.mnist_pytorch import train_mnist
-from ray.tune import ResultGrid
 
 from hydra import initialize, compose
 
@@ -16,7 +15,7 @@ import torch
 initialize(config_path="configs", version_base=None)
 
 from utils import Setup
-from distributed_experiment2 import BaseExperiment
+from distributed_experiment_final import BaseExperiment
 
 world_size = torch.cuda.device_count()
 

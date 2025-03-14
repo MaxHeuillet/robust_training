@@ -1,8 +1,6 @@
-import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch.autograd import Variable
-import torch.optim as optim
+
 from corruptions import apgd_attack
 
 

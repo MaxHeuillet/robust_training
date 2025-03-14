@@ -1,4 +1,3 @@
-import sys
 import os
 os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
 from comet_ml import Experiment
@@ -6,38 +5,27 @@ from comet_ml import Experiment
 import torch
 import torch.distributed as dist
 from torch.utils.data import DataLoader, DistributedSampler
-
+from torch.optim.lr_scheduler import CosineAnnealingLR
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.cuda.amp import GradScaler, autocast
 
 import torch.multiprocessing as mp 
 from multiprocessing import Queue 
 
-import torch
 
 from autoattack import AutoAttack
 
-from torch.utils.data import DataLoader
 
-import torch.distributed as dist
-
-from utils import Setup
-
-# from samplers import DistributedCustomSampler
-from torch.utils.data.distributed import DistributedSampler
+from utils import Setup, Hp_opt
 from datasets import load_data
 from architectures import load_architecture, CustomModel
 from losses import get_loss, get_eval_loss
 from utils import get_args2, set_seeds, load_optimizer, get_state_dict_dir
 from utils import ActivationTrackerAggregated, register_hooks_aggregated, compute_stats_aggregated
-from torch.optim.lr_scheduler import CosineAnnealingLR
-from ray.air import session
 
 from hydra import initialize, compose
 from omegaconf import OmegaConf
 
-from omegaconf import OmegaConf
-from utils import Hp_opt
 from ray import train
 
 import os

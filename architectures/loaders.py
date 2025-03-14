@@ -1,16 +1,13 @@
 import torch
 
 import timm
-from timm.models import create_model
 import torch.nn as nn
+import os
+import open_clip
 
 from utils import get_state_dict_dir
 from architectures.clip_wrapper import CLIPConvNeXtClassifier
 
-import os
-import torch
-import timm
-import open_clip
 
 def load_architecture(hp_opt, config, N):
     backbone = config.backbone

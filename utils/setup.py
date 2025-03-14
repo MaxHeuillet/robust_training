@@ -6,11 +6,8 @@ import os
 import torch
 import torch.distributed as dist
 from filelock import FileLock
-import pandas as pd
-from datetime import datetime
 from omegaconf import OmegaConf
 import pickle
-import datetime
 
 
 def get_config_id(cfg) -> str:

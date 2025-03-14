@@ -1,11 +1,4 @@
 from omegaconf import OmegaConf
-from datasets import load_data
-import numpy as np
-
-import torch
-
-from torch.utils.data import DataLoader
-from torchvision import datasets, transforms
 from architectures import load_architecture
 
 config = OmegaConf.load("./configs/default_config_linearprobe50.yaml")
@@ -31,7 +24,8 @@ backbones=(
  'robust_deit_small_patch16_224.pt',
  'vit_base_patch16_224.dino.pt', 
  'vit_small_patch16_224.augreg_in1k.pt', 
- 'convnext_tiny.fb_in22k.pt'   )  
+ 'convnext_tiny.fb_in22k.pt' 
+     )  
 
 N = 10 # nombre de classes dans le dataset considere
 

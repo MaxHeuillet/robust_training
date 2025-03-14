@@ -1,11 +1,7 @@
 from torchvision import datasets
 import os
-import os
 import kaggle
-import os
-import tarfile
-import zipfile
-import kaggle
+
 
 
 save_path = os.path.expanduser('~/scratch/data')
