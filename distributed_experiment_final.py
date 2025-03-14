@@ -506,9 +506,9 @@ class BaseExperiment:
             self.setup.log_results(config, statistic)
         
 
-# def training_wrapper(rank, experiment, config ):
-#     hpo_config = OmegaConf.load("{}/{}.yaml".format(config.hpo_config_directory, experiment.setup.exp_id) )
-#     experiment.training(hpo_config, rank=rank)
+def training_wrapper(rank, experiment, config ):
+    # this is necessary to bypass the rank argument that must be first in spawn, but not first in HPO optmiziation
+    experiment.training(config, rank=rank)
 
 if __name__ == "__main__":
 
@@ -547,7 +547,7 @@ if __name__ == "__main__":
     print('train', flush=True) 
     path = os.path.join(config_base.configs_path, "HPO_results", config_base.project_name, f"{config_base.exp_id}.yaml")
     config_optimal = OmegaConf.load(path) 
-    mp.spawn(experiment.training, args=(config_optimal), nprocs=world_size, join=True)
+    mp.spawn(training_wrapper, args=(experiment, config_optimal), nprocs=world_size, join=True)
 
     print('test Linf', flush=True)
     experiment.launch_test('Linf', config_optimal)
