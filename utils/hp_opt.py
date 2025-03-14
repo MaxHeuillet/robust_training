@@ -60,10 +60,10 @@ class Hp_opt:
         )
         return trainer
     
-    def get_tuner(self, epochs, training_func):
+    def get_tuner(self, training_func):
 
         update_config = self.get_config()
-        scheduler = self.get_scheduler(epochs)
+        scheduler = self.get_scheduler()
         trainer = self.get_trainer(training_func)
 
         # Define maximum runtime in seconds
