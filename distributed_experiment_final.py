@@ -547,7 +547,7 @@ if __name__ == "__main__":
     print('train', flush=True) 
     path = os.path.join(config_base.configs_path, "HPO_results", config_base.project_name, f"{config_base.exp_id}.yaml")
     config_optimal = OmegaConf.load(path) 
-    mp.spawn(experiment.training, args=(experiment, config_optimal), nprocs=world_size, join=True)
+    mp.spawn(experiment.training, args=(config_optimal), nprocs=world_size, join=True)
 
     print('test Linf', flush=True)
     experiment.launch_test('Linf', config_optimal)
