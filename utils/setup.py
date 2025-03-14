@@ -10,13 +10,7 @@ from omegaconf import OmegaConf
 import pickle
 
 
-def get_config_id(cfg) -> str:
 
-    # Join the values into a string
-    serialized_values = cfg.backbone + '_' + cfg.dataset + '_' + cfg.loss_function
-    print('serialized_values', serialized_values)
-    
-    return serialized_values
 
 class Setup:
 
@@ -157,16 +151,9 @@ class Setup:
 
         return statistic
 
-    def log_results(self, hpo_results=None, statistic=None):
-        
-        exp_id = self.exp_id
-        project_name = self.project_name
-        results_path = self.results_path
+    def log_results(self, config, statistic):
 
-        save_path = '{}/{}/{}.pkl'.format(results_path, project_name, exp_id)
-
-        # Load the current experiment configuration only once when first saving
-        current_experiment_config = OmegaConf.load("./configs/HPO_{}_{}.yaml".format(self.project_name, self.exp_id))
+        save_path = os.path.join(config.results, config.project_name, f"{config.exp_id}.pkl")
 
         # Use a file lock to prevent concurrent access
         lock = FileLock(save_path + '.lock')
@@ -175,24 +162,12 @@ class Setup:
             # Load existing results if the file exists
             if os.path.exists(save_path):
                 with open(save_path, 'rb') as f:
-                    results_dict = pickle.load(f)
+                    results = pickle.load(f)
             else:
-                results_dict = {}
+                results = {'clean_acc': None, 'Linf_acc': None, 'L2_acc': None, 'L1_acc': None }
 
-            # Ensure the current experiment's structure
-            if exp_id not in results_dict:
-                results_dict[exp_id] = {
-                    "config": current_experiment_config,  # Set config once when first initializing
-                    "statistics": {'clean_acc': None, 'Linf_acc': None, 'L2_acc': None, 'L1_acc': None},
-                    "hpo_results": {}
-                }
-
-            if hpo_results:
-                results_dict[exp_id]["hpo_results"] = hpo_results
-
-            if statistic:
-                results_dict[exp_id]["statistics"].update(statistic)
+            results.update( statistic )
 
             # Save the updated dictionary back to the file
             with open(save_path, 'wb') as f:
-                pickle.dump(results_dict, f)
+                pickle.dump(results, f)

@@ -1,14 +1,14 @@
 from torchvision import datasets
+import os
 from datasets.data_processing import process_trainvaltest, process_trainval, stratified_subsample
 
 from corruptions import apply_portfolio_of_corruptions
-from utils import get_data_dir
 from transforms import load_data_transforms
 
-def load_data(hp_opt, config, common_corruption=False):
+def load_data(config, common_corruption=False):
 
     dataset =config.dataset
-    datadir = get_data_dir(hp_opt,config)
+    datadir = os.path.abspath(os.path.expanduser(config.datasets_path))
 
     train_transform, transform = load_data_transforms()
 

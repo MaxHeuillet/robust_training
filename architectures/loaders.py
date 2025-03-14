@@ -9,9 +9,9 @@ from utils import get_state_dict_dir
 from architectures.clip_wrapper import CLIPConvNeXtClassifier
 
 
-def load_architecture(hp_opt, config, N):
+def load_architecture(config, N):
     backbone = config.backbone
-    statedict_dir = get_state_dict_dir(hp_opt, config)
+    statedict_dir = os.path.abspath(os.path.expanduser(config.statedicts_path)) #get_state_dict_dir(config)
 
     # Determine if it's an OpenCLIP model
     openclip_models = {

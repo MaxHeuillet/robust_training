@@ -51,6 +51,12 @@ def check_for_nans(tensors, tensor_names):
         if torch.isnan(tensor).any():
             print(f"{name} contains NaNs!")
 
+def get_config_id(cfg) -> str:
+    # Join the values into a string
+    serialized_values = cfg.backbone + '_' + cfg.dataset + '_' + cfg.loss_function
+    print('serialized_values', serialized_values)
+    return serialized_values
+
 class BaseExperiment:
 
     def __init__(self, setup, ):
@@ -78,7 +84,7 @@ class BaseExperiment:
         
     def initialize_loaders(self, config, rank, common_corruption = False):
 
-        train_dataset, val_dataset, test_dataset, N = load_data(self.setup.hp_opt, config, common_corruption)
+        train_dataset, val_dataset, test_dataset, N = load_data(config, common_corruption)
 
         train_sampler = DistributedSampler(train_dataset, num_replicas=self.setup.world_size, rank=rank, shuffle=True, drop_last=True)
         val_sampler = DistributedSampler(val_dataset, num_replicas=self.setup.world_size, rank=rank, drop_last=True)
@@ -126,7 +132,7 @@ class BaseExperiment:
 
         trainloader, valloader, _, train_sampler, val_sampler, _, N = self.initialize_loaders(config, rank)
 
-        model = load_architecture(self.setup.hp_opt, config, N, )
+        model = load_architecture(config, N, )
 
         optimizer = load_optimizer(config, model,)   
         
@@ -160,7 +166,7 @@ class BaseExperiment:
         
         self.setup.cleanup() 
 
-    def hyperparameter_optimization(self, hpo_config):  
+    def hyperparameter_optimization(self, config):  
 
         self.setup.hp_opt = True 
 
@@ -168,7 +174,7 @@ class BaseExperiment:
 
         hp_search = Hp_opt(self.setup)
 
-        tuner = hp_search.get_tuner( hpo_config.epochs, self.training )
+        tuner = hp_search.get_tuner( config.epochs, self.training )
 
         result_grid = tuner.fit()
 
@@ -177,8 +183,9 @@ class BaseExperiment:
 
         self.setup.hp_opt = False
 
-        optimal_config = OmegaConf.merge(self.setup.config, best_result.config['train_loop_config']  )
-        OmegaConf.save(optimal_config, './configs/HPO_results/{}/{}.yaml'.format(self.setup.project_name, self.setup.exp_id) )
+        optimal_config = OmegaConf.merge(config, best_result.config['train_loop_config']  )
+        output_path = os.path.join(config.configs_path, "HPO_results", config.project_name, f"{config.exp_id}.yaml")
+        OmegaConf.save(optimal_config, output_path)
 
         ray.shutdown()
 
@@ -194,9 +201,9 @@ class BaseExperiment:
 
         scaler = GradScaler() 
 
-        tracker_nat = ActivationTrackerAggregated(train=True)
-        tracker_adv = ActivationTrackerAggregated(train=True)
-        handles = register_hooks_aggregated(model, tracker_nat, tracker_adv)
+        # tracker_nat = ActivationTrackerAggregated(train=True)
+        # tracker_adv = ActivationTrackerAggregated(train=True)
+        # handles = register_hooks_aggregated(model, tracker_nat, tracker_adv)
          
         model.train()
 
@@ -244,16 +251,16 @@ class BaseExperiment:
                             
                         gradient_norm = compute_gradient_norms(model)
                             
-                        res_adv = compute_stats_aggregated(tracker_adv)
-                        metrics = { "gradient_norm": float(gradient_norm), 
-                                    "zero_adv_train": res_adv['zero_count'] / res_adv['total_neurons'],
-                                    "dormant_adv_train":res_adv['dormant_count'] / res_adv['total_neurons'], 
-                                    "overactive_adv_train":res_adv['overactive_count'] / res_adv['total_neurons'],  }
+                        # res_adv = compute_stats_aggregated(tracker_adv)
+                        metrics = { "gradient_norm": float(gradient_norm),   }
+                        # "zero_adv_train": res_adv['zero_count'] / res_adv['total_neurons'],
+                        # "dormant_adv_train":res_adv['dormant_count'] / res_adv['total_neurons'], 
+                        # "overactive_adv_train":res_adv['overactive_count'] / res_adv['total_neurons'],
                             
                         logger.log_metrics(metrics, epoch=iteration, step=update_step, )
 
-                        tracker_nat.clear()
-                        tracker_adv.clear()
+                        # tracker_nat.clear()
+                        # tracker_adv.clear()
 
                     scaler.step(optimizer)
                     scaler.update()
@@ -277,8 +284,8 @@ class BaseExperiment:
             break
                             
         # Remove hooks
-        for handle in handles:
-            handle.remove()
+        # for handle in handles:
+        #     handle.remove()
 
     def validation(self, valloader, model, logger, iteration, rank):
 
@@ -289,9 +296,9 @@ class BaseExperiment:
         nat_acc, _, _ = self.setup.sync_value(total_correct_nat, total_examples, rank)
         adv_acc, _, _ = self.setup.sync_value(total_correct_adv, total_examples, rank)
 
-        adv_zero, _, _ = self.setup.sync_value(res_adv['zero_count'], res_adv['total_neurons'], rank)
-        adv_dormant, _, _ = self.setup.sync_value(res_adv['dormant_count'], res_adv['total_neurons'], rank)
-        adv_overact, _, _ = self.setup.sync_value(res_adv['overactive_count'], res_adv['total_neurons'], rank)
+        # adv_zero, _, _ = self.setup.sync_value(res_adv['zero_count'], res_adv['total_neurons'], rank)
+        # adv_dormant, _, _ = self.setup.sync_value(res_adv['dormant_count'], res_adv['total_neurons'], rank)
+        # adv_overact, _, _ = self.setup.sync_value(res_adv['overactive_count'], res_adv['total_neurons'], rank)
 
         if self.setup.hp_opt:
             print('val loss', val_loss)
@@ -301,8 +308,8 @@ class BaseExperiment:
 
             print('hey', flush=True)
 
-            metrics = { "val_loss": val_loss, "val_nat_accuracy": nat_acc, "val_adv_accuracy": adv_acc,
-                            "zero_adv_val": adv_zero, "dormant_adv_val": adv_dormant, "overactive_adv_val": adv_overact, }
+            metrics = { "val_loss": val_loss, "val_nat_accuracy": nat_acc, "val_adv_accuracy": adv_acc, }
+                        #"zero_adv_val": adv_zero, "dormant_adv_val": adv_dormant, "overactive_adv_val": adv_overact,
                 
             logger.log_metrics(metrics, epoch=iteration)
 
@@ -310,9 +317,9 @@ class BaseExperiment:
 
         model.eval()
 
-        tracker_nat = ActivationTrackerAggregated(train=False)
-        tracker_adv = ActivationTrackerAggregated(train=False)
-        handles = register_hooks_aggregated(model, tracker_nat, tracker_adv)
+        # tracker_nat = ActivationTrackerAggregated(train=False)
+        # tracker_adv = ActivationTrackerAggregated(train=False)
+        # handles = register_hooks_aggregated(model, tracker_nat, tracker_adv)
 
         total_loss = 0.0
         total_correct_nat = 0
@@ -344,27 +351,25 @@ class BaseExperiment:
             break
 
             # Compute neuron statistics
-        res_adv = compute_stats_aggregated(tracker_adv)
+        # res_adv = compute_stats_aggregated(tracker_adv)
 
-        tracker_nat.clear()
-        tracker_adv.clear()   
-        # Remove hooks
-        for handle in handles:
-            handle.remove()
+        # tracker_nat.clear()
+        # tracker_adv.clear()   
+        # # Remove hooks
+        # for handle in handles:
+        #     handle.remove()
 
-        return total_loss, total_correct_nat, total_correct_adv, total_examples, None, res_adv
+        return total_loss, total_correct_nat, total_correct_adv, total_examples, None, None
     
 
-    def test(self, rank, result_queue, corruption_type):
-
-        config = OmegaConf.load("./configs/HPO_{}_{}.yaml".format(self.setup.project_name, self.setup.exp_id) )
+    def test(self, rank, result_queue, corruption_type, config):
 
         common_corruption = True if corruption_type == 'common' else False
         _, _, testloader, _, _, _, N = self.initialize_loaders(config, rank, common_corruption)
         # test_sampler.set_epoch(0)  
         print('dataloader', flush=True) 
         
-        model = load_architecture(self.setup.hp_opt, config, N, )
+        model = load_architecture(config, N, )
 
         model = CustomModel(config, model, )
         model.set_fine_tuning_strategy()
@@ -457,7 +462,7 @@ class BaseExperiment:
         
         return stats_nat, stats_adv
     
-    def launch_test(self, corruption_type):
+    def launch_test(self, corruption_type, config):
         # import psutil  # Requires: pip install psutil
         # Create a Queue to gather results
 
@@ -468,7 +473,7 @@ class BaseExperiment:
 
         for rank in range(self.setup.world_size): # 
 
-            p = mp.Process(target=self.test, args=(rank, result_queue, corruption_type))
+            p = mp.Process(target=self.test, args=(rank, result_queue, corruption_type, config))
             p.start()
 
             # print(f"Process {p.pid} assigned to cores: {core_groups[rank]}", flush=True)
@@ -491,12 +496,12 @@ class BaseExperiment:
         # Log the aggregated results
         if corruption_type == 'Linf':
             statistic = self.setup.aggregate_results(statistics_nat, 'clean')
-            self.setup.log_results(statistic=statistic)
+            self.setup.log_results(config, statistic)
             statistic = self.setup.aggregate_results(statistics_adv, corruption_type)
-            self.setup.log_results(statistic=statistic)
+            self.setup.log_results(config, statistic)
         else:
             statistic = self.setup.aggregate_results(statistics_adv, corruption_type)
-            self.setup.log_results(statistic=statistic)
+            self.setup.log_results(config, statistic)
         
 
 # def training_wrapper(rank, experiment, config ):
@@ -514,39 +519,41 @@ if __name__ == "__main__":
     args_dict = get_args2()
 
     if 'linearprobe_50epochs' in args_dict['project_name']:
-        config = compose(config_name="default_config_linearprobe50")  # Store Hydra config in a variable
+        config_base = compose(config_name="default_config_linearprobe50")  # Store Hydra config in a variable
     elif 'full_fine_tuning_5epochs' in args_dict['project_name']:
-        config = compose(config_name="default_config_fullfinetuning5")  # Store Hydra config in a variable
+        config_base = compose(config_name="default_config_fullfinetuning5")  # Store Hydra config in a variable
     elif 'full_fine_tuning_50epochs' in args_dict['project_name']:
-        config = compose(config_name="default_config_fullfinetuning50")  # Store Hydra config in a variable
+        config_base = compose(config_name="default_config_fullfinetuning50")  # Store Hydra config in a variable
     else:
         print('error in the experiment name', flush=True)
     
-    config = OmegaConf.merge(config, args_dict)
+    config_base = OmegaConf.merge(config_base, args_dict)
+    config_base.exp_id = get_config_id(config_base)
     
-    set_seeds(config.seed)
+    set_seeds(config_base.seed)
 
     world_size = torch.cuda.device_count()
-    hpo_config_directory = '{}/HPO_results/{}'.format(config.config_path, config.project_name)
-    os.makedirs(hpo_config_directory, exist_ok=True)
+    directory_path = os.path.join(config_base.configs_path, "HPO_results", config_base.project_name)
+    os.makedirs(directory_path, exist_ok=True)
 
-    setup = Setup(config, world_size)
+    setup = Setup(world_size)
     experiment = BaseExperiment(setup)
 
     print('HPO', flush=True)
-    experiment.hyperparameter_optimization()
+    experiment.hyperparameter_optimization(config_base)
     
     print('train', flush=True) 
-    config_optimal = OmegaConf.load("{}/{}.yaml".format(hpo_config_directory, experiment.setup.exp_id) ) 
-    mp.spawn(experiment.hyperparameter_optimization, args=(experiment, config_optimal), nprocs=world_size, join=True)
+    path = os.path.join(config_base.configs_path, "HPO_results", config_base.project_name, f"{config_base.exp_id}.yaml")
+    config_optimal = OmegaConf.load(path) 
+    mp.spawn(experiment.training, args=(experiment, config_optimal), nprocs=world_size, join=True)
 
     print('test Linf', flush=True)
-    experiment.launch_test('Linf')
+    experiment.launch_test('Linf', config_optimal)
     print('test L1', flush=True)
-    experiment.launch_test('L1')
+    experiment.launch_test('L1', config_optimal)
     print('test L2', flush=True)
-    experiment.launch_test('L2')
+    experiment.launch_test('L2', config_optimal)
     print('test common corruptions', flush=True)
-    experiment.launch_test('common')
+    experiment.launch_test('common', config_optimal)
 
 
