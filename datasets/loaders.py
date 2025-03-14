@@ -7,8 +7,9 @@ from transforms import load_data_transforms
 
 def load_data(config, common_corruption=False):
 
-    dataset =config.dataset
-    datadir = os.path.abspath(os.path.expanduser(config.datasets_path))
+    dataset = config.dataset
+    datadir = os.path.abspath(os.path.expandvars(os.path.expanduser(config.datasets_path)))
+
 
     train_transform, transform = load_data_transforms()
 
