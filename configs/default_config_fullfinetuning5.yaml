@@ -27,4 +27,6 @@ local_statedict_path: "/home/mheuillet/Desktop/state_dicts_share/"
 local_data_path: "/home/mheuillet/Desktop/robust_training/data/"
 cluster_data_path: "SLURM_TMPDIR"
 
+config_path: "./configs"
+
 

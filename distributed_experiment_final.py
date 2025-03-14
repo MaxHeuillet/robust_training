@@ -14,6 +14,7 @@ from multiprocessing import Queue
 
 
 from autoattack import AutoAttack
+from ray.air import session  
 
 
 from utils import Setup, Hp_opt
@@ -108,7 +109,7 @@ class BaseExperiment:
 
     def training(self, update_config, rank=None ):
 
-        if self.setup.hp_opt:
+        if self.setup.hp_opt: # we have to merge here because HP is a dictionary with sample objects, which is not compatible with Omegaconf
             config = OmegaConf.merge(self.setup.config, update_config)
             rank = train.get_context().get_world_rank()
             logger = None
@@ -116,7 +117,7 @@ class BaseExperiment:
             print(f"Trial resource allocation: {resources}")
             
         else:
-            config = OmegaConf.load( "./configs/HPO_{}_{}.yaml".format(self.setup.project_name, self.setup.exp_id) )
+            config = update_config.copy() #OmegaConf.load( "./configs/HPO_{}_{}.yaml".format(self.setup.project_name, self.setup.exp_id) )
             self.setup.distributed_setup(rank)
             logger = self.initialize_logger(rank)
 
@@ -166,8 +167,9 @@ class BaseExperiment:
         ray.init() #logging_level=logging.DEBUG
 
         hp_search = Hp_opt(self.setup)
-        print('epochs in the HP function', self.setup.config.epochs)
-        tuner = hp_search.get_tuner( self.setup.config.epochs, self.training )
+
+        tuner = hp_search.get_tuner( self.training )
+
         result_grid = tuner.fit()
 
         best_result = result_grid.get_best_result()
@@ -176,7 +178,7 @@ class BaseExperiment:
         self.setup.hp_opt = False
 
         best_config = OmegaConf.merge(self.setup.config, best_result.config['train_loop_config']  )
-        OmegaConf.save(best_config, './configs/HPO_{}_{}.yaml'.format(self.setup.project_name, self.setup.exp_id) )
+        OmegaConf.save(best_config, './configs/HPO_results/{}/{}.yaml'.format(self.setup.project_name, self.setup.exp_id) )
 
         self.setup.log_results(hpo_results = result_grid)
 
@@ -368,7 +370,10 @@ class BaseExperiment:
 
         model = CustomModel(config, model, )
         model.set_fine_tuning_strategy()
-        trained_state_dict = torch.load('./state_dicts/trained_model_{}_{}.pt'.format(self.setup.project_name, self.setup.exp_id), weights_only=True, map_location='cpu')
+
+        state_dict_path = config.trained_state_dict_path
+        model_name = 'trained_model_{}_{}.pt'.format(self.setup.project_name, self.setup.exp_id)
+        trained_state_dict = torch.load('{}/{}'.format(state_dict_path,model_name), weights_only=True, map_location='cpu')
         model.load_state_dict(trained_state_dict)
         model.to(rank)
 
@@ -496,9 +501,9 @@ class BaseExperiment:
             self.setup.log_results(statistic=statistic)
         
 
-def training_wrapper(rank, experiment, config ):
-    hpo_config = OmegaConf.load("./configs/HPO_{}_{}.yaml".format(experiment.setup.project_name, experiment.setup.exp_id) )
-    experiment.training(hpo_config, rank=rank)
+# def training_wrapper(rank, experiment, config ):
+#     hpo_config = OmegaConf.load("{}/{}.yaml".format(config.hpo_config_directory, experiment.setup.exp_id) )
+#     experiment.training(hpo_config, rank=rank)
 
 if __name__ == "__main__":
 
@@ -506,7 +511,7 @@ if __name__ == "__main__":
 
     torch.multiprocessing.set_start_method("spawn", force=True)
 
-    initialize(config_path="configs", version_base=None)
+    initialize(config_path="./configs", version_base=None)
 
     args_dict = get_args2()
 
@@ -524,15 +529,19 @@ if __name__ == "__main__":
     set_seeds(config.seed)
 
     world_size = torch.cuda.device_count()
+    hpo_config_directory = '{}/HPO_results/{}'.format(config.config_path, config.project_name)
+    os.makedirs(hpo_config_directory, exist_ok=True)
+
     setup = Setup(config, world_size)
     experiment = BaseExperiment(setup)
 
     print('HPO', flush=True)
     experiment.hyperparameter_optimization()
     
-    print('train', flush=True)  
-    mp.spawn(training_wrapper, args=(experiment, config), nprocs=world_size, join=True)
-    
+    print('train', flush=True) 
+    config_optimal = OmegaConf.load("{}/{}.yaml".format(hpo_config_directory, experiment.setup.exp_id) ) 
+    mp.spawn(experiment.hyperparameter_optimization, args=(experiment, config_optimal), nprocs=world_size, join=True)
+
     print('test Linf', flush=True)
     experiment.launch_test('Linf')
     print('test L1', flush=True)

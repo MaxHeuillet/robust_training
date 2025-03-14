@@ -18,26 +18,28 @@ class Hp_opt:
         self.setup = setup
         cluster_name = os.environ.get('SLURM_CLUSTER_NAME', 'Unknown')
         if cluster_name in ['narval', 'beluga']:
-            self.minutes = 150
-            self.trials = 1000
+            self.minutes = 5 #150
+            self.trials = 1 #1000
         else:
             self.minutes = 2
             self.trials = 2
 
     def get_config(self):
         # Ray Tune hyperparameter search space
+
         tune_config = {
             "lr1": tune.loguniform(1e-5, 1e-1),
             "lr2": tune.loguniform(1e-5, 1e-1),
             "weight_decay1": tune.loguniform(1e-6, 1e-2),
             "weight_decay2": tune.loguniform(1e-6, 1e-2),
             "scheduler": tune.choice([True, False])   }
+        
         return tune_config
 
-    def get_scheduler(self, epochs):
+    def get_scheduler(self, ):
         # Configure the scheduler WITHOUT metric and mode
         scheduler = ASHAScheduler(
-            max_t=epochs,
+            max_t=self.setup.config.epochs,
             grace_period=1,
             reduction_factor=2
         )
