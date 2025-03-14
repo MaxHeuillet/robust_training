@@ -78,8 +78,7 @@ class BaseExperiment:
             
             logger.log_parameter("run_id", os.getenv('SLURM_JOB_ID') )
             logger.log_parameter("global_process_rank", rank)
-            logger.log_parameters(self.setup.config)
-
+        
         return logger
         
     def initialize_loaders(self, config, rank, common_corruption = False):
@@ -126,6 +125,7 @@ class BaseExperiment:
             config = update_config.copy() #OmegaConf.load( "./configs/HPO_{}_{}.yaml".format(self.setup.project_name, self.setup.exp_id) )
             self.setup.distributed_setup(rank)
             logger = self.initialize_logger(rank)
+            logger.log_parameters(config)
 
         print('initialize dataset', rank, flush=True) 
         print(config, rank, flush=True) 
@@ -195,7 +195,7 @@ class BaseExperiment:
 
         # Gradient accumulation:
         effective_batch_size = 1024
-        loss_scale = 0.50 if self.setup.config.loss_function == 'TRADES_v2' else 1.00
+        loss_scale = 0.50 if config.loss_function == 'TRADES_v2' else 1.00
         per_gpu_batch_size = int( self.setup.train_batch_size() * loss_scale ) # Choose a batch size that fits in memory
         accumulation_steps = effective_batch_size // (self.setup.world_size * per_gpu_batch_size)
         global_step = 0  # Track global iterations across accumulation steps
@@ -377,7 +377,7 @@ class BaseExperiment:
         model.set_fine_tuning_strategy()
 
         state_dict_path = config.trained_state_dict_path
-        model_name = 'trained_model_{}_{}.pt'.format(self.setup.project_name, self.setup.exp_id)
+        model_name = 'trained_model_{}_{}.pt'.format(config.project_name, config.exp_id)
         trained_state_dict = torch.load('{}/{}'.format(state_dict_path,model_name), weights_only=True, map_location='cpu')
         model.load_state_dict(trained_state_dict)
         model.to(rank)
