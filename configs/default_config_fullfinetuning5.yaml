@@ -24,6 +24,7 @@ project_name: null # the experiment type
 exp_id: null
 
 statedicts_path: "~/scratch/state_dicts_share/"
+trained_statedicts_path: "~/scratch/trained_state_dicts/"
 datasets_path: "SLURM_TMPDIR/data"
 configs_path: "./configs"
 results_path: "./results"

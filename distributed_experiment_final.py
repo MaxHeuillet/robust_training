@@ -160,7 +160,9 @@ class BaseExperiment:
         if not self.setup.hp_opt and rank == 0:
             model_to_save = model.module
             model_to_save = model_to_save.cpu()
-            torch.save(model_to_save.state_dict(), get_state_dict_dir(self.setup.hp_opt, config) +'trained_model_{}_{}.pt'.format(self.setup.project_name, self.setup.exp_id) )
+            save_path =  os.path.join(config.trained_statedicts_path, config.project_name, f"{config.exp_id}.pt")
+            os.makedirs( os.path.dirname(save_path), exist_ok=True) 
+            torch.save(model_to_save.state_dict(), save_path )
             print('Model saved by rank 0')
             logger.end()
         
