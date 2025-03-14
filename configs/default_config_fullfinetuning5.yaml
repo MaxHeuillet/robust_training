@@ -21,6 +21,7 @@ beta: 1.0  # beta of trades
 
 # arguments for diffusion augmented learning
 project_name: null # the experiment type
+exp_id: null
 
 statedicts_path: "~/scratch/state_dicts_share/"
 datasets_path: "SLURM_TMPDIR/data"
