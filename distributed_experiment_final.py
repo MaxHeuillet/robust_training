@@ -69,7 +69,7 @@ class BaseExperiment:
         
         if rank == 0:
             logger = Experiment(api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
-                                    project_name=self.setup.project_name,
+                                    project_name=config.project_name,
                                     workspace="maxheuillet",
                                     auto_metric_logging=False,
                                     auto_output_logging=False)
