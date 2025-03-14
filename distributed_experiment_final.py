@@ -63,7 +63,7 @@ class BaseExperiment:
 
         self.setup = setup
 
-    def initialize_logger(self, rank):
+    def initialize_logger(self, rank, config):
 
         logger = None
         
@@ -78,6 +78,7 @@ class BaseExperiment:
             
             logger.log_parameter("run_id", os.getenv('SLURM_JOB_ID') )
             logger.log_parameter("global_process_rank", rank)
+            logger.log_parameters(config)
         
         return logger
         
@@ -124,8 +125,7 @@ class BaseExperiment:
         else:
             config = update_config.copy() #OmegaConf.load( "./configs/HPO_{}_{}.yaml".format(self.setup.project_name, self.setup.exp_id) )
             self.setup.distributed_setup(rank)
-            logger = self.initialize_logger(rank)
-            logger.log_parameters(config)
+            logger = self.initialize_logger(rank, config)
 
         print('initialize dataset', rank, flush=True) 
         print(config, rank, flush=True) 
