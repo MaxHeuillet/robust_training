@@ -26,5 +26,6 @@ statedicts_path: "~/scratch/state_dicts_share/"
 datasets_path: "SLURM_TMPDIR"
 configs_path: "./configs"
 results_path: "./results"
+hpo_path: "~/scratch/hpo_results/"
 
 

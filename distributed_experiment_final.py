@@ -160,7 +160,7 @@ class BaseExperiment:
         
         self.setup.cleanup() 
 
-    def hyperparameter_optimization(self, ):  
+    def hyperparameter_optimization(self, hpo_config):  
 
         self.setup.hp_opt = True 
 
@@ -168,7 +168,7 @@ class BaseExperiment:
 
         hp_search = Hp_opt(self.setup)
 
-        tuner = hp_search.get_tuner( self.training )
+        tuner = hp_search.get_tuner( hpo_config.epochs, self.training )
 
         result_grid = tuner.fit()
 
@@ -177,10 +177,8 @@ class BaseExperiment:
 
         self.setup.hp_opt = False
 
-        best_config = OmegaConf.merge(self.setup.config, best_result.config['train_loop_config']  )
-        OmegaConf.save(best_config, './configs/HPO_results/{}/{}.yaml'.format(self.setup.project_name, self.setup.exp_id) )
-
-        self.setup.log_results(best_config, hpo_results = result_grid)
+        optimal_config = OmegaConf.merge(self.setup.config, best_result.config['train_loop_config']  )
+        OmegaConf.save(optimal_config, './configs/HPO_results/{}/{}.yaml'.format(self.setup.project_name, self.setup.exp_id) )
 
         ray.shutdown()
 

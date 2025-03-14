@@ -10,12 +10,12 @@ from ray.train import ScalingConfig
 import torch
 import os
 from datetime import timedelta
-
+import subprocess
 
 class Hp_opt:
 
-    def __init__(self, setup):
-        self.setup = setup
+    def __init__(self, config):
+        self.config = config
         cluster_name = os.environ.get('SLURM_CLUSTER_NAME', 'Unknown')
         if cluster_name in ['narval', 'beluga']:
             self.minutes = 5 #150
@@ -39,7 +39,7 @@ class Hp_opt:
     def get_scheduler(self, ):
         # Configure the scheduler WITHOUT metric and mode
         scheduler = ASHAScheduler(
-            max_t=self.setup.config.epochs,
+            max_t=self.config.epochs,
             grace_period=1,
             reduction_factor=2
         )
@@ -60,7 +60,7 @@ class Hp_opt:
         )
         return trainer
     
-    def get_tuner(self, training_func):
+    def get_tuner(self, epochs, training_func):
 
         update_config = self.get_config()
         scheduler = self.get_scheduler(epochs)
@@ -70,14 +70,12 @@ class Hp_opt:
         max_runtime_seconds = timedelta(minutes=self.minutes).total_seconds()
 
         # Set up storage path
-        full_path = os.path.abspath(os.path.expanduser("~/scratch/hpo_results"))
-        experiment_path = os.path.join(full_path, f"{self.setup.project_name}_{self.setup.exp_id}")
+        full_path = os.path.expanduser(self.config.hpo_path)
+        experiment_path = os.path.join(full_path, f"{self.config.project_name}_{self.config.exp_id}")
 
         # Check if experiment path exists and delete it before starting a new run
         if os.path.exists(experiment_path):
             print(f"Deleting existing experiment directory: {experiment_path}")
-            # shutil.rmtree(experiment_path)
-            import subprocess
             subprocess.run(["rm", "-rf", experiment_path], check=True)
 
         os.makedirs(experiment_path, exist_ok=True)
@@ -94,7 +92,7 @@ class Hp_opt:
                 time_budget_s=max_runtime_seconds,
             ),
             run_config=RunConfig(
-                name=f"{self.setup.project_name}_{self.setup.exp_id}",
+                name=f"{self.config.project_name}_{self.config.exp_id}",
                 storage_path=f"file://{full_path}",
             ),
         )
