@@ -25,7 +25,7 @@ exp_id: null
 
 statedicts_path: "~/scratch/state_dicts_share/"
 trained_statedicts_path: "~/scratch/trained_state_dicts/"
-datasets_path: "SLURM_TMPDIR/data"
+datasets_path: "$SLURM_TMPDIR/data"
 configs_path: "./configs"
 results_path: "./results"
 hpo_path: "~/scratch/hpo_results/"
