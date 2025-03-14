@@ -22,11 +22,9 @@ beta: 1.0  # beta of trades
 # arguments for diffusion augmented learning
 project_name: null # the experiment type
 
-cluster_statedict_path: "~/scratch/state_dicts_share/"
-local_statedict_path: "/home/mheuillet/Desktop/state_dicts_share/"
-local_data_path: "/home/mheuillet/Desktop/robust_training/data/"
-cluster_data_path: "SLURM_TMPDIR"
-
-config_path: "./configs"
+statedicts_path: "~/scratch/state_dicts_share/"
+datasets_path: "SLURM_TMPDIR"
+configs_path: "./configs"
+results_path: "./results"
 
 

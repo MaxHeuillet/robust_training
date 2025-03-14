@@ -20,13 +20,13 @@ def get_config_id(cfg) -> str:
 
 class Setup:
 
-    def __init__(self, config, world_size):
-        self.config = config
-        self.exp_id = get_config_id(self.config)
+    def __init__(self, world_size): #config
+        # self.config = config
+        # self.exp_id = get_config_id(self.config)
         self.world_size = world_size
         self.hp_opt = False
         self.cluster_name = os.environ.get('SLURM_CLUSTER_NAME', 'Unknown')
-        self.project_name = config.project_name
+        # self.project_name = config.project_name
         
     def distributed_setup(self, rank):
 
@@ -158,54 +158,41 @@ class Setup:
         return statistic
 
     def log_results(self, hpo_results=None, statistic=None):
+        
+        exp_id = self.exp_id
+        project_name = self.project_name
+        results_path = self.results_path
 
-        data_path = './results/results_{}_{}.pkl'.format(self.project_name, self.exp_id)
+        save_path = '{}/{}/{}.pkl'.format(results_path, project_name, exp_id)
 
         # Load the current experiment configuration only once when first saving
         current_experiment_config = OmegaConf.load("./configs/HPO_{}_{}.yaml".format(self.project_name, self.exp_id))
 
         # Use a file lock to prevent concurrent access
-        lock = FileLock(data_path + '.lock')
+        lock = FileLock(save_path + '.lock')
 
         with lock:
             # Load existing results if the file exists
-            if os.path.exists(data_path):
-                with open(data_path, 'rb') as f:
+            if os.path.exists(save_path):
+                with open(save_path, 'rb') as f:
                     results_dict = pickle.load(f)
             else:
                 results_dict = {}
 
             # Ensure the current experiment's structure
-            if self.exp_id not in results_dict:
-                results_dict[self.exp_id] = {
+            if exp_id not in results_dict:
+                results_dict[exp_id] = {
                     "config": current_experiment_config,  # Set config once when first initializing
                     "statistics": {'clean_acc': None, 'Linf_acc': None, 'L2_acc': None, 'L1_acc': None},
                     "hpo_results": {}
                 }
 
             if hpo_results:
-                results_dict[self.exp_id]["hpo_results"] = hpo_results
+                results_dict[exp_id]["hpo_results"] = hpo_results
 
             if statistic:
-                results_dict[self.exp_id]["statistics"].update(statistic)
+                results_dict[exp_id]["statistics"].update(statistic)
 
             # Save the updated dictionary back to the file
-            with open(data_path, 'wb') as f:
+            with open(save_path, 'wb') as f:
                 pickle.dump(results_dict, f)
-
-
-# def generate_timestamp():
-#     return datetime.now().strftime('%y/%m/%d/%H/%M/%S')
-
-# def check_unique_id(df1, df2, unique_id_col):
-
-#     unique_id = df2[unique_id_col].iloc[0]
-    
-#     matching_indices = df1[df1[unique_id_col] == unique_id].index
-
-#     if not matching_indices.empty:
-#         iloc_indices = [df1.index.get_loc(idx) for idx in matching_indices]
-#         return True, iloc_indices
-#     else:
-#         return False, []
-    

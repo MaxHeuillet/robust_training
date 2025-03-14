@@ -180,7 +180,7 @@ class BaseExperiment:
         best_config = OmegaConf.merge(self.setup.config, best_result.config['train_loop_config']  )
         OmegaConf.save(best_config, './configs/HPO_results/{}/{}.yaml'.format(self.setup.project_name, self.setup.exp_id) )
 
-        self.setup.log_results(hpo_results = result_grid)
+        self.setup.log_results(best_config, hpo_results = result_grid)
 
         ray.shutdown()
 
