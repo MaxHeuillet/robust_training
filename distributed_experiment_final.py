@@ -376,9 +376,8 @@ class BaseExperiment:
         model = CustomModel(config, model, )
         model.set_fine_tuning_strategy()
 
-        state_dict_path = config.trained_state_dict_path
-        model_name = 'trained_model_{}_{}.pt'.format(config.project_name, config.exp_id)
-        trained_state_dict = torch.load('{}/{}'.format(state_dict_path,model_name), weights_only=True, map_location='cpu')
+        load_path =  os.path.join(config.trained_statedicts_path, config.project_name, f"{config.exp_id}.pt")
+        trained_state_dict = torch.load(load_path, weights_only=True, map_location='cpu')
         model.load_state_dict(trained_state_dict)
         model.to(rank)
 
