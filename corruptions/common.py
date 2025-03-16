@@ -6,27 +6,25 @@ from torch.utils.data import Dataset
 
 from .corruptions import *
 
-
-# Define a Custom Dataset
 class CustomDataset(Dataset):
     def __init__(self, data, transform=None):
-        self.dataset = data
-        self.transform = transform  # Apply transformations (if any)
+        self.dataset = data  # list of (img, label) pairs
+        self.transform = transform
 
     def __len__(self):
-        return len(self.dataset[0])  # Return dataset size
+        return len(self.dataset)
 
     def __getitem__(self, idx):
-        img,label = self.dataset[idx]
+        img, label = self.dataset[idx]
 
-        # Convert NumPy/PIL images to Tensor if needed
-        if isinstance(img, np.ndarray):  # If NumPy array, convert to PIL
+        if isinstance(img, np.ndarray):
             img = Image.fromarray(img)
 
         if self.transform:
-            img = self.transform(img)  # Apply transforms
+            img = self.transform(img)
 
         return img, label
+
 
 def apply_portfolio_of_corruptions(dataset, severity=3):
     """
