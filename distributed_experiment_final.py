@@ -59,9 +59,10 @@ def get_config_id(cfg) -> str:
 
 class BaseExperiment:
 
-    def __init__(self, setup, ):
+    def __init__(self, setup, base_config):
 
         self.setup = setup
+        self.base_config = base_config
 
     def initialize_logger(self, rank, config):
 
@@ -118,7 +119,8 @@ class BaseExperiment:
     def training(self, update_config, rank=None ):
 
         if self.setup.hp_opt: # we have to merge here because HP is a dictionary with sample objects, which is not compatible with Omegaconf
-            config = OmegaConf.merge(self.setup.config, update_config)
+            base_config = self.base_config
+            config = OmegaConf.merge(base_config, update_config)
             rank = train.get_context().get_world_rank()
             logger = None
             resources = session.get_trial_resources()
@@ -553,7 +555,7 @@ if __name__ == "__main__":
     os.makedirs(directory_path, exist_ok=True)
 
     setup = Setup(world_size)
-    experiment = BaseExperiment(setup)
+    experiment = BaseExperiment(setup, config_base)
 
     print('HPO', flush=True)
     experiment.hyperparameter_optimization(config_base)
