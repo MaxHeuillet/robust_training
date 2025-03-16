@@ -74,7 +74,7 @@ class BaseExperiment:
                                     auto_metric_logging=False,
                                     auto_output_logging=False)
             
-            logger.set_name( self.setup.exp_id )
+            logger.set_name( config.exp_id )
             
             logger.log_parameter("run_id", os.getenv('SLURM_JOB_ID') )
             logger.log_parameter("global_process_rank", rank)
