@@ -16,10 +16,10 @@ def apgd_attack(config, model, x, y):
         
     # is_train=True
     # mixup=None
-    use_rs=config.config.use_rs #False
-    n_iter= config.config.perturb_steps #
-    eps = config.config.epsilon #4/255 #args.epsilon #
-    norm = config.config.distance #'Linf' #args.distance #
+    use_rs=config.use_rs #False
+    n_iter= config.perturb_steps #
+    eps = config.epsilon #4/255 #args.epsilon #
+    norm = config.distance #'Linf' #args.distance #
 
     # y = y.reshape( (-1,1) )
     # print(y.shape)
