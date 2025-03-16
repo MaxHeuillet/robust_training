@@ -160,11 +160,16 @@ class BaseExperiment:
         dist.barrier() 
 
         if not self.setup.hp_opt and rank == 0:
+
+
+            trained_dir = os.path.expanduser(config.trained_statedicts_path)
+            os.makedirs(trained_dir, exist_ok=True)
+            save_path = os.path.join(trained_dir, config.project_name, f"{config.exp_id}.pt")
+
             model_to_save = model.module
             model_to_save = model_to_save.cpu()
-            save_path =  os.path.join(config.trained_statedicts_path, config.project_name, f"{config.exp_id}.pt")
             print('trained state dicts directory: ', os.path.dirname(save_path) )
-            os.makedirs( os.path.dirname(save_path), exist_ok=True) 
+
             torch.save(model_to_save.state_dict(), save_path )
             print('Model saved by rank 0')
             logger.end()
@@ -379,7 +384,8 @@ class BaseExperiment:
         model = CustomModel(config, model, )
         model.set_fine_tuning_strategy()
 
-        load_path =  os.path.join(config.trained_statedicts_path, config.project_name, f"{config.exp_id}.pt")
+        path = os.path.expanduser(config.trained_statedicts_path)
+        load_path =  os.path.join(path, config.project_name, f"{config.exp_id}.pt")
         trained_state_dict = torch.load(load_path, weights_only=True, map_location='cpu')
         model.load_state_dict(trained_state_dict)
         model.to(rank)
