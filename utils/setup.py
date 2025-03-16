@@ -153,7 +153,7 @@ class Setup:
 
     def log_results(self, config, statistic):
 
-        save_path = os.path.join(config.results, config.project_name, f"{config.exp_id}.pkl")
+        save_path = os.path.join(config.results_path, config.project_name, f"{config.exp_id}.pkl")
 
         # Use a file lock to prevent concurrent access
         lock = FileLock(save_path + '.lock')
