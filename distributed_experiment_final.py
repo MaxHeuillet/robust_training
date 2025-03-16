@@ -543,12 +543,12 @@ if __name__ == "__main__":
     experiment = BaseExperiment(setup)
 
     print('HPO', flush=True)
-    experiment.hyperparameter_optimization(config_base)
+    # experiment.hyperparameter_optimization(config_base)
     
     print('train', flush=True) 
     path = os.path.join(config_base.configs_path, "HPO_results", config_base.project_name, f"{config_base.exp_id}.yaml")
     config_optimal = OmegaConf.load(path) 
-    mp.spawn(training_wrapper, args=(experiment, config_optimal), nprocs=world_size, join=True)
+    # mp.spawn(training_wrapper, args=(experiment, config_optimal), nprocs=world_size, join=True)
 
     print('test Linf', flush=True)
     experiment.launch_test('Linf', config_optimal)
