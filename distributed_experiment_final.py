@@ -161,10 +161,10 @@ class BaseExperiment:
 
         if not self.setup.hp_opt and rank == 0:
 
-
-            trained_dir = os.path.expanduser(config.trained_statedicts_path)
+            trained_dir = os.path.expanduser(os.path.join(config.trained_statedicts_path, config.project_name))
             os.makedirs(trained_dir, exist_ok=True)
-            save_path = os.path.join(trained_dir, config.project_name, f"{config.exp_id}.pt")
+
+            save_path = os.path.join(trained_dir, f"{config.exp_id}.pt")
 
             model_to_save = model.module
             model_to_save = model_to_save.cpu()
