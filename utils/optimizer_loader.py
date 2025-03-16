@@ -9,44 +9,33 @@ def load_optimizer(config, model):
     weight_decay1 = config.weight_decay1
     weight_decay2 = config.weight_decay2
 
-    def get_param_groups(model, head_module_name):
-        decay = []
-        no_decay = []
-        head_decay = []
-        head_no_decay = []
+    def get_param_groups(model, head_module=None):
+        decay, no_decay, head_decay, head_no_decay = [], [], [], []
 
         for name, param in model.named_parameters():
             if not param.requires_grad:
-                continue  # Skip frozen parameters
+                continue
 
-            # Identify if the parameter is part of the head
-            if head_module_name in name:
-                # Parameters in the head
-                if name.endswith(".bias") or isinstance(getattr(model, name.split('.')[0]), nn.BatchNorm2d) or "bn" in name or "norm" in name:
+            # Check if this param belongs to the head module
+            is_head = head_module is not None and any(param is p for p in head_module.parameters())
+
+            if is_head:
+                if "bias" in name or "norm" in name or "bn" in name:
                     head_no_decay.append(param)
                 else:
                     head_decay.append(param)
             else:
-                # Parameters in the backbone
-                if name.endswith(".bias") or isinstance(getattr(model, name.split('.')[0]), nn.BatchNorm2d) or "bn" in name or "norm" in name:
+                if "bias" in name or "norm" in name or "bn" in name:
                     no_decay.append(param)
                 else:
                     decay.append(param)
 
         return decay, no_decay, head_decay, head_no_decay
-
-    # Determine the head module name based on backbone
-    if "convnext" in backbone:
-        head_module_name = "head.fc"
-    elif "wideresnet" in backbone:
-        head_module_name = "logits"
-    elif "deit" in backbone or "vit" in backbone:
-        head_module_name = "head"
-    # else:
-    #     head_module_name = "head"
-
-    # Get parameter groups
-    decay, no_decay, head_decay, head_no_decay = get_param_groups(model, head_module_name)
+    
+    if 'resnet' in backbone:
+        optimizer = load_optimizer(config, model, head_module=model.fc)
+    else:
+        decay, no_decay, head_decay, head_no_decay = get_param_groups(model, model.head)
 
     print(len(decay), len(no_decay), len(head_decay), len(head_no_decay))   
 
