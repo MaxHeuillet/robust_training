@@ -13,7 +13,7 @@ def get_args2():
 
     parser = argparse.ArgumentParser(allow_abbrev=False)
 
-    parser.add_argument("--backbone", default = 'eva02_base_patch14_224.mim_in22k', type=str, help="load backbone")
+    parser.add_argument("--backbone", default = 'swinv2_base_window12to24_192to384.ms_in22k_ft_in1k', type=str, help="load backbone")
     parser.add_argument('--dataset', default='uc-merced-land-use-dataset', type=str, help='dataset: ' + ' (default: cifar10)')
     parser.add_argument("--loss_function", default="TRADES_v2", type=str, help="the loss function")
     parser.add_argument('--seed', default=0, type=int, help="random seed")
