@@ -147,7 +147,7 @@ class BaseExperiment:
 
         # torch.autograd.set_detect_anomaly(True)
         if not self.setup.hp_opt:
-            self.validation( valloader, model, logger, 0, rank)
+            self.validation( config, valloader, model, logger, 0, rank)
         
         print('start the loop')
         
