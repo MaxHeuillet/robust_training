@@ -33,7 +33,7 @@ def load_optimizer(config, model):
         return decay, no_decay, head_decay, head_no_decay
     
     if 'resnet' in backbone:
-        optimizer = load_optimizer(config, model, head_module=model.fc)
+        optimizer = get_param_groups(model, model.fc)
     else:
         decay, no_decay, head_decay, head_no_decay = get_param_groups(model, model.head)
 
