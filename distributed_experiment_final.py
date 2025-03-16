@@ -94,19 +94,19 @@ class BaseExperiment:
 
         print('initialize dataoader', rank,flush=True) 
         trainloader = DataLoader(train_dataset, 
-                                    batch_size=self.setup.train_batch_size(), 
+                                    batch_size=self.setup.train_batch_size(config), 
                                     sampler=train_sampler, 
                                     num_workers=nb_workers, 
                                     pin_memory=True) 
         
         valloader = DataLoader(val_dataset, 
-                                    batch_size=int( 0.65 * self.setup.train_batch_size() ), 
+                                    batch_size=int( 0.65 * self.setup.train_batch_size(config) ), 
                                     sampler=val_sampler, 
                                     num_workers=nb_workers,
                                     pin_memory=True)
         
         testloader = DataLoader(test_dataset, 
-                                    batch_size=self.setup.test_batch_size(), 
+                                    batch_size=self.setup.test_batch_size(config), 
                                     sampler=test_sampler, 
                                     num_workers=nb_workers,
                                     pin_memory=True)

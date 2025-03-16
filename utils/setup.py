@@ -128,9 +128,9 @@ class Setup:
         return batch_size
 
         
-    def test_batch_size(self,):
+    def test_batch_size(self, config):
         
-        batch_size = self.train_batch_size() / 2
+        batch_size = self.train_batch_size(config) / 2
         
         return int(batch_size)
     
