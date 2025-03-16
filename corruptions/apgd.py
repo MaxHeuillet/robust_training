@@ -10,16 +10,16 @@ def check_oscillation(x, j, k, y5, k3=0.75):
           t += (x[j - counter5] > x[j - counter5 - 1]).float()
         return (t <= k * k3 * torch.ones_like(t)).float()
 
-def apgd_attack(setup, model, x, y):
+def apgd_attack(config, model, x, y):
 
     model.module._enable_all_gradients()
         
     # is_train=True
     # mixup=None
-    use_rs=setup.config.use_rs #False
-    n_iter= setup.config.perturb_steps #
-    eps = setup.config.epsilon #4/255 #args.epsilon #
-    norm = setup.config.distance #'Linf' #args.distance #
+    use_rs=config.config.use_rs #False
+    n_iter= config.config.perturb_steps #
+    eps = config.config.epsilon #4/255 #args.epsilon #
+    norm = config.config.distance #'Linf' #args.distance #
 
     # y = y.reshape( (-1,1) )
     # print(y.shape)

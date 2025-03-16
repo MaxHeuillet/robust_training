@@ -7,30 +7,30 @@ from losses.eval_trades import trades_loss_eval
 
 from losses.eval_classic_at import classic_at_loss_eval
 
-def get_loss(setup, model, x_nat, y, ):
+def get_loss(config, model, x_nat, y, ):
 
-    loss_function = setup.config.loss_function
+    loss_function = config.loss_function
 
     if loss_function == 'TRADES_v2':
         # print('returns TRADES_v2 loss')
-        return trades_loss(setup, model, x_nat, y, )
+        return trades_loss(config, model, x_nat, y, )
     elif loss_function == 'CLASSIC_AT':
         # print('returns APGD loss')
-        return classic_at_loss(setup, model, x_nat, y, )
+        return classic_at_loss(config, model, x_nat, y, )
     else:
         print('error - loss not implemented')
 
 
-def get_eval_loss(setup, model, x_nat, y):
+def get_eval_loss(config, model, x_nat, y):
 
-    loss_function = setup.config.loss_function
+    loss_function = config.loss_function
 
     if loss_function == 'TRADES_v2':
         # print('returns TRADES_v2 loss')
-        return trades_loss_eval(setup, model, x_nat, y, )
+        return trades_loss_eval(config, model, x_nat, y, )
     elif loss_function == 'CLASSIC_AT':
         # print('returns APGD loss')
-        return classic_at_loss_eval(setup, model, x_nat, y, )
-
-    return trades_loss_eval(setup, model, x_nat, y)
+        return classic_at_loss_eval(config, model, x_nat, y, )
+    else:
+        print('not implemented error')
 

@@ -13,11 +13,11 @@ def l2_norm(x):
     return squared_l2_norm(x).sqrt()
 
 
-def trades_loss_eval(setup,model, x_nat, y,):
+def trades_loss_eval(config,model, x_nat, y,):
     
     model.eval()
     
-    x_adv = apgd_attack(setup, model, x_nat, y)
+    x_adv = apgd_attack(config, model, x_nat, y)
 
     model.module.current_task = 'val_infer'
     logits_nat, logits_adv = model(x_nat, x_adv)
@@ -25,6 +25,6 @@ def trades_loss_eval(setup,model, x_nat, y,):
 
     clean_values = F.cross_entropy(logits_nat, y, reduction='none')
     robust_values = nn.KLDivLoss(reduction='none')(F.log_softmax(logits_adv, dim=1), F.softmax(logits_nat, dim=1)).sum(dim=1)
-    loss_values = clean_values + setup.config.beta * robust_values
+    loss_values = clean_values + config.beta * robust_values
 
     return loss_values, logits_nat, logits_adv

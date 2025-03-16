@@ -3,11 +3,11 @@ import torch.nn.functional as F
 
 from corruptions import apgd_attack
 
-def classic_at_loss_eval(args, model, x_nat, y):
+def classic_at_loss_eval(config, model, x_nat, y):
 
     model.eval()
     
-    x_adv = apgd_attack(args, model, x_nat, y)
+    x_adv = apgd_attack(config, model, x_nat, y)
     
     model.train()
 

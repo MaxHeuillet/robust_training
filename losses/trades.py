@@ -11,12 +11,12 @@ def squared_l2_norm(x):
 def l2_norm(x):
     return squared_l2_norm(x).sqrt()
 
-def trades_loss(setup, model, x_nat, y, ):
+def trades_loss(config, model, x_nat, y, ):
     
     model.eval()
 
     # x_adv = pgd_attack(args, model, x_nat, y)
-    x_adv = apgd_attack(setup, model, x_nat, y)
+    x_adv = apgd_attack(config, model, x_nat, y)
 
     model.train()
 
@@ -27,7 +27,7 @@ def trades_loss(setup, model, x_nat, y, ):
         
     robust_values = nn.KLDivLoss(reduction='none')( F.log_softmax(logits_adv, dim=1), F.softmax(logits_nat, dim=1) ).sum(dim=1)
         
-    loss_values = clean_values + setup.config.beta * robust_values
+    loss_values = clean_values + config.beta * robust_values
 
     return loss_values, logits_adv
 
