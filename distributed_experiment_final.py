@@ -404,7 +404,7 @@ class BaseExperiment:
             nb_examples = 0
             print('stats', nb_correct_nat, nb_correct_adv, nb_examples, flush=True)
 
-            adversary = AutoAttack(forward_pass, norm=config.distance, eps=config.epsilon, n_classes = N, version='standard', verbose = False, device = device)
+            adversary = AutoAttack(forward_pass, norm=config.distance, eps=config.epsilon, version='standard', verbose = False, device = device)
             print('adversary instanciated', flush=True) 
             
             for _, batch in enumerate( testloader ):
