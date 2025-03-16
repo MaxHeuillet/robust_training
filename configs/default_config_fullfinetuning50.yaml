@@ -1,5 +1,5 @@
 dataset: "Flowers"  # dataset (default: cifar10)
-backbone: "deit_small_patch16_224.fb_in1k"  # load backbone
+backbone: "convnext_tiny.fb_in1k"  # load backbone
 ft_type: "full_fine_tuning"  # fine tuning type
 
 loss_function: "CLASSIC_AT"  # TRADES_v2
