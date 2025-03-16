@@ -86,7 +86,7 @@ class BaseExperiment:
 
         train_dataset, val_dataset, test_dataset, N = load_data(config, common_corruption)
 
-        print('test dataset', test_dataset, flush=True)
+        print('test dataset', test_dataset, len(test_dataset), flush=True)
 
         train_sampler = DistributedSampler(train_dataset, num_replicas=self.setup.world_size, rank=rank, shuffle=True, drop_last=True)
         val_sampler = DistributedSampler(val_dataset, num_replicas=self.setup.world_size, rank=rank, drop_last=True)
