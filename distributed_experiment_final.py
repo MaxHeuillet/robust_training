@@ -442,6 +442,7 @@ class BaseExperiment:
             print('stats', nb_correct_adv, nb_examples, flush=True)
             
             for _, batch in enumerate( testloader ):
+                print('are we loading')
 
                 x_adv, target = batch
 
@@ -449,7 +450,7 @@ class BaseExperiment:
 
                 batch_size = x_adv.size(0)
                 
-                print('start batch iterations', rank, _,batch_size, len(testloader), flush=True) 
+                print('start batch iterations', rank, _, batch_size, len(testloader), flush=True) 
 
                 logits_nat, logits_adv = model(x_adv, x_adv)
 
