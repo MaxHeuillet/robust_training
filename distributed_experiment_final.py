@@ -435,6 +435,7 @@ class BaseExperiment:
             stats_adv = { 'nb_correct':nb_correct_adv, 'nb_examples':nb_examples }
 
         else:
+            print('we are focusing on this aspect')
 
             nb_correct_adv = 0
             nb_examples = 0
@@ -494,7 +495,7 @@ class BaseExperiment:
             statistics_nat[rank] = stats_nat
             statistics_adv[rank] = stats_adv
 
-        print(statistics_nat, statistics_adv, flush=True)
+        print('result statistics', statistics_nat, statistics_adv, flush=True)
 
         # Log the aggregated results
         if corruption_type == 'Linf':
@@ -550,12 +551,12 @@ if __name__ == "__main__":
     config_optimal = OmegaConf.load(path) 
     # mp.spawn(training_wrapper, args=(experiment, config_optimal), nprocs=world_size, join=True)
 
-    print('test Linf', flush=True)
-    experiment.launch_test('Linf', config_optimal)
-    print('test L1', flush=True)
-    experiment.launch_test('L1', config_optimal)
-    print('test L2', flush=True)
-    experiment.launch_test('L2', config_optimal)
+    # print('test Linf', flush=True)
+    # experiment.launch_test('Linf', config_optimal)
+    # print('test L1', flush=True)
+    # experiment.launch_test('L1', config_optimal)
+    # print('test L2', flush=True)
+    # experiment.launch_test('L2', config_optimal)
     print('test common corruptions', flush=True)
     experiment.launch_test('common', config_optimal)
 
