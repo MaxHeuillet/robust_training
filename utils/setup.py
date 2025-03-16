@@ -65,19 +65,19 @@ class Setup:
         return avg_value, value_tensor.item(), nb_examples_tensor.item() 
     
 
-    def train_batch_size(self): #(arch: str, dataset: str, loss_fn: str) -> int
+    def train_batch_size(self, config): #(arch: str, dataset: str, loss_fn: str) -> int
 
         # -------------------------
         # 1) BASELINES PER ARCH
         # -------------------------
 
-        if 'convnext_tiny' in self.config.backbone:
+        if 'convnext_tiny' in config.backbone:
             base_bs = 64 #124
-        elif 'convnext_base' in self.config.backbone:
+        elif 'convnext_base' in config.backbone:
             base_bs = 22 #40
-        elif 'deit_small' in self.config.backbone:
+        elif 'deit_small' in config.backbone:
             base_bs = 88 #212
-        elif 'vit_base' in self.config.backbone:
+        elif 'vit_base' in config.backbone:
             base_bs = 40 #96
 
         # -------------------------
@@ -95,7 +95,7 @@ class Setup:
             'uc-merced-land-use-dataset': 21,
             'kvasir-dataset': 8
         }
-        n_classes = dataset_nclasses.get(self.config.dataset, 100)  # fallback if unknown
+        n_classes = dataset_nclasses.get(config.dataset, 100)  # fallback if unknown
 
         # -------------------------
         # 3) SCALE BY #CLASSES
