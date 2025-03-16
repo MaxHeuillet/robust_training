@@ -81,7 +81,7 @@ def change_head(backbone, model, N):
         num_features = model.head.in_features
         model.head = nn.Linear(num_features, N)
 
-    elif "vit" in backbone: 
+    elif "vit" in backbone or 'eva02' in backbone: 
 
         if isinstance(model.head, nn.Identity):
             num_features = 768
