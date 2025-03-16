@@ -163,6 +163,7 @@ class BaseExperiment:
             model_to_save = model.module
             model_to_save = model_to_save.cpu()
             save_path =  os.path.join(config.trained_statedicts_path, config.project_name, f"{config.exp_id}.pt")
+            print('trained state dicts directory: ', os.path.dirname(save_path) )
             os.makedirs( os.path.dirname(save_path), exist_ok=True) 
             torch.save(model_to_save.state_dict(), save_path )
             print('Model saved by rank 0')
@@ -554,7 +555,7 @@ if __name__ == "__main__":
     print('train', flush=True) 
     path = os.path.join(config_base.configs_path, "HPO_results", config_base.project_name, f"{config_base.exp_id}.yaml")
     config_optimal = OmegaConf.load(path) 
-    # mp.spawn(training_wrapper, args=(experiment, config_optimal), nprocs=world_size, join=True)
+    mp.spawn(training_wrapper, args=(experiment, config_optimal), nprocs=world_size, join=True)
 
     # print('test Linf', flush=True)
     # experiment.launch_test('Linf', config_optimal)
@@ -562,7 +563,7 @@ if __name__ == "__main__":
     # experiment.launch_test('L1', config_optimal)
     # print('test L2', flush=True)
     # experiment.launch_test('L2', config_optimal)
-    print('test common corruptions', flush=True)
-    experiment.launch_test('common', config_optimal)
+    # print('test common corruptions', flush=True)
+    # experiment.launch_test('common', config_optimal)
 
 
