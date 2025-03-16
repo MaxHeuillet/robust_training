@@ -1,17 +1,31 @@
 # robust_training
 
-0/ Install requirements
+### Create the python environment:
 
-The code runs with Python 3.11.
-
+module --force purge
+module load StdEnv/2023 gcc/12.3 cuda/12.2 opencv/4.9.0 python/3.11 arrow/18.1.0 scipy-stack/2024a
+python3.11 -m venv ~/scratch/myenv_reprod
 pip install -r requirements.txt
 
-1/ Downloading the architecutres
+Note: the code runs with python 3.11.
 
-python ./architectures/download_architectures.py
 
-The robust architectures used in the study come from "Revisiting Adversarial Training for Imagenet" (Neurips 2023) paper and shall be downloaded manually and reformated with code in ./architectures/download_architectures.py
+### Before runing code:
 
-2/ Downloading the datasets
+Check the paths in the default configuration files, located in ./configs directory.
 
-python ./datasets/download_data.py
+### To launch all the jobs on the cluster:
+
+
+
+### To use in interactive session:
+
+module --force purge
+module load StdEnv/2023 gcc/12.3 cuda/12.2 opencv/4.9.0 python/3.11 arrow/18.1.0 scipy-stack/2024a httpproxy
+source ~/scratch/myenv_reprod/bin/activate
+cd ./project_directory
+bash ./dataset_to_tmpdir.sh 'uc-merced-land-use-dataset' 
+python distributed_experiment_final.py
+
+Note: the code runs a default configuration specified in ./utils/arguments.py:
+

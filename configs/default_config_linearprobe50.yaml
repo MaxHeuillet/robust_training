@@ -23,9 +23,9 @@ beta: 1.0  # beta of trades
 # arguments for diffusion augmented learning
 project_name: null # the experiment type
 
-statedicts_path: "~/scratch/state_dicts_share/"
-trained_statedicts_path: "~/scratch/trained_state_dicts/"
-datasets_path: "$SLURM_TMPDIR/data"
-configs_path: "./configs"
-results_path: "./results"
-hpo_path: "~/scratch/hpo_results/"
+statedicts_path: "~/scratch/state_dicts_share/"  # TODO: update, where we load the pretrained model
+trained_statedicts_path: "~/scratch/trained_state_dicts/" # TODO: update, where we save fine tuned model
+datasets_path: "$SLURM_TMPDIR/data" # where we load uncompressed dataset
+configs_path: "./configs" # where we save the results of HPO
+results_path: "./results" # where we save the measured accuracies
+hpo_path: "~/scratch/hpo_results/" # where we save the results of HPO
