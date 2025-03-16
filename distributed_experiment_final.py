@@ -446,16 +446,11 @@ class BaseExperiment:
             stats_adv = { 'nb_correct':nb_correct_adv, 'nb_examples':nb_examples }
 
         else:
-            print('we are focusing on this aspect', flush=True)
 
             nb_correct_adv = 0
             nb_examples = 0
-            print('stats', nb_correct_adv, nb_examples, flush=True)
-
-            print('test loader', testloader, flush=True)
             
             for _, batch in enumerate( testloader ):
-                print('are we loading', flush=True)
 
                 x_adv, target = batch
 
@@ -463,7 +458,6 @@ class BaseExperiment:
 
                 batch_size = x_adv.size(0)
                 
-                print('start batch iterations', rank, _, batch_size, len(testloader), flush=True) 
 
                 logits_nat, logits_adv = model(x_adv, x_adv)
 
