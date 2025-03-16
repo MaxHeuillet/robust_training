@@ -228,7 +228,7 @@ class BaseExperiment:
 
                 # Use autocast for mixed precision during forward pass
                 with autocast():
-                    loss_values, logits = get_loss(self.setup, model, data, target)
+                    loss_values, logits = get_loss(config, model, data, target)
                     loss = loss_values.mean()
                     loss = loss / accumulation_steps  # Scale the loss
 
@@ -274,7 +274,7 @@ class BaseExperiment:
                 break
 
             if self.setup.hp_opt:
-                self.validation( valloader, model, logger, iteration, rank)
+                self.validation( config, valloader, model, logger, iteration, rank)
             
             # elif not self.setup.hp_opt and iteration in [10, 40]: #25,
             #     self.validation( valloader, model, logger, iteration, rank)
@@ -289,9 +289,9 @@ class BaseExperiment:
         # for handle in handles:
         #     handle.remove()
 
-    def validation(self, valloader, model, logger, iteration, rank):
+    def validation(self, config, valloader, model, logger, iteration, rank):
 
-        total_loss, total_correct_nat, total_correct_adv, total_examples, _, res_adv = self.validation_loop(valloader, model, rank)
+        total_loss, total_correct_nat, total_correct_adv, total_examples, _, res_adv = self.validation_loop(config, valloader, model, rank)
 
         dist.barrier() 
         val_loss, _, _ = self.setup.sync_value(total_loss, total_examples, rank)
@@ -315,7 +315,7 @@ class BaseExperiment:
                 
             logger.log_metrics(metrics, epoch=iteration)
 
-    def validation_loop(self, valloader, model, rank):
+    def validation_loop(self, config, valloader, model, rank):
 
         model.eval()
 
@@ -338,7 +338,7 @@ class BaseExperiment:
             # print('shape validation batch', data.shape)
                 
             with torch.autocast(device_type='cuda'):
-                loss_values, logits_nat, logits_adv = get_eval_loss(self.setup, model, data, target, )
+                loss_values, logits_nat, logits_adv = get_eval_loss(config, model, data, target, )
 
             total_loss += loss_values.sum().item()
 
