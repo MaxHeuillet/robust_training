@@ -71,7 +71,7 @@ class Hp_opt:
 
         # Set up storage path
         full_path = os.path.expanduser(self.config.hpo_path)
-        experiment_path = os.path.join(full_path, f"{self.config.project_name}_{self.config.exp_id}")
+        experiment_path = os.path.join(full_path, self.config.project_name, self.config.exp_id )
 
         # Check if experiment path exists and delete it before starting a new run
         if os.path.exists(experiment_path):
