@@ -11,6 +11,7 @@ from architectures.clip_wrapper import CLIPConvNeXtClassifier
 
 def load_architecture(config, N):
     backbone = config.backbone
+    print('BACKBONE NAME', backbone)
     statedict_dir = os.path.abspath(os.path.expanduser(config.statedicts_path)) #get_state_dict_dir(config)
 
     # Determine if it's an OpenCLIP model
