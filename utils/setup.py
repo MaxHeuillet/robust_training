@@ -75,9 +75,9 @@ class Setup:
             base_bs = 64 #124
         elif 'convnext_base' in config.backbone:
             base_bs = 22 #40
-        elif 'deit_small' in config.backbone:
+        elif 'deit_small' in config.backbone or 'eva02_tiny' in config.backbone or 'swinv2_cr_tiny' in config.backbone:  
             base_bs = 88 #212
-        elif 'vit_base' in config.backbone:
+        elif 'vit_base' in config.backbone or 'eva02_base' in config.backbone or 'swinv2_base' in config.backbone:
             base_bs = 40 #96
         elif 'resnet50' in config.backbone:
             base_bs = 64 #96

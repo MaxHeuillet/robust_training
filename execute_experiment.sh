@@ -14,6 +14,8 @@ datas=( 'stanford_cars'
 losses=( 'CLASSIC_AT' 'TRADES_v2'   )  #  
 
 backbones=(
+
+  ######################## HYPOTHESIS BACKBONES
  'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K',
  'CLIP-convnext_base_w-laion2B-s13B-b82K',
  'deit_small_patch16_224.fb_in1k', 
@@ -37,6 +39,19 @@ backbones=(
  'vit_base_patch16_224.dino', 
  'vit_small_patch16_224.augreg_in1k', 
  'convnext_tiny.fb_in22k' 
+
+  ######################## PERFORMANCE BACKBONES
+  'vit_base_patch16_clip_224.laion2b_ft_in1k',
+  'vit_base_patch16_224.augreg_in21k_ft_in1k',
+  'vit_small_patch16_224.augreg_in21k_ft_in1k',
+  'eva02_base_patch14_224.mim_in22k',
+  'eva02_tiny_patch14_224.mim_in22k',
+  'swinv2_base_window12to24_192to384.ms_in22k_ft_in1k',
+  'swinv2_cr_tiny_ns_224.sw_in1k',
+  'convnext_base.clip_laion2b_augreg_ft_in12k_in1k',
+  'convnext_base.fb_in22k_ft_in1k',
+  'convnext_tiny.fb_in22k_ft_in1k'
+
      )   
 
 # Get the project name 
