@@ -79,6 +79,8 @@ class Setup:
             base_bs = 88 #212
         elif 'vit_base' in config.backbone:
             base_bs = 40 #96
+        elif 'resnet50' in config.backbone:
+            base_bs = 64 #96
 
         # -------------------------
         # 2) DATASET → #CLASSES
