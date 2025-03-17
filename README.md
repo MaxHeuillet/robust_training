@@ -18,6 +18,8 @@ pip install -r requirements.txt
 
 ### 🚀 Launch All Jobs on the Cluster
 
+Specify the paths to state_dicts and data folders, in the default configuration in `./configs`
+
 Maxime :
 ```
 bash ./execute_experiment.sh 'full_fine_tuning_50epochs_final2'
