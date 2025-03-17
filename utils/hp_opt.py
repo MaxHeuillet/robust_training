@@ -18,8 +18,8 @@ class Hp_opt:
         self.config = config
         cluster_name = os.environ.get('SLURM_CLUSTER_NAME', 'Unknown')
         if cluster_name in ['narval', 'beluga']:
-            self.minutes = 5 #150
-            self.trials = 1 #1000
+            self.minutes = 150
+            self.trials = 1000
         else:
             self.minutes = 2
             self.trials = 2
