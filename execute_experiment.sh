@@ -69,13 +69,13 @@ for id in $(seq 1 $seeds); do
     for bckbn in "${backbones[@]}"; do
       for loss in "${losses[@]}"; do
 
-          sbatch --export=ALL,\
-  BCKBN="$bckbn",\
-  DATA="$data",\
-  SEED="$id",\
-  LOSS="$loss",\
-  PRNM="$PRNM" \
-  ./distributed_experiment_final.sh
+sbatch --export=ALL,\
+BCKBN="$bckbn",\
+DATA="$data",\
+SEED="$id",\
+LOSS="$loss",\
+PRNM="$PRNM" \
+./distributed_experiment_final.sh
 
       done
     done
