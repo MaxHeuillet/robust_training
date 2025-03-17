@@ -12,7 +12,7 @@
 # Purge all loaded modules and load necessary ones
 module --force purge
 module load StdEnv/2023 gcc/12.3 cuda/12.2 opencv/4.9.0 python/3.11 arrow/18.1.0 scipy-stack/2024a httpproxy
-source ~/scratch/MYENV4/bin/activate
+source ~/scratch/myenv_reprod/bin/activate
 
 # export LD_PRELOAD="/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/CUDA/gcc12/cuda12.2/opencv/4.10.0/lib64/libopencv_cudaimgproc.so.410:/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/CUDA/gcc12/cuda12.2/opencv/4.10.0/lib64/libopencv_cudafeatures2d.so.410"
 
