@@ -15,43 +15,43 @@ datas=(
 losses=( 'CLASSIC_AT' 'TRADES_v2'   )  #  
 
 backbones=(
+  'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K'
+  'CLIP-convnext_base_w-laion2B-s13B-b82K'
+  'deit_small_patch16_224.fb_in1k'
+  'robust_resnet50'
+  'vit_base_patch16_224.mae'
+  'vit_small_patch16_224.augreg_in21k'
+  'convnext_base.fb_in1k'
+  'resnet50.a1_in1k'
+  'robust_vit_base_patch16_224'
+  'vit_base_patch16_224.sam_in1k'
+  'vit_small_patch16_224.dino'
+  'convnext_base.fb_in22k'
+  'robust_convnext_base'
+  'vit_base_patch16_224.augreg_in1k'
+  'vit_base_patch16_224.augreg_in21k'
+  'vit_base_patch16_224.dino'
+  'vit_base_patch16_clip_224.laion2b'
+  'convnext_tiny.fb_in1k'
+  'robust_convnext_tiny'
+  'robust_deit_small_patch16_224'
+  'vit_base_patch16_224.dino'
+  'vit_small_patch16_224.augreg_in1k'
+  'convnext_tiny.fb_in22k'
 
-  ######################## HYPOTHESIS BACKBONES
- 'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K',
- 'CLIP-convnext_base_w-laion2B-s13B-b82K',
- 'deit_small_patch16_224.fb_in1k', 
- 'robust_resnet50', 
- 'vit_base_patch16_224.mae', 
- 'vit_small_patch16_224.augreg_in21k', 
- 'convnext_base.fb_in1k', 
- 'resnet50.a1_in1k', 
- 'robust_vit_base_patch16_224', 
- 'vit_base_patch16_224.sam_in1k', 
- 'vit_small_patch16_224.dino', 
- 'convnext_base.fb_in22k', 
- 'robust_convnext_base', 
- 'vit_base_patch16_224.augreg_in1k',
- 'vit_base_patch16_224.augreg_in21k', 
- 'vit_base_patch16_224.dino', 
- 'vit_base_patch16_clip_224.laion2b',
- 'convnext_tiny.fb_in1k',
- 'robust_convnext_tiny', 
- 'robust_deit_small_patch16_224',
- 'vit_base_patch16_224.dino', 
- 'vit_small_patch16_224.augreg_in1k', 
- 'convnext_tiny.fb_in22k' 
-
-  ######################## PERFORMANCE BACKBONES
-  'vit_base_patch16_clip_224.laion2b_ft_in1k',
-  'vit_base_patch16_224.augreg_in21k_ft_in1k',
-  'vit_small_patch16_224.augreg_in21k_ft_in1k',
-  'eva02_base_patch14_224.mim_in22k',
-  'eva02_tiny_patch14_224.mim_in22k',
-  'swinv2_base_window12to24_192to384.ms_in22k_ft_in1k',
-  'swinv2_cr_tiny_ns_224.sw_in1k',
-  'convnext_base.clip_laion2b_augreg_ft_in12k_in1k',
-  'convnext_base.fb_in22k_ft_in1k',
-  'convnext_tiny.fb_in22k_ft_in1k'   )   
+  # PERFORMANCE BACKBONES
+  'vit_base_patch16_clip_224.laion2b_ft_in1k'
+  'vit_base_patch16_224.augreg_in21k_ft_in1k'
+  'vit_small_patch16_224.augreg_in21k_ft_in1k'
+  'eva02_base_patch14_224.mim_in22k'
+  'eva02_tiny_patch14_224.mim_in22k'
+  'swin_base_patch4_window7_224.ms_in22k_ft_in1k'
+  'swin_tiny_patch4_window7_224.ms_in1k'
+  'convnext_base.clip_laion2b_augreg_ft_in12k_in1k'
+  'convnext_base.fb_in22k_ft_in1k'
+  'convnext_tiny.fb_in22k_ft_in1k'
+)
+ 
 
 # Get the project name 
 PRNM=$1 #you need to set a project name
