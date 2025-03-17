@@ -3,11 +3,12 @@
 # Define variables
 seeds=1
 
-datas=( 'stanford_cars'
-        'oxford-iiit-pet'
-        'caltech101' 
-        'flowers-102' 
-        'fgvc-aircraft-2013b'
+datas=( 
+        # 'stanford_cars'
+        # 'oxford-iiit-pet'
+        # 'caltech101' 
+        # 'flowers-102' 
+        # 'fgvc-aircraft-2013b'
         'uc-merced-land-use-dataset' 
         ) # 'dtd' 
  
@@ -50,9 +51,7 @@ backbones=(
   'swinv2_cr_tiny_ns_224.sw_in1k',
   'convnext_base.clip_laion2b_augreg_ft_in12k_in1k',
   'convnext_base.fb_in22k_ft_in1k',
-  'convnext_tiny.fb_in22k_ft_in1k'
-
-     )   
+  'convnext_tiny.fb_in22k_ft_in1k'   )   
 
 # Get the project name 
 PRNM=$1 #you need to set a project name
