@@ -18,7 +18,21 @@ pip install -r requirements.txt
 
 ### 🚀 Launch All Jobs on the Cluster
 
-*(Add your job launching instructions here if applicable)*
+Maxime :
+```
+bash ./execute_experiment.sh 'full_fine_tuning_50epochs_final2'
+```
+
+Rishika :
+
+```
+bash ./execute_experiment.sh 'full_fine_tuning_5epochs_final2'
+```
+
+Jonas :
+```
+bash ./execute_experiment.sh 'linearprobe_50epochs_final2'
+```
 
 ---
 
