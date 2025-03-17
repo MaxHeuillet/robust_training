@@ -69,7 +69,7 @@ def change_head(backbone, model, N):
     if 'CLIP-convnext' in backbone:
         model = CLIPConvNeXtClassifier(model, num_classes=N)
 
-    elif "convnext" in backbone or 'swinv2' in backbone: 
+    elif "convnext" in backbone or 'swin' in backbone: 
         num_features = model.head.fc.in_features
         model.head.fc = nn.Linear(num_features, N)
 
