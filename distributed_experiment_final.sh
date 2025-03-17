@@ -18,7 +18,7 @@ source ~/scratch/myenv_reprod/bin/activate
 
 export PYTHONUNBUFFERED=1
 
-bash ./dataset_to_tmdir.sh "$DATA"
+bash ./dataset_to_tmpdir.sh "$DATA"
 
 # Run the Python experiment script with appropriate arguments
 python ./distributed_experiment_final.py \
