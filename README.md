@@ -8,7 +8,7 @@ module load StdEnv/2023 gcc/12.3 cuda/12.2 opencv/4.9.0 python/3.11 arrow/18.1.0
 
 python3.11 -m venv ~/scratch/myenv_reprod
 source ~/scratch/myenv_reprod/bin/activate
-
+cd ./my_project_directory
 pip install -r requirements.txt
 ```
 
