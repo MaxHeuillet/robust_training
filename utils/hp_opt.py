@@ -10,14 +10,17 @@ from ray.train import ScalingConfig
 import torch
 import os
 from datetime import timedelta
-import subprocess
 
 class Hp_opt:
 
-    def __init__(self, config):
+    def __init__(self, config, path):
         self.config = config
-        cluster_name = os.environ.get('SLURM_CLUSTER_NAME', 'Unknown')
-        if cluster_name in ['narval', 'beluga']:
+        self.path = path
+
+        cluster_keywords = ["calculquebec", "calcul.quebec"]
+        nodename = os.uname().nodename.lower()
+        # Check if the node is part of the Calcul Québec cluster
+        if any(keyword in nodename for keyword in cluster_keywords):
             self.minutes = 150 #5
             self.trials = 1000 #1
         else:
@@ -69,17 +72,6 @@ class Hp_opt:
         # Define maximum runtime in seconds
         max_runtime_seconds = timedelta(minutes=self.minutes).total_seconds()
 
-        # Set up storage path
-        full_path = os.path.expanduser(self.config.hpo_path)
-        experiment_path = os.path.join(full_path, self.config.project_name, self.config.exp_id )
-
-        # Check if experiment path exists and delete it before starting a new run
-        if os.path.exists(experiment_path):
-            print(f"Deleting existing experiment directory: {experiment_path}")
-            subprocess.run(["rm", "-rf", experiment_path], check=True)
-
-        os.makedirs(experiment_path, exist_ok=True)
-
         # Set up the Tuner
         tuner = Tuner(
             trainer,
@@ -92,8 +84,8 @@ class Hp_opt:
                 time_budget_s=max_runtime_seconds,
             ),
             run_config=RunConfig(
-                name=f"{self.config.project_name}_{self.config.exp_id}",
-                storage_path=f"file://{full_path}",
+                name=f"{self.config.exp_id}",
+                storage_path=f"file://{self.path}",
             ),
         )
 

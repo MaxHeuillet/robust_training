@@ -31,6 +31,8 @@ from ray import train
 
 import os
 import ray
+import subprocess
+
 
 
 def compute_gradient_norms(model):
@@ -184,9 +186,16 @@ class BaseExperiment:
 
         self.setup.hp_opt = True 
 
+        # Check if experiment path exists and delete it before starting a new run
+        experiment_path = os.path.join(config.hp_opt_path, config.project_name)
+        if os.path.exists(experiment_path):
+            print(f"Deleting existing experiment directory: {experiment_path}")
+            subprocess.run(["rm", "-rf", experiment_path], check=True)
+        os.makedirs(experiment_path, exist_ok=True)
+
         ray.init() #logging_level=logging.DEBUG
 
-        hp_search = Hp_opt(config)
+        hp_search = Hp_opt(config, experiment_path)
 
         tuner = hp_search.get_tuner( self.training )
 
@@ -197,6 +206,9 @@ class BaseExperiment:
 
         self.setup.hp_opt = False
 
+        #### Save the optimal configuration:
+        directory_path = os.path.join(config.configs_path, "HPO_results", config.project_name)
+        os.makedirs(directory_path, exist_ok=True)
         optimal_config = OmegaConf.merge(config, best_result.config['train_loop_config']  )
         output_path = os.path.join(config.configs_path, "HPO_results", config.project_name, f"{config.exp_id}.yaml")
         OmegaConf.save(optimal_config, output_path)
@@ -519,8 +531,10 @@ class BaseExperiment:
         
 
 def training_wrapper(rank, experiment, config ):
-    # this is necessary to bypass the rank argument that must be first in spawn, but not first in HPO optmiziation
+    print('we are launching training')
     experiment.training(config, rank=rank)
+    print('we are done training')
+    return True
 
 if __name__ == "__main__":
 
@@ -547,8 +561,6 @@ if __name__ == "__main__":
     set_seeds(config_base.seed)
 
     world_size = torch.cuda.device_count()
-    directory_path = os.path.join(config_base.configs_path, "HPO_results", config_base.project_name)
-    os.makedirs(directory_path, exist_ok=True)
 
     setup = Setup(world_size)
     experiment = BaseExperiment(setup, config_base)
