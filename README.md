@@ -18,7 +18,9 @@ pip install -r requirements.txt
 
 ### 🚀 Launch All Jobs on the Cluster
 
+Specify the path to compressed archives, line 10 in `./dataset_to_tmpdir.sh`
 Specify the paths to state_dicts and data folders, in the default configuration in `./configs`
+
 
 Maxime :
 ```

@@ -187,7 +187,8 @@ class BaseExperiment:
         self.setup.hp_opt = True 
 
         # Check if experiment path exists and delete it before starting a new run
-        experiment_path = os.path.join(config.hp_opt_path, config.project_name)
+        hpo_opt_path = os.path.abspath(os.path.expanduser(config.hp_opt_path)) 
+        experiment_path = os.path.join(hpo_opt_path, config.project_name, config.exp_id)
         if os.path.exists(experiment_path):
             print(f"Deleting existing experiment directory: {experiment_path}")
             subprocess.run(["rm", "-rf", experiment_path], check=True)
