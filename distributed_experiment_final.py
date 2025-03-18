@@ -176,7 +176,9 @@ class BaseExperiment:
             print('Model saved by rank 0')
             logger.end()
         
-        self.setup.cleanup() 
+        self.setup.cleanup()
+        print('processes ended', flush=True)
+        return True 
 
     def hyperparameter_optimization(self, config):  
 
