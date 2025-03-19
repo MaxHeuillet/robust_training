@@ -296,13 +296,13 @@ class BaseExperiment:
 
                     update_step += 1
 
-                    print('classifier head', model.module.base_model.head.fc.weight)
+                    # print('classifier head', model.module.base_model.head.fc.weight)
 
-                    print('layer weights', model.module.base_model.layers[0].blocks[0].attn.proj.weight)
+                    # print('layer weights', model.module.base_model.layers[0].blocks[0].attn.proj.weight)
 
                     
-                if batch_id == 100:
-                    break
+                # if batch_id == 100:
+                #     break
 
 
             if self.setup.hp_opt:
@@ -315,7 +315,7 @@ class BaseExperiment:
 
             print(f'Rank {rank}, Iteration {iteration},', flush=True) 
 
-            break
+            # break
                             
         # Remove hooks
         # for handle in handles:
@@ -382,7 +382,7 @@ class BaseExperiment:
             total_correct_adv += (preds_adv == target).sum().item()
             total_examples += target.size(0)
 
-            break
+            # break
 
             # Compute neuron statistics
         # res_adv = compute_stats_aggregated(tracker_adv)
@@ -461,8 +461,8 @@ class BaseExperiment:
                 nb_correct_adv += (preds_adv == target).sum().item()
                 nb_examples += target.size(0)
 
-                if _ == 2:
-                    break
+                # if _ == 2:
+                #     break
 
             stats_nat = { 'nb_correct':nb_correct_nat, 'nb_examples':nb_examples }
             stats_adv = { 'nb_correct':nb_correct_adv, 'nb_examples':nb_examples }
@@ -488,8 +488,8 @@ class BaseExperiment:
                 nb_correct_adv += (preds_adv == target).sum().item()
                 nb_examples += target.size(0)
 
-                if _ == 2:
-                    break
+                # if _ == 2:
+                #     break
             
             stats_nat = { 'nb_correct':None, 'nb_examples':None }
             stats_adv = { 'nb_correct':nb_correct_adv, 'nb_examples':nb_examples }
