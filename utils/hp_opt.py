@@ -32,8 +32,6 @@ class Hp_opt:
 
         if 'linearprobe' in self.config.project_name:
             tune_config = {
-                "lr1": 1e-3,              # Fixed learning rate for the feature extractor
-                "weight_decay1": 0.0,       # Fixed weight decay for the feature extractor
                 "lr2": tune.loguniform(1e-5, 1e-1),  # Search over a range for the classification head
                 "weight_decay2": tune.loguniform(1e-6, 1e-2),
                 "scheduler": tune.choice([True, False])

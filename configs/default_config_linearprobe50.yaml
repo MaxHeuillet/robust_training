@@ -6,11 +6,12 @@ loss_function: "CLASSIC_AT"  # TRADES_v2
 seed: 0  # random seed
 epochs: 50  # number of total iterations to run
 
-lr1: null
+lr1: 1e-3 #this will be ignored with gradient tracking false
 lr2: null
-weight_decay1: null
+weight_decay1: 0.0 #this will be ignored with gradient tracking false
 weight_decay2: null
 scheduler: null
+
 
 
 use_rs: False
