@@ -187,7 +187,7 @@ class BaseExperiment:
         self.setup.hp_opt = True 
 
         # Check if experiment path exists and delete it before starting a new run
-        hpo_opt_path = os.path.abspath(os.path.expanduser(config.hp_opt_path)) 
+        hpo_opt_path = os.path.abspath(os.path.expanduser(config.hpo_path)) 
         experiment_path = os.path.join(hpo_opt_path, config.project_name, config.exp_id)
         if os.path.exists(experiment_path):
             print(f"Deleting existing experiment directory: {experiment_path}")
@@ -295,8 +295,14 @@ class BaseExperiment:
 
                     update_step += 1
 
+                    print('classifier head', model.head.fc.weight)
+
+                    print('layer weights', model.layers[0].blocks[0].attn.proj.weight)
+
                     
-                # break
+                if batch_id == 100:
+                    break
+
 
             if self.setup.hp_opt:
                 self.validation( config, valloader, model, logger, iteration, rank)
@@ -308,7 +314,7 @@ class BaseExperiment:
 
             print(f'Rank {rank}, Iteration {iteration},', flush=True) 
 
-            # break
+            break
                             
         # Remove hooks
         # for handle in handles:
@@ -375,7 +381,7 @@ class BaseExperiment:
             total_correct_adv += (preds_adv == target).sum().item()
             total_examples += target.size(0)
 
-            # break
+            break
 
             # Compute neuron statistics
         # res_adv = compute_stats_aggregated(tracker_adv)
@@ -430,7 +436,7 @@ class BaseExperiment:
             nb_examples = 0
             print('stats', nb_correct_nat, nb_correct_adv, nb_examples, flush=True)
 
-            adversary = AutoAttack(forward_pass, norm=config.distance, eps=config.epsilon, version='standard', verbose = False, device = device)
+            adversary = AutoAttack(forward_pass, norm=corruption_type, eps=config.epsilon, version='standard', verbose = False, device = device)
             print('adversary instanciated', flush=True) 
             
             for _, batch in enumerate( testloader ):
@@ -454,8 +460,8 @@ class BaseExperiment:
                 nb_correct_adv += (preds_adv == target).sum().item()
                 nb_examples += target.size(0)
 
-                # if _ == 2:
-                #     break
+                if _ == 2:
+                    break
 
             stats_nat = { 'nb_correct':nb_correct_nat, 'nb_examples':nb_examples }
             stats_adv = { 'nb_correct':nb_correct_adv, 'nb_examples':nb_examples }
@@ -481,8 +487,8 @@ class BaseExperiment:
                 nb_correct_adv += (preds_adv == target).sum().item()
                 nb_examples += target.size(0)
 
-                # if _ == 2:
-                #     break
+                if _ == 2:
+                    break
             
             stats_nat = { 'nb_correct':None, 'nb_examples':None }
             stats_adv = { 'nb_correct':nb_correct_adv, 'nb_examples':nb_examples }
@@ -574,6 +580,7 @@ if __name__ == "__main__":
     config_optimal = OmegaConf.load(path) 
     mp.spawn(training_wrapper, args=(experiment, config_optimal), nprocs=world_size, join=True)
 
+    os.makedirs(os.path.join(config_base.results_path, config_base.project_name), exist_ok=True)
     print('test Linf', flush=True)
     experiment.launch_test('Linf', config_optimal)
     print('test L1', flush=True)

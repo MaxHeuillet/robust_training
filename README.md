@@ -16,10 +16,13 @@ pip install -r requirements.txt
 
 ---
 
-### 🚀 Launch All Jobs on the Cluster
-
 Specify the path to compressed archives, line 10 in `./dataset_to_tmpdir.sh`
 Specify the paths to state_dicts and data folders, in the default configuration in `./configs`
+Modify comet ML loging details in `./distributed_experiment_final.py` the method `initialize_logger()`.
+
+
+### 🚀 Launch All Jobs on the Cluster
+
 
 
 Maxime :
@@ -41,6 +44,7 @@ bash ./execute_experiment.sh 'linearprobe_50epochs_final2'
 ---
 
 ### 💻 Run in an Interactive Session
+
 
 ```
 module --force purge

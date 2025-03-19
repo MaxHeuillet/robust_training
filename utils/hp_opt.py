@@ -21,8 +21,8 @@ class Hp_opt:
         nodename = os.uname().nodename.lower()
         # Check if the node is part of the Calcul Québec cluster
         if any(keyword in nodename for keyword in cluster_keywords):
-            self.minutes = 150 #5
-            self.trials = 1000 #1
+            self.minutes = 5 #150 #5
+            self.trials = 1 #1000 #1
         else:
             self.minutes = 2
             self.trials = 2
@@ -30,13 +30,26 @@ class Hp_opt:
     def get_config(self):
         # Ray Tune hyperparameter search space
 
-        tune_config = {
-            "lr1": tune.loguniform(1e-5, 1e-1),
-            "lr2": tune.loguniform(1e-5, 1e-1),
-            "weight_decay1": tune.loguniform(1e-6, 1e-2),
-            "weight_decay2": tune.loguniform(1e-6, 1e-2),
-            "scheduler": tune.choice([True, False])   }
-        
+        if 'linearprobe' in self.config.project_name:
+            tune_config = {
+                "lr1": 1e-3,              # Fixed learning rate for the feature extractor
+                "weight_decay1": 0.0,       # Fixed weight decay for the feature extractor
+                "lr2": tune.loguniform(1e-5, 1e-1),  # Search over a range for the classification head
+                "weight_decay2": tune.loguniform(1e-6, 1e-2),
+                "scheduler": tune.choice([True, False])
+            }
+                    
+        elif 'full_fine_tuning' in self.config.project_name:
+            tune_config = {
+                "lr1": tune.loguniform(1e-5, 1e-1),
+                "lr2": tune.loguniform(1e-5, 1e-1),
+                "weight_decay1": tune.loguniform(1e-6, 1e-2),
+                "weight_decay2": tune.loguniform(1e-6, 1e-2),
+                "scheduler": tune.choice([True, False])   }
+
+        else:
+            print('not implemented error')
+
         return tune_config
 
     def get_scheduler(self, ):

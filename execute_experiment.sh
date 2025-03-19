@@ -15,6 +15,8 @@ datas=(
 losses=( 'CLASSIC_AT' 'TRADES_v2'   )  #  
 
 backbones=(
+
+  # SCIENTIFIC HYPOTHESES BACKBONES
   'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K'
   'CLIP-convnext_base_w-laion2B-s13B-b82K'
   'deit_small_patch16_224.fb_in1k'
