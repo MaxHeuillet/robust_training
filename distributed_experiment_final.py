@@ -188,12 +188,13 @@ class BaseExperiment:
 
         # Check if experiment path exists and delete it before starting a new run
         hpo_opt_path = os.path.abspath(os.path.expanduser(config.hpo_path)) 
-        experiment_path = os.path.join(hpo_opt_path, config.project_name, config.exp_id)
-        if os.path.exists(experiment_path):
-            print(f"Deleting existing experiment directory: {experiment_path}")
-            subprocess.run(["rm", "-rf", experiment_path], check=True)
+        experiment_path = os.path.join(hpo_opt_path, config.project_name)
         os.makedirs(experiment_path, exist_ok=True)
-
+        existing_experiment_path = os.path.join(hpo_opt_path, config.project_name, config.exp_id)
+        if os.path.exists(existing_experiment_path):
+            print(f"Deleting existing experiment directory: {existing_experiment_path}")
+            subprocess.run(["rm", "-rf", existing_experiment_path], check=True)
+        
         ray.init() #logging_level=logging.DEBUG
 
         hp_search = Hp_opt(config, experiment_path)
