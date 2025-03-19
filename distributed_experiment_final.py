@@ -295,9 +295,9 @@ class BaseExperiment:
 
                     update_step += 1
 
-                    print('classifier head', model.head.fc.weight)
+                    print('classifier head', model.module.head.fc.weight)
 
-                    print('layer weights', model.layers[0].blocks[0].attn.proj.weight)
+                    print('layer weights', model.module.layers[0].blocks[0].attn.proj.weight)
 
                     
                 if batch_id == 100:
