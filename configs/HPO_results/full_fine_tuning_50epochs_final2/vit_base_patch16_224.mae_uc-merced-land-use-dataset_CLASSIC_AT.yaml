@@ -1,13 +1,13 @@
 dataset: uc-merced-land-use-dataset
-backbone: CLIP-convnext_base_w-laion_aesthetic-s13B-b82K
+backbone: vit_base_patch16_224.mae
 ft_type: full_fine_tuning
 loss_function: CLASSIC_AT
 seed: 1
 epochs: 50
-lr1: 0.00023782678393729053
-lr2: 1.5483025646586275e-05
-weight_decay1: 6.229168370707181e-05
-weight_decay2: 0.004101327339787331
+lr1: 0.0003135600687184417
+lr2: 0.00012642940864681295
+weight_decay1: 0.00010905217347637133
+weight_decay2: 0.0034937551756816223
 scheduler: false
 use_rs: false
 epsilon: 0.015686275
@@ -16,7 +16,7 @@ perturb_steps: 10
 distance: Linf
 beta: 1.0
 project_name: full_fine_tuning_50epochs_final2
-exp_id: CLIP-convnext_base_w-laion_aesthetic-s13B-b82K_uc-merced-land-use-dataset_CLASSIC_AT
+exp_id: vit_base_patch16_224.mae_uc-merced-land-use-dataset_CLASSIC_AT
 statedicts_path: ~/scratch/state_dicts_share/
 trained_statedicts_path: ~/scratch/trained_state_dicts/
 datasets_path: $SLURM_TMPDIR/data
