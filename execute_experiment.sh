@@ -75,7 +75,7 @@ DATA="$data",\
 SEED="$id",\
 LOSS="$loss",\
 PRNM="$PRNM" \
-./job_templates/job1_hpo.sh
+./job1_hpo.sh
         done
       done
     done

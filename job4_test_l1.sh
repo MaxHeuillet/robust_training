@@ -5,7 +5,7 @@
 #SBATCH --cpus-per-task=24
 #SBATCH --gpus-per-node=4
 #SBATCH --mem-per-cpu=4000M
-#SBATCH --time=11:58:55
+#SBATCH --time=02:58:55
 #SBATCH --mail-user=maxime.heuillet.1@ulaval.ca
 #SBATCH --mail-type=ALL
 
@@ -17,10 +17,10 @@ source ~/scratch/myenv_reprod/bin/activate
 
 export PYTHONUNBUFFERED=1
 
-bash ../dataset_to_tmpdir.sh "$DATA"
+bash ./dataset_to_tmpdir.sh "$DATA"
 
 # --- HPO Step ---
-python ../distributed_experiment_final.py \
+python ./distributed_experiment_final.py \
     --mode hpo \
     --loss_function "${LOSS}" \
     --dataset "${DATA}" \
@@ -43,7 +43,7 @@ SEED="$SEED",\
 LOSS="$LOSS",\
 PRNM="$PRNM",\
 EXP="$EXP" \
-./job3_test_linf.sh
+./job5_test_l2.sh
 else
     echo "HPO failed. No further jobs will be submitted."
 fi

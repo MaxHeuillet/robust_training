@@ -5,7 +5,7 @@
 #SBATCH --cpus-per-task=24
 #SBATCH --gpus-per-node=4
 #SBATCH --mem-per-cpu=4000M
-#SBATCH --time=02:58:55
+#SBATCH --time=11:58:55
 #SBATCH --mail-user=maxime.heuillet.1@ulaval.ca
 #SBATCH --mail-type=ALL
 
@@ -17,10 +17,10 @@ source ~/scratch/myenv_reprod/bin/activate
 
 export PYTHONUNBUFFERED=1
 
-bash ../dataset_to_tmpdir.sh "$DATA"
+bash ./dataset_to_tmpdir.sh "$DATA"
 
 # --- HPO Step ---
-python ../distributed_experiment_final.py \
+python ./distributed_experiment_final.py \
     --mode hpo \
     --loss_function "${LOSS}" \
     --dataset "${DATA}" \
@@ -43,32 +43,7 @@ SEED="$SEED",\
 LOSS="$LOSS",\
 PRNM="$PRNM",\
 EXP="$EXP" \
-./job2_train.sh
+./job3_test_linf.sh
 else
     echo "HPO failed. No further jobs will be submitted."
 fi
-
-
-
-# # Run the Python experiment script with appropriate arguments
-# python ./distributed_experiment_final.py \
-#     --loss_function "${LOSS}" \
-#     --dataset "${DATA}" \
-#     --seed "${SEED}" \
-#     --backbone "${BCKBN}" \
-#     --project_name "${PRNM}" \
-#     --exp "${EXP}" \
-#     > stdout_"$SLURM_JOB_ID" 2> stderr_"$SLURM_JOB_ID"
-
-
-# echo "Starting HPO..."
-# python main.py mode=hpo project_name=full_fine_tuning_50epochs_final2
-# exit_code=$?
-
-# echo "HPO exit code: $exit_code"
-# if [ $exit_code -eq 0 ]; then
-#     echo "HPO succeeded, submitting training job..."
-#     sbatch job2_train.sh
-# else
-#     echo "HPO failed (exit code $exit_code). No further jobs will be submitted."
-# fi

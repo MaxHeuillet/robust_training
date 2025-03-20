@@ -17,10 +17,10 @@ source ~/scratch/myenv_reprod/bin/activate
 
 export PYTHONUNBUFFERED=1
 
-bash ../dataset_to_tmpdir.sh "$DATA"
+bash ./dataset_to_tmpdir.sh "$DATA"
 
 # --- HPO Step ---
-python ../distributed_experiment_final.py \
+python ./distributed_experiment_final.py \
     --mode hpo \
     --loss_function "${LOSS}" \
     --dataset "${DATA}" \
@@ -43,7 +43,7 @@ SEED="$SEED",\
 LOSS="$LOSS",\
 PRNM="$PRNM",\
 EXP="$EXP" \
-./job6_test_common.sh
+./job4_test_l1.sh
 else
     echo "HPO failed. No further jobs will be submitted."
 fi
