@@ -20,7 +20,7 @@ bash ./dataset_to_tmpdir.sh "$DATA"
 
 # --- HPO Step ---
 python ./distributed_experiment_final.py \
-    --mode hpo \
+    --mode "test-common" \
     --loss_function "${LOSS}" \
     --dataset "${DATA}" \
     --seed "${SEED}" \
