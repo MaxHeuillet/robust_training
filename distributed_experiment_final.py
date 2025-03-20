@@ -24,7 +24,7 @@ from losses import get_loss, get_eval_loss
 from utils import get_args2, set_seeds, load_optimizer
 # from utils import ActivationTrackerAggregated, register_hooks_aggregated, compute_stats_aggregated
 
-import hydra
+from hydra import initialize, compose
 from omegaconf import OmegaConf
 
 from ray import train
@@ -546,23 +546,25 @@ def training_wrapper(rank, experiment, config ):
 
 
 
-@hydra.main(config_path="./configs", version_base=None)
+# @hydra.main(config_path="./configs", version_base=None)
 def main(config_base):
 
-    # "mode" tells which step to run: hpo, train, test-linf, test-l1, etc.
-    mode = config_base.get("mode", "hpo")  
+    initialize(config_path="./configs", version_base=None)
 
     # The rest is your existing init:
     args_dict = get_args2()
     if 'linearprobe_50epochs' in args_dict['project_name']:
-        local_config = hydra.compose(config_name="default_config_linearprobe50")
+        local_config = compose(config_name="default_config_linearprobe50")
     elif 'full_fine_tuning_5epochs' in args_dict['project_name']:
-        local_config = hydra.compose(config_name="default_config_fullfinetuning5")
+        local_config = compose(config_name="default_config_fullfinetuning5")
     elif 'full_fine_tuning_50epochs' in args_dict['project_name']:
-        local_config = hydra.compose(config_name="default_config_fullfinetuning50")
+        local_config = compose(config_name="default_config_fullfinetuning50")
     else:
         print('error in the experiment name', flush=True)
         sys.exit(1)
+
+    mode = args_dict['mode']
+    args_dict.pop("mode")
 
     config_base = OmegaConf.merge(local_config, args_dict)
     config_base.exp_id = get_config_id(config_base)
