@@ -7,16 +7,15 @@ datas=(
         # 'stanford_cars'
         # 'oxford-iiit-pet'
         # 'caltech101' 
-        # 'flowers-102' 
+        'flowers-102' 
         # 'fgvc-aircraft-2013b'
-        'uc-merced-land-use-dataset' 
-        ) # 'dtd' 
+        # 'uc-merced-land-use-dataset' 
+        ) 
  
-losses=( 'CLASSIC_AT' 'TRADES_v2'   )  #  
+losses=( 'CLASSIC_AT' 'TRADES_v2'   )  
 
-backbones=(
-
-  # SCIENTIFIC HYPOTHESES BACKBONES
+# Two backbone groups
+scientific_backbones=(
   'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K'
   'CLIP-convnext_base_w-laion2B-s13B-b82K'
   'deit_small_patch16_224.fb_in1k'
@@ -40,8 +39,9 @@ backbones=(
   'vit_base_patch16_224.dino'
   'vit_small_patch16_224.augreg_in1k'
   'convnext_tiny.fb_in22k'
+)
 
-  # PERFORMANCE BACKBONES
+performance_backbones=(
   'vit_base_patch16_clip_224.laion2b_ft_in1k'
   'vit_base_patch16_224.augreg_in21k_ft_in1k'
   'vit_small_patch16_224.augreg_in21k_ft_in1k'
@@ -53,34 +53,39 @@ backbones=(
   'convnext_base.fb_in22k_ft_in1k'
   'convnext_tiny.fb_in22k_ft_in1k'
 )
- 
 
 # Get the project name 
-PRNM=$1 #you need to set a project name
+PRNM=$1
 
-# Check if PRNM is set
 if [ -z "$PRNM" ]; then
   echo "Error: Project name (PRNM) is not set. Please provide it as the first argument."
   exit 1
 fi
 
-# Loop over architectures, datasets, losses, seeds, backbones, and fine-tuning types
-
-for id in $(seq 1 $seeds); do
-  for data in "${datas[@]}"; do
-    for bckbn in "${backbones[@]}"; do
-      for loss in "${losses[@]}"; do
-
-sbatch --export=ALL,\
+# ---------- Function to submit jobs ----------
+submit_jobs() {
+  local backbones=("$@")  # All arguments passed to this function (backbone list)
+  for id in $(seq 1 $seeds); do
+    for data in "${datas[@]}"; do
+      for bckbn in "${backbones[@]}"; do
+        for loss in "${losses[@]}"; do
+          sbatch --export=ALL,\
 BCKBN="$bckbn",\
 DATA="$data",\
 SEED="$id",\
 LOSS="$loss",\
 PRNM="$PRNM" \
-./distributed_experiment_final.sh
-
+./job_templates/job1_hpo.sh
+        done
       done
     done
   done
-done
+}
 
+# ---------- Submit jobs ----------
+
+# echo "Submitting SCIENTIFIC backbone jobs..."
+# submit_jobs "${scientific_backbones[@]}"
+
+echo "Submitting PERFORMANCE backbone jobs..."
+submit_jobs "${performance_backbones[@]}"

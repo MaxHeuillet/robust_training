@@ -3,6 +3,7 @@ from PIL import Image
 import torch
 import torchvision.transforms as transforms
 from torch.utils.data import Dataset
+from torch.utils.data import Subset
 
 from .corruptions import *
 
@@ -79,7 +80,8 @@ def apply_portfolio_of_corruptions(dataset, severity=3):
         data[i] = (corrupted_img,label)
 
     # 4) Wrap in a TensorDataset so it's a valid PyTorch Dataset
-    return  CustomDataset( data )
+    dataset = CustomDataset( data )
+    return Subset( dataset, list(range(len(dataset))) )
 
 
 def apply_corruption(img, corruption_type, severity=3, max_attempts=3):

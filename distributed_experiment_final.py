@@ -24,11 +24,11 @@ from losses import get_loss, get_eval_loss
 from utils import get_args2, set_seeds, load_optimizer
 # from utils import ActivationTrackerAggregated, register_hooks_aggregated, compute_stats_aggregated
 
-from hydra import initialize, compose
+import hydra
 from omegaconf import OmegaConf
 
 from ray import train
-
+import sys
 import os
 import ray
 import subprocess
@@ -544,51 +544,115 @@ def training_wrapper(rank, experiment, config ):
     print('we are done training')
     return True
 
-if __name__ == "__main__":
 
-    print('begining of the execution', flush=True)
 
-    torch.multiprocessing.set_start_method("spawn", force=True)
+@hydra.main(config_path="./configs", version_base=None)
+def main(config_base):
 
-    initialize(config_path="./configs", version_base=None)
+    # "mode" tells which step to run: hpo, train, test-linf, test-l1, etc.
+    mode = config_base.get("mode", "hpo")  
 
+    # The rest is your existing init:
     args_dict = get_args2()
-
     if 'linearprobe_50epochs' in args_dict['project_name']:
-        config_base = compose(config_name="default_config_linearprobe50")  # Store Hydra config in a variable
+        local_config = hydra.compose(config_name="default_config_linearprobe50")
     elif 'full_fine_tuning_5epochs' in args_dict['project_name']:
-        config_base = compose(config_name="default_config_fullfinetuning5")  # Store Hydra config in a variable
+        local_config = hydra.compose(config_name="default_config_fullfinetuning5")
     elif 'full_fine_tuning_50epochs' in args_dict['project_name']:
-        config_base = compose(config_name="default_config_fullfinetuning50")  # Store Hydra config in a variable
+        local_config = hydra.compose(config_name="default_config_fullfinetuning50")
     else:
         print('error in the experiment name', flush=True)
-    
-    config_base = OmegaConf.merge(config_base, args_dict)
+        sys.exit(1)
+
+    config_base = OmegaConf.merge(local_config, args_dict)
     config_base.exp_id = get_config_id(config_base)
-    
     set_seeds(config_base.seed)
 
     world_size = torch.cuda.device_count()
-
     setup = Setup(world_size)
     experiment = BaseExperiment(setup, config_base)
 
-    print('HPO', flush=True)
-    experiment.hyperparameter_optimization(config_base)
-    
-    print('train', flush=True) 
-    path = os.path.join(config_base.configs_path, "HPO_results", config_base.project_name, f"{config_base.exp_id}.yaml")
-    config_optimal = OmegaConf.load(path) 
-    mp.spawn(training_wrapper, args=(experiment, config_optimal), nprocs=world_size, join=True)
+    if mode == "hpo":
+        print("HPO step", flush=True)
+        experiment.hyperparameter_optimization(config_base)
 
-    os.makedirs(os.path.join(config_base.results_path, config_base.project_name), exist_ok=True)
-    print('test Linf', flush=True)
-    experiment.launch_test('Linf', config_optimal)
-    print('test L1', flush=True)
-    experiment.launch_test('L1', config_optimal)
-    print('test L2', flush=True)
-    experiment.launch_test('L2', config_optimal)
-    print('test common corruptions', flush=True)
-    experiment.launch_test('common', config_optimal)
+    elif mode == "train":
+        print("Training step", flush=True)
+        # load best config from HPO results
+        path = os.path.join(config_base.configs_path, "HPO_results",
+                            config_base.project_name, f"{config_base.exp_id}.yaml")
+        config_optimal = OmegaConf.load(path)
+        mp.spawn(training_wrapper, args=(experiment, config_optimal),
+                 nprocs=world_size, join=True)
+
+    elif mode.startswith("test"):
+        # e.g. test-linf, test-l1, test-l2, test-common
+        test_type = mode.split("-")[1]  # "linf", "l1", "l2", "common"
+
+        print(f"Testing step: {test_type}", flush=True)
+        path = os.path.join(config_base.configs_path, "HPO_results",
+                            config_base.project_name, f"{config_base.exp_id}.yaml")
+        config_optimal = OmegaConf.load(path)
+
+        os.makedirs(os.path.join(config_base.results_path, config_base.project_name),
+                    exist_ok=True)
+        experiment.launch_test(test_type, config_optimal)
+
+    else:
+        print(f"Unknown mode {mode}", flush=True)
+        sys.exit(1)
+
+if __name__ == "__main__":
+    torch.multiprocessing.set_start_method("spawn", force=True)
+    main()
+
+
+
+# if __name__ == "__main__":
+
+#     print('begining of the execution', flush=True)
+
+#     torch.multiprocessing.set_start_method("spawn", force=True)
+
+#     initialize(config_path="./configs", version_base=None)
+
+#     args_dict = get_args2()
+
+#     if 'linearprobe_50epochs' in args_dict['project_name']:
+#         config_base = compose(config_name="default_config_linearprobe50")  # Store Hydra config in a variable
+#     elif 'full_fine_tuning_5epochs' in args_dict['project_name']:
+#         config_base = compose(config_name="default_config_fullfinetuning5")  # Store Hydra config in a variable
+#     elif 'full_fine_tuning_50epochs' in args_dict['project_name']:
+#         config_base = compose(config_name="default_config_fullfinetuning50")  # Store Hydra config in a variable
+#     else:
+#         print('error in the experiment name', flush=True)
+    
+#     config_base = OmegaConf.merge(config_base, args_dict)
+#     config_base.exp_id = get_config_id(config_base)
+    
+#     set_seeds(config_base.seed)
+
+#     world_size = torch.cuda.device_count()
+
+#     setup = Setup(world_size)
+#     experiment = BaseExperiment(setup, config_base)
+
+#     print('HPO', flush=True)
+#     experiment.hyperparameter_optimization(config_base)
+    
+#     print('train', flush=True) 
+#     path = os.path.join(config_base.configs_path, "HPO_results", config_base.project_name, f"{config_base.exp_id}.yaml")
+#     config_optimal = OmegaConf.load(path) 
+#     mp.spawn(training_wrapper, args=(experiment, config_optimal), nprocs=world_size, join=True)
+
+#     os.makedirs(os.path.join(config_base.results_path, config_base.project_name), exist_ok=True)
+#     print('test Linf', flush=True)
+#     experiment.launch_test('Linf', config_optimal)
+#     print('test L1', flush=True)
+#     experiment.launch_test('L1', config_optimal)
+#     print('test L2', flush=True)
+#     experiment.launch_test('L2', config_optimal)
+#     print('test common corruptions', flush=True)
+#     experiment.launch_test('common', config_optimal)
 
 

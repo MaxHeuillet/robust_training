@@ -24,7 +24,7 @@ def stratified_subsample(dataset, sample_size=1500):
         random_state=0
     )
 
-    return Subset(dataset, indices_subsample)
+    return torch.utils.data.Subset(dataset, indices_subsample)
 
 def process_trainvaltest(dataset_train_full, ):
 

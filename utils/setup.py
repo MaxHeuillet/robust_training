@@ -71,16 +71,23 @@ class Setup:
         # 1) BASELINES PER ARCH
         # -------------------------
 
-        if 'convnext_tiny' in config.backbone:
-            base_bs = 64 #124
-        elif 'convnext_base' in config.backbone:
-            base_bs = 22 #40
-        elif 'deit_small' in config.backbone or 'eva02_tiny' in config.backbone or 'swin_tiny' in config.backbone:  
-            base_bs = 88 #212
-        elif 'vit_base' in config.backbone or 'eva02_base' in config.backbone or 'swin_base' in config.backbone:
-            base_bs = 40 #96
-        elif 'resnet50' in config.backbone:
-            base_bs = 64 #96
+        arch_lower = config.backbone.lower()
+        base_bs = 32  # default fallback
+
+        # 1) Match known architectures by substring
+        if 'convnext_tiny' in arch_lower:
+            base_bs = 64
+        elif 'convnext_base' in arch_lower:
+            base_bs = 22
+        elif any(x in arch_lower for x in ['deit_small', 'eva02_tiny', 'swin_tiny', 'vit_small']):
+            base_bs = 88
+        elif any(x in arch_lower for x in ['vit_base', 'swin_base', 'eva02_base']):
+            base_bs = 40
+        elif 'resnet50' in arch_lower:
+            base_bs = 64
+        else:
+            print(f"WARNING: unrecognized backbone '{config.backbone}', using fallback base_bs={base_bs}.")
+
 
         # -------------------------
         # 2) DATASET → #CLASSES
