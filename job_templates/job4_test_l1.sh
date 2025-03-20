@@ -17,11 +17,11 @@ source ~/scratch/myenv_reprod/bin/activate
 
 export PYTHONUNBUFFERED=1
 
-bash ./dataset_to_tmpdir.sh "$DATA"
+bash ../dataset_to_tmpdir.sh "$DATA"
 
 # --- HPO Step ---
-python ./distributed_experiment_final.py \
-    --mode test-L1 \
+python ../distributed_experiment_final.py \
+    --mode hpo \
     --loss_function "${LOSS}" \
     --dataset "${DATA}" \
     --seed "${SEED}" \
