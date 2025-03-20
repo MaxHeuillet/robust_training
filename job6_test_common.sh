@@ -36,4 +36,5 @@ if [ $exit_code -eq 0 ]; then
     echo "All steps complete successfully!"
 else
     echo "test-common failed."
+    exit 1
 fi

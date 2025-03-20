@@ -46,4 +46,5 @@ EXP="$EXP" \
 ./job3_test_linf.sh
 else
     echo "HPO failed. No further jobs will be submitted."
+    exit 1
 fi

@@ -547,7 +547,7 @@ def training_wrapper(rank, experiment, config ):
 
 
 # @hydra.main(config_path="./configs", version_base=None)
-def main(config_base):
+def main():
 
     initialize(config_path="./configs", version_base=None)
 

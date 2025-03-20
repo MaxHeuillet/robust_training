@@ -46,4 +46,5 @@ EXP="$EXP" \
 ./job5_test_l2.sh
 else
     echo "HPO failed. No further jobs will be submitted."
+    exit 1
 fi

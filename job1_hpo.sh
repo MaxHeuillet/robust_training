@@ -46,6 +46,7 @@ EXP="$EXP" \
 ./job2_train.sh
 else
     echo "HPO failed. No further jobs will be submitted."
+    exit 1
 fi
 
 
