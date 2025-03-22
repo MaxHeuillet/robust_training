@@ -84,8 +84,8 @@ PRNM="$PRNM" \
 
 # ---------- Submit jobs ----------
 
-# echo "Submitting SCIENTIFIC backbone jobs..."
-# submit_jobs "${scientific_backbones[@]}"
+echo "Submitting SCIENTIFIC backbone jobs..."
+submit_jobs "${scientific_backbones[@]}"
 
 echo "Submitting PERFORMANCE backbone jobs..."
 submit_jobs "${performance_backbones[@]}"
