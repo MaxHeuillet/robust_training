@@ -1,8 +1,12 @@
 import torch
 from sklearn.model_selection import train_test_split
 from torch.utils.data import Subset
+from torch.utils.data import Dataset
+from sklearn.model_selection import train_test_split
 
-
+import torch
+from sklearn.model_selection import train_test_split
+from torch.utils.data import Subset
 
 def stratified_subsample(dataset, sample_size=1500):
     """
@@ -28,7 +32,7 @@ def stratified_subsample(dataset, sample_size=1500):
 
 def process_trainvaltest(dataset_train_full, ):
 
-    labels = [label for _, label in dataset_train_full]
+    labels = [dataset_train_full[i][1] for i in range(len(dataset_train_full))]
 
     train_val_indices, test_indices = train_test_split(
                                             range(len(labels)),
@@ -54,7 +58,7 @@ def process_trainvaltest(dataset_train_full, ):
 
 def process_trainval(dataset_train_val_full, ):
 
-    labels = [label for _, label in dataset_train_val_full]
+    labels = [dataset_train_val_full[i][1] for i in range(len(dataset_train_val_full))]
 
     train_indices, val_indices = train_test_split(
             range(len(labels)),

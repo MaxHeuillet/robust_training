@@ -6,6 +6,25 @@ from corruptions import apply_portfolio_of_corruptions
 from transforms import load_data_transforms
 from torch.utils.data import Subset
 
+from torch.utils.data import Dataset
+
+class TransformedSubset(Dataset):
+    def __init__(self, subset, transform=None, target_transform=None):
+        self.subset = subset
+        self.transform = transform
+        self.target_transform = target_transform
+
+    def __getitem__(self, idx):
+        x, y = self.subset[idx]
+        if self.transform:
+            x = self.transform(x)
+        if self.target_transform:
+            y = self.target_transform(y)
+        return x, y
+
+    def __len__(self):
+        return len(self.subset)
+
 def load_data(config, common_corruption=False):
 
     dataset = config.dataset
@@ -84,8 +103,8 @@ def load_data(config, common_corruption=False):
     if common_corruption:
         test_dataset = apply_portfolio_of_corruptions(test_dataset, severity=3)
 
-    train_dataset.dataset.transform = train_transform
-    val_dataset.dataset.transform = transform
-    test_dataset.dataset.transform = transform
+    train_dataset = TransformedSubset(train_dataset, transform=train_transform)
+    val_dataset  = TransformedSubset(val_dataset,  transform=transform)
+    test_dataset  = TransformedSubset(test_dataset,  transform=transform)
                        
     return train_dataset, val_dataset, test_dataset, N

@@ -406,7 +406,7 @@ class BaseExperiment:
         model = load_architecture(config, N, )
 
         model = CustomModel(config, model, )
-        model.set_fine_tuning_strategy()
+        #model.set_fine_tuning_strategy()
 
         path = os.path.expanduser(config.trained_statedicts_path)
         load_path =  os.path.join(path, config.project_name, f"{config.exp_id}.pt")
@@ -467,7 +467,7 @@ class BaseExperiment:
             stats_nat = { 'nb_correct':nb_correct_nat, 'nb_examples':nb_examples }
             stats_adv = { 'nb_correct':nb_correct_adv, 'nb_examples':nb_examples }
 
-        else:
+        elif corruption_type == 'common':
 
             nb_correct_adv = 0
             nb_examples = 0
@@ -479,7 +479,6 @@ class BaseExperiment:
                 x_adv, target = x_adv.to(rank), target.to(rank) 
 
                 batch_size = x_adv.size(0)
-                
 
                 logits_nat, logits_adv = model(x_adv, x_adv)
 
@@ -493,6 +492,9 @@ class BaseExperiment:
             
             stats_nat = { 'nb_correct':None, 'nb_examples':None }
             stats_adv = { 'nb_correct':nb_correct_adv, 'nb_examples':nb_examples }
+
+        else:
+            print("not implemented error")
         
         return stats_nat, stats_adv
     

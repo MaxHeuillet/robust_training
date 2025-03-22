@@ -58,7 +58,7 @@ def load_architecture(config, N):
         model.load_state_dict(state_dict)
 
     # Replace classification head if needed
-    model = change_head(backbone, model, N)
+    # model = change_head(backbone, model, N)
 
     return model
 
@@ -81,10 +81,19 @@ def change_head(backbone, model, N):
         num_features = model.head.in_features
         model.head = nn.Linear(num_features, N)
 
-    elif "vit" in backbone or 'eva02' in backbone: 
+    elif "vit" in backbone: 
 
         if isinstance(model.head, nn.Identity):
-            num_features = 768
+            num_features = model.norm.normalized_shape[0]
+            model.head = nn.Linear(num_features, N)
+
+        num_features = model.head.in_features
+        model.head = nn.Linear(num_features, N)
+
+    elif "eva02" in backbone: 
+
+        if isinstance(model.head, nn.Identity):
+            num_features = model.fc_norm.normalized_shape[0]
             model.head = nn.Linear(num_features, N)
 
         num_features = model.head.in_features

@@ -16,6 +16,7 @@ class CustomDataset(Dataset):
         return len(self.dataset)
 
     def __getitem__(self, idx):
+        print('hey hey')
         img, label = self.dataset[idx]
 
         if isinstance(img, np.ndarray):
