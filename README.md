@@ -27,18 +27,18 @@ Modify comet ML loging details in `./distributed_experiment_final.py` the method
 
 Maxime :
 ```
-bash ./execute_experiment.sh 'full_fine_tuning_50epochs_final2'
+bash ./execute_experiment.sh 'full_fine_tuning_50epochs_final3'
 ```
 
 Rishika :
 
 ```
-bash ./execute_experiment.sh 'full_fine_tuning_5epochs_final2'
+bash ./execute_experiment.sh 'full_fine_tuning_5epochs_final3'
 ```
 
 Jonas :
 ```
-bash ./execute_experiment.sh 'linearprobe_50epochs_final2'
+bash ./execute_experiment.sh 'linearprobe_50epochs_final3'
 ```
 
 ---
