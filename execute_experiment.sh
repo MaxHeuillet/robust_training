@@ -75,7 +75,7 @@ DATA="$data",\
 SEED="$id",\
 LOSS="$loss",\
 PRNM="$PRNM" \
-./job1_hpo.sh
+./job4_test_l1.sh
         done
       done
     done
