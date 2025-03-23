@@ -118,23 +118,20 @@ class BaseExperiment:
         
         return trainloader, valloader, testloader, train_sampler, val_sampler, test_sampler, N
 
-    def training(self, update_config, rank=None ):
+    def training(self, config, rank=None ):
 
         if self.setup.hp_opt: # we have to merge here because HP is a dictionary with sample objects, which is not compatible with Omegaconf
             base_config = self.base_config
-            config = OmegaConf.merge(base_config, update_config)
+            config = OmegaConf.merge(base_config, config)
             rank = train.get_context().get_world_rank()
             logger = None
             resources = session.get_trial_resources()
             print(f"Trial resource allocation: {resources}")
             
         else:
-            config = update_config.copy() #OmegaConf.load( "./configs/HPO_{}_{}.yaml".format(self.setup.project_name, self.setup.exp_id) )
             self.setup.distributed_setup(rank)
             logger = self.initialize_logger(rank, config)
 
-        print('initialize dataset', rank, flush=True) 
-        print(config, rank, flush=True) 
 
         trainloader, valloader, _, train_sampler, val_sampler, _, N = self.initialize_loaders(config, rank)
 
@@ -144,16 +141,8 @@ class BaseExperiment:
         
         model = CustomModel(config, model, )
         model.set_fine_tuning_strategy()
-        # model._enable_all_gradients()
         model.to(rank)
-
-        # for name, param in model.named_parameters():
-        #     print(f"Parameter: {name}, strides: {param.data.stride()}")
         model = DDP(model, device_ids=[rank])
-
-        # torch.autograd.set_detect_anomaly(True)
-        if not self.setup.hp_opt:
-            self.validation( config, valloader, model, logger, 0, rank)
         
         print('start the loop')
         
@@ -181,6 +170,86 @@ class BaseExperiment:
         self.setup.cleanup()
         print('processes ended', flush=True)
         return True 
+
+    def fit(self, config, model, optimizer, scheduler, trainloader, valloader, train_sampler, val_sampler, N, rank, logger=None):
+
+        # Gradient accumulation:
+        effective_batch_size = 1024
+        loss_scale = 0.50 if config.loss_function == 'TRADES_v2' else 1.00
+        per_gpu_batch_size = int( self.setup.train_batch_size(config) * loss_scale ) # Choose a batch size that fits in memory
+        accumulation_steps = effective_batch_size // (self.setup.world_size * per_gpu_batch_size)
+        global_step = 0  # Track global iterations across accumulation steps
+        print('effective batch size', effective_batch_size, 'per_gpu_batch_size', per_gpu_batch_size, 'accumulation steps', accumulation_steps)
+
+        scaler = GradScaler() 
+         
+        model.train()
+
+        print('epochs', config.epochs)
+        batch_step = 0
+        update_step = 0
+        
+        for iteration in range(1, config.epochs+1):
+
+            train_sampler.set_epoch(iteration)
+            val_sampler.set_epoch(iteration)
+
+            print('start batches')
+
+            for batch_id, batch in enumerate( trainloader ) :
+
+                data, target = batch
+
+                data, target = data.to(rank), target.to(rank) 
+
+                # Use autocast for mixed precision during forward pass
+                with autocast():
+                    loss_values, logits = get_loss(config, model, data, target)
+                    loss = loss_values.mean()
+                    loss = loss / accumulation_steps  # Scale the loss
+
+                scaler.scale(loss).backward()
+                
+                global_step += 1
+
+                if not self.setup.hp_opt and rank == 0:
+                    metrics = { "global_step": global_step, 
+                                "loss_value": loss.item() * accumulation_steps, }
+                    logger.log_metrics(metrics, epoch=iteration, step = batch_step )
+
+                batch_step += 1
+
+                if (batch_id + 1) % max(1, accumulation_steps) == 0 or (batch_id + 1) == len(trainloader):
+
+                    if not self.setup.hp_opt and rank == 0:
+                        # print('unscale', rank, flush=True)
+                        scaler.unscale_(optimizer)
+                            
+                        gradient_norm = compute_gradient_norms(model)
+                            
+                        metrics = { "gradient_norm": float(gradient_norm),   }
+                            
+                        logger.log_metrics(metrics, epoch=iteration, step=update_step, )
+
+
+                    scaler.step(optimizer)
+                    scaler.update()
+                    optimizer.zero_grad() # Clear gradients after optimizer step
+
+                    update_step += 1
+
+            if self.setup.hp_opt:
+                self.validation( config, valloader, model, logger, iteration, rank)
+            
+            # elif not self.setup.hp_opt and iteration in [10, 40]: #25,
+            #     self.validation( valloader, model, logger, iteration, rank)
+                
+            if scheduler is not None: scheduler.step()
+
+            print(f'Rank {rank}, Iteration {iteration},', flush=True) 
+
+            # break
+
 
     def hyperparameter_optimization(self, config):  
 
@@ -216,110 +285,6 @@ class BaseExperiment:
         OmegaConf.save(optimal_config, output_path)
 
         ray.shutdown()
-
-    def fit(self, config, model, optimizer, scheduler, trainloader, valloader, train_sampler, val_sampler, N, rank, logger=None):
-
-        # Gradient accumulation:
-        effective_batch_size = 1024
-        loss_scale = 0.50 if config.loss_function == 'TRADES_v2' else 1.00
-        per_gpu_batch_size = int( self.setup.train_batch_size(config) * loss_scale ) # Choose a batch size that fits in memory
-        accumulation_steps = effective_batch_size // (self.setup.world_size * per_gpu_batch_size)
-        global_step = 0  # Track global iterations across accumulation steps
-        print('effective batch size', effective_batch_size, 'per_gpu_batch_size', per_gpu_batch_size, 'accumulation steps', accumulation_steps)
-
-        scaler = GradScaler() 
-
-        # tracker_nat = ActivationTrackerAggregated(train=True)
-        # tracker_adv = ActivationTrackerAggregated(train=True)
-        # handles = register_hooks_aggregated(model, tracker_nat, tracker_adv)
-         
-        model.train()
-
-        print('epochs', config.epochs)
-        batch_step = 0
-        update_step = 0
-        
-        for iteration in range(1, config.epochs+1):
-
-            train_sampler.set_epoch(iteration)
-            val_sampler.set_epoch(iteration)
-
-            print('start batches')
-
-            for batch_id, batch in enumerate( trainloader ) :
-
-                data, target = batch
-
-                data, target = data.to(rank), target.to(rank) 
-
-                # Use autocast for mixed precision during forward pass
-                with autocast():
-                    loss_values, logits = get_loss(config, model, data, target)
-                    loss = loss_values.mean()
-                    loss = loss / accumulation_steps  # Scale the loss
-
-                # print('scale loss', rank, flush=True)
-
-                scaler.scale(loss).backward()
-                
-                global_step += 1
-
-                if not self.setup.hp_opt and rank == 0:
-                    metrics = { "global_step": global_step, 
-                                "loss_value": loss.item() * accumulation_steps, }
-                    logger.log_metrics(metrics, epoch=iteration, step = batch_step )
-
-                batch_step += 1
-
-                if (batch_id + 1) % max(1, accumulation_steps) == 0 or (batch_id + 1) == len(trainloader):
-
-                    if not self.setup.hp_opt and rank == 0:
-                        # print('unscale', rank, flush=True)
-                        scaler.unscale_(optimizer)
-                            
-                        gradient_norm = compute_gradient_norms(model)
-                            
-                        # res_adv = compute_stats_aggregated(tracker_adv)
-                        metrics = { "gradient_norm": float(gradient_norm),   }
-                        # "zero_adv_train": res_adv['zero_count'] / res_adv['total_neurons'],
-                        # "dormant_adv_train":res_adv['dormant_count'] / res_adv['total_neurons'], 
-                        # "overactive_adv_train":res_adv['overactive_count'] / res_adv['total_neurons'],
-                            
-                        logger.log_metrics(metrics, epoch=iteration, step=update_step, )
-
-                        # tracker_nat.clear()
-                        # tracker_adv.clear()
-
-                    scaler.step(optimizer)
-                    scaler.update()
-                    optimizer.zero_grad() # Clear gradients after optimizer step
-
-                    update_step += 1
-
-                    # print('classifier head', model.module.base_model.head.fc.weight)
-
-                    # print('layer weights', model.module.base_model.layers[0].blocks[0].attn.proj.weight)
-
-                    
-                # if batch_id == 100:
-                #     break
-
-
-            if self.setup.hp_opt:
-                self.validation( config, valloader, model, logger, iteration, rank)
-            
-            # elif not self.setup.hp_opt and iteration in [10, 40]: #25,
-            #     self.validation( valloader, model, logger, iteration, rank)
-                
-            if scheduler is not None: scheduler.step()
-
-            print(f'Rank {rank}, Iteration {iteration},', flush=True) 
-
-            # break
-                            
-        # Remove hooks
-        # for handle in handles:
-        #     handle.remove()
 
     def validation(self, config, valloader, model, logger, iteration, rank):
 
@@ -436,8 +401,17 @@ class BaseExperiment:
             nb_correct_adv = 0
             nb_examples = 0
             print('stats', nb_correct_nat, nb_correct_adv, nb_examples, flush=True)
+            if corruption_type == 'Linf':
+                distance = config.epsilon
+            elif corruption_type == 'L2':    
+                distance = 2.0
+            elif corruption_type == 'L1':
+                distance = 75.0
+            else:
+                distance = None
+                print('not implemented error in the distance', flush=True)
 
-            adversary = AutoAttack(forward_pass, norm=corruption_type, eps=config.epsilon, version='standard', verbose = False, device = device)
+            adversary = AutoAttack(forward_pass, norm=corruption_type, eps=distance, version='standard', verbose = False, device = device)
             print('adversary instanciated', flush=True) 
             
             for _, batch in enumerate( testloader ):
