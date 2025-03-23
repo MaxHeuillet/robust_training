@@ -57,7 +57,7 @@ def load_architecture(config, N):
         state_dict = torch.load(checkpoint_path, weights_only=True, map_location='cpu')
         model.load_state_dict(state_dict)
 
-    # Replace classification head if needed
+    # Replace classification head 
     model = change_head(backbone, model, N)
 
     return model
