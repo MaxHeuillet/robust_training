@@ -35,7 +35,6 @@ scientific_backbones=(
   'convnext_tiny.fb_in1k'
   'robust_convnext_tiny'
   'robust_deit_small_patch16_224'
-  'vit_base_patch16_224.dino'
   'vit_small_patch16_224.augreg_in1k'
   'convnext_tiny.fb_in22k'
 ) 
