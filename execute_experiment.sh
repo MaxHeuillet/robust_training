@@ -16,28 +16,28 @@ losses=( 'CLASSIC_AT' 'TRADES_v2'   )
 
 # Two backbone groups
 scientific_backbones=(
-  # 'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K'
-  # 'CLIP-convnext_base_w-laion2B-s13B-b82K'
-  # 'deit_small_patch16_224.fb_in1k'
-  # 'robust_resnet50'
-  # 'vit_small_patch16_224.augreg_in21k'
-  # 'convnext_base.fb_in1k'
-  # 'resnet50.a1_in1k'
-  # 'robust_vit_base_patch16_224'
+  'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K'
+  'CLIP-convnext_base_w-laion2B-s13B-b82K'
+  'deit_small_patch16_224.fb_in1k'
+  'robust_resnet50'
+  'vit_small_patch16_224.augreg_in21k'
+  'convnext_base.fb_in1k'
+  'resnet50.a1_in1k'
+  'robust_vit_base_patch16_224'
   'vit_base_patch16_224.mae'
-  # 'vit_small_patch16_224.dino'
-  # 'convnext_base.fb_in22k'
-  # 'robust_convnext_base'
-  # 'vit_base_patch16_224.augreg_in1k'
-  # 'vit_base_patch16_224.augreg_in21k'
-  # 'vit_base_patch16_224.dino'
-  # 'vit_base_patch16_clip_224.laion2b'
-  # 'convnext_tiny.fb_in1k'
-  # 'robust_convnext_tiny'
-  # 'robust_deit_small_patch16_224'
-  # 'vit_base_patch16_224.dino'
-  # 'vit_small_patch16_224.augreg_in1k'
-  # 'convnext_tiny.fb_in22k'
+  'vit_small_patch16_224.dino'
+  'convnext_base.fb_in22k'
+  'robust_convnext_base'
+  'vit_base_patch16_224.augreg_in1k'
+  'vit_base_patch16_224.augreg_in21k'
+  'vit_base_patch16_224.dino'
+  'vit_base_patch16_clip_224.laion2b'
+  'convnext_tiny.fb_in1k'
+  'robust_convnext_tiny'
+  'robust_deit_small_patch16_224'
+  'vit_base_patch16_224.dino'
+  'vit_small_patch16_224.augreg_in1k'
+  'convnext_tiny.fb_in22k'
 ) 
 
 
@@ -75,7 +75,7 @@ DATA="$data",\
 SEED="$id",\
 LOSS="$loss",\
 PRNM="$PRNM" \
-./job4_test_l1.sh
+./job1_hpo.sh
         done
       done
     done
@@ -87,5 +87,5 @@ PRNM="$PRNM" \
 echo "Submitting SCIENTIFIC backbone jobs..."
 submit_jobs "${scientific_backbones[@]}"
 
-# echo "Submitting PERFORMANCE backbone jobs..."
-# submit_jobs "${performance_backbones[@]}"
+echo "Submitting PERFORMANCE backbone jobs..."
+submit_jobs "${performance_backbones[@]}"
