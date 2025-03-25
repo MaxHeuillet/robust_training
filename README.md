@@ -23,7 +23,7 @@ Modify comet ML loging details in `./distributed_experiment_final.py` the method
 
 ### 🚀 Launch All Jobs on the Cluster
 
-
+Don't forget to change email and allocation credentials in ```./job*.sh``` scripts.
 
 Maxime :
 ```
