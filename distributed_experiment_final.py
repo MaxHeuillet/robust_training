@@ -31,7 +31,7 @@ from ray import train
 import sys
 import os
 import ray
-import subprocess
+import shutil
 
 
 
@@ -262,7 +262,7 @@ class BaseExperiment:
         existing_experiment_path = os.path.join(hpo_opt_path, config.project_name, config.exp_id)
         if os.path.exists(existing_experiment_path):
             print(f"Deleting existing experiment directory: {existing_experiment_path}")
-            subprocess.run(["rm", "-rf", existing_experiment_path], check=True)
+            shutil.rmtree(existing_experiment_path)
         
         ray.init() #logging_level=logging.DEBUG
 
