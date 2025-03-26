@@ -33,18 +33,26 @@ python ./distributed_experiment_final.py \
 exit_code=$?
 echo "HPO exit code: $exit_code"
 
-# If success, chain the next job
 if [ $exit_code -eq 0 ]; then
-    echo "HPO succeeded, submitting training job..."
-    sbatch --export=ALL,\
-BCKBN="$BCKBN",\
-DATA="$DATA",\
-SEED="$SEED",\
-LOSS="$LOSS",\
-PRNM="$PRNM",\
-EXP="$EXP" \
-./job3_test_linf.sh
+    echo "All steps complete successfully!"
 else
-    echo "HPO failed. No further jobs will be submitted."
+    echo "test-common failed."
     exit 1
 fi
+
+
+# If success, chain the next job
+# if [ $exit_code -eq 0 ]; then
+#     echo "HPO succeeded, submitting training job..."
+#     sbatch --export=ALL,\
+# BCKBN="$BCKBN",\
+# DATA="$DATA",\
+# SEED="$SEED",\
+# LOSS="$LOSS",\
+# PRNM="$PRNM",\
+# EXP="$EXP" \
+# ./job3_test_linf.sh
+# else
+#     echo "HPO failed. No further jobs will be submitted."
+#     exit 1
+# fi
