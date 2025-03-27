@@ -7,6 +7,8 @@ from huggingface_hub import hf_hub_download
 save_path = os.path.expanduser('/home/mheuillet/Desktop/state_dicts_share')
 os.makedirs(save_path, exist_ok=True)
 
+############## SET OF SCIENTIFIC BACKBONES
+
 # backbones = (
     # 'timm/vit_base_patch16_224.dino',
     # 'timm/vit_base_patch16_224.mae',
@@ -27,18 +29,29 @@ os.makedirs(save_path, exist_ok=True)
     # 'timm/convnext_tiny.fb_in1k',
     # 'timm/resnet50.a1_in1k', )
 
-backbones = (
+############## SET OF PERFORMANCE BACKBONES
+
+# backbones = (
     # 'timm/vit_base_patch16_clip_224.laion2b_ft_in1k',
     # 'timm/vit_base_patch16_224.augreg_in21k_ft_in1k',
     # 'timm/vit_small_patch16_224.augreg_in21k_ft_in1k',
     # 'timm/eva02_base_patch14_224.mim_in22k',
     # 'timm/eva02_tiny_patch14_224.mim_in22k',
-    'timm/swin_base_patch4_window7_224.ms_in22k_ft_in1k',
-    'timm/swin_tiny_patch4_window7_224.ms_in1k',
+    # 'timm/swin_base_patch4_window7_224.ms_in22k_ft_in1k',
+    # 'timm/swin_tiny_patch4_window7_224.ms_in1k',
     # 'timm/convnext_base.clip_laion2b_augreg_ft_in12k_in1k',
     # 'timm/convnext_base.fb_in22k_ft_in1k',
-    # 'timm/convnext_tiny.fb_in22k_ft_in1k' 
-    )
+    # 'timm/convnext_tiny.fb_in22k_ft_in1k'  )
+
+
+backbones = (
+    'timm/regnetx_004.pycls_in1k',
+    'google/efficientnet-b0',
+    'timm/deit_tiny_patch16_224.fb_in1k',
+    'apple/mobilevit-small',
+    'timm/mobilenetv3_large_100.ra_in1k',
+    'timm/edgenext_small.usi_in1k'
+)
 
 for backbone in backbones:
     parts = backbone.split("/")
@@ -52,17 +65,31 @@ for backbone in backbones:
         torch.save(model.state_dict(), save_file)
 
     elif model_source == "laion":
-        # For HF Hub models, download directly the model weights (usually .safetensors or .bin)
-        # This assumes weights are stored in a file named 'pytorch_model.bin'
         try:
             file = hf_hub_download(repo_id=backbone, filename="open_clip_pytorch_model.bin")
             state_dict = torch.load(file, map_location="cpu")
             torch.save(state_dict, save_file)
+        except Exception as e:
+            print(f"❌ Failed to download {backbone}: {e}")
+
+    elif model_source in {"google", "apple"}:
+        try:
+            # Try downloading both .safetensors and .bin files (whichever is available)
+            try:
+                file = hf_hub_download(repo_id=backbone, filename="model.safetensors")
+            except:
+                file = hf_hub_download(repo_id=backbone, filename="pytorch_model.bin")
+
+            state_dict = torch.load(file, map_location="cpu")
+            torch.save(state_dict, save_file)
+            print(f"✅ Successfully saved {backbone}")
 
         except Exception as e:
             print(f"❌ Failed to download {backbone}: {e}")
+
     else:
         print(f"⚠ Unknown source for backbone: {backbone}")
+
 
 
 ######################################################################################################################

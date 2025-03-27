@@ -30,7 +30,6 @@ scientific_backbones=(
   'robust_convnext_base'
   'vit_base_patch16_224.augreg_in1k'
   'vit_base_patch16_224.augreg_in21k'
-  'vit_base_patch16_224.dino'
   'vit_base_patch16_clip_224.laion2b'
   'convnext_tiny.fb_in1k'
   'robust_convnext_tiny'

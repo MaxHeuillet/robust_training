@@ -4,9 +4,32 @@ import timm
 import torch.nn as nn
 import os
 import open_clip
-
+from transformers import AutoModel
 # from utils import get_state_dict_dir
 from architectures.clip_wrapper import CLIPConvNeXtClassifier
+
+class HFModelWrapper(nn.Module):
+    def __init__(self, hf_model, num_classes, backbone):
+        super().__init__()
+        self.hf_model = hf_model
+        # Suppose you want your final classification layer to be called `fc`
+        if "efficientnet" in backbone:
+            in_features = 1280
+        elif "mobilevit" in backbone:
+            in_features = 640
+        # else: maybe other backbones
+
+        self.fc = nn.Linear(in_features, num_classes)
+
+    def forward(self, x):
+        # 1) Run the original HF model
+        outputs = self.hf_model(x)  
+        # 2) For EfficientNet, use outputs.pooler_output or last_hidden_state[-1], etc.
+        #    We'll pick the pooler_output for demonstration:
+        pooled = outputs.pooler_output
+        # 3) Apply your classification head
+        logits = self.fc(pooled)
+        return logits
 
 
 def load_architecture(config, N):
@@ -31,11 +54,31 @@ def load_architecture(config, N):
         )
 
         checkpoint_path = os.path.join(statedict_dir, f'{backbone}.pt')
-        state_dict = torch.load(checkpoint_path, map_location='cpu')
+        state_dict = torch.load(checkpoint_path, map_location='cpu', weights_only=True, )
 
         if 'state_dict' in state_dict:
             state_dict = state_dict['state_dict']  # Handle wrapped checkpoints
 
+        model.load_state_dict(state_dict, strict=False)
+
+        # New: Hugging Face Models (Google, Apple, and others)
+    elif backbone == 'efficientnet-b0' or backbone == 'mobilevit-small':
+
+            # Determine if it's an OpenCLIP model
+        hf_models = {
+        'efficientnet-b0': 'google/efficientnet-b0',
+        'mobilevit-small': 'apple/mobilevit-small',
+            }
+
+        print(f"Loading Hugging Face model: {backbone}")
+
+        try:
+            model = AutoModel.from_pretrained(hf_models[backbone], cache_dir=statedict_dir)  # Load model from HF
+        except Exception as e:
+            print(f"❌ Failed to load {backbone} from Hugging Face: {e}")
+            return None
+        checkpoint_path = os.path.join(statedict_dir, f'{backbone}.pt')
+        state_dict = torch.load(checkpoint_path, map_location='cpu', weights_only=True, )
         model.load_state_dict(state_dict, strict=False)
 
     else:
@@ -69,9 +112,18 @@ def change_head(backbone, model, N):
     if 'CLIP-convnext' in backbone:
         model = CLIPConvNeXtClassifier(model, num_classes=N)
 
-    elif "convnext" in backbone or 'swin' in backbone: 
+    elif "convnext" in backbone or 'swin' in backbone or 'regnetx' in backbone or 'edgenext' in backbone: 
         num_features = model.head.fc.in_features
         model.head.fc = nn.Linear(num_features, N)
+    
+    elif "efficientnet" in backbone:
+        model = HFModelWrapper(model, N, backbone)
+    
+    elif "mobilevit" in backbone:
+        model = HFModelWrapper(model, N, backbone)
+
+    elif 'mobilenetv3' in backbone:
+        model.classifier = nn.Linear(model.classifier.in_features, N)
 
     elif "resnet" in backbone:
         num_features = model.fc.in_features
@@ -86,9 +138,8 @@ def change_head(backbone, model, N):
         if isinstance(model.head, nn.Identity):
             num_features = model.norm.normalized_shape[0]
             model.head = nn.Linear(num_features, N)
-
-        # num_features = model.head.in_features
-        # model.head = nn.Linear(num_features, N)
+        num_features = model.head.in_features
+        model.head = nn.Linear(num_features, N)
 
     elif "eva02" in backbone: 
         print("hey")
@@ -96,9 +147,8 @@ def change_head(backbone, model, N):
             num_features = model.fc_norm.normalized_shape[0]
             print(num_features)
             model.head = nn.Linear(num_features, N)
-
-        # num_features = model.head.in_features
-        # model.head = nn.Linear(num_features, N)
+        num_features = model.head.in_features
+        model.head = nn.Linear(num_features, N)
 
     else:
         print("not implemented error")

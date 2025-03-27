@@ -25,7 +25,6 @@ scientific_backbones=(
   'resnet50.a1_in1k'
   'robust_vit_base_patch16_224'
   'vit_base_patch16_224.mae'
-  'vit_small_patch16_224.dino'
   'convnext_base.fb_in22k'
   'robust_convnext_base'
   'vit_base_patch16_224.augreg_in1k'

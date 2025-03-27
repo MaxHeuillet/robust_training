@@ -25,7 +25,7 @@ def load_data_transforms():
 
 def load_module_transform(config):
         
-    if 'laion2b' in config.backbone:
+    if 'laion' in config.backbone:
         # https://github.com/openai/CLIP/issues/20?utm_source=chatgpt.com
         mean = [0.48145466, 0.4578275, 0.40821073]
         std = [0.26862954, 0.26130258, 0.27577711]
