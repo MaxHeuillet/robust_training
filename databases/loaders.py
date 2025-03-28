@@ -1,6 +1,6 @@
 from torchvision import datasets
 import os
-from datasets.data_processing import process_trainvaltest, process_trainval, stratified_subsample
+from databases.data_processing import process_trainvaltest, process_trainval, stratified_subsample
 import torch
 from corruptions import apply_portfolio_of_corruptions
 from transforms import load_data_transforms

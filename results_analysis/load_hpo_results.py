@@ -6,7 +6,7 @@ from ray.tune.examples.mnist_pytorch import train_mnist
 from hydra import initialize, compose
 
 from omegaconf import OmegaConf
-from datasets import load_data
+from databases import load_data
 from architectures import load_architecture
 from utils import load_optimizer, get_args2, set_seeds, Hp_opt
 
