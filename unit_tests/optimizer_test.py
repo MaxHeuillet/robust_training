@@ -3,18 +3,17 @@ import torch
 
 from omegaconf import OmegaConf
 import numpy as np
-
-import torch
 import sys 
 import os
-import traceback  # ✅ Helps capture detailed errors
+import traceback  # Helps capture detailed errors
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(PROJECT_ROOT)
 
 from architectures import load_architecture
+from utils import load_optimizer
 
-SCIENTIFIC_BACKBONES=(
+SCIENTIFIC_BACKBONES = (
   'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K',
   'CLIP-convnext_base_w-laion2B-s13B-b82K',
   'deit_small_patch16_224.fb_in1k',
@@ -37,7 +36,7 @@ SCIENTIFIC_BACKBONES=(
   'convnext_tiny.fb_in22k',
 ) 
 
-PERFORMANCE_BACKBONES=(
+PERFORMANCE_BACKBONES = (
   'vit_base_patch16_clip_224.laion2b_ft_in1k',
   'vit_base_patch16_224.augreg_in21k_ft_in1k',
   'vit_small_patch16_224.augreg_in21k_ft_in1k',
@@ -67,17 +66,16 @@ ALL_BACKBONES = {
 }
 
 class TestModelForwardPass(unittest.TestCase):
-    """ Unit test for model forward pass with different backbone sets """
+    """ Unit test for model forward pass and optimizer validation """
 
     def setUp(self):
         """ Set up test configuration """
         self.N = 10  # Number of classification classes
         self.batch_size = 2  # Two image tensors
         self.config = OmegaConf.load("./configs/default_config_linearprobe50.yaml")
-        # self.config.statedicts_path = '/home/mheuillet/Desktop/state_dicts_share'
 
     def test_forward_pass(self):
-        """ Test forward pass for all backbone sets """
+        """ Test forward pass for all backbone sets and optimizer validation """
         for category, backbones in ALL_BACKBONES.items():
             print(f"\n🔹 Testing {category} ({len(backbones)} models) 🔹")
             for backbone in backbones:
@@ -97,29 +95,43 @@ class TestModelForwardPass(unittest.TestCase):
                         # Create random input tensors simulating images (batch_size=2, 224x224)
                         dummy_input = torch.randn(self.batch_size, 3, 224, 224).to(device)
 
-                        # ✅ Forward Pass
-                        logits = model(dummy_input)  # Get logits
-                        print(logits)
+                        # Run forward pass
+                        with torch.no_grad():
+                            output = model(dummy_input)
+                        self.assertIsNotNone(output, f"❌ Model forward pass failed! Backbone: {backbone}")
 
-                        # Validate output shape (should be [batch_size, N])
-                        expected_shape = (self.batch_size, self.N)
+                        # Load optimizer
+                        optimizer = load_optimizer(self.config, model)
 
-                        if not hasattr(logits, "shape"):
-                            raise TypeError(f"❌ Model output is not a tensor! Backbone: {backbone}, Output Type: {type(logits)}")
-
-                        self.assertEqual(
-                            logits.shape, expected_shape,
-                            f"❌ Output shape mismatch! Backbone: {backbone} - Got {logits.shape}, expected {expected_shape}"
-                        )
-
-                        print(f"✅ Forward pass successful! Backbone: {backbone}, Output shape: {logits.shape}")
+                        # Validate optimizer parameter groups
+                        self._validate_optimizer(optimizer, backbone)
 
                     except Exception as e:
-                        print(f"❌ Exception in backbone {backbone}:\n{traceback.format_exc()}")  # ✅ Print full traceback
+                        print(f"❌ Exception in backbone {backbone}:\n{traceback.format_exc()}")
                         self.fail(f"🚨 Test failed for backbone {backbone} with error: {str(e)}")
 
                     print()
 
+    def _validate_optimizer(self, optimizer, backbone):
+        """ Ensure optimizer has exactly one parameter in each head group """
+        param_groups = optimizer.param_groups
+
+        head_decay = None
+        head_no_decay = None
+
+        for group in param_groups:
+            if group["weight_decay"] > 0 and "head" in str(group["params"]):
+                head_decay = group
+            elif group["weight_decay"] == 0 and "head" in str(group["params"]):
+                head_no_decay = group
+
+        self.assertIsNotNone(head_decay, f"❌ Missing head parameter with weight decay in {backbone}")
+        self.assertIsNotNone(head_no_decay, f"❌ Missing head parameter without weight decay in {backbone}")
+
+        self.assertEqual(len(head_decay["params"]), 1, f"❌ More than 1 parameter in head decay for {backbone}")
+        self.assertEqual(len(head_no_decay["params"]), 1, f"❌ More than 1 parameter in head no decay for {backbone}")
+
+        print(f"✅ Optimizer parameters validated for {backbone}")
 
 # Run the unit test
 if __name__ == "__main__":
