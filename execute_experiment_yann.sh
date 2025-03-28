@@ -52,15 +52,14 @@ losses=( 'CLASSIC_AT' 'TRADES_v2'   )
 #   'convnext_tiny.fb_in22k_ft_in1k'
 # )
 
-edge_backbones = (
-    'regnetx_004.pycls_in1k', 
-    'efficientnet-b0',
-    'deit_tiny_patch16_224.fb_in1k',
-    'mobilevit-small',
-    'mobilenetv3_large_100.ra_in1k',
-    'edgenext_small.usi_in1k',
+edge_backbones=(
+    "regnetx_004.pycls_in1k"
+    'efficientnet-b0'
+    'deit_tiny_patch16_224.fb_in1k'
+    'mobilevit-small'
+    'mobilenetv3_large_100.ra_in1k'
+    'edgenext_small.usi_in1k'
 )
-
 
 # Get the project name 
 PRNM=$1
