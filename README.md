@@ -1,5 +1,9 @@
 ## 🛠️ Setup Instructions
 
+### ✅ Cluster specific considerations
+
+If you run jobs on Beluga, you need to enable internet connection for comet-ml with httpsproxy module in the job*_*.sh chain. If you run jobs on Cedar, you need to remove the loading of this module as it causes errors in environment packages loading.
+
 ### ✅ Create the Python Environment
 
 ```
