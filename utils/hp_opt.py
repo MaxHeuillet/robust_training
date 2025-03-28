@@ -17,7 +17,7 @@ class Hp_opt:
         self.config = config
         self.path = path
 
-        cluster_keywords = ["calculquebec", "calcul.quebec"]
+        cluster_keywords = ["calculquebec", "calcul.quebec", "computecanada.ca"]
         nodename = os.uname().nodename.lower()
         # Check if the node is part of the Calcul Québec cluster
         if any(keyword in nodename for keyword in cluster_keywords):
