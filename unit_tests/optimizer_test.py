@@ -120,9 +120,13 @@ class TestModelForwardPass(unittest.TestCase):
         head_no_decay = None
 
         for group in param_groups:
-            if group["weight_decay"] > 0 and "head" in str(group["params"]):
+            weight_decay = group.get("weight_decay", 0)  # Ensure weight_decay is not None
+            group_name = group.get("name", "unknown")  # Retrieve group name if available
+
+            # Identify head decay groups based on name
+            if weight_decay > 0 and "head_decay" in group_name:
                 head_decay = group
-            elif group["weight_decay"] == 0 and "head" in str(group["params"]):
+            elif weight_decay == 0 and "head_no_decay" in group_name:
                 head_no_decay = group
 
         self.assertIsNotNone(head_decay, f"❌ Missing head parameter with weight decay in {backbone}")
@@ -132,6 +136,7 @@ class TestModelForwardPass(unittest.TestCase):
         self.assertEqual(len(head_no_decay["params"]), 1, f"❌ More than 1 parameter in head no decay for {backbone}")
 
         print(f"✅ Optimizer parameters validated for {backbone}")
+
 
 # Run the unit test
 if __name__ == "__main__":

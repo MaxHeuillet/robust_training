@@ -45,28 +45,32 @@ def load_optimizer(config, model):
             'params': decay,
             'lr': lr1,
             'weight_decay': weight_decay1,
-            'betas': (0.9, 0.95)
+            'betas': (0.9, 0.95),
+            'name': 'backbone_decay'
         },
         # Backbone parameters without weight decay
         {
             'params': no_decay,
             'lr': lr1,
             'weight_decay': 0.0,
-            'betas': (0.9, 0.95)
+            'betas': (0.9, 0.95),
+            'name': 'backbone_no_decay'
         },
         # Head parameters with weight decay
         {
             'params': head_decay,
             'lr': lr2,
             'weight_decay': weight_decay2,
-            'betas': (0.9, 0.95)
+            'betas': (0.9, 0.95),
+            'name': 'head_decay'
         },
         # Head parameters without weight decay
         {
             'params': head_no_decay,
             'lr': lr2,
             'weight_decay': 0.0,
-            'betas': (0.9, 0.95)
+            'betas': (0.9, 0.95),
+            'name': 'head_no_decay'
         },
     ])
 
