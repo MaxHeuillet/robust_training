@@ -33,6 +33,7 @@ source ~/scratch/myenv_reprod/bin/activate
 cd ./my_project_directory
 python ./unit_tests/architecture_loader_test.py
 python ./unit_tests/dataset_transform_test.py
+python ./unit_tests/environment_test.py
 ```
 
 The architecture tests verify that architectures load correctly, and that the forward pass outputs the correct format. 
