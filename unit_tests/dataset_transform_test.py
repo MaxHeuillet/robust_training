@@ -8,6 +8,7 @@ import os
 import warnings
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+print(PROJECT_ROOT)  # Should print the path to your main directory
 sys.path.append(PROJECT_ROOT)
 
 from datasets import load_data
