@@ -6,6 +6,7 @@ from omegaconf import OmegaConf
 import sys 
 import os
 import warnings
+import subprocess
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 print(PROJECT_ROOT)  # Should print the path to your main directory
@@ -68,6 +69,11 @@ class TestDatasetTransforms(unittest.TestCase):
             with self.subTest(dataset=dataset_name):
                  
                  print('testing', dataset_name)
+                 command = ["bash", "./dataset_to_tmpdir.sh", dataset_name]
+
+                 # Run the command
+                 result = subprocess.run(command, capture_output=True, text=True)
+                 print('imported data to tmpdir')
 
                  with warnings.catch_warnings():
                     warnings.simplefilter("ignore", ResourceWarning)
