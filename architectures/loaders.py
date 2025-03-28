@@ -19,7 +19,7 @@ class HFModelWrapper(nn.Module):
             in_features = 640
         # else: maybe other backbones
 
-        self.fc = nn.Linear(in_features, num_classes)
+        self.head = nn.Linear(in_features, num_classes)
 
     def forward(self, x):
         # 1) Run the original HF model
@@ -28,7 +28,7 @@ class HFModelWrapper(nn.Module):
         #    We'll pick the pooler_output for demonstration:
         pooled = outputs.pooler_output
         # 3) Apply your classification head
-        logits = self.fc(pooled)
+        logits = self.head(pooled)
         return logits
 
 
@@ -102,9 +102,19 @@ def load_architecture(config, N):
 
     # Replace classification head 
     model = change_head(backbone, model, N)
+    # Ensure all models have a `.head` attribute for classification
+    rename_head_layer(model)
 
     return model
 
+def rename_head_layer(model):
+    """ Rename classification layers like `.fc` or `.classifier` to `.head` """
+    if hasattr(model, "fc"):
+        model.head = model.fc  # Rename `.fc` to `.head`
+        del model.fc  # Remove original reference
+    elif hasattr(model, "classifier"):
+        model.head = model.classifier  # Rename `.classifier` to `.head`
+        del model.classifier  # Remove original reference
 
 
 def change_head(backbone, model, N):
