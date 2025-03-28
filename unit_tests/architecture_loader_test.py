@@ -74,7 +74,7 @@ class TestModelForwardPass(unittest.TestCase):
         self.N = 10  # Number of classification classes
         self.batch_size = 2  # Two image tensors
         self.config = OmegaConf.load("./configs/default_config_linearprobe50.yaml")
-        self.config.statedicts_path = '/home/mheuillet/Desktop/state_dicts_share'
+        # self.config.statedicts_path = '/home/mheuillet/Desktop/state_dicts_share'
 
     def test_forward_pass(self):
         """ Test forward pass for all backbone sets """

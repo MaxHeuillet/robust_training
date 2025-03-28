@@ -32,7 +32,7 @@ class TestDatasetTransforms(unittest.TestCase):
     def setUpClass(cls):
         """Load the config once, and define the 'expected' transforms."""
         cls.config = OmegaConf.load("./configs/default_config_linearprobe50.yaml")
-        cls.config.datasets_path = './data'  # local dataset path
+        # cls.config.datasets_path = './data'  # local dataset path
 
         # The transforms we expect for the training set
         cls.train_transforms_expected = T.Compose([
