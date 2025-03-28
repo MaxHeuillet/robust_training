@@ -24,6 +24,8 @@ Modify comet ML loging details in `./distributed_experiment_final.py` the method
 ### ✅ Run unit tests
 
 ```
+salloc --account=def-adurand --time=2:59:00 --cpus-per-task=16 --mem=8000M
+
 module --force purge
 module load StdEnv/2023 gcc/12.3 cuda/12.2 opencv/4.9.0 python/3.11 arrow/18.1.0 scipy-stack/2024a
 
