@@ -14,17 +14,14 @@ pip install -r requirements.txt
 
 > 💡 **Note:** The code runs with **Python 3.11**.
 
----
+### ✅ Specify loading paths and login to comet-ml
 
 Specify the path to compressed archives, line 10 in `./dataset_to_tmpdir.sh`
 Specify the paths to state_dicts and data folders, in the default configuration in `./configs`
 Modify comet ML loging details in `./distributed_experiment_final.py` the method `initialize_logger()`.
 
 
-----
-
-
-You can run unit_tests to validate loading of datasets and backbones.
+### ✅ Run unit tests
 
 ```
 module --force purge
@@ -36,6 +33,8 @@ python ./unit_tests/architecture_loader_test.py
 python ./unit_tests/dataset_transform_test.py
 ```
 
+The architecture tests verify that architectures load correctly, and that the forward pass outputs the correct format. 
+The dataset tests verify that the transforms are crrectly loaded.
 
 ### 🚀 Launch All Jobs on the Cluster
 
