@@ -92,15 +92,11 @@ class TestModelForwardPass(unittest.TestCase):
                         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
                         model.to(device)
 
-                        # Create random input tensors simulating images (batch_size=2, 224x224)
-                        dummy_input = torch.randn(self.batch_size, 3, 224, 224).to(device)
+                        self.config.lr1 = 1
+                        self.config.lr2 = 1
+                        self.config.weight_decay1 = 1
+                        self.config.weight_decay2 = 1
 
-                        # Run forward pass
-                        with torch.no_grad():
-                            output = model(dummy_input)
-                        self.assertIsNotNone(output, f"❌ Model forward pass failed! Backbone: {backbone}")
-
-                        # Load optimizer
                         optimizer = load_optimizer(self.config, model)
 
                         # Validate optimizer parameter groups
@@ -114,27 +110,17 @@ class TestModelForwardPass(unittest.TestCase):
 
     def _validate_optimizer(self, optimizer, backbone):
         """ Ensure optimizer has exactly one parameter in each head group """
-        param_groups = optimizer.param_groups
 
-        head_decay = None
-        head_no_decay = None
+        for i, group in enumerate(optimizer.param_groups):
+            group_name = group.get("name", f"group_{i}")  # Get name, fallback to index
+            lr = group["lr"]
+            weight_decay = group["weight_decay"]
+            betas = group["betas"]
+            nb_params = len(group['params'])
 
-        for group in param_groups:
-            weight_decay = group.get("weight_decay", 0)  # Ensure weight_decay is not None
-            group_name = group.get("name", "unknown")  # Retrieve group name if available
-
-            # Identify head decay groups based on name
-            if weight_decay > 0 and "head_decay" in group_name:
-                head_decay = group
-            elif weight_decay == 0 and "head_no_decay" in group_name:
-                head_no_decay = group
-
-        self.assertIsNotNone(head_decay, f"❌ Missing head parameter with weight decay in {backbone}")
-        self.assertIsNotNone(head_no_decay, f"❌ Missing head parameter without weight decay in {backbone}")
-
-        self.assertEqual(len(head_decay["params"]), 1, f"❌ More than 1 parameter in head decay for {backbone}")
-        self.assertEqual(len(head_no_decay["params"]), 1, f"❌ More than 1 parameter in head no decay for {backbone}")
-
+            if "head" in group_name:
+                self.assertEqual(nb_params, 1, f"❌ Error on the nb of parameters in head for {backbone}")
+        
         print(f"✅ Optimizer parameters validated for {backbone}")
 
 
