@@ -7,12 +7,10 @@ def classic_at_loss(args, model, x_nat, y):
 
     model.eval()
     
-    # x_adv = pgd_attack(args, model, x_nat, y)
     x_adv = apgd_attack(args, model, x_nat, y)
-
-    # optimizer.zero_grad()
     
     model.train()
+
     model.module.current_task = 'infer'
     _, logits_adv = model(x_1 = None, x_2 = x_adv)
     loss_values = F.cross_entropy(logits_adv, y, reduction='none')

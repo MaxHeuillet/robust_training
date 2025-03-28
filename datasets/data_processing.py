@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 
 import torch
 from sklearn.model_selection import train_test_split
-from torch.utils.data import Subset
+
 
 def stratified_subsample(dataset, sample_size=1500):
     """
@@ -18,7 +18,7 @@ def stratified_subsample(dataset, sample_size=1500):
         return dataset
     
     # Extract labels for stratification
-    labels = [label for _, label in dataset]
+    labels = [dataset[i][1] for i in range(len(dataset))]
 
     # Perform stratified split to get exactly `sample_size` samples
     indices_subsample, _ = train_test_split(

@@ -7,6 +7,7 @@ from transforms import load_data_transforms
 from torch.utils.data import Subset
 
 from torch.utils.data import Dataset
+from PIL import Image
 
 class TransformedSubset(Dataset):
     def __init__(self, subset, transform=None, target_transform=None):
@@ -29,7 +30,6 @@ def load_data(config, common_corruption=False):
 
     dataset = config.dataset
     datadir = os.path.abspath(os.path.expandvars(os.path.expanduser(config.datasets_path)))
-
 
     train_transform, transform = load_data_transforms()
 
