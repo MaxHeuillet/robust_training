@@ -4,10 +4,10 @@
 seeds=1
 
 datas=( 
-        # 'stanford_cars'
-        # 'oxford-iiit-pet'
-        # 'caltech101' 
-        # 'flowers-102' 
+        'stanford_cars'
+        'oxford-iiit-pet'
+        'caltech101' 
+        'flowers-102' 
         'fgvc-aircraft-2013b'
         'uc-merced-land-use-dataset' 
         ) 
