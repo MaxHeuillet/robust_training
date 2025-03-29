@@ -50,7 +50,11 @@ performance_backbones=(
   'convnext_base.clip_laion2b_augreg_ft_in12k_in1k'
   'convnext_base.fb_in22k_ft_in1k'
   'convnext_tiny.fb_in22k_ft_in1k'
+  'coatnet_0_rw_224.sw_in1k'
+  'coatnet_2_rw_224.sw_in12k_ft_in1k'
+  'coatnet_2_rw_224.sw_in12k'
 )
+
 
 # Get the project name 
 PRNM=$1

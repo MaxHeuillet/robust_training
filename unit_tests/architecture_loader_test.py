@@ -49,22 +49,26 @@ PERFORMANCE_BACKBONES=(
   'convnext_base.clip_laion2b_augreg_ft_in12k_in1k',
   'convnext_base.fb_in22k_ft_in1k',
   'convnext_tiny.fb_in22k_ft_in1k',
+  'coatnet_0_rw_224.sw_in1k',
+  'coatnet_2_rw_224.sw_in12k_ft_in1k',
+  'coatnet_2_rw_224.sw_in12k'
 )
 
-COMMON_MODELS = (
-    'regnetx_004.pycls_in1k', 
+EDGE_BACKBONES=(
+    "regnetx_004.pycls_in1k",
     'efficientnet-b0',
     'deit_tiny_patch16_224.fb_in1k',
     'mobilevit-small',
     'mobilenetv3_large_100.ra_in1k',
     'edgenext_small.usi_in1k',
+    'coat_tiny.in1k'
 )
 
 # Combine all sets
 ALL_BACKBONES = {
-    "SCIENTIFIC_MODELS": SCIENTIFIC_BACKBONES,
+    # "SCIENTIFIC_MODELS": SCIENTIFIC_BACKBONES,
     "PERFORMANCE_MODELS": PERFORMANCE_BACKBONES,
-    "COMMON_MODELS": COMMON_MODELS,
+    "EDGE_MODELS": EDGE_BACKBONES,
 }
 
 class TestModelForwardPass(unittest.TestCase):
@@ -76,7 +80,7 @@ class TestModelForwardPass(unittest.TestCase):
         self.batch_size = 2  # Two image tensors
         self.config = OmegaConf.load("./configs/default_config_linearprobe50.yaml")
 
-        self.config.statedicts_path = '/home/mheuillet/Desktop/state_dicts_share'
+        # self.config.statedicts_path = '/home/mheuillet/Desktop/state_dicts_share'
 
     def test_forward_pass(self):
         """ Test forward pass for all backbone sets """
@@ -85,7 +89,7 @@ class TestModelForwardPass(unittest.TestCase):
             for backbone in backbones:
 
                 print(f"\n🔎 Testing backbone: {backbone}")
-                
+
                 for ft_type in ['full_fine_tuning', 'linear_probing']:
                     with self.subTest(backbone=backbone):
 

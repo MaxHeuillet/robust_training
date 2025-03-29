@@ -64,13 +64,13 @@ def load_architecture(config, N):
         model.load_state_dict(state_dict, strict=False)
 
         # New: Hugging Face Models (Google, Apple, and others)
-    elif backbone == 'efficientnet-b0' or backbone == 'mobilevit-small':
+    elif backbone == 'efficientnet-b0' or backbone == 'mobilevit-small' or backbone == 'cvt-21':
 
             # Determine if it's an OpenCLIP model
         hf_models = {
         'efficientnet-b0': 'google/efficientnet-b0',
         'mobilevit-small': 'apple/mobilevit-small',
-            }
+        'cvt-21': 'microsoft/cvt-21',  }
 
         print(f"Loading Hugging Face model: {backbone}")
 
@@ -149,6 +149,13 @@ def replace_classifier(backbone, model, N):
         in_features = model.head.fc.in_features
         model.head.fc = nn.Linear(in_features, N, bias=True)
 
+    elif 'coatnet' in backbone:
+        in_features = model.head.fc.in_features
+        model.head.fc = nn.Linear(in_features, N, bias=True)
+    
+    elif 'coat' in backbone:
+        in_features = model.head.in_features
+        model.head = nn.Linear(in_features, N, bias=True)
 
     elif 'deit' in backbone or 'vit' in backbone or 'eva02' in backbone:
         if isinstance(model.head, nn.Identity) and 'eva02' in backbone:
