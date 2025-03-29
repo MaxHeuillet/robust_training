@@ -15,7 +15,7 @@ step_size: 0.007843137
 perturb_steps: 10
 distance: Linf
 beta: 1.0
-project_name: full_fine_tuning_50epochs_final3
+project_name: full_fine_tuning_50epochs_final4
 exp_id: CLIP-convnext_base_w-laion2B-s13B-b82K_stanford_cars_CLASSIC_AT
 statedicts_path: ~/scratch/state_dicts_share/
 trained_statedicts_path: ~/scratch/trained_state_dicts/

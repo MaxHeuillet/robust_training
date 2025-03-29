@@ -1,13 +1,13 @@
 dataset: stanford_cars
-backbone: CLIP-convnext_base_w-laion2B-s13B-b82K
+backbone: robust_resnet50
 ft_type: full_fine_tuning
 loss_function: CLASSIC_AT
 seed: 1
 epochs: 50
-lr1: 0.00012365164457104434
-lr2: 1.7257298262927544e-05
-weight_decay1: 0.00048096354537337677
-weight_decay2: 0.0002356470857433856
+lr1: 0.000385765077377004
+lr2: 0.0003561582138458752
+weight_decay1: 0.00047751184301655973
+weight_decay2: 0.0055227614309091245
 scheduler: true
 use_rs: false
 epsilon: 0.015686275
@@ -16,7 +16,7 @@ perturb_steps: 10
 distance: Linf
 beta: 1.0
 project_name: full_fine_tuning_50epochs_final3
-exp_id: CLIP-convnext_base_w-laion2B-s13B-b82K_stanford_cars_CLASSIC_AT
+exp_id: robust_resnet50_stanford_cars_CLASSIC_AT
 statedicts_path: ~/scratch/state_dicts_share/
 trained_statedicts_path: ~/scratch/trained_state_dicts/
 datasets_path: $SLURM_TMPDIR/data
