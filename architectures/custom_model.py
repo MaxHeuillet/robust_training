@@ -81,8 +81,53 @@ class CustomModel(nn.Module):
             param.requires_grad = False
 
     def _unfreeze_last_layer(self):
-        last_layer = list(self.base_model.children())[-1]
-        for param in last_layer.parameters():
+        """
+        Unfreezes only the last classification head while keeping the backbone frozen.
+        Used for linear probing.
+        """
+        # Ensure we are working with the base model inside CustomModel
+        model = self.base_model if isinstance(self, CustomModel) else self
+
+        # Identify the classification head based on architecture type
+        if 'deit' in self.config.backbone or 'vit' in self.config.backbone or 'eva02' in self.config.backbone:
+            head_module = model.head
+        elif hasattr(model, 'classifier'):
+            head_module = model.classifier
+        elif hasattr(model, 'fc'):
+            head_module = model.fc
+        elif hasattr(model, 'head') and hasattr(model.head, 'fc'):
+            head_module = model.head.fc
+        elif hasattr(model, 'head') and isinstance(model.head, nn.Linear):
+            head_module = model.head
+        else:
+            raise ValueError(f"Could not identify the classification head for backbone: {self.config.backbone}")
+
+        # # Freeze all parameters in the model
+        # for param in model.parameters():
+        #     param.requires_grad = False
+
+        # Unfreeze only the classification head
+        for param in head_module.parameters():
             param.requires_grad = True
+
+
+    # def _unfreeze_last_layer(self):
+    #     if hasattr(self.base_model, "classifier"):
+    #         last_layer = self.base_model.classifier
+    #     elif hasattr(self.base_model, "head"):
+    #         last_layer = self.base_model.head
+    #     elif hasattr(self.base_model, "fc"):
+    #         last_layer = self.base_model.fc
+    #     else:
+    #         raise ValueError("No classification head found in the model.")
+
+    #     for param in last_layer.parameters():
+    #         param.requires_grad = True
+
+
+    # def _unfreeze_last_layer(self):
+    #     last_layer = list(self.base_model.children())[-1]
+    #     for param in last_layer.parameters():
+    #         param.requires_grad = True
 
 

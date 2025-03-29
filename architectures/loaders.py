@@ -14,9 +14,11 @@ class HFModelWrapper(nn.Module):
         self.hf_model = hf_model
         # Suppose you want your final classification layer to be called `fc`
         if "efficientnet" in backbone:
-            in_features = 1280
+            in_features = hf_model.pooler.kernel_size
         elif "mobilevit" in backbone:
-            in_features = 640
+            # in_features = 640
+            in_features = hf_model.conv_1x1_exp.convolution.out_channels
+
         # else: maybe other backbones
 
         self.head = nn.Linear(in_features, num_classes)
@@ -103,19 +105,191 @@ def load_architecture(config, N):
     # Replace classification head 
     # model = change_head(backbone, model, N)
     # model = rename_head_layer(model)
-    # model = replace_classifier(backbone, model, N)
+    model = replace_classifier(backbone, model, N)
 
     return model
 
-# def rename_head_layer(model):
-#     """ Rename classification layers like `.fc` or `.classifier` to `.head` """
-#     if hasattr(model, "fc"):
-#         model.head = model.fc  # Rename `.fc` to `.head`
-#         del model.fc  # Remove original reference
-#     elif hasattr(model, "classifier"):
-#         model.head = model.classifier  # Rename `.classifier` to `.head`
-#         del model.classifier  # Remove original reference
+
+
+class StandardClassifier(nn.Module):
+    def __init__(self, in_features, num_classes, dropout=0.1):
+        super().__init__()  # Call the parent constructor
+        self.dropout = nn.Dropout(p=dropout)
+        self.fc = nn.Linear(in_features, num_classes, bias=True)
+
+    def forward(self, x):
+        x = self.dropout(x)
+        x = self.fc(x)
+        return x
+    
+def replace_classifier(backbone, model, N):
+    """ Replaces the model's classification head with a standardized classifier. """
+
+    if 'CLIP-convnext' in backbone:
+        in_features = model.visual.head.proj.in_features
+        model = model.visual.trunk
+        model.head.fc = nn.Linear(in_features, N, bias=True) 
+    
+    elif 'resnet' in backbone:
+        in_features = model.fc.in_features
+        model.fc = nn.Linear(in_features, N, bias=True)
+
+    elif 'regnetx' in backbone:
+        in_features = model.head.fc.in_features
+        model.head.fc = nn.Linear(in_features, N, bias=True)
+
+    elif 'mobilevit' in backbone or 'efficientnet' in backbone:
+        model = HFModelWrapper(model, N, backbone)
+
+    elif 'mobilenetv3' in backbone:
+        in_features = model.classifier.in_features
+        model.classifier = nn.Linear(in_features, N, bias=True) 
+
+    elif 'edgenext' in backbone:
+        in_features = model.head.fc.in_features
+        model.head.fc = nn.Linear(in_features, N, bias=True)
+
+
+    elif 'deit' in backbone or 'vit' in backbone or 'eva02' in backbone:
+        if isinstance(model.head, nn.Identity) and 'eva02' in backbone:
+            num_features = model.fc_norm.normalized_shape[0]
+            model.head = nn.Linear(num_features, N)
+        elif isinstance(model.head, nn.Identity):
+            num_features = model.norm.normalized_shape[0]
+            model.head = nn.Linear(num_features, N)
+        else:
+            in_features = model.head.in_features
+            model.head = nn.Linear(in_features, N, bias=True) #StandardClassifier(in_features, N)
+
+
+    elif 'swin' in backbone:
+        in_features = model.head.fc.in_features
+        model.head.fc = nn.Linear(in_features, N, bias=True)
+
+    elif 'convnext' in backbone:
+        in_features = model.head.fc.in_features
+        model.head.fc = nn.Linear(in_features, N, bias=True) 
+
+    return model
+
+
+# import torch.nn as nn
+
+# def replace_fc_layer(model, fc_path, in_features, N):
+#     """Helper function to replace a classifier layer at the specified path."""
+#     fc_parent, fc_attr = fc_path.rsplit(".", 1)  # Split the path
+#     parent_module = eval(f"model.{fc_parent}")  # Get the parent module
+#     setattr(parent_module, fc_attr, nn.Linear(in_features, N, bias=True))  # Replace FC layer
+
+# def replace_classifier(backbone, model, N):
+#     """Replaces the model's classification head with a standardized classifier."""
+    
+#     if 'CLIP-convnext' in backbone:
+#         in_features = model.visual.head.proj.in_features
+#         model = model.visual.trunk  # Extract the trunk for modification
+#         replace_fc_layer(model, "head.fc", in_features, N)
+
+#     elif 'resnet' in backbone:
+#         replace_fc_layer(model, "fc", model.fc.in_features, N)
+
+#     elif 'regnetx' in backbone or 'swin' in backbone or 'convnext' in backbone:
+#         replace_fc_layer(model, "head.fc", model.head.fc.in_features, N)
+
+#     elif 'mobilevit' in backbone or 'efficientnet' in backbone:
+#         model = HFModelWrapper(model, N, backbone)  # Use a wrapper for these architectures
+
+#     elif 'mobilenetv3' in backbone:
+#         replace_fc_layer(model, "classifier", model.classifier.in_features, N)
+
+#     elif 'edgenext' in backbone:
+#         replace_fc_layer(model, "head.fc", model.head.fc.in_features, N)
+
+#     elif 'deit' in backbone or 'vit' in backbone or 'eva02' in backbone:
+#         if isinstance(model.head, nn.Identity):
+#             num_features = model.fc_norm.normalized_shape[0] if 'eva02' in backbone else model.norm.normalized_shape[0]
+#             model.head = nn.Linear(num_features, N)
+#         else:
+#             replace_fc_layer(model, "head", model.head.in_features, N)
+
 #     return model
+
+
+
+# def replace_classifier(backbone, model, N):
+#     """ Replaces the model's classification head with a standardized classifier. """
+
+#     if 'CLIP-convnext' in backbone:
+
+#         in_features = model.visual.head.proj.in_features
+#         model = model = model.visual.trunk
+
+#         # pool = model.head.global_pool
+#         # norm = model.head.norm
+#         # flatten = model.head.flatten
+
+#         # model.global_pool = pool
+#         # model.norm = norm
+#         # model.flatten = flatten
+#         model.head.fc = nn.Linear(in_features, N, bias=True) #StandardClassifier(in_features, N)
+
+        
+    
+#     elif 'resnet' in backbone:
+
+#         in_features = model.fc.in_features
+#         model.fc = nn.Linear(in_features, N, bias=True)#StandardClassifier(in_features,N)
+#         # del model.fc
+    
+#     elif 'regnetx' in backbone:
+
+#         in_features = model.head.fc.in_features
+#         # pool = model.head.global_pool
+#         # model.global_pool = pool
+#         model.head.fc = nn.Linear(in_features, N, bias=True)#StandardClassifier(in_features, N)
+#         # del model.head
+
+#     # elif 'efficientnet' in backbone:
+#     #     model = HFModelWrapper(model, N, backbone)
+#         # model.fc = nn.Linear(in_features, N, bias=True)#StandardClassifier(in_features, N)
+
+#     elif 'mobilevit' in backbone or 'efficientnet' in backbone:
+#         model = HFModelWrapper(model, N, backbone)
+#         # in_features = model.conv_1x1_exp.convolution.out_channels
+#         # model.classifier = StandardClassifier(in_features, N)
+    
+#     elif 'mobilenetv3' in backbone:
+#         in_features = model.classifier.in_features
+#         model.classifier = StandardClassifier(in_features, N)
+
+#     elif 'edgenext' in backbone:
+
+#         in_features = model.head.fc.in_features
+#         model.head.fc = nn.Linear(in_features, N, bias=True)
+
+
+#     elif 'deit' in backbone or 'vit' in backbone or 'eva02' in backbone:
+#         if isinstance(model.head, nn.Identity) and 'eva02' in backbone:
+#             num_features = model.fc_norm.normalized_shape[0]
+#             model.head = nn.Linear(num_features, N)
+#         elif isinstance(model.head, nn.Identity):
+#             num_features = model.norm.normalized_shape[0]
+#             model.head = nn.Linear(num_features, N)
+#         else:
+#             in_features = model.head.in_features
+#             model.head = nn.Linear(in_features, N, bias=True) #StandardClassifier(in_features, N)
+
+#     elif 'swin' in backbone:
+#         in_features = model.head.fc.in_features
+#         model.head.fc = nn.Linear(in_features, N, bias=True) #StandardClassifier(in_features, N)
+
+#     elif 'convnext' in backbone:
+#         in_features = model.head.fc.in_features
+#         model.head.fc = nn.Linear(in_features, N, bias=True) #StandardClassifier(in_features, N)
+
+
+#     return model
+    
+
 
 
 # def change_head(backbone, model, N):
@@ -166,143 +340,3 @@ def load_architecture(config, N):
 
 
 #     return model
-
-import torch.nn as nn
-
-class StandardClassifier(nn.Module):
-    def __init__(self, in_features, num_classes, dropout=0.1, norm=True):
-        super().__init__()  # Call the parent constructor
-        self.norm= norm
-        if self.norm:
-            self.norm = nn.LayerNorm(in_features, eps=1e-5, elementwise_affine=True)
-
-        self.dropout = nn.Dropout(p=dropout)
-        self.fc = nn.Linear(in_features, num_classes, bias=True)
-
-    def forward(self, x):
-        if self.norm:
-            x = self.norm(x)
-        x = self.dropout(x)
-        x = self.fc(x)
-        return x
-    
-def replace_classifier(backbone, model, N):
-    """ Replaces the model's classification head with a standardized classifier. """
-
-    if 'CLIP-convnext' in backbone:
-
-        in_features = model.visual.head.proj.in_features
-        model = model = model.visual.trunk
-
-        pool = model.head.global_pool
-        norm = model.head.norm
-        flatten = model.head.flatten
-
-        model.global_pool = pool
-        model.norm = norm
-        model.flatten = flatten
-        model.classifier = StandardClassifier(in_features, N)
-
-        del model.head
-    
-    elif 'resnet' in backbone:
-
-        in_features = model.fc.in_features
-        model.head = StandardClassifier(in_features,N, norm=False)
-        del model.fc
-    
-    elif 'regnetx' in backbone:
-
-        in_features = model.head.fc.in_features
-        pool = model.head.global_pool
-        model.global_pool = pool
-        model.classifier = StandardClassifier(in_features, N, norm=False)
-        del model.head
-
-    elif 'efficientnet' in backbone:
-
-        in_features = model.pooler.kernel_size
-        model.classifier = StandardClassifier(in_features, N, norm=False)
-
-    elif 'mobilevit' in backbone:
-
-        in_features = model.conv_1x1_exp.convolution.out_channels
-        model.classifier = StandardClassifier(in_features, N, norm=False)
-    
-    elif 'mobilenetv3' in backbone:
-
-        in_features = model.classifier.in_features
-        model.classifier = StandardClassifier(in_features, N, norm=False)
-
-    elif 'edgenext' in backbone:
-
-        in_features = model.head.fc.in_features
-        pool = model.head.global_pool
-        norm = model.head.norm
-        flatten = model.head.flatten
-        model.pool = pool
-        model.norm = norm
-        model.flatten = flatten
-        model.classifier = StandardClassifier(in_features, N, norm=False)
-        del model.head
-
-    elif 'deit' in backbone or 'vit' in backbone:
-
-        norm = model.norm
-        fc_norm = model.fc_norm
-        head_drop = model.head_drop
-        head = model.head  # This contains the linear layer
-
-        in_features = model.head.in_features
-        model.classifier = StandardClassifier(in_features, N)
-        model.classifier[0] = norm
-        model.classifier[2] = head_drop
-
-        del model.norm
-        del model.fc_norm
-        del model.head_drop
-        del model.head
-    
-    elif 'eva02' in backbone:
-        
-        norm = model.norm
-        fc_norm = model.fc_norm
-        head_drop = model.head_drop
-        head = model.head  # This contains the linear layer
-
-        in_features = model.head.in_features
-        model.classifier = StandardClassifier(in_features, N)
-        model.classifier[0] = fc_norm
-        model.classifier[2] = head_drop
-
-        del model.norm
-        del model.fc_norm
-        del model.head_drop
-        del model.head
-    
-    elif 'swin' in backbone:
-
-        in_features = model.head.fc.in_features
-        pool = model.head.global_pool
-        model.pool = pool
-        model.classifier = StandardClassifier(in_features, N, norm=False)
-        del model.head
-
-    elif 'convnext' in backbone:
-
-        in_features = model.head.fc.in_features
-
-        pool = model.head.global_pool
-        norm = model.head.norm
-        flatten = model.head.flatten
-
-        model.global_pool = pool
-        model.norm = norm
-        model.flatten = flatten
-        model.classifier = StandardClassifier(in_features, N, norm=False)
-
-        del model.head
-
-    return model
-
-
