@@ -14,6 +14,7 @@ sys.path.append(PROJECT_ROOT)
 
 from architectures import load_architecture, CustomModel
 from utils import load_optimizer
+from losses import get_loss
 
 SCIENTIFIC_BACKBONES=(
   'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K',
@@ -112,6 +113,7 @@ class TestModelForwardPass(unittest.TestCase):
 
                             # Create random input tensors simulating images (batch_size=2, 224x224)
                             dummy_input = torch.randn(self.batch_size, 3, 224, 224).to(device)
+                            dummy_target = torch.randint(0, self.N, (self.batch_size,)).to(device)
                             logits = model(dummy_input)  # Get logits
                             expected_shape = (self.batch_size, self.N)
 
@@ -121,6 +123,17 @@ class TestModelForwardPass(unittest.TestCase):
                             self.assertEqual(logits.shape, expected_shape,  f"❌ Output shape mismatch! Backbone: {backbone} - Got {logits.shape}, expected {expected_shape}" )
                             print(f"✅ Forward pass successful! Backbone: {backbone}, Output shape: {logits.shape}")
 
+                            for loss_type in ['CLASSIC_AT', 'TRADES_v2']:
+
+                                loss_values, logits = get_loss(self.config, model, dummy_input, dummy_target)
+                                loss = loss_values.mean()
+
+                                # ✅ Check if the loss is a scalar
+                                self.assertTrue(
+                                    loss.ndim == 0,
+                                    f"❌ Loss {loss_type} is not a scalar! Got shape: {loss.shape}"
+)
+                        
                             optimizer = load_optimizer(self.config, model)
                             self._validate_optimizer(optimizer, backbone)
 

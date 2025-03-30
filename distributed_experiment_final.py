@@ -132,7 +132,6 @@ class BaseExperiment:
             self.setup.distributed_setup(rank)
             logger = self.initialize_logger(rank, config)
 
-
         trainloader, valloader, _, train_sampler, val_sampler, _, N = self.initialize_loaders(config, rank)
 
         model = load_architecture(config, N, )
@@ -256,7 +255,7 @@ class BaseExperiment:
         self.setup.hp_opt = True 
 
         # Check if experiment path exists and delete it before starting a new run
-        hpo_opt_path = os.path.abspath(os.path.expanduser(config.hpo_path)) 
+        hpo_opt_path = os.path.abspath(os.path.expandvars(os.path.expanduser(config.datasets_path)))
         experiment_path = os.path.join(hpo_opt_path, config.project_name)
         os.makedirs(experiment_path, exist_ok=True)
         existing_experiment_path = os.path.join(hpo_opt_path, config.project_name, config.exp_id)
@@ -295,10 +294,6 @@ class BaseExperiment:
         nat_acc, _, _ = self.setup.sync_value(total_correct_nat, total_examples, rank)
         adv_acc, _, _ = self.setup.sync_value(total_correct_adv, total_examples, rank)
 
-        # adv_zero, _, _ = self.setup.sync_value(res_adv['zero_count'], res_adv['total_neurons'], rank)
-        # adv_dormant, _, _ = self.setup.sync_value(res_adv['dormant_count'], res_adv['total_neurons'], rank)
-        # adv_overact, _, _ = self.setup.sync_value(res_adv['overactive_count'], res_adv['total_neurons'], rank)
-
         if self.setup.hp_opt:
             print('val loss', val_loss)
             session.report({"loss": val_loss})
@@ -316,16 +311,10 @@ class BaseExperiment:
 
         model.eval()
 
-        # tracker_nat = ActivationTrackerAggregated(train=False)
-        # tracker_adv = ActivationTrackerAggregated(train=False)
-        # handles = register_hooks_aggregated(model, tracker_nat, tracker_adv)
-
         total_loss = 0.0
         total_correct_nat = 0
         total_correct_adv = 0
         total_examples = 0
-        # stats_nat = { "zero_count": 0, "dormant_count": 0, "overactive_count": 0, "total_neurons": 0 }
-        # stats_adv = { "zero_count": 0, "dormant_count": 0, "overactive_count": 0, "total_neurons": 0 }
 
         for batch_id, batch in enumerate( valloader ):
 
@@ -346,17 +335,6 @@ class BaseExperiment:
             total_correct_nat += (preds_nat == target).sum().item()
             total_correct_adv += (preds_adv == target).sum().item()
             total_examples += target.size(0)
-
-            # break
-
-            # Compute neuron statistics
-        # res_adv = compute_stats_aggregated(tracker_adv)
-
-        # tracker_nat.clear()
-        # tracker_adv.clear()   
-        # # Remove hooks
-        # for handle in handles:
-        #     handle.remove()
 
         return total_loss, total_correct_nat, total_correct_adv, total_examples, None, None
     
@@ -583,54 +561,3 @@ def main():
 if __name__ == "__main__":
     torch.multiprocessing.set_start_method("spawn", force=True)
     main()
-
-
-
-# if __name__ == "__main__":
-
-#     print('begining of the execution', flush=True)
-
-#     torch.multiprocessing.set_start_method("spawn", force=True)
-
-#     initialize(config_path="./configs", version_base=None)
-
-#     args_dict = get_args2()
-
-#     if 'linearprobe_50epochs' in args_dict['project_name']:
-#         config_base = compose(config_name="default_config_linearprobe50")  # Store Hydra config in a variable
-#     elif 'full_fine_tuning_5epochs' in args_dict['project_name']:
-#         config_base = compose(config_name="default_config_fullfinetuning5")  # Store Hydra config in a variable
-#     elif 'full_fine_tuning_50epochs' in args_dict['project_name']:
-#         config_base = compose(config_name="default_config_fullfinetuning50")  # Store Hydra config in a variable
-#     else:
-#         print('error in the experiment name', flush=True)
-    
-#     config_base = OmegaConf.merge(config_base, args_dict)
-#     config_base.exp_id = get_config_id(config_base)
-    
-#     set_seeds(config_base.seed)
-
-#     world_size = torch.cuda.device_count()
-
-#     setup = Setup(world_size)
-#     experiment = BaseExperiment(setup, config_base)
-
-#     print('HPO', flush=True)
-#     experiment.hyperparameter_optimization(config_base)
-    
-#     print('train', flush=True) 
-#     path = os.path.join(config_base.configs_path, "HPO_results", config_base.project_name, f"{config_base.exp_id}.yaml")
-#     config_optimal = OmegaConf.load(path) 
-#     mp.spawn(training_wrapper, args=(experiment, config_optimal), nprocs=world_size, join=True)
-
-#     os.makedirs(os.path.join(config_base.results_path, config_base.project_name), exist_ok=True)
-#     print('test Linf', flush=True)
-#     experiment.launch_test('Linf', config_optimal)
-#     print('test L1', flush=True)
-#     experiment.launch_test('L1', config_optimal)
-#     print('test L2', flush=True)
-#     experiment.launch_test('L2', config_optimal)
-#     print('test common corruptions', flush=True)
-#     experiment.launch_test('common', config_optimal)
-
-

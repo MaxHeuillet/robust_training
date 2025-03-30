@@ -24,10 +24,12 @@ project_name: null # the experiment type
 exp_id: null
 
 statedicts_path: "~/scratch/state_dicts_share/"  # TODO: update, where we load the pretrained model
-trained_statedicts_path: "~/scratch/trained_state_dicts/" # TODO: update, where we save fine tuned model
 datasets_path: "$SLURM_TMPDIR/data" # where we load uncompressed dataset
 configs_path: "./configs" # where we save the results of HPO
 results_path: "./results" # where we save the measured accuracies
-hpo_path: "~/scratch/hpo_results/" # where we save the results of HPO
+
+trained_statedicts_path: "$SLURM_TMPDIR/trained_state_dicts/" #"~/scratch/trained_state_dicts/" # TODO: update, where we save fine tuned model
+hpo_path: "$SLURM_TMPDIR/hpo_results/" #"~/scratch/hpo_results/" # where we save the results of HPO
+
 
 
