@@ -254,6 +254,11 @@ class BaseExperiment:
 
         self.setup.hp_opt = True 
 
+        print("CUDA_VISIBLE_DEVICES:", os.environ.get("CUDA_VISIBLE_DEVICES"))
+        print("CUDA available:", torch.cuda.is_available())
+        print("CUDA device count:", torch.cuda.device_count())
+        print("Device name:", torch.cuda.get_device_name(0) if torch.cuda.is_available() else "No GPU")
+
         # Check if experiment path exists and delete it before starting a new run
         hpo_opt_path = os.path.abspath(os.path.expandvars(os.path.expanduser(config.datasets_path)))
         experiment_path = os.path.join(hpo_opt_path, config.project_name)
@@ -262,6 +267,9 @@ class BaseExperiment:
         if os.path.exists(existing_experiment_path):
             print(f"Deleting existing experiment directory: {existing_experiment_path}")
             shutil.rmtree(existing_experiment_path)
+
+        import os
+        os.environ["CUDA_VISIBLE_DEVICES"] = ",".join([str(i) for i in range(torch.cuda.device_count())])
         
         ray.init() #logging_level=logging.DEBUG
 
