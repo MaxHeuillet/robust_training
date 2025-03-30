@@ -9,8 +9,8 @@ def load_optimizer(config, model):
     weight_decay1 = config.weight_decay1
     weight_decay2 = config.weight_decay2
 
-    if isinstance(model, CustomModel):
-        model = model.base_model
+    # if isinstance(model, CustomModel):
+    model = model.module.base_model
 
     def get_param_groups(model, head_module=None):
         decay, no_decay, head_decay, head_no_decay = [], [], [], []

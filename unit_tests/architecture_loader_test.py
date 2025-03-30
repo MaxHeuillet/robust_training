@@ -3,6 +3,8 @@ import torch
 
 from omegaconf import OmegaConf
 import numpy as np
+from torch.nn.parallel import DistributedDataParallel as DDP
+import torch.distributed as dist
 
 import torch
 import sys 
@@ -81,9 +83,13 @@ class TestModelForwardPass(unittest.TestCase):
         self.batch_size = 2  # Two image tensors
         self.config = OmegaConf.load("./configs/default_config_linearprobe50.yaml")
 
-        # self.config.statedicts_path = '/home/mheuillet/Desktop/state_dicts_share'
+        self.config.statedicts_path = '/home/mheuillet/Desktop/state_dicts_share'
 
     def test_forward_pass(self):
+        os.environ['MASTER_ADDR'] = 'localhost'
+        os.environ['MASTER_PORT'] = '12345'
+        dist.init_process_group("nccl", rank=0, world_size=1)
+
         """ Test forward pass for all backbone sets """
         for category, backbones in ALL_BACKBONES.items():
             print(f"\n🔹 Testing {category} ({len(backbones)} models) 🔹")
@@ -102,13 +108,16 @@ class TestModelForwardPass(unittest.TestCase):
                         self.config.ft_type = ft_type
 
                         try:
+
+                            
                             # Load the model
                             self.config.backbone = backbone
                             model = load_architecture(self.config, self.N)
                             model = CustomModel(self.config, model, )
                             model.set_fine_tuning_strategy()
                             device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-                            model.to(device)
+                            model = model.to(device)
+                            model = DDP(model, device_ids=[0])
                             self.assertIsNotNone(model, f"❌ Model failed to load! Backbone: {backbone}")
 
                             # Create random input tensors simulating images (batch_size=2, 224x224)
@@ -124,6 +133,7 @@ class TestModelForwardPass(unittest.TestCase):
                             print(f"✅ Forward pass successful! Backbone: {backbone}, Output shape: {logits.shape}")
 
                             for loss_type in ['CLASSIC_AT', 'TRADES_v2']:
+                                self.config.loss_type = loss_type
 
                                 loss_values, logits = get_loss(self.config, model, dummy_input, dummy_target)
                                 loss = loss_values.mean()
