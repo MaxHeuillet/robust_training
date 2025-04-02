@@ -29,7 +29,6 @@ from omegaconf import OmegaConf
 
 from ray import train
 import sys
-import os
 import ray
 import shutil
 
@@ -268,7 +267,6 @@ class BaseExperiment:
             print(f"Deleting existing experiment directory: {existing_experiment_path}")
             shutil.rmtree(existing_experiment_path)
 
-        import os
         os.environ["CUDA_VISIBLE_DEVICES"] = ",".join([str(i) for i in range(torch.cuda.device_count())])
         
         ray.init() #logging_level=logging.DEBUG
