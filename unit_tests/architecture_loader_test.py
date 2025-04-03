@@ -88,7 +88,8 @@ class TestModelForwardPass(unittest.TestCase):
     def test_forward_pass(self):
         os.environ['MASTER_ADDR'] = 'localhost'
         os.environ['MASTER_PORT'] = '12345'
-        dist.init_process_group("nccl", rank=0, world_size=1)
+        dist.init_process_group("gloo", rank=0, world_size=1)
+        # dist.init_process_group("nccl", rank=0, world_size=1)
 
         """ Test forward pass for all backbone sets """
         for category, backbones in ALL_BACKBONES.items():
@@ -152,6 +153,8 @@ class TestModelForwardPass(unittest.TestCase):
                             self.fail(f"🚨 Test failed for backbone {backbone} with error: {str(e)}")
 
                         print()
+        dist.destroy_process_group()
+
 
     def _validate_optimizer(self, optimizer, backbone):
         """ Ensure optimizer has exactly one parameter in each head group """
