@@ -52,27 +52,27 @@ Don't forget to change email and allocation credentials in ```./job*.sh``` scrip
 
 ## Maxime :
 ```
-bash ./execute_experiment.sh 'full_fine_tuning_50epochs_final6'
+bash ./execute_experiment_maxime.sh 'full_fine_tuning_50epochs_final6'
 ```
 
 ## Rishika :
 
 ```
-bash ./execute_experiment.sh 'full_fine_tuning_5epochs_final6'
+bash ./execute_experiment_rishika.sh 'full_fine_tuning_5epochs_final6'
 ```
 
 ## Jonas :
 ```
-bash ./execute_experiment.sh 'linearprobe_50epochs_final6'
+bash ./execute_experiment_jonas.sh 'linearprobe_50epochs_final6'
 ```
 
 ## Yann :
 ```
-bash ./execute_experiment.sh 'full_fine_tuning_50epochs_edge_final6'
+bash ./execute_experiment_yann.sh 'full_fine_tuning_50epochs_edge_final6'
 ```
 If we have time:
 ```
-bash ./execute_experiment.sh 'linearprobe_50epochs__edge_final6'
+bash ./execute_experiment_yann.sh 'linearprobe_50epochs__edge_final6'
 ```
 
 
