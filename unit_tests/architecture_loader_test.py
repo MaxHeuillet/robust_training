@@ -83,7 +83,7 @@ class TestModelForwardPass(unittest.TestCase):
         self.batch_size = 2  # Two image tensors
         self.config = OmegaConf.load("./configs/default_config_linearprobe50.yaml")
 
-        self.config.statedicts_path = '/home/mheuillet/Desktop/state_dicts_share'
+        # self.config.statedicts_path = '/home/mheuillet/Desktop/state_dicts_share'
 
     def test_forward_pass(self):
         os.environ['MASTER_ADDR'] = 'localhost'
