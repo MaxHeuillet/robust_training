@@ -136,12 +136,13 @@ class BaseExperiment:
 
         model = load_architecture(config, N, )
 
-        optimizer = load_optimizer(config, model,)   
-        
         model = CustomModel(config, model, )
         model.set_fine_tuning_strategy()
         model.to(rank)
         model = DDP(model, device_ids=[rank])
+
+        # load optmizer after model
+        optimizer = load_optimizer(config, model,)  
         
         print('start the loop')
         
