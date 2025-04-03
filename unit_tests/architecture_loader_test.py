@@ -88,8 +88,8 @@ class TestModelForwardPass(unittest.TestCase):
     def test_forward_pass(self):
         os.environ['MASTER_ADDR'] = 'localhost'
         os.environ['MASTER_PORT'] = '12345'
-        dist.init_process_group("gloo", rank=0, world_size=1)
-        # dist.init_process_group("nccl", rank=0, world_size=1)
+        # dist.init_process_group("gloo", rank=0, world_size=1)
+        dist.init_process_group("nccl", rank=0, world_size=1)
 
         """ Test forward pass for all backbone sets """
         for category, backbones in ALL_BACKBONES.items():
