@@ -16,46 +16,80 @@ class Normalize(nn.Module):
 
 # Custom Model Wrapper with Normalization
 class CustomModel(nn.Module):
+
     def __init__(self, config, original_model):
         super(CustomModel, self).__init__()
         self.config = config
         self.base_model = original_model
-        self.current_tracker = None
-        self.current_task = None
 
-        # Add Normalization Module
         mean_values, std_values = load_module_transform(config)
         self.normalize = Normalize(mean=mean_values, std=std_values)
+        
         self._enable_all_gradients()
+
+    def train(self, mode: bool = True):
+        """
+        We do NOT call super().train(mode) if ft_type == linear_probing, 
+        because that forces everything to train before we can revert it, 
+        and some submodules won't revert properly in DDP or other frameworks.
+        """
+        if self.config.ft_type == 'linear_probing':
+            # Force everything to eval
+            super().train(False)
+            # Now only the head goes to train
+            head_module = self.get_classification_head()
+            head_module.train(mode)
+        else:
+            # Full fine-tuning: normal behavior
+            super().train(mode)
+
+        return self
+
+    def get_classification_head(self):
+
+        # 1) If there's a 'head' attribute, use that
+        if hasattr(self.base_model, 'head'):
+            return self.base_model.head
+        
+        # 2) Else if there's an 'fc' (common in ResNet-style models)
+        elif hasattr(self.base_model, 'fc'):
+            return self.base_model.fc
+        
+        # 3) Else if there's a 'classifier' (some MobileNet/ConvNeXt variants)
+        elif hasattr(self.base_model, 'classifier'):
+            return self.base_model.classifier
+        
+        # 4) Otherwise, no recognized classification head was found
+        raise ValueError("Could not find a classification head in this model!")
 
     def forward(self, x_1=None, x_2=None):
         
         if x_1 is not None and x_2 is not None:
-            self.current_tracker = 'nat'
+            # self.current_tracker = 'nat'
             x_1 = self.normalize(x_1)  # Apply normalization
             logits_1 = self.base_model(x_1)
-            self.current_tracker = None
+            # self.current_tracker = None
 
-            self.current_tracker = 'adv'
+            # self.current_tracker = 'adv'
             x_2 = self.normalize(x_2)  # Apply normalization
             logits_2 = self.base_model(x_2)
-            self.current_tracker = None
+            # self.current_tracker = None
 
             return logits_1, logits_2
         
         elif x_1 is None and x_2 is not None:
-            self.current_tracker = 'adv'
+            # self.current_tracker = 'adv'
             x_2 = self.normalize(x_2)  # Apply normalization
             logits_2 = self.base_model(x_2)
-            self.current_tracker = None
+            # self.current_tracker = None
 
             return None, logits_2
         
         else:  
-            self.current_tracker = 'nat'
+            # self.current_tracker = 'nat'
             x_1 = self.normalize(x_1)  # Apply normalization
             logits_1 = self.base_model(x_1)
-            self.current_tracker = None
+            # self.current_tracker = None
 
             return logits_1
 
@@ -71,63 +105,35 @@ class CustomModel(nn.Module):
             raise ValueError(f"Unknown fine-tuning strategy: {self.config.ft_type}")
             
     def _enable_all_gradients(self):
-        self.all_gradients_on = True
         for param in self.base_model.parameters():
             param.requires_grad = True
 
     def _freeze_backbone(self):
-        self.all_gradients_on = False
         for param in self.base_model.parameters():
             param.requires_grad = False
 
     def _unfreeze_last_layer(self):
-        """
-        Unfreezes only the last classification head while keeping the backbone frozen.
-        Used for linear probing.
-        """
-        # Ensure we are working with the base model inside CustomModel
-        model = self.base_model if isinstance(self, CustomModel) else self
-
-        # Identify the classification head based on architecture type
-        if 'deit' in self.config.backbone or 'vit' in self.config.backbone or 'eva02' in self.config.backbone:
-            head_module = model.head
-        elif hasattr(model, 'classifier'):
-            head_module = model.classifier
-        elif hasattr(model, 'fc'):
-            head_module = model.fc
-        elif hasattr(model, 'head') and hasattr(model.head, 'fc'):
-            head_module = model.head.fc
-        elif hasattr(model, 'head') and isinstance(model.head, nn.Linear):
-            head_module = model.head
-        else:
-            raise ValueError(f"Could not identify the classification head for backbone: {self.config.backbone}")
-
-        # # Freeze all parameters in the model
-        # for param in model.parameters():
-        #     param.requires_grad = False
-
-        # Unfreeze only the classification head
+        head_module = self.get_classification_head() 
         for param in head_module.parameters():
             param.requires_grad = True
 
 
-    # def _unfreeze_last_layer(self):
-    #     if hasattr(self.base_model, "classifier"):
-    #         last_layer = self.base_model.classifier
-    #     elif hasattr(self.base_model, "head"):
-    #         last_layer = self.base_model.head
-    #     elif hasattr(self.base_model, "fc"):
-    #         last_layer = self.base_model.fc
+
+        
+    # def get_head(self,):
+    #     model = self.base_model
+    #     # Identify the classification head based on architecture type
+    #     if 'deit' in self.config.backbone or 'vit' in self.config.backbone or 'eva02' in self.config.backbone:
+    #         head_module = model.head
+    #     elif hasattr(model, 'classifier'):
+    #         head_module = model.classifier
+    #     elif hasattr(model, 'fc'):
+    #         head_module = model.fc
+    #     elif hasattr(model, 'head') and hasattr(model.head, 'fc'):
+    #         head_module = model.head.fc
+    #     elif hasattr(model, 'head') and isinstance(model.head, nn.Linear):
+    #         head_module = model.head
     #     else:
-    #         raise ValueError("No classification head found in the model.")
+    #         raise ValueError(f"Could not identify the classification head for backbone: {self.config.backbone}")
 
-    #     for param in last_layer.parameters():
-    #         param.requires_grad = True
-
-
-    # def _unfreeze_last_layer(self):
-    #     last_layer = list(self.base_model.children())[-1]
-    #     for param in last_layer.parameters():
-    #         param.requires_grad = True
-
-
+    #     self.head = head_module

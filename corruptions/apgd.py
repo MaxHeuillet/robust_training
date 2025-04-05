@@ -12,12 +12,12 @@ def check_oscillation(x, j, k, y5, k3=0.75):
 
 def apgd_attack(config, model, x, y):
 
-    model.module._enable_all_gradients()
+    # model.module._enable_all_gradients()
         
     # is_train=True
     # mixup=None
     use_rs=config.use_rs #False
-    n_iter= config.perturb_steps #
+    n_iter= config.perturb_steps #pertubration steps
     eps = config.epsilon #4/255 #args.epsilon #
     norm = config.distance #'Linf' #args.distance #
 
@@ -174,6 +174,6 @@ def apgd_attack(config, model, x, y):
                   counter3 = 0
                   k = max(k - size_decr, n_iter_min)
 
-    model.module.set_fine_tuning_strategy()
+    # model.module.set_fine_tuning_strategy()
                           
     return x_best.detach() #, acc, loss_best, x_best_adv

@@ -19,9 +19,9 @@ def trades_loss_eval(config,model, x_nat, y,):
     
     x_adv = apgd_attack(config, model, x_nat, y)
 
-    model.module.current_task = 'val_infer'
+    # model.module.current_task = 'val_infer'
     logits_nat, logits_adv = model(x_nat, x_adv)
-    model.module.current_task = None
+    # model.module.current_task = None
 
     clean_values = F.cross_entropy(logits_nat, y, reduction='none')
     robust_values = nn.KLDivLoss(reduction='none')(F.log_softmax(logits_adv, dim=1), F.softmax(logits_nat, dim=1)).sum(dim=1)

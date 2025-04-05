@@ -9,9 +9,9 @@ def classic_at_loss_eval(config, model, x_nat, y):
     
     x_adv = apgd_attack(config, model, x_nat, y)
     
-    model.module.current_task = 'val_infer'
-    logits_nat, logits_adv = model(x_1 = x_nat, x_2 = x_adv)
-    model.module.current_task = None
+    # model.module.current_task = 'val_infer'
+    logits_nat, logits_adv = model(x_1 = None, x_2 = x_adv)
+    # model.module.current_task = None
 
     loss_values = F.cross_entropy(logits_adv, y, reduction='none')
 

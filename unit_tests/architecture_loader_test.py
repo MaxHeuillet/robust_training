@@ -1,5 +1,6 @@
 import unittest
 import torch
+from torch import nn
 
 from omegaconf import OmegaConf
 import numpy as np
@@ -17,6 +18,8 @@ sys.path.append(PROJECT_ROOT)
 from architectures import load_architecture, CustomModel
 from utils import load_optimizer
 from losses import get_loss
+import torch.nn as nn
+import timm
 
 SCIENTIFIC_BACKBONES=(
   'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K',
@@ -69,10 +72,75 @@ EDGE_BACKBONES=(
 
 # Combine all sets
 ALL_BACKBONES = {
-    # "SCIENTIFIC_MODELS": SCIENTIFIC_BACKBONES,
+    "SCIENTIFIC_MODELS": SCIENTIFIC_BACKBONES,
     "PERFORMANCE_MODELS": PERFORMANCE_BACKBONES,
     "EDGE_MODELS": EDGE_BACKBONES,
 }
+
+    
+EXPECTED_HEAD={
+  'CLIP-convnext':{'expected_cls':timm.layers.classifier.NormMlpClassifierHead,
+          'len_head_decay':1, 'len_head_nodecay':3},
+
+  'deit':{'expected_cls':nn.Linear,
+          'len_head_decay':1, 'len_head_nodecay':1},
+        
+  'resnet50':{'expected_cls':nn.Linear,
+          'len_head_decay':1, 'len_head_nodecay':1},
+              
+  'vit':{'expected_cls':nn.Linear,
+         'len_head_decay':1, 'len_head_nodecay':1},
+
+  'convnext':{'expected_cls':timm.layers.classifier.NormMlpClassifierHead,
+          'len_head_decay':1, 'len_head_nodecay':3},
+
+  'eva02':{'expected_cls':nn.Linear,
+           'len_head_decay':1, 'len_head_nodecay':1},
+
+  'swin':{'expected_cls':timm.layers.classifier.ClassifierHead,
+           'len_head_decay':1, 'len_head_nodecay':1},
+
+  'coatnet':{'expected_cls':timm.layers.classifier.ClassifierHead,
+            'len_head_decay':1, 'len_head_nodecay':1},
+
+  "regnetx":{'expected_cls':timm.layers.classifier.ClassifierHead,
+             'len_head_decay':1, 'len_head_nodecay':1},
+             
+  'efficientnet':{'expected_cls':nn.Linear,
+              'len_head_decay':1, 'len_head_nodecay':1},
+
+  'mobilevit':{'expected_cls':nn.Linear,
+               'len_head_decay':1, 'len_head_nodecay':1},
+
+  'mobilenetv3':{'expected_cls':nn.Linear,
+                 'len_head_decay':1, 'len_head_nodecay':1},
+
+  'edgenext':{'expected_cls':timm.layers.classifier.NormMlpClassifierHead,
+              'len_head_decay':1, 'len_head_nodecay':3},
+
+  'coat':{'expected_cls':nn.Linear,
+          'len_head_decay':1, 'len_head_nodecay':1},
+}
+
+def get_expected_head_type(arch_name):
+    """
+    Match the architecture name to the most specific key in expected_head_dict.
+    Longer keys are prioritized (e.g., "CLIP-convnext" before "convnext").
+    """
+    for key in sorted(EXPECTED_HEAD.keys(), key=len, reverse=True):
+        if key in arch_name:
+            return EXPECTED_HEAD[key]['expected_cls']
+    raise ValueError(f"No expected head type found for architecture '{arch_name}'")
+
+def get_expected_optmizer_params(arch_name):
+    """
+    Match the architecture name to the most specific key in expected_head_dict.
+    Longer keys are prioritized (e.g., "CLIP-convnext" before "convnext").
+    """
+    for key in sorted(EXPECTED_HEAD.keys(), key=len, reverse=True):
+        if key in arch_name:
+            return EXPECTED_HEAD[key]['len_head_decay'], EXPECTED_HEAD[key]['len_head_nodecay'],
+    raise ValueError(f"No expected head type found for architecture '{arch_name}'")
 
 class TestModelForwardPass(unittest.TestCase):
     """ Unit test for model forward pass with different backbone sets """
@@ -80,9 +148,9 @@ class TestModelForwardPass(unittest.TestCase):
     def setUp(self):
         """ Set up test configuration """
         self.N = 10  # Number of classification classes
-        self.batch_size = 2  # Two image tensors
+        self.batch_size = 1  # Two image tensors
         self.config = OmegaConf.load("./configs/default_config_linearprobe50.yaml")
-
+        
         # self.config.statedicts_path = '/home/mheuillet/Desktop/state_dicts_share'
 
     def test_forward_pass(self):
@@ -98,10 +166,10 @@ class TestModelForwardPass(unittest.TestCase):
 
                 print(f"\n🔎 Testing backbone: {backbone}")
 
-                for ft_type in ['full_fine_tuning', 'linear_probing']:
-                    with self.subTest(backbone=backbone):
+                for ft_type in ['linear_probing', 'full_fine_tuning']:
 
-                        
+                    with self.subTest(backbone=backbone):
+                            
                         self.config.lr1 = 1
                         self.config.lr2 = 1
                         self.config.weight_decay1 = 1
@@ -109,56 +177,268 @@ class TestModelForwardPass(unittest.TestCase):
                         self.config.ft_type = ft_type
 
                         try:
-
-                            
+    
                             # Load the model
                             self.config.backbone = backbone
                             model = load_architecture(self.config, self.N)
+                            self.assertIsNotNone(model, f"❌ Model failed to load! Backbone: {backbone}")
                             model = CustomModel(self.config, model, )
-                            model.set_fine_tuning_strategy()
+                                
+                            ### test the retrieval of the head module:
+
+                            head_submodule = model.get_classification_head()
+                            expected_cls = get_expected_head_type(backbone)
+
+                            assert isinstance(head_submodule, expected_cls), (
+                                        f"For {backbone}, expected {expected_cls} but got {type(head_submodule)}"
+                                    )
+
+                            ### test the gradient tracking
+                                
                             device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
                             model = model.to(device)
                             model = DDP(model, device_ids=[0])
-                            self.assertIsNotNone(model, f"❌ Model failed to load! Backbone: {backbone}")
 
-                            # Create random input tensors simulating images (batch_size=2, 224x224)
+                            if self.config.ft_type == 'linear_probing':
+                                self._test_linear_probing(model)
+                                self._test_linear_probing_train_eval_modes(model)
+                            elif self.config.ft_type == 'full_fine_tuning':
+                                self._test_full_fine_tuning(model)
+                                self._test_full_finetuning_train_eval_modes(model)
+                            else:
+                                print('raise an error here')
+
                             dummy_input = torch.randn(self.batch_size, 3, 224, 224).to(device)
                             dummy_target = torch.randint(0, self.N, (self.batch_size,)).to(device)
-                            logits = model(dummy_input)  # Get logits
-                            expected_shape = (self.batch_size, self.N)
-
-                            if not hasattr(logits, "shape"):
-                                raise TypeError(f"❌ Model output is not a tensor! Backbone: {backbone}, Output Type: {type(logits)}")
-
-                            self.assertEqual(logits.shape, expected_shape,  f"❌ Output shape mismatch! Backbone: {backbone} - Got {logits.shape}, expected {expected_shape}" )
-                            print(f"✅ Forward pass successful! Backbone: {backbone}, Output shape: {logits.shape}")
 
                             for loss_type in ['CLASSIC_AT', 'TRADES_v2']:
-                                self.config.loss_type = loss_type
 
+                                ### test the loss
+                                self.config.loss_type = loss_type
                                 loss_values, logits = get_loss(self.config, model, dummy_input, dummy_target)
                                 loss = loss_values.mean()
 
-                                # ✅ Check if the loss is a scalar
-                                self.assertTrue(
-                                    loss.ndim == 0,
-                                    f"❌ Loss {loss_type} is not a scalar! Got shape: {loss.shape}"
-)
-                        
-                            optimizer = load_optimizer(self.config, model)
-                            self._validate_optimizer(optimizer, backbone)
+                                self.assertTrue(loss.ndim == 0,
+                                     f"❌ Loss {loss_type} is not a scalar! Got shape: {loss.shape}" )
+
+                                ### test the optimizer 
+                                optimizer = load_optimizer(self.config, model)
+                                self._validate_optimizer(self.config, optimizer, model, backbone)
+
+                                ### test the forward pass output shape
+                                logits = model(dummy_input)  # Get logits
+                                expected_shape = (self.batch_size, self.N)
+
+                                if not hasattr(logits, "shape"):
+                                    raise TypeError(f"❌ Model output is not a tensor! Backbone: {backbone}, Output Type: {type(logits)}")
+
+                                self.assertEqual(logits.shape, expected_shape,  f"❌ Output shape mismatch! Backbone: {backbone} - Got {logits.shape}, expected {expected_shape}" )
+                            
+                    
 
                         except Exception as e:
                             print(f"❌ Exception in backbone {backbone}:\n{traceback.format_exc()}")  # ✅ Print full traceback
                             self.fail(f"🚨 Test failed for backbone {backbone} with error: {str(e)}")
 
-                        print()
+                        
         dist.destroy_process_group()
 
 
-    def _validate_optimizer(self, optimizer, backbone):
+    def _test_linear_probing_train_eval_modes(self, model):
+        """
+        Ensures that when we call model.train() in linear_probing mode:
+        - The backbone is forced to eval (training=False)
+        - The classification head is in train mode (training=True)
+        Then ensures model.eval() sets everything to eval (training=False).
+        """
+
+        # 1. Freeze backbone & unfreeze head
+        model.module.set_fine_tuning_strategy()
+
+        # 2. Enter train mode on the DDP wrapper
+        model.train()
+
+        # 3. Identify classification head module
+        head_module = model.module.get_classification_head()
+
+        # We'll gather all submodules in the head so we can distinguish them
+        head_submodules = set(head_module.modules())  # includes head_module itself + children
+
+        # 4. Check states:
+        for name, submodule in model.module.base_model.named_modules():
+            # Skip the top-level base_model itself to avoid confusion
+            if submodule is model.module.base_model:
+                continue
+
+            if submodule in head_submodules:
+                # Classification head submodule → expect train=True
+                assert submodule.training, (
+                    f"Submodule '{name}' (in classification head) should be train=True, "
+                    "but got train=False."
+                )
+            else:
+                # Backbone submodule → expect train=False
+                assert not submodule.training, (
+                    f"Submodule '{name}' (in backbone) should be train=False, "
+                    "but got train=True."
+                )
+
+        # 5. Now call model.eval() and confirm everything becomes eval
+        model.eval()
+
+        for name, submodule in model.module.base_model.named_modules():
+            # After eval(), *all* submodules should be training=False
+            assert not submodule.training, (
+                f"After model.eval(), submodule '{name}' should be train=False, "
+                "but got train=True."
+            )
+
+    def _test_full_finetuning_train_eval_modes(self, model):
+        """
+        Ensures that in full_fine_tuning mode:
+        - All submodules in the backbone (and head) go to train mode when we call model.train().
+        - All submodules go to eval mode when we call model.eval().
+        """
+        # 1. Apply the fine-tuning strategy
+        model.module.set_fine_tuning_strategy()
+
+        # 2. Put the DDP-wrapped model in train mode
+        model.train()
+
+        # 3. Check that every submodule in base_model is in training mode
+        for name, submodule in model.module.base_model.named_modules():
+            # If you want to skip checking the top-level base_model container, do:
+            if submodule is model.module.base_model:
+                continue
+            assert submodule.training, (
+                f"[FULL FINETUNE] After model.train(), submodule '{name}' should be training=True "
+                f"but got {submodule.training}"
+            )
+
+        # 4. Now call eval()
+        model.eval()
+
+        # 5. Confirm every submodule in base_model is now eval
+        for name, submodule in model.module.base_model.named_modules():
+            if submodule is model.module.base_model:
+                continue
+            assert not submodule.training, (
+                f"[FULL FINETUNE] After model.eval(), submodule '{name}' should be training=False "
+                f"but got {submodule.training}"
+            )
+
+
+    def _test_linear_probing(self, model):
+
+        # Apply fine-tuning strategy
+        model.module.set_fine_tuning_strategy()
+
+        head_module = model.module.get_classification_head()
+        head_params = set(p for p in head_module.parameters())
+
+        for name, param in model.module.base_model.named_parameters():
+            if param in head_params:
+                assert param.requires_grad, f"{name} should be trainable (head param)"
+            else:
+                assert not param.requires_grad, f"{name} should be frozen (feature extractor)"
+
+    def _test_full_fine_tuning(self, model):
+
+        # Apply fine-tuning strategy
+        model.module.set_fine_tuning_strategy()
+
+        for name, param in model.module.base_model.named_parameters():
+            assert param.requires_grad, f"{name} should be trainable"
+
+
+    def _validate_optimizer(self, config, optimizer, model, backbone):
         """ Ensure optimizer has exactly one parameter in each head group """
 
+        assert len(optimizer.param_groups) == 4, "Expected 4 param groups."
+
+        # -----------------------------
+        # 5) Check param groups meta
+        # -----------------------------
+        # We'll store them for convenience:
+        pg_backbone_decay = optimizer.param_groups[0]
+        pg_backbone_no_decay = optimizer.param_groups[1]
+        pg_head_decay = optimizer.param_groups[2]
+        pg_head_no_decay = optimizer.param_groups[3]
+
+        # A) Check the "name" field if you rely on that:
+        assert pg_backbone_decay.get('name') == 'backbone_decay'
+        assert pg_backbone_no_decay.get('name') == 'backbone_no_decay'
+        assert pg_head_decay.get('name') == 'head_decay'
+        assert pg_head_no_decay.get('name') == 'head_no_decay'
+
+        # B) Check LR and weight_decay for each group
+        assert pg_backbone_decay['lr'] == config.lr1
+        assert pg_backbone_decay['weight_decay'] == config.weight_decay1
+
+        assert pg_backbone_no_decay['lr'] == config.lr1
+        assert pg_backbone_no_decay['weight_decay'] == 0.0
+
+        assert pg_head_decay['lr'] == config.lr2
+        assert pg_head_decay['weight_decay'] == config.weight_decay2
+
+        assert pg_head_no_decay['lr'] == config.lr2
+        assert pg_head_no_decay['weight_decay'] == 0.0
+
+        # -----------------------------
+        # 6) Inspect actual param assignment
+        # -----------------------------
+        # We'll gather references to the actual param Tensors from each group
+        backbone_decay_params   = set(pg_backbone_decay['params'])
+        backbone_no_decay_params = set(pg_backbone_no_decay['params'])
+        head_decay_params       = set(pg_head_decay['params'])
+        head_no_decay_params    = set(pg_head_no_decay['params'])
+
+        # Check they are disjoint
+        assert (
+            backbone_decay_params & backbone_no_decay_params & head_decay_params & head_no_decay_params
+        ) == set(), "No param should appear in multiple groups."
+
+        # Now systematically check each param in base_model
+        # We'll differentiate "backbone" vs "head" by seeing if param is in the classification head module
+        # (like you do in load_optimizer).
+        classification_head = model.module.get_classification_head() 
+        head_param_set = set(classification_head.parameters())
+
+        # We'll define a helper to see if a name suggests no_decay
+        def is_no_decay(name: str) -> bool:
+            return ("bias" in name or "norm" in name or "bn" in name)
+
+        # Now check each parameter in the model
+        for full_name, param in model.module.base_model.named_parameters(): 
+            if not param.requires_grad:
+                continue  # skip frozen or untrainable
+            
+            in_head = param in head_param_set
+            should_be_no_decay = is_no_decay(full_name)
+
+            # Decide which group we expect
+            if in_head:
+                # This param belongs to head
+                if should_be_no_decay:
+                    assert param in head_no_decay_params, (
+                        f"Param '{full_name}' is in head + no_decay but not found in 'head_no_decay' group."
+                    )
+                else:
+                    assert param in head_decay_params, (
+                        f"Param '{full_name}' is in head + decay but not found in 'head_decay' group."
+                    )
+            else:
+                # This param belongs to backbone
+                if should_be_no_decay:
+                    assert param in backbone_no_decay_params, (
+                        f"Param '{full_name}' is in backbone + no_decay but not in 'backbone_no_decay' group."
+                    )
+                else:
+                    assert param in backbone_decay_params, (
+                        f"Param '{full_name}' is in backbone + decay but not in 'backbone_decay' group."
+                    )
+
+        len_head_decay, len_head_nodecay = get_expected_optmizer_params(backbone)
         for i, group in enumerate(optimizer.param_groups):
             group_name = group.get("name", f"group_{i}")  # Get name, fallback to index
             lr = group["lr"]
@@ -166,15 +446,22 @@ class TestModelForwardPass(unittest.TestCase):
             betas = group["betas"]
             nb_params = len(group['params'])
 
-            if "head" in group_name:
-                self.assertEqual(nb_params, 1, f"❌ Error on the nb of parameters in head for {backbone}")
             if not "head" in group_name:
-                if self.config.ft_type == 'full_fine_tuning':
-                    self.assertGreater(nb_params, 1, f"❌ Error on the nb of parameters in FE for {backbone}")
-                elif self.config.ft_type == 'linear_probing':
-                    self.assertEqual(nb_params, 0, f"❌ Error on the nb of parameters in FR for {backbone} in Linear Probing")
+                if config.ft_type == 'full_fine_tuning':
+                    self.assertGreater(nb_params, 0, f"❌ Error on the nb of parameters ")
+                elif config.ft_type == 'linear_probing':
+                    self.assertEqual(nb_params, 0, f"❌ Error on the nb of parameters ")
+            
+            if "head_decay" in group_name:
+                self.assertEqual(nb_params, len_head_decay, f"❌ Error on the nb of parameters ")
 
-        print(f"✅ Optimizer parameters validated for {backbone}")
+            elif "head_no_decay" in group_name:
+                self.assertEqual(nb_params, len_head_nodecay, f"❌ Error on the nb of parameters ")
+
+
+
+
+
 
 
 

@@ -267,8 +267,6 @@ class BaseExperiment:
         if os.path.exists(existing_experiment_path):
             print(f"Deleting existing experiment directory: {existing_experiment_path}")
             shutil.rmtree(existing_experiment_path)
-
-        os.environ["CUDA_VISIBLE_DEVICES"] = ",".join([str(i) for i in range(torch.cuda.device_count())])
         
         ray.init() #logging_level=logging.DEBUG
 
@@ -294,7 +292,7 @@ class BaseExperiment:
 
     def validation(self, config, valloader, model, logger, iteration, rank):
 
-        total_loss, total_correct_nat, total_correct_adv, total_examples, _, res_adv = self.validation_loop(config, valloader, model, rank)
+        total_loss, total_correct_nat, total_correct_adv, total_examples, _, _ = self.validation_loop(config, valloader, model, rank)
 
         dist.barrier() 
         val_loss, _, _ = self.setup.sync_value(total_loss, total_examples, rank)

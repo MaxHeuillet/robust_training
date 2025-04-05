@@ -10,7 +10,8 @@ def load_optimizer(config, model):
     weight_decay2 = config.weight_decay2
 
     # if isinstance(model, CustomModel):
-    model = model.module.base_model
+    base_model = model.module.base_model
+    head = model.module.get_classification_head()
 
     def get_param_groups(model, head_module=None):
         decay, no_decay, head_decay, head_no_decay = [], [], [], []
@@ -32,25 +33,10 @@ def load_optimizer(config, model):
                         decay.append(param)
 
         return decay, no_decay, head_decay, head_no_decay
-    
-    # Handling ViTs separately because they may not have an explicit "classifier" module
-    if 'deit' in backbone or 'vit' in backbone or 'eva02' in backbone:
-        head_module = model.head #if isinstance(model.head, nn.Linear) else None  # Only assign if head is a classifier
-    elif hasattr(model, 'classifier'):
-        head_module = model.classifier  # Most CNN models
-    elif hasattr(model, 'fc'):
-        head_module = model.fc  # ResNets
-    elif hasattr(model, 'head') and hasattr(model.head, 'fc'):
-        head_module = model.head.fc  # ConvNeXt, Swin, RegNetX
-    elif hasattr(model, 'head') and isinstance(model.head, nn.Linear):
-        head_module = model.head
-    else:
-        head_module = None  # Fallback case (should not happen in supported architectures)
+        
+    decay, no_decay, head_decay, head_no_decay = get_param_groups(base_model, head)
 
-    # Now correctly get parameter groups
-    decay, no_decay, head_decay, head_no_decay = get_param_groups(model, head_module)
-
-    print(len(decay), len(no_decay), len(head_decay), len(head_no_decay))   
+    print( len(decay), len(no_decay), len(head_decay), len(head_no_decay))   
 
     optimizer = AdamW([
         # Backbone parameters with weight decay
