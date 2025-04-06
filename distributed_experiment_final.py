@@ -143,7 +143,7 @@ class BaseExperiment:
         # load optmizer after model
         optimizer = load_optimizer(config, model,)  
         
-        print('start the loop')
+        # print('start the loop')
         
         scheduler = CosineAnnealingLR( optimizer, T_max=config.epochs, eta_min=0 ) if config.scheduler else None
 
@@ -193,7 +193,7 @@ class BaseExperiment:
             train_sampler.set_epoch(iteration)
             val_sampler.set_epoch(iteration)
 
-            print('start batches')
+            # print('start batches')
 
             for batch_id, batch in enumerate( trainloader ) :
 
