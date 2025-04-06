@@ -1,13 +1,5 @@
 import argparse
 
-def get_exp_name(args):
-    # Access all attributes of args as a dictionary
-    args_dict = vars(args) if hasattr(args, '__dict__') else args.__dict__
-
-    # Create the experiment name dynamically by concatenating all key-value pairs
-    exp_name = "_".join(f"{key}={value}" for key, value in args_dict.items())
-
-    return exp_name
 
 def get_args2():
 

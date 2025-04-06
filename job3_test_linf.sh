@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# No hard-coded #SBATCH --account=...
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=24
 #SBATCH --gpus-per-node=4
@@ -27,7 +26,6 @@ python ./distributed_experiment_final.py \
     --seed "${SEED}" \
     --backbone "${BCKBN}" \
     --project_name "${PRNM}" \
-    --exp "${EXP}" \
     > stdout_"$SLURM_JOB_ID" 2> stderr_"$SLURM_JOB_ID"
 
 exit_code=$?
@@ -42,7 +40,6 @@ DATA="$DATA",\
 SEED="$SEED",\
 LOSS="$LOSS",\
 PRNM="$PRNM",\
-EXP="$EXP" \
 ./job4_test_l1.sh
 else
     echo "HPO failed. No further jobs will be submitted."
