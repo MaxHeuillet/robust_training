@@ -271,7 +271,9 @@ class BaseExperiment:
 
         tmpdir = os.environ["TMPDIR"]  #os.environ.get("TMPDIR", "/tmp")
         abs_tmpdir = os.path.abspath(os.path.expandvars(os.path.expanduser(tmpdir)))
+        print('initialize')
         ray.init(include_dashboard=False, _temp_dir=abs_tmpdir ) #logging_level=logging.DEBUG
+        print('end initialize')
 
         hp_search = Hp_opt(config, experiment_path)
 
