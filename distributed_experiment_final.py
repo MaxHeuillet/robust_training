@@ -260,7 +260,7 @@ class BaseExperiment:
         print("Device name:", torch.cuda.get_device_name(0) if torch.cuda.is_available() else "No GPU")
 
         # Check if experiment path exists and delete it before starting a new run
-        hpo_opt_path = os.path.abspath(os.path.expandvars(os.path.expanduser(config.datasets_path)))
+        hpo_opt_path = os.path.abspath(os.path.expandvars(os.path.expanduser(config.hpo_path)))
         experiment_path = os.path.join(hpo_opt_path, config.project_name)
         os.makedirs(experiment_path, exist_ok=True)
         existing_experiment_path = os.path.join(hpo_opt_path, config.project_name, config.exp_id)
