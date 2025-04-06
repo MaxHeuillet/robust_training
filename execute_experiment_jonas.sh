@@ -15,7 +15,7 @@ datas=(
 losses=( 'CLASSIC_AT' 'TRADES_v2'   )  
 
 # Two backbone groups
-scientific_backbones=(
+block_1=(
   'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K'
   'CLIP-convnext_base_w-laion2B-s13B-b82K'
   'deit_small_patch16_224.fb_in1k'
@@ -27,6 +27,10 @@ scientific_backbones=(
   'vit_base_patch16_224.mae'
   'vit_small_patch16_224.dino'
   'convnext_base.fb_in22k'
+) 
+
+
+block_2=(
   'robust_convnext_base'
   'vit_base_patch16_224.augreg_in1k'
   'vit_base_patch16_224.augreg_in21k'
@@ -36,12 +40,10 @@ scientific_backbones=(
   'robust_deit_small_patch16_224'
   'vit_small_patch16_224.augreg_in1k'
   'convnext_tiny.fb_in22k'
-) 
-
-
-performance_backbones=(
   'vit_base_patch16_clip_224.laion2b_ft_in1k'
-  'vit_base_patch16_224.augreg_in21k_ft_in1k'
+  'vit_base_patch16_224.augreg_in21k_ft_in1k')
+
+block_3=(
   'vit_small_patch16_224.augreg_in21k_ft_in1k'
   'eva02_base_patch14_224.mim_in22k'
   'eva02_tiny_patch14_224.mim_in22k'
@@ -55,6 +57,7 @@ performance_backbones=(
   'coatnet_2_rw_224.sw_in12k'
 )
 
+
 # Get the project name 
 PRNM=$1
 
@@ -65,18 +68,16 @@ fi
 
 # ---------- Function to submit jobs ----------
 submit_jobs() {
-  local backbones=("$@")  # All arguments passed to this function (backbone list)
+  local account_name="$1"
+  shift  # shift out the account name
+  local backbones=("$@")  # remaining arguments are backbone list
   for id in $(seq 1 $seeds); do
     for data in "${datas[@]}"; do
       for bckbn in "${backbones[@]}"; do
         for loss in "${losses[@]}"; do
-          sbatch --export=ALL,\
-BCKBN="$bckbn",\
-DATA="$data",\
-SEED="$id",\
-LOSS="$loss",\
-PRNM="$PRNM" \
-./job1_hpo.sh
+          sbatch --account="$account_name" \
+            --export=ALL,ACCOUNT="$account_name",BCKBN="$bckbn",DATA="$data",SEED="$id",LOSS="$loss",PRNM="$PRNM" \
+            ./job1_hpo.sh
         done
       done
     done
@@ -85,8 +86,12 @@ PRNM="$PRNM" \
 
 # ---------- Submit jobs ----------
 
-echo "Submitting SCIENTIFIC backbone jobs..."
-submit_jobs "${scientific_backbones[@]}"
+echo "Submitting block_1 backbone jobs..."
+submit_jobs "def-alloc" "${block_1[@]}" #TODO Define allocation
 
-echo "Submitting PERFORMANCE backbone jobs..."
-submit_jobs "${performance_backbones[@]}"
+echo "Submitting block_2 backbone jobs..."
+submit_jobs "def-alloc" "${block_2[@]}" #TODO Define allocation
+
+echo "Submitting block_3 backbone jobs..."
+submit_jobs "def-alloc" "${block_3[@]}" #TODO Define allocation
+

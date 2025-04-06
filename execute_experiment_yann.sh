@@ -14,49 +14,7 @@ datas=(
  
 losses=( 'CLASSIC_AT' 'TRADES_v2'   )  
 
-# Two backbone groups
-# scientific_backbones=(
-#   'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K'
-#   'CLIP-convnext_base_w-laion2B-s13B-b82K'
-#   'deit_small_patch16_224.fb_in1k'
-#   'robust_resnet50'
-#   'vit_small_patch16_224.augreg_in21k'
-#   'convnext_base.fb_in1k'
-#   'resnet50.a1_in1k'
-#   'robust_vit_base_patch16_224'
-#   'vit_base_patch16_224.mae'
-#   'convnext_base.fb_in22k'
-#   'robust_convnext_base'
-#   'vit_base_patch16_224.augreg_in1k'
-#   'vit_base_patch16_224.augreg_in21k'
-#   'vit_base_patch16_224.dino'
-#   'vit_base_patch16_clip_224.laion2b'
-#   'convnext_tiny.fb_in1k'
-#   'robust_convnext_tiny'
-#   'robust_deit_small_patch16_224'
-#   'vit_small_patch16_224.augreg_in1k'
-#   'convnext_tiny.fb_in22k'
-# ) 
-
-
-# performance_backbones=(
-#   'vit_base_patch16_clip_224.laion2b_ft_in1k'
-#   'vit_base_patch16_224.augreg_in21k_ft_in1k'
-#   'vit_small_patch16_224.augreg_in21k_ft_in1k'
-#   'eva02_base_patch14_224.mim_in22k'
-#   'eva02_tiny_patch14_224.mim_in22k'
-#   'swin_base_patch4_window7_224.ms_in22k_ft_in1k'
-#   'swin_tiny_patch4_window7_224.ms_in1k'
-#   'convnext_base.clip_laion2b_augreg_ft_in12k_in1k'
-#   'convnext_base.fb_in22k_ft_in1k'
-#   'convnext_tiny.fb_in22k_ft_in1k'
-#   'coatnet_0_rw_224.sw_in1k'
-#   'coatnet_2_rw_224.sw_in12k_ft_in1k'
-#   'coatnet_2_rw_224.sw_in12k'
-# )
-
-
-edge_backbones=(
+block_1=(
     "regnetx_004.pycls_in1k"
     'efficientnet-b0'
     'deit_tiny_patch16_224.fb_in1k'
@@ -76,31 +34,24 @@ fi
 
 # ---------- Function to submit jobs ----------
 submit_jobs() {
-  local backbones=("$@")  # All arguments passed to this function (backbone list)
+  local account_name="$1"
+  shift  # shift out the account name
+  local backbones=("$@")  # remaining arguments are backbone list
   for id in $(seq 1 $seeds); do
     for data in "${datas[@]}"; do
       for bckbn in "${backbones[@]}"; do
         for loss in "${losses[@]}"; do
-          sbatch --export=ALL,\
-BCKBN="$bckbn",\
-DATA="$data",\
-SEED="$id",\
-LOSS="$loss",\
-PRNM="$PRNM" \
-./job1_hpo.sh
+          sbatch --account="$account_name" \
+            --export=ALL,ACCOUNT="$account_name",BCKBN="$bckbn",DATA="$data",SEED="$id",LOSS="$loss",PRNM="$PRNM" \
+            ./job1_hpo.sh
         done
       done
     done
   done
 }
 
+
 # ---------- Submit jobs ----------
 
-# echo "Submitting SCIENTIFIC backbone jobs..."
-# submit_jobs "${scientific_backbones[@]}"
-
-# echo "Submitting PERFORMANCE backbone jobs..."
-# submit_jobs "${performance_backbones[@]}"
-
-echo "Submitting EDGE COMPUTING backbone jobs..."
-submit_jobs "${edge_backbones[@]}"
+echo "Submitting COMPUTING backbone jobs..."
+submit_jobs "def-alloc" "${block_1[@]}" #TODO Define allocation

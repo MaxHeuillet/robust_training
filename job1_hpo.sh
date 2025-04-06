@@ -1,10 +1,10 @@
 #!/bin/bash
 
-#SBATCH --account=rrg-csubakan
+# No hard-coded #SBATCH --account=...
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=24
-#SBATCH --gres=gpu:v100l:4 
-#SBATCH --mem-per-cpu=4000M
+#SBATCH --gpus-per-node=4
+#SBATCH --mem-per-cpu=8000M
 #SBATCH --time=02:58:55
 #SBATCH --mail-user=maxime.heuillet.1@ulaval.ca
 #SBATCH --mail-type=ALL
@@ -35,7 +35,7 @@ echo "HPO exit code: $exit_code"
 # If success, chain the next job
 if [ $exit_code -eq 0 ]; then
     echo "HPO succeeded, submitting training job..."
-    sbatch --export=ALL,\
+    sbatch --account="$ACCOUNT" --export=ALL,\
 BCKBN="$BCKBN",\
 DATA="$DATA",\
 SEED="$SEED",\
