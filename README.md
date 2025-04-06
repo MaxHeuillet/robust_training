@@ -48,7 +48,7 @@ This test verifies that i) each dataset included in the study loads correctly, a
 
 ### 🚀 Launch All Jobs on the Cluster
 
-Don't forget to change email and allocation credentials in ```./job*.sh``` scripts.
+Don't forget to change email and allocation credentials in your ```./execute_experiment*.sh``` script.
 
 ## Maxime :
 ```
@@ -59,8 +59,6 @@ bash ./execute_experiment_maxime.sh 'full_fine_tuning_5epochs_final6'
 ```
 bash ./execute_experiment_rishika.sh 'full_fine_tuning_50epochs_final6'
 ```
-
-
 
 ## Jonas :
 ```

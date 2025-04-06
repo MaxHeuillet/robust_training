@@ -1,6 +1,6 @@
 from .setup import Setup
 
-from .arguments import get_args2, get_exp_name
+from .arguments import get_args2
 from .seed_settings import set_seeds
 from .dormant_neurons import ActivationTrackerAggregated, register_hooks_aggregated, compute_stats_aggregated
 from .optimizer_loader import load_optimizer
