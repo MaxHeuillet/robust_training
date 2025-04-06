@@ -207,6 +207,12 @@ class BaseExperiment:
                     loss = loss_values.mean()
                     loss = loss / accumulation_steps  # Scale the loss
 
+                if not torch.isfinite(loss):
+                    print(f"⚠️ NaN loss detected during training at iteration {iteration}, batch {batch_id}. Skipping trial.")
+                    if self.setup.hp_opt:
+                        session.report({"loss": float("inf")})  # Inform Ray this is a bad trial
+                    return  # Exit early
+
                 scaler.scale(loss).backward()
                 
                 global_step += 1
@@ -341,6 +347,10 @@ class BaseExperiment:
                 
             with torch.autocast(device_type='cuda'):
                 loss_values, logits_nat, logits_adv = get_eval_loss(config, model, data, target, )
+
+            if not torch.isfinite(loss_values).all():
+                print(f"⚠️ NaN detected in validation loss at batch {batch_id}")
+                return float("inf"), total_correct_nat, total_correct_adv, total_examples, None, None
 
             total_loss += loss_values.sum().item()
 
