@@ -298,6 +298,8 @@ class BaseExperiment:
         src = os.path.join(tmpdir, "ray_results", config.exp_id)
         dst = os.path.join(experiment_path, config.exp_id) 
         shutil.copytree(src, dst)
+        print(src)
+        print(dst)
 
     def validation(self, config, valloader, model, logger, iteration, rank):
 
