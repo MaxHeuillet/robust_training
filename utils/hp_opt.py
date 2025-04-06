@@ -32,15 +32,15 @@ class Hp_opt:
 
         if 'linearprobe' in self.config.project_name:
             tune_config = {
-                "lr2": tune.loguniform(1e-5, 1e-1),  # Search over a range for the classification head
+                "lr2": tune.loguniform(1e-6, 1e-1),  # Search over a range for the classification head
                 "weight_decay2": tune.loguniform(1e-6, 1e-2),
                 "scheduler": tune.choice([True, False])
             }
                     
         elif 'full_fine_tuning' in self.config.project_name:
             tune_config = {
-                "lr1": tune.loguniform(1e-5, 1e-1),
-                "lr2": tune.loguniform(1e-5, 1e-1),
+                "lr1": tune.loguniform(1e-6, 1e-1),
+                "lr2": tune.loguniform(1e-6, 1e-1),
                 "weight_decay1": tune.loguniform(1e-6, 1e-2),
                 "weight_decay2": tune.loguniform(1e-6, 1e-2),
                 "scheduler": tune.choice([True, False])   }
