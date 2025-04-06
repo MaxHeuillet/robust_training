@@ -203,7 +203,7 @@ def combine_pngs_to_pdf(input_dir="plots", output_pdf="combined_plots.pdf"):
 
 if __name__ == "__main__":
     # Example config, adapt as needed
-    # config = OmegaConf.load("./configs/default_config_linearprobe50.yaml")        
+    config = OmegaConf.load("./configs/default_config_linearprobe50.yaml")        
     # config.statedicts_path = '/home/mheuillet/Desktop/state_dicts_share'
     # run_apgd_experiment_all_backbones(config, ALL_BACKBONES)
     # combine_pngs_to_pdf(input_dir="plots", output_pdf="all_backbones_combined.pdf")
