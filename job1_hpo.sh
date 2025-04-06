@@ -3,7 +3,7 @@
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=24
 #SBATCH --gpus-per-node=4
-#SBATCH --mem-per-cpu=8000M
+#SBATCH --mem-per-cpu=6000M
 #SBATCH --time=02:58:55
 #SBATCH --mail-user=maxime.heuillet.1@ulaval.ca
 #SBATCH --mail-type=ALL
