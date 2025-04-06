@@ -291,7 +291,7 @@ class BaseExperiment:
         ray.shutdown()
 
         tmp_dir = os.environ.get("TMPDIR", "/tmp")  # Fallback to /tmp if TMPDIR isn't set
-        src = os.path.join(tmp_dir, "ray_results", self.config.exp_id)
+        src = os.path.join(tmp_dir, "ray_results", config.exp_id)
         dst = os.path.join(experiment_path, config.exp_id) 
         shutil.copytree(src, dst)
 
