@@ -268,7 +268,10 @@ class BaseExperiment:
             print(f"Deleting existing experiment directory: {existing_experiment_path}")
             shutil.rmtree(existing_experiment_path)
         
-        ray.init(include_dashboard=False, _temp_dir=os.environ.get("TMPDIR", "/tmp") ) #logging_level=logging.DEBUG
+
+        tmpdir = os.environ.get("TMPDIR", "/tmp")
+        abs_tmpdir = os.path.abspath(os.path.expandvars(os.path.expanduser(tmpdir)))
+        ray.init(include_dashboard=False, _temp_dir=abs_tmpdir ) #logging_level=logging.DEBUG
 
         hp_search = Hp_opt(config, experiment_path)
 
