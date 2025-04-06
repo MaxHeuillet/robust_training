@@ -36,13 +36,9 @@ echo "HPO exit code: $exit_code"
 If success, chain the next job
 if [ $exit_code -eq 0 ]; then
     echo "HPO succeeded, submitting training job..."
-    sbatch --account="$ACCOUNT" --export=ALL,\
-BCKBN="$BCKBN",\
-DATA="$DATA",\
-SEED="$SEED",\
-LOSS="$LOSS",\
-PRNM="$PRNM",\
-./job3_test_linf.sh
+    sbatch --account="$ACCOUNT" \
+       --export=ALL,BCKBN="$BCKBN",DATA="$DATA",SEED="$SEED",LOSS="$LOSS",PRNM="$PRNM" \
+       ./job3_test_linf.sh
 else
     echo "HPO failed. No further jobs will be submitted."
     exit 1
