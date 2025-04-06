@@ -31,7 +31,7 @@ from ray import train
 import sys
 import ray
 import shutil
-
+import shutil
 
 
 def compute_gradient_norms(model):
@@ -176,7 +176,7 @@ class BaseExperiment:
         effective_batch_size = 1024
         loss_scale = 0.50 if config.loss_function == 'TRADES_v2' else 1.00
         per_gpu_batch_size = int( self.setup.train_batch_size(config) * loss_scale ) # Choose a batch size that fits in memory
-        accumulation_steps = effective_batch_size // (self.setup.world_size * per_gpu_batch_size)
+        accumulation_steps = max(1, effective_batch_size // (self.setup.world_size * per_gpu_batch_size))
         global_step = 0  # Track global iterations across accumulation steps
         print('effective batch size', effective_batch_size, 'per_gpu_batch_size', per_gpu_batch_size, 'accumulation steps', accumulation_steps)
 
@@ -275,7 +275,7 @@ class BaseExperiment:
         tuner = hp_search.get_tuner( self.training )
 
         result_grid = tuner.fit()
-
+        
         best_result = result_grid.get_best_result()
         print("Best hyperparameters found were: ", best_result.config)
 
@@ -289,6 +289,11 @@ class BaseExperiment:
         OmegaConf.save(optimal_config, output_path)
 
         ray.shutdown()
+
+        tmp_dir = os.environ.get("TMPDIR", "/tmp")  # Fallback to /tmp if TMPDIR isn't set
+        src = os.path.join(tmp_dir, "ray_results", self.config.exp_id)
+        dst = os.path.join(experiment_path, config.exp_id) 
+        shutil.copytree(src, dst)
 
     def validation(self, config, valloader, model, logger, iteration, rank):
 

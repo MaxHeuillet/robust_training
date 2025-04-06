@@ -82,6 +82,7 @@ class Hp_opt:
 
         # Define maximum runtime in seconds
         max_runtime_seconds = timedelta(minutes=self.minutes).total_seconds()
+        tmp_dir = os.environ.get("TMPDIR", "/tmp")  # Fallback to /tmp if TMPDIR isn't set
 
         # Set up the Tuner
         tuner = Tuner(
@@ -96,7 +97,7 @@ class Hp_opt:
             ),
             run_config=RunConfig(
                 name=f"{self.config.exp_id}",
-                storage_path=f"file://{self.path}",
+                storage_path=f"file://{tmp_dir}/ray_results",  # <-- use TMPDIR
             ),
         )
 
