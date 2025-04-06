@@ -21,3 +21,4 @@ submodlib/
 *.lock
 
 hpo_results/
+plots/

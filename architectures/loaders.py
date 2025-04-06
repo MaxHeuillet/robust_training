@@ -7,6 +7,7 @@ import open_clip
 from transformers import AutoModel
 # from utils import get_state_dict_dir
 from architectures.clip_wrapper import CLIPConvNeXtClassifier
+from transformers import AutoConfig, AutoModel
 
 class HFModelWrapper(nn.Module):
     def __init__(self, hf_model, num_classes, backbone):
@@ -74,11 +75,9 @@ def load_architecture(config, N):
 
         print(f"Loading Hugging Face model: {backbone}")
 
-        try:
-            model = AutoModel.from_pretrained(hf_models[backbone], cache_dir=statedict_dir)  # Load model from HF
-        except Exception as e:
-            print(f"❌ Failed to load {backbone} from Hugging Face: {e}")
-            return None
+        config = AutoConfig.from_pretrained(hf_models[backbone], cache_dir="{}/{}".format(statedict_dir,backbone) )
+        model = AutoModel.from_config(config)
+
         checkpoint_path = os.path.join(statedict_dir, f'{backbone}.pt')
         state_dict = torch.load(checkpoint_path, map_location='cpu', weights_only=True, )
         model.load_state_dict(state_dict, strict=False)
