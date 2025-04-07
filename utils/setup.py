@@ -50,19 +50,39 @@ class Setup:
     def cleanup(self,):
         dist.destroy_process_group()
 
+    
     def sync_value(self, value, nb_examples, rank):
+        if nb_examples == 0:
+            print(f"⚠️ sync_value: No examples provided on rank {rank}. Returning inf.")
+            return float("inf"), value, nb_examples
 
-        # Aggregate results across all processes
         value_tensor = torch.tensor([value], dtype=torch.float32, device=rank)
         nb_examples_tensor = torch.tensor([nb_examples], dtype=torch.float32, device=rank)
 
         dist.all_reduce(value_tensor, op=dist.ReduceOp.SUM)
         dist.all_reduce(nb_examples_tensor, op=dist.ReduceOp.SUM)
 
-        # Compute global averages
-        avg_value = value_tensor.item() / nb_examples_tensor.item()
+        # Check again after sync in case only one rank had data
+        if nb_examples_tensor.item() == 0:
+            print(f"⚠️ sync_value: Global nb_examples is 0. Returning inf.")
+            return float("inf"), value_tensor.item(), 0
 
-        return avg_value, value_tensor.item(), nb_examples_tensor.item() 
+        avg_value = value_tensor.item() / nb_examples_tensor.item()
+        return avg_value, value_tensor.item(), nb_examples_tensor.item()
+
+    # def sync_value(self, value, nb_examples, rank):
+
+    #     # Aggregate results across all processes
+    #     value_tensor = torch.tensor([value], dtype=torch.float32, device=rank)
+    #     nb_examples_tensor = torch.tensor([nb_examples], dtype=torch.float32, device=rank)
+
+    #     dist.all_reduce(value_tensor, op=dist.ReduceOp.SUM)
+    #     dist.all_reduce(nb_examples_tensor, op=dist.ReduceOp.SUM)
+
+    #     # Compute global averages
+    #     avg_value = value_tensor.item() / nb_examples_tensor.item()
+
+    #     return avg_value, value_tensor.item(), nb_examples_tensor.item() 
     
 
     def train_batch_size(self, config): #(arch: str, dataset: str, loss_fn: str) -> int
@@ -72,17 +92,17 @@ class Setup:
         # -------------------------
 
         arch_lower = config.backbone.lower()
-        base_bs = 32  # default fallback
+        base_bs = 30  # default fallback
 
         # 1) Match known architectures by substring
         if 'convnext_tiny' in arch_lower:
-            base_bs = 64
-        elif 'convnext_base' in arch_lower:
-            base_bs = 22
-        elif any(x in arch_lower for x in ['deit_small', 'eva02_tiny', 'swin_tiny', 'vit_small']):
-            base_bs = 88
-        elif any(x in arch_lower for x in ['vit_base', 'swin_base', 'eva02_base']):
-            base_bs = 40
+            base_bs = 55
+        elif any(x in arch_lower for x in ['convnext_base', 'coatnet_2', ]):
+            base_bs = 20
+        elif any(x in arch_lower for x in ['deit_small', 'eva02_tiny', 'swin_tiny', 'coatnet_0', 'vit_small']):
+            base_bs = 80
+        elif any(x in arch_lower for x in ['vit_base', 'swin_base', 'eva02_base', ]):
+            base_bs = 35
         elif 'resnet50' in arch_lower:
             base_bs = 64
         else:

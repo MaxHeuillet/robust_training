@@ -202,19 +202,38 @@ class BaseExperiment:
                 data, target = data.to(rank), target.to(rank) 
 
                 # Use autocast for mixed precision during forward pass
-                with autocast():
-                    loss_values, logits = get_loss(config, model, data, target)
-                    loss = loss_values.mean()
-                    loss = loss / accumulation_steps  # Scale the loss
 
-                if not torch.isfinite(loss) and self.setup.hp_opt:
-                    print(f"⚠️ NaN loss detected during training at iteration {iteration}, batch {batch_id}. Skipping trial.")
+                try:
+                    with autocast():
+                        loss_values, logits = get_loss(config, model, data, target)
+                        loss = loss_values.mean() / accumulation_steps
+                    if not torch.isfinite(loss):
+                        raise ValueError(f"Loss is not finite: {loss.item()}")
+
+                    scaler.scale(loss).backward()
+                except (RuntimeError, ValueError) as e:
+                    if "out of memory" in str(e).lower():
+                        print("⚠️ Caught OOM during backward")
+                        torch.cuda.empty_cache()
+                    else:
+                        print(f"⚠️ Caught exception: {e}")
                     if self.setup.hp_opt:
-                        session.report({"loss": float("inf")})  # Inform Ray this is a bad trial
-                        sys.exit(0)
-                    return  # Exit early
+                        session.report({"loss": float("inf")})
+                    sys.exit(0)  # prevent Ray from hanging
 
-                scaler.scale(loss).backward()
+                # with autocast():
+                #     loss_values, logits = get_loss(config, model, data, target)
+                #     loss = loss_values.mean()
+                #     loss = loss / accumulation_steps  # Scale the loss
+
+                # if not torch.isfinite(loss) and self.setup.hp_opt:
+                #     print(f"⚠️ NaN loss detected during training at iteration {iteration}, batch {batch_id}. Skipping trial.")
+                #     if self.setup.hp_opt:
+                #         session.report({"loss": float("inf")})  # Inform Ray this is a bad trial
+                #         sys.exit(0)
+                #     return  # Exit early
+
+                # scaler.scale(loss).backward()
                 
                 global_step += 1
 
@@ -352,7 +371,7 @@ class BaseExperiment:
 
             if not torch.isfinite(loss_values).all():
                 print(f"⚠️ NaN detected in validation loss at batch {batch_id}")
-                return float("inf"), total_correct_nat, total_correct_adv, total_examples, None, None
+                return float("inf"), 0, 0, 1, None, None
 
             total_loss += loss_values.sum().item()
 

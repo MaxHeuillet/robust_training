@@ -96,6 +96,7 @@ class Hp_opt:
                 scheduler=scheduler,
                 num_samples=self.trials,
                 time_budget_s=max_runtime_seconds,
+                reuse_actors=True
             ),
             run_config=RunConfig(
                 name=f"{self.config.exp_id}",
