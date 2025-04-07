@@ -211,6 +211,7 @@ class BaseExperiment:
                     print(f"⚠️ NaN loss detected during training at iteration {iteration}, batch {batch_id}. Skipping trial.")
                     if self.setup.hp_opt:
                         session.report({"loss": float("inf")})  # Inform Ray this is a bad trial
+                        sys.exit(0)
                     return  # Exit early
 
                 scaler.scale(loss).backward()
