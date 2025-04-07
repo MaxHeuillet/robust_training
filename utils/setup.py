@@ -104,7 +104,7 @@ class Setup:
         elif any(x in arch_lower for x in ['vit_base', 'swin_base', 'eva02_base', ]):
             base_bs = 35
         elif 'resnet50' in arch_lower:
-            base_bs = 64
+            base_bs = 60
         else:
             print(f"WARNING: unrecognized backbone '{config.backbone}', using fallback base_bs={base_bs}.")
 
