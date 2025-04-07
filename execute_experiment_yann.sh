@@ -54,4 +54,4 @@ submit_jobs() {
 # ---------- Submit jobs ----------
 
 echo "Submitting COMPUTING backbone jobs..."
-submit_jobs "def-alloc" "${block_1[@]}" #TODO Define allocation
+submit_jobs "todo" "${block_1[@]}" #TODO Define allocation

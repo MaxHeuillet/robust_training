@@ -12,7 +12,9 @@ datas=(
         'uc-merced-land-use-dataset' 
         ) 
  
-losses=( 'CLASSIC_AT' 'TRADES_v2'   )  
+losses=( 'CLASSIC_AT' 
+        'TRADES_v2'  
+         )  
 
 # Two backbone groups
 block_1=(
@@ -28,7 +30,6 @@ block_1=(
   'vit_small_patch16_224.dino'
   'convnext_base.fb_in22k'
 ) 
-
 
 block_2=(
   'robust_convnext_base'
@@ -87,11 +88,11 @@ submit_jobs() {
 # ---------- Submit jobs ----------
 
 echo "Submitting block_1 backbone jobs..."
-submit_jobs "def-alloc" "${block_1[@]}" #TODO Define allocation
+submit_jobs "todo" "${block_1[@]}"
 
 echo "Submitting block_2 backbone jobs..."
-submit_jobs "def-alloc" "${block_2[@]}" #TODO Define allocation
+submit_jobs "todo" "${block_2[@]}"
 
 echo "Submitting block_3 backbone jobs..."
-submit_jobs "def-alloc" "${block_3[@]}" #TODO Define allocation
+submit_jobs "todo" "${block_3[@]}"
 
