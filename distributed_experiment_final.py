@@ -255,6 +255,7 @@ class BaseExperiment:
             print(f'Rank {rank}, Iteration {iteration},', flush=True) 
 
             # break
+            return 
 
 
     def hyperparameter_optimization(self, config):  
