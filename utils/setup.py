@@ -104,7 +104,7 @@ class Setup:
         elif any(x in arch_lower for x in ['deit_small', 'eva02_tiny', 'swin_tiny', 'coatnet_0', 'vit_small']):
             base_bs = 75
         elif any(x in arch_lower for x in ['vit_base', 'swin_base', 'eva02_base', ]):
-            base_bs = 35
+            base_bs = 30
         elif 'resnet50' in arch_lower:
             base_bs = 55
         else:
