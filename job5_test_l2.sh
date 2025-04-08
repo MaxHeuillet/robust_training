@@ -16,7 +16,7 @@ source ~/scratch/myenv_reprod/bin/activate
 
 export PYTHONUNBUFFERED=1
 
-bash ./dataset_to_tmpdir.sh "$DATA"
+bash ./dataset_to_tmpdir_final.sh "$DATA"
 
 # --- HPO Step ---
 python ./distributed_experiment_final.py \
