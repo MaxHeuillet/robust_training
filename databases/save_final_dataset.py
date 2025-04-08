@@ -1,5 +1,5 @@
 from omegaconf import OmegaConf
-from databases import load_data
+from databases.loaders import load_data
 import torch
 from pathlib import Path
 from torchvision import transforms
