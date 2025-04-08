@@ -27,6 +27,7 @@ class CSVDataset(Dataset):
         self.root = Path(root)
         self.transform = transform
         self.samples = []
+        print(self.samples)
 
         # Read CSV file
         with open(self.root / "labels.csv", "r") as f:
@@ -50,13 +51,18 @@ def load_tar_zst_dataset(config):
 
     base_path = Path(config.datasets_path) / config.dataset
 
-    datasets_dict = {}
+    datasets_dict = []
     for split in ["train", "val", "test", "test_common"]:
         split_path = base_path / split
         if split_path.exists():
-            datasets_dict[split] = CSVDataset(split_path)
+            datasets_dict.append(  )
 
-    return datasets_dict
+    train_dataset = CSVDataset(base_path / "train")
+    val_dataset = CSVDataset(base_path / "val")
+    test_dataset = CSVDataset(base_path / "test")
+    test_common_dataset = CSVDataset(base_path / "test_common")
+    
+    return train_dataset, val_dataset, test_dataset, test_common_dataset
 
 
 if __name__ == "__main__":
@@ -79,8 +85,10 @@ if __name__ == "__main__":
         # If the script is executable:
         subprocess.run(["./dataset_to_tmpdir_final.sh", dataset_name], check=True)
 
-        dataset = load_tar_zst_dataset(config)
+        train_dataset, val_dataset, test_dataset, test_common_dataset = load_tar_zst_dataset(config)
 
-        print(dataset)
+        print(train_dataset, val_dataset, test_dataset, test_common_dataset)
+
+        print(train_dataset[0])
 
 
