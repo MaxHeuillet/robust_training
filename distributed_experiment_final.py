@@ -220,20 +220,6 @@ class BaseExperiment:
                     if self.setup.hp_opt:
                         session.report({"loss": float("inf")})
                     sys.exit(0)  # prevent Ray from hanging
-
-                # with autocast():
-                #     loss_values, logits = get_loss(config, model, data, target)
-                #     loss = loss_values.mean()
-                #     loss = loss / accumulation_steps  # Scale the loss
-
-                # if not torch.isfinite(loss) and self.setup.hp_opt:
-                #     print(f"⚠️ NaN loss detected during training at iteration {iteration}, batch {batch_id}. Skipping trial.")
-                #     if self.setup.hp_opt:
-                #         session.report({"loss": float("inf")})  # Inform Ray this is a bad trial
-                #         sys.exit(0)
-                #     return  # Exit early
-
-                # scaler.scale(loss).backward()
                 
                 global_step += 1
 

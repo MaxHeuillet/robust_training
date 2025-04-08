@@ -40,6 +40,7 @@ def load_data(config, common_corruption=False):
         dataset_train_full = datasets.ImageFolder( root=path )
         dataset_val_full = datasets.ImageFolder( root=path )
         dataset_test_full = datasets.ImageFolder( root=path )
+        labels = [dataset_train_full[i][1] for i in range(len(dataset_train_full))]
         train_dataset, _, _ = process_trainvaltest(dataset_train_full, )
         _, val_dataset, _ = process_trainvaltest(dataset_val_full, )
         _, _, test_dataset = process_trainvaltest(dataset_test_full, )
@@ -50,9 +51,10 @@ def load_data(config, common_corruption=False):
         dataset_train_full = datasets.Caltech101(root=datadir, download=False, )
         dataset_val_full = datasets.Caltech101(root=datadir, download=False, )
         dataset_test_full = datasets.Caltech101(root=datadir, download=False, )
-        train_dataset, _, _ = process_trainvaltest(dataset_train_full, )
-        _, val_dataset, _ = process_trainvaltest(dataset_val_full, )
-        _, _, test_dataset = process_trainvaltest(dataset_test_full, )
+        labels = [dataset_train_full[i][1] for i in range(len(dataset_train_full))]
+        train_dataset, _, _ = process_trainvaltest(dataset_train_full,  labels)
+        _, val_dataset, _ = process_trainvaltest(dataset_val_full,labels )
+        _, _, test_dataset = process_trainvaltest(dataset_test_full, labels)
                 
     elif dataset == 'fgvc-aircraft-2013b': 
 
@@ -81,8 +83,9 @@ def load_data(config, common_corruption=False):
         dataset_train_full = datasets.OxfordIIITPet(root=datadir, split='trainval', download=False,)
         dataset_val_full = datasets.OxfordIIITPet(root=datadir, split='trainval', download=False,)
         dataset_test_full = datasets.OxfordIIITPet(root=datadir,split='test',download=False, )
-        train_dataset, _ = process_trainval(dataset_train_full, )
-        _, val_dataset = process_trainval(dataset_val_full, )
+        labels = [dataset_train_full[i][1] for i in range(len(dataset_train_full))]
+        train_dataset, _ = process_trainval(dataset_train_full, labels)
+        _, val_dataset = process_trainval(dataset_val_full, labels)
         test_dataset = dataset_test_full
 
     elif dataset == 'stanford_cars':
@@ -91,8 +94,9 @@ def load_data(config, common_corruption=False):
         dataset_train_full = datasets.StanfordCars( root=datadir, split='train', download=False,)
         dataset_val_full = datasets.StanfordCars( root=datadir, split='train', download=False,)
         dataset_test_full = datasets.StanfordCars( root=datadir, split='test', download=False, )
-        train_dataset, _ = process_trainval(dataset_train_full, )
-        _, val_dataset = process_trainval(dataset_val_full, )
+        labels = [dataset_train_full[i][1] for i in range(len(dataset_train_full))]
+        train_dataset, _ = process_trainval(dataset_train_full, labels)
+        _, val_dataset = process_trainval(dataset_val_full, labels)
         test_dataset = dataset_test_full
     
     else:

@@ -30,9 +30,7 @@ def stratified_subsample(dataset, sample_size=1500):
 
     return torch.utils.data.Subset(dataset, indices_subsample)
 
-def process_trainvaltest(dataset_train_full, ):
-
-    labels = [dataset_train_full[i][1] for i in range(len(dataset_train_full))]
+def process_trainvaltest(dataset_train_full, labels):
 
     train_val_indices, test_indices = train_test_split(
                                             range(len(labels)),
@@ -56,9 +54,7 @@ def process_trainvaltest(dataset_train_full, ):
 
     return train_dataset, val_dataset, test_dataset
 
-def process_trainval(dataset_train_val_full, ):
-
-    labels = [dataset_train_val_full[i][1] for i in range(len(dataset_train_val_full))]
+def process_trainval(dataset_train_val_full, labels):
 
     train_indices, val_indices = train_test_split(
             range(len(labels)),
