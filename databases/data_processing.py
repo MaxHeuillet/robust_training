@@ -39,7 +39,7 @@ def process_trainvaltest(dataset_train_full, labels):
                                             random_state=42
                                         )
 
-    train_val_labels = labels[train_val_indices]
+    train_val_labels = [labels[i] for i in train_val_indices]
 
     train_indices, val_indices = train_test_split(
                                             train_val_indices,
