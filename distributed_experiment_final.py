@@ -131,7 +131,11 @@ class BaseExperiment:
             self.setup.distributed_setup(rank)
             logger = self.initialize_logger(rank, config)
 
+        print('### load model', flush=True)
+
         trainloader, valloader, _, train_sampler, val_sampler, _, N = self.initialize_loaders(config, rank)
+
+        print('### load model', flush=True)
 
         model = load_architecture(config, N, )
 

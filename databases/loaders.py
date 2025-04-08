@@ -41,9 +41,9 @@ def load_data(config, common_corruption=False):
         dataset_val_full = datasets.ImageFolder( root=path )
         dataset_test_full = datasets.ImageFolder( root=path )
         labels = [dataset_train_full[i][1] for i in range(len(dataset_train_full))]
-        train_dataset, _, _ = process_trainvaltest(dataset_train_full, )
-        _, val_dataset, _ = process_trainvaltest(dataset_val_full, )
-        _, _, test_dataset = process_trainvaltest(dataset_test_full, )
+        train_dataset, _, _ = process_trainvaltest(dataset_train_full, labels)
+        _, val_dataset, _ = process_trainvaltest(dataset_val_full, labels)
+        _, _, test_dataset = process_trainvaltest(dataset_test_full, labels)
  
     elif dataset == 'caltech101':
 
@@ -53,7 +53,7 @@ def load_data(config, common_corruption=False):
         dataset_test_full = datasets.Caltech101(root=datadir, download=False, )
         labels = [dataset_train_full[i][1] for i in range(len(dataset_train_full))]
         train_dataset, _, _ = process_trainvaltest(dataset_train_full,  labels)
-        _, val_dataset, _ = process_trainvaltest(dataset_val_full,labels )
+        _, val_dataset, _ = process_trainvaltest(dataset_val_full, labels )
         _, _, test_dataset = process_trainvaltest(dataset_test_full, labels)
                 
     elif dataset == 'fgvc-aircraft-2013b': 
