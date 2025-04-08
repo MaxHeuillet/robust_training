@@ -12,7 +12,7 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 print(PROJECT_ROOT)  # Should print the path to your main directory
 sys.path.append(PROJECT_ROOT)
 
-from databases import load_data
+from databases import load_data, load_dataset2
 
 # Suppose this is your custom grayscale-to-RGB transform
 class GrayscaleToRGB:
@@ -69,7 +69,8 @@ class TestDatasetTransforms(unittest.TestCase):
             with self.subTest(dataset=dataset_name):
                  
                  print('testing', dataset_name)
-                 command = ["bash", "./dataset_to_tmpdir.sh", dataset_name]
+                #  command = ["bash", "./dataset_to_tmpdir.sh", dataset_name]
+                 command = ["bash", "./dataset_to_tmpdir_final.sh", dataset_name]
 
                  # Run the command
                  result = subprocess.run(command, capture_output=True, text=True)
@@ -78,20 +79,21 @@ class TestDatasetTransforms(unittest.TestCase):
                  with warnings.catch_warnings():
                     warnings.simplefilter("ignore", ResourceWarning)
                     self.config.dataset = dataset_name
+
                     # load_data is your custom function returning (train_ds, val_ds, test_ds, N)
-                    train_ds, val_ds, test_ds, num_classes = load_data(self.config, common_corruption=False)
+                    # train_ds, val_ds, test_ds, num_classes = load_data(self.config, common_corruption=False)
+                    train_ds, val_ds, test_ds, test_common_ds, num_classes = load_dataset2(self.config)
 
                     # 1) Check the training set transform
-                    # self.assertTrue(hasattr(train_ds, 'transform'), f"Train set missing 'transform' for {dataset_name}")
                     self._compare_transforms(train_ds.transform, self.train_transforms_expected, split='train')
 
                     # 2) Check the validation set transform
-                    # self.assertTrue(hasattr(val_ds, 'transform'), f"Val set missing 'transform' for {dataset_name}")
                     self._compare_transforms(val_ds.transform, self.eval_transforms_expected, split='val')
 
                     # 3) Check the test set transform
-                    # self.assertTrue(hasattr(test_ds, 'transform'), f"Test set missing 'transform' for {dataset_name}")
                     self._compare_transforms(test_ds.transform, self.eval_transforms_expected, split='test')
+
+                    self._compare_transforms(test_common_ds.transform, self.eval_transforms_expected, split='test_common')
 
     def _compare_transforms(self, actual_compose, expected_compose, split):
         """Helper to compare two torchvision.transforms.Compose objects."""
