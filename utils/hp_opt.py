@@ -69,7 +69,7 @@ class Hp_opt:
             train_loop_per_worker=training_func,
             scaling_config=ScalingConfig(
                 use_gpu=True,  # Use GPUs
-                resources_per_worker={"CPU": 6, "GPU": 1},  # Resources per worker
+                resources_per_worker={"CPU": 7, "GPU": 1},  # Resources per worker
             ),
         )
         return trainer
