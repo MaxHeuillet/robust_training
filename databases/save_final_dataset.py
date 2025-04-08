@@ -73,9 +73,13 @@ for dataset_name in [
         json.dump(metadata, f, indent=2)
 
     # Compress into .tar.zst
-    archive_path = config.data_path / f"{dataset_name}_processed.tar.zst"
+    # Save to TMPDIR
+    archive_name = f"{dataset_name}_processed.tar.zst"
+    tmp_archive_path = Path(os.environ.get("TMPDIR", "/tmp")) / archive_name
+    final_archive_path = Path.home() / "scratch" / "data" / archive_name
+
     cctx = zstd.ZstdCompressor(level=3)
-    with open(archive_path, "wb") as f_out:
+    with open(tmp_archive_path, "wb") as f_out:
         with cctx.stream_writer(f_out) as zst_stream:
             with tarfile.open(fileobj=zst_stream, mode="w|") as tar:
                 for root, _, files in os.walk(temp_dir):
@@ -84,7 +88,11 @@ for dataset_name in [
                         arcname = fullpath.relative_to(temp_dir)
                         tar.add(fullpath, arcname=str(arcname))
 
-    print(f"✅ Saved archive to: {archive_path}")
+
+    final_archive_path.parent.mkdir(parents=True, exist_ok=True)
+    shutil.move(str(tmp_archive_path), str(final_archive_path))
+    print(f"✅ Archive moved to: {final_archive_path}")
+
 
     # Clean up temp dir
     shutil.rmtree(temp_dir)
