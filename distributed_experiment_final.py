@@ -18,7 +18,7 @@ from ray.air import session
 
 
 from utils import Setup, Hp_opt
-from databases import load_data
+from databases import load_data2
 from architectures import load_architecture, CustomModel
 from losses import get_loss, get_eval_loss
 from utils import get_args2, set_seeds, load_optimizer
@@ -84,16 +84,14 @@ class BaseExperiment:
         
         return logger
         
-    def initialize_loaders(self, config, rank, common_corruption = False):
+    def initialize_loaders(self, config, rank, ):
 
-        train_dataset, val_dataset, test_dataset, N = load_data(config, common_corruption)
-
-        print('test dataset', test_dataset, len(test_dataset), flush=True)
+        # train_dataset, val_dataset, test_dataset, N = load_data(config, common_corruption)
+        train_dataset, val_dataset, _, _, N = load_data2(config)
 
         train_sampler = DistributedSampler(train_dataset, num_replicas=self.setup.world_size, rank=rank, shuffle=True, drop_last=True)
         val_sampler = DistributedSampler(val_dataset, num_replicas=self.setup.world_size, rank=rank, drop_last=True)
-        test_sampler = DistributedSampler(test_dataset, num_replicas=self.setup.world_size, rank=rank, shuffle=True, drop_last=True)
-        
+  
         nb_workers = 3 if torch.cuda.device_count() > 1 else 1
 
         print('initialize dataoader', rank,flush=True) 
@@ -108,6 +106,19 @@ class BaseExperiment:
                                     sampler=val_sampler, 
                                     num_workers=nb_workers,
                                     pin_memory=True)
+    
+        
+        return trainloader, valloader, train_sampler, val_sampler, N
+    
+    def initialize_loaders_test(self, config, rank,):
+
+        # train_dataset, val_dataset, test_dataset, N = load_data(config, common_corruption)
+        _, _, test_dataset, common_dataset, N = load_data2(config)
+
+        test_sampler = DistributedSampler(test_dataset, num_replicas=self.setup.world_size, rank=rank, shuffle=True, drop_last=True)
+        common_sampler = DistributedSampler(common_dataset, num_replicas=self.setup.world_size, rank=rank, shuffle=True, drop_last=True)
+        
+        nb_workers = 3 if torch.cuda.device_count() > 1 else 1
         
         testloader = DataLoader(test_dataset, 
                                     batch_size=self.setup.test_batch_size(config), 
@@ -115,7 +126,13 @@ class BaseExperiment:
                                     num_workers=nb_workers,
                                     pin_memory=True)
         
-        return trainloader, valloader, testloader, train_sampler, val_sampler, test_sampler, N
+        commonloader = DataLoader(common_dataset, 
+                                    batch_size=self.setup.test_batch_size(config), 
+                                    sampler=common_sampler, 
+                                    num_workers=nb_workers,
+                                    pin_memory=True)
+        
+        return testloader, commonloader, test_sampler, common_sampler, N
 
     def training(self, config, rank=None ):
 
@@ -133,7 +150,7 @@ class BaseExperiment:
 
         print('### load model', flush=True)
 
-        trainloader, valloader, _, train_sampler, val_sampler, _, N = self.initialize_loaders(config, rank)
+        trainloader, valloader, train_sampler, val_sampler, N = self.initialize_loaders(config, rank)
 
         print('### load model', flush=True)
 
@@ -378,8 +395,11 @@ class BaseExperiment:
 
     def test(self, rank, result_queue, corruption_type, config):
 
-        common_corruption = True if corruption_type == 'common' else False
-        _, _, testloader, _, _, _, N = self.initialize_loaders(config, rank, common_corruption)
+        if corruption_type == 'common':
+            _, testloader, _, _, N = self.initialize_loaders_test(config, rank)
+        else:
+            testloader, _, _, _, N = self.initialize_loaders_test(config, rank)
+
         # test_sampler.set_epoch(0)  
         print('dataloader', flush=True) 
         
