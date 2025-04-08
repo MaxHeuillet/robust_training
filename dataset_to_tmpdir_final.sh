@@ -1,21 +1,20 @@
 #!/bin/bash
 
-DATA="$1"  # First argument passed from main script
+DATA="$1"
 
 echo "Processing dataset: ${DATA}"
 
-# Create a temporary data directory
-mkdir -p "$SLURM_TMPDIR/data"
+# Create a directory for the dataset
+DEST_DIR="$SLURM_TMPDIR/data/${DATA}"
+mkdir -p "$DEST_DIR"
 
-ARCHIVE_PATH=~/scratch/data/${DATA}
+ARCHIVE_PATH=~/scratch/data/${DATA}_processed.tar.zst
 
 extract_tar_zst() {
-    local archive="${ARCHIVE_PATH}_processed.tar.zst"
-    echo "Extracting ${archive} with tar + zstd..."
-    tar -I zstd -xf "$archive" -C "$SLURM_TMPDIR/data"
+    echo "Extracting ${ARCHIVE_PATH} into ${DEST_DIR} with tar + zstd..."
+    tar -I zstd -xf "$ARCHIVE_PATH" -C "$DEST_DIR"
 }
 
-echo "Dataset is not in the zip list. Using tar.zst to extract."
 extract_tar_zst
 
 if [ $? -ne 0 ]; then
@@ -23,4 +22,4 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo "Extraction of ${DATA} archive completed successfully at $(date)."
+echo "✅ Extraction of ${DATA} completed successfully at $(date)."
