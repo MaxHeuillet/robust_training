@@ -22,6 +22,8 @@ from PIL import Image
 import os
 import subprocess
 
+from transforms import load_data_transforms
+
 class CSVDataset(Dataset):
     def __init__(self, root, transform=None):
         self.root = Path(root)
@@ -36,8 +38,6 @@ class CSVDataset(Dataset):
                 label = int(row["label"])
                 self.samples.append((img_path, label))
 
-        print(self.samples)
-
     def __len__(self):
         return len(self.samples)
 
@@ -50,12 +50,14 @@ class CSVDataset(Dataset):
 
 def load_tar_zst_dataset(config):
 
+    train_transform, transform = load_data_transforms()
+
     base_path = Path(os.environ["SLURM_TMPDIR"]) / "data" / config.dataset
 
-    train_dataset = CSVDataset(base_path / "train")
-    val_dataset = CSVDataset(base_path / "val")
-    test_dataset = CSVDataset(base_path / "test")
-    test_common_dataset = CSVDataset(base_path / "test_common")
+    train_dataset = CSVDataset(base_path / "train", train_transform)
+    val_dataset = CSVDataset(base_path / "val", transform)
+    test_dataset = CSVDataset(base_path / "test", transform)
+    test_common_dataset = CSVDataset(base_path / "test_common", transform)
     
     return train_dataset, val_dataset, test_dataset, test_common_dataset
 
@@ -84,6 +86,9 @@ if __name__ == "__main__":
 
         print(train_dataset, val_dataset, test_dataset, test_common_dataset)
 
-        print(train_dataset[0])
+        print("train", len(train_dataset))
+        print("val", len(val_dataset))
+        print("test", len(test_dataset))
+        print("test_common", len(test_common_dataset))
 
 
