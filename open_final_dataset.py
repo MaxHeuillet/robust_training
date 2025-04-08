@@ -80,4 +80,6 @@ if __name__ == "__main__":
 
         dataset = load_tar_zst_dataset(config)
 
+        print(dataset)
+
 
