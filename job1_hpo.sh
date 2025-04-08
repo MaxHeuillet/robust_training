@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=24
+#SBATCH --cpus-per-task=38
 #SBATCH --gpus-per-node=4
 #SBATCH --mem-per-cpu=7000M
 #SBATCH --time=02:58:55

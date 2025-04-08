@@ -1,7 +1,4 @@
 import os
-import tarfile
-import zstandard as zstd
-import tempfile
 from pathlib import Path
 from PIL import Image
 from torchvision import datasets, transforms
@@ -10,14 +7,9 @@ import csv
 
 from omegaconf import OmegaConf
 from databases import load_data
-import torch
-from pathlib import Path
-from torchvision import transforms
-import shutil
+
 import csv
 import json
-import tarfile
-import zstandard as zstd
 from PIL import Image
 import os
 import subprocess
