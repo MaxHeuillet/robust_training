@@ -51,12 +51,6 @@ def load_tar_zst_dataset(config):
 
     base_path = Path(os.environ["SLURM_TMPDIR"]) / "data" / config.dataset
 
-    datasets_dict = []
-    for split in ["train", "val", "test", "test_common"]:
-        split_path = base_path / split
-        if split_path.exists():
-            datasets_dict.append(  )
-
     train_dataset = CSVDataset(base_path / "train")
     val_dataset = CSVDataset(base_path / "val")
     test_dataset = CSVDataset(base_path / "test")
