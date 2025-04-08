@@ -58,8 +58,16 @@ def load_tar_zst_dataset(config):
     val_dataset = CSVDataset(base_path / "val", transform)
     test_dataset = CSVDataset(base_path / "test", transform)
     test_common_dataset = CSVDataset(base_path / "test_common", transform)
+
+    # Load metadata.json
+    metadata_path = base_path / "metadata.json"
+
+    with open(metadata_path, "r") as f:
+        metadata = json.load(f)
+
+    N = metadata.get("N", None)
     
-    return train_dataset, val_dataset, test_dataset, test_common_dataset
+    return train_dataset, val_dataset, test_dataset, test_common_dataset, N
 
 
 if __name__ == "__main__":
@@ -82,7 +90,7 @@ if __name__ == "__main__":
         # If the script is executable:
         subprocess.run(["./dataset_to_tmpdir_final.sh", dataset_name], check=True)
 
-        train_dataset, val_dataset, test_dataset, test_common_dataset = load_tar_zst_dataset(config)
+        train_dataset, val_dataset, test_dataset, test_common_dataset, N = load_tar_zst_dataset(config)
 
         print(train_dataset, val_dataset, test_dataset, test_common_dataset)
 
@@ -90,5 +98,7 @@ if __name__ == "__main__":
         print("val", len(val_dataset))
         print("test", len(test_dataset))
         print("test_common", len(test_common_dataset))
+        print(N)
+        print()
 
 
