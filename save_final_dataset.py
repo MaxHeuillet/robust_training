@@ -48,7 +48,7 @@ for dataset_name in [
     subprocess.run(["./dataset_to_tmpdir.sh", dataset_name], check=True)
 
     # Temporary folder to stage extracted contents
-    temp_dir = config.datasets_path / f"tmp_{dataset_name}"
+    temp_dir = Path(config.datasets_path) / f"tmp_{dataset_name}"
     if temp_dir.exists():
         shutil.rmtree(temp_dir)
     temp_dir.mkdir(parents=True)
