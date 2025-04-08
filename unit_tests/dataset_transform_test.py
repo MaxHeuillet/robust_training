@@ -53,6 +53,51 @@ class TestDatasetTransforms(unittest.TestCase):
             T.ToTensor()
         ])
 
+
+    def test_dataloader_iteration(self):
+        """Test that dataloaders for each dataset can be created and iterated."""
+        datasets_to_test = [
+            'uc-merced-land-use-dataset',
+            'flowers-102',
+            'caltech101',
+            'stanford_cars',
+            'fgvc-aircraft-2013b',
+            'oxford-iiit-pet'
+        ]
+
+        for dataset_name in datasets_to_test:
+
+            with self.subTest(dataset=dataset_name):
+                print(f"🔁 Testing DataLoader for: {dataset_name}")
+
+                command = ["bash", "./dataset_to_tmpdir_final.sh", dataset_name]
+                subprocess.run(command, check=True, capture_output=True, text=True)
+
+                with warnings.catch_warnings():
+                    warnings.simplefilter("ignore", ResourceWarning)
+                    self.config.dataset = dataset_name
+
+                    train_ds, val_ds, test_ds, test_common_ds, _ = load_dataset2(self.config)
+
+                    for split_name, dataset in {
+                        "train": train_ds,
+                        "val": val_ds,
+                        "test": test_ds,
+                        "test_common": test_common_ds
+                    }.items():
+                        dataloader = torch.utils.data.DataLoader(dataset, batch_size=4, shuffle=False)
+
+                        try:
+                            images, labels = next(iter(dataloader))
+                        except Exception as e:
+                            self.fail(f"Failed to iterate over {split_name} DataLoader of {dataset_name}: {e}")
+
+                        self.assertIsInstance(images, torch.Tensor, f"{split_name} images are not torch.Tensor")
+                        self.assertIsInstance(labels, torch.Tensor, f"{split_name} labels are not torch.Tensor")
+                        self.assertEqual(images.ndim, 4, f"{split_name} images should be [B, C, H, W], got shape {images.shape}")
+                        self.assertEqual(labels.ndim, 1, f"{split_name} labels should be 1D, got shape {labels.shape}")
+
+
     def test_data_transforms(self):
         """Check that each dataset uses the correct transforms for train/val/test."""
         datasets_to_test = [
