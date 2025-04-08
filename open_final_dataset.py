@@ -49,7 +49,7 @@ class CSVDataset(Dataset):
 
 def load_tar_zst_dataset(config):
 
-    base_path = Path(os.environ["SLURM_TMPDIR"]) / config.dataset
+    base_path = Path(os.environ["SLURM_TMPDIR"]) / "data" / config.dataset
 
     datasets_dict = []
     for split in ["train", "val", "test", "test_common"]:
