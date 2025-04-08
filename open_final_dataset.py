@@ -51,7 +51,7 @@ def load_tar_zst_dataset(config):
     # Load splits
     datasets_dict = {}
     for split in ["train", "val", "test", "test_common"]:
-        split_path = config.datasets_path / split
+        split_path = Path(config.datasets_path) / split
         if split_path.exists():
             datasets_dict[split] = CSVDataset(split_path)
 
