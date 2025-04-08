@@ -590,6 +590,7 @@ def main():
         experiment.hyperparameter_optimization(config_base)
 
     elif mode == "train":
+        torch.multiprocessing.set_start_method("spawn", force=True)
         print("Training step", flush=True)
         # load best config from HPO results
         path = os.path.join(config_base.configs_path, "HPO_results",
@@ -600,6 +601,8 @@ def main():
 
     elif mode.startswith("test"):
         # e.g. test-linf, test-l1, test-l2, test-common
+        torch.multiprocessing.set_start_method("spawn", force=True)
+
         test_type = mode.split("-")[1]  # "linf", "l1", "l2", "common"
 
         print(f"Testing step: {test_type}", flush=True)
@@ -616,5 +619,5 @@ def main():
         sys.exit(1)
 
 if __name__ == "__main__":
-    torch.multiprocessing.set_start_method("spawn", force=True)
+    
     main()
