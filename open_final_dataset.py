@@ -27,8 +27,7 @@ class CSVDataset(Dataset):
         self.root = Path(root)
         self.transform = transform
         self.samples = []
-        print(self.samples)
-
+    
         # Read CSV file
         with open(self.root / "labels.csv", "r") as f:
             reader = csv.DictReader(f)
@@ -36,6 +35,8 @@ class CSVDataset(Dataset):
                 img_path = self.root / row["filename"]
                 label = int(row["label"])
                 self.samples.append((img_path, label))
+
+        print(self.samples)
 
     def __len__(self):
         return len(self.samples)
