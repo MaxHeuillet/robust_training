@@ -10,6 +10,8 @@ import tarfile
 import zstandard as zstd
 from PIL import Image
 import os
+import subprocess
+
 
 def save_split_as_folder(dataset, path, transform=None):
     path.mkdir(parents=True, exist_ok=True)
@@ -41,6 +43,12 @@ for dataset_name in [
 
     print(f"📦 Processing: {dataset_name}")
     config.dataset = dataset_name
+
+
+    dataset_path = "/path/to/dataset"
+
+    # If the script is executable:
+    subprocess.run(["./dataset_to_tmpdir.sh", dataset_name], check=True)
 
     # Temporary folder to stage extracted contents
     temp_dir = config.datapath / f"tmp_{dataset_name}"
