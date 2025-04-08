@@ -44,14 +44,11 @@ for dataset_name in [
     print(f"📦 Processing: {dataset_name}")
     config.dataset = dataset_name
 
-
-    dataset_path = "/path/to/dataset"
-
     # If the script is executable:
     subprocess.run(["./dataset_to_tmpdir.sh", dataset_name], check=True)
 
     # Temporary folder to stage extracted contents
-    temp_dir = config.datapath / f"tmp_{dataset_name}"
+    temp_dir = config.datasets_path / f"tmp_{dataset_name}"
     if temp_dir.exists():
         shutil.rmtree(temp_dir)
     temp_dir.mkdir(parents=True)
