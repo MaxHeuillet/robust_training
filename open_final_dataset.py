@@ -48,11 +48,11 @@ class CSVDataset(Dataset):
 
 def load_tar_zst_dataset(config):
 
-    base_path = config.datasets_path / config.dataset
+    base_path = Path(config.datasets_path) / config.dataset
 
     datasets_dict = {}
     for split in ["train", "val", "test", "test_common"]:
-        split_path = Path(base_path) / split
+        split_path = base_path / split
         if split_path.exists():
             datasets_dict[split] = CSVDataset(split_path)
 
