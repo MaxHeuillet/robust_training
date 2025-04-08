@@ -9,6 +9,21 @@ from torch.utils.data import Subset
 from torch.utils.data import Dataset
 from PIL import Image
 
+
+# def load_data_final(config, common_corruption=False):
+
+#     dataset = config.dataset
+#     datadir = os.path.abspath(os.path.expandvars(os.path.expanduser(config.datasets_path)))
+
+#     train_transform, transform = load_data_transforms()
+
+#     dataset = datasets.ImageFolder( root=datadir )
+
+
+
+
+
+
 class TransformedSubset(Dataset):
     def __init__(self, subset, transform=None, target_transform=None):
         self.subset = subset
