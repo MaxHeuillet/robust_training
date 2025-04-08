@@ -38,7 +38,7 @@ class CSVDataset(Dataset):
             image = self.transform(image)
         return image, label
 
-def load_dataset2(config):
+def load_data2(config):
 
     train_transform, transform = load_data_transforms()
 

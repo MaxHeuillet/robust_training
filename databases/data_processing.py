@@ -2,10 +2,7 @@ import torch
 from sklearn.model_selection import train_test_split
 from torch.utils.data import Subset
 from torch.utils.data import Dataset
-from sklearn.model_selection import train_test_split
 
-import torch
-from sklearn.model_selection import train_test_split
 
 
 def stratified_subsample(dataset, sample_size=1500):
