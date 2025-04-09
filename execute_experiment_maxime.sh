@@ -4,31 +4,32 @@
 seeds=1
 
 datas=( 
-        'stanford_cars'
-        'oxford-iiit-pet'
-        'caltech101' 
-        'flowers-102' 
-        'fgvc-aircraft-2013b'
+        # 'stanford_cars'
+        # 'oxford-iiit-pet'
+        # 'caltech101' 
+        # 'flowers-102' 
+        # 'fgvc-aircraft-2013b'
         'uc-merced-land-use-dataset' 
         ) 
  
-losses=( 'CLASSIC_AT' 
-        'TRADES_v2'  
+losses=( 
+        'CLASSIC_AT' 
+        # 'TRADES_v2'  
          )  
 
 # Two backbone groups
 block_1=(
-  'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K'
+  # 'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K'
   'CLIP-convnext_base_w-laion2B-s13B-b82K'
-  'deit_small_patch16_224.fb_in1k'
-  'robust_resnet50'
-  'vit_small_patch16_224.augreg_in21k'
-  'convnext_base.fb_in1k'
-  'resnet50.a1_in1k'
-  'robust_vit_base_patch16_224'
-  'vit_base_patch16_224.mae'
-  'vit_small_patch16_224.dino'
-  'convnext_base.fb_in22k'
+  # 'deit_small_patch16_224.fb_in1k'
+  # 'robust_resnet50'
+  # 'vit_small_patch16_224.augreg_in21k'
+  # 'convnext_base.fb_in1k'
+  # 'resnet50.a1_in1k'
+  # 'robust_vit_base_patch16_224'
+  # 'vit_base_patch16_224.mae'
+  # 'vit_small_patch16_224.dino'
+  # 'convnext_base.fb_in22k'
 ) 
 
 block_2=(
@@ -92,9 +93,9 @@ EMAIL="maxime.heuillet.1@ulaval.ca"
 echo "Submitting block_1 backbone jobs..."
 submit_jobs "rrg-csubakan" "${block_1[@]}"
 
-echo "Submitting block_2 backbone jobs..."
-submit_jobs "rrg-adurand" "${block_2[@]}"
+# echo "Submitting block_2 backbone jobs..."
+# submit_jobs "rrg-adurand" "${block_2[@]}"
 
-echo "Submitting block_3 backbone jobs..."
-submit_jobs "def-adurand" "${block_3[@]}"
+# echo "Submitting block_3 backbone jobs..."
+# submit_jobs "def-adurand" "${block_3[@]}"
 

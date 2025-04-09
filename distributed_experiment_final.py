@@ -183,7 +183,7 @@ class BaseExperiment:
 
             dest = Path(config.trained_state_dicts).expanduser().resolve() / config.project_name
             os.makedirs(str(dest), exist_ok=True) 
-            
+
             print(f"📦 Moving HPO results from {src} to {dest}")
             shutil.move(str(src), str(dest))
             print(f"✅ Moved successfully.")
@@ -283,8 +283,9 @@ class BaseExperiment:
 
             print(f'Rank {rank}, Iteration {iteration},', flush=True) 
 
-            # break
-            return 
+            break
+
+        return 
 
 
     def hyperparameter_optimization(self, config):  
@@ -386,6 +387,9 @@ class BaseExperiment:
             total_correct_adv += (preds_adv == target).sum().item()
             total_examples += target.size(0)
 
+            if _ == 2:
+                break
+
         return total_loss, total_correct_nat, total_correct_adv, total_examples, None, None
     
 
@@ -466,8 +470,8 @@ class BaseExperiment:
                 nb_correct_adv += (preds_adv == target).sum().item()
                 nb_examples += target.size(0)
 
-                # if _ == 2:
-                #     break
+                if _ == 2:
+                    break
 
             stats_nat = { 'nb_correct':nb_correct_nat, 'nb_examples':nb_examples }
             stats_adv = { 'nb_correct':nb_correct_adv, 'nb_examples':nb_examples }
@@ -492,8 +496,8 @@ class BaseExperiment:
                 nb_correct_adv += (preds_adv == target).sum().item()
                 nb_examples += target.size(0)
 
-                # if _ == 2:
-                #     break
+                if _ == 2:
+                    break
             
             stats_nat = { 'nb_correct':None, 'nb_examples':None }
             stats_adv = { 'nb_correct':nb_correct_adv, 'nb_examples':nb_examples }
