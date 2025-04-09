@@ -387,7 +387,7 @@ class BaseExperiment:
             total_correct_adv += (preds_adv == target).sum().item()
             total_examples += target.size(0)
 
-            if _ == 2:
+            if batch_id== 2:
                 break
 
         return total_loss, total_correct_nat, total_correct_adv, total_examples, None, None
@@ -409,7 +409,11 @@ class BaseExperiment:
         #model.set_fine_tuning_strategy()
 
         path = os.path.expanduser(config.trained_statedicts_path)
-        load_path =  os.path.join(path, config.project_name, f"{config.exp_id}.pt")
+        src =  os.path.join(path, config.project_name, f"{config.exp_id}.pt")
+        dest = Path(config.work_path)
+        shutil.move(str(src), str(dest))
+        load_path = os.path.join(dest, f"{config.exp_id}.pt")
+        
         trained_state_dict = torch.load(load_path, weights_only=True, map_location='cpu')
         model.load_state_dict(trained_state_dict)
         model.to(rank)
