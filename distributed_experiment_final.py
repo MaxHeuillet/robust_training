@@ -302,11 +302,7 @@ class BaseExperiment:
             print(f"Deleting existing experiment directory: {existing_experiment_path}")
             shutil.rmtree(existing_experiment_path)
         
-
-        tmpdir = os.environ["SLURM_TMPDIR"]  #os.environ.get("TMPDIR", "/tmp")
-        abs_tmpdir = os.path.abspath(os.path.expandvars(os.path.expanduser(tmpdir)))
-        print('initialize')
-        ray.init(include_dashboard=False, _temp_dir=abs_tmpdir ) #logging_level=logging.DEBUG
+        ray.init(include_dashboard=False,  ) #logging_level=logging.DEBUG
         print('end initialize')
 
         hp_search = Hp_opt(config, experiment_path)
@@ -329,11 +325,6 @@ class BaseExperiment:
 
         ray.shutdown()
 
-        src = os.path.join(tmpdir, "ray_results", config.exp_id)
-        dst = os.path.join(experiment_path, config.exp_id) 
-        shutil.copytree(src, dst)
-        print(src)
-        print(dst)
 
     def validation(self, config, valloader, model, logger, iteration, rank):
 
