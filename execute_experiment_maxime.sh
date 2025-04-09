@@ -77,7 +77,7 @@ submit_jobs() {
       for bckbn in "${backbones[@]}"; do
         for loss in "${losses[@]}"; do
           sbatch --account="$account_name" \
-            --export=ALL,ACCOUNT="$account_name",BCKBN="$bckbn",DATA="$data",SEED="$id",LOSS="$loss",PRNM="$PRNM" \
+            -export=ALL,ACCOUNT="$account_name",BCKBN="$bckbn",DATA="$data",SEED="$id",LOSS="$loss",PRNM="$PRNM",EMAIL="$EMAIL" \
             ./job1_hpo.sh
         done
       done
@@ -86,6 +86,8 @@ submit_jobs() {
 }
 
 # ---------- Submit jobs ----------
+
+EMAIL="maxime.heuillet.1@ulaval.ca"
 
 echo "Submitting block_1 backbone jobs..."
 submit_jobs "rrg-csubakan" "${block_1[@]}"

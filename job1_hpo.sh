@@ -5,7 +5,7 @@
 #SBATCH --gpus-per-node=4
 #SBATCH --mem-per-cpu=5000M
 #SBATCH --time=02:58:55
-#SBATCH --mail-user=maxime.heuillet.1@ulaval.ca
+#SBATCH --mail-user=${EMAIL}
 #SBATCH --mail-type=ALL
 
 # Purge all loaded modules and load necessary ones
@@ -34,7 +34,7 @@ echo "HPO exit code: $exit_code"
 if [ $exit_code -eq 0 ]; then
     echo "HPO succeeded, submitting training job..."
     sbatch --account="$ACCOUNT" \
-       --export=ALL,BCKBN="$BCKBN",DATA="$DATA",SEED="$SEED",LOSS="$LOSS",PRNM="$PRNM" \
+       --export=ALL,BCKBN="$BCKBN",DATA="$DATA",SEED="$SEED",LOSS="$LOSS",PRNM="$PRNM",EMAIL="$EMAIL" \
        ./job2_train.sh
 else
     echo "HPO failed. No further jobs will be submitted."

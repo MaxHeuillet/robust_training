@@ -12,7 +12,7 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 print(PROJECT_ROOT)  # Should print the path to your main directory
 sys.path.append(PROJECT_ROOT)
 
-from databases import load_data, load_dataset2
+from databases import load_data, load_data2
 
 # Suppose this is your custom grayscale-to-RGB transform
 class GrayscaleToRGB:
