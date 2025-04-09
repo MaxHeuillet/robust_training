@@ -303,7 +303,7 @@ class BaseExperiment:
             shutil.rmtree(existing_experiment_path)
         
 
-        tmpdir = os.environ["TMPDIR"]  #os.environ.get("TMPDIR", "/tmp")
+        tmpdir = os.environ["SLURM_TMPDIR"]  #os.environ.get("TMPDIR", "/tmp")
         abs_tmpdir = os.path.abspath(os.path.expandvars(os.path.expanduser(tmpdir)))
         print('initialize')
         ray.init(include_dashboard=False, _temp_dir=abs_tmpdir ) #logging_level=logging.DEBUG

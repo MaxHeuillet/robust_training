@@ -83,7 +83,7 @@ class Hp_opt:
         # Define maximum runtime in seconds
         max_runtime_seconds = timedelta(minutes=self.minutes).total_seconds()
 
-        tmpdir = os.environ["SLURM_TMPDIR"] #os.environ.get("TMPDIR", "/tmp")
+        tmpdir = os.environ["TMPDIR"] #os.environ.get("TMPDIR", "/tmp")
         abs_tmpdir = os.path.abspath(os.path.expandvars(os.path.expanduser(tmpdir)))
 
         # Set up the Tuner
