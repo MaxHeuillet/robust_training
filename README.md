@@ -5,7 +5,7 @@
 
 ```
 module --force purge
-module load StdEnv/2023 gcc/12.3 cuda/12.2 opencv/4.9.0 python/3.11 arrow/18.1.0 scipy-stack/2024a
+module load StdEnv/2023 gcc/12.3 cuda/12.2 opencv/4.9.0 python/3.11 arrow/18.1.0 scipy-stack/2024a nccl/2.18.3
 
 python3.11 -m venv ~/scratch/myenv_reprod
 source ~/scratch/myenv_reprod/bin/activate
@@ -31,7 +31,7 @@ If you run jobs on Beluga, you need to enable internet connection for comet-ml w
 salloc --account=def-adurand --time=2:59:00 --cpus-per-task=16 --mem=60000M --gpus-per-node=1
 
 module --force purge
-module load StdEnv/2023 gcc/12.3 cuda/12.2 opencv/4.9.0 python/3.11 arrow/18.1.0 scipy-stack/2024a
+module load StdEnv/2023 gcc/12.3 cuda/12.2 opencv/4.9.0 python/3.11 arrow/18.1.0 scipy-stack/2024a nccl/2.18.3
 
 source ~/scratch/myenv_reprod/bin/activate
 cd ./my_project_directory
