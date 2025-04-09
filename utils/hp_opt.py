@@ -20,8 +20,8 @@ class Hp_opt:
         nodename = os.uname().nodename.lower()
         # Check if the node is part of the Calcul Québec cluster
         if any(keyword in nodename for keyword in cluster_keywords):
-            self.minutes = 120 
-            self.trials = 1000 
+            self.minutes = 5#120 
+            self.trials = 1#1000 
         else:
             self.minutes = 2
             self.trials = 2
