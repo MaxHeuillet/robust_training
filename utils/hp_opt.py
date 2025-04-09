@@ -13,9 +13,8 @@ from datetime import timedelta
 
 class Hp_opt:
 
-    def __init__(self, config, path):
+    def __init__(self, config, ):
         self.config = config
-        self.path = path
 
         cluster_keywords = ["calculquebec", "calcul.quebec", "computecanada.ca"]
         nodename = os.uname().nodename.lower()
@@ -97,7 +96,7 @@ class Hp_opt:
             ),
             run_config=RunConfig(
                 name=f"{self.config.exp_id}",
-                storage_path=f"file://{self.path}",
+                storage_path=f"file://{self.work_path}",
             ),
         )
 

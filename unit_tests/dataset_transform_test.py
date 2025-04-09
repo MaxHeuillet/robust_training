@@ -13,6 +13,7 @@ print(PROJECT_ROOT)  # Should print the path to your main directory
 sys.path.append(PROJECT_ROOT)
 
 from databases import load_data, load_data2
+from utils import move_dataset_to_tmpdir
 
 # Suppose this is your custom grayscale-to-RGB transform
 class GrayscaleToRGB:
@@ -77,7 +78,9 @@ class TestDatasetTransforms(unittest.TestCase):
                     warnings.simplefilter("ignore", ResourceWarning)
                     self.config.dataset = dataset_name
 
-                    train_ds, val_ds, test_ds, test_common_ds, _ = load_dataset2(self.config)
+                    move_dataset_to_tmpdir(self.config)
+
+                    train_ds, val_ds, test_ds, test_common_ds, _ = load_data2(self.config)
 
                     for split_name, dataset in {
                         "train": train_ds,

@@ -8,6 +8,8 @@ from transformers import AutoModel
 # from utils import get_state_dict_dir
 from architectures.clip_wrapper import CLIPConvNeXtClassifier
 from transformers import AutoConfig, AutoModel
+from pathlib import Path  # In case config.dataset_path is a string
+
 
 class HFModelWrapper(nn.Module):
     def __init__(self, hf_model, num_classes, backbone):
@@ -38,7 +40,7 @@ class HFModelWrapper(nn.Module):
 def load_architecture(config, N):
     backbone = config.backbone
     print('BACKBONE NAME', backbone)
-    statedict_dir = os.path.abspath(os.path.expanduser(config.statedicts_path)) #get_state_dict_dir(config)
+    statedict_dir = Path(config.work_path).expanduser().resolve()  #get_state_dict_dir(config)
 
     # Determine if it's an OpenCLIP model
     openclip_models = {

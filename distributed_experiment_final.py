@@ -16,8 +16,7 @@ from multiprocessing import Queue
 from autoattack import AutoAttack
 from ray.air import session  
 
-
-from utils import Setup, Hp_opt
+from utils import Setup, Hp_opt, move_dataset_to_tmpdir, move_architecture_to_tmpdir
 from databases import load_data2
 from architectures import load_architecture, CustomModel
 from losses import get_loss, get_eval_loss
@@ -31,7 +30,9 @@ from ray import train
 import sys
 import ray
 import shutil
-import shutil
+import subprocess
+from datetime import datetime
+from pathlib import Path  # In case config.dataset_path is a string
 
 
 def compute_gradient_norms(model):
@@ -174,17 +175,19 @@ class BaseExperiment:
 
         if not self.setup.hp_opt and rank == 0:
 
-            trained_dir = os.path.expanduser(os.path.join(config.trained_statedicts_path, config.project_name))
-            os.makedirs(trained_dir, exist_ok=True)
-
-            save_path = os.path.join(trained_dir, f"{config.exp_id}.pt")
-
+            src = Path(config.work_path).expanduser().resolve()
             model_to_save = model.module
             model_to_save = model_to_save.cpu()
-            print('trained state dicts directory: ', os.path.dirname(save_path) )
-
-            torch.save(model_to_save.state_dict(), save_path )
+            torch.save(model_to_save.state_dict(), str(src) )
             print('Model saved by rank 0')
+
+            dest = Path(config.trained_state_dicts).expanduser().resolve() / config.project_name
+            os.makedirs(str(dest), exist_ok=True) 
+            
+            print(f"📦 Moving HPO results from {src} to {dest}")
+            shutil.move(str(src), str(dest))
+            print(f"✅ Moved successfully.")
+            
             logger.end()
         
         self.setup.cleanup()
@@ -288,16 +291,11 @@ class BaseExperiment:
 
         self.setup.hp_opt = True 
 
-        print("CUDA_VISIBLE_DEVICES:", os.environ.get("CUDA_VISIBLE_DEVICES"))
-        print("CUDA available:", torch.cuda.is_available())
-        print("CUDA device count:", torch.cuda.device_count())
-        print("Device name:", torch.cuda.get_device_name(0) if torch.cuda.is_available() else "No GPU")
-
         # Check if experiment path exists and delete it before starting a new run
-        hpo_opt_path = os.path.abspath(os.path.expandvars(os.path.expanduser(config.hpo_path)))
-        experiment_path = os.path.join(hpo_opt_path, config.project_name)
+        hpo_opt_path = Path(config.hpo_path).expanduser().resolve() #os.path.abspath(os.path.expandvars(os.path.expanduser(config.hpo_path)))
+        experiment_path = hpo_opt_path / config.project_name
         os.makedirs(experiment_path, exist_ok=True)
-        existing_experiment_path = os.path.join(hpo_opt_path, config.project_name, config.exp_id)
+        existing_experiment_path = hpo_opt_path / config.project_name / config.exp_id
         if os.path.exists(existing_experiment_path):
             print(f"Deleting existing experiment directory: {existing_experiment_path}")
             shutil.rmtree(existing_experiment_path)
@@ -305,7 +303,7 @@ class BaseExperiment:
         ray.init(include_dashboard=False,  ) #logging_level=logging.DEBUG
         print('end initialize')
 
-        hp_search = Hp_opt(config, experiment_path)
+        hp_search = Hp_opt(config, )
 
         tuner = hp_search.get_tuner( self.training )
 
@@ -317,11 +315,18 @@ class BaseExperiment:
         self.setup.hp_opt = False
 
         #### Save the optimal configuration:
-        directory_path = os.path.join(config.configs_path, "HPO_results", config.project_name)
+        directory_path = Path(config.hpo_path) / "HPO_results" / config.project_name
         os.makedirs(directory_path, exist_ok=True)
         optimal_config = OmegaConf.merge(config, best_result.config['train_loop_config']  )
-        output_path = os.path.join(config.configs_path, "HPO_results", config.project_name, f"{config.exp_id}.yaml")
+        output_path = directory_path / f"{config.exp_id}.yaml"
         OmegaConf.save(optimal_config, output_path)
+
+        src = Path(config.work_path).expanduser().resolve() / config.exp_id
+        dest = Path(config.hpo_path).expanduser().resolve() / config.project_name 
+
+        print(f"📦 Moving HPO results from {src} to {dest}")
+        shutil.move(str(src), str(dest))
+        print(f"✅ Moved successfully.")
 
         ray.shutdown()
 
@@ -570,7 +575,12 @@ def main():
 
     config_base = OmegaConf.merge(local_config, args_dict)
     config_base.exp_id = get_config_id(config_base)
+
     set_seeds(config_base.seed)
+
+    move_dataset_to_tmpdir(config_base)
+    move_architecture_to_tmpdir(config_base)
+
 
     world_size = torch.cuda.device_count()
     setup = Setup(world_size)
@@ -610,5 +620,10 @@ def main():
         sys.exit(1)
 
 if __name__ == "__main__":
+
+    print("CUDA_VISIBLE_DEVICES:", os.environ.get("CUDA_VISIBLE_DEVICES"))
+    print("CUDA available:", torch.cuda.is_available())
+    print("CUDA device count:", torch.cuda.device_count())
+    print("Device name:", torch.cuda.get_device_name(0) if torch.cuda.is_available() else "No GPU")
     
     main()

@@ -11,15 +11,17 @@ import torch
 import sys 
 import os
 import traceback  # ✅ Helps capture detailed errors
+import torch.nn as nn
+import timm
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(PROJECT_ROOT)
 
 from architectures import load_architecture, CustomModel
-from utils import load_optimizer
+from utils import load_optimizer, move_architecture_to_tmpdir
 from losses import get_loss
-import torch.nn as nn
-import timm
+
+
 
 SCIENTIFIC_BACKBONES=(
   'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K',
@@ -165,6 +167,7 @@ class TestModelForwardPass(unittest.TestCase):
             for backbone in backbones:
 
                 print(f"\n🔎 Testing backbone: {backbone}")
+                move_architecture_to_tmpdir(self.config)
 
                 for ft_type in ['linear_probing', 'full_fine_tuning']:
 

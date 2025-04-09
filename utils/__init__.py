@@ -5,6 +5,7 @@ from .seed_settings import set_seeds
 from .dormant_neurons import ActivationTrackerAggregated, register_hooks_aggregated, compute_stats_aggregated
 from .optimizer_loader import load_optimizer
 from .hp_opt import Hp_opt
+from .movers import move_dataset_to_tmpdir, move_architecture_to_tmpdir,move_ray_results_from_tmpdir
 
 # from .paths import get_data_dir, get_state_dict_dir
 # from ..old_files.exp_decay import FitExpDecay

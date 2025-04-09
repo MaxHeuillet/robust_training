@@ -42,15 +42,16 @@ def load_data2(config):
 
     train_transform, transform = load_data_transforms()
 
-    base_path = Path(os.environ["SLURM_TMPDIR"]) / "data" / config.dataset
+    tmpdir = Path(config.work_path).expanduser().resolve() 
+    dataset_path = tmpdir / "data" / config.dataset
 
-    train_dataset = CSVDataset(base_path / "train", train_transform)
-    val_dataset = CSVDataset(base_path / "val", transform)
-    test_dataset = CSVDataset(base_path / "test", transform)
-    test_common_dataset = CSVDataset(base_path / "test_common", transform)
+    train_dataset = CSVDataset(dataset_path / "train", train_transform)
+    val_dataset = CSVDataset(dataset_path / "val", transform)
+    test_dataset = CSVDataset(dataset_path / "test", transform)
+    test_common_dataset = CSVDataset(dataset_path / "test_common", transform)
 
     # Load metadata.json
-    metadata_path = base_path / "metadata.json"
+    metadata_path = dataset_path / "metadata.json"
 
     with open(metadata_path, "r") as f:
         metadata = json.load(f)
