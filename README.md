@@ -30,12 +30,14 @@ If you run jobs on Beluga, you need to enable internet connection for comet-ml w
 ```
 salloc --account=def-adurand --time=2:59:00 --cpus-per-task=16 --mem=60000M --gpus-per-node=1
 
+cd ./my_project_directory
+
 module --force purge
 module load StdEnv/2023 gcc/12.3 cuda/12.2 opencv/4.9.0 python/3.11 arrow/18.1.0 scipy-stack/2024a nccl/2.18.3
 
 source ~/scratch/myenv_reprod/bin/activate
-cd ./my_project_directory
 python ./unit_tests/architecture_loader_test.py
+python ./unit_tests/dataset_transform_test.py
 ```
 
 This test verifies i) that the backbone loads correctly, ii) that the output of the forward pass of the backbone is aligned with the nb of classes in the fine-tuning task, iii) that both CLASSIC_AT and TRADES loss output a float number, iv) that the learning rate and weight decay for the feature extractor and classification head are correctly split, v) that the gradient tracking for linear probing and end-to-end fine-tuning are correctly distinguished.

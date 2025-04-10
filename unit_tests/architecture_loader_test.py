@@ -44,6 +44,7 @@ SCIENTIFIC_BACKBONES=(
   'robust_deit_small_patch16_224',
   'vit_small_patch16_224.augreg_in1k',
   'convnext_tiny.fb_in22k',
+  'vit_base_patch16_clip_224.laion400m_e32'
 ) 
 
 PERFORMANCE_BACKBONES=(

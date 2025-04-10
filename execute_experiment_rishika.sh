@@ -19,6 +19,7 @@ losses=( 'CLASSIC_AT'
 # Two backbone groups
 block_1=(
   'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K'
+  'vit_base_patch16_clip_224.laion400m_e32'
   'CLIP-convnext_base_w-laion2B-s13B-b82K'
   'deit_small_patch16_224.fb_in1k'
   'robust_resnet50'
