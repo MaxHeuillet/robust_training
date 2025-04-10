@@ -47,7 +47,7 @@ SCIENTIFIC_BACKBONES=(
 #   'convnext_tiny.fb_in22k',
 ) 
 
-# PERFORMANCE_BACKBONES=(
+PERFORMANCE_BACKBONES=(
 #   'vit_base_patch16_clip_224.laion2b_ft_in1k',
 #   'vit_base_patch16_224.augreg_in21k_ft_in1k',
 #   'vit_small_patch16_224.augreg_in21k_ft_in1k',
@@ -61,9 +61,9 @@ SCIENTIFIC_BACKBONES=(
 #   'coatnet_0_rw_224.sw_in1k',
 #   'coatnet_2_rw_224.sw_in12k_ft_in1k',
 #   'coatnet_2_rw_224.sw_in12k'
-# )
+)
 
-# EDGE_BACKBONES=(
+EDGE_BACKBONES=(
 #     "regnetx_004.pycls_in1k",
 #     'efficientnet-b0',
 #     'deit_tiny_patch16_224.fb_in1k',
@@ -71,7 +71,7 @@ SCIENTIFIC_BACKBONES=(
 #     'mobilenetv3_large_100.ra_in1k',
 #     'edgenext_small.usi_in1k',
 #     'coat_tiny.in1k'
-# )
+)
 
 # Combine all sets
 ALL_BACKBONES = {
