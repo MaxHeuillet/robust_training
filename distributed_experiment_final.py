@@ -173,7 +173,7 @@ class BaseExperiment:
 
         if not self.setup.hp_opt and rank == 0:
 
-            src = Path(config.work_path).expanduser().resolve()
+            src = Path(os.path.expandvars(config.work_path)).expanduser().resolve()
             model_to_save = model.module
             model_to_save = model_to_save.cpu()
             torch.save(model_to_save.state_dict(), str(src) )
@@ -183,7 +183,7 @@ class BaseExperiment:
             os.makedirs(str(dest), exist_ok=True) 
 
             print(f"📦 Moving HPO results from {src} to {dest}")
-            shutil.move(str(src), str(dest))
+            shutil.copy2(str(src), str(dest))
             print(f"✅ Moved successfully.")
             
             logger.end()
@@ -318,11 +318,11 @@ class BaseExperiment:
         output_path = directory_path / f"{config.exp_id}.yaml"
         OmegaConf.save(optimal_config, output_path)
 
-        src = Path(config.work_path).expanduser().resolve() / config.exp_id
+        src = Path(os.path.expandvars(config.work_path)).expanduser().resolve() / config.exp_id
         dest = Path(config.hpo_path).expanduser().resolve() / config.project_name 
 
         print(f"📦 Moving HPO results from {src} to {dest}")
-        shutil.move(str(src), str(dest))
+        shutil.copy2(str(src), str(dest))
         print(f"✅ Moved successfully.")
 
         ray.shutdown()
@@ -406,8 +406,8 @@ class BaseExperiment:
 
         path = os.path.expanduser(config.trained_statedicts_path)
         src =  os.path.join(path, config.project_name, f"{config.exp_id}.pt")
-        dest = Path(config.work_path)
-        shutil.move(str(src), str(dest))
+        dest = Path(os.path.expandvars(config.work_path)).expanduser().resolve()
+        shutil.copy2(str(src), str(dest))
         load_path = os.path.join(dest, f"{config.exp_id}.pt")
 
         trained_state_dict = torch.load(load_path, weights_only=True, map_location='cpu')

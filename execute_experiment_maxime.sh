@@ -20,16 +20,16 @@ losses=(
 # Two backbone groups
 block_1=(
   'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K'
-  'CLIP-convnext_base_w-laion2B-s13B-b82K'
-  'deit_small_patch16_224.fb_in1k'
-  'robust_resnet50'
-  'vit_small_patch16_224.augreg_in21k'
-  'convnext_base.fb_in1k'
-  'resnet50.a1_in1k'
-  'robust_vit_base_patch16_224'
-  'vit_base_patch16_224.mae'
-  'vit_small_patch16_224.dino'
-  'convnext_base.fb_in22k'
+  # 'CLIP-convnext_base_w-laion2B-s13B-b82K'
+  # 'deit_small_patch16_224.fb_in1k'
+  # 'robust_resnet50'
+  # 'vit_small_patch16_224.augreg_in21k'
+  # 'convnext_base.fb_in1k'
+  # 'resnet50.a1_in1k'
+  # 'robust_vit_base_patch16_224'
+  # 'vit_base_patch16_224.mae'
+  # 'vit_small_patch16_224.dino'
+  # 'convnext_base.fb_in22k'
 ) 
 
 block_2=(
