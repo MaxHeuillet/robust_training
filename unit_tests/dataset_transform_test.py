@@ -73,10 +73,8 @@ class TestDatasetTransforms(unittest.TestCase):
             with self.subTest(dataset=dataset_name):
                 print(f"🔁 Testing DataLoader for: {dataset_name}")
 
-                command = ["bash", "./dataset_to_tmpdir_final.sh", dataset_name]
-                subprocess.run(command, check=True, capture_output=True, text=True)
-
                 with warnings.catch_warnings():
+                    
                     warnings.simplefilter("ignore", ResourceWarning)
                     self.config.dataset = dataset_name
 
