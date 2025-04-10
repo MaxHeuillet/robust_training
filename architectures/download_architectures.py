@@ -64,8 +64,11 @@ for backbone in backbones:
 
     if model_source == "timm":
         print(backbone)
-        model = create_model(backbone, pretrained=True)
-        torch.save(model.state_dict(), save_file)
+        try:
+            model = create_model(backbone, pretrained=True)
+            torch.save(model.state_dict(), save_file)
+        except Exception as e:
+            print(f"❌ Failed to download {backbone}: {e}")
 
     if model_source == "laion" or backbone == "vit_base_patch16_clip_224.laion400m_e32":
         try:
