@@ -12,8 +12,6 @@ weight_decay1: 0.0 #this will be ignored with gradient tracking false
 weight_decay2: null
 scheduler: null
 
-
-
 use_rs: False
 epsilon: 0.015686275  # epsilon of trades (4/255)
 step_size: 0.007843137  # step size of trades (2/255)
@@ -25,10 +23,11 @@ beta: 1.0  # beta of trades
 project_name: null # the experiment type
 exp_id: null
 
+
 statedicts_path: "~/scratch/state_dicts_share/"  # TODO: update, where we load the pretrained model
 trained_statedicts_path: "~/scratch/trained_state_dicts/" # TODO: update, where we save fine tuned model
-datasets_path: "$~/scratch/data" # where we load uncompressed dataset
+datasets_path: "$~/scratch/data/" # where we load uncompressed dataset
 hpo_path: "~/scratch/hpo_results/" # where we save the results of HPO
-work_path: "$SLURM_TMPDIR"
-configs_path: "./configs" # where we save the results of HPO
-results_path: "./results" # where we save the measured accuracies
+work_path: "$SLURM_TMPDIR/"
+configs_path: "./configs/" # where we save the results of HPO
+results_path: "./results/" # where we save the measured accuracies

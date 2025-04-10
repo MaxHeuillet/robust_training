@@ -14,7 +14,7 @@ def move_dataset_to_tmpdir(config):
     # Fixed archive path construction
     archive_path = dataset_path / f"{dataset_name}_processed.tar.zst"
     
-    tmpdir = Path(config.work_path).expanduser().resolve() 
+    tmpdir = config.work_path
     dest_dir = os.path.join(tmpdir, "data", dataset_name)
     os.makedirs(dest_dir, exist_ok=True)
 
