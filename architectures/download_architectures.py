@@ -61,10 +61,10 @@ for backbone in backbones:
 
     save_file = os.path.join(save_path, f"{model_name}.pt")
 
-    # if model_source == "timm":
-    #     print(backbone)
-    #     model = create_model(backbone, pretrained=True)
-    #     torch.save(model.state_dict(), save_file)
+    if model_source == "timm":
+        print(backbone)
+        model = create_model(backbone, pretrained=True)
+        torch.save(model.state_dict(), save_file)
 
     if model_source == "laion":
         try:
