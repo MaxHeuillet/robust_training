@@ -295,9 +295,19 @@ class BaseExperiment:
         if os.path.exists(existing_experiment_path):
             print(f"Deleting existing experiment directory: {existing_experiment_path}")
             shutil.rmtree(existing_experiment_path)
+
+        tmp_dir = Path(os.path.expandvars(config.work_path)).expanduser().resolve()
+        os.environ["RAY_TMPDIR"] = str(tmp_dir)
+        os.environ["RAY_STARTUP_TIMEOUT_SECONDS"] = "120"
+        os.environ["RAY_GCS_SERVER_REQUEST_TIMEOUT_SECONDS"] = "60"
+        os.environ["RAY_WORKER_REGISTER_TIMEOUT_SECONDS"] = "60"
+        os.environ["RAY_NUM_HEARTBEATS_TIMEOUT"] = "120"
         
         print('initialize ray')
-        ray.init()
+        ray.init( _temp_dir=str(tmp_dir) ,
+                 include_dashboard=False, 
+                 logging_level="DEBUG")
+        
         print('end initialize')
 
         hp_search = Hp_opt(config, )
