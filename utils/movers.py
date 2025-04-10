@@ -26,7 +26,7 @@ def move_dataset_to_tmpdir(config):
         raise RuntimeError(f"❌ Failed to extract archive: {archive_path}")
 
     print(f"✅ Extraction of {dataset_name} completed successfully at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    return dest_dir
+    
 
 def move_architecture_to_tmpdir(config):
 

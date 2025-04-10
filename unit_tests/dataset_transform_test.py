@@ -130,7 +130,7 @@ class TestDatasetTransforms(unittest.TestCase):
 
                     # load_data is your custom function returning (train_ds, val_ds, test_ds, N)
                     # train_ds, val_ds, test_ds, num_classes = load_data(self.config, common_corruption=False)
-                    train_ds, val_ds, test_ds, test_common_ds, num_classes = load_dataset2(self.config)
+                    train_ds, val_ds, test_ds, test_common_ds, num_classes = load_data2(self.config)
 
                     # 1) Check the training set transform
                     self._compare_transforms(train_ds.transform, self.train_transforms_expected, split='train')
