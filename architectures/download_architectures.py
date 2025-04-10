@@ -73,7 +73,7 @@ for backbone in backbones:
         except Exception as e:
             print(f"❌ Failed to download {backbone}: {e}")
 
-    elif model_source in {"google", "apple", "microsoft"}:
+    elif model_source in {"google", "apple", }:
         try:
             # Try downloading both .safetensors and .bin files (whichever is available)
             try:
