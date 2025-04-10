@@ -297,7 +297,7 @@ class BaseExperiment:
             shutil.rmtree(existing_experiment_path)
         
         print('initialize ray')
-        ray.init(include_dashboard=False,  ) #logging_level=logging.DEBUG
+        ray.init()
         print('end initialize')
 
         hp_search = Hp_opt(config, )

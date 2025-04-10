@@ -4,8 +4,8 @@ import os
 from timm import create_model
 from huggingface_hub import hf_hub_download
 
-# save_path = os.path.expanduser('/home/mheuillet/Desktop/state_dicts_share')
-save_path = os.path.expanduser('~/scratch/state_dicts_share')
+save_path = os.path.expanduser('/home/mheuillet/Desktop/state_dicts_share')
+# save_path = os.path.expanduser('~/scratch/state_dicts_share')
 os.makedirs(save_path, exist_ok=True)
 
 ############## SET OF SCIENTIFIC BACKBONES
@@ -59,6 +59,7 @@ for backbone in backbones:
     parts = backbone.split("/")
     model_source = parts[0]
     model_name = parts[1]
+    print('model_source', model_source)
 
     save_file = os.path.join(save_path, f"{model_name}.pt")
 
@@ -70,7 +71,7 @@ for backbone in backbones:
         except Exception as e:
             print(f"❌ Failed to download {backbone}: {e}")
 
-    if model_source == "laion" or backbone == "vit_base_patch16_clip_224.laion400m_e32":
+    elif model_source == "laion" or backbone == "vit_base_patch16_clip_224.laion400m_e32":
         try:
             file = hf_hub_download(repo_id=backbone, filename="open_clip_pytorch_model.bin")
             state_dict = torch.load(file, map_location="cpu")
@@ -78,7 +79,8 @@ for backbone in backbones:
         except Exception as e:
             print(f"❌ Failed to download {backbone}: {e}")
 
-    elif model_source in {"google", "apple", "timm"}:
+    elif model_source in {"google", "apple"}:
+        print(backbone)
         try:
             # Try downloading both .safetensors and .bin files (whichever is available)
             try:
