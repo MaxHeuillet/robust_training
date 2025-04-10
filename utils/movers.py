@@ -35,7 +35,7 @@ def move_architecture_to_tmpdir(config):
     tmpdir = Path(os.path.expandvars(config.work_path)).expanduser().resolve()
     dest_dir = tmpdir
 
-    shutil.move(str(checkpoint_path), str(dest_dir) )
+    shutil.copy2(str(checkpoint_path), str(dest_dir) )
 
     print(f"✅ Moved {checkpoint_path} to {dest_dir}")
 

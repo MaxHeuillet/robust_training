@@ -90,7 +90,7 @@ for backbone in backbones:
             print(f"❌ Failed to download {backbone}: {e}")
 
     else:
-        print(f"⚠ Unknown source for backbone: {backbone}")
+        print(f"Unknown source for backbone: {backbone}")
 
 
 
