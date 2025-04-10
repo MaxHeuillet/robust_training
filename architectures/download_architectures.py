@@ -37,7 +37,7 @@ backbones = (
     'timm/swin_tiny_patch4_window7_224.ms_in1k',
     'timm/convnext_base.clip_laion2b_augreg_ft_in12k_in1k',
     'timm/convnext_base.fb_in22k_ft_in1k',
-    'timm/convnext_tiny.fb_in22k_ft_in1k'  
+    'timm/convnext_tiny.fb_in22k_ft_in1k',
 
     'timm/regnetx_004.pycls_in1k',
     'google/efficientnet-b0',
@@ -62,6 +62,7 @@ for backbone in backbones:
     save_file = os.path.join(save_path, f"{model_name}.pt")
 
     if model_source == "timm":
+        print(backbone)
         model = create_model(backbone, pretrained=True)
         torch.save(model.state_dict(), save_file)
 
