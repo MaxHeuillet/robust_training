@@ -24,6 +24,7 @@ from losses import get_loss
 
 
 SCIENTIFIC_BACKBONES=(
+  'vit_base_patch16_clip_224.laion400m_e32',
   'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K',
   'CLIP-convnext_base_w-laion2B-s13B-b82K',
   'deit_small_patch16_224.fb_in1k',
@@ -44,7 +45,6 @@ SCIENTIFIC_BACKBONES=(
   'robust_deit_small_patch16_224',
   'vit_small_patch16_224.augreg_in1k',
   'convnext_tiny.fb_in22k',
-  'vit_base_patch16_clip_224.laion400m_e32'
 ) 
 
 PERFORMANCE_BACKBONES=(
