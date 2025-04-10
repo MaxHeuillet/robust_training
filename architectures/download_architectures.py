@@ -11,11 +11,12 @@ os.makedirs(save_path, exist_ok=True)
 
 ############## SET OF SCIENTIFIC BACKBONES
 
+#'timm/vit_base_patch16_clip_224.laion400m_e32',
+
 backbones = (
 
     # 'timm/vit_base_patch16_224.dino',
     # 'timm/vit_base_patch16_224.mae',
-    'timm/vit_base_patch16_clip_224.laion400m_e32',
     # 'timm/vit_base_patch16_clip_224.laion2b',
     # 'timm/vit_base_patch16_224.augreg_in21k',
     # 'timm/vit_base_patch16_224.augreg_in1k',
@@ -42,11 +43,11 @@ backbones = (
     # 'timm/convnext_tiny.fb_in22k_ft_in1k',
 
     # 'timm/regnetx_004.pycls_in1k',
-    'google/efficientnet-b0',
+    # 'google/efficientnet-b0',
     # 'timm/deit_tiny_patch16_224.fb_in1k',
-    'apple/mobilevit-small',
+    # 'apple/mobilevit-small',
     # 'timm/mobilenetv3_large_100.ra_in1k',
-    'timm/edgenext_small.usi_in1k'
+    'timm/edgenext_small.usi_in1k',
     'timm/coat_tiny.in1k',
 
     # 'timm/coatnet_0_rw_224.sw_in1k',
@@ -64,7 +65,7 @@ for backbone in backbones:
 
     save_file = os.path.join(save_path, f"{model_name}.pt")
 
-    if model_source == "laion" or backbone == "vit_base_patch16_clip_224.laion400m_e32":
+    if model_source == "laion":
         try:
             file = hf_hub_download(repo_id=backbone, filename="open_clip_pytorch_model.bin")
             state_dict = torch.load(file, map_location="cpu")
@@ -72,7 +73,7 @@ for backbone in backbones:
         except Exception as e:
             print(f"❌ Failed to download {backbone}: {e}")
 
-    elif model_source in {"google", "apple"} or backbone == "timm/vit_base_patch16_clip_224.laion400m_e32":
+    elif model_source in {"google", "apple"}:
         print(backbone)
         try:
             # Try downloading both .safetensors and .bin files (whichever is available)
