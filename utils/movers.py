@@ -32,7 +32,7 @@ def move_architecture_to_tmpdir(config):
     statedict_dir = Path(config.statedicts_path).expanduser().resolve()
     checkpoint_path = statedict_dir / f"{backbone}.pt"
 
-    tmpdir = Path(config.work_path)
+    tmpdir = Path(os.path.expandvars(config.work_path)).expanduser().resolve()
     dest_dir = tmpdir
 
     shutil.move(str(checkpoint_path), str(dest_dir) )

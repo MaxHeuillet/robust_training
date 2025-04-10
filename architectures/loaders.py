@@ -40,8 +40,8 @@ class HFModelWrapper(nn.Module):
 def load_architecture(config, N):
     backbone = config.backbone
     print('BACKBONE NAME', backbone)
-    statedict_dir = Path(config.work_path).expanduser().resolve()  #get_state_dict_dir(config)
-
+    statedict_dir =  Path(os.path.expandvars(config.work_path)).expanduser().resolve()
+    
     # Determine if it's an OpenCLIP model
     openclip_models = {
         'CLIP-convnext_base_w-laion2B-s13B-b82K': 'convnext_base_w',
