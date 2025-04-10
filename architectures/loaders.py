@@ -72,8 +72,7 @@ def load_architecture(config, N):
             # Determine if it's an OpenCLIP model
         hf_models = {
         'efficientnet-b0': 'google/efficientnet-b0',
-        'mobilevit-small': 'apple/mobilevit-small',
-        'cvt-21': 'microsoft/cvt-21',  }
+        'mobilevit-small': 'apple/mobilevit-small',  }
 
         print(f"Loading Hugging Face model: {backbone}")
 
