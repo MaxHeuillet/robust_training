@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define variables
-seeds=1
+seed=1
 
 datas=( 
         # 'stanford_cars'
@@ -75,17 +75,15 @@ submit_jobs() {
   local ACCOUNT="$1"
   shift  # shift out the account name
   local backbones=("$@")  # remaining arguments are backbone list
-  for id in $(seq 1 $seeds); do
-    for data in "${datas[@]}"; do
-      for bckbn in "${backbones[@]}"; do
-        for loss in "${losses[@]}"; do
-          sbatch --account="$ACCOUNT" --mail-user="$EMAIL" \
-            --export=ALL,ACCOUNT="$ACCOUNT",BCKBN="$bckbn",DATA="$data",SEED="$id",LOSS="$loss",PRNM="$PRNM",EMAIL="$EMAIL" \
-            ./job1_hpo.sh
-        done
-      done
+  for data in "${datas[@]}"; do
+    for bckbn in "${backbones[@]}"; do
+      for loss in "${losses[@]}"; do
+        sbatch --account="$ACCOUNT" --mail-user="$EMAIL" \
+          --export=ALL,ACCOUNT="$ACCOUNT",BCKBN="$bckbn",DATA="$data",SEED="$seed",LOSS="$loss",PRNM="$PRNM",EMAIL="$EMAIL" \
+          ./job1_hpo.sh
     done
   done
+done
 }
 
 # ---------- Submit jobs ----------

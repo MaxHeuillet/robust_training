@@ -32,7 +32,7 @@ echo "HPO exit code: $exit_code"
 if [ $exit_code -eq 0 ]; then
     echo "HPO succeeded, submitting training job..."
     sbatch --account="$ACCOUNT" --mail-user="$EMAIL" \
-       --export=ALL,ACCOUNT="$ACCOUNT",BCKBN="$bckbn",DATA="$data",SEED="$id",LOSS="$loss",PRNM="$PRNM",EMAIL="$EMAIL" \
+       --export=ALL,ACCOUNT="$ACCOUNT",BCKBN="$BCKBN",DATA="$DATA",SEED="$SEED",LOSS="$LOSS",PRNM="$PRNM",EMAIL="$EMAIL"
        ./job4_test_l1.sh
 else
     echo "HPO failed. No further jobs will be submitted."
