@@ -42,7 +42,7 @@ def load_data2(config):
 
     train_transform, transform = load_data_transforms()
 
-    tmpdir = Path(config.work_path).expanduser().resolve() 
+    tmpdir = Path(os.path.expandvars(config.work_path)).expanduser().resolve()
     dataset_path = tmpdir / "data" / config.dataset
 
     train_dataset = CSVDataset(dataset_path / "train", train_transform)
