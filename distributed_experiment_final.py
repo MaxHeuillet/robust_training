@@ -318,9 +318,9 @@ class BaseExperiment:
         OmegaConf.save(optimal_config, output_path)
 
         src = Path(os.path.expandvars(config.work_path)).expanduser().resolve() / config.exp_id
-        dest = Path(config.hpo_path).expanduser().resolve() / config.project_name 
+        dest = Path(config.hpo_path).expanduser().resolve() / config.project_name / config.exp_id
         print(f"📦 Moving HPO results from {src} to {dest}")
-        shutil.copytree(str(src), str(dest))
+        shutil.copytree(str(src), str(dest), dirs_exist_ok=True)
         print(f"✅ Moved successfully.")
 
         ray.shutdown()
