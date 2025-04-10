@@ -30,8 +30,6 @@ from ray import train
 import sys
 import ray
 import shutil
-import subprocess
-from datetime import datetime
 from pathlib import Path  # In case config.dataset_path is a string
 
 
@@ -285,8 +283,6 @@ class BaseExperiment:
 
             break
 
-        return 
-
 
     def hyperparameter_optimization(self, config):  
 
@@ -413,7 +409,7 @@ class BaseExperiment:
         dest = Path(config.work_path)
         shutil.move(str(src), str(dest))
         load_path = os.path.join(dest, f"{config.exp_id}.pt")
-        
+
         trained_state_dict = torch.load(load_path, weights_only=True, map_location='cpu')
         model.load_state_dict(trained_state_dict)
         model.to(rank)
@@ -558,8 +554,6 @@ def training_wrapper(rank, experiment, config ):
     experiment.training(config, rank=rank)
     print('we are done training')
     return True
-
-
 
 # @hydra.main(config_path="./configs", version_base=None)
 def main():
