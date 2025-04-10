@@ -9,57 +9,49 @@ os.makedirs(save_path, exist_ok=True)
 
 ############## SET OF SCIENTIFIC BACKBONES
 
-# backbones = (
-    # 'timm/vit_base_patch16_224.dino',
-    # 'timm/vit_base_patch16_224.mae',
-    # 'timm/vit_base_patch16_224.sam_in1k',
-    # 'timm/vit_base_patch16_clip_224.laion400m_e32',
-    # 'timm/vit_base_patch16_clip_224.laion2b',
-    # 'timm/vit_base_patch16_224.augreg_in21k',
-    # 'timm/vit_base_patch16_224.augreg_in1k',
-    # 'timm/vit_small_patch16_224.dino',
-    # 'timm/vit_small_patch16_224.augreg_in21k',
-    # 'timm/vit_small_patch16_224.augreg_in1k',
-    # 'timm/deit_small_patch16_224.fb_in1k',
-    # 'laion/CLIP-convnext_base_w-laion2B-s13B-b82K',
-    # 'laion/CLIP-convnext_base_w-laion_aesthetic-s13B-b82K',
-    # 'timm/convnext_base.fb_in1k',
-    # 'timm/convnext_base.fb_in22k',
-    # 'timm/convnext_tiny.fb_in22k',
-    # 'timm/convnext_tiny.fb_in1k',
-    # 'timm/resnet50.a1_in1k', )
-
-############## SET OF PERFORMANCE BACKBONES
-
-# backbones = (
-    # 'timm/vit_base_patch16_clip_224.laion2b_ft_in1k',
-    # 'timm/vit_base_patch16_224.augreg_in21k_ft_in1k',
-    # 'timm/vit_small_patch16_224.augreg_in21k_ft_in1k',
-    # 'timm/eva02_base_patch14_224.mim_in22k',
-    # 'timm/eva02_tiny_patch14_224.mim_in22k',
-    # 'timm/swin_base_patch4_window7_224.ms_in22k_ft_in1k',
-    # 'timm/swin_tiny_patch4_window7_224.ms_in1k',
-    # 'timm/convnext_base.clip_laion2b_augreg_ft_in12k_in1k',
-    # 'timm/convnext_base.fb_in22k_ft_in1k',
-    # 'timm/convnext_tiny.fb_in22k_ft_in1k'  )
-
-
-# backbones = (
-#     'timm/regnetx_004.pycls_in1k',
-#     'google/efficientnet-b0',
-#     'timm/deit_tiny_patch16_224.fb_in1k',
-#     'apple/mobilevit-small',
-#     'timm/mobilenetv3_large_100.ra_in1k',
-#     'timm/edgenext_small.usi_in1k'
-# )
-
 backbones = (
+    'timm/vit_base_patch16_224.dino',
+    'timm/vit_base_patch16_224.mae',
+    'timm/vit_base_patch16_clip_224.laion400m_e32',
+    'timm/vit_base_patch16_clip_224.laion2b',
+    'timm/vit_base_patch16_224.augreg_in21k',
+    'timm/vit_base_patch16_224.augreg_in1k',
+    'timm/vit_small_patch16_224.augreg_in21k',
+    'timm/vit_small_patch16_224.augreg_in1k',
+    'timm/deit_small_patch16_224.fb_in1k',
+    'laion/CLIP-convnext_base_w-laion2B-s13B-b82K',
+    'laion/CLIP-convnext_base_w-laion_aesthetic-s13B-b82K',
+    'timm/convnext_base.fb_in1k',
+    'timm/convnext_base.fb_in22k',
+    'timm/convnext_tiny.fb_in22k',
+    'timm/convnext_tiny.fb_in1k',
+    'timm/resnet50.a1_in1k', 
+
+    'timm/vit_base_patch16_clip_224.laion2b_ft_in1k',
+    'timm/vit_base_patch16_224.augreg_in21k_ft_in1k',
+    'timm/vit_small_patch16_224.augreg_in21k_ft_in1k',
+    'timm/eva02_base_patch14_224.mim_in22k',
+    'timm/eva02_tiny_patch14_224.mim_in22k',
+    'timm/swin_base_patch4_window7_224.ms_in22k_ft_in1k',
+    'timm/swin_tiny_patch4_window7_224.ms_in1k',
+    'timm/convnext_base.clip_laion2b_augreg_ft_in12k_in1k',
+    'timm/convnext_base.fb_in22k_ft_in1k',
+    'timm/convnext_tiny.fb_in22k_ft_in1k'  
+
+    'timm/regnetx_004.pycls_in1k',
+    'google/efficientnet-b0',
+    'timm/deit_tiny_patch16_224.fb_in1k',
+    'apple/mobilevit-small',
+    'timm/mobilenetv3_large_100.ra_in1k',
+    'timm/edgenext_small.usi_in1k'
     'timm/coat_tiny.in1k',
-    'microsoft/cvt-21',
+
     'timm/coatnet_0_rw_224.sw_in1k',
     'timm/coatnet_2_rw_224.sw_in12k_ft_in1k',
     'timm/coatnet_2_rw_224.sw_in12k'
 )
+
+
 
 for backbone in backbones:
     parts = backbone.split("/")

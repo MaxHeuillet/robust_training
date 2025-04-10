@@ -36,10 +36,6 @@ def move_architecture_to_tmpdir(config):
 
     tmpdir = Path(config.work_path)
     dest_dir = tmpdir
-    dest_path = dest_dir / f"{backbone}.pt"
-
-    if dest_path.exists():
-        dest_path.unlink()  # Delete existing file
 
     shutil.move(str(checkpoint_path), str(dest_dir) )
 
