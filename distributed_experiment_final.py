@@ -111,13 +111,15 @@ class BaseExperiment:
     
     def initialize_loaders_test(self, config, rank,):
 
-        # train_dataset, val_dataset, test_dataset, N = load_data(config, common_corruption)
         _, _, test_dataset, common_dataset, N = load_data2(config)
+        nb_workers = 3 
 
-        test_sampler = DistributedSampler(test_dataset, num_replicas=self.setup.world_size, rank=rank, shuffle=True, drop_last=True)
-        common_sampler = DistributedSampler(common_dataset, num_replicas=self.setup.world_size, rank=rank, shuffle=True, drop_last=True)
+        world_size = self.setup.world_size if not self.setup.hp_opt else 4
+
+        test_sampler = DistributedSampler(test_dataset, num_replicas=world_size, rank=rank, shuffle=True, drop_last=True)
+        common_sampler = DistributedSampler(common_dataset, num_replicas=world_size, rank=rank, shuffle=True, drop_last=True)
         
-        nb_workers = 3 if torch.cuda.device_count() > 1 else 1
+        
         
         testloader = DataLoader(test_dataset, 
                                     batch_size=self.setup.test_batch_size(config), 

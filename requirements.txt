@@ -16,8 +16,10 @@ datasets==2.20.0
 numba==0.60.0
 omegaconf==2.3.0
 comet-ml==3.44.4
-ray[tune]==2.41.0
+ray[default]==2.41.0
 hydra-core==1.3.2
 git+https://github.com/fra31/auto-attack
 comet_ml
 zstandard
+grpcio 
+aiohttp_cors
