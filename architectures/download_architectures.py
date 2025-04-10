@@ -11,6 +11,7 @@ os.makedirs(save_path, exist_ok=True)
 ############## SET OF SCIENTIFIC BACKBONES
 
 backbones = (
+
     'timm/vit_base_patch16_224.dino',
     'timm/vit_base_patch16_224.mae',
     'timm/vit_base_patch16_clip_224.laion400m_e32',
