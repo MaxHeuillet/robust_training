@@ -80,7 +80,7 @@ submit_jobs() {
   for data in "${datas[@]}"; do
     for bckbn in "${backbones[@]}"; do
       for loss in "${losses[@]}"; do
-        srun --account="$ACCOUNT" --mail-user="$EMAIL" \
+        sbatch --account="$ACCOUNT" --mail-user="$EMAIL" \
           --export=ALL,ACCOUNT="$ACCOUNT",BCKBN="$bckbn",DATA="$data",SEED="$seed",LOSS="$loss",PRNM="$PRNM",EMAIL="$EMAIL" \
           ./job1_hpo.sh
     done
