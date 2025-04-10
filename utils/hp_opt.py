@@ -10,6 +10,8 @@ from ray.train import ScalingConfig
 import torch
 import os
 from datetime import timedelta
+from pathlib import Path  # In case config.dataset_path is a string
+
 
 class Hp_opt:
 
@@ -81,6 +83,7 @@ class Hp_opt:
 
         # Define maximum runtime in seconds
         max_runtime_seconds = timedelta(minutes=self.minutes).total_seconds()
+        path = Path(os.path.expandvars(self.config.work_path)).expanduser().resolve()
 
         # Set up the Tuner
         tuner = Tuner(
@@ -96,7 +99,7 @@ class Hp_opt:
             ),
             run_config=RunConfig(
                 name=f"{self.config.exp_id}",
-                storage_path=f"file://{self.work_path}",
+                storage_path=f"file://{path}",
             ),
         )
 
