@@ -30,7 +30,11 @@ def move_architecture_to_tmpdir(config):
 
     backbone = config.backbone
     statedict_dir = Path(config.statedicts_path).expanduser().resolve()
-    checkpoint_path = statedict_dir / f"{backbone}.pt"
+
+    if config.backbone in ["efficientnet-b0", "mobilevit-small"]:
+        checkpoint_path = statedict_dir / f"{backbone}"
+    else:
+        checkpoint_path = statedict_dir / f"{backbone}.pt"
 
     tmpdir = Path(os.path.expandvars(config.work_path)).expanduser().resolve()
     dest_dir = tmpdir
