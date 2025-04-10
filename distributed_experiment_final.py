@@ -182,7 +182,6 @@ class BaseExperiment:
             dest = Path(config.trained_state_dicts).expanduser().resolve() / config.project_name
             os.makedirs(str(dest), exist_ok=True) 
 
-            print(f"📦 Moving HPO results from {src} to {dest}")
             shutil.copy2(str(src), str(dest))
             print(f"✅ Moved successfully.")
             
@@ -322,7 +321,7 @@ class BaseExperiment:
         dest = Path(config.hpo_path).expanduser().resolve() / config.project_name 
 
         print(f"📦 Moving HPO results from {src} to {dest}")
-        shutil.copy2(str(src), str(dest))
+        shutil.copytree(str(src), str(dest))
         print(f"✅ Moved successfully.")
 
         ray.shutdown()
