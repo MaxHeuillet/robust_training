@@ -57,8 +57,8 @@ class TestDatasetTransforms(unittest.TestCase):
         ])
 
 
-    def test_dataloader_iteration(self):
-        """Test that dataloaders for each dataset can be created and iterated."""
+    def test_data(self):
+        """Check that each dataset uses the correct transforms for train/val/test."""
         datasets_to_test = [
             'uc-merced-land-use-dataset',
             'flowers-102',
@@ -71,16 +71,26 @@ class TestDatasetTransforms(unittest.TestCase):
         for dataset_name in datasets_to_test:
 
             with self.subTest(dataset=dataset_name):
-                print(f"🔁 Testing DataLoader for: {dataset_name}")
 
-                with warnings.catch_warnings():
-                    
+                 with warnings.catch_warnings():
                     warnings.simplefilter("ignore", ResourceWarning)
                     self.config.dataset = dataset_name
-
                     move_dataset_to_tmpdir(self.config)
 
-                    train_ds, val_ds, test_ds, test_common_ds, _ = load_data2(self.config)
+                    # load_data is your custom function returning (train_ds, val_ds, test_ds, N)
+                    # train_ds, val_ds, test_ds, num_classes = load_data(self.config, common_corruption=False)
+                    train_ds, val_ds, test_ds, test_common_ds, num_classes = load_data2(self.config)
+
+                    # 1) Check the training set transform
+                    self._compare_transforms(train_ds.transform, self.train_transforms_expected, split='train')
+
+                    # 2) Check the validation set transform
+                    self._compare_transforms(val_ds.transform, self.eval_transforms_expected, split='val')
+
+                    # 3) Check the test set transform
+                    self._compare_transforms(test_ds.transform, self.eval_transforms_expected, split='test')
+
+                    self._compare_transforms(test_common_ds.transform, self.eval_transforms_expected, split='test_common')
 
                     for split_name, dataset in {
                         "train": train_ds,
@@ -99,49 +109,6 @@ class TestDatasetTransforms(unittest.TestCase):
                         self.assertIsInstance(labels, torch.Tensor, f"{split_name} labels are not torch.Tensor")
                         self.assertEqual(images.ndim, 4, f"{split_name} images should be [B, C, H, W], got shape {images.shape}")
                         self.assertEqual(labels.ndim, 1, f"{split_name} labels should be 1D, got shape {labels.shape}")
-
-
-    def test_data_transforms(self):
-        """Check that each dataset uses the correct transforms for train/val/test."""
-        datasets_to_test = [
-            'uc-merced-land-use-dataset',
-            'flowers-102',
-            'caltech101',
-            'stanford_cars',
-            'fgvc-aircraft-2013b',
-            'oxford-iiit-pet'
-        ]
-
-        for dataset_name in datasets_to_test:
-
-            with self.subTest(dataset=dataset_name):
-                 
-                 print('testing', dataset_name)
-                #  command = ["bash", "./dataset_to_tmpdir.sh", dataset_name]
-                 command = ["bash", "./dataset_to_tmpdir_final.sh", dataset_name]
-
-                 # Run the command
-                 result = subprocess.run(command, capture_output=True, text=True)
-                 print('imported data to tmpdir')
-
-                 with warnings.catch_warnings():
-                    warnings.simplefilter("ignore", ResourceWarning)
-                    self.config.dataset = dataset_name
-
-                    # load_data is your custom function returning (train_ds, val_ds, test_ds, N)
-                    # train_ds, val_ds, test_ds, num_classes = load_data(self.config, common_corruption=False)
-                    train_ds, val_ds, test_ds, test_common_ds, num_classes = load_data2(self.config)
-
-                    # 1) Check the training set transform
-                    self._compare_transforms(train_ds.transform, self.train_transforms_expected, split='train')
-
-                    # 2) Check the validation set transform
-                    self._compare_transforms(val_ds.transform, self.eval_transforms_expected, split='val')
-
-                    # 3) Check the test set transform
-                    self._compare_transforms(test_ds.transform, self.eval_transforms_expected, split='test')
-
-                    self._compare_transforms(test_common_ds.transform, self.eval_transforms_expected, split='test_common')
 
     def _compare_transforms(self, actual_compose, expected_compose, split):
         """Helper to compare two torchvision.transforms.Compose objects."""
