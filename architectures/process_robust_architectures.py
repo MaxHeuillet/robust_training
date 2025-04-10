@@ -80,7 +80,7 @@ for backbone in [ 'weights_convnext_base', 'weights_vit_s', 'weights_convnext_t'
         # Rebuild the sequential model without the 'normalize' layer
         model = model._modules['model']
 
-    torch.save(model.state_dict(), '/home/mheuillet/Desktop/state_dicts_share/robust_{}.pt'.format(backbone) )
+    torch.save(model.state_dict(), '/home/mheuillet/Desktop/state_dicts_share/robust_{}.pt'.format(equivalences[backbone]) )
 
 
 #########################################

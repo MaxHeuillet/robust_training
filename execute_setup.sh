@@ -7,3 +7,4 @@ source $SLURM_TMPDIR/myenv_reprod/bin/activate
 pip install -r ~/projects/def-adurand/mheuill/robust_training/requirements.txt
 
 export PYTHONUNBUFFERED=1
+

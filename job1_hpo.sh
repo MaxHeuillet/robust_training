@@ -7,7 +7,7 @@
 #SBATCH --time=02:58:55
 #SBATCH --mail-type=ALL
 
-bash ./execute_setup.sh
+source ./execute_setup.sh
 
 # --- HPO Step ---
 python ./distributed_experiment_final.py \

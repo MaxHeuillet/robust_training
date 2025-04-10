@@ -67,7 +67,7 @@ def load_architecture(config, N):
         model.load_state_dict(state_dict, strict=False)
 
         # New: Hugging Face Models (Google, Apple, and others)
-    elif backbone == 'efficientnet-b0' or backbone == 'mobilevit-small' or backbone == 'cvt-21':
+    elif backbone in ['efficientnet-b0', 'mobilevit-small', ]:
 
             # Determine if it's an OpenCLIP model
         hf_models = {
@@ -91,6 +91,7 @@ def load_architecture(config, N):
             'robust_resnet50': 'resnet50',
             'robust_deit_small_patch16_224': 'deit_small_patch16_224',
             'robust_vit_base_patch16_224': 'vit_base_patch16_224',
+            'vit_base_patch16_clip_224.laion400m_e32': 'vit_base_patch16_clip_224',
         }
 
         model_name = equivalencies.get(backbone, backbone)

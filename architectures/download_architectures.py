@@ -3,6 +3,7 @@ import torch
 import os
 from timm import create_model
 from huggingface_hub import hf_hub_download
+import json
 
 save_path = os.path.expanduser('/home/mheuillet/Desktop/state_dicts_share')
 # save_path = os.path.expanduser('~/scratch/state_dicts_share')
@@ -14,7 +15,7 @@ backbones = (
 
     # 'timm/vit_base_patch16_224.dino',
     # 'timm/vit_base_patch16_224.mae',
-    # 'timm/vit_base_patch16_clip_224.laion400m_e32',
+    'timm/vit_base_patch16_clip_224.laion400m_e32',
     # 'timm/vit_base_patch16_clip_224.laion2b',
     # 'timm/vit_base_patch16_224.augreg_in21k',
     # 'timm/vit_base_patch16_224.augreg_in1k',
@@ -41,9 +42,9 @@ backbones = (
     # 'timm/convnext_tiny.fb_in22k_ft_in1k',
 
     # 'timm/regnetx_004.pycls_in1k',
-    # 'google/efficientnet-b0',
+    'google/efficientnet-b0',
     # 'timm/deit_tiny_patch16_224.fb_in1k',
-    # 'apple/mobilevit-small',
+    'apple/mobilevit-small',
     # 'timm/mobilenetv3_large_100.ra_in1k',
     # 'timm/edgenext_small.usi_in1k'
     # 'timm/coat_tiny.in1k',
@@ -71,14 +72,6 @@ for backbone in backbones:
         except Exception as e:
             print(f"❌ Failed to download {backbone}: {e}")
 
-    elif model_source == "timm":
-        print(backbone)
-        try:
-            model = create_model(backbone, pretrained=True)
-            torch.save(model.state_dict(), save_file)
-        except Exception as e:
-            print(f"❌ Failed to download {backbone}: {e}")
-
     elif model_source in {"google", "apple"} or backbone == "timm/vit_base_patch16_clip_224.laion400m_e32":
         print(backbone)
         try:
@@ -89,11 +82,19 @@ for backbone in backbones:
             except:
                 file = hf_hub_download(repo_id=backbone, filename="pytorch_model.bin")
                 state_dict = torch.load(file, map_location="cpu")
-
             
             torch.save(state_dict, save_file)
+            
             print(f"✅ Successfully saved {backbone}")
 
+        except Exception as e:
+            print(f"❌ Failed to download {backbone}: {e}")
+
+    elif model_source == "timm":
+        print(backbone)
+        try:
+            model = create_model(backbone, pretrained=True)
+            torch.save(model.state_dict(), save_file)
         except Exception as e:
             print(f"❌ Failed to download {backbone}: {e}")
 
