@@ -61,12 +61,12 @@ for backbone in backbones:
 
     save_file = os.path.join(save_path, f"{model_name}.pt")
 
-    if model_source == "timm":
-        print(backbone)
-        model = create_model(backbone, pretrained=True)
-        torch.save(model.state_dict(), save_file)
+    # if model_source == "timm":
+    #     print(backbone)
+    #     model = create_model(backbone, pretrained=True)
+    #     torch.save(model.state_dict(), save_file)
 
-    elif model_source == "laion":
+    if model_source == "laion":
         try:
             file = hf_hub_download(repo_id=backbone, filename="open_clip_pytorch_model.bin")
             state_dict = torch.load(file, map_location="cpu")
@@ -74,7 +74,7 @@ for backbone in backbones:
         except Exception as e:
             print(f"❌ Failed to download {backbone}: {e}")
 
-    elif model_source in {"google", "apple", }:
+    elif model_source in {"google", "apple", "timm"}:
         try:
             # Try downloading both .safetensors and .bin files (whichever is available)
             try:
