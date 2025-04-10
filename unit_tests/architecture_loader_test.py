@@ -185,6 +185,7 @@ class TestModelForwardPass(unittest.TestCase):
                             self.config.backbone = backbone
                             move_architecture_to_tmpdir(self.config)
                             model = load_architecture(self.config, self.N)
+                            print(model)
                             self.assertIsNotNone(model, f"❌ Model failed to load! Backbone: {backbone}")
                             model = CustomModel(self.config, model, )
                                 
