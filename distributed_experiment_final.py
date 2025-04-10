@@ -296,14 +296,18 @@ class BaseExperiment:
             print(f"Deleting existing experiment directory: {existing_experiment_path}")
             shutil.rmtree(existing_experiment_path)
         
+        print('initialize ray')
         ray.init(include_dashboard=False,  ) #logging_level=logging.DEBUG
         print('end initialize')
 
         hp_search = Hp_opt(config, )
+        print('initialized hp search')
 
         tuner = hp_search.get_tuner( self.training )
+        print('initialized tuner')
 
         result_grid = tuner.fit()
+        print('finished grid')
         
         best_result = result_grid.get_best_result()
         print("Best hyperparameters found were: ", best_result.config)

@@ -76,7 +76,7 @@ def load_architecture(config, N):
 
         print(f"Loading Hugging Face model: {backbone}")
 
-        config = AutoConfig.from_pretrained(os.path.join(statedict_dir, backbone))
+        config = AutoConfig.from_pretrained( os.path.join(statedict_dir, backbone) )
         model = AutoModel.from_config(config)
 
         checkpoint_path = os.path.join(statedict_dir, f'{backbone}.pt')
