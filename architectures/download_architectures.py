@@ -67,7 +67,7 @@ for backbone in backbones:
         model = create_model(backbone, pretrained=True)
         torch.save(model.state_dict(), save_file)
 
-    if model_source == "laion":
+    if model_source == "laion" or backbone == "vit_base_patch16_clip_224.laion400m_e32":
         try:
             file = hf_hub_download(repo_id=backbone, filename="open_clip_pytorch_model.bin")
             state_dict = torch.load(file, map_location="cpu")
