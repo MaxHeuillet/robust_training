@@ -167,7 +167,6 @@ class TestModelForwardPass(unittest.TestCase):
             for backbone in backbones:
 
                 print(f"\n🔎 Testing backbone: {backbone}")
-                move_architecture_to_tmpdir(self.config)
 
                 for ft_type in ['linear_probing', 'full_fine_tuning']:
 
@@ -183,6 +182,7 @@ class TestModelForwardPass(unittest.TestCase):
     
                             # Load the model
                             self.config.backbone = backbone
+                            move_architecture_to_tmpdir(self.config)
                             model = load_architecture(self.config, self.N)
                             self.assertIsNotNone(model, f"❌ Model failed to load! Backbone: {backbone}")
                             model = CustomModel(self.config, model, )
