@@ -7,6 +7,8 @@ import sys
 import os
 import warnings
 import subprocess
+import traceback  # ✅ Helps capture detailed errors
+
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 print(PROJECT_ROOT)  # Should print the path to your main directory

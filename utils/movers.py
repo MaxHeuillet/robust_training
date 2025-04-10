@@ -9,12 +9,10 @@ from pathlib import Path  # In case config.dataset_path is a string
 def move_dataset_to_tmpdir(config):
 
     dataset_name = config.dataset
-    dataset_path = Path(config.dataset_path).expanduser().resolve()
+    data_path = Path(config.dataset_path).expanduser().resolve()
+    archive_path = data_path / f"{dataset_name}_processed.tar.zst"
     
-    # Fixed archive path construction
-    archive_path = dataset_path / f"{dataset_name}_processed.tar.zst"
-    
-    tmpdir = config.work_path
+    tmpdir = Path(os.path.expandvars(config.work_path)).expanduser().resolve()
     dest_dir = os.path.join(tmpdir, "data", dataset_name)
     os.makedirs(dest_dir, exist_ok=True)
 
