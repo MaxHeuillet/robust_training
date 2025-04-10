@@ -91,7 +91,7 @@ def load_architecture(config, N):
             'robust_resnet50': 'resnet50',
             'robust_deit_small_patch16_224': 'deit_small_patch16_224',
             'robust_vit_base_patch16_224': 'vit_base_patch16_224',
-            'vit_base_patch16_clip_224.laion400m_e32': 'vit_base_patch16_clip_224',
+            # 'vit_base_patch16_clip_224.laion400m_e32': 'vit_base_patch16_clip_224',
         }
 
         model_name = equivalencies.get(backbone, backbone)

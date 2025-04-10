@@ -21,56 +21,56 @@ from architectures import load_architecture, CustomModel
 from utils import load_optimizer, move_architecture_to_tmpdir
 from losses import get_loss
 
+#  'vit_base_patch16_clip_224.laion400m_e32',
 
 
 SCIENTIFIC_BACKBONES=(
-  'vit_base_patch16_clip_224.laion400m_e32',
-#   'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K',
-#   'CLIP-convnext_base_w-laion2B-s13B-b82K',
-#   'deit_small_patch16_224.fb_in1k',
-#   'robust_resnet50',
-#   'vit_small_patch16_224.augreg_in21k',
-#   'convnext_base.fb_in1k',
-#   'resnet50.a1_in1k',
-#   'robust_vit_base_patch16_224',
-#   'vit_base_patch16_224.mae',
-#   'convnext_base.fb_in22k',
-#   'robust_convnext_base',
-#   'vit_base_patch16_224.augreg_in1k',
-#   'vit_base_patch16_224.augreg_in21k',
-#   'vit_base_patch16_224.dino',
-#   'vit_base_patch16_clip_224.laion2b',
-#   'convnext_tiny.fb_in1k',
-#   'robust_convnext_tiny',
-#   'robust_deit_small_patch16_224',
-#   'vit_small_patch16_224.augreg_in1k',
-#   'convnext_tiny.fb_in22k',
+  'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K',
+  'CLIP-convnext_base_w-laion2B-s13B-b82K',
+  'deit_small_patch16_224.fb_in1k',
+  'robust_resnet50',
+  'vit_small_patch16_224.augreg_in21k',
+  'convnext_base.fb_in1k',
+  'resnet50.a1_in1k',
+  'robust_vit_base_patch16_224',
+  'vit_base_patch16_224.mae',
+  'convnext_base.fb_in22k',
+  'robust_convnext_base',
+  'vit_base_patch16_224.augreg_in1k',
+  'vit_base_patch16_224.augreg_in21k',
+  'vit_base_patch16_224.dino',
+  'vit_base_patch16_clip_224.laion2b',
+  'convnext_tiny.fb_in1k',
+  'robust_convnext_tiny',
+  'robust_deit_small_patch16_224',
+  'vit_small_patch16_224.augreg_in1k',
+  'convnext_tiny.fb_in22k',
 ) 
 
 PERFORMANCE_BACKBONES=(
-#   'vit_base_patch16_clip_224.laion2b_ft_in1k',
-#   'vit_base_patch16_224.augreg_in21k_ft_in1k',
-#   'vit_small_patch16_224.augreg_in21k_ft_in1k',
-#   'eva02_base_patch14_224.mim_in22k',
-#   'eva02_tiny_patch14_224.mim_in22k',
-#   'swin_base_patch4_window7_224.ms_in22k_ft_in1k',
-#   'swin_tiny_patch4_window7_224.ms_in1k',
-#   'convnext_base.clip_laion2b_augreg_ft_in12k_in1k',
-#   'convnext_base.fb_in22k_ft_in1k',
-#   'convnext_tiny.fb_in22k_ft_in1k',
-#   'coatnet_0_rw_224.sw_in1k',
-#   'coatnet_2_rw_224.sw_in12k_ft_in1k',
-#   'coatnet_2_rw_224.sw_in12k'
+  'vit_base_patch16_clip_224.laion2b_ft_in1k',
+  'vit_base_patch16_224.augreg_in21k_ft_in1k',
+  'vit_small_patch16_224.augreg_in21k_ft_in1k',
+  'eva02_base_patch14_224.mim_in22k',
+  'eva02_tiny_patch14_224.mim_in22k',
+  'swin_base_patch4_window7_224.ms_in22k_ft_in1k',
+  'swin_tiny_patch4_window7_224.ms_in1k',
+  'convnext_base.clip_laion2b_augreg_ft_in12k_in1k',
+  'convnext_base.fb_in22k_ft_in1k',
+  'convnext_tiny.fb_in22k_ft_in1k',
+  'coatnet_0_rw_224.sw_in1k',
+  'coatnet_2_rw_224.sw_in12k_ft_in1k',
+  'coatnet_2_rw_224.sw_in12k'
 )
 
 EDGE_BACKBONES=(
-#     "regnetx_004.pycls_in1k",
-#     'efficientnet-b0',
-#     'deit_tiny_patch16_224.fb_in1k',
-#     'mobilevit-small',
-#     'mobilenetv3_large_100.ra_in1k',
-#     'edgenext_small.usi_in1k',
-#     'coat_tiny.in1k'
+    "regnetx_004.pycls_in1k",
+    'efficientnet-b0',
+    'deit_tiny_patch16_224.fb_in1k',
+    'mobilevit-small',
+    'mobilenetv3_large_100.ra_in1k',
+    'edgenext_small.usi_in1k',
+    'coat_tiny.in1k'
 )
 
 # Combine all sets
