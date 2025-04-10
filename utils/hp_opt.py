@@ -23,8 +23,10 @@ class Hp_opt:
         # Check if the node is part of the Calcul Québec cluster
         if any(keyword in nodename for keyword in cluster_keywords):
             self.trials = 100 
+            self.minutes = 120
         else:
             self.trials = 2
+            self.minutes = 5
 
     def get_config(self):
         # Ray Tune hyperparameter search space
