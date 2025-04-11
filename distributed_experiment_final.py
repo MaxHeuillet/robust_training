@@ -176,12 +176,13 @@ class BaseExperiment:
         if not self.setup.hp_opt and rank == 0:
 
             src = Path(os.path.expandvars(config.work_path)).expanduser().resolve()
+            model_name = src / f"{config.exp_id}.pt"
             model_to_save = model.module
             model_to_save = model_to_save.cpu()
-            torch.save(model_to_save.state_dict(), str(src) )
+            torch.save(model_to_save.state_dict(), str(model_name) )
             print('Model saved by rank 0')
 
-            dest = Path(config.trained_state_dicts).expanduser().resolve() / config.project_name
+            dest = Path(config.trained_state_dicts).expanduser().resolve() / config.project_name 
             os.makedirs(str(dest), exist_ok=True) 
 
             shutil.copy2(str(src), str(dest))
