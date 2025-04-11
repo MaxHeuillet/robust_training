@@ -327,7 +327,7 @@ class BaseExperiment:
         self.setup.hp_opt = False
 
         #### Save the optimal configuration:
-        directory_path = Path(config.hpo_path) / "HPO_results" / config.project_name
+        directory_path = Path(config.configs_path) / "HPO_results" / config.project_name
         os.makedirs(directory_path, exist_ok=True)
         optimal_config = OmegaConf.merge(config, best_result.config['train_loop_config']  )
         output_path = directory_path / f"{config.exp_id}.yaml"
