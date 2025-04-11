@@ -56,8 +56,8 @@ submit_jobs() {
 
 # ---------- Submit jobs ----------
 
-EMAIL="your.email@domain.com"
+EMAIL="maxime.heuillet.1@ulaval.ca"
 
 
 echo "Submitting COMPUTING backbone jobs..."
-submit_jobs "your-alloc1" "${block_1[@]}" #TODO Define allocation
+submit_jobs "def-adurand" "${block_1[@]}" #TODO Define allocation
