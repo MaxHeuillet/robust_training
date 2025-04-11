@@ -35,7 +35,7 @@ block_1=(
 
 block_2=(
   # 'robust_convnext_base'
-  # 'vit_base_patch16_224.augreg_in1k'
+  'vit_base_patch16_224.augreg_in1k'
   # 'vit_base_patch16_224.augreg_in21k'
   # 'vit_base_patch16_clip_224.laion2b'
   # 'convnext_tiny.fb_in1k'
@@ -56,7 +56,7 @@ block_3=(
   # 'convnext_base.clip_laion2b_augreg_ft_in12k_in1k'
   # 'convnext_base.fb_in22k_ft_in1k'
   # 'convnext_tiny.fb_in22k_ft_in1k'
-  # 'coatnet_0_rw_224.sw_in1k'
+  'coatnet_0_rw_224.sw_in1k'
   # 'coatnet_2_rw_224.sw_in12k_ft_in1k'
   # 'coatnet_2_rw_224.sw_in12k'
 )
@@ -95,9 +95,9 @@ EMAIL="maxime.heuillet.1@ulaval.ca"
 echo "Submitting block_1 backbone jobs..."
 submit_jobs "rrg-csubakan" "${block_1[@]}"
 
-# echo "Submitting block_2 backbone jobs..."
-# submit_jobs "rrg-adurand" "${block_2[@]}"
+echo "Submitting block_2 backbone jobs..."
+submit_jobs "rrg-adurand" "${block_2[@]}"
 
-# echo "Submitting block_3 backbone jobs..."
-# submit_jobs "def-adurand" "${block_3[@]}"
+echo "Submitting block_3 backbone jobs..."
+submit_jobs "def-adurand" "${block_3[@]}"
 

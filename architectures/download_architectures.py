@@ -47,8 +47,8 @@ backbones = (
     # 'timm/deit_tiny_patch16_224.fb_in1k',
     # 'apple/mobilevit-small',
     # 'timm/mobilenetv3_large_100.ra_in1k',
-    'timm/edgenext_small.usi_in1k',
-    'timm/coat_tiny.in1k',
+    # 'timm/edgenext_small.usi_in1k',
+    # 'timm/coat_tiny.in1k',
 
     # 'timm/coatnet_0_rw_224.sw_in1k',
     # 'timm/coatnet_2_rw_224.sw_in12k_ft_in1k',
