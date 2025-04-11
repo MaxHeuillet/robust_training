@@ -185,7 +185,7 @@ class BaseExperiment:
             dest = Path(config.trained_statedicts_path).expanduser().resolve() / config.project_name 
             os.makedirs(str(dest), exist_ok=True) 
 
-            shutil.copy2(str(src), str(dest))
+            shutil.copy2(str(model_name), str(dest))
             print(f"✅ Moved successfully.")
             
             logger.end()
