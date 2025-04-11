@@ -320,8 +320,9 @@ class BaseExperiment:
         print('initialized tuner')
 
         result_grid = tuner.fit()
-        nb_completed_trials = len([t for t in result_grid if t.status == "TERMINATED"])
+        nb_completed_trials = len([  result for result in result_grid if result.get_trial().status == "TERMINATED" ])
         config.nb_completed_trials= nb_completed_trials
+
         print('finished grid')
         
         best_result = result_grid.get_best_result()
