@@ -182,7 +182,7 @@ class BaseExperiment:
             torch.save(model_to_save.state_dict(), str(model_name) )
             print('Model saved by rank 0')
 
-            dest = Path(config.trained_state_dicts).expanduser().resolve() / config.project_name 
+            dest = Path(config.trained_statedicts_path).expanduser().resolve() / config.project_name 
             os.makedirs(str(dest), exist_ok=True) 
 
             shutil.copy2(str(src), str(dest))
