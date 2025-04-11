@@ -4,15 +4,18 @@
 seeds=1
 
 datas=( 
-        'stanford_cars'
-        'oxford-iiit-pet'
-        'caltech101' 
-        'flowers-102' 
-        'fgvc-aircraft-2013b'
+        # 'stanford_cars'
+        # 'oxford-iiit-pet'
+        # 'caltech101' 
+        # 'flowers-102' 
+        # 'fgvc-aircraft-2013b'
         'uc-merced-land-use-dataset' 
         ) 
  
-losses=( 'CLASSIC_AT' 'TRADES_v2'   )  
+losses=( 
+  # 'CLASSIC_AT' 
+  'TRADES_v2'
+     )  
 
 block_1=(
     "regnetx_004.pycls_in1k"
