@@ -1,0 +1,2 @@
+  Running command git clone --filter=blob:none --quiet https://github.com/fra31/auto-attack /tmp/pip-req-build-vvnghxan
+slurmstepd: error: *** JOB 55121295 ON bg12311 CANCELLED AT 2025-04-11T13:10:55 ***
