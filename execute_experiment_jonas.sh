@@ -70,22 +70,19 @@ fi
 
 # ---------- Function to submit jobs ----------
 submit_jobs() {
-  local account_name="$1"
+  local ACCOUNT="$1"
   shift  # shift out the account name
   local backbones=("$@")  # remaining arguments are backbone list
-  for id in $(seq 1 $seeds); do
-    for data in "${datas[@]}"; do
-      for bckbn in "${backbones[@]}"; do
-        for loss in "${losses[@]}"; do
-          sbatch --account="$ACCOUNT" --mail-user="$EMAIL" \
-            --export=ALL,ACCOUNT="$account_name",BCKBN="$bckbn",DATA="$data",SEED="$id",LOSS="$loss",PRNM="$PRNM",EMAIL="$EMAIL" \
-            ./job1_hpo.sh
-        done
-      done
+  for data in "${datas[@]}"; do
+    for bckbn in "${backbones[@]}"; do
+      for loss in "${losses[@]}"; do
+        sbatch --account="$ACCOUNT" --mail-user="$EMAIL" \
+          --export=ALL,ACCOUNT="$ACCOUNT",BCKBN="$bckbn",DATA="$data",SEED="$seed",LOSS="$loss",PRNM="$PRNM",EMAIL="$EMAIL" \
+          ./job1_hpo.sh
     done
   done
+done
 }
-
 
 
 # ---------- Submit jobs ----------
