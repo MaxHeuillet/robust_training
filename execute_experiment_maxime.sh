@@ -4,8 +4,8 @@
 seed=1
 
 datas=( 
-        'stanford_cars'
-        # 'oxford-iiit-pet'
+        # 'stanford_cars'
+        'oxford-iiit-pet'
         # 'caltech101' 
         # 'flowers-102' 
         # 'fgvc-aircraft-2013b'
@@ -13,7 +13,7 @@ datas=(
         ) 
  
 losses=( 
-        'CLASSIC_AT' 
+        # 'CLASSIC_AT' 
         'TRADES_v2'  
          )  
 
@@ -62,7 +62,11 @@ block_3=(
 )
 
 block_repair=(
-  'convnext_tiny.fb_in1k',
+  'robust_convnext_base',
+  'vit_base_patch16_clip_224.laion2b',
+  'convnext_base.clip_laion2b_augreg_ft_in12k_in1k'
+
+
 )
 
 #33-4 = 29 + 7 = 36
