@@ -13,8 +13,8 @@ datas=(
         ) 
  
 losses=( 
-        'CLASSIC_AT' 
-        # 'TRADES_v2'  
+        # 'CLASSIC_AT' 
+        'TRADES_v2'  
          )  
 
 # Two backbone groups
@@ -62,10 +62,7 @@ block_3=(
 )
 
 block_repair=(
-  'swin_tiny_patch4_window7_224.ms_in1k',
-  'vit_base_patch16_224.augreg_in21k',
-  'convnext_tiny.fb_in22k_caltech101',
-  #'vit_small_patch16_224.augreg_in21k_ft_in1k',
+  'vit_small_patch16_224.augreg_in21k_ft_in1k',
 )
 
 #33-4 = 29 + 7 = 36
