@@ -7,14 +7,14 @@ datas=(
         # 'stanford_cars'
         # 'oxford-iiit-pet'
         # 'caltech101' 
-        'flowers-102' 
+        # 'flowers-102' 
         # 'fgvc-aircraft-2013b'
-        # 'uc-merced-land-use-dataset' 
+        'uc-merced-land-use-dataset' 
         ) 
  
 losses=( 
-        # 'CLASSIC_AT' 
-        'TRADES_v2'  
+        'CLASSIC_AT' 
+        # 'TRADES_v2'  
          )  
 
 # Two backbone groups
@@ -62,8 +62,11 @@ block_3=(
 )
 
 block_repair=(
-  'convnext_base.fb_in22k',
+  'robust_convnext_base',
   'convnext_tiny.fb_in22k',
+  'convnext_tiny.fb_in22k',
+  'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K',
+  'convnext_base.fb_in1k',
 )
 
 #33-4 = 29 + 7 = 36
