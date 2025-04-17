@@ -62,7 +62,8 @@ block_3=(
 )
 
 block_repair=(
-  'vit_small_patch16_224.augreg_in21k_ft_in1k',
+  'convnext_tiny.fb_in22k',
+  'convnext_base.fb_in22k',
 )
 
 #33-4 = 29 + 7 = 36
