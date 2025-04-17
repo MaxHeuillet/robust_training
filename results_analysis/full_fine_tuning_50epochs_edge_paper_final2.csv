@@ -1,0 +1,17 @@
+dataset,,caltech101,caltech101,caltech101,fgvc-aircraft-2013b,fgvc-aircraft-2013b,fgvc-aircraft-2013b,flowers-102,flowers-102,flowers-102,oxford-iiit-pet,oxford-iiit-pet,oxford-iiit-pet,stanford_cars,stanford_cars,stanford_cars,uc-merced-land-use-dataset,uc-merced-land-use-dataset,uc-merced-land-use-dataset
+metric,,Linf_acc,clean_acc,model_size,Linf_acc,clean_acc,model_size,Linf_acc,clean_acc,model_size,Linf_acc,clean_acc,model_size,Linf_acc,clean_acc,model_size,Linf_acc,clean_acc,model_size
+backbone,loss_function,,,,,,,,,,,,,,,,,,
+coat_tiny.in1k,CLASSIC_AT,,,0,,,0,0.016,0.025333333333333333,0,0.044,0.08666666666666667,0,,,0,,,0
+coat_tiny.in1k,TRADES_v2,,,0,,,0,,,0,,,0,,,0,,,0
+deit_tiny_patch16_224.fb_in1k,CLASSIC_AT,0.622,0.854,0,,,0,0.0,0.008,0,0.015,0.046,0,0.024,0.08266666666666667,0,,,0
+deit_tiny_patch16_224.fb_in1k,TRADES_v2,0.657,0.867,0,0.11,0.478,0,0.0,0.302,0,0.158,0.681,0,0.124,0.5293333333333333,0,,,0
+edgenext_small.usi_in1k,CLASSIC_AT,,,0,0.024,0.086,0,0.076,0.376,0,0.258,0.734,0,0.17733333333333334,0.54,0,,,0
+edgenext_small.usi_in1k,TRADES_v2,0.7426666666666667,0.916,0,0.118,0.553,0,0.104,0.768,0,0.264,0.784,0,0.216,0.6133333333333333,0,,,0
+efficientnet-b0,CLASSIC_AT,0.363,0.527,0,0.008,0.03,0,0.02,0.036,0,0.053,0.135,0,0.022,0.057,0,,,0
+efficientnet-b0,TRADES_v2,0.221,0.448,0,0.0,0.02266666666666667,0,0.001,0.173,0,0.018,0.173,0,0.003,0.081,0,,,0
+mobilenetv3_large_100.ra_in1k,CLASSIC_AT,0.48,0.867,0,0.004,0.22,0,0.0,0.569,0,0.003,0.498,0,0.023,0.382,0,,,0
+mobilenetv3_large_100.ra_in1k,TRADES_v2,0.206,0.848,0,0.0,0.332,0,0.0,0.767,0,0.0,0.816,0,0.0,0.486,0,,,0
+mobilevit-small,CLASSIC_AT,0.485,0.608,0,0.029,0.05,0,0.041,0.079,0,0.042,0.085,0,0.039,0.083,0,,,0
+mobilevit-small,TRADES_v2,,,0,0.014,0.169,0,0.047,0.262,0,0.014,0.2,0,0.005,0.103,0,,,0
+regnetx_004.pycls_in1k,CLASSIC_AT,0.578,0.884,0,0.02,0.266,0,0.0,0.581,0,0.018666666666666668,0.504,0,0.064,0.415,0,0.7365079365079366,0.9492063492063492,0
+regnetx_004.pycls_in1k,TRADES_v2,0.379,0.849,0,0.0,0.427,0,0.0,0.737,0,0.0,0.759,0,0.001,0.564,0,,,0

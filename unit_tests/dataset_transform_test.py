@@ -81,6 +81,8 @@ class TestDatasetTransforms(unittest.TestCase):
                     # train_ds, val_ds, test_ds, num_classes = load_data(self.config, common_corruption=False)
                     train_ds, val_ds, test_ds, test_common_ds, num_classes = load_data2(self.config)
 
+                    print(dataset_name, len(train_ds), len(val_ds), len(test_common_ds) )
+
                     # 1) Check the training set transform
                     self._compare_transforms(train_ds.transform, self.train_transforms_expected, split='train')
 
