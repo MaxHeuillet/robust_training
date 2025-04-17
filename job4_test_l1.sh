@@ -1,9 +1,9 @@
 #!/bin/bash
 
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=38
+#SBATCH --cpus-per-task=20
 #SBATCH --gpus-per-node=4
-#SBATCH --mem-per-cpu=5000M
+#SBATCH --mem-per-cpu=4000M
 #SBATCH --time=02:58:55
 #SBATCH --mail-type=ALL
 
