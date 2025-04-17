@@ -5,11 +5,11 @@ seed=1
 
 datas=( 
         'stanford_cars'
-        'oxford-iiit-pet'
-        'caltech101' 
-        'flowers-102' 
-        'fgvc-aircraft-2013b'
-        'uc-merced-land-use-dataset' 
+        # 'oxford-iiit-pet'
+        # 'caltech101' 
+        # 'flowers-102' 
+        # 'fgvc-aircraft-2013b'
+        # 'uc-merced-land-use-dataset' 
         ) 
  
 losses=( 
@@ -61,6 +61,10 @@ block_3=(
   'coatnet_2_rw_224.sw_in12k'
 )
 
+block_repair=(
+  'convnext_tiny.fb_in1k',
+)
+
 #33-4 = 29 + 7 = 36
 
 
@@ -92,12 +96,15 @@ done
 
 EMAIL="maxime.heuillet.1@ulaval.ca"
 
-echo "Submitting block_1 backbone jobs..."
-submit_jobs "rrg-csubakan" "${block_1[@]}"
+# echo "Submitting block_1 backbone jobs..."
+# submit_jobs "rrg-csubakan" "${block_1[@]}"
 
-echo "Submitting block_2 backbone jobs..."
-submit_jobs "rrg-adurand" "${block_2[@]}"
+# echo "Submitting block_2 backbone jobs..."
+# submit_jobs "rrg-adurand" "${block_2[@]}"
 
-echo "Submitting block_3 backbone jobs..."
-submit_jobs "def-adurand" "${block_3[@]}"
+# echo "Submitting block_3 backbone jobs..."
+# submit_jobs "def-adurand" "${block_3[@]}"
+
+echo "Submitting block_repair backbone jobs..."
+submit_jobs "rrg-adurand" "${block_repair[@]}"
 
