@@ -5,8 +5,8 @@ seed=1
 
 datas=( 
         # 'stanford_cars'
-        'oxford-iiit-pet'
-        # 'caltech101' 
+        # 'oxford-iiit-pet'
+        'caltech101' 
         # 'flowers-102' 
         # 'fgvc-aircraft-2013b'
         # 'uc-merced-land-use-dataset' 
@@ -62,10 +62,10 @@ block_3=(
 )
 
 block_repair=(
-  'vit_base_patch16_clip_224.laion2b',
-  'convnext_tiny.fb_in1k',
-  'convnext_tiny.fb_in22k',
-  'vit_small_patch16_224.augreg_in21k',
+  'swin_tiny_patch4_window7_224.ms_in1k',
+  'vit_base_patch16_224.augreg_in21k',
+  'convnext_tiny.fb_in22k_caltech101',
+  'vit_small_patch16_224.augreg_in21k_ft_in1k',
 )
 
 #33-4 = 29 + 7 = 36
