@@ -4,12 +4,12 @@ ft_type: full_fine_tuning
 loss_function: TRADES_v2
 seed: 1
 epochs: 5
-lr1: 0.05809725572644378
-lr2: 1.2358511353661582e-05
-weight_decay1: 9.8809977477913e-06
-weight_decay2: 0.0028523786588596314
+lr1: 0.0029236541396874204
+lr2: 1.157612813535485e-06
+weight_decay1: 6.889395808497781e-05
+weight_decay2: 0.007002756882288199
 scheduler: false
-nb_completed_trials: 303
+nb_completed_trials: 289
 use_rs: false
 epsilon: 0.015686275
 step_size: 0.007843137
