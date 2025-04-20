@@ -38,8 +38,27 @@ model_parameters = {
         'edgenext_small': 8.0,  
         'coat_tiny': 12.0, }
 
+model_type = {
+        'convnext_base': "fully convolutional",
+        'convnext_tiny': "fully convolutional",
+        'deit_small': "fully attention",
+        'vit_base': "fully attention",
+        'vit_small': "fully attention",
+        'resnet50': "fully convolutional",
+        'eva02_base': "fully attention",
+        'eva02_tiny': "fully attention",
+        'swin_base': "fully attention",
+        'swin_tiny': "fully attention",
+        'coatnet_0': "hybrid",
+        'coatnet_2': "hybrid",
+        'regnetx_004': "fully convolutional",
+        'efficientnet-b0': "fully convolutional", 
+        'deit_tiny': "fully attention",
+        'mobilevit-small': "hybrid",
+        'mobilenetv3': "fully convolutional",
+        'edgenext_small': "fully convolutional",
+        'coat_tiny': "hybrid", }
 
-    # Two backbone groups
 backbones=(
     'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K',
     'CLIP-convnext_base_w-laion2B-s13B-b82K',
@@ -149,7 +168,17 @@ def load_result_dataset(pn1, pn2,):
 
                 result['backbone'] = backbone
                 result['dataset'] = data
-                result['loss_function'] = loss  
+                result['loss_function'] = loss
+                
+                # ── set model_type ────────────────────────────────────────────────────────────
+                for key, mtype in model_type.items():
+                    if key in backbone:         # e.g. "convnext_base" in "convnext_base.fb_in22k"
+                        result['model_type'] = mtype
+                        break
+                else:
+                    # executed only if the loop ends without 'break'
+                    result['model_type'] = "unknown"
+
                 final_data.append(result)
 
     return final_data
