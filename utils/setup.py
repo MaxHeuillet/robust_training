@@ -107,6 +107,8 @@ class Setup:
             base_bs = 40
         elif 'resnet50' in arch_lower:
             base_bs = 64
+        elif 'coat_tiny' in arch_lower:
+            base_bs = 88
         else:
             print(f"WARNING: unrecognized backbone '{config.backbone}', using fallback base_bs={base_bs}.")
 
