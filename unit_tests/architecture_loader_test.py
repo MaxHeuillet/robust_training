@@ -236,7 +236,7 @@ class TestModelForwardPass(unittest.TestCase):
 
                                 ### test the forward pass output shape
                                 logits = model(dummy_input)  # Get logits
-                                expected_shape = (self.batch_size, self.N)
+                                expected_shape = (bs, self.N)
 
                                 if not hasattr(logits, "shape"):
                                     raise TypeError(f"❌ Model output is not a tensor! Backbone: {backbone}, Output Type: {type(logits)}")
