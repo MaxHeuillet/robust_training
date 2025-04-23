@@ -1,5 +1,11 @@
 import pandas as pd
 
+# Re-run necessary steps after code environment reset
+import pandas as pd
+import numpy as np
+from statsmodels.stats.contingency_tables import Table2x2
+
+
 def process_grouped_df(final_data, size):
 
     df = pd.DataFrame(final_data)
@@ -78,12 +84,6 @@ def process_rankings(grouped_df):
     grouped_df = grouped_df.sort_values(('TOTAL', 'score_sum'), ascending=False)
 
     return grouped_df
-
-# Re-run necessary steps after code environment reset
-import pandas as pd
-import numpy as np
-from statsmodels.stats.contingency_tables import Table2x2
-
 
 # Recompute odds ratios using 'in_tier1'
 def compute_odds_ratio_by_group(df, group_col, target_col="in_tier1"):
