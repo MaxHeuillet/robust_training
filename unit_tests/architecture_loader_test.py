@@ -341,6 +341,8 @@ class TestModelForwardPass(unittest.TestCase):
         Test if AutoAttack can process a single synthetic batch without OOM or shape issues.
         """
 
+        device = torch.device("cuda")
+
         def forward_pass(x):
             return model(x)
 
@@ -363,7 +365,7 @@ class TestModelForwardPass(unittest.TestCase):
             norm=corruption_type,
             eps=epsilon,
             version='standard',
-            device=self.device,
+            device=device,
             verbose=False
         )
 
