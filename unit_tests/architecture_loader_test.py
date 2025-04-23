@@ -19,7 +19,7 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(PROJECT_ROOT)
 
 from architectures import load_architecture, CustomModel
-from utils import load_optimizer, move_architecture_to_tmpdir
+from utils import load_optimizer, move_architecture_to_tmpdir, Setup
 from losses import get_loss
 
 #  'vit_base_patch16_clip_224.laion400m_e32',
@@ -200,7 +200,7 @@ class TestModelForwardPass(unittest.TestCase):
 
                             ### test the gradient tracking
                                 
-                            device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+                            device = torch.device("cuda")
                             model = model.to(device)
                             model = DDP(model, device_ids=[0])
 
@@ -213,8 +213,12 @@ class TestModelForwardPass(unittest.TestCase):
                             else:
                                 print('raise an error here')
 
-                            dummy_input = torch.randn(self.batch_size, 3, 224, 224).to(device)
-                            dummy_target = torch.randint(0, self.N, (self.batch_size,)).to(device)
+
+                            setup = Setup(1)
+                            bs = setup.train_batch_size(self.config)
+                            dummy_input = torch.randn(bs, 3, 224, 224).to(device)
+                            dummy_target = torch.randint(0, self.N, (bs,)).to(device)
+
 
                             for loss_type in ['CLASSIC_AT', 'TRADES_v2']:
 
@@ -238,9 +242,9 @@ class TestModelForwardPass(unittest.TestCase):
                                     raise TypeError(f"❌ Model output is not a tensor! Backbone: {backbone}, Output Type: {type(logits)}")
 
                                 self.assertEqual(logits.shape, expected_shape,  f"❌ Output shape mismatch! Backbone: {backbone} - Got {logits.shape}, expected {expected_shape}" )
-                            
-                    
 
+                                self.test_autoattack_batch_pass(model)
+                        
                         except Exception as e:
                             print(f"❌ Exception in backbone {backbone}:\n{traceback.format_exc()}")  # ✅ Print full traceback
                             self.fail(f"🚨 Test failed for backbone {backbone} with error: {str(e)}")
@@ -332,42 +336,56 @@ class TestModelForwardPass(unittest.TestCase):
                 f"but got {submodule.training}"
             )
 
-    
     def test_autoattack_batch_pass(self, model):
+        """
+        Test if AutoAttack can process a single synthetic batch without OOM or shape issues.
+        """
 
         def forward_pass(x):
             return model(x)
-        
-        corruption_type = 'Linf'
 
+        # Config
+        corruption_type = 'Linf'
+        epsilon = self.config.epsilon if hasattr(self.config, "epsilon") else 8 / 255  # fallback default
+        batch_size = self.batch_size
+        input_shape = (3, 224, 224)  # Standard image size
+
+        setup = Setup(1)
+        device = torch.device("cuda")
+        bs = setup.test_batch_size(self.config)
+        x_nat = torch.randn(bs, 3, 224, 224).to(device)
+        target = torch.randint(0, self.N, (bs,)).to(device)
+
+
+        # Initialize AutoAttack
         adversary = AutoAttack(
             forward_pass,
             norm=corruption_type,
-            eps=self.config.epsilon,
+            eps=epsilon,
             version='standard',
             device=self.device,
             verbose=False
         )
 
-        for batch_idx, (x_nat, target) in enumerate(self.loader):
-            x_nat, target = x_nat.to(self.device), target.to(self.device)
+        try:
+            # Run attack
+            x_adv = adversary.run_standard_evaluation(x_nat, target, bs=batch_size)
 
-            try:
-                x_adv = adversary.run_standard_evaluation(x_nat, target, bs=self.batch_size)
-                logits_nat, logits_adv = self.model(x_nat, x_adv)
+            # Forward both clean and adversarial
+            logits_nat, logits_adv = model(x_nat, x_adv)
 
-                preds_nat = torch.argmax(logits_nat, dim=1)
-                preds_adv = torch.argmax(logits_adv, dim=1)
+            # Compute predictions
+            preds_nat = torch.argmax(logits_nat, dim=1)
+            preds_adv = torch.argmax(logits_adv, dim=1)
 
-                nat_correct = (preds_nat == target).sum().item()
-                adv_correct = (preds_adv == target).sum().item()
+            nat_correct = (preds_nat == target).sum().item()
+            adv_correct = (preds_adv == target).sum().item()
 
-                print(f"Batch {batch_idx}: Clean Acc={nat_correct}/{x_nat.size(0)}, Adversarial Acc={adv_correct}/{x_nat.size(0)}")
+            print(f"✅ Clean Acc: {nat_correct}/{batch_size}, Adversarial Acc: {adv_correct}/{batch_size}")
 
-            except RuntimeError as e:
-                self.fail(f"OOM or other RuntimeError during AutoAttack: {e}")
+        except RuntimeError as e:
+            self.fail(f"❌ OOM or other RuntimeError during AutoAttack: {e}")
 
-            break
 
 
     def _test_linear_probing(self, model):
