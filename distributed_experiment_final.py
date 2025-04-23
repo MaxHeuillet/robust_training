@@ -1,6 +1,6 @@
 import os
 os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
-from comet_ml import Experiment
+# from comet_ml import Experiment
 
 import torch
 import torch.distributed as dist
@@ -68,18 +68,18 @@ class BaseExperiment:
 
         logger = None
         
-        if rank == 0:
-            logger = Experiment(api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
-                                    project_name=config.project_name,
-                                    workspace="maxheuillet",
-                                    auto_metric_logging=False,
-                                    auto_output_logging=False)
+        # if rank == 0:
+        #     logger = Experiment(api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
+        #                             project_name=config.project_name,
+        #                             workspace="maxheuillet",
+        #                             auto_metric_logging=False,
+        #                             auto_output_logging=False)
             
-            logger.set_name( config.exp_id )
+        #     logger.set_name( config.exp_id )
             
-            logger.log_parameter("run_id", os.getenv('SLURM_JOB_ID') )
-            logger.log_parameter("global_process_rank", rank)
-            logger.log_parameters(config)
+        #     logger.log_parameter("run_id", os.getenv('SLURM_JOB_ID') )
+        #     logger.log_parameter("global_process_rank", rank)
+        #     logger.log_parameters(config)
         
         return logger
         
@@ -188,7 +188,7 @@ class BaseExperiment:
             shutil.copy2(str(model_name), str(dest))
             print(f"✅ Moved successfully.")
             
-            logger.end()
+            #logger.end()
         
         self.setup.cleanup()
         print('processes ended', flush=True)
@@ -250,7 +250,7 @@ class BaseExperiment:
                 if not self.setup.hp_opt and rank == 0:
                     metrics = { "global_step": global_step, 
                                 "loss_value": loss.item() * accumulation_steps, }
-                    logger.log_metrics(metrics, epoch=iteration, step = batch_step )
+                    #logger.log_metrics(metrics, epoch=iteration, step = batch_step )
 
                 batch_step += 1
 
@@ -264,7 +264,7 @@ class BaseExperiment:
                             
                         metrics = { "gradient_norm": float(gradient_norm),   }
                             
-                        logger.log_metrics(metrics, epoch=iteration, step=update_step, )
+                        #logger.log_metrics(metrics, epoch=iteration, step=update_step, )
 
 
                     scaler.step(optimizer)
@@ -366,7 +366,7 @@ class BaseExperiment:
             metrics = { "val_loss": val_loss, "val_nat_accuracy": nat_acc, "val_adv_accuracy": adv_acc, }
                         #"zero_adv_val": adv_zero, "dormant_adv_val": adv_dormant, "overactive_adv_val": adv_overact,
                 
-            logger.log_metrics(metrics, epoch=iteration)
+            #logger.log_metrics(metrics, epoch=iteration)
 
     def validation_loop(self, config, valloader, model, rank):
 
