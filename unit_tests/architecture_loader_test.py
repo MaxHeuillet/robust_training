@@ -13,6 +13,7 @@ import os
 import traceback  # ✅ Helps capture detailed errors
 import torch.nn as nn
 import timm
+from autoattack import AutoAttack
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(PROJECT_ROOT)
@@ -331,6 +332,43 @@ class TestModelForwardPass(unittest.TestCase):
                 f"but got {submodule.training}"
             )
 
+    
+    def test_autoattack_batch_pass(self, model):
+
+        def forward_pass(x):
+            return model(x)
+        
+        corruption_type = 'Linf'
+
+        adversary = AutoAttack(
+            forward_pass,
+            norm=corruption_type,
+            eps=self.config.epsilon,
+            version='standard',
+            device=self.device,
+            verbose=False
+        )
+
+        for batch_idx, (x_nat, target) in enumerate(self.loader):
+            x_nat, target = x_nat.to(self.device), target.to(self.device)
+
+            try:
+                x_adv = adversary.run_standard_evaluation(x_nat, target, bs=self.batch_size)
+                logits_nat, logits_adv = self.model(x_nat, x_adv)
+
+                preds_nat = torch.argmax(logits_nat, dim=1)
+                preds_adv = torch.argmax(logits_adv, dim=1)
+
+                nat_correct = (preds_nat == target).sum().item()
+                adv_correct = (preds_adv == target).sum().item()
+
+                print(f"Batch {batch_idx}: Clean Acc={nat_correct}/{x_nat.size(0)}, Adversarial Acc={adv_correct}/{x_nat.size(0)}")
+
+            except RuntimeError as e:
+                self.fail(f"OOM or other RuntimeError during AutoAttack: {e}")
+
+            break
+
 
     def _test_linear_probing(self, model):
 
@@ -461,13 +499,6 @@ class TestModelForwardPass(unittest.TestCase):
 
             elif "head_no_decay" in group_name:
                 self.assertEqual(nb_params, len_head_nodecay, f"❌ Error on the nb of parameters ")
-
-
-
-
-
-
-
 
 # Run the unit test
 if __name__ == "__main__":

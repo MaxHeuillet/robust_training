@@ -10,7 +10,6 @@ def process_grouped_df(final_data, size):
 
     df = pd.DataFrame(final_data)
 
-
     nan_percentage = (df.isna().sum().sum() / df.size) * 100
     print(f"Percentage of NaN values: {nan_percentage:.2f}%")
 
