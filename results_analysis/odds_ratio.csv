@@ -1,0 +1,37 @@
+,backbone,loss_function,pre_training_strategy,model_type,borda,nan_geom_cnt,nan_sum_cnt,rank_borda,rank_geom,rank_sum,score_geom,score_sum
+0,eva02_base_patch14_224.mim_in22k,TRADES_v2,self-supervised,fully attention,368.0,0,0,5.0,8.0,1.0,0.0,8.113412698412699
+1,swin_base_patch4_window7_224.ms_in22k_ft_in1k,TRADES_v2,supervised,fully attention,370.0,0,0,3.0,8.0,2.0,0.0,8.003857142857143
+2,convnext_base.fb_in22k_ft_in1k,TRADES_v2,supervised,fully convolutional,369.0,0,0,4.0,8.0,3.0,0.0,7.923714285714286
+3,CLIP-convnext_base_w-laion2B-s13B-b82K,TRADES_v2,self-supervised (multimodal),fully convolutional,352.0,0,0,7.0,8.0,4.0,0.0,7.543333333333333
+4,CLIP-convnext_base_w-laion_aesthetic-s13B-b82K,TRADES_v2,self-supervised (multimodal),fully convolutional,313.0,0,0,10.0,8.0,5.0,0.0,7.351238095238096
+5,convnext_base.fb_in22k,TRADES_v2,supervised,fully convolutional,335.0,0,0,8.0,8.0,6.0,0.0,7.0374285714285705
+6,vit_base_patch16_clip_224.laion2b_ft_in1k,TRADES_v2,self-supervised (multimodal),fully attention,314.0,0,0,9.0,8.0,7.0,0.0,6.9355714285714285
+7,convnext_base.clip_laion2b_augreg_ft_in12k_in1k,TRADES_v2,hybrid (multimodal),fully convolutional,304.0,0,0,11.0,8.0,8.0,0.0,6.589539682539682
+8,swin_base_patch4_window7_224.ms_in22k_ft_in1k,CLASSIC_AT,supervised,fully attention,285.0,0,0,12.0,8.0,9.0,0.0,6.436619047619048
+9,convnext_base.fb_in22k,CLASSIC_AT,supervised,fully convolutional,260.0,0,0,16.0,8.0,10.0,0.0,5.7843809523809515
+10,vit_base_patch16_clip_224.laion2b_ft_in1k,CLASSIC_AT,self-supervised (multimodal),fully attention,265.0,0,0,14.0,8.0,11.0,0.0,5.730476190476191
+11,convnext_base.fb_in1k,TRADES_v2,supervised,fully convolutional,254.0,0,0,18.0,8.0,12.0,0.0,5.598190476190476
+12,vit_base_patch16_clip_224.laion2b,TRADES_v2,self-supervised (multimodal),fully attention,236.0,1,1,19.0,8.0,13.0,0.0,5.4670000000000005
+13,convnext_base.clip_laion2b_augreg_ft_in12k_in1k,CLASSIC_AT,hybrid (multimodal),fully convolutional,275.0,0,0,13.0,8.0,14.0,0.0,5.440095238095238
+14,eva02_base_patch14_224.mim_in22k,CLASSIC_AT,self-supervised,fully attention,355.0,0,0,6.0,8.0,15.0,0.0,5.160714285714286
+15,convnext_base.fb_in22k_ft_in1k,CLASSIC_AT,supervised,fully convolutional,213.0,0,0,24.0,8.0,16.0,0.0,4.620285714285714
+16,vit_base_patch16_224.augreg_in1k,TRADES_v2,supervised,fully attention,216.0,0,0,22.0,8.0,17.0,0.0,4.339666666666666
+17,CLIP-convnext_base_w-laion2B-s13B-b82K,CLASSIC_AT,self-supervised (multimodal),fully convolutional,259.0,0,0,17.0,8.0,18.0,0.0,3.9569047619047617
+18,vit_base_patch16_clip_224.laion2b,CLASSIC_AT,self-supervised (multimodal),fully attention,220.0,0,0,21.0,8.0,19.0,0.0,3.844190476190476
+19,vit_base_patch16_224.augreg_in21k_ft_in1k,CLASSIC_AT,supervised,fully attention,264.0,0,0,15.0,3.0,20.0,1.4811204266666664e-07,3.658650793650794
+20,robust_convnext_base,TRADES_v2,supervised (robust),fully convolutional,582.0,0,0,1.0,1.0,21.0,0.0016785056068614106,3.3896190476190475
+21,vit_base_patch16_224.augreg_in21k,CLASSIC_AT,supervised,fully attention,224.0,0,0,20.0,5.0,22.0,2.7728904000000005e-08,3.0946666666666665
+22,convnext_base.fb_in1k,CLASSIC_AT,supervised,fully convolutional,155.0,0,0,28.0,8.0,23.0,0.0,2.8666349206349206
+23,CLIP-convnext_base_w-laion_aesthetic-s13B-b82K,CLASSIC_AT,self-supervised (multimodal),fully convolutional,205.0,0,0,26.0,8.0,24.0,0.0,2.8577460317460317
+24,robust_convnext_base,CLASSIC_AT,supervised (robust),fully convolutional,578.0,0,0,2.0,2.0,25.0,0.0003282840940579491,2.8145555555555557
+25,vit_base_patch16_224.augreg_in1k,CLASSIC_AT,supervised,fully attention,214.0,1,1,23.0,4.0,26.0,1.0500373333333334e-07,2.804
+26,vit_base_patch16_224.augreg_in21k_ft_in1k,TRADES_v2,supervised,fully attention,142.0,0,0,29.0,8.0,27.0,0.0,1.9507777777777777
+27,robust_vit_base_patch16_224,TRADES_v2,supervised (robust),fully attention,186.0,0,0,27.0,7.0,28.0,9.490460691349212e-09,1.7374285714285713
+28,robust_vit_base_patch16_224,CLASSIC_AT,supervised (robust),fully attention,210.0,0,0,25.0,6.0,29.0,2.5805184e-08,1.4494285714285717
+29,vit_base_patch16_224.augreg_in21k,TRADES_v2,supervised,fully attention,98.0,0,0,30.0,8.0,30.0,0.0,1.039031746031746
+30,vit_base_patch16_224.mae,TRADES_v2,self-supervised,fully attention,65.0,0,0,31.0,8.0,31.0,0.0,0.8672857142857143
+31,vit_base_patch16_224.mae,CLASSIC_AT,self-supervised,fully attention,55.0,0,0,32.0,8.0,32.0,0.0,0.6882380952380953
+32,coatnet_2_rw_224.sw_in12k,TRADES_v2,supervised,hybrid,0.0,6,6,33.0,8.0,33.0,0.0,0.0
+33,coatnet_2_rw_224.sw_in12k_ft_in1k,CLASSIC_AT,supervised,hybrid,0.0,6,6,33.0,8.0,33.0,0.0,0.0
+34,coatnet_2_rw_224.sw_in12k_ft_in1k,TRADES_v2,supervised,hybrid,0.0,6,6,33.0,8.0,33.0,0.0,0.0
+35,coatnet_2_rw_224.sw_in12k,CLASSIC_AT,supervised,hybrid,0.0,6,6,33.0,8.0,33.0,0.0,0.0

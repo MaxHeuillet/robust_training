@@ -1,0 +1,25 @@
+\begin{table}[ht]
+\centering
+\caption{Tier 1 fine-tuning configurations among small architectures}
+\label{tab:full_fine_tuning_50epochs_paper_final2_small}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+                         backbone &        loss & pre\_training\_strategy &         model\_type &  total\ Borda\ rank &  total\ geom\ rank &  total\ cumulative\ rank &  total\ Borda\ value &  total\ geom\ value &  total\ cumulative\ value \\
+\hline
+\hline
+        edgenext\_small.usi\_in1k &  TRADES\_v2 &              supervised & fully convolutional &                 1.0 &                1.0 &                      1.0 &               0.4955 &             14.6629 &                     362.0 \\
+\hline
+deit\_tiny\_patch16\_224.fb\_in1k &  TRADES\_v2 &              supervised &     fully attention &                 3.0 &                3.0 &                      2.0 &               0.3252 &             11.2662 &                     256.0 \\
+\hline
+         regnetx\_004.pycls\_in1k & CLASSIC\_AT &              supervised & fully convolutional &                 4.0 &                2.0 &                      3.0 &               0.4378 &             10.8458 &                     252.0 \\
+\hline
+         regnetx\_004.pycls\_in1k &  TRADES\_v2 &              supervised & fully convolutional &                 9.0 &                8.0 &                      4.0 &               0.0573 &              9.0004 &                     158.0 \\
+\hline
+ mobilenetv3\_large\_100.ra\_in1k &  TRADES\_v2 &              supervised & fully convolutional &                 7.0 &                9.0 &                      5.0 &               0.0383 &              8.8694 &                     176.0 \\
+\hline
+\hline
+\hline
+\end{tabular}
+}
+\end{table}

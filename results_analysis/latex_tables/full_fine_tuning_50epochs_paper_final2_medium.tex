@@ -1,0 +1,35 @@
+\begin{table}[ht]
+\centering
+\caption{Tier 1 fine-tuning configurations among medium architectures}
+\label{tab:full_fine_tuning_50epochs_paper_final2_medium}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+                          backbone &        loss & pre\_training\_strategy &         model\_type &  total\ Borda\ rank &  total\ geom\ rank &  total\ cumulative\ rank &  total\ Borda\ value &  total\ geom\ value &  total\ cumulative\ value \\
+\hline
+\hline
+convnext\_tiny.fb\_in22k\_ft\_in1k &  TRADES\_v2 &              supervised & fully convolutional &                 1.0 &                1.0 &                      1.0 &               0.8753 &             16.4900 &                     723.0 \\
+\hline
+           convnext\_tiny.fb\_in1k &  TRADES\_v2 &              supervised & fully convolutional &                 2.0 &                6.0 &                      2.0 &               0.6471 &             15.6048 &                     709.0 \\
+\hline
+          convnext\_tiny.fb\_in22k &  TRADES\_v2 &              supervised & fully convolutional &                 3.0 &                7.0 &                      3.0 &               0.6124 &             15.0662 &                     705.0 \\
+\hline
+            robust\_convnext\_tiny &  TRADES\_v2 &     supervised (robust) & fully convolutional &                 5.0 &                4.0 &                      4.0 &               0.7198 &             14.7121 &                     628.0 \\
+\hline
+           convnext\_tiny.fb\_in1k & CLASSIC\_AT &              supervised & fully convolutional &                 6.0 &                2.0 &                      5.0 &               0.8211 &             14.1907 &                     620.0 \\
+\hline
+ robust\_deit\_small\_patch16\_224 &  TRADES\_v2 &     supervised (robust) &     fully attention &                 4.0 &               10.0 &                      6.0 &               0.4303 &             13.2109 &                     653.0 \\
+\hline
+          convnext\_tiny.fb\_in22k & CLASSIC\_AT &              supervised & fully convolutional &                 7.0 &                8.0 &                      7.0 &               0.5346 &             13.1217 &                     585.0 \\
+\hline
+                  robust\_resnet50 & CLASSIC\_AT &     supervised (robust) & fully convolutional &                 8.0 &               24.0 &                      8.0 &               0.0682 &             11.7870 &                     544.0 \\
+\hline
+ robust\_deit\_small\_patch16\_224 & CLASSIC\_AT &     supervised (robust) &     fully attention &                10.0 &                3.0 &                      9.0 &               0.7382 &             11.1693 &                     517.0 \\
+\hline
+            robust\_convnext\_tiny & CLASSIC\_AT &     supervised (robust) & fully convolutional &                11.0 &               15.0 &                     10.0 &               0.2578 &             10.6300 &                     492.0 \\
+\hline
+\hline
+\hline
+\end{tabular}
+}
+\end{table}

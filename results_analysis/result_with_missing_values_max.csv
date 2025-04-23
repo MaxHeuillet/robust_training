@@ -1,5 +1,5 @@
 ,clean_acc,Linf_acc,L2_acc,L1_acc,common_acc,sum,geom,model_size,backbone,dataset,loss_function,model_type
-0,,,,,,,,2,CLIP-convnext_base_w-laion_aesthetic-s13B-b82K,uc-merced-land-use-dataset,TRADES_v2,fully convolutional
+0,0.6904761904761905,0.014285714285714285,0.08571428571428572,0.12698412698412698,0.4126984126984127,1.33015873015873,4.4308404713791346e-05,2,CLIP-convnext_base_w-laion_aesthetic-s13B-b82K,uc-merced-land-use-dataset,TRADES_v2,fully convolutional
 1,0.050793650793650794,0.050793650793650794,0.050793650793650794,0.047619047619047616,0.047619047619047616,0.24761904761904763,2.9715955350507486e-07,2,CLIP-convnext_base_w-laion2B-s13B-b82K,uc-merced-land-use-dataset,TRADES_v2,fully convolutional
 2,0.6309523809523809,0.0,0.0,0.0,0.45714285714285713,1.088095238095238,0.0,1,deit_small_patch16_224.fb_in1k,uc-merced-land-use-dataset,TRADES_v2,fully attention
 3,0.18571428571428572,0.12142857142857143,0.09285714285714286,0.03333333333333333,0.14285714285714285,0.5761904761904761,9.971539636262667e-06,1,robust_resnet50,uc-merced-land-use-dataset,TRADES_v2,fully convolutional
@@ -93,11 +93,11 @@
 105,0.915,0.087,0.22,0.598,0.794,2.614,0.0083154300372,2,swin_base_patch4_window7_224.ms_in22k_ft_in1k,caltech101,TRADES_v2,fully attention
 106,0.902,0.096,0.152,0.342,0.764,2.2560000000000002,0.0034390684753920005,1,swin_tiny_patch4_window7_224.ms_in1k,caltech101,TRADES_v2,fully attention
 107,0.114,0.114,0.08533333333333333,0.092,0.092,0.4973333333333333,9.386508288e-06,2,convnext_base.clip_laion2b_augreg_ft_in12k_in1k,caltech101,TRADES_v2,fully convolutional
-108,0.587,0.407,,,,,,2,convnext_base.fb_in22k_ft_in1k,caltech101,TRADES_v2,fully convolutional
+108,0.9386666666666666,0.7213333333333334,,,,,,2,convnext_base.fb_in22k_ft_in1k,caltech101,TRADES_v2,fully convolutional
 109,0.01,0.01,0.01,0.01,0.01,0.05,1.0000000000000002e-10,1,convnext_tiny.fb_in22k_ft_in1k,caltech101,TRADES_v2,fully convolutional
 110,0.31,0.0,0.0,0.0,0.19,0.5,0.0,1,coatnet_0_rw_224.sw_in1k,caltech101,TRADES_v2,hybrid
-111,0.725,0.062,,,,,,2,coatnet_2_rw_224.sw_in12k_ft_in1k,caltech101,TRADES_v2,hybrid
-112,0.7826666666666666,0.0013333333333333333,,,,,,2,coatnet_2_rw_224.sw_in12k,caltech101,TRADES_v2,hybrid
+111,0.881,0.081,,,,,,2,coatnet_2_rw_224.sw_in12k_ft_in1k,caltech101,TRADES_v2,hybrid
+112,0.542,0.005,,,,,,2,coatnet_2_rw_224.sw_in12k,caltech101,TRADES_v2,hybrid
 120,0.01,0.01,0.008,0.01,0.01,0.048,8.000000000000001e-11,2,CLIP-convnext_base_w-laion_aesthetic-s13B-b82K,fgvc-aircraft-2013b,TRADES_v2,fully convolutional
 121,0.178,0.0,0.0,0.0,0.15866666666666668,0.33666666666666667,0.0,2,CLIP-convnext_base_w-laion2B-s13B-b82K,fgvc-aircraft-2013b,TRADES_v2,fully convolutional
 122,0.061,0.0,0.0,0.0,0.051,0.11199999999999999,0.0,1,deit_small_patch16_224.fb_in1k,fgvc-aircraft-2013b,TRADES_v2,fully attention
@@ -178,7 +178,7 @@
 211,0.030666666666666665,0.030666666666666665,0.02266666666666667,0.028,0.028,0.13999999999999999,1.671232474074074e-08,2,robust_convnext_base,oxford-iiit-pet,TRADES_v2,fully convolutional
 212,0.72,0.0,0.0,0.006,0.617,1.343,0.0,2,vit_base_patch16_224.augreg_in1k,oxford-iiit-pet,TRADES_v2,fully attention
 213,0.027,0.027,0.027,0.027,0.027,0.135,1.4348906999999998e-08,2,vit_base_patch16_224.augreg_in21k,oxford-iiit-pet,TRADES_v2,fully attention
-214,,,,,,,,2,vit_base_patch16_clip_224.laion2b,oxford-iiit-pet,TRADES_v2,fully attention
+214,0.028,0.028,0.028,0.024,0.028,0.136,1.4751744000000001e-08,2,vit_base_patch16_clip_224.laion2b,oxford-iiit-pet,TRADES_v2,fully attention
 215,0.929,0.0,0.0,0.001,0.868,1.798,0.0,1,convnext_tiny.fb_in1k,oxford-iiit-pet,TRADES_v2,fully convolutional
 216,0.324,0.086,0.048,0.001,0.268,0.7270000000000001,3.5844249600000003e-07,1,robust_convnext_tiny,oxford-iiit-pet,TRADES_v2,fully convolutional
 217,0.025333333333333333,0.025333333333333333,0.02666666666666667,0.027,0.027,0.13133333333333333,1.2476160000000002e-08,1,robust_deit_small_patch16_224,oxford-iiit-pet,TRADES_v2,fully attention
@@ -197,12 +197,12 @@
 230,0.904,0.0,0.0,0.004,0.774,1.682,0.0,1,coatnet_0_rw_224.sw_in1k,oxford-iiit-pet,TRADES_v2,hybrid
 231,0.024,0.0,0.002,0.012,0.029333333333333333,0.06733333333333334,0.0,2,coatnet_2_rw_224.sw_in12k_ft_in1k,oxford-iiit-pet,TRADES_v2,hybrid
 232,0.196,0.0,0.0,0.0,0.134,0.33,0.0,2,coatnet_2_rw_224.sw_in12k,oxford-iiit-pet,TRADES_v2,hybrid
-240,0.0380952380952381,0.0380952380952381,,,,,,2,CLIP-convnext_base_w-laion_aesthetic-s13B-b82K,uc-merced-land-use-dataset,CLASSIC_AT,fully convolutional
+240,0.047619047619047616,0.047619047619047616,0.047619047619047616,0.047619047619047616,0.047619047619047616,0.23809523809523808,2.448519270213934e-07,2,CLIP-convnext_base_w-laion_aesthetic-s13B-b82K,uc-merced-land-use-dataset,CLASSIC_AT,fully convolutional
 241,0.047619047619047616,0.047619047619047616,0.04047619047619048,0.047619047619047616,0.0380952380952381,0.22142857142857142,1.6649931037454754e-07,2,CLIP-convnext_base_w-laion2B-s13B-b82K,uc-merced-land-use-dataset,CLASSIC_AT,fully convolutional
 242,0.3119047619047619,0.009523809523809525,0.06428571428571428,0.09285714285714286,0.26666666666666666,0.7452380952380953,4.7285853116756906e-06,1,deit_small_patch16_224.fb_in1k,uc-merced-land-use-dataset,CLASSIC_AT,fully attention
 243,0.8380952380952381,0.5619047619047619,0.46904761904761905,0.17857142857142858,0.55,2.5976190476190473,0.02169440202384809,1,robust_resnet50,uc-merced-land-use-dataset,CLASSIC_AT,fully convolutional
 244,0.09523809523809523,0.03571428571428571,0.02142857142857143,0.01904761904761905,0.08095238095238096,0.2523809523809524,1.1238703450281958e-07,1,vit_small_patch16_224.augreg_in21k,uc-merced-land-use-dataset,CLASSIC_AT,fully attention
-245,,,,,,,,2,convnext_base.fb_in1k,uc-merced-land-use-dataset,CLASSIC_AT,fully convolutional
+245,0.2714285714285714,0.014285714285714285,0.011904761904761904,0.012698412698412698,0.20714285714285716,0.5174603174603175,1.21422070609909e-07,2,convnext_base.fb_in1k,uc-merced-land-use-dataset,CLASSIC_AT,fully convolutional
 246,0.05476190476190476,0.0,0.0,0.0,0.06666666666666667,0.12142857142857143,0.0,1,resnet50.a1_in1k,uc-merced-land-use-dataset,CLASSIC_AT,fully convolutional
 247,0.047619047619047616,0.04285714285714286,0.047619047619047616,0.0380952380952381,0.047619047619047616,0.22380952380952382,1.7629338745540327e-07,2,robust_vit_base_patch16_224,uc-merced-land-use-dataset,CLASSIC_AT,fully attention
 248,0.12142857142857143,0.04047619047619048,0.02857142857142857,0.0,0.11190476190476191,0.3023809523809524,0.0,2,vit_base_patch16_224.mae,uc-merced-land-use-dataset,CLASSIC_AT,fully attention
@@ -226,7 +226,7 @@
 266,0.05476190476190476,0.0,0.0,0.0,0.05238095238095238,0.10714285714285715,0.0,1,swin_tiny_patch4_window7_224.ms_in1k,uc-merced-land-use-dataset,CLASSIC_AT,fully attention
 267,0.04126984126984127,0.04126984126984127,0.05238095238095238,0.047619047619047616,0.047619047619047616,0.23015873015873015,2.0230210325900903e-07,2,convnext_base.clip_laion2b_augreg_ft_in12k_in1k,uc-merced-land-use-dataset,CLASSIC_AT,fully convolutional
 268,0.09761904761904762,0.0,0.0,0.0,0.09047619047619047,0.1880952380952381,0.0,2,convnext_base.fb_in22k_ft_in1k,uc-merced-land-use-dataset,CLASSIC_AT,fully convolutional
-269,,,,,,,,1,convnext_tiny.fb_in22k_ft_in1k,uc-merced-land-use-dataset,CLASSIC_AT,fully convolutional
+269,0.5206349206349207,0.0,0.0,0.004761904761904762,0.4380952380952381,0.9634920634920635,0.0,1,convnext_tiny.fb_in22k_ft_in1k,uc-merced-land-use-dataset,CLASSIC_AT,fully convolutional
 270,,,,,,,,1,coatnet_0_rw_224.sw_in1k,uc-merced-land-use-dataset,CLASSIC_AT,hybrid
 271,0.06666666666666667,0.0031746031746031746,0.030952380952380953,0.050793650793650794,0.05714285714285714,0.20873015873015874,1.9013568306301274e-08,2,coatnet_2_rw_224.sw_in12k_ft_in1k,uc-merced-land-use-dataset,CLASSIC_AT,hybrid
 272,0.06666666666666667,0.0,0.0,0.0,0.06984126984126984,0.13650793650793652,0.0,2,coatnet_2_rw_224.sw_in12k,uc-merced-land-use-dataset,CLASSIC_AT,hybrid
@@ -249,7 +249,7 @@
 296,0.01,0.001,0.0013333333333333333,0.0,0.005,0.017333333333333333,0.0,1,robust_convnext_tiny,stanford_cars,CLASSIC_AT,fully convolutional
 297,0.006,0.0,0.0,0.0,0.008,0.014,0.0,1,robust_deit_small_patch16_224,stanford_cars,CLASSIC_AT,fully attention
 298,0.006666666666666667,0.006666666666666667,0.008,0.008,0.008,0.037333333333333336,2.2755555555555564e-11,1,vit_small_patch16_224.augreg_in1k,stanford_cars,CLASSIC_AT,fully attention
-299,,,,,,,,1,convnext_tiny.fb_in22k,stanford_cars,CLASSIC_AT,fully convolutional
+299,0.008,0.008,0.004,0.008,0.008,0.036000000000000004,1.6384000000000005e-11,1,convnext_tiny.fb_in22k,stanford_cars,CLASSIC_AT,fully convolutional
 300,0.008,0.008,0.008,0.009333333333333334,0.008,0.04133333333333333,3.822933333333334e-11,2,vit_base_patch16_clip_224.laion2b_ft_in1k,stanford_cars,CLASSIC_AT,fully attention
 301,0.004,0.004,0.004,0.003,0.008,0.023,1.5360000000000001e-12,2,vit_base_patch16_224.augreg_in21k_ft_in1k,stanford_cars,CLASSIC_AT,fully attention
 302,0.006666666666666667,0.006666666666666667,0.008,0.006666666666666667,0.008,0.036000000000000004,1.8962962962962968e-11,1,vit_small_patch16_224.augreg_in21k_ft_in1k,stanford_cars,CLASSIC_AT,fully attention
@@ -282,7 +282,7 @@
 336,0.81,0.703,0.671,0.502,0.72,3.4059999999999997,0.1381017168432,1,robust_convnext_tiny,caltech101,CLASSIC_AT,fully convolutional
 337,0.167,0.143,0.152,0.153,0.155,0.77,8.608336308e-05,1,robust_deit_small_patch16_224,caltech101,CLASSIC_AT,fully attention
 338,0.194,0.162,0.151,0.144,0.148,0.799,0.00010113882393600001,1,vit_small_patch16_224.augreg_in1k,caltech101,CLASSIC_AT,fully attention
-339,,,,,,,,1,convnext_tiny.fb_in22k,caltech101,CLASSIC_AT,fully convolutional
+339,0.092,0.092,0.088,0.09,0.092,0.45399999999999996,6.167208959999999e-06,1,convnext_tiny.fb_in22k,caltech101,CLASSIC_AT,fully convolutional
 340,0.092,0.092,0.092,0.092,0.092,0.45999999999999996,6.590815231999999e-06,2,vit_base_patch16_clip_224.laion2b_ft_in1k,caltech101,CLASSIC_AT,fully attention
 341,0.709,0.002,0.009,0.0,0.575,1.295,0.0,2,vit_base_patch16_224.augreg_in21k_ft_in1k,caltech101,CLASSIC_AT,fully attention
 342,0.143,0.137,0.138,0.137,0.135,0.6900000000000001,5.0002305210000014e-05,1,vit_small_patch16_224.augreg_in21k_ft_in1k,caltech101,CLASSIC_AT,fully attention
@@ -290,7 +290,7 @@
 344,0.144,0.134,0.14,0.134,0.136,0.6880000000000001,4.9231042560000016e-05,1,eva02_tiny_patch14_224.mim_in22k,caltech101,CLASSIC_AT,fully attention
 345,0.858,0.502,0.673,0.724,0.746,3.5029999999999997,0.156560955394272,2,swin_base_patch4_window7_224.ms_in22k_ft_in1k,caltech101,CLASSIC_AT,fully attention
 346,0.092,0.092,0.09,0.092,0.092,0.45799999999999996,6.447536639999999e-06,1,swin_tiny_patch4_window7_224.ms_in1k,caltech101,CLASSIC_AT,fully attention
-347,0.876,0.603,,,,,,2,convnext_base.clip_laion2b_augreg_ft_in12k_in1k,caltech101,CLASSIC_AT,fully convolutional
+347,0.879,0.617,,,,,,2,convnext_base.clip_laion2b_augreg_ft_in12k_in1k,caltech101,CLASSIC_AT,fully convolutional
 348,0.092,0.092,0.092,0.092,0.092,0.45999999999999996,6.590815231999999e-06,2,convnext_base.fb_in22k_ft_in1k,caltech101,CLASSIC_AT,fully convolutional
 349,0.823,0.543,0.674,0.693,0.727,3.46,0.151749478341846,1,convnext_tiny.fb_in22k_ft_in1k,caltech101,CLASSIC_AT,fully convolutional
 350,0.135,0.119,0.131,0.134,0.128,0.647,3.609664128e-05,1,coatnet_0_rw_224.sw_in1k,caltech101,CLASSIC_AT,hybrid

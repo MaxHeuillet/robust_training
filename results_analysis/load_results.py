@@ -114,6 +114,40 @@ yann_backbones = (
     'edgenext_small.usi_in1k',
     'coat_tiny.in1k', )
 
+pre_trainining_strategy = {
+    'CLIP': 'self-supervised (multimodal)',
+    'clip_224.laion2b': 'self-supervised (multimodal)',
+
+    'clip_laion2b_augreg_ft_in12k_in1k':'hybrid (multimodal)',
+    'clip_224.laion2b_ft_in1k':'hybrid (multimodal)',
+    
+    'fb_in1k': 'supervised',
+    'robust': 'supervised (robust)',
+    'augreg_in21k': 'supervised',
+    'a1_in1k': 'supervised',
+    'mae': 'self-supervised',
+    'dino': 'self-supervised',
+    'fb_in22k': 'supervised',
+    'augreg_in1k':'supervised',
+    'augreg_in21k': 'supervised',
+    'augreg_in21k_ft_in1k': 'supervised', 
+    'mim_in22k': 'self-supervised',
+    'ms_in22k_ft_in1k': 'supervised',
+    'ms_in1k':'supervised',
+
+    'fb_in22k_ft_in1k': 'supervised',
+    'sw_in1k':'supervised',
+    'sw_in12k_ft_in1k': 'supervised',
+    'sw_in12k':'supervised',
+    'pycls_in1k':'supervised',
+    'efficientnet-b0':'supervised',
+    'fb_in1k':'supervised',
+    'mobilevit-small':'supervised',
+    'ra_in1k':'supervised',
+    'usi_in1k':'supervised',
+    'in1k':'supervised' }
+
+
 def sums_from_dict(scores):
 
     values = []
@@ -135,9 +169,9 @@ def load_result_dataset(pn1, pn2,):
             for backbone in backbones:
 
                 if backbone in yann_backbones:
-                    project_name = pn1#'full_fine_tuning_50epochs_edge_paper_final2'
+                    project_name = pn1
                 else:
-                    project_name = pn2#'full_fine_tuning_50epochs_paper_final2'
+                    project_name = pn2
 
                 try:
                     name ='{}_{}_{}'.format(backbone, data, loss)
@@ -158,11 +192,11 @@ def load_result_dataset(pn1, pn2,):
                 for key, value in model_parameters.items():
                     if key in backbone:  # Match the model name in the backbone string
                         if value < 20:
-                            result['model_size'] = 0 
+                            result['model_size'] = 'small'
                         elif value < 50:
-                            result['model_size'] = 1
+                            result['model_size'] = 'medium'
                         else:
-                            result['model_size'] = 2
+                            result['model_size'] = 'large'
 
                         break
 
@@ -178,6 +212,14 @@ def load_result_dataset(pn1, pn2,):
                 else:
                     # executed only if the loop ends without 'break'
                     result['model_type'] = "unknown"
+
+                # ── set pre_training_strategy ───────────────────────────────────────────────
+                for key, strategy in pre_trainining_strategy.items():
+                    if key in backbone:
+                        result['pre_training_strategy'] = strategy
+                        break
+                else:
+                    result['pre_training_strategy'] = "unknown"
 
                 final_data.append(result)
 
