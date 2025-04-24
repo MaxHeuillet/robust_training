@@ -8,7 +8,7 @@ email = "maxime.heuillet.1@ulaval.ca"
 
 # project_name = "full_fine_tuning_5epochs_article1"
 # project_name = "linearprobe_50epochs_paper_final2"
-pn2 = 'full_fine_tuning_50epochs_paper_final2'
+project_name = 'full_fine_tuning_50epochs_paper_final2'
 
 ACCOUNT = "rrg-csubakan"
 
