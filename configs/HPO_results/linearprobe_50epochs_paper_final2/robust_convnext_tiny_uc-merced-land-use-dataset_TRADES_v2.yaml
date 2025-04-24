@@ -5,11 +5,11 @@ loss_function: TRADES_v2
 seed: 1
 epochs: 50
 lr1: 0.001
-lr2: 0.00014239437572248639
+lr2: 1.0335979401650288e-06
 weight_decay1: 0.0
-weight_decay2: 0.005708357416333576
+weight_decay2: 0.0002941573161810303
 scheduler: true
-nb_completed_trials: 238
+nb_completed_trials: 248
 use_rs: false
 epsilon: 0.015686275
 step_size: 0.007843137
@@ -18,7 +18,7 @@ distance: Linf
 beta: 1.0
 project_name: linearprobe_50epochs_paper_final2
 exp_id: robust_convnext_tiny_uc-merced-land-use-dataset_TRADES_v2
-statedicts_path: ~/scratch/state_dicts/
+statedicts_path: ~/scratch/state_dicts_share/
 trained_statedicts_path: ~/scratch/trained_state_dicts/
 datasets_path: ~/scratch/data/
 hpo_path: ~/scratch/hpo_results/
