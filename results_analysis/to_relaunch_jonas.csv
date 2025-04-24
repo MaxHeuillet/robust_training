@@ -37,7 +37,6 @@
 430,coatnet_0_rw_224.sw_in1k,flowers-102,CLASSIC_AT,job1_hpo.sh
 431,coatnet_2_rw_224.sw_in12k_ft_in1k,flowers-102,CLASSIC_AT,job1_hpo.sh
 432,coatnet_2_rw_224.sw_in12k,flowers-102,CLASSIC_AT,job1_hpo.sh
-456,robust_convnext_tiny,oxford-iiit-pet,CLASSIC_AT,job5_test_l2.sh
 470,coatnet_0_rw_224.sw_in1k,oxford-iiit-pet,CLASSIC_AT,job1_hpo.sh
 471,coatnet_2_rw_224.sw_in12k_ft_in1k,oxford-iiit-pet,CLASSIC_AT,job1_hpo.sh
 472,coatnet_2_rw_224.sw_in12k,oxford-iiit-pet,CLASSIC_AT,job1_hpo.sh
