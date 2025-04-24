@@ -165,89 +165,97 @@ class TestModelForwardPass(unittest.TestCase):
 
         """ Test forward pass for all backbone sets """
         for category, backbones in ALL_BACKBONES.items():
+
             print(f"\n🔹 Testing {category} ({len(backbones)} models) 🔹")
+
             for backbone in backbones:
 
                 print(f"\n🔎 Testing backbone: {backbone}")
 
-                for ft_type in ['linear_probing', 'full_fine_tuning']:
+                for data in ['uc-merced-land-use-dataset', 'flowers-102', 'caltech101', 'stanford_cars', 'fgvc-aircraft-2013b', 'oxford-iiit-pet' ]:
 
-                    with self.subTest(backbone=backbone):
+                    self.config.dataset = data
+
+                    print('data', data)
+
+                    for ft_type in ['linear_probing', 'full_fine_tuning']:
+
+                        with self.subTest(backbone=backbone):
+                                
+                            self.config.lr1 = 1
+                            self.config.lr2 = 1
+                            self.config.weight_decay1 = 1
+                            self.config.weight_decay2 = 1
+                            self.config.ft_type = ft_type
+
+                            try:
+        
+                                # Load the model
+                                self.config.backbone = backbone
+                                move_architecture_to_tmpdir(self.config)
+                                model = load_architecture(self.config, self.N)
+                                self.assertIsNotNone(model, f"❌ Model failed to load! Backbone: {backbone}")
+                                model = CustomModel(self.config, model, )
+                                    
+                                ### test the retrieval of the head module:
+
+                                head_submodule = model.get_classification_head()
+                                expected_cls = get_expected_head_type(backbone)
+
+                                assert isinstance(head_submodule, expected_cls), (
+                                            f"For {backbone}, expected {expected_cls} but got {type(head_submodule)}"
+                                        )
+
+                                ### test the gradient tracking
+                                    
+                                device = torch.device("cuda")
+                                model = model.to(device)
+                                model = DDP(model, device_ids=[0])
+
+                                if self.config.ft_type == 'linear_probing':
+                                    self._test_linear_probing(model)
+                                    self._test_linear_probing_train_eval_modes(model)
+                                elif self.config.ft_type == 'full_fine_tuning':
+                                    self._test_full_fine_tuning(model)
+                                    self._test_full_finetuning_train_eval_modes(model)
+                                else:
+                                    print('raise an error here')
+
+
+                                setup = Setup(1)
+                                bs = setup.train_batch_size(self.config)
+                                dummy_input = torch.randn(bs, 3, 224, 224).to(device)
+                                dummy_target = torch.randint(0, self.N, (bs,)).to(device)
+
+
+                                for loss_type in ['CLASSIC_AT', 'TRADES_v2']:
+
+                                    ### test the loss
+                                    self.config.loss_type = loss_type
+                                    loss_values, logits = get_loss(self.config, model, dummy_input, dummy_target)
+                                    loss = loss_values.mean()
+
+                                    self.assertTrue(loss.ndim == 0,
+                                        f"❌ Loss {loss_type} is not a scalar! Got shape: {loss.shape}" )
+
+                                    ### test the optimizer 
+                                    optimizer = load_optimizer(self.config, model)
+                                    self._validate_optimizer(self.config, optimizer, model, backbone)
+
+                                    ### test the forward pass output shape
+                                    logits = model(dummy_input)  # Get logits
+                                    expected_shape = (bs, self.N)
+
+                                    if not hasattr(logits, "shape"):
+                                        raise TypeError(f"❌ Model output is not a tensor! Backbone: {backbone}, Output Type: {type(logits)}")
+
+                                    self.assertEqual(logits.shape, expected_shape,  f"❌ Output shape mismatch! Backbone: {backbone} - Got {logits.shape}, expected {expected_shape}" )
+
+                                    self.test_autoattack_batch_pass(model)
                             
-                        self.config.lr1 = 1
-                        self.config.lr2 = 1
-                        self.config.weight_decay1 = 1
-                        self.config.weight_decay2 = 1
-                        self.config.ft_type = ft_type
-
-                        try:
-    
-                            # Load the model
-                            self.config.backbone = backbone
-                            move_architecture_to_tmpdir(self.config)
-                            model = load_architecture(self.config, self.N)
-                            self.assertIsNotNone(model, f"❌ Model failed to load! Backbone: {backbone}")
-                            model = CustomModel(self.config, model, )
-                                
-                            ### test the retrieval of the head module:
-
-                            head_submodule = model.get_classification_head()
-                            expected_cls = get_expected_head_type(backbone)
-
-                            assert isinstance(head_submodule, expected_cls), (
-                                        f"For {backbone}, expected {expected_cls} but got {type(head_submodule)}"
-                                    )
-
-                            ### test the gradient tracking
-                                
-                            device = torch.device("cuda")
-                            model = model.to(device)
-                            model = DDP(model, device_ids=[0])
-
-                            if self.config.ft_type == 'linear_probing':
-                                self._test_linear_probing(model)
-                                self._test_linear_probing_train_eval_modes(model)
-                            elif self.config.ft_type == 'full_fine_tuning':
-                                self._test_full_fine_tuning(model)
-                                self._test_full_finetuning_train_eval_modes(model)
-                            else:
-                                print('raise an error here')
-
-
-                            setup = Setup(1)
-                            bs = setup.train_batch_size(self.config)
-                            dummy_input = torch.randn(bs, 3, 224, 224).to(device)
-                            dummy_target = torch.randint(0, self.N, (bs,)).to(device)
-
-
-                            for loss_type in ['CLASSIC_AT', 'TRADES_v2']:
-
-                                ### test the loss
-                                self.config.loss_type = loss_type
-                                loss_values, logits = get_loss(self.config, model, dummy_input, dummy_target)
-                                loss = loss_values.mean()
-
-                                self.assertTrue(loss.ndim == 0,
-                                     f"❌ Loss {loss_type} is not a scalar! Got shape: {loss.shape}" )
-
-                                ### test the optimizer 
-                                optimizer = load_optimizer(self.config, model)
-                                self._validate_optimizer(self.config, optimizer, model, backbone)
-
-                                ### test the forward pass output shape
-                                logits = model(dummy_input)  # Get logits
-                                expected_shape = (bs, self.N)
-
-                                if not hasattr(logits, "shape"):
-                                    raise TypeError(f"❌ Model output is not a tensor! Backbone: {backbone}, Output Type: {type(logits)}")
-
-                                self.assertEqual(logits.shape, expected_shape,  f"❌ Output shape mismatch! Backbone: {backbone} - Got {logits.shape}, expected {expected_shape}" )
-
-                                self.test_autoattack_batch_pass(model)
-                        
-                        except Exception as e:
-                            print(f"❌ Exception in backbone {backbone}:\n{traceback.format_exc()}")  # ✅ Print full traceback
-                            self.fail(f"🚨 Test failed for backbone {backbone} with error: {str(e)}")
+                            except Exception as e:
+                                print(f"❌ Exception in backbone {backbone}:\n{traceback.format_exc()}")  # ✅ Print full traceback
+                                self.fail(f"🚨 Test failed for backbone {backbone} with error: {str(e)}")
 
                         
         dist.destroy_process_group()
@@ -386,7 +394,7 @@ class TestModelForwardPass(unittest.TestCase):
             print(f"✅ Clean Acc: {nat_correct}/{batch_size}, Adversarial Acc: {adv_correct}/{batch_size}")
 
         except RuntimeError as e:
-            self.fail(f"❌ OOM or other RuntimeError during AutoAttack: {e}")
+            self.fail(f"❌ RuntimeError during AutoAttack: {e}")
 
 
 
