@@ -101,14 +101,16 @@ class Setup:
             base_bs = 15
         elif any(x in arch_lower for x in ['convnext_base', ]):
             base_bs = 22
-        elif any(x in arch_lower for x in ['deit_small', 'eva02_tiny', 'swin_tiny', 'coatnet_0', 'vit_small']):
+        elif 'coatnet_0' in arch_lower:
+            base_bs = 50
+        elif any(x in arch_lower for x in ['deit_small', 'eva02_tiny', 'swin_tiny',  'vit_small']):
             base_bs = 88
         elif any(x in arch_lower for x in ['vit_base', 'swin_base', 'eva02_base', ]):
             base_bs = 40
         elif 'resnet50' in arch_lower:
             base_bs = 64
         elif 'coat_tiny' in arch_lower:
-            base_bs = 88
+            base_bs = 50
         else:
             print(f"WARNING: unrecognized backbone '{config.backbone}', using fallback base_bs={base_bs}.")
 

@@ -1,0 +1,16 @@
+\begin{table}[ht]
+\centering
+\caption{Top 3 fine-tuning configurations}
+\label{tab:FFT_50_epochs}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|c|c|c|c|}
+\toprule
+\textbf{Size} &            \textbf{Best (\emoji{1st-place-medal})} &         \textbf{Better (\emoji{2nd-place-medal})} &         \textbf{Good (\emoji{3rd-place-medal})} &  \textbf{$\Delta \%$ (\emoji{1st-place-medal}$\rightarrow$\emoji{2nd-place-medal})} &  \textbf{$\Delta \%$ (\emoji{2nd-place-medal}$\rightarrow$\emoji{3rd-place-medal})} \\
+\midrule
+        small &                           regnetx\_004.pycls\_in1k &                 deit\_tiny\_patch16\_224.fb\_in1k &                       edgenext\_small.usi\_in1k &                                               3.88 &                                              30.15 \\
+       medium &                           convnext\_tiny.fb\_in22k &                           convnext\_tiny.fb\_in1k &              convnext\_tiny.fb\_in22k\_ft\_in1k &                                               3.57 &                                               5.67 \\
+        large & swin\_base\_patch4\_window7\_224.ms\_in22k\_ft\... & CLIP-convnext\_base\_w-laion\_aesthetic-s13B-b82K & vit\_base\_patch16\_clip\_224.laion2b\_ft\_in1k &                                               1.52 &                                               9.06 \\
+\bottomrule
+\end{tabular}
+}
+\end{table}

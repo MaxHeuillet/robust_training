@@ -1,0 +1,16 @@
+\begin{table}[ht]
+\centering
+\caption{Top 3 fine-tuning configurations}
+\label{tab:LP_50_epochs}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|c|c|c|c|}
+\toprule
+\textbf{Size} & \textbf{Best (\emoji{1st-place-medal})} &          \textbf{Better (\emoji{2nd-place-medal})} & \textbf{Good (\emoji{3rd-place-medal})} &  \textbf{$\Delta \%$ (\emoji{1st-place-medal}$\rightarrow$\emoji{2nd-place-medal})} &  \textbf{$\Delta \%$ (\emoji{2nd-place-medal}$\rightarrow$\emoji{3rd-place-medal})} \\
+\midrule
+        small &       deit\_tiny\_patch16\_224.fb\_in1k &                   mobilenetv3\_large\_100.ra\_in1k &               edgenext\_small.usi\_in1k &                                               8.22 &                                              20.57 \\
+       medium &       robust\_deit\_small\_patch16\_224 &                             robust\_convnext\_tiny &       robust\_deit\_small\_patch16\_224 &                                               6.72 &                                              22.83 \\
+        large &      convnext\_base.fb\_in22k\_ft\_in1k & swin\_base\_patch4\_window7\_224.ms\_in22k\_ft\... &    eva02\_base\_patch14\_224.mim\_in22k &                                               1.01 &                                               1.37 \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
