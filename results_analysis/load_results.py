@@ -56,8 +56,10 @@ model_type = {
         'deit_tiny': "fully attention",
         'mobilevit-small': "hybrid",
         'mobilenetv3': "fully convolutional",
-        'edgenext_small': "fully convolutional",
+        'edgenext_small': "hybrid",
         'coat_tiny': "hybrid", }
+
+
 
 backbones=(
     'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K',
@@ -114,38 +116,120 @@ yann_backbones = (
     'edgenext_small.usi_in1k',
     'coat_tiny.in1k', )
 
-pre_trainining_strategy = {
-    'CLIP': 'self-supervised (multimodal)',
-    'clip_224.laion2b': 'self-supervised (multimodal)',
+volume_pre_training_data = {
+    "laion_aesthetic":900_000_000 ,
+    "laion2B":2_320_000_000,
+    "in1k":1_281_167,
+    "in22k":14_197_122,
+    "laion2b+in1k":2_320_000_000+1_281_167,
+    "in22k+in1k":14_197_122+1_281_167,
+    "laion2b+in12k+in1k":2_320_000_000+9_000_000+1_281_167,
+    "in12k+in1k":9_000_000+1_281_167,
+    "in12k":9_000_000,
+}
 
-    'clip_laion2b_augreg_ft_in12k_in1k':'hybrid (multimodal)',
-    'clip_224.laion2b_ft_in1k':'hybrid (multimodal)',
-    
-    'fb_in1k': 'supervised',
-    'robust': 'supervised (robust)',
-    'augreg_in21k': 'supervised',
-    'a1_in1k': 'supervised',
-    'mae': 'self-supervised',
-    'dino': 'self-supervised',
-    'fb_in22k': 'supervised',
-    'augreg_in1k':'supervised',
-    'augreg_in21k': 'supervised',
-    'augreg_in21k_ft_in1k': 'supervised', 
-    'mim_in22k': 'self-supervised',
-    'ms_in22k_ft_in1k': 'supervised',
-    'ms_in1k':'supervised',
+pre_training_dataset = {
+    'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K': "laion_aesthetic",
+    'CLIP-convnext_base_w-laion2B-s13B-b82K':"laion2B",
+    'deit_small_patch16_224.fb_in1k':"in1k",
+    'robust_resnet50':"in1k",
+    'vit_small_patch16_224.augreg_in21k':"in22k",
+    'convnext_base.fb_in1k':"in1k",
+    'resnet50.a1_in1k':"in1k",
+    'robust_vit_base_patch16_224':"in1k",
+    'vit_base_patch16_224.mae':"in1k",
+    'vit_small_patch16_224.dino':"in1k",
+    'convnext_base.fb_in22k':"in22k",
+    'robust_convnext_base': "in1k",
+    'vit_base_patch16_224.augreg_in1k':"in1k",
+    'vit_base_patch16_224.augreg_in21k':"in22k",
+    'vit_base_patch16_clip_224.laion2b':"laion2B",
+    'convnext_tiny.fb_in1k':"in1k",
+    'robust_convnext_tiny':"in1k",
+    'robust_deit_small_patch16_224':"in1k",
+    'vit_small_patch16_224.augreg_in1k':"in1k",
+    'convnext_tiny.fb_in22k':"in22k",
+    'vit_base_patch16_clip_224.laion2b_ft_in1k':"laion2b+in1k",
+    'vit_base_patch16_224.augreg_in21k_ft_in1k':"in22k+in1k",
+    'vit_small_patch16_224.augreg_in21k_ft_in1k':"in22k+in1k",
+    'eva02_base_patch14_224.mim_in22k':"in22k",
+    'eva02_tiny_patch14_224.mim_in22k':"in22k",
+    'swin_base_patch4_window7_224.ms_in22k_ft_in1k':"in22k+in1k",
+    'swin_tiny_patch4_window7_224.ms_in1k':"in1k",
+    'convnext_base.clip_laion2b_augreg_ft_in12k_in1k':"laion2b+in12k+in1k",
+    'convnext_base.fb_in22k_ft_in1k':'in22k+in1k',
+    'convnext_tiny.fb_in22k_ft_in1k':'in22k+in1k',
+    'coatnet_0_rw_224.sw_in1k':"in1k",
+    'coatnet_2_rw_224.sw_in12k_ft_in1k':"in12k+in1k",
+    'coatnet_2_rw_224.sw_in12k':"in12k",
+    "regnetx_004.pycls_in1k":"in1k",
+    'efficientnet-b0':"in1k", 
+    'deit_tiny_patch16_224.fb_in1k':"in1k",
+    'mobilevit-small':"in1k",
+    'mobilenetv3_large_100.ra_in1k':"in1k",
+    'edgenext_small.usi_in1k':"in1k",
+    'coat_tiny.in1k':"in1k", 
+    "regnetx_004.pycls_in1k":"in1k",
+    'efficientnet-b0':"in1k", 
+    'deit_tiny_patch16_224.fb_in1k':"in1k",
+    'mobilevit-small':"in1k",
+    'mobilenetv3_large_100.ra_in1k':"in1k",
+    'edgenext_small.usi_in1k':"in1k",
+    'coat_tiny.in1k':"in1k", 
+}
 
-    'fb_in22k_ft_in1k': 'supervised',
-    'sw_in1k':'supervised',
-    'sw_in12k_ft_in1k': 'supervised',
-    'sw_in12k':'supervised',
-    'pycls_in1k':'supervised',
+
+pre_training_strategy = {
+    'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K': 'self-supervised (multimodal)',
+    'CLIP-convnext_base_w-laion2B-s13B-b82K':'self-supervised (multimodal)',
+    'deit_small_patch16_224.fb_in1k':'supervised',
+    'robust_resnet50':'supervised (robust)',
+    'vit_small_patch16_224.augreg_in21k':'supervised',
+    'convnext_base.fb_in1k':'supervised',
+    'resnet50.a1_in1k':'supervised',
+    'robust_vit_base_patch16_224':'supervised (robust)',
+    'vit_base_patch16_224.mae':'self-supervised',
+    'vit_small_patch16_224.dino':'self-supervised',
+    'convnext_base.fb_in22k':'supervised',
+    'robust_convnext_base': 'supervised (robust)',
+    'vit_base_patch16_224.augreg_in1k':'supervised',
+    'vit_base_patch16_224.augreg_in21k':'supervised',
+    'vit_base_patch16_clip_224.laion2b':'self-supervised (multimodal)',
+    'convnext_tiny.fb_in1k':'supervised',
+    'robust_convnext_tiny':'supervised (robust)',
+    'robust_deit_small_patch16_224':'supervised (robust)',
+    'vit_small_patch16_224.augreg_in1k':'supervised',
+    'convnext_tiny.fb_in22k':'supervised',
+    'vit_base_patch16_clip_224.laion2b_ft_in1k':'hybrid',
+    'vit_base_patch16_224.augreg_in21k_ft_in1k':'supervised',
+    'vit_small_patch16_224.augreg_in21k_ft_in1k':'supervised',
+    'eva02_base_patch14_224.mim_in22k':'self-supervised',
+    'eva02_tiny_patch14_224.mim_in22k':'self-supervised',
+    'swin_base_patch4_window7_224.ms_in22k_ft_in1k':'supervised',
+    'swin_tiny_patch4_window7_224.ms_in1k':'supervised',
+    'convnext_base.clip_laion2b_augreg_ft_in12k_in1k':'hybrid',
+    'convnext_base.fb_in22k_ft_in1k':'supervised',
+    'convnext_tiny.fb_in22k_ft_in1k':'supervised',
+    'coatnet_0_rw_224.sw_in1k':'supervised',
+    'coatnet_2_rw_224.sw_in12k_ft_in1k':'supervised',
+    'coatnet_2_rw_224.sw_in12k':'supervised',
+    "regnetx_004.pycls_in1k":'supervised',
     'efficientnet-b0':'supervised',
-    'fb_in1k':'supervised',
+    'deit_tiny_patch16_224.fb_in1k':'supervised',
     'mobilevit-small':'supervised',
-    'ra_in1k':'supervised',
-    'usi_in1k':'supervised',
-    'in1k':'supervised' }
+    'mobilenetv3_large_100.ra_in1k':'supervised',
+    'edgenext_small.usi_in1k':'supervised',
+    'coat_tiny.in1k':'supervised',
+    "regnetx_004.pycls_in1k":'supervised',
+    'efficientnet-b0':'supervised',
+    'deit_tiny_patch16_224.fb_in1k':'supervised',
+    'mobilevit-small':'supervised',
+    'mobilenetv3_large_100.ra_in1k':'supervised',
+    'edgenext_small.usi_in1k':'supervised',
+    'coat_tiny.in1k':'supervised',
+}
+
+
 
 
 def sums_from_dict(scores):
@@ -185,9 +269,23 @@ def load_result_dataset(pn1, pn2,):
                     result['geom'] = geom_sum
 
                 except:
-                    
-                    result = {'clean_acc': math.nan, 'Linf_acc': math.nan, 'L2_acc': math.nan, 'L1_acc': math.nan, 'common_acc': math.nan, 
-                            'sum':math.nan, 'geom':math.nan, }
+
+                    try: 
+                        project_name = pn2
+
+                        name ='{}_{}_{}'.format(backbone, data, loss)
+                        print( '../results/{}/{}.pkl'.format(project_name, name) )
+                        with open('../results/{}/{}.pkl'.format(project_name, name), 'rb') as f:
+                            result = pickle.load(f)
+
+                        arith_sum, geom_sum = sums_from_dict(result)
+                        result['sum'] = arith_sum
+                        result['geom'] = geom_sum
+
+                    except:
+                                    
+                        result = {'clean_acc': math.nan, 'Linf_acc': math.nan, 'L2_acc': math.nan, 'L1_acc': math.nan, 'common_acc': math.nan, 
+                                'sum':math.nan, 'geom':math.nan, }
                     
                 for key, value in model_parameters.items():
                     if key in backbone:  # Match the model name in the backbone string
@@ -203,6 +301,9 @@ def load_result_dataset(pn1, pn2,):
                 result['backbone'] = backbone
                 result['dataset'] = data
                 result['loss_function'] = loss
+                result['pre_training_dataset'] = pre_training_dataset[backbone]
+                result['pre_training_strategy'] = pre_training_strategy[backbone]
+                result['volume_pre_training_data'] = volume_pre_training_data[ pre_training_dataset[backbone] ]
                 
                 # ── set model_type ────────────────────────────────────────────────────────────
                 for key, mtype in model_type.items():
@@ -212,14 +313,6 @@ def load_result_dataset(pn1, pn2,):
                 else:
                     # executed only if the loop ends without 'break'
                     result['model_type'] = "unknown"
-
-                # ── set pre_training_strategy ───────────────────────────────────────────────
-                for key, strategy in pre_trainining_strategy.items():
-                    if key in backbone:
-                        result['pre_training_strategy'] = strategy
-                        break
-                else:
-                    result['pre_training_strategy'] = "unknown"
 
                 final_data.append(result)
 
