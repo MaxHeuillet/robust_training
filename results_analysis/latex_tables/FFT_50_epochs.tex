@@ -1,15 +1,15 @@
 \begin{table}[ht]
 \centering
-\caption{Top 3 fine-tuning configurations}
+\caption{Top 3 fine-tuning configurations FFT (50 epochs)}
 \label{tab:FFT_50_epochs}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|c|c|c|c|c|c|}
 \toprule
-\textbf{Size} &                                \textbf{Best (1st)} &                             \textbf{Better (2nd)} &                             \textbf{Good (3rd)} &  \textbf{$\Delta \%$ (1st$\rightarrow$2nd)} &  \textbf{$\Delta \%$ (2nd$\rightarrow$3rd)} \\
+\textbf{Size} &                            \textbf{Gold (1st)} &                        \textbf{Silver (2nd)} &                       \textbf{Bronze (3rd)} &  \textbf{$\Delta \%$ (1st$\rightarrow$2nd)} &  \textbf{$\Delta \%$ (2nd$\rightarrow$3rd)} \\
 \midrule
-        small &                           regnetx\_004.pycls\_in1k &                 deit\_tiny\_patch16\_224.fb\_in1k &                       edgenext\_small.usi\_in1k &                                        3.88 &                                       30.15 \\
-       medium &                           convnext\_tiny.fb\_in22k &                           convnext\_tiny.fb\_in1k &              convnext\_tiny.fb\_in22k\_ft\_in1k &                                        3.57 &                                        5.67 \\
-        large & swin\_base\_patch4\_window7\_224.ms\_in22k\_ft\... & CLIP-convnext\_base\_w-laion\_aesthetic-s13B-b82K & vit\_base\_patch16\_clip\_224.laion2b\_ft\_in1k &                                        1.52 &                                        9.06 \\
+        small &      edgenetx\_s,sup,in1k,TRADES\_v2 (GR:15.0) &        deit\_t,sup,in1k,TRADES\_v2 (GR:34.0) & regnetx\_004,sup,in1k,CLASSIC\_AT (GR:37.0) &                                      -23.17 &                                       -3.73 \\
+       medium & convnext\_t,sup,in22k-in1k,TRADES\_v2 (GR:8.0) &    convnext\_t,sup,in1k,TRADES\_v2 (GR:11.0) &  convnext\_t,sup,in22k,TRADES\_v2 (GR:13.0) &                                       -5.37 &                                       -3.45 \\
+        large &      convnext\_b,sup,in22k,TRADES\_v2 (GR:1.0) & convnext\_b,clip,laion2b,TRADES\_v2 (GR:2.0) & convnext\_b,clip,laiona,TRADES\_v2 (GR:3.0) &                                       -1.98 &                                       -5.99 \\
 \bottomrule
 \end{tabular}
 }

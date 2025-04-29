@@ -1,15 +1,15 @@
 \begin{table}[ht]
 \centering
-\caption{Top 3 fine-tuning configurations}
+\caption{Top 3 fine-tuning configurations FFT (5 epochs)}
 \label{tab:FFT_5_epochs}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|c|c|c|c|c|c|}
 \toprule
-\textbf{Size} &      \textbf{Best (1st)} &     \textbf{Better (2nd)} &                                \textbf{Good (3rd)} &  \textbf{$\Delta \%$ (1st$\rightarrow$2nd)} &  \textbf{$\Delta \%$ (2nd$\rightarrow$3rd)} \\
+\textbf{Size} &                           \textbf{Gold (1st)} &                      \textbf{Silver (2nd)} &                        \textbf{Bronze (3rd)} &  \textbf{$\Delta \%$ (1st$\rightarrow$2nd)} &  \textbf{$\Delta \%$ (2nd$\rightarrow$3rd)} \\
 \midrule
-        small &          coat\_tiny.in1k & edgenext\_small.usi\_in1k &                   mobilenetv3\_large\_100.ra\_in1k &                                       25.02 &                                       48.00 \\
-       medium &   robust\_convnext\_tiny &          robust\_resnet50 &                             robust\_convnext\_tiny &                                        8.70 &                                       17.11 \\
-        large & convnext\_base.fb\_in22k &   convnext\_base.fb\_in1k & swin\_base\_patch4\_window7\_224.ms\_in22k\_ft\... &                                       11.23 &                                       13.16 \\
+        small &    mobilenet\_v3,sup,in1k,TRADES\_v2 (GR:8.0) &  edgenetx\_s,sup,in1k,TRADES\_v2 (GR:21.0) &        coat\_t,sup,in1k,TRADES\_v2 (GR:26.0) &                                      -32.43 &                                      -20.01 \\
+       medium & convnext\_t,rob-sup,in1k,CLASSIC\_AT (GR:1.0) & resnet50,rob-sup,in1k,CLASSIC\_AT (GR:3.0) & convnext\_t,rob-sup,in1k,TRADES\_v2 (GR:5.0) &                                      -14.61 &                                       -8.01 \\
+        large &   swin\_b,sup,ink22k-in1k,TRADES\_v2 (GR:2.0) &   convnext\_b,sup,in1k,TRADES\_v2 (GR:4.0) &    convnext\_b,sup,in22k,TRADES\_v2 (GR:6.0) &                                      -11.63 &                                      -10.10 \\
 \bottomrule
 \end{tabular}
 }

@@ -1,10 +1,6 @@
 ,backbone,dataset,loss_function,restart_from,model_size
-20,vit_base_patch16_clip_224.laion2b_ft_in1k,uc-merced-land-use-dataset,TRADES_v2,job6_test_common.sh,large
-30,coatnet_0_rw_224.sw_in1k,uc-merced-land-use-dataset,TRADES_v2,job1_hpo.sh,medium
-108,convnext_base.fb_in22k_ft_in1k,caltech101,TRADES_v2,job4_test_l1.sh,large
+108,convnext_base.fb_in22k_ft_in1k,caltech101,TRADES_v2,job5_test_l2.sh,large
 111,coatnet_2_rw_224.sw_in12k_ft_in1k,caltech101,TRADES_v2,job4_test_l1.sh,large
 112,coatnet_2_rw_224.sw_in12k,caltech101,TRADES_v2,job4_test_l1.sh,large
-258,vit_small_patch16_224.augreg_in1k,uc-merced-land-use-dataset,CLASSIC_AT,job6_test_common.sh,medium
-270,coatnet_0_rw_224.sw_in1k,uc-merced-land-use-dataset,CLASSIC_AT,job1_hpo.sh,medium
 347,convnext_base.clip_laion2b_augreg_ft_in12k_in1k,caltech101,CLASSIC_AT,job4_test_l1.sh,large
 359,coat_tiny.in1k,caltech101,CLASSIC_AT,job4_test_l1.sh,small

@@ -17,7 +17,7 @@ def process_grouped_df(final_data, size=None):
         df = df[ df.model_size == size ]
 
     grouped_df = df.pivot_table(
-        index=['backbone', 'loss_function', 'pre_training_strategy', 'model_type', "model_size", "ft_strategy"],
+        index=['backbone', "backbone_name", 'loss_function', 'pre_training_strategy', 'model_type', "model_size", "ft_strategy"],
         columns='dataset',
         # dropna=False
     )

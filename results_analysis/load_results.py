@@ -60,6 +60,51 @@ model_type = {
         'coat_tiny': "hybrid", }
 
 
+backbone_name={
+    'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K':'convnext_b,clip,laiona',
+    'CLIP-convnext_base_w-laion2B-s13B-b82K':'convnext_b,clip,laion2b',
+    'deit_small_patch16_224.fb_in1k':'deit_s,sup,in1k',
+    'robust_resnet50':'resnet50,rob-sup,in1k',
+    'vit_small_patch16_224.augreg_in21k':'vit_s,sup,in22k',
+    'convnext_base.fb_in1k':'convnext_b,sup,in1k',
+    'resnet50.a1_in1k':'resnet50,sup,in1k',
+    'robust_vit_base_patch16_224':'vit_b,rob-sup,in1k',
+    'vit_base_patch16_224.mae':'vit_b,mae,in1k',
+    'vit_small_patch16_224.dino':'vit_b,dino,in1k',
+    'convnext_base.fb_in22k':'convnext_b,sup,in22k',
+
+    'robust_convnext_base':'convnext_b,rob-sup,in1k',
+    'vit_base_patch16_224.augreg_in1k':'vit_b,sup,in1k',
+    'vit_base_patch16_224.augreg_in21k':'vit_b,sup,in22k',
+    'vit_base_patch16_clip_224.laion2b':'vit_b,clip,laion2b',
+    'convnext_tiny.fb_in1k':'convnext_t,sup,in1k',
+    'robust_convnext_tiny':'convnext_t,rob-sup,in1k',
+    'robust_deit_small_patch16_224':'deit_s,rob-sup,in1k',
+    'vit_small_patch16_224.augreg_in1k':'vit_s,sup,in1k',
+    'convnext_tiny.fb_in22k':'convnext_t,sup,in22k',
+    'vit_base_patch16_clip_224.laion2b_ft_in1k':'vit_b,clip,laion2b',
+    'vit_base_patch16_224.augreg_in21k_ft_in1k':'vit_b,sup,ink22k-in1k',
+
+    'vit_small_patch16_224.augreg_in21k_ft_in1k':'vit_s,sup,ink22k-in1k',
+    'eva02_base_patch14_224.mim_in22k':'eva02_b,mim,ink22k',
+    'eva02_tiny_patch14_224.mim_in22k':'eva02_b,mim,ink22k',
+    'swin_base_patch4_window7_224.ms_in22k_ft_in1k':'swin_b,sup,ink22k-in1k',
+    'swin_tiny_patch4_window7_224.ms_in1k':'swin_t,sup,in1k',
+    'convnext_base.clip_laion2b_augreg_ft_in12k_in1k':'convnext_b,hybrid,laion2b-in12k-in1k',
+    'convnext_base.fb_in22k_ft_in1k':'convnext_b,sup,in22k-in1k',
+    'convnext_tiny.fb_in22k_ft_in1k':'convnext_t,sup,in22k-in1k',
+    'coatnet_0_rw_224.sw_in1k':'coatnet_0,sup,in1k',
+    'coatnet_2_rw_224.sw_in12k_ft_in1k':'coatnet_2,sup,in12k-in1k',
+    'coatnet_2_rw_224.sw_in12k':'coatnet_2,sup,in12k',
+
+    "regnetx_004.pycls_in1k":'regnetx_004,sup,in1k',
+    'efficientnet-b0':'efficientnet_b0,sup,in1k',
+    'deit_tiny_patch16_224.fb_in1k':'deit_t,sup,in1k',
+    'mobilevit-small':'mobilevit_s,sup,in1k',
+    'mobilenetv3_large_100.ra_in1k':'mobilenet_v3,sup,in1k',
+    'edgenext_small.usi_in1k':'edgenetx_s,sup,in1k',
+    'coat_tiny.in1k':'coat_t,sup,in1k', }
+
 
 backbones=(
     'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K',
@@ -304,6 +349,7 @@ def load_result_dataset(pn1, pn2,):
                 result['pre_training_dataset'] = pre_training_dataset[backbone]
                 result['pre_training_strategy'] = pre_training_strategy[backbone]
                 result['volume_pre_training_data'] = volume_pre_training_data[ pre_training_dataset[backbone] ]
+                result["backbone_name"] = backbone_name[backbone]
                 
                 # ── set model_type ────────────────────────────────────────────────────────────
                 for key, mtype in model_type.items():
