@@ -1,5 +1,4 @@
 ,backbone,dataset,loss_function,restart_from,model_size
-108,convnext_base.fb_in22k_ft_in1k,caltech101,TRADES_v2,job5_test_l2.sh,large
 111,coatnet_2_rw_224.sw_in12k_ft_in1k,caltech101,TRADES_v2,job4_test_l1.sh,large
 112,coatnet_2_rw_224.sw_in12k,caltech101,TRADES_v2,job4_test_l1.sh,large
 347,convnext_base.clip_laion2b_augreg_ft_in12k_in1k,caltech101,CLASSIC_AT,job4_test_l1.sh,large
