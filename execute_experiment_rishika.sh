@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define variables
-seeds=1
+seed=1
 
 datas=( 
         'stanford_cars'
@@ -12,7 +12,8 @@ datas=(
         'uc-merced-land-use-dataset' 
         ) 
  
-losses=( 'CLASSIC_AT' 
+losses=( 
+        'CLASSIC_AT' 
         'TRADES_v2'  
          )  
 
@@ -66,7 +67,6 @@ block_3=(
   'mobilevit-small'
 )
 
-
 # Get the project name 
 PRNM=$1
 
@@ -94,7 +94,6 @@ done
 # ---------- Submit jobs ----------
 
 EMAIL="your.email@domain.com"
-
 
 echo "Submitting block_1 backbone jobs..."
 submit_jobs "your-alloc1" "${block_1[@]}"

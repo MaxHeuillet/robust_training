@@ -118,9 +118,7 @@ class BaseExperiment:
 
         test_sampler = DistributedSampler(test_dataset, num_replicas=world_size, rank=rank, shuffle=True, drop_last=True)
         common_sampler = DistributedSampler(common_dataset, num_replicas=world_size, rank=rank, shuffle=True, drop_last=True)
-        
-        
-        
+                
         testloader = DataLoader(test_dataset, 
                                     batch_size=self.setup.test_batch_size(config), 
                                     sampler=test_sampler, 
