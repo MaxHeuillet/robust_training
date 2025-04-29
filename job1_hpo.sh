@@ -4,7 +4,7 @@
 #SBATCH --cpus-per-task=10
 #SBATCH --gpus-per-node=1
 #SBATCH --mem=46000M
-#SBATCH --time=11:58:55
+#SBATCH --time=02:58:55
 #SBATCH --mail-type=ALL
 
 source ./execute_setup.sh

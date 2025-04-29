@@ -320,8 +320,8 @@ class BaseExperiment:
         print('initialized tuner')
 
         result_grid = tuner.fit()
-        nb_completed_trials = result_grid.num_terminated
-        config.nb_completed_trials= nb_completed_trials
+        nb_reporting_trials = sum(1 for r in result_grid if r.last_result)
+        config.nb_completed_trials= nb_reporting_trials
 
         print('finished grid')
         
@@ -633,6 +633,7 @@ def main():
 
         os.makedirs(os.path.join(config_base.results_path, config_base.project_name),
                     exist_ok=True)
+
         experiment.launch_test(test_type, config_optimal)
 
     else:

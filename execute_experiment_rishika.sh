@@ -16,8 +16,7 @@ losses=( 'CLASSIC_AT'
         'TRADES_v2'  
          )  
 
-# Two backbone groups
-# Two backbone groups
+
 block_1=(
   'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K'
   'CLIP-convnext_base_w-laion2B-s13B-b82K'
@@ -30,6 +29,9 @@ block_1=(
   'vit_base_patch16_224.mae'
   'vit_small_patch16_224.dino'
   'convnext_base.fb_in22k'
+  'mobilenetv3_large_100.ra_in1k'
+  'edgenext_small.usi_in1k'
+  'coat_tiny.in1k'
 ) 
 
 block_2=(
@@ -43,7 +45,10 @@ block_2=(
   'vit_small_patch16_224.augreg_in1k'
   'convnext_tiny.fb_in22k'
   'vit_base_patch16_clip_224.laion2b_ft_in1k'
-  'vit_base_patch16_224.augreg_in21k_ft_in1k')
+  'vit_base_patch16_224.augreg_in21k_ft_in1k'
+  "regnetx_004.pycls_in1k"
+  'efficientnet-b0'
+  )
 
 block_3=(
   'vit_small_patch16_224.augreg_in21k_ft_in1k'
@@ -57,6 +62,8 @@ block_3=(
   'coatnet_0_rw_224.sw_in1k'
   'coatnet_2_rw_224.sw_in12k_ft_in1k'
   'coatnet_2_rw_224.sw_in12k'
+  'deit_tiny_patch16_224.fb_in1k'
+  'mobilevit-small'
 )
 
 
