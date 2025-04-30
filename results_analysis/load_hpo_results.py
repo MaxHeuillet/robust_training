@@ -147,9 +147,6 @@ def load_hpo_result_dataset(pn1, pn2,):
         for data in datas:
             for backbone in backbones:
 
-                # try:
-                
-
                 if 'linearprobe_50epochs' in pn2:
                     config_base = compose(config_name="default_config_linearprobe50")
                 elif 'full_fine_tuning_5epochs' in pn2:
@@ -163,7 +160,6 @@ def load_hpo_result_dataset(pn1, pn2,):
                 config_base.backbone = backbone
                 config_base.loss_function = loss
 
-                    
                 if backbone in yann_backbones:
                     project_name = pn1
                     config_base.project_name = pn1
@@ -186,19 +182,13 @@ def load_hpo_result_dataset(pn1, pn2,):
                 except:
                     print('file not found')
 
-                result = {'lr1': config_optimal.lr1,
+                result = {      'nb_trials': config_optimal.nb_completed_trials,
+                                'lr1': config_optimal.lr1,
                                 'lr2': config_optimal.lr2,
                                 'wd1': config_optimal.weight_decay1,
                                 'wd2': config_optimal.weight_decay2,
                                 'sched': config_optimal.scheduler }
 
-                # except:
-
-                #     result = {'lr1': math.nan,
-                #               'lr2': math.nan,
-                #               'wd1': math.nan,
-                #               'wd2': math.nan,
-                #               'sched': math.nan, }
                     
                 for key, value in model_parameters.items():
                     if key in backbone:  # Match the model name in the backbone string
