@@ -35,7 +35,8 @@ class Hp_opt:
             tune_config = {
                 "lr2": tune.loguniform(1e-6, 1e-1),  # Search over a range for the classification head
                 "weight_decay2": tune.loguniform(1e-6, 1e-2),
-                "scheduler": tune.choice([True, False]) }
+                "scheduler": tune.choice([True, False])
+            }
                     
         elif 'full_fine_tuning' in self.config.project_name:
             tune_config = {
@@ -53,7 +54,7 @@ class Hp_opt:
     def get_scheduler(self, ):
         # Configure the scheduler WITHOUT metric and mode
         scheduler = ASHAScheduler(
-            max_t=5,
+            max_t=self.config.epochs,
             grace_period=1,
             reduction_factor=2
         )
