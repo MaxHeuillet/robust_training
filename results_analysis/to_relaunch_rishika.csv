@@ -1,5 +1,4 @@
 ,backbone,dataset,loss_function,restart_from,model_size
-71,coatnet_2_rw_224.sw_in12k_ft_in1k,stanford_cars,TRADES_v2,job6_test_common.sh,large
 72,coatnet_2_rw_224.sw_in12k,stanford_cars,TRADES_v2,job5_test_l2.sh,large
 79,coat_tiny.in1k,stanford_cars,TRADES_v2,job5_test_l2.sh,small
 119,coat_tiny.in1k,caltech101,TRADES_v2,job4_test_l1.sh,small
