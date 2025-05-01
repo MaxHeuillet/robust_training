@@ -1,0 +1,23 @@
+
+\begin{table}[h!]
+\centering
+\caption{Spearman Correlation Summary Across Threat Models}
+\label{tab:spearman_corr}
+\resizebox{0.33\textwidth}{!}{%
+\begin{tabular}{lrrr}
+\toprule
+{} &  Mean Abs. Corr. &  Off-diag. Frobenius Norm &  Avg. Pairwise R2 \\
+\midrule
+Global (Spearman)   &            0.842 &                     3.813 &             0.714 \\
+CLASSIC_AT          &            0.896 &                     4.017 &             0.806 \\
+TRADES_v2           &            0.823 &                     3.768 &             0.684 \\
+large               &            0.902 &                     4.040 &             0.817 \\
+medium              &            0.781 &                     3.566 &             0.622 \\
+small               &            0.700 &                     3.337 &             0.515 \\
+fully attention     &            0.868 &                     3.892 &             0.758 \\
+fully convolutional &            0.799 &                     3.660 &             0.646 \\
+hybrid              &            0.903 &                     4.057 &             0.819 \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
