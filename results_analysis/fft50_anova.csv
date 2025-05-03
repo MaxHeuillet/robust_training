@@ -1,0 +1,81 @@
+,backbone,backbone_name,loss_function,pre_training_strategy,model_type,model_size,ft_strategy,borda,nan_geom_cnt,nan_sum_cnt,rank_borda,rank_geom,rank_sum,score_geom,score_sum
+0,convnext_base.fb_in22k,"convnext_b,sup,in22k",TRADES_v2,supervised,fully convolutional,large,FFT (50 epochs),2272.0,0,0,1.0,1.0,1.0,1.3206448973856444,19.789301587301587
+1,CLIP-convnext_base_w-laion2B-s13B-b82K,"convnext_b,clip,laion2b",TRADES_v2,self-supervised (multimodal),fully convolutional,large,FFT (50 epochs),2058.0,0,0,4.0,6.0,2.0,1.0018782578440377,19.396968253968254
+2,coatnet_2_rw_224.sw_in12k,"coatnet_2,sup,in12k",TRADES_v2,supervised,hybrid,large,FFT (50 epochs),2107.0,0,0,3.0,3.0,3.0,1.0854874200793625,18.87442857142857
+3,coatnet_2_rw_224.sw_in12k_ft_in1k,"coatnet_2,sup,in12k-in1k",TRADES_v2,supervised,hybrid,large,FFT (50 epochs),2118.0,0,0,2.0,2.0,4.0,1.1471184569610828,18.743904761904762
+4,CLIP-convnext_base_w-laion_aesthetic-s13B-b82K,"convnext_b,clip,laiona",TRADES_v2,self-supervised (multimodal),fully convolutional,large,FFT (50 epochs),1983.0,0,0,7.0,21.0,5.0,0.6513430776831238,18.235888888888887
+5,swin_base_patch4_window7_224.ms_in22k_ft_in1k,"swin_b,sup,ink22k-in1k",TRADES_v2,supervised,fully attention,large,FFT (50 epochs),1981.0,0,0,8.0,4.0,6.0,1.0377076665930565,18.05390476190476
+6,eva02_base_patch14_224.mim_in22k,"eva02_b,mim,ink22k",TRADES_v2,self-supervised,fully attention,large,FFT (50 epochs),1986.0,0,0,6.0,22.0,7.0,0.651284923495774,17.59952380952381
+7,convnext_base.fb_in22k_ft_in1k,"convnext_b,sup,in22k-in1k",TRADES_v2,supervised,fully convolutional,large,FFT (50 epochs),1992.0,0,0,5.0,12.0,8.0,0.8156723898340401,17.01639682539683
+8,swin_base_patch4_window7_224.ms_in22k_ft_in1k,"swin_b,sup,ink22k-in1k",CLASSIC_AT,supervised,fully attention,large,FFT (50 epochs),1783.0,0,0,13.0,7.0,9.0,0.9629756471617317,16.77236507936508
+9,robust_convnext_base,"convnext_b,rob-sup,in1k",TRADES_v2,supervised (robust),fully convolutional,large,FFT (50 epochs),1966.0,0,0,9.0,8.0,10.0,0.955159304801535,16.63130158730159
+10,convnext_tiny.fb_in22k_ft_in1k,"convnext_t,sup,in22k-in1k",TRADES_v2,supervised,fully convolutional,medium,FFT (50 epochs),1764.0,0,0,14.0,9.0,11.0,0.875281189351784,16.489968253968254
+11,convnext_base.fb_in1k,"convnext_b,sup,in1k",TRADES_v2,supervised,fully convolutional,large,FFT (50 epochs),1929.0,0,0,10.0,25.0,12.0,0.6233103656430858,16.42042857142857
+12,convnext_base.fb_in22k,"convnext_b,sup,in22k",CLASSIC_AT,supervised,fully convolutional,large,FFT (50 epochs),1913.0,0,0,11.0,13.0,13.0,0.7999355406848929,15.99288888888889
+13,convnext_tiny.fb_in1k,"convnext_t,sup,in1k",TRADES_v2,supervised,fully convolutional,medium,FFT (50 epochs),1672.0,0,0,15.0,23.0,14.0,0.6471098936147027,15.604809523809525
+14,CLIP-convnext_base_w-laion2B-s13B-b82K,"convnext_b,clip,laion2b",CLASSIC_AT,self-supervised (multimodal),fully convolutional,large,FFT (50 epochs),1626.0,0,0,20.0,14.0,15.0,0.7708017707241699,15.419238095238097
+15,vit_base_patch16_clip_224.laion2b_ft_in1k,"vit_b,clip,laion2b",TRADES_v2,hybrid,fully attention,large,FFT (50 epochs),1565.0,0,0,21.0,24.0,16.0,0.6422195138577602,15.24073015873016
+16,convnext_base.fb_in22k_ft_in1k,"convnext_b,sup,in22k-in1k",CLASSIC_AT,supervised,fully convolutional,large,FFT (50 epochs),1790.0,0,0,12.0,5.0,17.0,1.0058086409399987,15.127682539682539
+17,convnext_tiny.fb_in22k,"convnext_t,sup,in22k",TRADES_v2,supervised,fully convolutional,medium,FFT (50 epochs),1643.0,0,0,19.0,27.0,18.0,0.6123707947691618,15.066190476190478
+18,robust_convnext_tiny,"convnext_t,rob-sup,in1k",TRADES_v2,supervised (robust),fully convolutional,medium,FFT (50 epochs),1488.0,0,0,25.0,17.0,19.0,0.7197944199926392,14.712079365079365
+19,edgenext_small.usi_in1k,"edgenetx_s,sup,in1k",TRADES_v2,supervised,hybrid,small,FFT (50 epochs),1546.0,0,0,22.0,35.0,20.0,0.4955377393328147,14.662857142857144
+20,convnext_base.clip_laion2b_augreg_ft_in12k_in1k,"convnext_b,hybrid,laion2b-in12k-in1k",TRADES_v2,hybrid,fully convolutional,large,FFT (50 epochs),1647.0,0,0,16.0,28.0,21.0,0.5644827189473028,14.625873015873015
+21,CLIP-convnext_base_w-laion_aesthetic-s13B-b82K,"convnext_b,clip,laiona",CLASSIC_AT,self-supervised (multimodal),fully convolutional,large,FFT (50 epochs),1474.0,0,0,26.0,18.0,22.0,0.7169065260352583,14.510619047619048
+22,coatnet_2_rw_224.sw_in12k_ft_in1k,"coatnet_2,sup,in12k-in1k",CLASSIC_AT,supervised,hybrid,large,FFT (50 epochs),1535.0,0,0,23.0,16.0,23.0,0.7303334366918799,14.404333333333332
+23,convnext_base.fb_in1k,"convnext_b,sup,in1k",CLASSIC_AT,supervised,fully convolutional,large,FFT (50 epochs),1646.0,0,0,17.0,29.0,24.0,0.5639284005854399,14.390857142857145
+24,convnext_tiny.fb_in1k,"convnext_t,sup,in1k",CLASSIC_AT,supervised,fully convolutional,medium,FFT (50 epochs),1464.0,0,0,27.0,11.0,25.0,0.821062475665366,14.190666666666667
+25,robust_convnext_base,"convnext_b,rob-sup,in1k",CLASSIC_AT,supervised (robust),fully convolutional,large,FFT (50 epochs),1645.0,0,0,18.0,30.0,26.0,0.56248997231947,13.771698412698411
+26,coatnet_2_rw_224.sw_in12k,"coatnet_2,sup,in12k",CLASSIC_AT,supervised,hybrid,large,FFT (50 epochs),1455.0,0,0,28.0,20.0,27.0,0.6634652082600514,13.656476190476189
+27,robust_deit_small_patch16_224,"deit_s,rob-sup,in1k",TRADES_v2,supervised (robust),fully attention,medium,FFT (50 epochs),1531.0,0,0,24.0,39.0,28.0,0.43031620380354485,13.210857142857144
+28,coatnet_0_rw_224.sw_in1k,"coatnet_0,sup,in1k",TRADES_v2,supervised,hybrid,medium,FFT (50 epochs),1283.0,0,0,33.0,26.0,29.0,0.6206501474601915,13.198714285714287
+29,eva02_base_patch14_224.mim_in22k,"eva02_b,mim,ink22k",CLASSIC_AT,self-supervised,fully attention,large,FFT (50 epochs),1418.0,0,0,31.0,10.0,30.0,0.8323223271388702,13.163380952380951
+30,convnext_tiny.fb_in22k,"convnext_t,sup,in22k",CLASSIC_AT,supervised,fully convolutional,medium,FFT (50 epochs),1392.0,0,0,32.0,31.0,31.0,0.5346125769294301,13.121666666666666
+31,vit_base_patch16_clip_224.laion2b,"vit_b,clip,laion2b",TRADES_v2,self-supervised (multimodal),fully attention,large,FFT (50 epochs),1431.0,0,0,29.0,40.0,32.0,0.42803850364132107,12.831396825396824
+32,vit_base_patch16_224.augreg_in1k,"vit_b,sup,in1k",TRADES_v2,supervised,fully attention,large,FFT (50 epochs),1264.0,0,0,34.0,34.0,33.0,0.5264264438117527,12.497777777777777
+33,robust_resnet50,"resnet50,rob-sup,in1k",CLASSIC_AT,supervised (robust),fully convolutional,medium,FFT (50 epochs),1248.0,0,0,35.0,66.0,34.0,0.06824446375462256,11.786952380952382
+34,coat_tiny.in1k,"coat_t,sup,in1k",TRADES_v2,supervised,hybrid,small,FFT (50 epochs),1419.0,1,1,30.0,60.0,35.0,0.2032884368220592,11.764015873015872
+35,vit_base_patch16_224.augreg_in1k,"vit_b,sup,in1k",CLASSIC_AT,supervised,fully attention,large,FFT (50 epochs),1083.0,0,0,43.0,32.0,36.0,0.530873093948051,11.306857142857144
+36,deit_tiny_patch16_224.fb_in1k,"deit_t,sup,in1k",TRADES_v2,supervised,fully attention,small,FFT (50 epochs),969.0,0,0,48.0,43.0,37.0,0.32517728620170677,11.266238095238098
+37,robust_deit_small_patch16_224,"deit_s,rob-sup,in1k",CLASSIC_AT,supervised (robust),fully attention,medium,FFT (50 epochs),1186.0,0,0,36.0,15.0,38.0,0.73822284699332,11.169269841269841
+38,vit_base_patch16_224.mae,"vit_b,mae,in1k",TRADES_v2,self-supervised,fully attention,large,FFT (50 epochs),1170.0,0,0,37.0,70.0,39.0,0.053784324656448,10.922761904761904
+39,regnetx_004.pycls_in1k,"regnetx_004,sup,in1k",CLASSIC_AT,supervised,fully convolutional,small,FFT (50 epochs),927.0,0,0,49.0,38.0,40.0,0.4377868472002056,10.845761904761906
+40,vit_base_patch16_224.mae,"vit_b,mae,in1k",CLASSIC_AT,self-supervised,fully attention,large,FFT (50 epochs),1046.0,0,0,44.0,42.0,41.0,0.3253646094844401,10.652857142857142
+41,robust_convnext_tiny,"convnext_t,rob-sup,in1k",CLASSIC_AT,supervised (robust),fully convolutional,medium,FFT (50 epochs),1123.0,0,0,40.0,55.0,42.0,0.25775268818718367,10.63004761904762
+42,swin_tiny_patch4_window7_224.ms_in1k,"swin_t,sup,in1k",CLASSIC_AT,supervised,fully attention,medium,FFT (50 epochs),982.0,0,0,47.0,33.0,43.0,0.5275568429824322,10.30595238095238
+43,swin_tiny_patch4_window7_224.ms_in1k,"swin_t,sup,in1k",TRADES_v2,supervised,fully attention,medium,FFT (50 epochs),1149.0,0,0,38.0,48.0,44.0,0.3024916872626881,9.993523809523811
+44,robust_resnet50,"resnet50,rob-sup,in1k",TRADES_v2,supervised (robust),fully convolutional,medium,FFT (50 epochs),1029.0,0,0,45.0,68.0,45.0,0.060121346501631985,9.827396825396825
+45,convnext_base.clip_laion2b_augreg_ft_in12k_in1k,"convnext_b,hybrid,laion2b-in12k-in1k",CLASSIC_AT,hybrid,fully convolutional,large,FFT (50 epochs),1108.0,0,0,42.0,41.0,46.0,0.4066249267176637,9.757952380952382
+46,robust_vit_base_patch16_224,"vit_b,rob-sup,in1k",TRADES_v2,supervised (robust),fully attention,large,FFT (50 epochs),1114.0,0,0,41.0,37.0,47.0,0.4384026425321999,9.284619047619048
+47,vit_base_patch16_224.augreg_in21k,"vit_b,sup,in22k",TRADES_v2,supervised,fully attention,large,FFT (50 epochs),905.0,0,0,52.0,44.0,48.0,0.3143622479877346,9.20452380952381
+48,vit_small_patch16_224.augreg_in1k,"vit_s,sup,in1k",TRADES_v2,supervised,fully attention,medium,FFT (50 epochs),669.0,0,0,65.0,47.0,49.0,0.3029805467696951,9.144730158730159
+49,regnetx_004.pycls_in1k,"regnetx_004,sup,in1k",TRADES_v2,supervised,fully convolutional,small,FFT (50 epochs),623.0,0,0,70.0,69.0,50.0,0.05730809488536,9.000444444444444
+50,convnext_tiny.fb_in22k_ft_in1k,"convnext_t,sup,in22k-in1k",CLASSIC_AT,supervised,fully convolutional,medium,FFT (50 epochs),915.0,0,0,51.0,19.0,51.0,0.7123415839362048,8.96915873015873
+51,resnet50.a1_in1k,"resnet50,sup,in1k",TRADES_v2,supervised,fully convolutional,medium,FFT (50 epochs),690.0,0,0,64.0,75.0,52.0,0.029563295770624,8.874571428571429
+52,mobilenetv3_large_100.ra_in1k,"mobilenet_v3,sup,in1k",TRADES_v2,supervised,fully convolutional,small,FFT (50 epochs),729.0,0,0,62.0,72.0,53.0,0.038294192886143996,8.869428571428571
+53,edgenext_small.usi_in1k,"edgenetx_s,sup,in1k",CLASSIC_AT,supervised,hybrid,small,FFT (50 epochs),1124.0,1,1,39.0,49.0,54.0,0.2915783798727114,8.825714285714287
+54,mobilenetv3_large_100.ra_in1k,"mobilenet_v3,sup,in1k",CLASSIC_AT,supervised,fully convolutional,small,FFT (50 epochs),829.0,0,0,56.0,63.0,55.0,0.14110662738910348,8.747539682539681
+55,vit_base_patch16_224.augreg_in21k,"vit_b,sup,in22k",CLASSIC_AT,supervised,fully attention,large,FFT (50 epochs),879.0,0,0,53.0,54.0,56.0,0.2687410419170838,8.744079365079365
+56,vit_small_patch16_224.augreg_in21k_ft_in1k,"vit_s,sup,ink22k-in1k",TRADES_v2,supervised,fully attention,medium,FFT (50 epochs),773.0,0,0,61.0,59.0,57.0,0.21029738432016695,8.685698412698413
+57,vit_base_patch16_clip_224.laion2b,"vit_b,clip,laion2b",CLASSIC_AT,self-supervised (multimodal),fully attention,large,FFT (50 epochs),789.0,0,0,60.0,51.0,58.0,0.28955613604613717,8.554015873015873
+58,deit_small_patch16_224.fb_in1k,"deit_s,sup,in1k",CLASSIC_AT,supervised,fully attention,medium,FFT (50 epochs),917.0,0,0,50.0,56.0,59.0,0.2561185619768929,8.404936507936508
+59,eva02_tiny_patch14_224.mim_in22k,"eva02_b,mim,ink22k",TRADES_v2,self-supervised,fully attention,medium,FFT (50 epochs),800.0,0,0,59.0,57.0,60.0,0.239198349526556,8.368904761904762
+60,vit_small_patch16_224.augreg_in21k,"vit_s,sup,in22k",TRADES_v2,supervised,fully attention,medium,FFT (50 epochs),820.0,0,0,57.0,77.0,61.0,0.0029299282214288345,8.256285714285713
+61,resnet50.a1_in1k,"resnet50,sup,in1k",CLASSIC_AT,supervised,fully convolutional,medium,FFT (50 epochs),723.0,0,0,63.0,61.0,62.0,0.17610293859387982,7.891190476190476
+62,vit_base_patch16_224.augreg_in21k_ft_in1k,"vit_b,sup,ink22k-in1k",TRADES_v2,supervised,fully attention,large,FFT (50 epochs),818.0,0,0,58.0,46.0,63.0,0.3040434470882647,7.76604761904762
+63,robust_vit_base_patch16_224,"vit_b,rob-sup,in1k",CLASSIC_AT,supervised (robust),fully attention,large,FFT (50 epochs),997.0,0,0,46.0,36.0,64.0,0.4759193635199727,7.738222222222221
+64,deit_tiny_patch16_224.fb_in1k,"deit_t,sup,in1k",CLASSIC_AT,supervised,fully attention,small,FFT (50 epochs),624.0,0,0,69.0,53.0,65.0,0.2806226754827456,7.61152380952381
+65,vit_base_patch16_224.augreg_in21k_ft_in1k,"vit_b,sup,ink22k-in1k",CLASSIC_AT,supervised,fully attention,large,FFT (50 epochs),837.0,0,0,55.0,52.0,66.0,0.28261679039129145,7.513095238095238
+66,coatnet_0_rw_224.sw_in1k,"coatnet_0,sup,in1k",CLASSIC_AT,supervised,hybrid,medium,FFT (50 epochs),844.0,0,0,54.0,58.0,67.0,0.230031104745712,7.354095238095239
+67,deit_small_patch16_224.fb_in1k,"deit_s,sup,in1k",TRADES_v2,supervised,fully attention,medium,FFT (50 epochs),582.0,0,0,74.0,50.0,68.0,0.29014076181729886,6.858126984126985
+68,vit_small_patch16_224.dino,"vit_b,dino,in1k",CLASSIC_AT,self-supervised,fully attention,medium,FFT (50 epochs),609.0,0,0,72.0,65.0,69.0,0.07915652092103255,6.640190476190476
+69,vit_small_patch16_224.augreg_in21k,"vit_s,sup,in22k",CLASSIC_AT,supervised,fully attention,medium,FFT (50 epochs),664.0,0,0,66.0,64.0,70.0,0.10540969305380003,6.476619047619048
+70,vit_small_patch16_224.augreg_in21k_ft_in1k,"vit_s,sup,ink22k-in1k",CLASSIC_AT,supervised,fully attention,medium,FFT (50 epochs),657.0,0,0,67.0,62.0,71.0,0.16672869355150094,6.104857142857144
+71,vit_base_patch16_clip_224.laion2b_ft_in1k,"vit_b,clip,laion2b",CLASSIC_AT,hybrid,fully attention,large,FFT (50 epochs),623.0,0,0,70.0,71.0,72.0,0.0530815343802682,5.8201269841269845
+72,coat_tiny.in1k,"coat_t,sup,in1k",CLASSIC_AT,supervised,hybrid,small,FFT (50 epochs),565.0,1,1,75.0,45.0,73.0,0.3046660127636017,5.544095238095238
+73,eva02_tiny_patch14_224.mim_in22k,"eva02_b,mim,ink22k",CLASSIC_AT,self-supervised,fully attention,medium,FFT (50 epochs),626.0,0,0,68.0,74.0,74.0,0.030397152702851912,5.497158730158731
+74,vit_small_patch16_224.dino,"vit_b,dino,in1k",TRADES_v2,self-supervised,fully attention,medium,FFT (50 epochs),365.0,0,0,79.0,67.0,75.0,0.06269076937390558,5.332063492063492
+75,mobilevit-small,"mobilevit_s,sup,in1k",CLASSIC_AT,supervised,hybrid,small,FFT (50 epochs),608.0,0,0,73.0,73.0,76.0,0.035783717853440464,4.924285714285714
+76,efficientnet-b0,"efficientnet_b0,sup,in1k",CLASSIC_AT,supervised,fully convolutional,small,FFT (50 epochs),424.0,0,0,78.0,76.0,77.0,0.01293896461183204,3.9464285714285716
+77,efficientnet-b0,"efficientnet_b0,sup,in1k",TRADES_v2,supervised,fully convolutional,small,FFT (50 epochs),329.0,0,0,80.0,78.0,78.0,0.0028350378449563765,3.465190476190476
+78,mobilevit-small,"mobilevit_s,sup,in1k",TRADES_v2,supervised,hybrid,small,FFT (50 epochs),511.0,1,1,76.0,79.0,79.0,0.0020040184723011606,3.295666666666667
+79,vit_small_patch16_224.augreg_in1k,"vit_s,sup,in1k",CLASSIC_AT,supervised,fully attention,medium,FFT (50 epochs),433.0,0,0,77.0,80.0,80.0,0.0009500000371446209,2.7429047619047617
