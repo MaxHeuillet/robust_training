@@ -297,12 +297,13 @@ def load_result_dataset(pn1, pn2,):
         for data in datas:
             for backbone in backbones:
 
-                if backbone in yann_backbones:
-                    project_name = pn1
-                else:
-                    project_name = pn2
+                # if backbone in yann_backbones:
+                #     project_name = pn1
+                # else:
+                #     project_name = pn2
 
                 try:
+                    project_name = pn2
                     name ='{}_{}_{}'.format(backbone, data, loss)
                     print( '../results/{}/{}.pkl'.format(project_name, name) )
                     with open('../results/{}/{}.pkl'.format(project_name, name), 'rb') as f:
@@ -317,7 +318,7 @@ def load_result_dataset(pn1, pn2,):
 
                     try:
                         print("HEY") 
-                        project_name = pn2
+                        project_name = pn1
 
                         name ='{}_{}_{}'.format(backbone, data, loss)
                         print( '../results/{}/{}.pkl'.format(project_name, name) )
