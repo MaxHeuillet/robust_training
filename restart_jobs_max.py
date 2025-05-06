@@ -1,7 +1,7 @@
 import pandas as pd
 import subprocess
 
-df = pd.read_csv("./results_analysis/restart_max.csv")
+df = pd.read_csv("./results_analysis/to_relaunch_max.csv")
 # df = pd.read_csv("./results_analysis/to_relaunch_rishika.csv")
 # df = pd.read_csv("./results_analysis/to_relaunch_jonas.csv")
 email = "maxime.heuillet.1@ulaval.ca"
