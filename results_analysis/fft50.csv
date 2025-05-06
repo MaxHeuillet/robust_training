@@ -118,7 +118,7 @@
 116,0.594,0.425,0.474,0.35,0.494,2.3369999999999997,0.02068943877,small,mobilevit-small,caltech101,TRADES_v2,in1k,supervised,1281167,"mobilevit_s,sup,in1k",hybrid,FFT (50 epochs)
 117,0.848,0.206,0.481,0.652,0.699,2.886,0.038294192886143996,small,mobilenetv3_large_100.ra_in1k,caltech101,TRADES_v2,in1k,supervised,1281167,"mobilenet_v3,sup,in1k",fully convolutional,FFT (50 epochs)
 118,0.916,0.7426666666666667,0.811,0.794,0.809,4.072666666666667,0.35438822518996277,small,edgenext_small.usi_in1k,caltech101,TRADES_v2,in1k,supervised,1281167,"edgenetx_s,sup,in1k",hybrid,FFT (50 epochs)
-119,0.9,0.774,,,,,,small,coat_tiny.in1k,caltech101,TRADES_v2,in1k,supervised,1281167,"coat_t,sup,in1k",hybrid,FFT (50 epochs)
+119,0.912,0.763,0.821,0.758,,3.254,0.433043714208,small,coat_tiny.in1k,caltech101,TRADES_v2,in1k,supervised,1281167,"coat_t,sup,in1k",hybrid,FFT (50 epochs)
 120,0.717,0.444,0.33066666666666666,0.046,0.6253333333333333,2.1630000000000003,0.0030280424151039997,large,CLIP-convnext_base_w-laion_aesthetic-s13B-b82K,fgvc-aircraft-2013b,TRADES_v2,laion_aesthetic,self-supervised (multimodal),900000000,"convnext_b,clip,laiona",fully convolutional,FFT (50 epochs)
 121,0.739,0.46,0.33066666666666666,0.04,0.66,2.2296666666666667,0.002967540224,large,CLIP-convnext_base_w-laion2B-s13B-b82K,fgvc-aircraft-2013b,TRADES_v2,laion2B,self-supervised (multimodal),2320000000,"convnext_b,clip,laion2b",fully convolutional,FFT (50 epochs)
 122,0.07333333333333333,0.005333333333333333,0.008,0.008,0.044,0.13866666666666666,1.101368888888889e-09,medium,deit_small_patch16_224.fb_in1k,fgvc-aircraft-2013b,TRADES_v2,in1k,supervised,1281167,"deit_s,sup,in1k",fully attention,FFT (50 epochs)

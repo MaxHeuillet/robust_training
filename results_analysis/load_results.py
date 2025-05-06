@@ -60,6 +60,7 @@ model_type = {
         'coat_tiny': "hybrid", }
 
 
+
 backbone_name={
     'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K':'convnext_b,clip,laiona',
     'CLIP-convnext_base_w-laion2B-s13B-b82K':'convnext_b,clip,laion2b',
@@ -246,17 +247,17 @@ pre_training_strategy = {
     'vit_small_patch16_224.augreg_in1k':'supervised',
     'convnext_tiny.fb_in22k':'supervised',
     'vit_base_patch16_clip_224.laion2b_ft_in1k':'hybrid',
-    'vit_base_patch16_224.augreg_in21k_ft_in1k':'supervised',
-    'vit_small_patch16_224.augreg_in21k_ft_in1k':'supervised',
+    'vit_base_patch16_224.augreg_in21k_ft_in1k':'supervised (multistep)',
+    'vit_small_patch16_224.augreg_in21k_ft_in1k':'supervised (multistep)',
     'eva02_base_patch14_224.mim_in22k':'self-supervised',
     'eva02_tiny_patch14_224.mim_in22k':'self-supervised',
-    'swin_base_patch4_window7_224.ms_in22k_ft_in1k':'supervised',
+    'swin_base_patch4_window7_224.ms_in22k_ft_in1k':'supervised (multistep)',
     'swin_tiny_patch4_window7_224.ms_in1k':'supervised',
     'convnext_base.clip_laion2b_augreg_ft_in12k_in1k':'hybrid',
-    'convnext_base.fb_in22k_ft_in1k':'supervised',
-    'convnext_tiny.fb_in22k_ft_in1k':'supervised',
+    'convnext_base.fb_in22k_ft_in1k':'supervised (multistep)',
+    'convnext_tiny.fb_in22k_ft_in1k':'supervised (multistep)',
     'coatnet_0_rw_224.sw_in1k':'supervised',
-    'coatnet_2_rw_224.sw_in12k_ft_in1k':'supervised',
+    'coatnet_2_rw_224.sw_in12k_ft_in1k':'supervised (multistep)',
     'coatnet_2_rw_224.sw_in12k':'supervised',
     "regnetx_004.pycls_in1k":'supervised',
     'efficientnet-b0':'supervised',

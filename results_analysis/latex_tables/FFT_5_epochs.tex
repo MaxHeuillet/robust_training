@@ -5,11 +5,11 @@
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|c|c|c|c|c|c|}
 \toprule
-\textbf{Size} &                                                               \textbf{Gold (1st)} &                                                          \textbf{Silver (2nd)} &                                                            \textbf{Bronze (3rd)} &  \textbf{$\Delta \%$ (1st$\rightarrow$2nd)} &  \textbf{$\Delta \%$ (2nd$\rightarrow$3rd)} \\
+\textbf{Size} &                                                              \textbf{Gold (1st)} &                                                           \textbf{Silver (2nd)} &                                                             \textbf{Bronze (3rd)} &  \textbf{$\Delta \%$ Abs. perf.  (1st$\rightarrow$2nd)} &  \textbf{$\Delta \%$ Abs. perf. (2nd$\rightarrow$3rd)} \\
 \midrule
-        small &    \makecell{mobilenet\_v3,sup,in1k, TRADES\_v2 \\[0.3ex] \footnotesize (GR:8.0)} &  \makecell{edgenetx\_s,sup,in1k, TRADES\_v2 \\[0.3ex] \footnotesize (GR:21.0)} &        \makecell{coat\_t,sup,in1k, TRADES\_v2 \\[0.3ex] \footnotesize (GR:27.0)} &                                      -32.43 &                                      -20.01 \\
-       medium & \makecell{convnext\_t,rob-sup,in1k, CLASSIC\_AT \\[0.3ex] \footnotesize (GR:1.0)} & \makecell{resnet50,rob-sup,in1k, CLASSIC\_AT \\[0.3ex] \footnotesize (GR:3.0)} & \makecell{convnext\_t,rob-sup,in1k, TRADES\_v2 \\[0.3ex] \footnotesize (GR:5.0)} &                                      -14.61 &                                       -8.01 \\
-        large &   \makecell{swin\_b,sup,ink22k-in1k, TRADES\_v2 \\[0.3ex] \footnotesize (GR:2.0)} &   \makecell{convnext\_b,sup,in1k, TRADES\_v2 \\[0.3ex] \footnotesize (GR:4.0)} &    \makecell{convnext\_b,sup,in22k, TRADES\_v2 \\[0.3ex] \footnotesize (GR:6.0)} &                                      -11.63 &                                      -10.10 \\
+        small &    \makecell{edgenetx\_s,sup,in1k, TRADES\_v2 \\[0.3ex] \footnotesize (GR:16.0)} & \makecell{mobilevit\_s,sup,in1k, CLASSIC\_AT \\[0.3ex] \footnotesize (GR:18.0)} &    \makecell{edgenetx\_s,sup,in1k, CLASSIC\_AT \\[0.3ex] \footnotesize (GR:33.0)} &                                                   -2.65 &                                                   0.16 \\
+       medium & \makecell{convnext\_t,rob-sup,in1k, TRADES\_v2 \\[0.3ex] \footnotesize (GR:1.0)} &  \makecell{resnet50,rob-sup,in1k, CLASSIC\_AT \\[0.3ex] \footnotesize (GR:2.0)} & \makecell{convnext\_t,rob-sup,in1k, CLASSIC\_AT \\[0.3ex] \footnotesize (GR:3.0)} &                                                    0.53 &                                                   1.13 \\
+        large & \makecell{convnext\_b,clip,laion2b, TRADES\_v2 \\[0.3ex] \footnotesize (GR:6.0)} &        \makecell{vit\_b,sup,in1k, CLASSIC\_AT \\[0.3ex] \footnotesize (GR:7.0)} &  \makecell{convnext\_b,rob-sup,in1k, TRADES\_v2 \\[0.3ex] \footnotesize (GR:8.0)} &                                                   -1.92 &                                                   0.64 \\
 \bottomrule
 \end{tabular}
 

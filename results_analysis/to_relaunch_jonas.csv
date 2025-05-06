@@ -1,2 +1,1 @@
 ,backbone,dataset,loss_function,restart_from
-456,robust_convnext_tiny,oxford-iiit-pet,CLASSIC_AT,job5_test_l2.sh

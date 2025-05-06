@@ -7,9 +7,9 @@ df = pd.read_csv("./results_analysis/restart_max.csv")
 email = "maxime.heuillet.1@ulaval.ca"
 
 
-# project_name = "full_fine_tuning_5epochs_article1"
+project_name = "full_fine_tuning_5epochs_article1"
 # project_name = "linearprobe_50epochs_paper_final2"
-project_name = 'full_fine_tuning_50epochs_paper_final2'
+# project_name = 'full_fine_tuning_50epochs_paper_final2'
 
 ACCOUNT = "rrg-adurand"
 
@@ -17,7 +17,7 @@ for _, row in df.iterrows():
     backbone = row["backbone"]
     dataset = row["dataset"]
     loss = row["loss_function"]
-    job_script = "job1_hpo.sh" #row["restart_from"]
+    job_script = row["restart_from"] 
     cmd = [
     "sbatch",
     f"--account={ACCOUNT}",
