@@ -17,7 +17,7 @@ for _, row in df.iterrows():
     backbone = row["backbone"]
     dataset = row["dataset"]
     loss = row["loss_function"]
-    job_script = row["restart_from"] 
+    job_script = "job1_hpo.sh"#row["restart_from"] 
     cmd = [
     "sbatch",
     f"--account={ACCOUNT}",
