@@ -1,15 +1,15 @@
 \begin{table}[ht]
 \centering
-\caption{Top 3 fine‑tuning configurations LP (50 epochs)}
+\caption{Top fine‑tuning configurations in LP (50 epochs), with global ranking (GR) below. }
 \label{tab:LP_50_epochs}
 \resizebox{\textwidth}{!}{%
-\begin{tabular}{|c|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|}
 \toprule
-\textbf{Size} &                                                                \textbf{Gold (1st)} &                                                              \textbf{Silver (2nd)} &                                                            \textbf{Bronze (3rd)} &  \textbf{$\Delta \%$ Abs. perf.  (1st$\rightarrow$2nd)} &  \textbf{$\Delta \%$ Abs. perf. (2nd$\rightarrow$3rd)} \\
+\textbf{Size} &                                                             \textbf{Gold (1st)} &                                                          \textbf{Silver (2nd)} &                                                         \textbf{Bronze (3rd)} \\
 \midrule
-        small & \makecell{efficientnet\_b0,sup,in1k, CLASSIC\_AT \\[0.3ex] \footnotesize (GR:9.0)} & \makecell{efficientnet\_b0,sup,in1k, TRADES\_v2 \\[0.3ex] \footnotesize (GR:10.0)} & \makecell{mobilenet\_v3,sup,in1k, CLASSIC\_AT \\[0.3ex] \footnotesize (GR:43.0)} &                                                   -0.43 &                                                   3.28 \\
-       medium &      \makecell{deit\_s,rob-sup,in1k, CLASSIC\_AT \\[0.3ex] \footnotesize (GR:1.0)} &       \makecell{deit\_s,rob-sup,in1k, TRADES\_v2 \\[0.3ex] \footnotesize (GR:2.0)} & \makecell{convnext\_t,rob-sup,in1k, TRADES\_v2 \\[0.3ex] \footnotesize (GR:3.0)} &                                                   -2.17 &                                                   0.60 \\
-        large &   \makecell{convnext\_b,rob-sup,in1k, TRADES\_v2 \\[0.3ex] \footnotesize (GR:6.0)} &  \makecell{convnext\_b,rob-sup,in1k, CLASSIC\_AT \\[0.3ex] \footnotesize (GR:8.0)} & \makecell{swin\_b,sup,ink22k-in1k, TRADES\_v2 \\[0.3ex] \footnotesize (GR:11.0)} &                                                   -0.58 &                                                   5.19 \\
+        small & \makecell{efficientnet\_b0,sup,in1k, Classic AT \\[0.3ex] \footnotesize (GR:9)} &   \makecell{efficientnet\_b0,sup,in1k, TRADES \\[0.3ex] \footnotesize (GR:10)} & \makecell{mobilenet\_v3,sup,in1k, Classic AT \\[0.3ex] \footnotesize (GR:43)} \\
+       medium &      \makecell{deit\_s,rob-sup,in1k, Classic AT \\[0.3ex] \footnotesize (GR:1)} &         \makecell{deit\_s,rob-sup,in1k, TRADES \\[0.3ex] \footnotesize (GR:2)} &    \makecell{convnext\_t,rob-sup,in1k, TRADES \\[0.3ex] \footnotesize (GR:3)} \\
+        large &      \makecell{convnext\_b,rob-sup,in1k, TRADES \\[0.3ex] \footnotesize (GR:6)} & \makecell{convnext\_b,rob-sup,in1k, Classic AT \\[0.3ex] \footnotesize (GR:8)} &    \makecell{swin\_b,sup,ink22k-in1k, TRADES \\[0.3ex] \footnotesize (GR:11)} \\
 \bottomrule
 \end{tabular}
 

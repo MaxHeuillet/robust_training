@@ -246,14 +246,14 @@ pre_training_strategy = {
     'robust_deit_small_patch16_224':'supervised (robust)',
     'vit_small_patch16_224.augreg_in1k':'supervised',
     'convnext_tiny.fb_in22k':'supervised',
-    'vit_base_patch16_clip_224.laion2b_ft_in1k':'hybrid',
+    'vit_base_patch16_clip_224.laion2b_ft_in1k':'fusion',
     'vit_base_patch16_224.augreg_in21k_ft_in1k':'supervised (multistep)',
     'vit_small_patch16_224.augreg_in21k_ft_in1k':'supervised (multistep)',
     'eva02_base_patch14_224.mim_in22k':'self-supervised',
     'eva02_tiny_patch14_224.mim_in22k':'self-supervised',
     'swin_base_patch4_window7_224.ms_in22k_ft_in1k':'supervised (multistep)',
     'swin_tiny_patch4_window7_224.ms_in1k':'supervised',
-    'convnext_base.clip_laion2b_augreg_ft_in12k_in1k':'hybrid',
+    'convnext_base.clip_laion2b_augreg_ft_in12k_in1k':'fusion',
     'convnext_base.fb_in22k_ft_in1k':'supervised (multistep)',
     'convnext_tiny.fb_in22k_ft_in1k':'supervised (multistep)',
     'coatnet_0_rw_224.sw_in1k':'supervised',
@@ -350,7 +350,7 @@ def load_result_dataset(pn1, pn2,):
 
                 result['backbone'] = backbone
                 result['dataset'] = data
-                result['loss_function'] = loss
+                result['loss_function'] = "Classic AT" if loss=='CLASSIC_AT' else "TRADES"
                 result['pre_training_dataset'] = pre_training_dataset[backbone]
                 result['pre_training_strategy'] = pre_training_strategy[backbone]
                 result['volume_pre_training_data'] = volume_pre_training_data[ pre_training_dataset[backbone] ]

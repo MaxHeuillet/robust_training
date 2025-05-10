@@ -1,15 +1,15 @@
 \begin{table}[ht]
 \centering
-\caption{Top 3 fine‑tuning configurations FFT (5 epochs)}
+\caption{Top fine‑tuning configurations in FFT (5 epochs), with global ranking (GR) below. }
 \label{tab:FFT_5_epochs}
 \resizebox{\textwidth}{!}{%
-\begin{tabular}{|c|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|}
 \toprule
-\textbf{Size} &                                                              \textbf{Gold (1st)} &                                                           \textbf{Silver (2nd)} &                                                             \textbf{Bronze (3rd)} &  \textbf{$\Delta \%$ Abs. perf.  (1st$\rightarrow$2nd)} &  \textbf{$\Delta \%$ Abs. perf. (2nd$\rightarrow$3rd)} \\
+\textbf{Size} &                                                        \textbf{Gold (1st)} &                                                        \textbf{Silver (2nd)} &                                                          \textbf{Bronze (3rd)} \\
 \midrule
-        small &    \makecell{edgenetx\_s,sup,in1k, TRADES\_v2 \\[0.3ex] \footnotesize (GR:16.0)} & \makecell{mobilevit\_s,sup,in1k, CLASSIC\_AT \\[0.3ex] \footnotesize (GR:18.0)} &    \makecell{edgenetx\_s,sup,in1k, CLASSIC\_AT \\[0.3ex] \footnotesize (GR:33.0)} &                                                   -2.65 &                                                   0.16 \\
-       medium & \makecell{convnext\_t,rob-sup,in1k, TRADES\_v2 \\[0.3ex] \footnotesize (GR:1.0)} &  \makecell{resnet50,rob-sup,in1k, CLASSIC\_AT \\[0.3ex] \footnotesize (GR:2.0)} & \makecell{convnext\_t,rob-sup,in1k, CLASSIC\_AT \\[0.3ex] \footnotesize (GR:3.0)} &                                                    0.53 &                                                   1.13 \\
-        large & \makecell{convnext\_b,clip,laion2b, TRADES\_v2 \\[0.3ex] \footnotesize (GR:6.0)} &        \makecell{vit\_b,sup,in1k, CLASSIC\_AT \\[0.3ex] \footnotesize (GR:7.0)} &  \makecell{convnext\_b,rob-sup,in1k, TRADES\_v2 \\[0.3ex] \footnotesize (GR:8.0)} &                                                   -1.92 &                                                   0.64 \\
+        small &    \makecell{edgenetx\_s,sup,in1k, TRADES \\[0.3ex] \footnotesize (GR:16)} & \makecell{mobilevit\_s,sup,in1k, Classic AT \\[0.3ex] \footnotesize (GR:18)} &    \makecell{edgenetx\_s,sup,in1k, Classic AT \\[0.3ex] \footnotesize (GR:34)} \\
+       medium & \makecell{convnext\_t,rob-sup,in1k, TRADES \\[0.3ex] \footnotesize (GR:1)} &  \makecell{resnet50,rob-sup,in1k, Classic AT \\[0.3ex] \footnotesize (GR:2)} & \makecell{convnext\_t,rob-sup,in1k, Classic AT \\[0.3ex] \footnotesize (GR:3)} \\
+        large &      \makecell{vit\_b,sup,in1k, Classic AT \\[0.3ex] \footnotesize (GR:6)} &   \makecell{convnext\_b,clip,laion2b, TRADES \\[0.3ex] \footnotesize (GR:7)} &     \makecell{convnext\_b,rob-sup,in1k, TRADES \\[0.3ex] \footnotesize (GR:8)} \\
 \bottomrule
 \end{tabular}
 

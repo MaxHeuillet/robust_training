@@ -122,7 +122,7 @@ def compute_odds_ratio_by_group(df, group_col, target_col="in_tier1"):
 def global_grouped_dataset(df):
 
     grouped_df = df.pivot_table(
-        index=['ft_strategy', 'model_type', 'model_size', 'loss_function', 'backbone',],
+        index=['ft_strategy', 'model_type', 'model_size', 'pre_training_strategy', 'loss_function', 'backbone',],
         columns='dataset',
         # dropna=False
     )
