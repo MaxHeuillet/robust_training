@@ -139,7 +139,7 @@ def get_config_id(cfg) -> str:
 initialize(config_path="../configs", version_base=None)
 
 
-def load_hpo_result_dataset(pn1, pn2,):
+def load_hpo_result_dataset(pn1, pn2, pn3):
 
     final_data = []
 
@@ -160,27 +160,45 @@ def load_hpo_result_dataset(pn1, pn2,):
                 config_base.backbone = backbone
                 config_base.loss_function = loss
 
-                if backbone in yann_backbones:
-                    project_name = pn1
-                    config_base.project_name = pn1
-                else:
-                    project_name = pn2
-                    config_base.project_name = pn2
 
-                config_base.exp_id = get_config_id(config_base)
-
-                print(config_base.configs_path, config_base.project_name, config_base.exp_id)
-
-                path = os.path.join("/Users/maximeheuillet/Desktop/robust_training/configs",
-                                            "HPO_results",
-                                            config_base.project_name, 
-                                            f"{config_base.exp_id}.yaml")
-                print(path)
-
-                try:        
+                try:
+                    project_name = pn3
+                    config_base.project_name = pn3
+                    config_base.exp_id = get_config_id(config_base)
+                    path = os.path.join("/Users/maximeheuillet/Desktop/robust_training/configs",
+                                                "HPO_results",
+                                                config_base.project_name, 
+                                                f"{config_base.exp_id}.yaml")       
                     config_optimal = OmegaConf.load(path)
+
                 except:
-                    print('file not found')
+
+                    try:
+                        project_name = pn2
+                        config_base.project_name = pn2
+                        config_base.exp_id = get_config_id(config_base)
+                        path = os.path.join("/Users/maximeheuillet/Desktop/robust_training/configs",
+                                                    "HPO_results",
+                                                    config_base.project_name, 
+                                                    f"{config_base.exp_id}.yaml")       
+                        config_optimal = OmegaConf.load(path)
+
+                    except:
+
+                        try:
+                            project_name = pn1
+                            config_base.project_name = pn1
+                            config_base.exp_id = get_config_id(config_base)
+                            path = os.path.join("/Users/maximeheuillet/Desktop/robust_training/configs",
+                                                        "HPO_results",
+                                                        config_base.project_name, 
+                                                        f"{config_base.exp_id}.yaml")       
+                            config_optimal = OmegaConf.load(path)
+
+                        except:
+
+                            print("file not found")
+
 
                 result = {      'nb_trials': config_optimal.nb_completed_trials,
                                 'lr1': config_optimal.lr1,
