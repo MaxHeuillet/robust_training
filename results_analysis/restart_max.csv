@@ -1,5 +1,0 @@
-,backbone,dataset,loss_function,restart_from,model_size
-116,mobilevit-small,caltech101,TRADES_v2,job1_hpo.sh,small
-119,coat_tiny.in1k,caltech101,TRADES_v2,job1_hpo.sh,small
-319,coat_tiny.in1k,stanford_cars,CLASSIC_AT,job1_hpo.sh,small
-358,edgenext_small.usi_in1k,caltech101,CLASSIC_AT,job1_hpo.sh,small

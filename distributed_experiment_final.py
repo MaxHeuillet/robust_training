@@ -307,8 +307,7 @@ class BaseExperiment:
         
         print('initialize ray')
         ray.init( _temp_dir=str(tmp_dir) ,
-                 include_dashboard=False, 
-                 logging_level="DEBUG")
+                 include_dashboard=False, ) #logging_level="DEBUG"
         
         print('end initialize')
 

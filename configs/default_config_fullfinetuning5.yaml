@@ -26,7 +26,7 @@ exp_id: null
 
 statedicts_path: "~/my_backbones/"  # TODO: update, where we load the pretrained model
 trained_statedicts_path: "~/my_backbones/trained_state_dicts/" # TODO: update, where we save fine tuned model
-datasets_path: "./data/" # where we load uncompressed dataset
+datasets_path: "~/data/" # where we load uncompressed dataset
 hpo_path: "~/hpo_results/" # where we save the results of HPO
 work_path: "~/work_dir/"
 configs_path: "./configs/" # where we save the results of HPO

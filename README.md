@@ -1,138 +1,68 @@
-Get your setup started:
+### ✅ Create python environment
 
-python3.11 -m venv ./Desktop/myenv_reprod
-source ./Desktop/myenv_reprod/bin/activate
-cd ./Desktop/robust_training
+```
+python3.11 -m venv ./myenv_reprod
+source ./myenv_reprod/bin/activate
+cd ./robust_training
 pip install -r ./requirements.txt
+``` 
 
-Download datasets:
+### ✅ Reproduce paper results
 
-python ./databases/download_data.py --save_path ./data
+The database with all the measurements is ```results_dataset.csv```
+
+All the Figures of the paper can be reproducing with scripts in ```./results_analysis```
+
+### ✅ Reproduce training
+
+## ✅ Download and process datasets
+
+```python ./databases/download_data.py --save_path ~/data```
 For Caltech101, LandUse and StanfordCard, use Kaggle. 
 Relevant info: https://stackoverflow.com/questions/63067515/http-error-404-not-found-in-downloading-caltech101-dataset
 
-python ./save_final_dataset.py --datasets_path ./data
+```python ./databases/save_final_dataset.py --datasets_path ~/data```
 
-Download backbones:
+## ✅ Download and process backbones
 
-python ./architectures/download_architectures.py --save_path ~/my_backbones
+```python ./architectures/download_architectures.py --save_path ~/my_backbones```
 
 To download the robust checkpoints:
 		- Download link ('robust_convnext_tiny', 'robust_deit_small_patch16_224', 'robust_convnext_base', 'robust_vit_base_patch16_224’):  https://nc.mlcloud.uni-tuebingen.de/index.php/s/XLLnoCnJxp74Zqn . This is from official github (https://github.com/nmndeep/revisiting-at?tab=readme-ov-file) of "Revisiting Adversarial Training for Imagenet" (Neurips 2023) paper.
 		- Download link of resnet50: https://www.dropbox.com/scl/fi/7f2p987eg4pwugw2r660b/imagenet_linf_4.pt?rlkey=e5nv0f5lrktppjlv2c9dcccz9&e=2&dl=0); this is from https://github.com/MadryLab/robustness?tab=readme-ov-file .
 
-python ./architectures/process_robust_architectures.py --path ~/my_backbones
+```python ./architectures/process_robust_architectures.py --path ~/my_backbones```
 
-Launch code:
+## ✅ Launch code
 
-python distributed_experiment_final.py
+Don't forget to change email and allocation credentials in your ```./execute_experiment*.sh``` script, and modify the loading paths in the base configs.
 
-Load the results:
-
-
+> 💡 **Note:** The code runs a default configuration specified in `./utils/arguments.py`.
 
 
+Locally:
 
+```python distributed_experiment_final.py```
 
-
-
-
-
-
-
-## 🛠️ Setup Instructions
-
-
-### ✅ Create the Python Environment
+On a SLURM cluster:
 
 ```
-module --force purge
-module load StdEnv/2023 gcc/12.3 cuda/12.2 opencv/4.9.0 python/3.11 arrow/18.1.0 scipy-stack/2024a nccl/2.18.3
-
-python3.11 -m venv ~/scratch/myenv_reprod
-source ~/scratch/myenv_reprod/bin/activate
-cd ./my_project_directory
-pip install -r requirements.txt
+bash ./execute_experiment.sh 'full_fine_tuning_5epochs_reproduce'
 ```
 
-> 💡 **Note:** The code runs with **Python 3.11**.
-
-### ✅ Specify loading paths and login to comet-ml
-
-Specify the path to compressed archives, line 10 in `./dataset_to_tmpdir.sh`
-Specify the paths to state_dicts and data folders, in the default configuration in `./configs`
-Modify comet ML loging details in `./distributed_experiment_final.py` the method `initialize_logger()`.
-
-### ✅ Cluster specific considerations
-
-If you run jobs on Beluga, you need to enable internet connection for comet-ml with httpsproxy module in the job*_*.sh chain. If you run jobs on Cedar, you need to remove the loading of this module as it causes errors in environment packages loading.
-
-### ✅ Run unit tests
+```
+bash ./execute_experiment.sh 'full_fine_tuning_50epochs_reproduce'
+```
 
 ```
-salloc --account=def-adurand --time=2:59:00 --cpus-per-task=16 --mem=60000M --gpus-per-node=1
+bash ./execute_experiment.sh 'linearprobe_50epochs_reproduce'
+```
 
-cd ./my_project_directory
+## ✅ Run unit tests
 
-module --force purge
-module load StdEnv/2023 gcc/12.3 cuda/12.2 opencv/4.9.0 python/3.11 arrow/18.1.0 scipy-stack/2024a nccl/2.18.3
-
-source ~/scratch/myenv_reprod/bin/activate
+```
 python ./unit_tests/architecture_loader_test.py
 python ./unit_tests/dataset_transform_test.py
 ```
 
 This test verifies i) that the backbone loads correctly, ii) that the output of the forward pass of the backbone is aligned with the nb of classes in the fine-tuning task, iii) that both CLASSIC_AT and TRADES loss output a float number, iv) that the learning rate and weight decay for the feature extractor and classification head are correctly split, v) that the gradient tracking for linear probing and end-to-end fine-tuning are correctly distinguished.
-
-```
-python ./unit_tests/data_transform_test.py
-```
-
-This test verifies that i) each dataset included in the study loads correctly, and ii) that the distinct transforms for train, and text-val are correctly associated with each dataset.
-
-### 🚀 Launch All Jobs on the Cluster
-
-Don't forget to change email and allocation credentials in your ```./execute_experiment*.sh``` script.
-
-## Maxime :
-```
-bash ./execute_experiment_maxime.sh 'full_fine_tuning_5epochs_paper_final2'
-```
-
-## Rishika :
-```
-bash ./execute_experiment_rishika.sh 'full_fine_tuning_50epochs_paper_final2'
-```
-
-## Jonas :
-```
-bash ./execute_experiment_jonas.sh 'linearprobe_50epochs_paper_final2'
-```
-
-## Yann :
-```
-bash ./execute_experiment_yann.sh 'full_fine_tuning_50epochs_edge_paper_final2'
-```
-If we have time:
-```
-bash ./execute_experiment_yann.sh 'linearprobe_50epochs__edge_paper_final2'
-```
-
-
----
-
-### 💻 Run in an Interactive Session
-
-
-```
-module --force purge
-module load StdEnv/2023 gcc/12.3 cuda/12.2 opencv/4.9.0 python/3.11 arrow/18.1.0 scipy-stack/2024a
-
-source ~/scratch/myenv_reprod/bin/activate
-cd ./project_directory
-
-bash ./dataset_to_tmpdir.sh 'uc-merced-land-use-dataset'
-python distributed_experiment_final.py
-```
-
-> 💡 **Note:** The code runs a default configuration specified in `./utils/arguments.py`.

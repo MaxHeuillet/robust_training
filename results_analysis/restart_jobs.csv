@@ -1,7 +1,0 @@
-backbone,dataset,loss_function,restart_from
-coat_tiny.in1k,stanford_cars,TRADES_v2,job1_hpo.sh
-coat_tiny.in1k,caltech101,TRADES_v2,job1_hpo.sh
-coat_tiny.in1k,fgvc-aircraft-2013b,TRADES_v2,job1_hpo.sh
-coat_tiny.in1k,flowers-102,TRADES_v2,job1_hpo.sh
-coat_tiny.in1k,oxford-iiit-pet,TRADES_v2,job1_hpo.sh
-coat_tiny.in1k,caltech101,CLASSIC_AT,job1_hpo.sh
