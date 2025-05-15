@@ -81,7 +81,7 @@ def process_rankings(grouped_df):
     # Optional: sort the columns to keep things tidy
     grouped_df = grouped_df.sort_index(axis=1, level=[0, 1])
 
-    grouped_df = grouped_df.sort_values(('TOTAL', 'score_sum'), ascending=False)
+    grouped_df = grouped_df.sort_values(('TOTAL', 'borda'), ascending=False)
 
     return grouped_df
 

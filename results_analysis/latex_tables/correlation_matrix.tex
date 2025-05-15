@@ -1,26 +1,26 @@
 
 \centering
 \label{tab:spearman_corr}
-\resizebox{0.33\textwidth}{!}{%
-\begin{tabular}{lr}
+\resizebox{0.45\textwidth}{!}{%
+\begin{tabular}{lrrrrrrr}
 \toprule
-{} &  Mean Abs. Corr. \\
+{} &  caltech101 &  fgvc-aircraft-2013b &  flowers-102 &  oxford-iiit-pet &  stanford_cars &  uc-merced-land-use-dataset &  Average MAC \\
 \midrule
-Global (Spearman)            &            0.850 \\
-Classic AT                   &            0.897 \\
-TRADES                       &            0.839 \\
-large                        &            0.902 \\
-medium                       &            0.788 \\
-small                        &            0.748 \\
-fully attention              &            0.867 \\
-fully convolutional          &            0.813 \\
-hybrid                       &            0.908 \\
-fusion                       &            0.888 \\
-self-supervised              &            0.843 \\
-self-supervised (multimodal) &            0.896 \\
-supervised                   &            0.817 \\
-supervised (multistep)       &            0.904 \\
-supervised (robust)          &            0.854 \\
+Global (Spearman)            &       0.847 &                0.782 &        0.805 &            0.681 &          0.849 &                       0.807 &        0.795 \\
+Classic AT                   &       0.876 &                0.702 &        0.842 &            0.778 &          0.844 &                       0.890 &        0.822 \\
+TRADES                       &       0.823 &                0.884 &        0.830 &            0.669 &          0.896 &                       0.777 &        0.813 \\
+large                        &       0.825 &                0.882 &        0.860 &            0.859 &          0.871 &                       0.803 &        0.850 \\
+medium                       &       0.743 &                0.628 &        0.743 &            0.436 &          0.701 &                       0.833 &        0.681 \\
+small                        &       0.911 &                0.531 &        0.503 &            0.467 &          0.575 &                       0.678 &        0.611 \\
+fully attention              &       0.884 &                0.800 &        0.761 &            0.713 &          0.856 &                       0.882 &        0.816 \\
+fully convolutional          &       0.762 &                0.756 &        0.811 &            0.574 &          0.818 &                       0.719 &        0.740 \\
+hybrid                       &       0.951 &                0.815 &        0.892 &            0.798 &          0.889 &                       0.879 &        0.871 \\
+fusion                       &       0.760 &                0.760 &        0.920 &            0.660 &          0.920 &                       1.000 &        0.837 \\
+self-supervised              &       0.821 &                0.902 &        0.860 &            0.619 &          0.878 &                       0.668 &        0.791 \\
+self-supervised (multimodal) &       0.911 &                0.742 &        0.760 &            0.589 &          0.855 &                       0.703 &        0.760 \\
+supervised                   &       0.937 &                0.760 &        0.727 &            0.682 &          0.806 &                       0.789 &        0.783 \\
+supervised (multistep)       &       0.867 &                0.809 &        0.846 &            0.893 &          0.856 &                       0.798 &        0.845 \\
+supervised (robust)          &       0.568 &                0.641 &        0.841 &            0.670 &          0.685 &                       0.877 &        0.714 \\
 \bottomrule
 \end{tabular}
 }

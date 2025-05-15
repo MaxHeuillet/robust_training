@@ -290,7 +290,7 @@ def sums_from_dict(scores):
     geom_sum  = math.prod(values)
     return arith_sum, geom_sum
 
-def load_result_dataset(pn1, pn2,):
+def load_result_dataset(pn1, pn2, pn3):
 
     final_data = []
 
@@ -298,42 +298,51 @@ def load_result_dataset(pn1, pn2,):
         for data in datas:
             for backbone in backbones:
 
-                # if backbone in yann_backbones:
-                #     project_name = pn1
-                # else:
-                #     project_name = pn2
-
                 try:
-                    project_name = pn2
+
+                    project_name = pn3
                     name ='{}_{}_{}'.format(backbone, data, loss)
                     print( '../results/{}/{}.pkl'.format(project_name, name) )
                     with open('../results/{}/{}.pkl'.format(project_name, name), 'rb') as f:
-                        result = pickle.load(f)
-                                        # result = saved_data[name]["statistics"]
+                            result = pickle.load(f)
 
                     arith_sum, geom_sum = sums_from_dict(result)
                     result['sum'] = arith_sum
                     result['geom'] = geom_sum
 
                 except:
+                    print("HEY")
 
                     try:
-                        print("HEY") 
-                        project_name = pn1
-
+                        project_name = pn2
                         name ='{}_{}_{}'.format(backbone, data, loss)
                         print( '../results/{}/{}.pkl'.format(project_name, name) )
                         with open('../results/{}/{}.pkl'.format(project_name, name), 'rb') as f:
                             result = pickle.load(f)
+                                            # result = saved_data[name]["statistics"]
 
                         arith_sum, geom_sum = sums_from_dict(result)
                         result['sum'] = arith_sum
                         result['geom'] = geom_sum
 
                     except:
-                                    
-                        result = {'clean_acc': math.nan, 'Linf_acc': math.nan, 'L2_acc': math.nan, 'L1_acc': math.nan, 'common_acc': math.nan, 
-                                'sum':math.nan, 'geom':math.nan, }
+
+                        try:
+                            project_name = pn1
+                            name ='{}_{}_{}'.format(backbone, data, loss)
+                            print( '../results/{}/{}.pkl'.format(project_name, name) )
+                            with open('../results/{}/{}.pkl'.format(project_name, name), 'rb') as f:
+                                result = pickle.load(f)
+
+                            arith_sum, geom_sum = sums_from_dict(result)
+                            result['sum'] = arith_sum
+                            result['geom'] = geom_sum
+
+                        except:
+                            print("file not found")
+                                        
+                            result = {'clean_acc': math.nan, 'Linf_acc': math.nan, 'L2_acc': math.nan, 'L1_acc': math.nan, 'common_acc': math.nan, 
+                                    'sum':math.nan, 'geom':math.nan, }
                         
                 ########### FEATURES PROCESSING STEP:
                     

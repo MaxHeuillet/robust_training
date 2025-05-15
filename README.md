@@ -1,3 +1,45 @@
+Get your setup started:
+
+python3.11 -m venv ./Desktop/myenv_reprod
+source ./Desktop/myenv_reprod/bin/activate
+cd ./Desktop/robust_training
+pip install -r ./requirements.txt
+
+Download datasets:
+
+python ./databases/download_data.py --save_path ./data
+For Caltech101, LandUse and StanfordCard, use Kaggle. 
+Relevant info: https://stackoverflow.com/questions/63067515/http-error-404-not-found-in-downloading-caltech101-dataset
+
+python ./save_final_dataset.py --datasets_path ./data
+
+Download backbones:
+
+python ./architectures/download_architectures.py --save_path ~/my_backbones
+
+To download the robust checkpoints:
+		- Download link ('robust_convnext_tiny', 'robust_deit_small_patch16_224', 'robust_convnext_base', 'robust_vit_base_patch16_224’):  https://nc.mlcloud.uni-tuebingen.de/index.php/s/XLLnoCnJxp74Zqn . This is from official github (https://github.com/nmndeep/revisiting-at?tab=readme-ov-file) of "Revisiting Adversarial Training for Imagenet" (Neurips 2023) paper.
+		- Download link of resnet50: https://www.dropbox.com/scl/fi/7f2p987eg4pwugw2r660b/imagenet_linf_4.pt?rlkey=e5nv0f5lrktppjlv2c9dcccz9&e=2&dl=0); this is from https://github.com/MadryLab/robustness?tab=readme-ov-file .
+
+python ./architectures/process_robust_architectures.py --path ~/my_backbones
+
+Launch code:
+
+python distributed_experiment_final.py
+
+Load the results:
+
+
+
+
+
+
+
+
+
+
+
+
 ## 🛠️ Setup Instructions
 
 

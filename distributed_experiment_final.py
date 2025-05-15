@@ -289,7 +289,7 @@ class BaseExperiment:
         self.setup.hp_opt = True 
 
         # Check if experiment path exists and delete it before starting a new run
-        hpo_opt_path = Path(config.hpo_path).expanduser().resolve() #os.path.abspath(os.path.expandvars(os.path.expanduser(config.hpo_path)))
+        hpo_opt_path = Path(config.hpo_path).expanduser().resolve() 
         experiment_path = hpo_opt_path / config.project_name
         os.makedirs(experiment_path, exist_ok=True)
         existing_experiment_path = hpo_opt_path / config.project_name / config.exp_id
@@ -298,6 +298,7 @@ class BaseExperiment:
             shutil.rmtree(existing_experiment_path)
 
         tmp_dir = Path(os.path.expandvars(config.work_path)).expanduser().resolve()
+        print("TMP DIR", tmp_dir)
         os.environ["RAY_TMPDIR"] = str(tmp_dir)
         os.environ["RAY_STARTUP_TIMEOUT_SECONDS"] = "120"
         os.environ["RAY_GCS_SERVER_REQUEST_TIMEOUT_SECONDS"] = "60"

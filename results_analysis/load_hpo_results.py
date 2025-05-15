@@ -172,7 +172,8 @@ def load_hpo_result_dataset(pn1, pn2, pn3):
                     config_optimal = OmegaConf.load(path)
 
                 except:
-
+                    print('HEY')
+        
                     try:
                         project_name = pn2
                         config_base.project_name = pn2
@@ -197,7 +198,7 @@ def load_hpo_result_dataset(pn1, pn2, pn3):
 
                         except:
 
-                            print("file not found")
+                            print("file not found", loss, data, backbone, pn1, pn2, pn3)
 
 
                 result = {      'nb_trials': config_optimal.nb_completed_trials,
