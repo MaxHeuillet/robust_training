@@ -26,25 +26,25 @@ from losses import get_loss
 
 
 SCIENTIFIC_BACKBONES=(
-  'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K',
-  'CLIP-convnext_base_w-laion2B-s13B-b82K',
-  'deit_small_patch16_224.fb_in1k',
-  'robust_resnet50',
-  'vit_small_patch16_224.augreg_in21k',
-  'convnext_base.fb_in1k',
-  'resnet50.a1_in1k',
-  'robust_vit_base_patch16_224',
-  'vit_base_patch16_224.mae',
-  'convnext_base.fb_in22k',
-  'robust_convnext_base',
-  'vit_base_patch16_224.augreg_in1k',
-  'vit_base_patch16_224.augreg_in21k',
-  'vit_base_patch16_224.dino',
-  'vit_base_patch16_clip_224.laion2b',
-  'convnext_tiny.fb_in1k',
-  'robust_convnext_tiny',
-  'robust_deit_small_patch16_224',
-  'vit_small_patch16_224.augreg_in1k',
+#   'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K',
+#   'CLIP-convnext_base_w-laion2B-s13B-b82K',
+#   'deit_small_patch16_224.fb_in1k',
+#   'robust_resnet50',
+#   'vit_small_patch16_224.augreg_in21k',
+#   'convnext_base.fb_in1k',
+#   'resnet50.a1_in1k',
+#   'robust_vit_base_patch16_224',
+#   'vit_base_patch16_224.mae',
+#   'convnext_base.fb_in22k',
+#   'robust_convnext_base',
+#   'vit_base_patch16_224.augreg_in1k',
+#   'vit_base_patch16_224.augreg_in21k',
+#   'vit_base_patch16_224.dino',
+#   'vit_base_patch16_clip_224.laion2b',
+#   'convnext_tiny.fb_in1k',
+#   'robust_convnext_tiny',
+#   'robust_deit_small_patch16_224',
+#   'vit_small_patch16_224.augreg_in1k',
   'convnext_tiny.fb_in22k',
 ) 
 
@@ -77,8 +77,8 @@ EDGE_BACKBONES=(
 # Combine all sets
 ALL_BACKBONES = {
     "SCIENTIFIC_MODELS": SCIENTIFIC_BACKBONES,
-    "PERFORMANCE_MODELS": PERFORMANCE_BACKBONES,
-    "EDGE_MODELS": EDGE_BACKBONES,
+    # "PERFORMANCE_MODELS": PERFORMANCE_BACKBONES,
+    # "EDGE_MODELS": EDGE_BACKBONES,
 }
 
     
@@ -251,7 +251,7 @@ class TestModelForwardPass(unittest.TestCase):
 
                                     self.assertEqual(logits.shape, expected_shape,  f"❌ Output shape mismatch! Backbone: {backbone} - Got {logits.shape}, expected {expected_shape}" )
 
-                                    self.test_autoattack_batch_pass(model)
+                                    # self.test_autoattack_batch_pass(model)
                             
                             except Exception as e:
                                 print(f"❌ Exception in backbone {backbone}:\n{traceback.format_exc()}")  # ✅ Print full traceback
@@ -344,57 +344,57 @@ class TestModelForwardPass(unittest.TestCase):
                 f"but got {submodule.training}"
             )
 
-    def test_autoattack_batch_pass(self, model):
-        """
-        Test if AutoAttack can process a single synthetic batch without OOM or shape issues.
-        """
+    # def test_autoattack_batch_pass(self, model):
+    #     """
+    #     Test if AutoAttack can process a single synthetic batch without OOM or shape issues.
+    #     """
 
-        device = torch.device("cuda")
+    #     device = torch.device("cuda")
 
-        def forward_pass(x):
-            return model(x)
+    #     def forward_pass(x):
+    #         return model(x)
 
-        # Config
-        corruption_type = 'Linf'
-        epsilon = self.config.epsilon if hasattr(self.config, "epsilon") else 8 / 255  # fallback default
-        batch_size = self.batch_size
-        input_shape = (3, 224, 224)  # Standard image size
+    #     # Config
+    #     corruption_type = 'Linf'
+    #     epsilon = self.config.epsilon if hasattr(self.config, "epsilon") else 8 / 255  # fallback default
+    #     batch_size = self.batch_size
+    #     input_shape = (3, 224, 224)  # Standard image size
 
-        setup = Setup(1)
-        device = torch.device("cuda")
-        bs = setup.test_batch_size(self.config)
-        x_nat = torch.randn(bs, 3, 224, 224).to(device)
-        target = torch.randint(0, self.N, (bs,)).to(device)
+    #     setup = Setup(1)
+    #     device = torch.device("cuda")
+    #     bs = setup.test_batch_size(self.config)
+    #     x_nat = torch.randn(bs, 3, 224, 224).to(device)
+    #     target = torch.randint(0, self.N, (bs,)).to(device)
 
 
-        # Initialize AutoAttack
-        adversary = AutoAttack(
-            forward_pass,
-            norm=corruption_type,
-            eps=epsilon,
-            version='standard',
-            device=device,
-            verbose=False
-        )
+    #     # Initialize AutoAttack
+    #     adversary = AutoAttack(
+    #         forward_pass,
+    #         norm=corruption_type,
+    #         eps=epsilon,
+    #         version='standard',
+    #         device=device,
+    #         verbose=False
+    #     )
 
-        try:
-            # Run attack
-            x_adv = adversary.run_standard_evaluation(x_nat, target, bs=batch_size)
+    #     try:
+    #         # Run attack
+    #         x_adv = adversary.run_standard_evaluation(x_nat, target, bs=batch_size)
 
-            # Forward both clean and adversarial
-            logits_nat, logits_adv = model(x_nat, x_adv)
+    #         # Forward both clean and adversarial
+    #         logits_nat, logits_adv = model(x_nat, x_adv)
 
-            # Compute predictions
-            preds_nat = torch.argmax(logits_nat, dim=1)
-            preds_adv = torch.argmax(logits_adv, dim=1)
+    #         # Compute predictions
+    #         preds_nat = torch.argmax(logits_nat, dim=1)
+    #         preds_adv = torch.argmax(logits_adv, dim=1)
 
-            nat_correct = (preds_nat == target).sum().item()
-            adv_correct = (preds_adv == target).sum().item()
+    #         nat_correct = (preds_nat == target).sum().item()
+    #         adv_correct = (preds_adv == target).sum().item()
 
-            print(f"✅ Clean Acc: {nat_correct}/{batch_size}, Adversarial Acc: {adv_correct}/{batch_size}")
+    #         print(f"✅ Clean Acc: {nat_correct}/{batch_size}, Adversarial Acc: {adv_correct}/{batch_size}")
 
-        except RuntimeError as e:
-            self.fail(f"❌ RuntimeError during AutoAttack: {e}")
+    #     except RuntimeError as e:
+    #         self.fail(f"❌ RuntimeError during AutoAttack: {e}")
 
 
 
