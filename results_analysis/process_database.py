@@ -6,20 +6,29 @@ import numpy as np
 from statsmodels.stats.contingency_tables import Table2x2
 
 
-def process_grouped_df(final_data, size=None):
 
+def process_grouped_df(final_data, size=None):
     df = pd.DataFrame(final_data)
 
     nan_percentage = (df.isna().sum().sum() / df.size) * 100
     print(f"Percentage of NaN values: {nan_percentage:.2f}%")
 
     if size:
-        df = df[ df.model_size == size ]
+        df = df[df.model_size == size]
 
+    # Define index and column identifiers
+    index_cols = ['backbone', "backbone_name", 'loss_function', 'pre_training_strategy', 'model_type', "model_size", "ft_strategy"]
+    pivot_col = 'dataset'
+
+    # All columns not in index + pivot column are assumed to be values → coerce them to numeric
+    value_cols = df.columns.difference(index_cols + [pivot_col])
+    df[value_cols] = df[value_cols].apply(pd.to_numeric, errors='coerce')
+
+    # Create the pivot table
     grouped_df = df.pivot_table(
-        index=['backbone', "backbone_name", 'loss_function', 'pre_training_strategy', 'model_type', "model_size", "ft_strategy"],
-        columns='dataset',
-        # dropna=False
+        index=index_cols,
+        columns=pivot_col,
+        aggfunc='mean'  # default, but explicit now
     )
 
     # Rename column levels
@@ -28,10 +37,37 @@ def process_grouped_df(final_data, size=None):
     # Swap column levels → dataset becomes level 0, metric becomes level 1
     grouped_df.columns = grouped_df.columns.swaplevel(0, 1)
 
-    # (Optional) Sort columns so that all metrics are grouped within each dataset
+    # Sort columns so that all metrics are grouped within each dataset
     grouped_df = grouped_df.sort_index(axis=1, level=0)
 
     return grouped_df
+
+# def process_grouped_df(final_data, size=None):
+
+#     df = pd.DataFrame(final_data)
+
+#     nan_percentage = (df.isna().sum().sum() / df.size) * 100
+#     print(f"Percentage of NaN values: {nan_percentage:.2f}%")
+
+#     if size:
+#         df = df[ df.model_size == size ]
+
+#     grouped_df = df.pivot_table(
+#         index=['backbone', "backbone_name", 'loss_function', 'pre_training_strategy', 'model_type', "model_size", "ft_strategy"],
+#         columns='dataset',
+#         # dropna=False
+#     )
+
+#     # Rename column levels
+#     grouped_df.columns.set_names(["metric", "dataset"], inplace=True)
+
+#     # Swap column levels → dataset becomes level 0, metric becomes level 1
+#     grouped_df.columns = grouped_df.columns.swaplevel(0, 1)
+
+#     # (Optional) Sort columns so that all metrics are grouped within each dataset
+#     grouped_df = grouped_df.sort_index(axis=1, level=0)
+
+#     return grouped_df
 
 
 def process_rankings(grouped_df):
