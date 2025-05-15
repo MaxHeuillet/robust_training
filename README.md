@@ -1,4 +1,8 @@
-## ✅ Create python environment
+## 📚 Reproducing Paper Results – robust_training
+
+This project provides a pipeline for reproducing the training and evaluation of various models under different pre-training and fine-tuning strategies, including adversarial robustness and transfer learning.
+
+## ✅ Create environment
 
 ```
 python3.11 -m venv ~/myenv_reprod
