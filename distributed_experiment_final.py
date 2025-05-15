@@ -270,6 +270,7 @@ class BaseExperiment:
                     optimizer.zero_grad() # Clear gradients after optimizer step
 
                     update_step += 1
+                break
 
             if self.setup.hp_opt:
                 self.validation( config, valloader, model, logger, iteration, rank)
@@ -281,7 +282,7 @@ class BaseExperiment:
 
             print(f'Rank {rank}, Iteration {iteration},', flush=True) 
 
-            # break
+            break
 
 
     def hyperparameter_optimization(self, config):  
@@ -486,8 +487,8 @@ class BaseExperiment:
                 nb_correct_adv += (preds_adv == target).sum().item()
                 nb_examples += target.size(0)
 
-                # if _ == 2:
-                #     break
+                if _ == 1:
+                    break
 
             stats_nat = { 'nb_correct':nb_correct_nat, 'nb_examples':nb_examples }
             stats_adv = { 'nb_correct':nb_correct_adv, 'nb_examples':nb_examples }
@@ -512,8 +513,8 @@ class BaseExperiment:
                 nb_correct_adv += (preds_adv == target).sum().item()
                 nb_examples += target.size(0)
 
-                # if _ == 2:
-                #     break
+                if _ == 1:
+                    break
             
             stats_nat = { 'nb_correct':None, 'nb_examples':None }
             stats_adv = { 'nb_correct':nb_correct_adv, 'nb_examples':nb_examples }
@@ -584,6 +585,8 @@ def main():
         local_config = compose(config_name="default_config_fullfinetuning5")
     elif 'full_fine_tuning_50epochs' in args_dict['project_name']:
         local_config = compose(config_name="default_config_fullfinetuning50")
+    elif 'full_fine_tuning_reproduce' in args_dict['project_name']:
+        local_config = compose(config_name="default_config_fullfinetuning_reproduce")
     else:
         print('error in the experiment name', flush=True)
         sys.exit(1)

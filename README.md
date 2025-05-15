@@ -35,10 +35,8 @@ To download the robust checkpoints:
 
 ## ✅ Launch code
 
-Don't forget to change email and allocation credentials in your ```./execute_experiment*.sh``` script, and modify the loading paths in the base configs.
-
 > 💡 **Note:** The code runs a default configuration specified in `./utils/arguments.py`.
-
+> 💡 **Note:** We have added ```break``` statements in the train and test loops (L.517, L.491, L.273) to simplify execution of toy code.
 
 Locally:
 
@@ -57,6 +55,10 @@ bash ./execute_experiment.sh 'full_fine_tuning_50epochs_reproduce'
 ```
 bash ./execute_experiment.sh 'linearprobe_50epochs_reproduce'
 ```
+## ✅ Understanding the file system
+
+At the end of ```mode='hpo```, the code stores the results of HPO optimization in a separate folder of ```configs```. At the beginning of ```mode='train'```, the config is loaded to train the model with optimized HPO. Then the model is saved. At testing, the model is loaded and the results are saved in a folder named after project name in ```results``` folder.
+
 
 ## ✅ Run unit tests
 

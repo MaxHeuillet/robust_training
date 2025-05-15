@@ -9,8 +9,9 @@ def get_args2():
     parser.add_argument('--dataset', default='flowers-102', type=str, help='dataset: ' + ' (default: cifar10)')
     parser.add_argument("--loss_function", default="TRADES_v2", type=str, help="the loss function")
     parser.add_argument('--seed', default=0, type=int, help="random seed")
-    parser.add_argument("--project_name", default = 'full_fine_tuning_5epochs_reproduce', type=str, help="task")
-    parser.add_argument("--mode", default = 'train', type=str, )
+    parser.add_argument("--project_name", default = 'full_fine_tuning_reproduce', type=str, help="task")
+    parser.add_argument("--mode", default='test-common', type=str, choices=['hpo', 'train', 'test-Linf', 'test-L1', 'test-L2', 'test-common'], 
+                        help="Choose among: hpo, train, test-L1, test-L2, test-common" )
         
     args, unknown = parser.parse_known_args()
     args_dict = vars(args)

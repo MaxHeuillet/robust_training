@@ -12,14 +12,14 @@ args = parser.parse_args()
 save_path = os.path.expanduser(args.save_path)
 os.makedirs(save_path, exist_ok=True)
 
-########## OxfordIIITPet #########
-datasets.OxfordIIITPet(root=save_path, download=True)
-
-########## FGVCAircraft #########
-datasets.FGVCAircraft(root=save_path, download=True)
-
 ########## Flowers102 #########
 datasets.Flowers102(root=save_path, download=True)
+
+########## OxfordIIITPet #########
+# datasets.OxfordIIITPet(root=save_path, download=True)
+
+########## FGVCAircraft #########
+# datasets.FGVCAircraft(root=save_path, download=True)
 
 ########## Caltech101 #########
 # datasets.Caltech101(root=save_path, download=True)
