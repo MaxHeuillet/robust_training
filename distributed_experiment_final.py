@@ -91,7 +91,7 @@ class BaseExperiment:
         train_sampler = DistributedSampler(train_dataset, num_replicas=self.setup.world_size, rank=rank, shuffle=True, drop_last=True)
         val_sampler = DistributedSampler(val_dataset, num_replicas=self.setup.world_size, rank=rank, drop_last=True)
   
-        nb_workers = 3 if torch.cuda.device_count() > 1 else 1
+        nb_workers = 0 #3 if torch.cuda.device_count() > 1 else 1
 
         print('initialize dataoader', rank,flush=True) 
         trainloader = DataLoader(train_dataset, 

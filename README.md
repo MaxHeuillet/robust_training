@@ -1,8 +1,8 @@
 ### ✅ Create python environment
 
 ```
-python3.11 -m venv ./myenv_reprod
-source ./myenv_reprod/bin/activate
+python3.11 -m venv ~/myenv_reprod
+source ~/myenv_reprod/bin/activate
 cd ./robust_training
 pip install -r ./requirements.txt
 ``` 
