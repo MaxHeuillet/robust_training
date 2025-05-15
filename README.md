@@ -1,4 +1,4 @@
-### ✅ Create python environment
+## ✅ Create python environment
 
 ```
 python3.11 -m venv ~/myenv_reprod
@@ -7,15 +7,15 @@ cd ./robust_training
 pip install -r ./requirements.txt
 ``` 
 
-### ✅ Reproduce paper results
+## ✅ Reproduce paper results
 
 The database with all the measurements is ```results_dataset.csv```
 
 All the Figures of the paper can be reproducing with scripts in ```./results_analysis```
 
-### ✅ Reproduce training
+## ✅ Reproduce training
 
-## ✅ Download and process datasets
+### ✅ Download and process datasets
 
 ```python ./databases/download_data.py --save_path ~/data```
 For Caltech101, LandUse and StanfordCard, use Kaggle. 
@@ -23,7 +23,7 @@ Relevant info: https://stackoverflow.com/questions/63067515/http-error-404-not-f
 
 ```python ./databases/save_final_dataset.py --datasets_path ~/data```
 
-## ✅ Download and process backbones
+### ✅ Download and process backbones
 
 ```python ./architectures/download_architectures.py --save_path ~/my_backbones```
 
@@ -33,7 +33,7 @@ To download the robust checkpoints:
 
 ```python ./architectures/process_robust_architectures.py --path ~/my_backbones```
 
-## ✅ Launch code
+### ✅ Launch code
 
 > 💡 **Note:** The code runs a default configuration specified in `./utils/arguments.py`.
 > 💡 **Note:** We have added ```break``` statements in the train and test loops (L.517, L.491, L.273) to simplify execution of toy code.
@@ -55,12 +55,12 @@ bash ./execute_experiment.sh 'full_fine_tuning_50epochs_reproduce'
 ```
 bash ./execute_experiment.sh 'linearprobe_50epochs_reproduce'
 ```
-## ✅ Understanding the file system
+### ✅ Understanding the file system
 
 At the end of ```mode='hpo```, the code stores the results of HPO optimization in a separate folder of ```configs```. At the beginning of ```mode='train'```, the config is loaded to train the model with optimized HPO. Then the model is saved. At testing, the model is loaded and the results are saved in a folder named after project name in ```results``` folder.
 
 
-## ✅ Run unit tests
+### ✅ Run unit tests
 
 ```
 python ./unit_tests/architecture_loader_test.py
