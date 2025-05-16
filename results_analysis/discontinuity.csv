@@ -1,0 +1,181 @@
+,model_type,model_size,pre_training_strategy,loss_function,backbone,dataset,ft_strategy,borda,continuity
+0,fully attention,large,supervised (robust),Classic AT,robust_vit_base_patch16_224,caltech101,FFT (5 epochs),725.0,1.0
+1,fully attention,large,supervised (robust),Classic AT,robust_vit_base_patch16_224,caltech101,FFT (50 epochs),79.0,1.0
+2,fully attention,large,supervised (robust),Classic AT,robust_vit_base_patch16_224,caltech101,LP (50 epochs),825.0,1.0
+3,fully attention,large,supervised (robust),Classic AT,robust_vit_base_patch16_224,fgvc-aircraft-2013b,FFT (5 epochs),773.0,1.0
+4,fully attention,large,supervised (robust),Classic AT,robust_vit_base_patch16_224,fgvc-aircraft-2013b,FFT (50 epochs),423.0,1.0
+5,fully attention,large,supervised (robust),Classic AT,robust_vit_base_patch16_224,fgvc-aircraft-2013b,LP (50 epochs),658.0,1.0
+6,fully attention,large,supervised (robust),Classic AT,robust_vit_base_patch16_224,flowers-102,FFT (5 epochs),605.0,1.0
+7,fully attention,large,supervised (robust),Classic AT,robust_vit_base_patch16_224,flowers-102,FFT (50 epochs),457.0,1.0
+8,fully attention,large,supervised (robust),Classic AT,robust_vit_base_patch16_224,flowers-102,LP (50 epochs),605.0,1.0
+9,fully attention,large,supervised (robust),Classic AT,robust_vit_base_patch16_224,oxford-iiit-pet,FFT (5 epochs),682.0,1.0
+10,fully attention,large,supervised (robust),Classic AT,robust_vit_base_patch16_224,oxford-iiit-pet,FFT (50 epochs),130.0,1.0
+11,fully attention,large,supervised (robust),Classic AT,robust_vit_base_patch16_224,oxford-iiit-pet,LP (50 epochs),659.0,1.0
+12,fully attention,large,supervised (robust),Classic AT,robust_vit_base_patch16_224,stanford_cars,FFT (5 epochs),660.0,1.0
+13,fully attention,large,supervised (robust),Classic AT,robust_vit_base_patch16_224,stanford_cars,FFT (50 epochs),499.0,1.0
+14,fully attention,large,supervised (robust),Classic AT,robust_vit_base_patch16_224,stanford_cars,LP (50 epochs),759.0,1.0
+15,fully attention,large,supervised (robust),Classic AT,robust_vit_base_patch16_224,uc-merced-land-use-dataset,FFT (5 epochs),704.0,1.0
+16,fully attention,large,supervised (robust),Classic AT,robust_vit_base_patch16_224,uc-merced-land-use-dataset,FFT (50 epochs),619.0,1.0
+17,fully attention,large,supervised (robust),Classic AT,robust_vit_base_patch16_224,uc-merced-land-use-dataset,LP (50 epochs),722.0,1.0
+18,fully attention,large,supervised (robust),TRADES,robust_vit_base_patch16_224,caltech101,FFT (5 epochs),624.0,0.0
+19,fully attention,large,supervised (robust),TRADES,robust_vit_base_patch16_224,caltech101,FFT (50 epochs),106.0,0.0
+20,fully attention,large,supervised (robust),TRADES,robust_vit_base_patch16_224,caltech101,LP (50 epochs),865.0,0.0
+21,fully attention,large,supervised (robust),TRADES,robust_vit_base_patch16_224,fgvc-aircraft-2013b,FFT (5 epochs),596.0,0.0
+22,fully attention,large,supervised (robust),TRADES,robust_vit_base_patch16_224,fgvc-aircraft-2013b,FFT (50 epochs),124.0,0.0
+23,fully attention,large,supervised (robust),TRADES,robust_vit_base_patch16_224,fgvc-aircraft-2013b,LP (50 epochs),669.0,0.0
+24,fully attention,large,supervised (robust),TRADES,robust_vit_base_patch16_224,flowers-102,FFT (5 epochs),723.0,0.0
+25,fully attention,large,supervised (robust),TRADES,robust_vit_base_patch16_224,flowers-102,FFT (50 epochs),313.0,0.0
+26,fully attention,large,supervised (robust),TRADES,robust_vit_base_patch16_224,flowers-102,LP (50 epochs),758.0,0.0
+27,fully attention,large,supervised (robust),TRADES,robust_vit_base_patch16_224,oxford-iiit-pet,FFT (5 epochs),441.0,0.0
+28,fully attention,large,supervised (robust),TRADES,robust_vit_base_patch16_224,oxford-iiit-pet,FFT (50 epochs),416.0,0.0
+29,fully attention,large,supervised (robust),TRADES,robust_vit_base_patch16_224,oxford-iiit-pet,LP (50 epochs),658.0,0.0
+30,fully attention,large,supervised (robust),TRADES,robust_vit_base_patch16_224,stanford_cars,FFT (5 epochs),626.0,0.0
+31,fully attention,large,supervised (robust),TRADES,robust_vit_base_patch16_224,stanford_cars,FFT (50 epochs),230.0,0.0
+32,fully attention,large,supervised (robust),TRADES,robust_vit_base_patch16_224,stanford_cars,LP (50 epochs),766.0,0.0
+33,fully attention,large,supervised (robust),TRADES,robust_vit_base_patch16_224,uc-merced-land-use-dataset,FFT (5 epochs),796.0,0.0
+34,fully attention,large,supervised (robust),TRADES,robust_vit_base_patch16_224,uc-merced-land-use-dataset,FFT (50 epochs),713.0,0.0
+35,fully attention,large,supervised (robust),TRADES,robust_vit_base_patch16_224,uc-merced-land-use-dataset,LP (50 epochs),595.0,0.0
+36,fully attention,medium,supervised (robust),Classic AT,robust_deit_small_patch16_224,caltech101,FFT (5 epochs),699.0,1.0
+37,fully attention,medium,supervised (robust),Classic AT,robust_deit_small_patch16_224,caltech101,FFT (50 epochs),100.0,1.0
+38,fully attention,medium,supervised (robust),Classic AT,robust_deit_small_patch16_224,caltech101,LP (50 epochs),334.0,1.0
+39,fully attention,medium,supervised (robust),Classic AT,robust_deit_small_patch16_224,fgvc-aircraft-2013b,FFT (5 epochs),331.0,1.0
+40,fully attention,medium,supervised (robust),Classic AT,robust_deit_small_patch16_224,fgvc-aircraft-2013b,FFT (50 epochs),484.0,1.0
+41,fully attention,medium,supervised (robust),Classic AT,robust_deit_small_patch16_224,fgvc-aircraft-2013b,LP (50 epochs),689.0,1.0
+42,fully attention,medium,supervised (robust),Classic AT,robust_deit_small_patch16_224,flowers-102,FFT (5 epochs),663.0,1.0
+43,fully attention,medium,supervised (robust),Classic AT,robust_deit_small_patch16_224,flowers-102,FFT (50 epochs),406.0,1.0
+44,fully attention,medium,supervised (robust),Classic AT,robust_deit_small_patch16_224,flowers-102,LP (50 epochs),175.0,1.0
+45,fully attention,medium,supervised (robust),Classic AT,robust_deit_small_patch16_224,oxford-iiit-pet,FFT (5 epochs),139.0,1.0
+46,fully attention,medium,supervised (robust),Classic AT,robust_deit_small_patch16_224,oxford-iiit-pet,FFT (50 epochs),422.0,1.0
+47,fully attention,medium,supervised (robust),Classic AT,robust_deit_small_patch16_224,oxford-iiit-pet,LP (50 epochs),258.0,1.0
+48,fully attention,medium,supervised (robust),Classic AT,robust_deit_small_patch16_224,stanford_cars,FFT (5 epochs),842.0,1.0
+49,fully attention,medium,supervised (robust),Classic AT,robust_deit_small_patch16_224,stanford_cars,FFT (50 epochs),248.0,1.0
+50,fully attention,medium,supervised (robust),Classic AT,robust_deit_small_patch16_224,stanford_cars,LP (50 epochs),351.0,1.0
+51,fully attention,medium,supervised (robust),Classic AT,robust_deit_small_patch16_224,uc-merced-land-use-dataset,FFT (5 epochs),818.0,1.0
+52,fully attention,medium,supervised (robust),Classic AT,robust_deit_small_patch16_224,uc-merced-land-use-dataset,FFT (50 epochs),65.0,1.0
+53,fully attention,medium,supervised (robust),Classic AT,robust_deit_small_patch16_224,uc-merced-land-use-dataset,LP (50 epochs),522.0,1.0
+54,fully attention,medium,supervised (robust),TRADES,robust_deit_small_patch16_224,caltech101,FFT (5 epochs),780.0,0.0
+55,fully attention,medium,supervised (robust),TRADES,robust_deit_small_patch16_224,caltech101,FFT (50 epochs),112.0,0.0
+56,fully attention,medium,supervised (robust),TRADES,robust_deit_small_patch16_224,caltech101,LP (50 epochs),391.0,0.0
+57,fully attention,medium,supervised (robust),TRADES,robust_deit_small_patch16_224,fgvc-aircraft-2013b,FFT (5 epochs),669.0,0.0
+58,fully attention,medium,supervised (robust),TRADES,robust_deit_small_patch16_224,fgvc-aircraft-2013b,FFT (50 epochs),85.0,0.0
+59,fully attention,medium,supervised (robust),TRADES,robust_deit_small_patch16_224,fgvc-aircraft-2013b,LP (50 epochs),272.0,0.0
+60,fully attention,medium,supervised (robust),TRADES,robust_deit_small_patch16_224,flowers-102,FFT (5 epochs),756.0,0.0
+61,fully attention,medium,supervised (robust),TRADES,robust_deit_small_patch16_224,flowers-102,FFT (50 epochs),131.0,0.0
+62,fully attention,medium,supervised (robust),TRADES,robust_deit_small_patch16_224,flowers-102,LP (50 epochs),765.0,0.0
+63,fully attention,medium,supervised (robust),TRADES,robust_deit_small_patch16_224,oxford-iiit-pet,FFT (5 epochs),687.0,0.0
+64,fully attention,medium,supervised (robust),TRADES,robust_deit_small_patch16_224,oxford-iiit-pet,FFT (50 epochs),137.0,0.0
+65,fully attention,medium,supervised (robust),TRADES,robust_deit_small_patch16_224,oxford-iiit-pet,LP (50 epochs),160.0,0.0
+66,fully attention,medium,supervised (robust),TRADES,robust_deit_small_patch16_224,stanford_cars,FFT (5 epochs),689.0,0.0
+67,fully attention,medium,supervised (robust),TRADES,robust_deit_small_patch16_224,stanford_cars,FFT (50 epochs),161.0,0.0
+68,fully attention,medium,supervised (robust),TRADES,robust_deit_small_patch16_224,stanford_cars,LP (50 epochs),499.0,0.0
+69,fully attention,medium,supervised (robust),TRADES,robust_deit_small_patch16_224,uc-merced-land-use-dataset,FFT (5 epochs),739.0,0.0
+70,fully attention,medium,supervised (robust),TRADES,robust_deit_small_patch16_224,uc-merced-land-use-dataset,FFT (50 epochs),618.0,0.0
+71,fully attention,medium,supervised (robust),TRADES,robust_deit_small_patch16_224,uc-merced-land-use-dataset,LP (50 epochs),621.0,0.0
+72,fully convolutional,large,supervised (robust),Classic AT,robust_convnext_base,caltech101,FFT (5 epochs),814.0,1.0
+73,fully convolutional,large,supervised (robust),Classic AT,robust_convnext_base,caltech101,FFT (50 epochs),59.0,1.0
+74,fully convolutional,large,supervised (robust),Classic AT,robust_convnext_base,caltech101,LP (50 epochs),669.0,1.0
+75,fully convolutional,large,supervised (robust),Classic AT,robust_convnext_base,fgvc-aircraft-2013b,FFT (5 epochs),641.0,1.0
+76,fully convolutional,large,supervised (robust),Classic AT,robust_convnext_base,fgvc-aircraft-2013b,FFT (50 epochs),92.0,1.0
+77,fully convolutional,large,supervised (robust),Classic AT,robust_convnext_base,fgvc-aircraft-2013b,LP (50 epochs),678.0,1.0
+78,fully convolutional,large,supervised (robust),Classic AT,robust_convnext_base,flowers-102,FFT (5 epochs),691.0,1.0
+79,fully convolutional,large,supervised (robust),Classic AT,robust_convnext_base,flowers-102,FFT (50 epochs),160.0,1.0
+80,fully convolutional,large,supervised (robust),Classic AT,robust_convnext_base,flowers-102,LP (50 epochs),609.0,1.0
+81,fully convolutional,large,supervised (robust),Classic AT,robust_convnext_base,oxford-iiit-pet,FFT (5 epochs),666.0,1.0
+82,fully convolutional,large,supervised (robust),Classic AT,robust_convnext_base,oxford-iiit-pet,FFT (50 epochs),62.0,1.0
+83,fully convolutional,large,supervised (robust),Classic AT,robust_convnext_base,oxford-iiit-pet,LP (50 epochs),581.0,1.0
+84,fully convolutional,large,supervised (robust),Classic AT,robust_convnext_base,stanford_cars,FFT (5 epochs),669.0,1.0
+85,fully convolutional,large,supervised (robust),Classic AT,robust_convnext_base,stanford_cars,FFT (50 epochs),172.0,1.0
+86,fully convolutional,large,supervised (robust),Classic AT,robust_convnext_base,stanford_cars,LP (50 epochs),622.0,1.0
+87,fully convolutional,large,supervised (robust),Classic AT,robust_convnext_base,uc-merced-land-use-dataset,FFT (5 epochs),691.0,1.0
+88,fully convolutional,large,supervised (robust),Classic AT,robust_convnext_base,uc-merced-land-use-dataset,FFT (50 epochs),468.0,1.0
+89,fully convolutional,large,supervised (robust),Classic AT,robust_convnext_base,uc-merced-land-use-dataset,LP (50 epochs),438.0,1.0
+90,fully convolutional,large,supervised (robust),TRADES,robust_convnext_base,caltech101,FFT (5 epochs),536.0,0.0
+91,fully convolutional,large,supervised (robust),TRADES,robust_convnext_base,caltech101,FFT (50 epochs),45.0,0.0
+92,fully convolutional,large,supervised (robust),TRADES,robust_convnext_base,caltech101,LP (50 epochs),710.0,0.0
+93,fully convolutional,large,supervised (robust),TRADES,robust_convnext_base,fgvc-aircraft-2013b,FFT (5 epochs),827.0,0.0
+94,fully convolutional,large,supervised (robust),TRADES,robust_convnext_base,fgvc-aircraft-2013b,FFT (50 epochs),33.0,0.0
+95,fully convolutional,large,supervised (robust),TRADES,robust_convnext_base,fgvc-aircraft-2013b,LP (50 epochs),670.0,0.0
+96,fully convolutional,large,supervised (robust),TRADES,robust_convnext_base,flowers-102,FFT (5 epochs),545.0,0.0
+97,fully convolutional,large,supervised (robust),TRADES,robust_convnext_base,flowers-102,FFT (50 epochs),305.0,0.0
+98,fully convolutional,large,supervised (robust),TRADES,robust_convnext_base,flowers-102,LP (50 epochs),642.0,0.0
+99,fully convolutional,large,supervised (robust),TRADES,robust_convnext_base,oxford-iiit-pet,FFT (5 epochs),632.0,0.0
+100,fully convolutional,large,supervised (robust),TRADES,robust_convnext_base,oxford-iiit-pet,FFT (50 epochs),61.0,0.0
+101,fully convolutional,large,supervised (robust),TRADES,robust_convnext_base,oxford-iiit-pet,LP (50 epochs),602.0,0.0
+102,fully convolutional,large,supervised (robust),TRADES,robust_convnext_base,stanford_cars,FFT (5 epochs),701.0,0.0
+103,fully convolutional,large,supervised (robust),TRADES,robust_convnext_base,stanford_cars,FFT (50 epochs),104.0,0.0
+104,fully convolutional,large,supervised (robust),TRADES,robust_convnext_base,stanford_cars,LP (50 epochs),724.0,0.0
+105,fully convolutional,large,supervised (robust),TRADES,robust_convnext_base,uc-merced-land-use-dataset,FFT (5 epochs),479.0,0.0
+106,fully convolutional,large,supervised (robust),TRADES,robust_convnext_base,uc-merced-land-use-dataset,FFT (50 epochs),38.0,0.0
+107,fully convolutional,large,supervised (robust),TRADES,robust_convnext_base,uc-merced-land-use-dataset,LP (50 epochs),283.0,0.0
+108,fully convolutional,medium,supervised (robust),Classic AT,robust_convnext_tiny,caltech101,FFT (5 epochs),398.0,1.0
+109,fully convolutional,medium,supervised (robust),Classic AT,robust_convnext_tiny,caltech101,FFT (50 epochs),515.0,1.0
+110,fully convolutional,medium,supervised (robust),Classic AT,robust_convnext_tiny,caltech101,LP (50 epochs),352.0,1.0
+111,fully convolutional,medium,supervised (robust),Classic AT,robust_convnext_tiny,fgvc-aircraft-2013b,FFT (5 epochs),456.0,1.0
+112,fully convolutional,medium,supervised (robust),Classic AT,robust_convnext_tiny,fgvc-aircraft-2013b,FFT (50 epochs),143.0,1.0
+113,fully convolutional,medium,supervised (robust),Classic AT,robust_convnext_tiny,fgvc-aircraft-2013b,LP (50 epochs),390.0,1.0
+114,fully convolutional,medium,supervised (robust),Classic AT,robust_convnext_tiny,flowers-102,FFT (5 epochs),285.0,1.0
+115,fully convolutional,medium,supervised (robust),Classic AT,robust_convnext_tiny,flowers-102,FFT (50 epochs),135.0,1.0
+116,fully convolutional,medium,supervised (robust),Classic AT,robust_convnext_tiny,flowers-102,LP (50 epochs),726.0,1.0
+117,fully convolutional,medium,supervised (robust),Classic AT,robust_convnext_tiny,oxford-iiit-pet,FFT (5 epochs),119.0,1.0
+118,fully convolutional,medium,supervised (robust),Classic AT,robust_convnext_tiny,oxford-iiit-pet,FFT (50 epochs),472.0,1.0
+119,fully convolutional,medium,supervised (robust),Classic AT,robust_convnext_tiny,oxford-iiit-pet,LP (50 epochs),710.0,1.0
+120,fully convolutional,medium,supervised (robust),Classic AT,robust_convnext_tiny,stanford_cars,FFT (5 epochs),833.0,1.0
+121,fully convolutional,medium,supervised (robust),Classic AT,robust_convnext_tiny,stanford_cars,FFT (50 epochs),543.0,1.0
+122,fully convolutional,medium,supervised (robust),Classic AT,robust_convnext_tiny,stanford_cars,LP (50 epochs),393.0,1.0
+123,fully convolutional,medium,supervised (robust),Classic AT,robust_convnext_tiny,uc-merced-land-use-dataset,FFT (5 epochs),676.0,1.0
+124,fully convolutional,medium,supervised (robust),Classic AT,robust_convnext_tiny,uc-merced-land-use-dataset,FFT (50 epochs),84.0,1.0
+125,fully convolutional,medium,supervised (robust),Classic AT,robust_convnext_tiny,uc-merced-land-use-dataset,LP (50 epochs),266.0,1.0
+126,fully convolutional,medium,supervised (robust),Classic AT,robust_resnet50,caltech101,FFT (5 epochs),491.0,0.0
+127,fully convolutional,medium,supervised (robust),Classic AT,robust_resnet50,caltech101,FFT (50 epochs),224.0,0.0
+128,fully convolutional,medium,supervised (robust),Classic AT,robust_resnet50,caltech101,LP (50 epochs),369.0,0.0
+129,fully convolutional,medium,supervised (robust),Classic AT,robust_resnet50,fgvc-aircraft-2013b,FFT (5 epochs),686.0,0.0
+130,fully convolutional,medium,supervised (robust),Classic AT,robust_resnet50,fgvc-aircraft-2013b,FFT (50 epochs),179.0,0.0
+131,fully convolutional,medium,supervised (robust),Classic AT,robust_resnet50,fgvc-aircraft-2013b,LP (50 epochs),415.0,0.0
+132,fully convolutional,medium,supervised (robust),Classic AT,robust_resnet50,flowers-102,FFT (5 epochs),422.0,0.0
+133,fully convolutional,medium,supervised (robust),Classic AT,robust_resnet50,flowers-102,FFT (50 epochs),272.0,0.0
+134,fully convolutional,medium,supervised (robust),Classic AT,robust_resnet50,flowers-102,LP (50 epochs),625.0,0.0
+135,fully convolutional,medium,supervised (robust),Classic AT,robust_resnet50,oxford-iiit-pet,FFT (5 epochs),712.0,0.0
+136,fully convolutional,medium,supervised (robust),Classic AT,robust_resnet50,oxford-iiit-pet,FFT (50 epochs),324.0,0.0
+137,fully convolutional,medium,supervised (robust),Classic AT,robust_resnet50,oxford-iiit-pet,LP (50 epochs),306.0,0.0
+138,fully convolutional,medium,supervised (robust),Classic AT,robust_resnet50,stanford_cars,FFT (5 epochs),388.0,0.0
+139,fully convolutional,medium,supervised (robust),Classic AT,robust_resnet50,stanford_cars,FFT (50 epochs),263.0,0.0
+140,fully convolutional,medium,supervised (robust),Classic AT,robust_resnet50,stanford_cars,LP (50 epochs),434.0,0.0
+141,fully convolutional,medium,supervised (robust),Classic AT,robust_resnet50,uc-merced-land-use-dataset,FFT (5 epochs),231.0,0.0
+142,fully convolutional,medium,supervised (robust),Classic AT,robust_resnet50,uc-merced-land-use-dataset,FFT (50 epochs),328.0,0.0
+143,fully convolutional,medium,supervised (robust),Classic AT,robust_resnet50,uc-merced-land-use-dataset,LP (50 epochs),795.0,0.0
+144,fully convolutional,medium,supervised (robust),TRADES,robust_convnext_tiny,caltech101,FFT (5 epochs),213.0,0.0
+145,fully convolutional,medium,supervised (robust),TRADES,robust_convnext_tiny,caltech101,FFT (50 epochs),93.0,0.0
+146,fully convolutional,medium,supervised (robust),TRADES,robust_convnext_tiny,caltech101,LP (50 epochs),400.0,0.0
+147,fully convolutional,medium,supervised (robust),TRADES,robust_convnext_tiny,fgvc-aircraft-2013b,FFT (5 epochs),511.0,0.0
+148,fully convolutional,medium,supervised (robust),TRADES,robust_convnext_tiny,fgvc-aircraft-2013b,FFT (50 epochs),337.0,0.0
+149,fully convolutional,medium,supervised (robust),TRADES,robust_convnext_tiny,fgvc-aircraft-2013b,LP (50 epochs),476.0,0.0
+150,fully convolutional,medium,supervised (robust),TRADES,robust_convnext_tiny,flowers-102,FFT (5 epochs),551.0,0.0
+151,fully convolutional,medium,supervised (robust),TRADES,robust_convnext_tiny,flowers-102,FFT (50 epochs),110.0,0.0
+152,fully convolutional,medium,supervised (robust),TRADES,robust_convnext_tiny,flowers-102,LP (50 epochs),294.0,0.0
+153,fully convolutional,medium,supervised (robust),TRADES,robust_convnext_tiny,oxford-iiit-pet,FFT (5 epochs),489.0,0.0
+154,fully convolutional,medium,supervised (robust),TRADES,robust_convnext_tiny,oxford-iiit-pet,FFT (50 epochs),192.0,0.0
+155,fully convolutional,medium,supervised (robust),TRADES,robust_convnext_tiny,oxford-iiit-pet,LP (50 epochs),207.0,0.0
+156,fully convolutional,medium,supervised (robust),TRADES,robust_convnext_tiny,stanford_cars,FFT (5 epochs),409.0,0.0
+157,fully convolutional,medium,supervised (robust),TRADES,robust_convnext_tiny,stanford_cars,FFT (50 epochs),396.0,0.0
+158,fully convolutional,medium,supervised (robust),TRADES,robust_convnext_tiny,stanford_cars,LP (50 epochs),441.0,0.0
+159,fully convolutional,medium,supervised (robust),TRADES,robust_convnext_tiny,uc-merced-land-use-dataset,FFT (5 epochs),432.0,0.0
+160,fully convolutional,medium,supervised (robust),TRADES,robust_convnext_tiny,uc-merced-land-use-dataset,FFT (50 epochs),69.0,0.0
+161,fully convolutional,medium,supervised (robust),TRADES,robust_convnext_tiny,uc-merced-land-use-dataset,LP (50 epochs),753.0,0.0
+162,fully convolutional,medium,supervised (robust),TRADES,robust_resnet50,caltech101,FFT (5 epochs),760.0,0.0
+163,fully convolutional,medium,supervised (robust),TRADES,robust_resnet50,caltech101,FFT (50 epochs),234.0,0.0
+164,fully convolutional,medium,supervised (robust),TRADES,robust_resnet50,caltech101,LP (50 epochs),415.0,0.0
+165,fully convolutional,medium,supervised (robust),TRADES,robust_resnet50,fgvc-aircraft-2013b,FFT (5 epochs),518.0,0.0
+166,fully convolutional,medium,supervised (robust),TRADES,robust_resnet50,fgvc-aircraft-2013b,FFT (50 epochs),206.0,0.0
+167,fully convolutional,medium,supervised (robust),TRADES,robust_resnet50,fgvc-aircraft-2013b,LP (50 epochs),759.0,0.0
+168,fully convolutional,medium,supervised (robust),TRADES,robust_resnet50,flowers-102,FFT (5 epochs),308.0,0.0
+169,fully convolutional,medium,supervised (robust),TRADES,robust_resnet50,flowers-102,FFT (50 epochs),222.0,0.0
+170,fully convolutional,medium,supervised (robust),TRADES,robust_resnet50,flowers-102,LP (50 epochs),429.0,0.0
+171,fully convolutional,medium,supervised (robust),TRADES,robust_resnet50,oxford-iiit-pet,FFT (5 epochs),467.0,0.0
+172,fully convolutional,medium,supervised (robust),TRADES,robust_resnet50,oxford-iiit-pet,FFT (50 epochs),345.0,0.0
+173,fully convolutional,medium,supervised (robust),TRADES,robust_resnet50,oxford-iiit-pet,LP (50 epochs),487.0,0.0
+174,fully convolutional,medium,supervised (robust),TRADES,robust_resnet50,stanford_cars,FFT (5 epochs),439.0,0.0
+175,fully convolutional,medium,supervised (robust),TRADES,robust_resnet50,stanford_cars,FFT (50 epochs),421.0,0.0
+176,fully convolutional,medium,supervised (robust),TRADES,robust_resnet50,stanford_cars,LP (50 epochs),436.0,0.0
+177,fully convolutional,medium,supervised (robust),TRADES,robust_resnet50,uc-merced-land-use-dataset,FFT (5 epochs),506.0,0.0
+178,fully convolutional,medium,supervised (robust),TRADES,robust_resnet50,uc-merced-land-use-dataset,FFT (50 epochs),641.0,0.0
+179,fully convolutional,medium,supervised (robust),TRADES,robust_resnet50,uc-merced-land-use-dataset,LP (50 epochs),655.0,0.0
