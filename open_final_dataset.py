@@ -80,8 +80,9 @@ if __name__ == "__main__":
         config.dataset = dataset_name
 
         # If the script is executable:
-        subprocess.run(["./dataset_to_tmpdir_final.sh", dataset_name], check=True)
-
+        # subprocess.run(["./dataset_to_tmpdir_final.sh", dataset_name], check=True)
+        from utils import move_dataset_to_tmpdir
+        move_dataset_to_tmpdir(config)
         train_dataset, val_dataset, test_dataset, test_common_dataset, N = load_tar_zst_dataset(config)
 
         print(train_dataset, val_dataset, test_dataset, test_common_dataset)
