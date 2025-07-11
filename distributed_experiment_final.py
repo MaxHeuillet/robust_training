@@ -1,6 +1,6 @@
 import os
 os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
-from comet_ml import Experiment
+# from comet_ml import Experiment
 
 import torch
 import torch.distributed as dist
@@ -68,18 +68,18 @@ class BaseExperiment:
 
         logger = None
         
-        if rank == 0:
-            logger = Experiment(api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
-                                    project_name=config.project_name,
-                                    workspace="maxheuillet",
-                                    auto_metric_logging=False,
-                                    auto_output_logging=False)
+        # if rank == 0:
+        #     logger = Experiment(api_key="I5AiXfuD0TVuSz5UOtujrUM9i",
+        #                             project_name=config.project_name,
+        #                             workspace="maxheuillet",
+        #                             auto_metric_logging=False,
+        #                             auto_output_logging=False)
             
-            logger.set_name( config.exp_id )
+        #     logger.set_name( config.exp_id )
             
-            logger.log_parameter("run_id", os.getenv('SLURM_JOB_ID') )
-            logger.log_parameter("global_process_rank", rank)
-            logger.log_parameters(config)
+        #     logger.log_parameter("run_id", os.getenv('SLURM_JOB_ID') )
+        #     logger.log_parameter("global_process_rank", rank)
+        #     logger.log_parameters(config)
         
         return logger
         
@@ -91,7 +91,7 @@ class BaseExperiment:
         train_sampler = DistributedSampler(train_dataset, num_replicas=self.setup.world_size, rank=rank, shuffle=True, drop_last=True)
         val_sampler = DistributedSampler(val_dataset, num_replicas=self.setup.world_size, rank=rank, drop_last=True)
   
-        nb_workers = 3 if torch.cuda.device_count() > 1 else 1
+        nb_workers = 0 #3 if torch.cuda.device_count() > 1 else 1
 
         print('initialize dataoader', rank,flush=True) 
         trainloader = DataLoader(train_dataset, 
@@ -118,9 +118,7 @@ class BaseExperiment:
 
         test_sampler = DistributedSampler(test_dataset, num_replicas=world_size, rank=rank, shuffle=True, drop_last=True)
         common_sampler = DistributedSampler(common_dataset, num_replicas=world_size, rank=rank, shuffle=True, drop_last=True)
-        
-        
-        
+                
         testloader = DataLoader(test_dataset, 
                                     batch_size=self.setup.test_batch_size(config), 
                                     sampler=test_sampler, 
@@ -188,7 +186,7 @@ class BaseExperiment:
             shutil.copy2(str(model_name), str(dest))
             print(f"✅ Moved successfully.")
             
-            logger.end()
+            #logger.end()
         
         self.setup.cleanup()
         print('processes ended', flush=True)
@@ -250,7 +248,7 @@ class BaseExperiment:
                 if not self.setup.hp_opt and rank == 0:
                     metrics = { "global_step": global_step, 
                                 "loss_value": loss.item() * accumulation_steps, }
-                    logger.log_metrics(metrics, epoch=iteration, step = batch_step )
+                    #logger.log_metrics(metrics, epoch=iteration, step = batch_step )
 
                 batch_step += 1
 
@@ -264,7 +262,7 @@ class BaseExperiment:
                             
                         metrics = { "gradient_norm": float(gradient_norm),   }
                             
-                        logger.log_metrics(metrics, epoch=iteration, step=update_step, )
+                        #logger.log_metrics(metrics, epoch=iteration, step=update_step, )
 
 
                     scaler.step(optimizer)
@@ -272,6 +270,7 @@ class BaseExperiment:
                     optimizer.zero_grad() # Clear gradients after optimizer step
 
                     update_step += 1
+                break
 
             if self.setup.hp_opt:
                 self.validation( config, valloader, model, logger, iteration, rank)
@@ -283,7 +282,7 @@ class BaseExperiment:
 
             print(f'Rank {rank}, Iteration {iteration},', flush=True) 
 
-            # break
+            break
 
 
     def hyperparameter_optimization(self, config):  
@@ -291,7 +290,7 @@ class BaseExperiment:
         self.setup.hp_opt = True 
 
         # Check if experiment path exists and delete it before starting a new run
-        hpo_opt_path = Path(config.hpo_path).expanduser().resolve() #os.path.abspath(os.path.expandvars(os.path.expanduser(config.hpo_path)))
+        hpo_opt_path = Path(config.hpo_path).expanduser().resolve() 
         experiment_path = hpo_opt_path / config.project_name
         os.makedirs(experiment_path, exist_ok=True)
         existing_experiment_path = hpo_opt_path / config.project_name / config.exp_id
@@ -300,6 +299,7 @@ class BaseExperiment:
             shutil.rmtree(existing_experiment_path)
 
         tmp_dir = Path(os.path.expandvars(config.work_path)).expanduser().resolve()
+        print("TMP DIR", tmp_dir)
         os.environ["RAY_TMPDIR"] = str(tmp_dir)
         os.environ["RAY_STARTUP_TIMEOUT_SECONDS"] = "120"
         os.environ["RAY_GCS_SERVER_REQUEST_TIMEOUT_SECONDS"] = "60"
@@ -308,8 +308,7 @@ class BaseExperiment:
         
         print('initialize ray')
         ray.init( _temp_dir=str(tmp_dir) ,
-                 include_dashboard=False, 
-                 logging_level="DEBUG")
+                 include_dashboard=False, ) #logging_level="DEBUG"
         
         print('end initialize')
 
@@ -366,7 +365,7 @@ class BaseExperiment:
             metrics = { "val_loss": val_loss, "val_nat_accuracy": nat_acc, "val_adv_accuracy": adv_acc, }
                         #"zero_adv_val": adv_zero, "dormant_adv_val": adv_dormant, "overactive_adv_val": adv_overact,
                 
-            logger.log_metrics(metrics, epoch=iteration)
+            #logger.log_metrics(metrics, epoch=iteration)
 
     def validation_loop(self, config, valloader, model, rank):
 
@@ -488,8 +487,8 @@ class BaseExperiment:
                 nb_correct_adv += (preds_adv == target).sum().item()
                 nb_examples += target.size(0)
 
-                # if _ == 2:
-                #     break
+                if _ == 1:
+                    break
 
             stats_nat = { 'nb_correct':nb_correct_nat, 'nb_examples':nb_examples }
             stats_adv = { 'nb_correct':nb_correct_adv, 'nb_examples':nb_examples }
@@ -514,8 +513,8 @@ class BaseExperiment:
                 nb_correct_adv += (preds_adv == target).sum().item()
                 nb_examples += target.size(0)
 
-                # if _ == 2:
-                #     break
+                if _ == 1:
+                    break
             
             stats_nat = { 'nb_correct':None, 'nb_examples':None }
             stats_adv = { 'nb_correct':nb_correct_adv, 'nb_examples':nb_examples }
@@ -586,6 +585,8 @@ def main():
         local_config = compose(config_name="default_config_fullfinetuning5")
     elif 'full_fine_tuning_50epochs' in args_dict['project_name']:
         local_config = compose(config_name="default_config_fullfinetuning50")
+    elif 'full_fine_tuning_reproduce' in args_dict['project_name']:
+        local_config = compose(config_name="default_config_fullfinetuning_reproduce")
     else:
         print('error in the experiment name', flush=True)
         sys.exit(1)
@@ -633,6 +634,7 @@ def main():
 
         os.makedirs(os.path.join(config_base.results_path, config_base.project_name),
                     exist_ok=True)
+
         experiment.launch_test(test_type, config_optimal)
 
     else:

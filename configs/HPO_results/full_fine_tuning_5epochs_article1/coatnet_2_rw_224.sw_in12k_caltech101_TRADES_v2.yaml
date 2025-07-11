@@ -9,7 +9,7 @@ lr2: 0.003995972283135062
 weight_decay1: 1.0010539860510488e-06
 weight_decay2: 1.6193110912440726e-05
 scheduler: false
-nb_completed_trials: 203
+nb_completed_trials: 204
 use_rs: false
 epsilon: 0.015686275
 step_size: 0.007843137
