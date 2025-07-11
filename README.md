@@ -1,96 +1,65 @@
-## 🛠️ Setup Instructions
+## 📚 Reproducing Paper Results – robust_training
 
+This project provides a pipeline for reproducing the training and evaluation of various models under different pre-training and fine-tuning strategies, including adversarial robustness and transfer learning.
 
-### ✅ Create the Python Environment
-
-```
-module --force purge
-module load StdEnv/2023 gcc/12.3 cuda/12.2 opencv/4.9.0 python/3.11 arrow/18.1.0 scipy-stack/2024a nccl/2.18.3
-
-python3.11 -m venv ~/scratch/myenv_reprod
-source ~/scratch/myenv_reprod/bin/activate
-cd ./my_project_directory
-pip install -r requirements.txt
-```
-
-> 💡 **Note:** The code runs with **Python 3.11**.
-
-### ✅ Specify loading paths and login to comet-ml
-
-Specify the path to compressed archives, line 10 in `./dataset_to_tmpdir.sh`
-Specify the paths to state_dicts and data folders, in the default configuration in `./configs`
-Modify comet ML loging details in `./distributed_experiment_final.py` the method `initialize_logger()`.
-
-### ✅ Cluster specific considerations
-
-If you run jobs on Beluga, you need to enable internet connection for comet-ml with httpsproxy module in the job*_*.sh chain. If you run jobs on Cedar, you need to remove the loading of this module as it causes errors in environment packages loading.
-
-### ✅ Run unit tests
+## Create environment
 
 ```
-salloc --account=def-adurand --time=2:59:00 --cpus-per-task=16 --mem=60000M --gpus-per-node=1
+python3.11 -m venv ~/myenv_reprod
+source ~/myenv_reprod/bin/activate
+cd ./robust_training
+pip install -r ./requirements.txt
+``` 
 
-cd ./my_project_directory
+## Reproduce paper results
 
-module --force purge
-module load StdEnv/2023 gcc/12.3 cuda/12.2 opencv/4.9.0 python/3.11 arrow/18.1.0 scipy-stack/2024a nccl/2.18.3
+The database with all the measurements is ```results_dataset.csv```
 
-source ~/scratch/myenv_reprod/bin/activate
-python ./unit_tests/architecture_loader_test.py
-python ./unit_tests/dataset_transform_test.py
-```
+All the Figures of the paper can be reproducing with scripts in ```./results_analysis```
 
-This test verifies i) that the backbone loads correctly, ii) that the output of the forward pass of the backbone is aligned with the nb of classes in the fine-tuning task, iii) that both CLASSIC_AT and TRADES loss output a float number, iv) that the learning rate and weight decay for the feature extractor and classification head are correctly split, v) that the gradient tracking for linear probing and end-to-end fine-tuning are correctly distinguished.
+## Reproduce training
 
-```
-python ./unit_tests/data_transform_test.py
-```
+### 🗂️ Understanding the file system
 
-This test verifies that i) each dataset included in the study loads correctly, and ii) that the distinct transforms for train, and text-val are correctly associated with each dataset.
+The argument mode in ```utils/arguments.py``` specifies which step of the code to execute. At the end of ```mode='hpo'```, the code stores the results of HPO optimization in a separate folder of ```configs```. At the beginning of ```mode='train'```, the config is loaded to train the model with optimized HPO. Then the model is saved. At testing, the model is loaded and the results are saved in a folder named after project name in ```results``` folder.
 
-### 🚀 Launch All Jobs on the Cluster
+### 📦 Download and process datasets
 
-Don't forget to change email and allocation credentials in your ```./execute_experiment*.sh``` script.
+```python ./databases/download_data.py --save_path ~/data```
 
-## Maxime :
-```
-bash ./execute_experiment_maxime.sh 'full_fine_tuning_5epochs_paper_final2'
-```
+⚠️ For Caltech101, LandUse and StanfordCard, use Kaggle.  Click for info on Caltech101 download: [Caltech101 info](https://stackoverflow.com/questions/63067515/http-error-404-not-found-in-downloading-caltech101-dataset)
 
-## Rishika :
-```
-bash ./execute_experiment_rishika.sh 'full_fine_tuning_50epochs_paper_final2'
-```
+```python ./databases/save_final_dataset.py --datasets_path ~/data```
 
-## Jonas :
-```
-bash ./execute_experiment_jonas.sh 'linearprobe_50epochs_paper_final2'
-```
+### 🧠 Download and process backbones
 
-## Yann :
-```
-bash ./execute_experiment_yann.sh 'full_fine_tuning_50epochs_edge_paper_final2'
-```
-If we have time:
-```
-bash ./execute_experiment_yann.sh 'linearprobe_50epochs__edge_paper_final2'
-```
+```python ./architectures/download_architectures.py --save_path ~/my_backbones```
 
+To download the robust checkpoints:
+		- Download link ('robust_convnext_tiny', 'robust_deit_small_patch16_224', 'robust_convnext_base', 'robust_vit_base_patch16_224’):  [Download link](https://nc.mlcloud.uni-tuebingen.de/index.php/s/XLLnoCnJxp74Zqn) . This is from o "Revisiting Adversarial Training for Imagenet" (Neurips 2023) paper.
+		- Download link of resnet50: [Download link](https://www.dropbox.com/scl/fi/7f2p987eg4pwugw2r660b/imagenet_linf_4.pt?rlkey=e5nv0f5lrktppjlv2c9dcccz9&e=2&dl=0); this is from [Madry-robustness repo](https://github.com/MadryLab/robustness?tab=readme-ov-file) .
 
----
+```python ./architectures/process_robust_architectures.py --path ~/my_backbones```
 
-### 💻 Run in an Interactive Session
-
-
-```
-module --force purge
-module load StdEnv/2023 gcc/12.3 cuda/12.2 opencv/4.9.0 python/3.11 arrow/18.1.0 scipy-stack/2024a
-
-source ~/scratch/myenv_reprod/bin/activate
-cd ./project_directory
-
-bash ./dataset_to_tmpdir.sh 'uc-merced-land-use-dataset'
-python distributed_experiment_final.py
-```
+### ✅ Launch code
 
 > 💡 **Note:** The code runs a default configuration specified in `./utils/arguments.py`.
+> 
+> 💡 **Note:** We have added ```break``` statements in the train and test loops (L.517, L.491, L.273) to simplify execution of toy code.
+
+Locally:
+
+```python distributed_experiment_final.py```
+
+On a SLURM cluster:
+For FFT-5: ```bash ./execute_experiment.sh 'full_fine_tuning_5epochs_reproduce'```
+For FFT-50: ```bash ./execute_experiment.sh 'full_fine_tuning_50epochs_reproduce'```
+For LP-50: ```bash ./execute_experiment.sh 'linearprobe_50epochs_reproduce'```
+
+### 🧪 Run unit tests
+
+```
+python ./unit_tests/architecture_loader_test.py
+```
+
+Other tests are available but are not maintained.
