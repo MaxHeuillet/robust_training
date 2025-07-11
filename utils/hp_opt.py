@@ -22,10 +22,10 @@ class Hp_opt:
         nodename = os.uname().nodename.lower()
         # Check if the node is part of the Calcul Québec cluster
         if any(keyword in nodename for keyword in cluster_keywords):
-            self.trials = 3
-            self.minutes = 680
+            self.trials = -1 
+            self.minutes = 140
         else:
-            self.trials = 1
+            self.trials = -1
             self.minutes = 5
 
     def get_config(self):
@@ -54,7 +54,7 @@ class Hp_opt:
     def get_scheduler(self, ):
         # Configure the scheduler WITHOUT metric and mode
         scheduler = ASHAScheduler(
-            max_t=self.config.epochs, #10, 
+            max_t=self.config.epochs,
             grace_period=1,
             reduction_factor=2
         )

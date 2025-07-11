@@ -23,11 +23,3 @@ comet_ml
 zstandard
 grpcio 
 aiohttp_cors
-
-
-matplotlib
-statsmodels
-plotly
-nbformat
-seaborn
-kaleido

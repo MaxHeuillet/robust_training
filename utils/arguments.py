@@ -5,13 +5,12 @@ def get_args2():
 
     parser = argparse.ArgumentParser(allow_abbrev=False)
 
-    parser.add_argument("--backbone", default = 'convnext_tiny.fb_in22k', type=str, help="load backbone")
-    parser.add_argument('--dataset', default='flowers-102', type=str, help='dataset: ' + ' (default: cifar10)')
+    parser.add_argument("--backbone", default = 'swin_tiny_patch4_window7_224.ms_in1k', type=str, help="load backbone")
+    parser.add_argument('--dataset', default='uc-merced-land-use-dataset', type=str, help='dataset: ' + ' (default: cifar10)')
     parser.add_argument("--loss_function", default="TRADES_v2", type=str, help="the loss function")
     parser.add_argument('--seed', default=0, type=int, help="random seed")
-    parser.add_argument("--project_name", default = 'full_fine_tuning_reproduce', type=str, help="task")
-    parser.add_argument("--mode", default='test-common', type=str, choices=['hpo', 'train', 'test-Linf', 'test-L1', 'test-L2', 'test-common'], 
-                        help="Choose among: hpo, train, test-L1, test-L2, test-common" )
+    parser.add_argument("--project_name", default = 'full_fine_tuning_5epochs_baseline', type=str, help="task")
+    parser.add_argument("--mode", default = 'hpo', type=str, )
         
     args, unknown = parser.parse_known_args()
     args_dict = vars(args)

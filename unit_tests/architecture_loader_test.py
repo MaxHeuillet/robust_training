@@ -13,38 +13,37 @@ import os
 import traceback  # ✅ Helps capture detailed errors
 import torch.nn as nn
 import timm
-from autoattack import AutoAttack
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(PROJECT_ROOT)
 
 from architectures import load_architecture, CustomModel
-from utils import load_optimizer, move_architecture_to_tmpdir, Setup
+from utils import load_optimizer, move_architecture_to_tmpdir
 from losses import get_loss
 
 #  'vit_base_patch16_clip_224.laion400m_e32',
 
 
 SCIENTIFIC_BACKBONES=(
-#   'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K',
-#   'CLIP-convnext_base_w-laion2B-s13B-b82K',
-#   'deit_small_patch16_224.fb_in1k',
-#   'robust_resnet50',
-#   'vit_small_patch16_224.augreg_in21k',
-#   'convnext_base.fb_in1k',
-#   'resnet50.a1_in1k',
-#   'robust_vit_base_patch16_224',
-#   'vit_base_patch16_224.mae',
-#   'convnext_base.fb_in22k',
-#   'robust_convnext_base',
-#   'vit_base_patch16_224.augreg_in1k',
-#   'vit_base_patch16_224.augreg_in21k',
-#   'vit_base_patch16_224.dino',
-#   'vit_base_patch16_clip_224.laion2b',
-#   'convnext_tiny.fb_in1k',
-#   'robust_convnext_tiny',
-#   'robust_deit_small_patch16_224',
-#   'vit_small_patch16_224.augreg_in1k',
+  'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K',
+  'CLIP-convnext_base_w-laion2B-s13B-b82K',
+  'deit_small_patch16_224.fb_in1k',
+  'robust_resnet50',
+  'vit_small_patch16_224.augreg_in21k',
+  'convnext_base.fb_in1k',
+  'resnet50.a1_in1k',
+  'robust_vit_base_patch16_224',
+  'vit_base_patch16_224.mae',
+  'convnext_base.fb_in22k',
+  'robust_convnext_base',
+  'vit_base_patch16_224.augreg_in1k',
+  'vit_base_patch16_224.augreg_in21k',
+  'vit_base_patch16_224.dino',
+  'vit_base_patch16_clip_224.laion2b',
+  'convnext_tiny.fb_in1k',
+  'robust_convnext_tiny',
+  'robust_deit_small_patch16_224',
+  'vit_small_patch16_224.augreg_in1k',
   'convnext_tiny.fb_in22k',
 ) 
 
@@ -77,8 +76,8 @@ EDGE_BACKBONES=(
 # Combine all sets
 ALL_BACKBONES = {
     "SCIENTIFIC_MODELS": SCIENTIFIC_BACKBONES,
-    # "PERFORMANCE_MODELS": PERFORMANCE_BACKBONES,
-    # "EDGE_MODELS": EDGE_BACKBONES,
+    "PERFORMANCE_MODELS": PERFORMANCE_BACKBONES,
+    "EDGE_MODELS": EDGE_BACKBONES,
 }
 
     
@@ -155,6 +154,8 @@ class TestModelForwardPass(unittest.TestCase):
         self.batch_size = 1  # Two image tensors
         self.config = OmegaConf.load("./configs/default_config_linearprobe50.yaml")
         
+        # self.config.statedicts_path = '/home/mheuillet/Desktop/state_dicts_share'
+
     def test_forward_pass(self):
         os.environ['MASTER_ADDR'] = 'localhost'
         os.environ['MASTER_PORT'] = '12345'
@@ -163,97 +164,85 @@ class TestModelForwardPass(unittest.TestCase):
 
         """ Test forward pass for all backbone sets """
         for category, backbones in ALL_BACKBONES.items():
-
             print(f"\n🔹 Testing {category} ({len(backbones)} models) 🔹")
-
             for backbone in backbones:
 
                 print(f"\n🔎 Testing backbone: {backbone}")
 
-                for data in ['uc-merced-land-use-dataset', 'flowers-102', 'caltech101', 'stanford_cars', 'fgvc-aircraft-2013b', 'oxford-iiit-pet' ]:
+                for ft_type in ['linear_probing', 'full_fine_tuning']:
 
-                    self.config.dataset = data
-
-                    print('data', data)
-
-                    for ft_type in ['linear_probing', 'full_fine_tuning']:
-
-                        with self.subTest(backbone=backbone):
-                                
-                            self.config.lr1 = 1
-                            self.config.lr2 = 1
-                            self.config.weight_decay1 = 1
-                            self.config.weight_decay2 = 1
-                            self.config.ft_type = ft_type
-
-                            try:
-        
-                                # Load the model
-                                self.config.backbone = backbone
-                                move_architecture_to_tmpdir(self.config)
-                                model = load_architecture(self.config, self.N)
-                                self.assertIsNotNone(model, f"❌ Model failed to load! Backbone: {backbone}")
-                                model = CustomModel(self.config, model, )
-                                    
-                                ### test the retrieval of the head module:
-
-                                head_submodule = model.get_classification_head()
-                                expected_cls = get_expected_head_type(backbone)
-
-                                assert isinstance(head_submodule, expected_cls), (
-                                            f"For {backbone}, expected {expected_cls} but got {type(head_submodule)}"
-                                        )
-
-                                ### test the gradient tracking
-                                    
-                                device = torch.device("cuda")
-                                model = model.to(device)
-                                model = DDP(model, device_ids=[0])
-
-                                if self.config.ft_type == 'linear_probing':
-                                    self._test_linear_probing(model)
-                                    self._test_linear_probing_train_eval_modes(model)
-                                elif self.config.ft_type == 'full_fine_tuning':
-                                    self._test_full_fine_tuning(model)
-                                    self._test_full_finetuning_train_eval_modes(model)
-                                else:
-                                    print('raise an error here')
-
-
-                                setup = Setup(1)
-                                bs = setup.train_batch_size(self.config)
-                                dummy_input = torch.randn(bs, 3, 224, 224).to(device)
-                                dummy_target = torch.randint(0, self.N, (bs,)).to(device)
-
-
-                                for loss_type in ['CLASSIC_AT', 'TRADES_v2']:
-
-                                    ### test the loss
-                                    self.config.loss_type = loss_type
-                                    loss_values, logits = get_loss(self.config, model, dummy_input, dummy_target)
-                                    loss = loss_values.mean()
-
-                                    self.assertTrue(loss.ndim == 0,
-                                        f"❌ Loss {loss_type} is not a scalar! Got shape: {loss.shape}" )
-
-                                    ### test the optimizer 
-                                    optimizer = load_optimizer(self.config, model)
-                                    self._validate_optimizer(self.config, optimizer, model, backbone)
-
-                                    ### test the forward pass output shape
-                                    logits = model(dummy_input)  # Get logits
-                                    expected_shape = (bs, self.N)
-
-                                    if not hasattr(logits, "shape"):
-                                        raise TypeError(f"❌ Model output is not a tensor! Backbone: {backbone}, Output Type: {type(logits)}")
-
-                                    self.assertEqual(logits.shape, expected_shape,  f"❌ Output shape mismatch! Backbone: {backbone} - Got {logits.shape}, expected {expected_shape}" )
-
-                                    # self.test_autoattack_batch_pass(model)
+                    with self.subTest(backbone=backbone):
                             
-                            except Exception as e:
-                                print(f"❌ Exception in backbone {backbone}:\n{traceback.format_exc()}")  # ✅ Print full traceback
-                                self.fail(f"🚨 Test failed for backbone {backbone} with error: {str(e)}")
+                        self.config.lr1 = 1
+                        self.config.lr2 = 1
+                        self.config.weight_decay1 = 1
+                        self.config.weight_decay2 = 1
+                        self.config.ft_type = ft_type
+
+                        try:
+    
+                            # Load the model
+                            self.config.backbone = backbone
+                            move_architecture_to_tmpdir(self.config)
+                            model = load_architecture(self.config, self.N)
+                            self.assertIsNotNone(model, f"❌ Model failed to load! Backbone: {backbone}")
+                            model = CustomModel(self.config, model, )
+                                
+                            ### test the retrieval of the head module:
+
+                            head_submodule = model.get_classification_head()
+                            expected_cls = get_expected_head_type(backbone)
+
+                            assert isinstance(head_submodule, expected_cls), (
+                                        f"For {backbone}, expected {expected_cls} but got {type(head_submodule)}"
+                                    )
+
+                            ### test the gradient tracking
+                                
+                            device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+                            model = model.to(device)
+                            model = DDP(model, device_ids=[0])
+
+                            if self.config.ft_type == 'linear_probing':
+                                self._test_linear_probing(model)
+                                self._test_linear_probing_train_eval_modes(model)
+                            elif self.config.ft_type == 'full_fine_tuning':
+                                self._test_full_fine_tuning(model)
+                                self._test_full_finetuning_train_eval_modes(model)
+                            else:
+                                print('raise an error here')
+
+                            dummy_input = torch.randn(self.batch_size, 3, 224, 224).to(device)
+                            dummy_target = torch.randint(0, self.N, (self.batch_size,)).to(device)
+
+                            for loss_type in ['CLASSIC_AT', 'TRADES_v2']:
+
+                                ### test the loss
+                                self.config.loss_type = loss_type
+                                loss_values, logits = get_loss(self.config, model, dummy_input, dummy_target)
+                                loss = loss_values.mean()
+
+                                self.assertTrue(loss.ndim == 0,
+                                     f"❌ Loss {loss_type} is not a scalar! Got shape: {loss.shape}" )
+
+                                ### test the optimizer 
+                                optimizer = load_optimizer(self.config, model)
+                                self._validate_optimizer(self.config, optimizer, model, backbone)
+
+                                ### test the forward pass output shape
+                                logits = model(dummy_input)  # Get logits
+                                expected_shape = (self.batch_size, self.N)
+
+                                if not hasattr(logits, "shape"):
+                                    raise TypeError(f"❌ Model output is not a tensor! Backbone: {backbone}, Output Type: {type(logits)}")
+
+                                self.assertEqual(logits.shape, expected_shape,  f"❌ Output shape mismatch! Backbone: {backbone} - Got {logits.shape}, expected {expected_shape}" )
+                            
+                    
+
+                        except Exception as e:
+                            print(f"❌ Exception in backbone {backbone}:\n{traceback.format_exc()}")  # ✅ Print full traceback
+                            self.fail(f"🚨 Test failed for backbone {backbone} with error: {str(e)}")
 
                         
         dist.destroy_process_group()
@@ -341,59 +330,6 @@ class TestModelForwardPass(unittest.TestCase):
                 f"[FULL FINETUNE] After model.eval(), submodule '{name}' should be training=False "
                 f"but got {submodule.training}"
             )
-
-    # def test_autoattack_batch_pass(self, model):
-    #     """
-    #     Test if AutoAttack can process a single synthetic batch without OOM or shape issues.
-    #     """
-
-    #     device = torch.device("cuda")
-
-    #     def forward_pass(x):
-    #         return model(x)
-
-    #     # Config
-    #     corruption_type = 'Linf'
-    #     epsilon = self.config.epsilon if hasattr(self.config, "epsilon") else 8 / 255  # fallback default
-    #     batch_size = self.batch_size
-    #     input_shape = (3, 224, 224)  # Standard image size
-
-    #     setup = Setup(1)
-    #     device = torch.device("cuda")
-    #     bs = setup.test_batch_size(self.config)
-    #     x_nat = torch.randn(bs, 3, 224, 224).to(device)
-    #     target = torch.randint(0, self.N, (bs,)).to(device)
-
-
-    #     # Initialize AutoAttack
-    #     adversary = AutoAttack(
-    #         forward_pass,
-    #         norm=corruption_type,
-    #         eps=epsilon,
-    #         version='standard',
-    #         device=device,
-    #         verbose=False
-    #     )
-
-    #     try:
-    #         # Run attack
-    #         x_adv = adversary.run_standard_evaluation(x_nat, target, bs=batch_size)
-
-    #         # Forward both clean and adversarial
-    #         logits_nat, logits_adv = model(x_nat, x_adv)
-
-    #         # Compute predictions
-    #         preds_nat = torch.argmax(logits_nat, dim=1)
-    #         preds_adv = torch.argmax(logits_adv, dim=1)
-
-    #         nat_correct = (preds_nat == target).sum().item()
-    #         adv_correct = (preds_adv == target).sum().item()
-
-    #         print(f"✅ Clean Acc: {nat_correct}/{batch_size}, Adversarial Acc: {adv_correct}/{batch_size}")
-
-    #     except RuntimeError as e:
-    #         self.fail(f"❌ RuntimeError during AutoAttack: {e}")
-
 
 
     def _test_linear_probing(self, model):
@@ -525,6 +461,13 @@ class TestModelForwardPass(unittest.TestCase):
 
             elif "head_no_decay" in group_name:
                 self.assertEqual(nb_params, len_head_nodecay, f"❌ Error on the nb of parameters ")
+
+
+
+
+
+
+
 
 # Run the unit test
 if __name__ == "__main__":

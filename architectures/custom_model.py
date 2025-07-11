@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+from peft import LoraConfig, get_peft_model
 
 from transforms import load_module_transform
 

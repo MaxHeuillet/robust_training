@@ -6,34 +6,25 @@ from pathlib import Path  # In case config.dataset_path is a string
 
 
 
-import os
-import subprocess
-import tarfile
-import zstandard as zstd
-from pathlib import Path
-from datetime import datetime
-
 def move_dataset_to_tmpdir(config):
+
     dataset_name = config.dataset
     data_path = Path(config.datasets_path).expanduser().resolve()
     archive_path = data_path / f"{dataset_name}_processed.tar.zst"
     
     tmpdir = Path(os.path.expandvars(config.work_path)).expanduser().resolve()
-    dest_dir = tmpdir / "data" / dataset_name
+    dest_dir = os.path.join(tmpdir, "data", dataset_name)
     os.makedirs(dest_dir, exist_ok=True)
 
-    print(f"📦 Extracting {archive_path} into {dest_dir} using Python zstd + tarfile...")
-
+    print(f"📦 Extracting {archive_path} into {dest_dir} using tar + zstd...")
+    
     try:
-        with open(archive_path, "rb") as compressed:
-            dctx = zstd.ZstdDecompressor()
-            with dctx.stream_reader(compressed) as reader:
-                with tarfile.open(fileobj=reader, mode="r|") as tar:
-                    tar.extractall(path=dest_dir)
-    except Exception as e:
-        raise RuntimeError(f"❌ Failed to extract archive: {archive_path}") from e
+        subprocess.run(["tar", "-I", "zstd", "-xf", archive_path, "-C", dest_dir], check=True)
+    except subprocess.CalledProcessError:
+        raise RuntimeError(f"❌ Failed to extract archive: {archive_path}")
 
     print(f"✅ Extraction of {dataset_name} completed successfully at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    
 
 def move_architecture_to_tmpdir(config):
 
