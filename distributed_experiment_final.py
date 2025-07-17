@@ -446,37 +446,31 @@ class BaseExperiment:
         
         device = torch.device(f"cuda:{rank}")
 
-        if corruption_type in ['Linf' , 'L2' , 'L1']:
+        if corruption_type in ['Linf', 'L2', 'L1']:
 
             nb_correct_nat = 0
             nb_correct_adv = 0
             nb_examples = 0
-            print('stats', nb_correct_nat, nb_correct_adv, nb_examples, flush=True)
+            all_preds_nat, all_preds_adv, all_targets = [], [], []
+
             if corruption_type == 'Linf':
                 distance = config.epsilon
-            elif corruption_type == 'L2':    
+            elif corruption_type == 'L2':
                 distance = 2.0
             elif corruption_type == 'L1':
                 distance = 75.0
             else:
-                distance = None
-                print('not implemented error in the distance', flush=True)
+                raise NotImplementedError('Unknown distance norm')
 
-            adversary = AutoAttack(forward_pass, norm=corruption_type, eps=distance, version='standard', verbose = False, device = device)
-            print('adversary instanciated', flush=True) 
-            
-            for _, batch in enumerate( testloader ):
+            adversary = AutoAttack(forward_pass, norm=corruption_type, eps=distance, version='standard', verbose=False, device=device)
+
+            for _, batch in enumerate(testloader):
 
                 x_nat, target = batch
-
-                x_nat, target = x_nat.to(rank), target.to(rank) 
-
+                x_nat, target = x_nat.to(rank), target.to(rank)
                 batch_size = x_nat.size(0)
 
-                print('start batch iterations', rank, _,batch_size, len(testloader), flush=True) 
-
-                x_adv = adversary.run_standard_evaluation(x_nat, target, bs = batch_size )
-
+                x_adv = adversary.run_standard_evaluation(x_nat, target, bs=batch_size)
                 logits_nat, logits_adv = model(x_nat, x_adv)
 
                 preds_nat = torch.argmax(logits_nat, dim=1)
@@ -484,43 +478,62 @@ class BaseExperiment:
 
                 nb_correct_nat += (preds_nat == target).sum().item()
                 nb_correct_adv += (preds_adv == target).sum().item()
-                nb_examples += target.size(0)
+                nb_examples += batch_size
 
-                # if _ == 2:
-                #     break
+                all_preds_nat.extend(preds_nat.cpu().tolist())
+                all_preds_adv.extend(preds_adv.cpu().tolist())
+                all_targets.extend(target.cpu().tolist())
 
-            stats_nat = { 'nb_correct':nb_correct_nat, 'nb_examples':nb_examples }
-            stats_adv = { 'nb_correct':nb_correct_adv, 'nb_examples':nb_examples }
+            stats_nat = {
+                'nb_correct': nb_correct_nat,
+                'nb_examples': nb_examples,
+                'predictions': all_preds_nat,
+                'targets': all_targets,
+            }
+            stats_adv = {
+                'nb_correct': nb_correct_adv,
+                'nb_examples': nb_examples,
+                'predictions': all_preds_adv,
+                'targets': all_targets,
+            }
 
         elif corruption_type == 'common':
 
             nb_correct_adv = 0
             nb_examples = 0
-            
-            for _, batch in enumerate( testloader ):
+            all_preds_adv, all_targets = [], []
+
+            for _, batch in enumerate(testloader):
 
                 x_adv, target = batch
-
-                x_adv, target = x_adv.to(rank), target.to(rank) 
-
+                x_adv, target = x_adv.to(rank), target.to(rank)
                 batch_size = x_adv.size(0)
 
-                logits_nat, logits_adv = model(x_adv, x_adv)
-
+                _, logits_adv = model(x_adv, x_adv)
                 preds_adv = torch.argmax(logits_adv, dim=1)
 
                 nb_correct_adv += (preds_adv == target).sum().item()
-                nb_examples += target.size(0)
+                nb_examples += batch_size
 
-                # if _ == 2:
-                #     break
-            
-            stats_nat = { 'nb_correct':None, 'nb_examples':None }
-            stats_adv = { 'nb_correct':nb_correct_adv, 'nb_examples':nb_examples }
+                all_preds_adv.extend(preds_adv.cpu().tolist())
+                all_targets.extend(target.cpu().tolist())
+
+            stats_nat = {
+                'nb_correct': None,
+                'nb_examples': None,
+                'predictions': None,
+                'targets': None,
+            }
+            stats_adv = {
+                'nb_correct': nb_correct_adv,
+                'nb_examples': nb_examples,
+                'predictions': all_preds_adv,
+                'targets': all_targets,
+            }
 
         else:
-            print("not implemented error")
-        
+            raise NotImplementedError("Unknown corruption type")
+
         return stats_nat, stats_adv
     
     def launch_test(self, corruption_type, config):

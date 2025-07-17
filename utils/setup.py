@@ -1,15 +1,10 @@
-
-# from comet_ml import Experiment
-# import cloudpickle as pickle
-
 import os
 import torch
 import torch.distributed as dist
 from filelock import FileLock
 from omegaconf import OmegaConf
 import pickle
-
-
+from sklearn.metrics import f1_score
 
 
 class Setup:
@@ -170,19 +165,24 @@ class Setup:
         return int(batch_size)
     
     def aggregate_results(self, results, corruption_type):
-
         total_correct = 0
         total_examples = 0
+        all_predictions = []
+        all_targets = []
 
-        # Sum up values from each process
-        for process_id, process_data in results.items():
+        for process_data in results.values():
             total_correct += process_data['nb_correct']
             total_examples += process_data['nb_examples']
+            all_predictions.extend(process_data['predictions'])
+            all_targets.extend(process_data['targets'])
 
-        # Calculate percentages
         accuracy = total_correct / total_examples
-        
-        statistic = { corruption_type+'_acc': accuracy  }
+        weighted_f1 = f1_score(all_targets, all_predictions, average='weighted')
+
+        statistic = {
+            corruption_type + '_acc': accuracy,
+            corruption_type + '_f1': weighted_f1
+        }
 
         return statistic
 
@@ -199,7 +199,8 @@ class Setup:
                 with open(save_path, 'rb') as f:
                     results = pickle.load(f)
             else:
-                results = {'clean_acc': None, 'Linf_acc': None, 'L2_acc': None, 'L1_acc': None }
+                results = {'clean_acc': None, 'Linf_acc': None, 'L2_acc': None, 'L1_acc': None,
+                           'clean_f1': None, 'Linf_f1': None, 'L2_f1': None, 'L1_f1': None }
 
             results.update( statistic )
 

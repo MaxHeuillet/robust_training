@@ -96,13 +96,13 @@ done
 EMAIL="maxime.heuillet.1@ulaval.ca"
 
 echo "Submitting block_1 backbone jobs..."
-submit_jobs "rrg-csubakan" "${block_1[@]}"
+submit_jobs "rrg-adurand" "${block_1[@]}"
 
 echo "Submitting block_2 backbone jobs..."
 submit_jobs "rrg-adurand" "${block_2[@]}"
 
 echo "Submitting block_3 backbone jobs..."
-submit_jobs "def-adurand" "${block_3[@]}"
+submit_jobs "rrg-adurand" "${block_3[@]}"
 
 
 
