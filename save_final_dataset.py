@@ -43,8 +43,8 @@ config = OmegaConf.create({
 # === Dataset list
 for dataset_name in [
     # 'uc-merced-land-use-dataset',
-    'flowers-102',
-    # 'caltech101',
+    # 'flowers-102',
+    'caltech101',
     # 'stanford_cars',
     # 'fgvc-aircraft-2013b',
     # 'oxford-iiit-pet'
@@ -64,11 +64,12 @@ for dataset_name in [
     temp_dir.mkdir(parents=True)
 
     # Load data
+    print(config)
     train_dataset, val_dataset, test_dataset, N = load_data(config, common_corruption=False)
     save_split_as_folder(train_dataset, temp_dir / "train")
     save_split_as_folder(val_dataset, temp_dir / "val")
     save_split_as_folder(test_dataset, temp_dir / "test")
-
+    
     _, _, test_common_dataset, _ = load_data(config, common_corruption=True)
     save_split_as_folder(test_common_dataset, temp_dir / "test_common")
 

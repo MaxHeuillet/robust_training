@@ -31,3 +31,6 @@ plotly
 nbformat
 seaborn
 kaleido
+
+anthropic
+google-genai

@@ -25,11 +25,24 @@ The argument mode in ```utils/arguments.py``` specifies which step of the code t
 
 ### 📦 Download and process datasets
 
+
+
+```python 
+from huggingface_hub import snapshot_download
+
+snapshot_download(
+    repo_id="MaxHeuillet/RobustGenBench",
+    repo_type="dataset",
+    local_dir="~/data/",
+)
+```
+
+The scripts that were used to download and prepare the dataset repository are the following:
+
 ```python ./databases/download_data.py --save_path ~/data```
-
-⚠️ For Caltech101, LandUse and StanfordCard, use Kaggle.  Click for info on Caltech101 download: [Caltech101 info](https://stackoverflow.com/questions/63067515/http-error-404-not-found-in-downloading-caltech101-dataset)
-
 ```python ./databases/save_final_dataset.py --datasets_path ~/data```
+
+⚠️ For LandUse and StanfordCard, use Kaggle.  Click for info on Caltech101 download: [Caltech101 info](https://data.caltech.edu/records/mzrjq-6wc02)
 
 ### 🧠 Download and process backbones
 
