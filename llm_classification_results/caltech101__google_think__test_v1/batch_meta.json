@@ -1,0 +1,10 @@
+{
+  "batch_name": "batches/i2pyvk4c3zip53eq3k6cgifdqt87etqc27b9",
+  "uploaded_file": "files/wjik9n63ssc9",
+  "provider": "google",
+  "run_id": "caltech101__google_think__test_v1",
+  "model": "gemini-3-flash-preview-think",
+  "actual_model": "gemini-3-flash-preview",
+  "num_requests": 1000,
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batches/i2pyvk4c3zip53eq3k6cgifdqt87etqc27b9 --provider google --dataset caltech101 --data_root /Users/maximeheuillet/data_processed --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name caltech101__google_think__test_v1"
+}

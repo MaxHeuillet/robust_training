@@ -1,0 +1,10 @@
+{
+  "batch_name": "batches/05hb7nqbi74ayjn0gwt8xh8n1uccph11d1u8",
+  "uploaded_file": "files/8wjsap0pjgxc",
+  "provider": "google",
+  "run_id": "flowers-102__google_think__test_v1",
+  "model": "gemini-3-flash-preview-think",
+  "actual_model": "gemini-3-flash-preview",
+  "num_requests": 1000,
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batches/05hb7nqbi74ayjn0gwt8xh8n1uccph11d1u8 --provider google --dataset flowers-102 --data_root /Users/maximeheuillet/data_processed --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name flowers-102__google_think__test_v1"
+}

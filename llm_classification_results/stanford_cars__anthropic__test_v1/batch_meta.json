@@ -1,0 +1,8 @@
+{
+  "batch_id": "msgbatch_01KnqkzKtsw9kpHKGhBBczdK",
+  "run_id": "stanford_cars__anthropic__test_v1",
+  "model": "claude-haiku-4-5-20251001",
+  "num_requests": 1000,
+  "submitted_at": "2026-03-06T20:18:28.181394",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve msgbatch_01KnqkzKtsw9kpHKGhBBczdK --dataset stanford_cars --data_root /Users/maximeheuillet/data_processed --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name stanford_cars__anthropic__test_v1"
+}

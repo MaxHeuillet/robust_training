@@ -1,0 +1,10 @@
+{
+  "batch_name": "batches/4j7njumzabdoleev1urul2awtdv61n3dsxjc",
+  "uploaded_file": "files/w4uxeb7394m2",
+  "provider": "google",
+  "run_id": "fgvc-aircraft-2013b__google_nothink__test_v1",
+  "model": "gemini-3-flash-preview-nothink",
+  "actual_model": "gemini-3-flash-preview",
+  "num_requests": 1000,
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batches/4j7njumzabdoleev1urul2awtdv61n3dsxjc --provider google --dataset fgvc-aircraft-2013b --data_root /Users/maximeheuillet/data_processed --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name fgvc-aircraft-2013b__google_nothink__test_v1"
+}

@@ -1,0 +1,10 @@
+{
+  "batch_id": "batch_69ba24f22afc8190a52bb7e6e87b95e2",
+  "file_id": "file-CX1dpNKhGPuS1UbXCu9N29",
+  "provider": "openai",
+  "run_id": "flowers-102__adv_linf30__zeroshot_clip__openai",
+  "model": "gpt-4o-mini",
+  "num_requests": 392,
+  "submitted_at": "2026-03-18T00:07:14.589974",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batch_69ba24f22afc8190a52bb7e6e87b95e2 --provider openai --dataset flowers-102 --data_root  --class_names_dir  --output_dir llm_classification_results --run_name flowers-102__adv_linf30__zeroshot_clip__openai"
+}

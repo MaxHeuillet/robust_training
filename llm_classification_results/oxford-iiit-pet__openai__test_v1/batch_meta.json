@@ -1,0 +1,10 @@
+{
+  "batch_id": "batch_69ac93e64d74819086fc8915fb0ae5f7",
+  "file_id": "file-B4uropc8xewxuwpn4jffEU",
+  "provider": "openai",
+  "run_id": "oxford-iiit-pet__openai__test_v1",
+  "model": "gpt-4o-mini",
+  "num_requests": 1000,
+  "submitted_at": "2026-03-07T16:08:54.692258",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batch_69ac93e64d74819086fc8915fb0ae5f7 --provider openai --dataset oxford-iiit-pet --data_root /Users/maximeheuillet/data_processed --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name oxford-iiit-pet__openai__test_v1"
+}

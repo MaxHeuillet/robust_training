@@ -1,0 +1,242 @@
+[
+  {
+    "dataset": "caltech101",
+    "key": "google_think",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-think",
+    "run_name": "caltech101__google_think__test_v1",
+    "batch_id": "batches/i2pyvk4c3zip53eq3k6cgifdqt87etqc27b9",
+    "status": "retrieved",
+    "experiment": "test_v1"
+  },
+  {
+    "dataset": "caltech101",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "caltech101__google_nothink__test_v1",
+    "batch_id": "batches/0kexwmzn0bv5jti17yq24b2otqa7fo1rsusp",
+    "status": "retrieved",
+    "experiment": "test_v1"
+  },
+  {
+    "dataset": "caltech101",
+    "key": "anthropic",
+    "provider": "anthropic",
+    "model": "claude-haiku-4-5-20251001",
+    "run_name": "caltech101__anthropic__test_v1",
+    "batch_id": "msgbatch_01K4WrFzF1VNpsLvvgJnJPVK",
+    "status": "retrieved",
+    "experiment": "test_v1"
+  },
+  {
+    "dataset": "caltech101",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "caltech101__openai__test_v1",
+    "batch_id": "batch_69ab7b6df6e88190985621a321d2013f",
+    "status": "retrieved",
+    "experiment": "test_v1"
+  },
+  {
+    "dataset": "fgvc-aircraft-2013b",
+    "key": "google_think",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-think",
+    "run_name": "fgvc-aircraft-2013b__google_think__test_v1",
+    "batch_id": "batches/du7y3966zkgun14mtczomnbyx0o5yro05ppm",
+    "status": "retrieved",
+    "experiment": "test_v1"
+  },
+  {
+    "dataset": "fgvc-aircraft-2013b",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "fgvc-aircraft-2013b__google_nothink__test_v1",
+    "batch_id": "batches/4j7njumzabdoleev1urul2awtdv61n3dsxjc",
+    "status": "retrieved",
+    "experiment": "test_v1"
+  },
+  {
+    "dataset": "fgvc-aircraft-2013b",
+    "key": "anthropic",
+    "provider": "anthropic",
+    "model": "claude-haiku-4-5-20251001",
+    "run_name": "fgvc-aircraft-2013b__anthropic__test_v1",
+    "batch_id": "msgbatch_016aE86aP8E4a3hvB2gEGeq7",
+    "status": "retrieved",
+    "experiment": "test_v1"
+  },
+  {
+    "dataset": "fgvc-aircraft-2013b",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "fgvc-aircraft-2013b__openai__test_v1",
+    "batch_id": "batch_69ac5c628eb48190bb5bbe4d853361d6",
+    "status": "retrieved",
+    "experiment": "test_v1"
+  },
+  {
+    "dataset": "oxford-iiit-pet",
+    "key": "google_think",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-think",
+    "run_name": "oxford-iiit-pet__google_think__test_v1",
+    "batch_id": "batches/yqzbkpdn5l9mdifsb0xyqwixl6g67hpimakr",
+    "status": "retrieved",
+    "experiment": "test_v1"
+  },
+  {
+    "dataset": "oxford-iiit-pet",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "oxford-iiit-pet__google_nothink__test_v1",
+    "batch_id": "batches/iwe31f2bvhmhh49obrpg7ifm7xwxw7wqmovt",
+    "status": "retrieved",
+    "experiment": "test_v1"
+  },
+  {
+    "dataset": "oxford-iiit-pet",
+    "key": "anthropic",
+    "provider": "anthropic",
+    "model": "claude-haiku-4-5-20251001",
+    "run_name": "oxford-iiit-pet__anthropic__test_v1",
+    "batch_id": "msgbatch_01CGnaGc4zGfvEkgeVZAZaEH",
+    "status": "retrieved",
+    "experiment": "test_v1"
+  },
+  {
+    "dataset": "oxford-iiit-pet",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "oxford-iiit-pet__openai__test_v1",
+    "batch_id": "batch_69ac93e64d74819086fc8915fb0ae5f7",
+    "status": "retrieved",
+    "experiment": "test_v1"
+  },
+  {
+    "dataset": "stanford_cars",
+    "key": "google_think",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-think",
+    "run_name": "stanford_cars__google_think__test_v1",
+    "batch_id": "batches/6jp6go7c52w3z16nxqghd42mr48jobw18nlw",
+    "status": "retrieved",
+    "experiment": "test_v1"
+  },
+  {
+    "dataset": "stanford_cars",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "stanford_cars__google_nothink__test_v1",
+    "batch_id": "batches/s2w15z4690sap4pc2e3v34oj1ug7xunvooui",
+    "status": "retrieved",
+    "experiment": "test_v1"
+  },
+  {
+    "dataset": "stanford_cars",
+    "key": "anthropic",
+    "provider": "anthropic",
+    "model": "claude-haiku-4-5-20251001",
+    "run_name": "stanford_cars__anthropic__test_v1",
+    "batch_id": "msgbatch_01KnqkzKtsw9kpHKGhBBczdK",
+    "status": "retrieved",
+    "experiment": "test_v1"
+  },
+  {
+    "dataset": "stanford_cars",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "stanford_cars__openai__test_v1",
+    "batch_id": null,
+    "status": "failed",
+    "experiment": "test_v1"
+  },
+  {
+    "dataset": "uc-merced-land-use-dataset",
+    "key": "google_think",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-think",
+    "run_name": "uc-merced-land-use-dataset__google_think__test_v1",
+    "batch_id": "batches/q4ipq9xwa8jsp8cht33oiwifcqvce933dy9y",
+    "status": "retrieved",
+    "experiment": "test_v1"
+  },
+  {
+    "dataset": "uc-merced-land-use-dataset",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "uc-merced-land-use-dataset__google_nothink__test_v1",
+    "batch_id": "batches/j41i6v5m71vzodwlcggdxz2lg0wtgy5h3rj8",
+    "status": "retrieved",
+    "experiment": "test_v1"
+  },
+  {
+    "dataset": "uc-merced-land-use-dataset",
+    "key": "anthropic",
+    "provider": "anthropic",
+    "model": "claude-haiku-4-5-20251001",
+    "run_name": "uc-merced-land-use-dataset__anthropic__test_v1",
+    "batch_id": "msgbatch_01SsCtVfdwjEVNTGGDmH8681",
+    "status": "retrieved",
+    "experiment": "test_v1"
+  },
+  {
+    "dataset": "uc-merced-land-use-dataset",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "uc-merced-land-use-dataset__openai__test_v1",
+    "batch_id": "batch_69ab7d526b0481908934f03034b86734",
+    "status": "retrieved",
+    "experiment": "test_v1"
+  },
+  {
+    "dataset": "stanford_cars",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "stanford_cars__openai__test_v1",
+    "batch_id": null,
+    "status": "failed",
+    "experiment": "test_v1"
+  },
+  {
+    "dataset": "stanford_cars",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "stanford_cars__openai__test_v1",
+    "batch_id": null,
+    "status": "failed",
+    "experiment": "test_v1"
+  },
+  {
+    "dataset": "stanford_cars",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "stanford_cars__openai__test_v1",
+    "batch_id": null,
+    "status": "failed",
+    "experiment": "test_v1"
+  },
+  {
+    "dataset": "stanford_cars",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "stanford_cars__openai__test_v1",
+    "batch_id": "batch_69ba2c8410b481909d7b9fecc9f58adf",
+    "status": "submitted",
+    "experiment": "test_v1"
+  }
+]

@@ -1,0 +1,10 @@
+{
+  "batch_name": "batches/0kexwmzn0bv5jti17yq24b2otqa7fo1rsusp",
+  "uploaded_file": "files/3hxjpng7bm7e",
+  "provider": "google",
+  "run_id": "caltech101__google_nothink__test_v1",
+  "model": "gemini-3-flash-preview-nothink",
+  "actual_model": "gemini-3-flash-preview",
+  "num_requests": 1000,
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batches/0kexwmzn0bv5jti17yq24b2otqa7fo1rsusp --provider google --dataset caltech101 --data_root /Users/maximeheuillet/data_processed --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name caltech101__google_nothink__test_v1"
+}

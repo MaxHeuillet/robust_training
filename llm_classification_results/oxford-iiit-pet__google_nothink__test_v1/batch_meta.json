@@ -1,0 +1,10 @@
+{
+  "batch_name": "batches/iwe31f2bvhmhh49obrpg7ifm7xwxw7wqmovt",
+  "uploaded_file": "files/oco1k85jareg",
+  "provider": "google",
+  "run_id": "oxford-iiit-pet__google_nothink__test_v1",
+  "model": "gemini-3-flash-preview-nothink",
+  "actual_model": "gemini-3-flash-preview",
+  "num_requests": 1000,
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batches/iwe31f2bvhmhh49obrpg7ifm7xwxw7wqmovt --provider google --dataset oxford-iiit-pet --data_root /Users/maximeheuillet/data_processed --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name oxford-iiit-pet__google_nothink__test_v1"
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "dataset": "flowers-102",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "flowers-102__google_nothink__test_v1",
+    "batch_id": "batches/7x4nctujhahbztwz04savm7k41dr63m161qj",
+    "status": "retrieved",
+    "experiment": "test_v1"
+  },
+  {
+    "dataset": "flowers-102",
+    "key": "google_think",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-think",
+    "run_name": "flowers-102__google_think__test_v1",
+    "batch_id": "batches/05hb7nqbi74ayjn0gwt8xh8n1uccph11d1u8",
+    "status": "retrieved",
+    "experiment": "test_v1"
+  },
+  {
+    "dataset": "flowers-102",
+    "key": "anthropic",
+    "provider": "anthropic",
+    "model": "claude-haiku-4-5-20251001",
+    "run_name": "flowers-102__anthropic__test_v1",
+    "batch_id": "msgbatch_016UdagkGr2UoT42cNqC2PxH",
+    "status": "retrieved",
+    "experiment": "test_v1"
+  },
+  {
+    "dataset": "flowers-102",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "flowers-102__openai__test_v1",
+    "batch_id": "batch_69ab551c3bc08190a5a7a63e73ca2f49",
+    "status": "retrieved",
+    "experiment": "test_v1"
+  }
+]

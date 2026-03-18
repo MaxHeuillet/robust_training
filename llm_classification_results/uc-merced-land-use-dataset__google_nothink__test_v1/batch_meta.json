@@ -1,0 +1,10 @@
+{
+  "batch_name": "batches/j41i6v5m71vzodwlcggdxz2lg0wtgy5h3rj8",
+  "uploaded_file": "files/x0zen3aepep4",
+  "provider": "google",
+  "run_id": "uc-merced-land-use-dataset__google_nothink__test_v1",
+  "model": "gemini-3-flash-preview-nothink",
+  "actual_model": "gemini-3-flash-preview",
+  "num_requests": 420,
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batches/j41i6v5m71vzodwlcggdxz2lg0wtgy5h3rj8 --provider google --dataset uc-merced-land-use-dataset --data_root /Users/maximeheuillet/data_processed --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name uc-merced-land-use-dataset__google_nothink__test_v1"
+}

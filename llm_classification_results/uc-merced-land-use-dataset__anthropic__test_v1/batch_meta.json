@@ -1,0 +1,8 @@
+{
+  "batch_id": "msgbatch_01SsCtVfdwjEVNTGGDmH8681",
+  "run_id": "uc-merced-land-use-dataset__anthropic__test_v1",
+  "model": "claude-haiku-4-5-20251001",
+  "num_requests": 420,
+  "submitted_at": "2026-03-06T20:19:57.401064",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve msgbatch_01SsCtVfdwjEVNTGGDmH8681 --dataset uc-merced-land-use-dataset --data_root /Users/maximeheuillet/data_processed --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name uc-merced-land-use-dataset__anthropic__test_v1"
+}

@@ -1,0 +1,10 @@
+{
+  "batch_id": "batch_69ab551c3bc08190a5a7a63e73ca2f49",
+  "file_id": "file-WNFL88p9sBL5RTv1BrVggT",
+  "provider": "openai",
+  "run_id": "flowers-102__openai__test_v1",
+  "model": "gpt-4o-mini",
+  "num_requests": 1000,
+  "submitted_at": "2026-03-06T17:28:45.060016",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batch_69ab551c3bc08190a5a7a63e73ca2f49 --provider openai --dataset flowers-102 --data_root /Users/maximeheuillet/data_processed --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name flowers-102__openai__test_v1"
+}

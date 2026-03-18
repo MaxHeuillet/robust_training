@@ -1,0 +1,8 @@
+{
+  "batch_id": "msgbatch_016UdagkGr2UoT42cNqC2PxH",
+  "run_id": "flowers-102__anthropic__test_v1",
+  "model": "claude-haiku-4-5-20251001",
+  "num_requests": 1000,
+  "submitted_at": "2026-03-06T17:27:59.290748",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve msgbatch_016UdagkGr2UoT42cNqC2PxH --dataset flowers-102 --data_root /Users/maximeheuillet/data_processed --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name flowers-102__anthropic__test_v1"
+}

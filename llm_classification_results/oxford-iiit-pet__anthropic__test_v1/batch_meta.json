@@ -1,0 +1,8 @@
+{
+  "batch_id": "msgbatch_01CGnaGc4zGfvEkgeVZAZaEH",
+  "run_id": "oxford-iiit-pet__anthropic__test_v1",
+  "model": "claude-haiku-4-5-20251001",
+  "num_requests": 1000,
+  "submitted_at": "2026-03-06T20:15:59.327764",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve msgbatch_01CGnaGc4zGfvEkgeVZAZaEH --dataset oxford-iiit-pet --data_root /Users/maximeheuillet/data_processed --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name oxford-iiit-pet__anthropic__test_v1"
+}

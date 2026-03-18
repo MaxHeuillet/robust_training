@@ -34,3 +34,4 @@ kaleido
 
 anthropic
 google-genai
+openai

@@ -1,0 +1,10 @@
+{
+  "batch_name": "batches/6jp6go7c52w3z16nxqghd42mr48jobw18nlw",
+  "uploaded_file": "files/zg29bs4mxp5r",
+  "provider": "google",
+  "run_id": "stanford_cars__google_think__test_v1",
+  "model": "gemini-3-flash-preview-think",
+  "actual_model": "gemini-3-flash-preview",
+  "num_requests": 1000,
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batches/6jp6go7c52w3z16nxqghd42mr48jobw18nlw --provider google --dataset stanford_cars --data_root /Users/maximeheuillet/data_processed --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name stanford_cars__google_think__test_v1"
+}

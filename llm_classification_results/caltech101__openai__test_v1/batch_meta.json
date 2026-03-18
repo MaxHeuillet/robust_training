@@ -1,0 +1,10 @@
+{
+  "batch_id": "batch_69ab7b6df6e88190985621a321d2013f",
+  "file_id": "file-Y6qtPjR5SHHjUTmHhWfWZR",
+  "provider": "openai",
+  "run_id": "caltech101__openai__test_v1",
+  "model": "gpt-4o-mini",
+  "num_requests": 1000,
+  "submitted_at": "2026-03-06T20:12:14.511656",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batch_69ab7b6df6e88190985621a321d2013f --provider openai --dataset caltech101 --data_root /Users/maximeheuillet/data_processed --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name caltech101__openai__test_v1"
+}

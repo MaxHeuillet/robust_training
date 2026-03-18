@@ -1,0 +1,8 @@
+{
+  "batch_id": "msgbatch_016aE86aP8E4a3hvB2gEGeq7",
+  "run_id": "fgvc-aircraft-2013b__anthropic__test_v1",
+  "model": "claude-haiku-4-5-20251001",
+  "num_requests": 1000,
+  "submitted_at": "2026-03-06T20:13:40.973407",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve msgbatch_016aE86aP8E4a3hvB2gEGeq7 --dataset fgvc-aircraft-2013b --data_root /Users/maximeheuillet/data_processed --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name fgvc-aircraft-2013b__anthropic__test_v1"
+}

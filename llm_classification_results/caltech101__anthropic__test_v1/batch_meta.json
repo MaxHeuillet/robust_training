@@ -1,0 +1,8 @@
+{
+  "batch_id": "msgbatch_01K4WrFzF1VNpsLvvgJnJPVK",
+  "run_id": "caltech101__anthropic__test_v1",
+  "model": "claude-haiku-4-5-20251001",
+  "num_requests": 1000,
+  "submitted_at": "2026-03-06T20:11:43.890061",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve msgbatch_01K4WrFzF1VNpsLvvgJnJPVK --dataset caltech101 --data_root /Users/maximeheuillet/data_processed --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name caltech101__anthropic__test_v1"
+}

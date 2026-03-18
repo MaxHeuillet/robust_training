@@ -1,0 +1,10 @@
+{
+  "batch_id": "batch_69b9f4be52c48190ab80a529d408b5f7",
+  "file_id": "file-C31tyh5XVaJgYqjzzUWUg6",
+  "provider": "openai",
+  "run_id": "uc-merced-land-use-dataset__openai__test_v1",
+  "model": "gpt-4o-mini",
+  "num_requests": 420,
+  "submitted_at": "2026-03-17T20:41:34.811304",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batch_69b9f4be52c48190ab80a529d408b5f7 --provider openai --dataset uc-merced-land-use-dataset --data_root /Users/maximeheuillet/data_processed --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name uc-merced-land-use-dataset__openai__test_v1"
+}

@@ -1,0 +1,10 @@
+{
+  "batch_id": "batch_69ac5c628eb48190bb5bbe4d853361d6",
+  "file_id": "file-Fnpu74zXEn7KiQq7NM3T79",
+  "provider": "openai",
+  "run_id": "fgvc-aircraft-2013b__openai__test_v1",
+  "model": "gpt-4o-mini",
+  "num_requests": 1000,
+  "submitted_at": "2026-03-07T12:12:03.059518",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batch_69ac5c628eb48190bb5bbe4d853361d6 --provider openai --dataset fgvc-aircraft-2013b --data_root /Users/maximeheuillet/data_processed --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name fgvc-aircraft-2013b__openai__test_v1"
+}

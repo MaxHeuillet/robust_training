@@ -1,0 +1,1000 @@
+{"index": 0, "int_label": 93, "ground_truth": "Saab 2000", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 1, "int_label": 84, "ground_truth": "L-1011", "raw_prediction": "DC-10", "parsed_prediction": "DC-10", "confidence": 1.0, "correct": false, "error": false}
+{"index": 2, "int_label": 32, "ground_truth": "A340-600", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 3, "int_label": 8, "ground_truth": "737-800", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": true, "error": false}
+{"index": 4, "int_label": 86, "ground_truth": "MD-80", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 5, "int_label": 25, "ground_truth": "A320", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": true, "error": false}
+{"index": 6, "int_label": 53, "ground_truth": "DC-3", "raw_prediction": "C-47", "parsed_prediction": "C-47", "confidence": 1.0, "correct": false, "error": false}
+{"index": 7, "int_label": 0, "ground_truth": "707-320", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 8, "int_label": 95, "ground_truth": "Spitfire", "raw_prediction": "Spitfire", "parsed_prediction": "Spitfire", "confidence": 1.0, "correct": true, "error": false}
+{"index": 9, "int_label": 88, "ground_truth": "MD-90", "raw_prediction": "MD-90", "parsed_prediction": "MD-90", "confidence": 1.0, "correct": true, "error": false}
+{"index": 10, "int_label": 51, "ground_truth": "Challenger 600", "raw_prediction": "Challenger 600", "parsed_prediction": "Challenger 600", "confidence": 1.0, "correct": true, "error": false}
+{"index": 11, "int_label": 12, "ground_truth": "747-300", "raw_prediction": "747-400", "parsed_prediction": "747-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 12, "int_label": 40, "ground_truth": "Beechcraft 1900", "raw_prediction": "Cessna 560", "parsed_prediction": "Cessna 560", "confidence": 1.0, "correct": false, "error": false}
+{"index": 13, "int_label": 8, "ground_truth": "737-800", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 14, "int_label": 93, "ground_truth": "Saab 2000", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 15, "int_label": 83, "ground_truth": "Il-76", "raw_prediction": "C-130", "parsed_prediction": "C-130", "confidence": 1.0, "correct": false, "error": false}
+{"index": 16, "int_label": 5, "ground_truth": "737-500", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 17, "int_label": 60, "ground_truth": "DHC-8-100", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 18, "int_label": 11, "ground_truth": "747-200", "raw_prediction": "747-400", "parsed_prediction": "747-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 19, "int_label": 49, "ground_truth": "Cessna 525", "raw_prediction": "Cessna 560", "parsed_prediction": "Cessna 560", "confidence": 1.0, "correct": false, "error": false}
+{"index": 20, "int_label": 91, "ground_truth": "PA-28", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": false, "error": false}
+{"index": 21, "int_label": 84, "ground_truth": "L-1011", "raw_prediction": "DC-10", "parsed_prediction": "DC-10", "confidence": 1.0, "correct": false, "error": false}
+{"index": 22, "int_label": 34, "ground_truth": "ATR-42", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 23, "int_label": 14, "ground_truth": "757-200", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": true, "error": false}
+{"index": 24, "int_label": 43, "ground_truth": "C-47", "raw_prediction": "DC-3", "parsed_prediction": "DC-3", "confidence": 1.0, "correct": false, "error": false}
+{"index": 25, "int_label": 8, "ground_truth": "737-800", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": true, "error": false}
+{"index": 26, "int_label": 9, "ground_truth": "737-900", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 27, "int_label": 39, "ground_truth": "BAE-125", "raw_prediction": "Cessna 560", "parsed_prediction": "Cessna 560", "confidence": 1.0, "correct": false, "error": false}
+{"index": 28, "int_label": 30, "ground_truth": "A340-300", "raw_prediction": "A340-300", "parsed_prediction": "A340-300", "confidence": 1.0, "correct": true, "error": false}
+{"index": 29, "int_label": 38, "ground_truth": "BAE 146-300", "raw_prediction": "BAE 146-200", "parsed_prediction": "BAE 146-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 30, "int_label": 33, "ground_truth": "A380", "raw_prediction": "A300B4", "parsed_prediction": "A300B4", "confidence": 1.0, "correct": false, "error": false}
+{"index": 31, "int_label": 66, "ground_truth": "E-195", "raw_prediction": "777-200", "parsed_prediction": "777-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 32, "int_label": 44, "ground_truth": "CRJ-200", "raw_prediction": "CRJ-200", "parsed_prediction": "CRJ-200", "confidence": 1.0, "correct": true, "error": false}
+{"index": 33, "int_label": 56, "ground_truth": "DC-9-30", "raw_prediction": "A340-300", "parsed_prediction": "A340-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 34, "int_label": 72, "ground_truth": "F-16A/B", "raw_prediction": "Hawk T1", "parsed_prediction": "Hawk T1", "confidence": 1.0, "correct": false, "error": false}
+{"index": 35, "int_label": 19, "ground_truth": "777-200", "raw_prediction": "787-300", "parsed_prediction": "737-300", "confidence": 0.8571428571428571, "correct": false, "error": false}
+{"index": 36, "int_label": 53, "ground_truth": "DC-3", "raw_prediction": "DC-3", "parsed_prediction": "DC-3", "confidence": 1.0, "correct": true, "error": false}
+{"index": 37, "int_label": 2, "ground_truth": "737-200", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 38, "int_label": 69, "ground_truth": "ERJ 145", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 39, "int_label": 2, "ground_truth": "737-200", "raw_prediction": "737-300", "parsed_prediction": "737-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 40, "int_label": 93, "ground_truth": "Saab 2000", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 41, "int_label": 9, "ground_truth": "737-900", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 42, "int_label": 7, "ground_truth": "737-700", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": true, "error": false}
+{"index": 43, "int_label": 33, "ground_truth": "A380", "raw_prediction": "A380", "parsed_prediction": "A380", "confidence": 1.0, "correct": true, "error": false}
+{"index": 44, "int_label": 60, "ground_truth": "DHC-8-100", "raw_prediction": "DHC-6", "parsed_prediction": "DHC-6", "confidence": 1.0, "correct": false, "error": false}
+{"index": 45, "int_label": 94, "ground_truth": "Saab 340", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 46, "int_label": 64, "ground_truth": "E-170", "raw_prediction": "E-170", "parsed_prediction": "E-170", "confidence": 1.0, "correct": true, "error": false}
+{"index": 47, "int_label": 66, "ground_truth": "E-195", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 48, "int_label": 75, "ground_truth": "Falcon 900", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 49, "int_label": 17, "ground_truth": "767-300", "raw_prediction": "767-300", "parsed_prediction": "767-300", "confidence": 1.0, "correct": true, "error": false}
+{"index": 50, "int_label": 21, "ground_truth": "A300B4", "raw_prediction": "A340-300", "parsed_prediction": "A340-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 51, "int_label": 48, "ground_truth": "Cessna 208", "raw_prediction": "Cessna 208", "parsed_prediction": "Cessna 208", "confidence": 1.0, "correct": true, "error": false}
+{"index": 52, "int_label": 87, "ground_truth": "MD-87", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 53, "int_label": 93, "ground_truth": "Saab 2000", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 54, "int_label": 15, "ground_truth": "757-300", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 55, "int_label": 67, "ground_truth": "EMB-120", "raw_prediction": "Saab 340", "parsed_prediction": "Saab 340", "confidence": 1.0, "correct": false, "error": false}
+{"index": 56, "int_label": 34, "ground_truth": "ATR-42", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 57, "int_label": 7, "ground_truth": "737-700", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": true, "error": false}
+{"index": 58, "int_label": 24, "ground_truth": "A319", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 59, "int_label": 4, "ground_truth": "737-400", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 60, "int_label": 80, "ground_truth": "Gulfstream IV", "raw_prediction": "CRJ-200", "parsed_prediction": "CRJ-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 61, "int_label": 39, "ground_truth": "BAE-125", "raw_prediction": "Beechcraft 1900", "parsed_prediction": "Beechcraft 1900", "confidence": 1.0, "correct": false, "error": false}
+{"index": 62, "int_label": 38, "ground_truth": "BAE 146-300", "raw_prediction": "ATR-42", "parsed_prediction": "ATR-42", "confidence": 1.0, "correct": false, "error": false}
+{"index": 63, "int_label": 22, "ground_truth": "A310", "raw_prediction": "767-200", "parsed_prediction": "767-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 64, "int_label": 80, "ground_truth": "Gulfstream IV", "raw_prediction": "CRJ-200", "parsed_prediction": "CRJ-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 65, "int_label": 39, "ground_truth": "BAE-125", "raw_prediction": "Challenger 600", "parsed_prediction": "Challenger 600", "confidence": 1.0, "correct": false, "error": false}
+{"index": 66, "int_label": 15, "ground_truth": "757-300", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 67, "int_label": 82, "ground_truth": "Hawk T1", "raw_prediction": "Hawk T1", "parsed_prediction": "Hawk T1", "confidence": 1.0, "correct": true, "error": false}
+{"index": 68, "int_label": 23, "ground_truth": "A318", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 69, "int_label": 94, "ground_truth": "Saab 340", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 70, "int_label": 99, "ground_truth": "Yak-42", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 71, "int_label": 43, "ground_truth": "C-47", "raw_prediction": "C-47", "parsed_prediction": "C-47", "confidence": 1.0, "correct": true, "error": false}
+{"index": 72, "int_label": 73, "ground_truth": "F/A-18", "raw_prediction": "Hawk T1", "parsed_prediction": "Hawk T1", "confidence": 1.0, "correct": false, "error": false}
+{"index": 73, "int_label": 18, "ground_truth": "767-400", "raw_prediction": "767-200", "parsed_prediction": "767-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 74, "int_label": 42, "ground_truth": "C-130", "raw_prediction": "C-130", "parsed_prediction": "C-130", "confidence": 1.0, "correct": true, "error": false}
+{"index": 75, "int_label": 65, "ground_truth": "E-190", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 76, "int_label": 62, "ground_truth": "DR-400", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": false, "error": false}
+{"index": 77, "int_label": 30, "ground_truth": "A340-300", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 78, "int_label": 89, "ground_truth": "Metroliner", "raw_prediction": "Saab 340", "parsed_prediction": "Saab 340", "confidence": 1.0, "correct": false, "error": false}
+{"index": 79, "int_label": 16, "ground_truth": "767-200", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 80, "int_label": 68, "ground_truth": "ERJ 135", "raw_prediction": "Boeing 717", "parsed_prediction": "Boeing 717", "confidence": 1.0, "correct": false, "error": false}
+{"index": 81, "int_label": 53, "ground_truth": "DC-3", "raw_prediction": "DC-3", "parsed_prediction": "DC-3", "confidence": 1.0, "correct": true, "error": false}
+{"index": 82, "int_label": 79, "ground_truth": "Global Express", "raw_prediction": "Falcon 900", "parsed_prediction": "Falcon 900", "confidence": 1.0, "correct": false, "error": false}
+{"index": 83, "int_label": 55, "ground_truth": "DC-8", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 84, "int_label": 27, "ground_truth": "A330-200", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 85, "int_label": 5, "ground_truth": "737-500", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 86, "int_label": 6, "ground_truth": "737-600", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 87, "int_label": 33, "ground_truth": "A380", "raw_prediction": "A380", "parsed_prediction": "A380", "confidence": 1.0, "correct": true, "error": false}
+{"index": 88, "int_label": 77, "ground_truth": "Fokker 50", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 89, "int_label": 71, "ground_truth": "Eurofighter Typhoon", "raw_prediction": "Eurofighter Typhoon", "parsed_prediction": "Eurofighter Typhoon", "confidence": 1.0, "correct": true, "error": false}
+{"index": 90, "int_label": 61, "ground_truth": "DHC-8-300", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": true, "error": false}
+{"index": 91, "int_label": 73, "ground_truth": "F/A-18", "raw_prediction": "F/A-18", "parsed_prediction": "F/A-18", "confidence": 1.0, "correct": true, "error": false}
+{"index": 92, "int_label": 55, "ground_truth": "DC-8", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 93, "int_label": 78, "ground_truth": "Fokker 70", "raw_prediction": "ATR-42", "parsed_prediction": "ATR-42", "confidence": 1.0, "correct": false, "error": false}
+{"index": 94, "int_label": 99, "ground_truth": "Yak-42", "raw_prediction": "DC-10", "parsed_prediction": "DC-10", "confidence": 1.0, "correct": false, "error": false}
+{"index": 95, "int_label": 61, "ground_truth": "DHC-8-300", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": true, "error": false}
+{"index": 96, "int_label": 52, "ground_truth": "DC-10", "raw_prediction": "DC-10", "parsed_prediction": "DC-10", "confidence": 1.0, "correct": true, "error": false}
+{"index": 97, "int_label": 9, "ground_truth": "737-900", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 98, "int_label": 27, "ground_truth": "A330-200", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 99, "int_label": 23, "ground_truth": "A318", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 100, "int_label": 63, "ground_truth": "Dornier 328", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 101, "int_label": 88, "ground_truth": "MD-90", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 102, "int_label": 88, "ground_truth": "MD-90", "raw_prediction": "707-320", "parsed_prediction": "707-320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 103, "int_label": 41, "ground_truth": "Boeing 717", "raw_prediction": "717", "parsed_prediction": "717", "confidence": 0.0, "correct": false, "error": false}
+{"index": 104, "int_label": 64, "ground_truth": "E-170", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 105, "int_label": 43, "ground_truth": "C-47", "raw_prediction": "DC-3", "parsed_prediction": "DC-3", "confidence": 1.0, "correct": false, "error": false}
+{"index": 106, "int_label": 92, "ground_truth": "SR-20", "raw_prediction": "Cessna 208", "parsed_prediction": "Cessna 208", "confidence": 1.0, "correct": false, "error": false}
+{"index": 107, "int_label": 91, "ground_truth": "PA-28", "raw_prediction": "Piper PA-28", "parsed_prediction": "PA-28", "confidence": 0.95, "correct": true, "error": false}
+{"index": 108, "int_label": 1, "ground_truth": "727-200", "raw_prediction": "DC-10", "parsed_prediction": "DC-10", "confidence": 1.0, "correct": false, "error": false}
+{"index": 109, "int_label": 20, "ground_truth": "777-300", "raw_prediction": "767-300", "parsed_prediction": "767-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 110, "int_label": 91, "ground_truth": "PA-28", "raw_prediction": "Beechcraft 1900", "parsed_prediction": "Beechcraft 1900", "confidence": 1.0, "correct": false, "error": false}
+{"index": 111, "int_label": 58, "ground_truth": "DHC-1", "raw_prediction": "Avro Lancaster", "parsed_prediction": "Avro Lancaster", "confidence": 0.0, "correct": false, "error": false}
+{"index": 112, "int_label": 1, "ground_truth": "727-200", "raw_prediction": "727-200", "parsed_prediction": "727-200", "confidence": 1.0, "correct": true, "error": false}
+{"index": 113, "int_label": 21, "ground_truth": "A300B4", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 114, "int_label": 55, "ground_truth": "DC-8", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 115, "int_label": 57, "ground_truth": "DH-82", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": false, "error": false}
+{"index": 116, "int_label": 73, "ground_truth": "F/A-18", "raw_prediction": "F/A-18", "parsed_prediction": "F/A-18", "confidence": 1.0, "correct": true, "error": false}
+{"index": 117, "int_label": 37, "ground_truth": "BAE 146-200", "raw_prediction": "BAE 146-200", "parsed_prediction": "BAE 146-200", "confidence": 1.0, "correct": true, "error": false}
+{"index": 118, "int_label": 91, "ground_truth": "PA-28", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": false, "error": false}
+{"index": 119, "int_label": 65, "ground_truth": "E-190", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 120, "int_label": 16, "ground_truth": "767-200", "raw_prediction": "747-400", "parsed_prediction": "747-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 121, "int_label": 11, "ground_truth": "747-200", "raw_prediction": "747-400", "parsed_prediction": "747-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 122, "int_label": 18, "ground_truth": "767-400", "raw_prediction": "767-300", "parsed_prediction": "767-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 123, "int_label": 10, "ground_truth": "747-100", "raw_prediction": "747-400", "parsed_prediction": "747-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 124, "int_label": 22, "ground_truth": "A310", "raw_prediction": "A300B4", "parsed_prediction": "A300B4", "confidence": 1.0, "correct": false, "error": false}
+{"index": 125, "int_label": 49, "ground_truth": "Cessna 525", "raw_prediction": "Cessna 560", "parsed_prediction": "Cessna 560", "confidence": 1.0, "correct": false, "error": false}
+{"index": 126, "int_label": 90, "ground_truth": "Model B200", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 127, "int_label": 69, "ground_truth": "ERJ 145", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 128, "int_label": 52, "ground_truth": "DC-10", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 129, "int_label": 17, "ground_truth": "767-300", "raw_prediction": "777-200", "parsed_prediction": "777-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 130, "int_label": 93, "ground_truth": "Saab 2000", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 131, "int_label": 35, "ground_truth": "ATR-72", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 132, "int_label": 34, "ground_truth": "ATR-42", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 133, "int_label": 47, "ground_truth": "Cessna 172", "raw_prediction": "Cessna 208", "parsed_prediction": "Cessna 208", "confidence": 1.0, "correct": false, "error": false}
+{"index": 134, "int_label": 96, "ground_truth": "Tornado", "raw_prediction": "Tornado", "parsed_prediction": "Tornado", "confidence": 1.0, "correct": true, "error": false}
+{"index": 135, "int_label": 9, "ground_truth": "737-900", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 136, "int_label": 8, "ground_truth": "737-800", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 137, "int_label": 70, "ground_truth": "Embraer Legacy 600", "raw_prediction": "E-190", "parsed_prediction": "E-190", "confidence": 1.0, "correct": false, "error": false}
+{"index": 138, "int_label": 62, "ground_truth": "DR-400", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": false, "error": false}
+{"index": 139, "int_label": 35, "ground_truth": "ATR-72", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": true, "error": false}
+{"index": 140, "int_label": 36, "ground_truth": "An-12", "raw_prediction": "C-130", "parsed_prediction": "C-130", "confidence": 1.0, "correct": false, "error": false}
+{"index": 141, "int_label": 54, "ground_truth": "DC-6", "raw_prediction": "DC-6", "parsed_prediction": "DC-6", "confidence": 1.0, "correct": true, "error": false}
+{"index": 142, "int_label": 9, "ground_truth": "737-900", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 143, "int_label": 4, "ground_truth": "737-400", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 144, "int_label": 88, "ground_truth": "MD-90", "raw_prediction": "DC-9-30", "parsed_prediction": "DC-9-30", "confidence": 1.0, "correct": false, "error": false}
+{"index": 145, "int_label": 18, "ground_truth": "767-400", "raw_prediction": "777-200", "parsed_prediction": "777-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 146, "int_label": 53, "ground_truth": "DC-3", "raw_prediction": "DHC-6", "parsed_prediction": "DHC-6", "confidence": 1.0, "correct": false, "error": false}
+{"index": 147, "int_label": 96, "ground_truth": "Tornado", "raw_prediction": "F/A-18", "parsed_prediction": "F/A-18", "confidence": 1.0, "correct": false, "error": false}
+{"index": 148, "int_label": 66, "ground_truth": "E-195", "raw_prediction": "E-190", "parsed_prediction": "E-190", "confidence": 1.0, "correct": false, "error": false}
+{"index": 149, "int_label": 20, "ground_truth": "777-300", "raw_prediction": "777-200", "parsed_prediction": "777-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 150, "int_label": 31, "ground_truth": "A340-500", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 151, "int_label": 35, "ground_truth": "ATR-72", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 152, "int_label": 56, "ground_truth": "DC-9-30", "raw_prediction": "DC-9-30", "parsed_prediction": "DC-9-30", "confidence": 1.0, "correct": true, "error": false}
+{"index": 153, "int_label": 89, "ground_truth": "Metroliner", "raw_prediction": "Saab 340", "parsed_prediction": "Saab 340", "confidence": 1.0, "correct": false, "error": false}
+{"index": 154, "int_label": 7, "ground_truth": "737-700", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": true, "error": false}
+{"index": 155, "int_label": 34, "ground_truth": "ATR-42", "raw_prediction": "C-130", "parsed_prediction": "C-130", "confidence": 1.0, "correct": false, "error": false}
+{"index": 156, "int_label": 90, "ground_truth": "Model B200", "raw_prediction": "DHC-8-100", "parsed_prediction": "DHC-8-100", "confidence": 1.0, "correct": false, "error": false}
+{"index": 157, "int_label": 96, "ground_truth": "Tornado", "raw_prediction": "F-16A/B", "parsed_prediction": "F-16A/B", "confidence": 1.0, "correct": false, "error": false}
+{"index": 158, "int_label": 90, "ground_truth": "Model B200", "raw_prediction": "Cessna 208", "parsed_prediction": "Cessna 208", "confidence": 1.0, "correct": false, "error": false}
+{"index": 159, "int_label": 32, "ground_truth": "A340-600", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 160, "int_label": 7, "ground_truth": "737-700", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": true, "error": false}
+{"index": 161, "int_label": 1, "ground_truth": "727-200", "raw_prediction": "DC-9-30", "parsed_prediction": "DC-9-30", "confidence": 1.0, "correct": false, "error": false}
+{"index": 162, "int_label": 37, "ground_truth": "BAE 146-200", "raw_prediction": "BAE 146-200", "parsed_prediction": "BAE 146-200", "confidence": 1.0, "correct": true, "error": false}
+{"index": 163, "int_label": 27, "ground_truth": "A330-200", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 164, "int_label": 65, "ground_truth": "E-190", "raw_prediction": "E-190", "parsed_prediction": "E-190", "confidence": 1.0, "correct": true, "error": false}
+{"index": 165, "int_label": 31, "ground_truth": "A340-500", "raw_prediction": "A380", "parsed_prediction": "A380", "confidence": 1.0, "correct": false, "error": false}
+{"index": 166, "int_label": 72, "ground_truth": "F-16A/B", "raw_prediction": "Eurofighter Typhoon", "parsed_prediction": "Eurofighter Typhoon", "confidence": 1.0, "correct": false, "error": false}
+{"index": 167, "int_label": 8, "ground_truth": "737-800", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": true, "error": false}
+{"index": 168, "int_label": 77, "ground_truth": "Fokker 50", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 169, "int_label": 53, "ground_truth": "DC-3", "raw_prediction": "DC-3", "parsed_prediction": "DC-3", "confidence": 1.0, "correct": true, "error": false}
+{"index": 170, "int_label": 14, "ground_truth": "757-200", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 171, "int_label": 3, "ground_truth": "737-300", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 172, "int_label": 76, "ground_truth": "Fokker 100", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 173, "int_label": 88, "ground_truth": "MD-90", "raw_prediction": "MD-90", "parsed_prediction": "MD-90", "confidence": 1.0, "correct": true, "error": false}
+{"index": 174, "int_label": 70, "ground_truth": "Embraer Legacy 600", "raw_prediction": "CRJ-200", "parsed_prediction": "CRJ-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 175, "int_label": 58, "ground_truth": "DHC-1", "raw_prediction": "Spitfire", "parsed_prediction": "Spitfire", "confidence": 1.0, "correct": false, "error": false}
+{"index": 176, "int_label": 0, "ground_truth": "707-320", "raw_prediction": "A300B4", "parsed_prediction": "A300B4", "confidence": 1.0, "correct": false, "error": false}
+{"index": 177, "int_label": 30, "ground_truth": "A340-300", "raw_prediction": "A330-200", "parsed_prediction": "A330-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 178, "int_label": 84, "ground_truth": "L-1011", "raw_prediction": "DC-10", "parsed_prediction": "DC-10", "confidence": 1.0, "correct": false, "error": false}
+{"index": 179, "int_label": 12, "ground_truth": "747-300", "raw_prediction": "747-400", "parsed_prediction": "747-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 180, "int_label": 18, "ground_truth": "767-400", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 181, "int_label": 92, "ground_truth": "SR-20", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": false, "error": false}
+{"index": 182, "int_label": 90, "ground_truth": "Model B200", "raw_prediction": "DHC-8-100", "parsed_prediction": "DHC-8-100", "confidence": 1.0, "correct": false, "error": false}
+{"index": 183, "int_label": 44, "ground_truth": "CRJ-200", "raw_prediction": "ERJ 145", "parsed_prediction": "ERJ 145", "confidence": 1.0, "correct": false, "error": false}
+{"index": 184, "int_label": 35, "ground_truth": "ATR-72", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": true, "error": false}
+{"index": 185, "int_label": 97, "ground_truth": "Tu-134", "raw_prediction": "DC-9-30", "parsed_prediction": "DC-9-30", "confidence": 1.0, "correct": false, "error": false}
+{"index": 186, "int_label": 63, "ground_truth": "Dornier 328", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 187, "int_label": 29, "ground_truth": "A340-200", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 188, "int_label": 12, "ground_truth": "747-300", "raw_prediction": "747-400", "parsed_prediction": "747-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 189, "int_label": 4, "ground_truth": "737-400", "raw_prediction": "737-500", "parsed_prediction": "737-500", "confidence": 1.0, "correct": false, "error": false}
+{"index": 190, "int_label": 98, "ground_truth": "Tu-154", "raw_prediction": "DC-9-30", "parsed_prediction": "DC-9-30", "confidence": 1.0, "correct": false, "error": false}
+{"index": 191, "int_label": 44, "ground_truth": "CRJ-200", "raw_prediction": "CRJ-200", "parsed_prediction": "CRJ-200", "confidence": 1.0, "correct": true, "error": false}
+{"index": 192, "int_label": 62, "ground_truth": "DR-400", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": false, "error": false}
+{"index": 193, "int_label": 18, "ground_truth": "767-400", "raw_prediction": "777-200", "parsed_prediction": "777-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 194, "int_label": 90, "ground_truth": "Model B200", "raw_prediction": "DHC-8-100", "parsed_prediction": "DHC-8-100", "confidence": 1.0, "correct": false, "error": false}
+{"index": 195, "int_label": 92, "ground_truth": "SR-20", "raw_prediction": "SR-20", "parsed_prediction": "SR-20", "confidence": 1.0, "correct": true, "error": false}
+{"index": 196, "int_label": 82, "ground_truth": "Hawk T1", "raw_prediction": "Hawk T1", "parsed_prediction": "Hawk T1", "confidence": 1.0, "correct": true, "error": false}
+{"index": 197, "int_label": 89, "ground_truth": "Metroliner", "raw_prediction": "Saab 340", "parsed_prediction": "Saab 340", "confidence": 1.0, "correct": false, "error": false}
+{"index": 198, "int_label": 16, "ground_truth": "767-200", "raw_prediction": "737-400", "parsed_prediction": "737-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 199, "int_label": 42, "ground_truth": "C-130", "raw_prediction": "Avro Lancaster\n\nI apologize, but \"Avro Lancaster\" is not in the provided class list. Based on the large military transport aircraft visible in this black and white photograph, the closest match from the available classes would be:\n\nC-47", "parsed_prediction": "C-47", "confidence": 0.95, "correct": false, "error": false}
+{"index": 200, "int_label": 3, "ground_truth": "737-300", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 201, "int_label": 49, "ground_truth": "Cessna 525", "raw_prediction": "Citation X", "parsed_prediction": "Citation X", "confidence": 0.0, "correct": false, "error": false}
+{"index": 202, "int_label": 97, "ground_truth": "Tu-134", "raw_prediction": "737-300", "parsed_prediction": "737-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 203, "int_label": 50, "ground_truth": "Cessna 560", "raw_prediction": "SF-340", "parsed_prediction": "Saab 340", "confidence": 0.7142857142857143, "correct": false, "error": false}
+{"index": 204, "int_label": 74, "ground_truth": "Falcon 2000", "raw_prediction": "Falcon 2000", "parsed_prediction": "Falcon 2000", "confidence": 1.0, "correct": true, "error": false}
+{"index": 205, "int_label": 63, "ground_truth": "Dornier 328", "raw_prediction": "DHC-6", "parsed_prediction": "DHC-6", "confidence": 1.0, "correct": false, "error": false}
+{"index": 206, "int_label": 77, "ground_truth": "Fokker 50", "raw_prediction": "An-12", "parsed_prediction": "An-12", "confidence": 1.0, "correct": false, "error": false}
+{"index": 207, "int_label": 71, "ground_truth": "Eurofighter Typhoon", "raw_prediction": "Eurofighter Typhoon", "parsed_prediction": "Eurofighter Typhoon", "confidence": 1.0, "correct": true, "error": false}
+{"index": 208, "int_label": 54, "ground_truth": "DC-6", "raw_prediction": "C-130", "parsed_prediction": "C-130", "confidence": 1.0, "correct": false, "error": false}
+{"index": 209, "int_label": 59, "ground_truth": "DHC-6", "raw_prediction": "DHC-6", "parsed_prediction": "DHC-6", "confidence": 1.0, "correct": true, "error": false}
+{"index": 210, "int_label": 36, "ground_truth": "An-12", "raw_prediction": "C-130", "parsed_prediction": "C-130", "confidence": 1.0, "correct": false, "error": false}
+{"index": 211, "int_label": 49, "ground_truth": "Cessna 525", "raw_prediction": "Citation X", "parsed_prediction": "Citation X", "confidence": 0.0, "correct": false, "error": false}
+{"index": 212, "int_label": 59, "ground_truth": "DHC-6", "raw_prediction": "DHC-6", "parsed_prediction": "DHC-6", "confidence": 1.0, "correct": true, "error": false}
+{"index": 213, "int_label": 44, "ground_truth": "CRJ-200", "raw_prediction": "737-200", "parsed_prediction": "737-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 214, "int_label": 30, "ground_truth": "A340-300", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 215, "int_label": 37, "ground_truth": "BAE 146-200", "raw_prediction": "ERJ 145", "parsed_prediction": "ERJ 145", "confidence": 1.0, "correct": false, "error": false}
+{"index": 216, "int_label": 29, "ground_truth": "A340-200", "raw_prediction": "A340-300", "parsed_prediction": "A340-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 217, "int_label": 64, "ground_truth": "E-170", "raw_prediction": "ERJ 145", "parsed_prediction": "ERJ 145", "confidence": 1.0, "correct": false, "error": false}
+{"index": 218, "int_label": 87, "ground_truth": "MD-87", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 219, "int_label": 52, "ground_truth": "DC-10", "raw_prediction": "DC-10", "parsed_prediction": "DC-10", "confidence": 1.0, "correct": true, "error": false}
+{"index": 220, "int_label": 21, "ground_truth": "A300B4", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 221, "int_label": 68, "ground_truth": "ERJ 135", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 222, "int_label": 2, "ground_truth": "737-200", "raw_prediction": "737-400", "parsed_prediction": "737-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 223, "int_label": 99, "ground_truth": "Yak-42", "raw_prediction": "DC-10", "parsed_prediction": "DC-10", "confidence": 1.0, "correct": false, "error": false}
+{"index": 224, "int_label": 20, "ground_truth": "777-300", "raw_prediction": "767-300", "parsed_prediction": "767-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 225, "int_label": 26, "ground_truth": "A321", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 226, "int_label": 43, "ground_truth": "C-47", "raw_prediction": "DC-3", "parsed_prediction": "DC-3", "confidence": 1.0, "correct": false, "error": false}
+{"index": 227, "int_label": 60, "ground_truth": "DHC-8-100", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 228, "int_label": 19, "ground_truth": "777-200", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 229, "int_label": 79, "ground_truth": "Global Express", "raw_prediction": "CRJ-700", "parsed_prediction": "CRJ-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 230, "int_label": 54, "ground_truth": "DC-6", "raw_prediction": "DC-6", "parsed_prediction": "DC-6", "confidence": 1.0, "correct": true, "error": false}
+{"index": 231, "int_label": 32, "ground_truth": "A340-600", "raw_prediction": "777-300", "parsed_prediction": "777-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 232, "int_label": 21, "ground_truth": "A300B4", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 233, "int_label": 73, "ground_truth": "F/A-18", "raw_prediction": "F-16A/B", "parsed_prediction": "F-16A/B", "confidence": 1.0, "correct": false, "error": false}
+{"index": 234, "int_label": 51, "ground_truth": "Challenger 600", "raw_prediction": "Challenger 600", "parsed_prediction": "Challenger 600", "confidence": 1.0, "correct": true, "error": false}
+{"index": 235, "int_label": 49, "ground_truth": "Cessna 525", "raw_prediction": "Cessna 560", "parsed_prediction": "Cessna 560", "confidence": 1.0, "correct": false, "error": false}
+{"index": 236, "int_label": 86, "ground_truth": "MD-80", "raw_prediction": "MD-80", "parsed_prediction": "MD-80", "confidence": 1.0, "correct": true, "error": false}
+{"index": 237, "int_label": 48, "ground_truth": "Cessna 208", "raw_prediction": "Cessna 208", "parsed_prediction": "Cessna 208", "confidence": 1.0, "correct": true, "error": false}
+{"index": 238, "int_label": 96, "ground_truth": "Tornado", "raw_prediction": "Tornado", "parsed_prediction": "Tornado", "confidence": 1.0, "correct": true, "error": false}
+{"index": 239, "int_label": 75, "ground_truth": "Falcon 900", "raw_prediction": "737-400", "parsed_prediction": "737-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 240, "int_label": 9, "ground_truth": "737-900", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 241, "int_label": 25, "ground_truth": "A320", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": true, "error": false}
+{"index": 242, "int_label": 68, "ground_truth": "ERJ 135", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 243, "int_label": 28, "ground_truth": "A330-300", "raw_prediction": "777-200", "parsed_prediction": "777-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 244, "int_label": 56, "ground_truth": "DC-9-30", "raw_prediction": "DC-9-30", "parsed_prediction": "DC-9-30", "confidence": 1.0, "correct": true, "error": false}
+{"index": 245, "int_label": 50, "ground_truth": "Cessna 560", "raw_prediction": "Cessna 560", "parsed_prediction": "Cessna 560", "confidence": 1.0, "correct": true, "error": false}
+{"index": 246, "int_label": 11, "ground_truth": "747-200", "raw_prediction": "A340-600", "parsed_prediction": "A340-600", "confidence": 1.0, "correct": false, "error": false}
+{"index": 247, "int_label": 84, "ground_truth": "L-1011", "raw_prediction": "DC-10", "parsed_prediction": "DC-10", "confidence": 1.0, "correct": false, "error": false}
+{"index": 248, "int_label": 70, "ground_truth": "Embraer Legacy 600", "raw_prediction": "ERJ 145", "parsed_prediction": "ERJ 145", "confidence": 1.0, "correct": false, "error": false}
+{"index": 249, "int_label": 43, "ground_truth": "C-47", "raw_prediction": "DC-3", "parsed_prediction": "DC-3", "confidence": 1.0, "correct": false, "error": false}
+{"index": 250, "int_label": 0, "ground_truth": "707-320", "raw_prediction": "A330-200", "parsed_prediction": "A330-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 251, "int_label": 3, "ground_truth": "737-300", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 252, "int_label": 46, "ground_truth": "CRJ-900", "raw_prediction": "CRJ-200", "parsed_prediction": "CRJ-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 253, "int_label": 30, "ground_truth": "A340-300", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 254, "int_label": 37, "ground_truth": "BAE 146-200", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 255, "int_label": 10, "ground_truth": "747-100", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 256, "int_label": 76, "ground_truth": "Fokker 100", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 257, "int_label": 79, "ground_truth": "Global Express", "raw_prediction": "CRJ-700", "parsed_prediction": "CRJ-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 258, "int_label": 40, "ground_truth": "Beechcraft 1900", "raw_prediction": "Saab 340", "parsed_prediction": "Saab 340", "confidence": 1.0, "correct": false, "error": false}
+{"index": 259, "int_label": 45, "ground_truth": "CRJ-700", "raw_prediction": "Boeing 717", "parsed_prediction": "Boeing 717", "confidence": 1.0, "correct": false, "error": false}
+{"index": 260, "int_label": 78, "ground_truth": "Fokker 70", "raw_prediction": "BAE 146-300", "parsed_prediction": "BAE 146-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 261, "int_label": 57, "ground_truth": "DH-82", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": false, "error": false}
+{"index": 262, "int_label": 22, "ground_truth": "A310", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 263, "int_label": 78, "ground_truth": "Fokker 70", "raw_prediction": "BAE 146-300", "parsed_prediction": "BAE 146-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 264, "int_label": 70, "ground_truth": "Embraer Legacy 600", "raw_prediction": "Cessna 208", "parsed_prediction": "Cessna 208", "confidence": 1.0, "correct": false, "error": false}
+{"index": 265, "int_label": 88, "ground_truth": "MD-90", "raw_prediction": "A321", "parsed_prediction": "A321", "confidence": 1.0, "correct": false, "error": false}
+{"index": 266, "int_label": 72, "ground_truth": "F-16A/B", "raw_prediction": "F-16A/B", "parsed_prediction": "F-16A/B", "confidence": 1.0, "correct": true, "error": false}
+{"index": 267, "int_label": 95, "ground_truth": "Spitfire", "raw_prediction": "Spitfire", "parsed_prediction": "Spitfire", "confidence": 1.0, "correct": true, "error": false}
+{"index": 268, "int_label": 76, "ground_truth": "Fokker 100", "raw_prediction": "BAE 146-300", "parsed_prediction": "BAE 146-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 269, "int_label": 50, "ground_truth": "Cessna 560", "raw_prediction": "Citation X\n\nWait, I need to look more carefully. This aircraft has a distinctive fuselage shape with windows along the side, twin engines, and the overall configuration. Looking at the specific characteristics visible in the image - the cabin windows, fuselage proportions, and engine placement - this appears to be a Cessna 560.\n\nCessna 560", "parsed_prediction": "Cessna 560", "confidence": 0.95, "correct": true, "error": false}
+{"index": 270, "int_label": 86, "ground_truth": "MD-80", "raw_prediction": "737-400", "parsed_prediction": "737-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 271, "int_label": 45, "ground_truth": "CRJ-700", "raw_prediction": "CRJ-200", "parsed_prediction": "CRJ-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 272, "int_label": 37, "ground_truth": "BAE 146-200", "raw_prediction": "Boeing 717", "parsed_prediction": "Boeing 717", "confidence": 1.0, "correct": false, "error": false}
+{"index": 273, "int_label": 54, "ground_truth": "DC-6", "raw_prediction": "DC-6", "parsed_prediction": "DC-6", "confidence": 1.0, "correct": true, "error": false}
+{"index": 274, "int_label": 27, "ground_truth": "A330-200", "raw_prediction": "777-200", "parsed_prediction": "777-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 275, "int_label": 84, "ground_truth": "L-1011", "raw_prediction": "737-200", "parsed_prediction": "737-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 276, "int_label": 77, "ground_truth": "Fokker 50", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 277, "int_label": 61, "ground_truth": "DHC-8-300", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 278, "int_label": 75, "ground_truth": "Falcon 900", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 279, "int_label": 5, "ground_truth": "737-500", "raw_prediction": "737-500", "parsed_prediction": "737-500", "confidence": 1.0, "correct": true, "error": false}
+{"index": 280, "int_label": 66, "ground_truth": "E-195", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 281, "int_label": 51, "ground_truth": "Challenger 600", "raw_prediction": "BAE 146-200", "parsed_prediction": "BAE 146-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 282, "int_label": 70, "ground_truth": "Embraer Legacy 600", "raw_prediction": "ERJ 145", "parsed_prediction": "ERJ 145", "confidence": 1.0, "correct": false, "error": false}
+{"index": 283, "int_label": 16, "ground_truth": "767-200", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 284, "int_label": 50, "ground_truth": "Cessna 560", "raw_prediction": "Citation X", "parsed_prediction": "Citation X", "confidence": 0.0, "correct": false, "error": false}
+{"index": 285, "int_label": 93, "ground_truth": "Saab 2000", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 286, "int_label": 44, "ground_truth": "CRJ-200", "raw_prediction": "CRJ-200", "parsed_prediction": "CRJ-200", "confidence": 1.0, "correct": true, "error": false}
+{"index": 287, "int_label": 22, "ground_truth": "A310", "raw_prediction": "A330-200", "parsed_prediction": "A330-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 288, "int_label": 6, "ground_truth": "737-600", "raw_prediction": "737-300", "parsed_prediction": "737-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 289, "int_label": 42, "ground_truth": "C-130", "raw_prediction": "C-130", "parsed_prediction": "C-130", "confidence": 1.0, "correct": true, "error": false}
+{"index": 290, "int_label": 81, "ground_truth": "Gulfstream V", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 291, "int_label": 51, "ground_truth": "Challenger 600", "raw_prediction": "CRJ-200", "parsed_prediction": "CRJ-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 292, "int_label": 27, "ground_truth": "A330-200", "raw_prediction": "A330-200", "parsed_prediction": "A330-200", "confidence": 1.0, "correct": true, "error": false}
+{"index": 293, "int_label": 62, "ground_truth": "DR-400", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": false, "error": false}
+{"index": 294, "int_label": 60, "ground_truth": "DHC-8-100", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 295, "int_label": 94, "ground_truth": "Saab 340", "raw_prediction": "Saab 340", "parsed_prediction": "Saab 340", "confidence": 1.0, "correct": true, "error": false}
+{"index": 296, "int_label": 8, "ground_truth": "737-800", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 297, "int_label": 79, "ground_truth": "Global Express", "raw_prediction": "Challenger 600", "parsed_prediction": "Challenger 600", "confidence": 1.0, "correct": false, "error": false}
+{"index": 298, "int_label": 0, "ground_truth": "707-320", "raw_prediction": "747-100", "parsed_prediction": "747-100", "confidence": 1.0, "correct": false, "error": false}
+{"index": 299, "int_label": 35, "ground_truth": "ATR-72", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": true, "error": false}
+{"index": 300, "int_label": 82, "ground_truth": "Hawk T1", "raw_prediction": "Hawk T1", "parsed_prediction": "Hawk T1", "confidence": 1.0, "correct": true, "error": false}
+{"index": 301, "int_label": 11, "ground_truth": "747-200", "raw_prediction": "747-400", "parsed_prediction": "747-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 302, "int_label": 91, "ground_truth": "PA-28", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": false, "error": false}
+{"index": 303, "int_label": 47, "ground_truth": "Cessna 172", "raw_prediction": "Cessna 208", "parsed_prediction": "Cessna 208", "confidence": 1.0, "correct": false, "error": false}
+{"index": 304, "int_label": 33, "ground_truth": "A380", "raw_prediction": "A380", "parsed_prediction": "A380", "confidence": 1.0, "correct": true, "error": false}
+{"index": 305, "int_label": 17, "ground_truth": "767-300", "raw_prediction": "767-300", "parsed_prediction": "767-300", "confidence": 1.0, "correct": true, "error": false}
+{"index": 306, "int_label": 97, "ground_truth": "Tu-134", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 307, "int_label": 46, "ground_truth": "CRJ-900", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 308, "int_label": 21, "ground_truth": "A300B4", "raw_prediction": "A300B4", "parsed_prediction": "A300B4", "confidence": 1.0, "correct": true, "error": false}
+{"index": 309, "int_label": 60, "ground_truth": "DHC-8-100", "raw_prediction": "DHC-8-100", "parsed_prediction": "DHC-8-100", "confidence": 1.0, "correct": true, "error": false}
+{"index": 310, "int_label": 21, "ground_truth": "A300B4", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 311, "int_label": 22, "ground_truth": "A310", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 312, "int_label": 52, "ground_truth": "DC-10", "raw_prediction": "DC-10", "parsed_prediction": "DC-10", "confidence": 1.0, "correct": true, "error": false}
+{"index": 313, "int_label": 58, "ground_truth": "DHC-1", "raw_prediction": "DHC-6", "parsed_prediction": "DHC-6", "confidence": 1.0, "correct": false, "error": false}
+{"index": 314, "int_label": 4, "ground_truth": "737-400", "raw_prediction": "737-400", "parsed_prediction": "737-400", "confidence": 1.0, "correct": true, "error": false}
+{"index": 315, "int_label": 6, "ground_truth": "737-600", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 316, "int_label": 10, "ground_truth": "747-100", "raw_prediction": "A300B4", "parsed_prediction": "A300B4", "confidence": 1.0, "correct": false, "error": false}
+{"index": 317, "int_label": 73, "ground_truth": "F/A-18", "raw_prediction": "F/A-18", "parsed_prediction": "F/A-18", "confidence": 1.0, "correct": true, "error": false}
+{"index": 318, "int_label": 98, "ground_truth": "Tu-154", "raw_prediction": "DC-10", "parsed_prediction": "DC-10", "confidence": 1.0, "correct": false, "error": false}
+{"index": 319, "int_label": 82, "ground_truth": "Hawk T1", "raw_prediction": "Cessna 208", "parsed_prediction": "Cessna 208", "confidence": 1.0, "correct": false, "error": false}
+{"index": 320, "int_label": 45, "ground_truth": "CRJ-700", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 321, "int_label": 76, "ground_truth": "Fokker 100", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 322, "int_label": 73, "ground_truth": "F/A-18", "raw_prediction": "Eurofighter Typhoon", "parsed_prediction": "Eurofighter Typhoon", "confidence": 1.0, "correct": false, "error": false}
+{"index": 323, "int_label": 35, "ground_truth": "ATR-72", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": true, "error": false}
+{"index": 324, "int_label": 84, "ground_truth": "L-1011", "raw_prediction": "747-400", "parsed_prediction": "747-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 325, "int_label": 32, "ground_truth": "A340-600", "raw_prediction": "A340-600", "parsed_prediction": "A340-600", "confidence": 1.0, "correct": true, "error": false}
+{"index": 326, "int_label": 98, "ground_truth": "Tu-154", "raw_prediction": "MD-87", "parsed_prediction": "MD-87", "confidence": 1.0, "correct": false, "error": false}
+{"index": 327, "int_label": 16, "ground_truth": "767-200", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 328, "int_label": 34, "ground_truth": "ATR-42", "raw_prediction": "ATR-42", "parsed_prediction": "ATR-42", "confidence": 1.0, "correct": true, "error": false}
+{"index": 329, "int_label": 23, "ground_truth": "A318", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 330, "int_label": 61, "ground_truth": "DHC-8-300", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": true, "error": false}
+{"index": 331, "int_label": 29, "ground_truth": "A340-200", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 332, "int_label": 76, "ground_truth": "Fokker 100", "raw_prediction": "737-400", "parsed_prediction": "737-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 333, "int_label": 89, "ground_truth": "Metroliner", "raw_prediction": "Boeing 737-200", "parsed_prediction": "737-200", "confidence": 0.95, "correct": false, "error": false}
+{"index": 334, "int_label": 60, "ground_truth": "DHC-8-100", "raw_prediction": "DHC-6", "parsed_prediction": "DHC-6", "confidence": 1.0, "correct": false, "error": false}
+{"index": 335, "int_label": 88, "ground_truth": "MD-90", "raw_prediction": "CRJ-700", "parsed_prediction": "CRJ-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 336, "int_label": 62, "ground_truth": "DR-400", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": false, "error": false}
+{"index": 337, "int_label": 35, "ground_truth": "ATR-72", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 338, "int_label": 84, "ground_truth": "L-1011", "raw_prediction": "DC-10", "parsed_prediction": "DC-10", "confidence": 1.0, "correct": false, "error": false}
+{"index": 339, "int_label": 71, "ground_truth": "Eurofighter Typhoon", "raw_prediction": "Eurofighter Typhoon", "parsed_prediction": "Eurofighter Typhoon", "confidence": 1.0, "correct": true, "error": false}
+{"index": 340, "int_label": 4, "ground_truth": "737-400", "raw_prediction": "737-300", "parsed_prediction": "737-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 341, "int_label": 83, "ground_truth": "Il-76", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 342, "int_label": 48, "ground_truth": "Cessna 208", "raw_prediction": "Cessna 208", "parsed_prediction": "Cessna 208", "confidence": 1.0, "correct": true, "error": false}
+{"index": 343, "int_label": 20, "ground_truth": "777-300", "raw_prediction": "777-300", "parsed_prediction": "777-300", "confidence": 1.0, "correct": true, "error": false}
+{"index": 344, "int_label": 5, "ground_truth": "737-500", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 345, "int_label": 7, "ground_truth": "737-700", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": true, "error": false}
+{"index": 346, "int_label": 26, "ground_truth": "A321", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 347, "int_label": 90, "ground_truth": "Model B200", "raw_prediction": "DHC-8-100", "parsed_prediction": "DHC-8-100", "confidence": 1.0, "correct": false, "error": false}
+{"index": 348, "int_label": 41, "ground_truth": "Boeing 717", "raw_prediction": "737-300", "parsed_prediction": "737-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 349, "int_label": 82, "ground_truth": "Hawk T1", "raw_prediction": "T-37", "parsed_prediction": "ATR-72", "confidence": 0.6, "correct": false, "error": false}
+{"index": 350, "int_label": 82, "ground_truth": "Hawk T1", "raw_prediction": "Hawk T1", "parsed_prediction": "Hawk T1", "confidence": 1.0, "correct": true, "error": false}
+{"index": 351, "int_label": 62, "ground_truth": "DR-400", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": false, "error": false}
+{"index": 352, "int_label": 20, "ground_truth": "777-300", "raw_prediction": "777-300", "parsed_prediction": "777-300", "confidence": 1.0, "correct": true, "error": false}
+{"index": 353, "int_label": 56, "ground_truth": "DC-9-30", "raw_prediction": "DC-9-30", "parsed_prediction": "DC-9-30", "confidence": 1.0, "correct": true, "error": false}
+{"index": 354, "int_label": 98, "ground_truth": "Tu-154", "raw_prediction": "727-200", "parsed_prediction": "727-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 355, "int_label": 69, "ground_truth": "ERJ 145", "raw_prediction": "BAE 146-300", "parsed_prediction": "BAE 146-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 356, "int_label": 75, "ground_truth": "Falcon 900", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 357, "int_label": 45, "ground_truth": "CRJ-700", "raw_prediction": "CRJ-200", "parsed_prediction": "CRJ-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 358, "int_label": 52, "ground_truth": "DC-10", "raw_prediction": "DC-10", "parsed_prediction": "DC-10", "confidence": 1.0, "correct": true, "error": false}
+{"index": 359, "int_label": 86, "ground_truth": "MD-80", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 360, "int_label": 53, "ground_truth": "DC-3", "raw_prediction": "737-300", "parsed_prediction": "737-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 361, "int_label": 5, "ground_truth": "737-500", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 362, "int_label": 64, "ground_truth": "E-170", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 363, "int_label": 24, "ground_truth": "A319", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 364, "int_label": 17, "ground_truth": "767-300", "raw_prediction": "767-200", "parsed_prediction": "767-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 365, "int_label": 60, "ground_truth": "DHC-8-100", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 366, "int_label": 48, "ground_truth": "Cessna 208", "raw_prediction": "Cessna 208", "parsed_prediction": "Cessna 208", "confidence": 1.0, "correct": true, "error": false}
+{"index": 367, "int_label": 63, "ground_truth": "Dornier 328", "raw_prediction": "DHC-6", "parsed_prediction": "DHC-6", "confidence": 1.0, "correct": false, "error": false}
+{"index": 368, "int_label": 28, "ground_truth": "A330-300", "raw_prediction": "767-300", "parsed_prediction": "767-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 369, "int_label": 4, "ground_truth": "737-400", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 370, "int_label": 67, "ground_truth": "EMB-120", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 371, "int_label": 69, "ground_truth": "ERJ 145", "raw_prediction": "CRJ-200", "parsed_prediction": "CRJ-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 372, "int_label": 13, "ground_truth": "747-400", "raw_prediction": "747-400", "parsed_prediction": "747-400", "confidence": 1.0, "correct": true, "error": false}
+{"index": 373, "int_label": 81, "ground_truth": "Gulfstream V", "raw_prediction": "Gulfstream V", "parsed_prediction": "Gulfstream V", "confidence": 1.0, "correct": true, "error": false}
+{"index": 374, "int_label": 19, "ground_truth": "777-200", "raw_prediction": "737-400", "parsed_prediction": "737-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 375, "int_label": 96, "ground_truth": "Tornado", "raw_prediction": "Hawk T1", "parsed_prediction": "Hawk T1", "confidence": 1.0, "correct": false, "error": false}
+{"index": 376, "int_label": 22, "ground_truth": "A310", "raw_prediction": "A330-200", "parsed_prediction": "A330-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 377, "int_label": 68, "ground_truth": "ERJ 135", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 378, "int_label": 67, "ground_truth": "EMB-120", "raw_prediction": "A380", "parsed_prediction": "A380", "confidence": 1.0, "correct": false, "error": false}
+{"index": 379, "int_label": 63, "ground_truth": "Dornier 328", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 380, "int_label": 55, "ground_truth": "DC-8", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 381, "int_label": 63, "ground_truth": "Dornier 328", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 382, "int_label": 98, "ground_truth": "Tu-154", "raw_prediction": "DC-9-30", "parsed_prediction": "DC-9-30", "confidence": 1.0, "correct": false, "error": false}
+{"index": 383, "int_label": 74, "ground_truth": "Falcon 2000", "raw_prediction": "JetBlue Airways Airbus A320 in flight with landing gear down, photographed against a blue sky background.\n\nLooking at the aircraft features:\n- Twin-engine jet\n- Medium-sized narrow-body aircraft\n- Fuselage shape and proportions\n- Engine configuration\n- Tail design\n\nThis is an **A320**", "parsed_prediction": "A320", "confidence": 0.95, "correct": false, "error": false}
+{"index": 384, "int_label": 22, "ground_truth": "A310", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 385, "int_label": 15, "ground_truth": "757-300", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 386, "int_label": 83, "ground_truth": "Il-76", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 387, "int_label": 10, "ground_truth": "747-100", "raw_prediction": "747-100", "parsed_prediction": "747-100", "confidence": 1.0, "correct": true, "error": false}
+{"index": 388, "int_label": 3, "ground_truth": "737-300", "raw_prediction": "737-300", "parsed_prediction": "737-300", "confidence": 1.0, "correct": true, "error": false}
+{"index": 389, "int_label": 90, "ground_truth": "Model B200", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 390, "int_label": 15, "ground_truth": "757-300", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 391, "int_label": 8, "ground_truth": "737-800", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": true, "error": false}
+{"index": 392, "int_label": 46, "ground_truth": "CRJ-900", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 393, "int_label": 46, "ground_truth": "CRJ-900", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 394, "int_label": 67, "ground_truth": "EMB-120", "raw_prediction": "EMB-120", "parsed_prediction": "EMB-120", "confidence": 1.0, "correct": true, "error": false}
+{"index": 395, "int_label": 71, "ground_truth": "Eurofighter Typhoon", "raw_prediction": "Eurofighter Typhoon", "parsed_prediction": "Eurofighter Typhoon", "confidence": 1.0, "correct": true, "error": false}
+{"index": 396, "int_label": 40, "ground_truth": "Beechcraft 1900", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 397, "int_label": 19, "ground_truth": "777-200", "raw_prediction": "767-200", "parsed_prediction": "767-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 398, "int_label": 34, "ground_truth": "ATR-42", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 399, "int_label": 84, "ground_truth": "L-1011", "raw_prediction": "DC-10", "parsed_prediction": "DC-10", "confidence": 1.0, "correct": false, "error": false}
+{"index": 400, "int_label": 40, "ground_truth": "Beechcraft 1900", "raw_prediction": "DHC-6", "parsed_prediction": "DHC-6", "confidence": 1.0, "correct": false, "error": false}
+{"index": 401, "int_label": 48, "ground_truth": "Cessna 208", "raw_prediction": "DHC-6", "parsed_prediction": "DHC-6", "confidence": 1.0, "correct": false, "error": false}
+{"index": 402, "int_label": 85, "ground_truth": "MD-11", "raw_prediction": "MD-11", "parsed_prediction": "MD-11", "confidence": 1.0, "correct": true, "error": false}
+{"index": 403, "int_label": 77, "ground_truth": "Fokker 50", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 404, "int_label": 35, "ground_truth": "ATR-72", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": true, "error": false}
+{"index": 405, "int_label": 14, "ground_truth": "757-200", "raw_prediction": "A321", "parsed_prediction": "A321", "confidence": 1.0, "correct": false, "error": false}
+{"index": 406, "int_label": 18, "ground_truth": "767-400", "raw_prediction": "767-300", "parsed_prediction": "767-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 407, "int_label": 11, "ground_truth": "747-200", "raw_prediction": "A300B4", "parsed_prediction": "A300B4", "confidence": 1.0, "correct": false, "error": false}
+{"index": 408, "int_label": 41, "ground_truth": "Boeing 717", "raw_prediction": "737-300", "parsed_prediction": "737-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 409, "int_label": 69, "ground_truth": "ERJ 145", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 410, "int_label": 77, "ground_truth": "Fokker 50", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 411, "int_label": 43, "ground_truth": "C-47", "raw_prediction": "DC-3", "parsed_prediction": "DC-3", "confidence": 1.0, "correct": false, "error": false}
+{"index": 412, "int_label": 46, "ground_truth": "CRJ-900", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 413, "int_label": 75, "ground_truth": "Falcon 900", "raw_prediction": "A340-300", "parsed_prediction": "A340-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 414, "int_label": 76, "ground_truth": "Fokker 100", "raw_prediction": "717-300", "parsed_prediction": "737-300", "confidence": 0.8571428571428571, "correct": false, "error": false}
+{"index": 415, "int_label": 38, "ground_truth": "BAE 146-300", "raw_prediction": "BAE 146-300", "parsed_prediction": "BAE 146-300", "confidence": 1.0, "correct": true, "error": false}
+{"index": 416, "int_label": 24, "ground_truth": "A319", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 417, "int_label": 40, "ground_truth": "Beechcraft 1900", "raw_prediction": "ERJ 145", "parsed_prediction": "ERJ 145", "confidence": 1.0, "correct": false, "error": false}
+{"index": 418, "int_label": 25, "ground_truth": "A320", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": true, "error": false}
+{"index": 419, "int_label": 24, "ground_truth": "A319", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 420, "int_label": 52, "ground_truth": "DC-10", "raw_prediction": "DC-10", "parsed_prediction": "DC-10", "confidence": 1.0, "correct": true, "error": false}
+{"index": 421, "int_label": 49, "ground_truth": "Cessna 525", "raw_prediction": "Cessna 208", "parsed_prediction": "Cessna 208", "confidence": 1.0, "correct": false, "error": false}
+{"index": 422, "int_label": 16, "ground_truth": "767-200", "raw_prediction": "767-300", "parsed_prediction": "767-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 423, "int_label": 97, "ground_truth": "Tu-134", "raw_prediction": "ERJ 145", "parsed_prediction": "ERJ 145", "confidence": 1.0, "correct": false, "error": false}
+{"index": 424, "int_label": 29, "ground_truth": "A340-200", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 425, "int_label": 86, "ground_truth": "MD-80", "raw_prediction": "MD-90", "parsed_prediction": "MD-90", "confidence": 1.0, "correct": false, "error": false}
+{"index": 426, "int_label": 32, "ground_truth": "A340-600", "raw_prediction": "A340-600", "parsed_prediction": "A340-600", "confidence": 1.0, "correct": true, "error": false}
+{"index": 427, "int_label": 35, "ground_truth": "ATR-72", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": true, "error": false}
+{"index": 428, "int_label": 52, "ground_truth": "DC-10", "raw_prediction": "DC-10", "parsed_prediction": "DC-10", "confidence": 1.0, "correct": true, "error": false}
+{"index": 429, "int_label": 96, "ground_truth": "Tornado", "raw_prediction": "Tornado", "parsed_prediction": "Tornado", "confidence": 1.0, "correct": true, "error": false}
+{"index": 430, "int_label": 91, "ground_truth": "PA-28", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": false, "error": false}
+{"index": 431, "int_label": 91, "ground_truth": "PA-28", "raw_prediction": "Cessna 208", "parsed_prediction": "Cessna 208", "confidence": 1.0, "correct": false, "error": false}
+{"index": 432, "int_label": 89, "ground_truth": "Metroliner", "raw_prediction": "Saab 340", "parsed_prediction": "Saab 340", "confidence": 1.0, "correct": false, "error": false}
+{"index": 433, "int_label": 28, "ground_truth": "A330-300", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": true, "error": false}
+{"index": 434, "int_label": 34, "ground_truth": "ATR-42", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 435, "int_label": 92, "ground_truth": "SR-20", "raw_prediction": "Cessna 208", "parsed_prediction": "Cessna 208", "confidence": 1.0, "correct": false, "error": false}
+{"index": 436, "int_label": 4, "ground_truth": "737-400", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 437, "int_label": 51, "ground_truth": "Challenger 600", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 438, "int_label": 27, "ground_truth": "A330-200", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 439, "int_label": 41, "ground_truth": "Boeing 717", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 440, "int_label": 3, "ground_truth": "737-300", "raw_prediction": "737-300", "parsed_prediction": "737-300", "confidence": 1.0, "correct": true, "error": false}
+{"index": 441, "int_label": 74, "ground_truth": "Falcon 2000", "raw_prediction": "Falcon 900", "parsed_prediction": "Falcon 900", "confidence": 1.0, "correct": false, "error": false}
+{"index": 442, "int_label": 68, "ground_truth": "ERJ 135", "raw_prediction": "717", "parsed_prediction": "717", "confidence": 0.0, "correct": false, "error": false}
+{"index": 443, "int_label": 57, "ground_truth": "DH-82", "raw_prediction": "Hawk T1", "parsed_prediction": "Hawk T1", "confidence": 1.0, "correct": false, "error": false}
+{"index": 444, "int_label": 52, "ground_truth": "DC-10", "raw_prediction": "747-400", "parsed_prediction": "747-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 445, "int_label": 39, "ground_truth": "BAE-125", "raw_prediction": "Citation X", "parsed_prediction": "Citation X", "confidence": 0.0, "correct": false, "error": false}
+{"index": 446, "int_label": 2, "ground_truth": "737-200", "raw_prediction": "737-300", "parsed_prediction": "737-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 447, "int_label": 99, "ground_truth": "Yak-42", "raw_prediction": "727-200", "parsed_prediction": "727-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 448, "int_label": 78, "ground_truth": "Fokker 70", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 449, "int_label": 17, "ground_truth": "767-300", "raw_prediction": "767-300", "parsed_prediction": "767-300", "confidence": 1.0, "correct": true, "error": false}
+{"index": 450, "int_label": 86, "ground_truth": "MD-80", "raw_prediction": "CRJ-200", "parsed_prediction": "CRJ-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 451, "int_label": 9, "ground_truth": "737-900", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 452, "int_label": 86, "ground_truth": "MD-80", "raw_prediction": "Fokker 70", "parsed_prediction": "Fokker 70", "confidence": 1.0, "correct": false, "error": false}
+{"index": 453, "int_label": 67, "ground_truth": "EMB-120", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 454, "int_label": 54, "ground_truth": "DC-6", "raw_prediction": "DC-6", "parsed_prediction": "DC-6", "confidence": 1.0, "correct": true, "error": false}
+{"index": 455, "int_label": 23, "ground_truth": "A318", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 456, "int_label": 67, "ground_truth": "EMB-120", "raw_prediction": "DHC-8-100", "parsed_prediction": "DHC-8-100", "confidence": 1.0, "correct": false, "error": false}
+{"index": 457, "int_label": 26, "ground_truth": "A321", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 458, "int_label": 69, "ground_truth": "ERJ 145", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 459, "int_label": 6, "ground_truth": "737-600", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 460, "int_label": 82, "ground_truth": "Hawk T1", "raw_prediction": "Hawk T1", "parsed_prediction": "Hawk T1", "confidence": 1.0, "correct": true, "error": false}
+{"index": 461, "int_label": 78, "ground_truth": "Fokker 70", "raw_prediction": "Fokker 70", "parsed_prediction": "Fokker 70", "confidence": 1.0, "correct": true, "error": false}
+{"index": 462, "int_label": 3, "ground_truth": "737-300", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 463, "int_label": 59, "ground_truth": "DHC-6", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 464, "int_label": 69, "ground_truth": "ERJ 145", "raw_prediction": "ERJ 145", "parsed_prediction": "ERJ 145", "confidence": 1.0, "correct": true, "error": false}
+{"index": 465, "int_label": 54, "ground_truth": "DC-6", "raw_prediction": "DC-6", "parsed_prediction": "DC-6", "confidence": 1.0, "correct": true, "error": false}
+{"index": 466, "int_label": 37, "ground_truth": "BAE 146-200", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 467, "int_label": 45, "ground_truth": "CRJ-700", "raw_prediction": "CRJ-200", "parsed_prediction": "CRJ-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 468, "int_label": 68, "ground_truth": "ERJ 135", "raw_prediction": "DHC-8-100", "parsed_prediction": "DHC-8-100", "confidence": 1.0, "correct": false, "error": false}
+{"index": 469, "int_label": 96, "ground_truth": "Tornado", "raw_prediction": "Eurofighter Typhoon", "parsed_prediction": "Eurofighter Typhoon", "confidence": 1.0, "correct": false, "error": false}
+{"index": 470, "int_label": 83, "ground_truth": "Il-76", "raw_prediction": "Il-76", "parsed_prediction": "Il-76", "confidence": 1.0, "correct": true, "error": false}
+{"index": 471, "int_label": 41, "ground_truth": "Boeing 717", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 472, "int_label": 19, "ground_truth": "777-200", "raw_prediction": "767-300", "parsed_prediction": "767-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 473, "int_label": 60, "ground_truth": "DHC-8-100", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 474, "int_label": 24, "ground_truth": "A319", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 475, "int_label": 25, "ground_truth": "A320", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 476, "int_label": 79, "ground_truth": "Global Express", "raw_prediction": "DC-9-30", "parsed_prediction": "DC-9-30", "confidence": 1.0, "correct": false, "error": false}
+{"index": 477, "int_label": 97, "ground_truth": "Tu-134", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 478, "int_label": 83, "ground_truth": "Il-76", "raw_prediction": "DHC-6", "parsed_prediction": "DHC-6", "confidence": 1.0, "correct": false, "error": false}
+{"index": 479, "int_label": 81, "ground_truth": "Gulfstream V", "raw_prediction": "Cessna 560", "parsed_prediction": "Cessna 560", "confidence": 1.0, "correct": false, "error": false}
+{"index": 480, "int_label": 48, "ground_truth": "Cessna 208", "raw_prediction": "Cessna 208", "parsed_prediction": "Cessna 208", "confidence": 1.0, "correct": true, "error": false}
+{"index": 481, "int_label": 38, "ground_truth": "BAE 146-300", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 482, "int_label": 15, "ground_truth": "757-300", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 483, "int_label": 20, "ground_truth": "777-300", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 484, "int_label": 46, "ground_truth": "CRJ-900", "raw_prediction": "CRJ-200", "parsed_prediction": "CRJ-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 485, "int_label": 61, "ground_truth": "DHC-8-300", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": true, "error": false}
+{"index": 486, "int_label": 95, "ground_truth": "Spitfire", "raw_prediction": "Avro Lancaster\n\nI apologize - that class is not in the provided list. Based on the available classes and the appearance of this WWII-era fighter aircraft with elliptical wings and RAF markings, the closest match would be:\n\nSpitfire", "parsed_prediction": "Spitfire", "confidence": 0.95, "correct": true, "error": false}
+{"index": 487, "int_label": 30, "ground_truth": "A340-300", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 488, "int_label": 28, "ground_truth": "A330-300", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 489, "int_label": 81, "ground_truth": "Gulfstream V", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 490, "int_label": 80, "ground_truth": "Gulfstream IV", "raw_prediction": "Cessna 560", "parsed_prediction": "Cessna 560", "confidence": 1.0, "correct": false, "error": false}
+{"index": 491, "int_label": 99, "ground_truth": "Yak-42", "raw_prediction": "737-300", "parsed_prediction": "737-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 492, "int_label": 68, "ground_truth": "ERJ 135", "raw_prediction": "ERJ 145", "parsed_prediction": "ERJ 145", "confidence": 1.0, "correct": false, "error": false}
+{"index": 493, "int_label": 66, "ground_truth": "E-195", "raw_prediction": "E-190", "parsed_prediction": "E-190", "confidence": 1.0, "correct": false, "error": false}
+{"index": 494, "int_label": 83, "ground_truth": "Il-76", "raw_prediction": "An-12", "parsed_prediction": "An-12", "confidence": 1.0, "correct": false, "error": false}
+{"index": 495, "int_label": 87, "ground_truth": "MD-87", "raw_prediction": "MD-87", "parsed_prediction": "MD-87", "confidence": 1.0, "correct": true, "error": false}
+{"index": 496, "int_label": 39, "ground_truth": "BAE-125", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 497, "int_label": 6, "ground_truth": "737-600", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 498, "int_label": 47, "ground_truth": "Cessna 172", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": true, "error": false}
+{"index": 499, "int_label": 8, "ground_truth": "737-800", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 500, "int_label": 80, "ground_truth": "Gulfstream IV", "raw_prediction": "Cessna 560", "parsed_prediction": "Cessna 560", "confidence": 1.0, "correct": false, "error": false}
+{"index": 501, "int_label": 51, "ground_truth": "Challenger 600", "raw_prediction": "CRJ-200", "parsed_prediction": "CRJ-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 502, "int_label": 56, "ground_truth": "DC-9-30", "raw_prediction": "DC-9-30", "parsed_prediction": "DC-9-30", "confidence": 1.0, "correct": true, "error": false}
+{"index": 503, "int_label": 80, "ground_truth": "Gulfstream IV", "raw_prediction": "BAE 146-300", "parsed_prediction": "BAE 146-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 504, "int_label": 27, "ground_truth": "A330-200", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 505, "int_label": 92, "ground_truth": "SR-20", "raw_prediction": "Cessna 208", "parsed_prediction": "Cessna 208", "confidence": 1.0, "correct": false, "error": false}
+{"index": 506, "int_label": 36, "ground_truth": "An-12", "raw_prediction": "C-130", "parsed_prediction": "C-130", "confidence": 1.0, "correct": false, "error": false}
+{"index": 507, "int_label": 47, "ground_truth": "Cessna 172", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": true, "error": false}
+{"index": 508, "int_label": 41, "ground_truth": "Boeing 717", "raw_prediction": "Fokker 70", "parsed_prediction": "Fokker 70", "confidence": 1.0, "correct": false, "error": false}
+{"index": 509, "int_label": 13, "ground_truth": "747-400", "raw_prediction": "A340-300", "parsed_prediction": "A340-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 510, "int_label": 93, "ground_truth": "Saab 2000", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 511, "int_label": 45, "ground_truth": "CRJ-700", "raw_prediction": "CRJ-900", "parsed_prediction": "CRJ-900", "confidence": 1.0, "correct": false, "error": false}
+{"index": 512, "int_label": 67, "ground_truth": "EMB-120", "raw_prediction": "737-500", "parsed_prediction": "737-500", "confidence": 1.0, "correct": false, "error": false}
+{"index": 513, "int_label": 30, "ground_truth": "A340-300", "raw_prediction": "A340-300", "parsed_prediction": "A340-300", "confidence": 1.0, "correct": true, "error": false}
+{"index": 514, "int_label": 36, "ground_truth": "An-12", "raw_prediction": "C-130", "parsed_prediction": "C-130", "confidence": 1.0, "correct": false, "error": false}
+{"index": 515, "int_label": 13, "ground_truth": "747-400", "raw_prediction": "747-400", "parsed_prediction": "747-400", "confidence": 1.0, "correct": true, "error": false}
+{"index": 516, "int_label": 4, "ground_truth": "737-400", "raw_prediction": "737-300", "parsed_prediction": "737-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 517, "int_label": 33, "ground_truth": "A380", "raw_prediction": "A380", "parsed_prediction": "A380", "confidence": 1.0, "correct": true, "error": false}
+{"index": 518, "int_label": 41, "ground_truth": "Boeing 717", "raw_prediction": "717-200", "parsed_prediction": "727-200", "confidence": 0.8571428571428571, "correct": false, "error": false}
+{"index": 519, "int_label": 97, "ground_truth": "Tu-134", "raw_prediction": "727-200", "parsed_prediction": "727-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 520, "int_label": 36, "ground_truth": "An-12", "raw_prediction": "C-130", "parsed_prediction": "C-130", "confidence": 1.0, "correct": false, "error": false}
+{"index": 521, "int_label": 32, "ground_truth": "A340-600", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 522, "int_label": 46, "ground_truth": "CRJ-900", "raw_prediction": "CRJ-900", "parsed_prediction": "CRJ-900", "confidence": 1.0, "correct": true, "error": false}
+{"index": 523, "int_label": 95, "ground_truth": "Spitfire", "raw_prediction": "Spitfire", "parsed_prediction": "Spitfire", "confidence": 1.0, "correct": true, "error": false}
+{"index": 524, "int_label": 2, "ground_truth": "737-200", "raw_prediction": "737-300", "parsed_prediction": "737-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 525, "int_label": 32, "ground_truth": "A340-600", "raw_prediction": "A340-600", "parsed_prediction": "A340-600", "confidence": 1.0, "correct": true, "error": false}
+{"index": 526, "int_label": 74, "ground_truth": "Falcon 2000", "raw_prediction": "Saab 2000", "parsed_prediction": "Saab 2000", "confidence": 1.0, "correct": false, "error": false}
+{"index": 527, "int_label": 52, "ground_truth": "DC-10", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 528, "int_label": 89, "ground_truth": "Metroliner", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 529, "int_label": 89, "ground_truth": "Metroliner", "raw_prediction": "ERJ 145", "parsed_prediction": "ERJ 145", "confidence": 1.0, "correct": false, "error": false}
+{"index": 530, "int_label": 14, "ground_truth": "757-200", "raw_prediction": "767-200", "parsed_prediction": "767-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 531, "int_label": 33, "ground_truth": "A380", "raw_prediction": "A380", "parsed_prediction": "A380", "confidence": 1.0, "correct": true, "error": false}
+{"index": 532, "int_label": 7, "ground_truth": "737-700", "raw_prediction": "737-300", "parsed_prediction": "737-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 533, "int_label": 85, "ground_truth": "MD-11", "raw_prediction": "MD-11", "parsed_prediction": "MD-11", "confidence": 1.0, "correct": true, "error": false}
+{"index": 534, "int_label": 65, "ground_truth": "E-190", "raw_prediction": "E-190", "parsed_prediction": "E-190", "confidence": 1.0, "correct": true, "error": false}
+{"index": 535, "int_label": 25, "ground_truth": "A320", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 536, "int_label": 98, "ground_truth": "Tu-154", "raw_prediction": "727-200", "parsed_prediction": "727-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 537, "int_label": 73, "ground_truth": "F/A-18", "raw_prediction": "F/A-18", "parsed_prediction": "F/A-18", "confidence": 1.0, "correct": true, "error": false}
+{"index": 538, "int_label": 74, "ground_truth": "Falcon 2000", "raw_prediction": "Saab 2000", "parsed_prediction": "Saab 2000", "confidence": 1.0, "correct": false, "error": false}
+{"index": 539, "int_label": 2, "ground_truth": "737-200", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 540, "int_label": 69, "ground_truth": "ERJ 145", "raw_prediction": "CRJ-900", "parsed_prediction": "CRJ-900", "confidence": 1.0, "correct": false, "error": false}
+{"index": 541, "int_label": 40, "ground_truth": "Beechcraft 1900", "raw_prediction": "Cessna 208", "parsed_prediction": "Cessna 208", "confidence": 1.0, "correct": false, "error": false}
+{"index": 542, "int_label": 39, "ground_truth": "BAE-125", "raw_prediction": "Cessna 560", "parsed_prediction": "Cessna 560", "confidence": 1.0, "correct": false, "error": false}
+{"index": 543, "int_label": 5, "ground_truth": "737-500", "raw_prediction": "737-400", "parsed_prediction": "737-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 544, "int_label": 51, "ground_truth": "Challenger 600", "raw_prediction": "DC-10", "parsed_prediction": "DC-10", "confidence": 1.0, "correct": false, "error": false}
+{"index": 545, "int_label": 83, "ground_truth": "Il-76", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 546, "int_label": 70, "ground_truth": "Embraer Legacy 600", "raw_prediction": "E-190", "parsed_prediction": "E-190", "confidence": 1.0, "correct": false, "error": false}
+{"index": 547, "int_label": 41, "ground_truth": "Boeing 717", "raw_prediction": "717-200", "parsed_prediction": "727-200", "confidence": 0.8571428571428571, "correct": false, "error": false}
+{"index": 548, "int_label": 66, "ground_truth": "E-195", "raw_prediction": "E-190", "parsed_prediction": "E-190", "confidence": 1.0, "correct": false, "error": false}
+{"index": 549, "int_label": 61, "ground_truth": "DHC-8-300", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": true, "error": false}
+{"index": 550, "int_label": 48, "ground_truth": "Cessna 208", "raw_prediction": "Cessna 208", "parsed_prediction": "Cessna 208", "confidence": 1.0, "correct": true, "error": false}
+{"index": 551, "int_label": 14, "ground_truth": "757-200", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 552, "int_label": 63, "ground_truth": "Dornier 328", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 553, "int_label": 93, "ground_truth": "Saab 2000", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 554, "int_label": 58, "ground_truth": "DHC-1", "raw_prediction": "DHC-1", "parsed_prediction": "DHC-1", "confidence": 1.0, "correct": true, "error": false}
+{"index": 555, "int_label": 55, "ground_truth": "DC-8", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 556, "int_label": 72, "ground_truth": "F-16A/B", "raw_prediction": "Eurofighter Typhoon", "parsed_prediction": "Eurofighter Typhoon", "confidence": 1.0, "correct": false, "error": false}
+{"index": 557, "int_label": 59, "ground_truth": "DHC-6", "raw_prediction": "DHC-6", "parsed_prediction": "DHC-6", "confidence": 1.0, "correct": true, "error": false}
+{"index": 558, "int_label": 28, "ground_truth": "A330-300", "raw_prediction": "A340-300", "parsed_prediction": "A340-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 559, "int_label": 20, "ground_truth": "777-300", "raw_prediction": "767-300", "parsed_prediction": "767-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 560, "int_label": 28, "ground_truth": "A330-300", "raw_prediction": "A330-200", "parsed_prediction": "A330-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 561, "int_label": 50, "ground_truth": "Cessna 560", "raw_prediction": "Cessna 560", "parsed_prediction": "Cessna 560", "confidence": 1.0, "correct": true, "error": false}
+{"index": 562, "int_label": 79, "ground_truth": "Global Express", "raw_prediction": "727-200", "parsed_prediction": "727-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 563, "int_label": 20, "ground_truth": "777-300", "raw_prediction": "787-200", "parsed_prediction": "727-200", "confidence": 0.8571428571428571, "correct": false, "error": false}
+{"index": 564, "int_label": 57, "ground_truth": "DH-82", "raw_prediction": "DH-82", "parsed_prediction": "DH-82", "confidence": 1.0, "correct": true, "error": false}
+{"index": 565, "int_label": 29, "ground_truth": "A340-200", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 566, "int_label": 6, "ground_truth": "737-600", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 567, "int_label": 80, "ground_truth": "Gulfstream IV", "raw_prediction": "Gulfstream IV", "parsed_prediction": "Gulfstream IV", "confidence": 1.0, "correct": true, "error": false}
+{"index": 568, "int_label": 98, "ground_truth": "Tu-154", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 569, "int_label": 99, "ground_truth": "Yak-42", "raw_prediction": "BAE 146-300", "parsed_prediction": "BAE 146-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 570, "int_label": 32, "ground_truth": "A340-600", "raw_prediction": "A340-300", "parsed_prediction": "A340-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 571, "int_label": 50, "ground_truth": "Cessna 560", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 572, "int_label": 13, "ground_truth": "747-400", "raw_prediction": "A340-600", "parsed_prediction": "A340-600", "confidence": 1.0, "correct": false, "error": false}
+{"index": 573, "int_label": 0, "ground_truth": "707-320", "raw_prediction": "DC-8", "parsed_prediction": "DC-8", "confidence": 1.0, "correct": false, "error": false}
+{"index": 574, "int_label": 77, "ground_truth": "Fokker 50", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 575, "int_label": 36, "ground_truth": "An-12", "raw_prediction": "C-130", "parsed_prediction": "C-130", "confidence": 1.0, "correct": false, "error": false}
+{"index": 576, "int_label": 31, "ground_truth": "A340-500", "raw_prediction": "A330-200", "parsed_prediction": "A330-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 577, "int_label": 64, "ground_truth": "E-170", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 578, "int_label": 71, "ground_truth": "Eurofighter Typhoon", "raw_prediction": "Eurofighter Typhoon", "parsed_prediction": "Eurofighter Typhoon", "confidence": 1.0, "correct": true, "error": false}
+{"index": 579, "int_label": 79, "ground_truth": "Global Express", "raw_prediction": "CRJ-200", "parsed_prediction": "CRJ-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 580, "int_label": 83, "ground_truth": "Il-76", "raw_prediction": "An-12", "parsed_prediction": "An-12", "confidence": 1.0, "correct": false, "error": false}
+{"index": 581, "int_label": 94, "ground_truth": "Saab 340", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 582, "int_label": 12, "ground_truth": "747-300", "raw_prediction": "A300B4", "parsed_prediction": "A300B4", "confidence": 1.0, "correct": false, "error": false}
+{"index": 583, "int_label": 13, "ground_truth": "747-400", "raw_prediction": "747-400", "parsed_prediction": "747-400", "confidence": 1.0, "correct": true, "error": false}
+{"index": 584, "int_label": 61, "ground_truth": "DHC-8-300", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 585, "int_label": 1, "ground_truth": "727-200", "raw_prediction": "DC-9-30", "parsed_prediction": "DC-9-30", "confidence": 1.0, "correct": false, "error": false}
+{"index": 586, "int_label": 73, "ground_truth": "F/A-18", "raw_prediction": "F/A-18", "parsed_prediction": "F/A-18", "confidence": 1.0, "correct": true, "error": false}
+{"index": 587, "int_label": 95, "ground_truth": "Spitfire", "raw_prediction": "Avro Lancaster", "parsed_prediction": "Avro Lancaster", "confidence": 0.0, "correct": false, "error": false}
+{"index": 588, "int_label": 78, "ground_truth": "Fokker 70", "raw_prediction": "747-400", "parsed_prediction": "747-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 589, "int_label": 13, "ground_truth": "747-400", "raw_prediction": "747-400", "parsed_prediction": "747-400", "confidence": 1.0, "correct": true, "error": false}
+{"index": 590, "int_label": 50, "ground_truth": "Cessna 560", "raw_prediction": "Cessna 560", "parsed_prediction": "Cessna 560", "confidence": 1.0, "correct": true, "error": false}
+{"index": 591, "int_label": 97, "ground_truth": "Tu-134", "raw_prediction": "ERJ 145", "parsed_prediction": "ERJ 145", "confidence": 1.0, "correct": false, "error": false}
+{"index": 592, "int_label": 84, "ground_truth": "L-1011", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 593, "int_label": 58, "ground_truth": "DHC-1", "raw_prediction": "DHC-6", "parsed_prediction": "DHC-6", "confidence": 1.0, "correct": false, "error": false}
+{"index": 594, "int_label": 18, "ground_truth": "767-400", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 595, "int_label": 56, "ground_truth": "DC-9-30", "raw_prediction": "MD-80", "parsed_prediction": "MD-80", "confidence": 1.0, "correct": false, "error": false}
+{"index": 596, "int_label": 65, "ground_truth": "E-190", "raw_prediction": "E-190", "parsed_prediction": "E-190", "confidence": 1.0, "correct": true, "error": false}
+{"index": 597, "int_label": 1, "ground_truth": "727-200", "raw_prediction": "DC-9-30", "parsed_prediction": "DC-9-30", "confidence": 1.0, "correct": false, "error": false}
+{"index": 598, "int_label": 1, "ground_truth": "727-200", "raw_prediction": "727-200", "parsed_prediction": "727-200", "confidence": 1.0, "correct": true, "error": false}
+{"index": 599, "int_label": 19, "ground_truth": "777-200", "raw_prediction": "787-9", "parsed_prediction": "737-900", "confidence": 0.6666666666666666, "correct": false, "error": false}
+{"index": 600, "int_label": 70, "ground_truth": "Embraer Legacy 600", "raw_prediction": "Global Express", "parsed_prediction": "Global Express", "confidence": 1.0, "correct": false, "error": false}
+{"index": 601, "int_label": 13, "ground_truth": "747-400", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 602, "int_label": 23, "ground_truth": "A318", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 603, "int_label": 32, "ground_truth": "A340-600", "raw_prediction": "777-300", "parsed_prediction": "777-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 604, "int_label": 11, "ground_truth": "747-200", "raw_prediction": "747-400", "parsed_prediction": "747-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 605, "int_label": 71, "ground_truth": "Eurofighter Typhoon", "raw_prediction": "Eurofighter Typhoon", "parsed_prediction": "Eurofighter Typhoon", "confidence": 1.0, "correct": true, "error": false}
+{"index": 606, "int_label": 59, "ground_truth": "DHC-6", "raw_prediction": "DHC-6", "parsed_prediction": "DHC-6", "confidence": 1.0, "correct": true, "error": false}
+{"index": 607, "int_label": 63, "ground_truth": "Dornier 328", "raw_prediction": "ATR-42", "parsed_prediction": "ATR-42", "confidence": 1.0, "correct": false, "error": false}
+{"index": 608, "int_label": 22, "ground_truth": "A310", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 609, "int_label": 63, "ground_truth": "Dornier 328", "raw_prediction": "ATR-42", "parsed_prediction": "ATR-42", "confidence": 1.0, "correct": false, "error": false}
+{"index": 610, "int_label": 3, "ground_truth": "737-300", "raw_prediction": "737-400", "parsed_prediction": "737-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 611, "int_label": 32, "ground_truth": "A340-600", "raw_prediction": "777-200", "parsed_prediction": "777-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 612, "int_label": 31, "ground_truth": "A340-500", "raw_prediction": "777-300", "parsed_prediction": "777-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 613, "int_label": 14, "ground_truth": "757-200", "raw_prediction": "767-200", "parsed_prediction": "767-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 614, "int_label": 2, "ground_truth": "737-200", "raw_prediction": "Boeing 737-800", "parsed_prediction": "737-800", "confidence": 0.95, "correct": false, "error": false}
+{"index": 615, "int_label": 5, "ground_truth": "737-500", "raw_prediction": "737-400", "parsed_prediction": "737-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 616, "int_label": 57, "ground_truth": "DH-82", "raw_prediction": "DH-82", "parsed_prediction": "DH-82", "confidence": 1.0, "correct": true, "error": false}
+{"index": 617, "int_label": 75, "ground_truth": "Falcon 900", "raw_prediction": "Falcon 900", "parsed_prediction": "Falcon 900", "confidence": 1.0, "correct": true, "error": false}
+{"index": 618, "int_label": 24, "ground_truth": "A319", "raw_prediction": "767-200", "parsed_prediction": "767-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 619, "int_label": 11, "ground_truth": "747-200", "raw_prediction": "A300B4", "parsed_prediction": "A300B4", "confidence": 1.0, "correct": false, "error": false}
+{"index": 620, "int_label": 10, "ground_truth": "747-100", "raw_prediction": "747-100", "parsed_prediction": "747-100", "confidence": 1.0, "correct": true, "error": false}
+{"index": 621, "int_label": 96, "ground_truth": "Tornado", "raw_prediction": "Tornado", "parsed_prediction": "Tornado", "confidence": 1.0, "correct": true, "error": false}
+{"index": 622, "int_label": 72, "ground_truth": "F-16A/B", "raw_prediction": "F-16A/B", "parsed_prediction": "F-16A/B", "confidence": 1.0, "correct": true, "error": false}
+{"index": 623, "int_label": 65, "ground_truth": "E-190", "raw_prediction": "E-190", "parsed_prediction": "E-190", "confidence": 1.0, "correct": true, "error": false}
+{"index": 624, "int_label": 58, "ground_truth": "DHC-1", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": false, "error": false}
+{"index": 625, "int_label": 62, "ground_truth": "DR-400", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": false, "error": false}
+{"index": 626, "int_label": 22, "ground_truth": "A310", "raw_prediction": "A330-200", "parsed_prediction": "A330-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 627, "int_label": 67, "ground_truth": "EMB-120", "raw_prediction": "DHC-8-100", "parsed_prediction": "DHC-8-100", "confidence": 1.0, "correct": false, "error": false}
+{"index": 628, "int_label": 1, "ground_truth": "727-200", "raw_prediction": "717-200", "parsed_prediction": "727-200", "confidence": 0.8571428571428571, "correct": true, "error": false}
+{"index": 629, "int_label": 14, "ground_truth": "757-200", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 630, "int_label": 98, "ground_truth": "Tu-154", "raw_prediction": "DC-9-30", "parsed_prediction": "DC-9-30", "confidence": 1.0, "correct": false, "error": false}
+{"index": 631, "int_label": 66, "ground_truth": "E-195", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 632, "int_label": 14, "ground_truth": "757-200", "raw_prediction": "767-300", "parsed_prediction": "767-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 633, "int_label": 23, "ground_truth": "A318", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 634, "int_label": 18, "ground_truth": "767-400", "raw_prediction": "767-400", "parsed_prediction": "767-400", "confidence": 1.0, "correct": true, "error": false}
+{"index": 635, "int_label": 41, "ground_truth": "Boeing 717", "raw_prediction": "DC-9-30", "parsed_prediction": "DC-9-30", "confidence": 1.0, "correct": false, "error": false}
+{"index": 636, "int_label": 3, "ground_truth": "737-300", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 637, "int_label": 57, "ground_truth": "DH-82", "raw_prediction": "Spitfire", "parsed_prediction": "Spitfire", "confidence": 1.0, "correct": false, "error": false}
+{"index": 638, "int_label": 57, "ground_truth": "DH-82", "raw_prediction": "DH-82", "parsed_prediction": "DH-82", "confidence": 1.0, "correct": true, "error": false}
+{"index": 639, "int_label": 22, "ground_truth": "A310", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 640, "int_label": 49, "ground_truth": "Cessna 525", "raw_prediction": "Cessna 560", "parsed_prediction": "Cessna 560", "confidence": 1.0, "correct": false, "error": false}
+{"index": 641, "int_label": 8, "ground_truth": "737-800", "raw_prediction": "767-300", "parsed_prediction": "767-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 642, "int_label": 53, "ground_truth": "DC-3", "raw_prediction": "C-130", "parsed_prediction": "C-130", "confidence": 1.0, "correct": false, "error": false}
+{"index": 643, "int_label": 44, "ground_truth": "CRJ-200", "raw_prediction": "CRJ-700", "parsed_prediction": "CRJ-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 644, "int_label": 40, "ground_truth": "Beechcraft 1900", "raw_prediction": "ERJ 145", "parsed_prediction": "ERJ 145", "confidence": 1.0, "correct": false, "error": false}
+{"index": 645, "int_label": 43, "ground_truth": "C-47", "raw_prediction": "DC-3", "parsed_prediction": "DC-3", "confidence": 1.0, "correct": false, "error": false}
+{"index": 646, "int_label": 28, "ground_truth": "A330-300", "raw_prediction": "737-400", "parsed_prediction": "737-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 647, "int_label": 87, "ground_truth": "MD-87", "raw_prediction": "Gulfstream V", "parsed_prediction": "Gulfstream V", "confidence": 1.0, "correct": false, "error": false}
+{"index": 648, "int_label": 27, "ground_truth": "A330-200", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 649, "int_label": 7, "ground_truth": "737-700", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 650, "int_label": 24, "ground_truth": "A319", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 651, "int_label": 89, "ground_truth": "Metroliner", "raw_prediction": "ATR-42", "parsed_prediction": "ATR-42", "confidence": 1.0, "correct": false, "error": false}
+{"index": 652, "int_label": 94, "ground_truth": "Saab 340", "raw_prediction": "737-200", "parsed_prediction": "737-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 653, "int_label": 35, "ground_truth": "ATR-72", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": true, "error": false}
+{"index": 654, "int_label": 42, "ground_truth": "C-130", "raw_prediction": "C-130", "parsed_prediction": "C-130", "confidence": 1.0, "correct": true, "error": false}
+{"index": 655, "int_label": 59, "ground_truth": "DHC-6", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 656, "int_label": 49, "ground_truth": "Cessna 525", "raw_prediction": "Cessna 525", "parsed_prediction": "Cessna 525", "confidence": 1.0, "correct": true, "error": false}
+{"index": 657, "int_label": 61, "ground_truth": "DHC-8-300", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": true, "error": false}
+{"index": 658, "int_label": 10, "ground_truth": "747-100", "raw_prediction": "A340-300", "parsed_prediction": "A340-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 659, "int_label": 23, "ground_truth": "A318", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 660, "int_label": 15, "ground_truth": "757-300", "raw_prediction": "A321", "parsed_prediction": "A321", "confidence": 1.0, "correct": false, "error": false}
+{"index": 661, "int_label": 98, "ground_truth": "Tu-154", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 662, "int_label": 37, "ground_truth": "BAE 146-200", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 663, "int_label": 83, "ground_truth": "Il-76", "raw_prediction": "An-12", "parsed_prediction": "An-12", "confidence": 1.0, "correct": false, "error": false}
+{"index": 664, "int_label": 26, "ground_truth": "A321", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 665, "int_label": 97, "ground_truth": "Tu-134", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 666, "int_label": 48, "ground_truth": "Cessna 208", "raw_prediction": "Cessna 208", "parsed_prediction": "Cessna 208", "confidence": 1.0, "correct": true, "error": false}
+{"index": 667, "int_label": 34, "ground_truth": "ATR-42", "raw_prediction": "ATR-42", "parsed_prediction": "ATR-42", "confidence": 1.0, "correct": true, "error": false}
+{"index": 668, "int_label": 55, "ground_truth": "DC-8", "raw_prediction": "A340-600", "parsed_prediction": "A340-600", "confidence": 1.0, "correct": false, "error": false}
+{"index": 669, "int_label": 77, "ground_truth": "Fokker 50", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 670, "int_label": 17, "ground_truth": "767-300", "raw_prediction": "A321", "parsed_prediction": "A321", "confidence": 1.0, "correct": false, "error": false}
+{"index": 671, "int_label": 48, "ground_truth": "Cessna 208", "raw_prediction": "Beechcraft 1900", "parsed_prediction": "Beechcraft 1900", "confidence": 1.0, "correct": false, "error": false}
+{"index": 672, "int_label": 25, "ground_truth": "A320", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": true, "error": false}
+{"index": 673, "int_label": 49, "ground_truth": "Cessna 525", "raw_prediction": "Cessna 560", "parsed_prediction": "Cessna 560", "confidence": 1.0, "correct": false, "error": false}
+{"index": 674, "int_label": 53, "ground_truth": "DC-3", "raw_prediction": "DC-3", "parsed_prediction": "DC-3", "confidence": 1.0, "correct": true, "error": false}
+{"index": 675, "int_label": 12, "ground_truth": "747-300", "raw_prediction": "Airbus A330-200", "parsed_prediction": "A330-200", "confidence": 0.95, "correct": false, "error": false}
+{"index": 676, "int_label": 80, "ground_truth": "Gulfstream IV", "raw_prediction": "Global Express", "parsed_prediction": "Global Express", "confidence": 1.0, "correct": false, "error": false}
+{"index": 677, "int_label": 26, "ground_truth": "A321", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 678, "int_label": 11, "ground_truth": "747-200", "raw_prediction": "737-400", "parsed_prediction": "737-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 679, "int_label": 81, "ground_truth": "Gulfstream V", "raw_prediction": "Global Express", "parsed_prediction": "Global Express", "confidence": 1.0, "correct": false, "error": false}
+{"index": 680, "int_label": 47, "ground_truth": "Cessna 172", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": true, "error": false}
+{"index": 681, "int_label": 8, "ground_truth": "737-800", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": true, "error": false}
+{"index": 682, "int_label": 90, "ground_truth": "Model B200", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 683, "int_label": 27, "ground_truth": "A330-200", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 684, "int_label": 72, "ground_truth": "F-16A/B", "raw_prediction": "F-16A/B", "parsed_prediction": "F-16A/B", "confidence": 1.0, "correct": true, "error": false}
+{"index": 685, "int_label": 7, "ground_truth": "737-700", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": true, "error": false}
+{"index": 686, "int_label": 10, "ground_truth": "747-100", "raw_prediction": "747-400", "parsed_prediction": "747-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 687, "int_label": 5, "ground_truth": "737-500", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 688, "int_label": 73, "ground_truth": "F/A-18", "raw_prediction": "F-16A/B", "parsed_prediction": "F-16A/B", "confidence": 1.0, "correct": false, "error": false}
+{"index": 689, "int_label": 12, "ground_truth": "747-300", "raw_prediction": "747-400", "parsed_prediction": "747-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 690, "int_label": 95, "ground_truth": "Spitfire", "raw_prediction": "Spitfire", "parsed_prediction": "Spitfire", "confidence": 1.0, "correct": true, "error": false}
+{"index": 691, "int_label": 48, "ground_truth": "Cessna 208", "raw_prediction": "Cessna 208", "parsed_prediction": "Cessna 208", "confidence": 1.0, "correct": true, "error": false}
+{"index": 692, "int_label": 43, "ground_truth": "C-47", "raw_prediction": "C-47", "parsed_prediction": "C-47", "confidence": 1.0, "correct": true, "error": false}
+{"index": 693, "int_label": 86, "ground_truth": "MD-80", "raw_prediction": "MD-90", "parsed_prediction": "MD-90", "confidence": 1.0, "correct": false, "error": false}
+{"index": 694, "int_label": 89, "ground_truth": "Metroliner", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 695, "int_label": 42, "ground_truth": "C-130", "raw_prediction": "C-130", "parsed_prediction": "C-130", "confidence": 1.0, "correct": true, "error": false}
+{"index": 696, "int_label": 21, "ground_truth": "A300B4", "raw_prediction": "737-300", "parsed_prediction": "737-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 697, "int_label": 85, "ground_truth": "MD-11", "raw_prediction": "MD-11", "parsed_prediction": "MD-11", "confidence": 1.0, "correct": true, "error": false}
+{"index": 698, "int_label": 62, "ground_truth": "DR-400", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": false, "error": false}
+{"index": 699, "int_label": 9, "ground_truth": "737-900", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 700, "int_label": 16, "ground_truth": "767-200", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 701, "int_label": 67, "ground_truth": "EMB-120", "raw_prediction": "DHC-8-100", "parsed_prediction": "DHC-8-100", "confidence": 1.0, "correct": false, "error": false}
+{"index": 702, "int_label": 76, "ground_truth": "Fokker 100", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 703, "int_label": 85, "ground_truth": "MD-11", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 704, "int_label": 43, "ground_truth": "C-47", "raw_prediction": "C-47", "parsed_prediction": "C-47", "confidence": 1.0, "correct": true, "error": false}
+{"index": 705, "int_label": 54, "ground_truth": "DC-6", "raw_prediction": "DC-10", "parsed_prediction": "DC-10", "confidence": 1.0, "correct": false, "error": false}
+{"index": 706, "int_label": 85, "ground_truth": "MD-11", "raw_prediction": "MD-11", "parsed_prediction": "MD-11", "confidence": 1.0, "correct": true, "error": false}
+{"index": 707, "int_label": 27, "ground_truth": "A330-200", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 708, "int_label": 94, "ground_truth": "Saab 340", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 709, "int_label": 80, "ground_truth": "Gulfstream IV", "raw_prediction": "Gulfstream V", "parsed_prediction": "Gulfstream V", "confidence": 1.0, "correct": false, "error": false}
+{"index": 710, "int_label": 59, "ground_truth": "DHC-6", "raw_prediction": "Cessna 208", "parsed_prediction": "Cessna 208", "confidence": 1.0, "correct": false, "error": false}
+{"index": 711, "int_label": 26, "ground_truth": "A321", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 712, "int_label": 46, "ground_truth": "CRJ-900", "raw_prediction": "CRJ-900", "parsed_prediction": "CRJ-900", "confidence": 1.0, "correct": true, "error": false}
+{"index": 713, "int_label": 31, "ground_truth": "A340-500", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 714, "int_label": 56, "ground_truth": "DC-9-30", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 715, "int_label": 15, "ground_truth": "757-300", "raw_prediction": "A321", "parsed_prediction": "A321", "confidence": 1.0, "correct": false, "error": false}
+{"index": 716, "int_label": 99, "ground_truth": "Yak-42", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 717, "int_label": 24, "ground_truth": "A319", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 718, "int_label": 65, "ground_truth": "E-190", "raw_prediction": "E-170", "parsed_prediction": "E-170", "confidence": 1.0, "correct": false, "error": false}
+{"index": 719, "int_label": 54, "ground_truth": "DC-6", "raw_prediction": "Lockheed L-1011\n\nWait, let me reconsider. Looking at this aircraft, it appears to be a 4-engine turboprop transport aircraft. The configuration and size suggest this is an Ilyushin Il-76.\n\nIl-76", "parsed_prediction": "L-1011", "confidence": 0.95, "correct": false, "error": false}
+{"index": 720, "int_label": 53, "ground_truth": "DC-3", "raw_prediction": "DC-3", "parsed_prediction": "DC-3", "confidence": 1.0, "correct": true, "error": false}
+{"index": 721, "int_label": 97, "ground_truth": "Tu-134", "raw_prediction": "737-400", "parsed_prediction": "737-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 722, "int_label": 56, "ground_truth": "DC-9-30", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 723, "int_label": 9, "ground_truth": "737-900", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 724, "int_label": 54, "ground_truth": "DC-6", "raw_prediction": "A340-600", "parsed_prediction": "A340-600", "confidence": 1.0, "correct": false, "error": false}
+{"index": 725, "int_label": 29, "ground_truth": "A340-200", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 726, "int_label": 45, "ground_truth": "CRJ-700", "raw_prediction": "CRJ-200", "parsed_prediction": "CRJ-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 727, "int_label": 63, "ground_truth": "Dornier 328", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 728, "int_label": 85, "ground_truth": "MD-11", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 729, "int_label": 44, "ground_truth": "CRJ-200", "raw_prediction": "BAE 146-300", "parsed_prediction": "BAE 146-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 730, "int_label": 4, "ground_truth": "737-400", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 731, "int_label": 33, "ground_truth": "A380", "raw_prediction": "A380", "parsed_prediction": "A380", "confidence": 1.0, "correct": true, "error": false}
+{"index": 732, "int_label": 76, "ground_truth": "Fokker 100", "raw_prediction": "DC-9-30", "parsed_prediction": "DC-9-30", "confidence": 1.0, "correct": false, "error": false}
+{"index": 733, "int_label": 58, "ground_truth": "DHC-1", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": false, "error": false}
+{"index": 734, "int_label": 23, "ground_truth": "A318", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 735, "int_label": 38, "ground_truth": "BAE 146-300", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 736, "int_label": 87, "ground_truth": "MD-87", "raw_prediction": "DC-9-30", "parsed_prediction": "DC-9-30", "confidence": 1.0, "correct": false, "error": false}
+{"index": 737, "int_label": 43, "ground_truth": "C-47", "raw_prediction": "DC-3", "parsed_prediction": "DC-3", "confidence": 1.0, "correct": false, "error": false}
+{"index": 738, "int_label": 29, "ground_truth": "A340-200", "raw_prediction": "A340-300", "parsed_prediction": "A340-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 739, "int_label": 50, "ground_truth": "Cessna 560", "raw_prediction": "Saab 340", "parsed_prediction": "Saab 340", "confidence": 1.0, "correct": false, "error": false}
+{"index": 740, "int_label": 0, "ground_truth": "707-320", "raw_prediction": "747-400", "parsed_prediction": "747-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 741, "int_label": 37, "ground_truth": "BAE 146-200", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 742, "int_label": 11, "ground_truth": "747-200", "raw_prediction": "767-300", "parsed_prediction": "767-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 743, "int_label": 37, "ground_truth": "BAE 146-200", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 744, "int_label": 91, "ground_truth": "PA-28", "raw_prediction": "Cessna 208", "parsed_prediction": "Cessna 208", "confidence": 1.0, "correct": false, "error": false}
+{"index": 745, "int_label": 10, "ground_truth": "747-100", "raw_prediction": "737-300", "parsed_prediction": "737-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 746, "int_label": 77, "ground_truth": "Fokker 50", "raw_prediction": "DHC-6", "parsed_prediction": "DHC-6", "confidence": 1.0, "correct": false, "error": false}
+{"index": 747, "int_label": 75, "ground_truth": "Falcon 900", "raw_prediction": "BAE 146-300", "parsed_prediction": "BAE 146-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 748, "int_label": 96, "ground_truth": "Tornado", "raw_prediction": "Tornado", "parsed_prediction": "Tornado", "confidence": 1.0, "correct": true, "error": false}
+{"index": 749, "int_label": 51, "ground_truth": "Challenger 600", "raw_prediction": "Challenger 600", "parsed_prediction": "Challenger 600", "confidence": 1.0, "correct": true, "error": false}
+{"index": 750, "int_label": 58, "ground_truth": "DHC-1", "raw_prediction": "Hawk T1", "parsed_prediction": "Hawk T1", "confidence": 1.0, "correct": false, "error": false}
+{"index": 751, "int_label": 25, "ground_truth": "A320", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": true, "error": false}
+{"index": 752, "int_label": 67, "ground_truth": "EMB-120", "raw_prediction": "Cessna 208", "parsed_prediction": "Cessna 208", "confidence": 1.0, "correct": false, "error": false}
+{"index": 753, "int_label": 44, "ground_truth": "CRJ-200", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 754, "int_label": 69, "ground_truth": "ERJ 145", "raw_prediction": "ERJ 145", "parsed_prediction": "ERJ 145", "confidence": 1.0, "correct": true, "error": false}
+{"index": 755, "int_label": 66, "ground_truth": "E-195", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 756, "int_label": 81, "ground_truth": "Gulfstream V", "raw_prediction": "C-130", "parsed_prediction": "C-130", "confidence": 1.0, "correct": false, "error": false}
+{"index": 757, "int_label": 90, "ground_truth": "Model B200", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 758, "int_label": 99, "ground_truth": "Yak-42", "raw_prediction": "ERJ 145", "parsed_prediction": "ERJ 145", "confidence": 1.0, "correct": false, "error": false}
+{"index": 759, "int_label": 57, "ground_truth": "DH-82", "raw_prediction": "DH-82", "parsed_prediction": "DH-82", "confidence": 1.0, "correct": true, "error": false}
+{"index": 760, "int_label": 45, "ground_truth": "CRJ-700", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 761, "int_label": 17, "ground_truth": "767-300", "raw_prediction": "A330-200", "parsed_prediction": "A330-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 762, "int_label": 4, "ground_truth": "737-400", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 763, "int_label": 71, "ground_truth": "Eurofighter Typhoon", "raw_prediction": "Eurofighter Typhoon", "parsed_prediction": "Eurofighter Typhoon", "confidence": 1.0, "correct": true, "error": false}
+{"index": 764, "int_label": 3, "ground_truth": "737-300", "raw_prediction": "737-400", "parsed_prediction": "737-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 765, "int_label": 94, "ground_truth": "Saab 340", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 766, "int_label": 92, "ground_truth": "SR-20", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": false, "error": false}
+{"index": 767, "int_label": 64, "ground_truth": "E-170", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 768, "int_label": 58, "ground_truth": "DHC-1", "raw_prediction": "Hawk T1", "parsed_prediction": "Hawk T1", "confidence": 1.0, "correct": false, "error": false}
+{"index": 769, "int_label": 59, "ground_truth": "DHC-6", "raw_prediction": "DHC-6", "parsed_prediction": "DHC-6", "confidence": 1.0, "correct": true, "error": false}
+{"index": 770, "int_label": 0, "ground_truth": "707-320", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 771, "int_label": 0, "ground_truth": "707-320", "raw_prediction": "707-320", "parsed_prediction": "707-320", "confidence": 1.0, "correct": true, "error": false}
+{"index": 772, "int_label": 72, "ground_truth": "F-16A/B", "raw_prediction": "F-16A/B", "parsed_prediction": "F-16A/B", "confidence": 1.0, "correct": true, "error": false}
+{"index": 773, "int_label": 30, "ground_truth": "A340-300", "raw_prediction": "A340-300", "parsed_prediction": "A340-300", "confidence": 1.0, "correct": true, "error": false}
+{"index": 774, "int_label": 1, "ground_truth": "727-200", "raw_prediction": "DC-9-30", "parsed_prediction": "DC-9-30", "confidence": 1.0, "correct": false, "error": false}
+{"index": 775, "int_label": 1, "ground_truth": "727-200", "raw_prediction": "747-100", "parsed_prediction": "747-100", "confidence": 1.0, "correct": false, "error": false}
+{"index": 776, "int_label": 70, "ground_truth": "Embraer Legacy 600", "raw_prediction": "ERJ 145", "parsed_prediction": "ERJ 145", "confidence": 1.0, "correct": false, "error": false}
+{"index": 777, "int_label": 40, "ground_truth": "Beechcraft 1900", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 778, "int_label": 98, "ground_truth": "Tu-154", "raw_prediction": "DC-9-30", "parsed_prediction": "DC-9-30", "confidence": 1.0, "correct": false, "error": false}
+{"index": 779, "int_label": 0, "ground_truth": "707-320", "raw_prediction": "A300B4", "parsed_prediction": "A300B4", "confidence": 1.0, "correct": false, "error": false}
+{"index": 780, "int_label": 68, "ground_truth": "ERJ 135", "raw_prediction": "ERJ 145", "parsed_prediction": "ERJ 145", "confidence": 1.0, "correct": false, "error": false}
+{"index": 781, "int_label": 52, "ground_truth": "DC-10", "raw_prediction": "L-1011", "parsed_prediction": "L-1011", "confidence": 1.0, "correct": false, "error": false}
+{"index": 782, "int_label": 86, "ground_truth": "MD-80", "raw_prediction": "MD-87", "parsed_prediction": "MD-87", "confidence": 1.0, "correct": false, "error": false}
+{"index": 783, "int_label": 80, "ground_truth": "Gulfstream IV", "raw_prediction": "Gulfstream V", "parsed_prediction": "Gulfstream V", "confidence": 1.0, "correct": false, "error": false}
+{"index": 784, "int_label": 93, "ground_truth": "Saab 2000", "raw_prediction": "ATR-42", "parsed_prediction": "ATR-42", "confidence": 1.0, "correct": false, "error": false}
+{"index": 785, "int_label": 80, "ground_truth": "Gulfstream IV", "raw_prediction": "Gulfstream V", "parsed_prediction": "Gulfstream V", "confidence": 1.0, "correct": false, "error": false}
+{"index": 786, "int_label": 59, "ground_truth": "DHC-6", "raw_prediction": "DHC-6", "parsed_prediction": "DHC-6", "confidence": 1.0, "correct": true, "error": false}
+{"index": 787, "int_label": 25, "ground_truth": "A320", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": true, "error": false}
+{"index": 788, "int_label": 28, "ground_truth": "A330-300", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 789, "int_label": 84, "ground_truth": "L-1011", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 790, "int_label": 47, "ground_truth": "Cessna 172", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": true, "error": false}
+{"index": 791, "int_label": 16, "ground_truth": "767-200", "raw_prediction": "767-200", "parsed_prediction": "767-200", "confidence": 1.0, "correct": true, "error": false}
+{"index": 792, "int_label": 45, "ground_truth": "CRJ-700", "raw_prediction": "CRJ-900", "parsed_prediction": "CRJ-900", "confidence": 1.0, "correct": false, "error": false}
+{"index": 793, "int_label": 83, "ground_truth": "Il-76", "raw_prediction": "C-130", "parsed_prediction": "C-130", "confidence": 1.0, "correct": false, "error": false}
+{"index": 794, "int_label": 78, "ground_truth": "Fokker 70", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 795, "int_label": 17, "ground_truth": "767-300", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 796, "int_label": 87, "ground_truth": "MD-87", "raw_prediction": "ATR-42", "parsed_prediction": "ATR-42", "confidence": 1.0, "correct": false, "error": false}
+{"index": 797, "int_label": 92, "ground_truth": "SR-20", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": false, "error": false}
+{"index": 798, "int_label": 62, "ground_truth": "DR-400", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": false, "error": false}
+{"index": 799, "int_label": 50, "ground_truth": "Cessna 560", "raw_prediction": "Let me analyze this aircraft image carefully.\n\nThe aircraft has:\n- Two turboprop engines mounted on the high wing\n- A distinctive high-wing configuration\n- Twin-engine design\n- Regional aircraft size\n- Landing gear visible (appears to be up or retracting)\n- Registration visible on fuselage\n\nThis is a Saab 340, a twin-turboprop commuter aircraft with the characteristic high-wing design, two Lycoming engines,", "parsed_prediction": "Saab 340", "confidence": 0.95, "correct": false, "error": false}
+{"index": 800, "int_label": 28, "ground_truth": "A330-300", "raw_prediction": "A321", "parsed_prediction": "A321", "confidence": 1.0, "correct": false, "error": false}
+{"index": 801, "int_label": 26, "ground_truth": "A321", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 802, "int_label": 42, "ground_truth": "C-130", "raw_prediction": "C-130", "parsed_prediction": "C-130", "confidence": 1.0, "correct": true, "error": false}
+{"index": 803, "int_label": 29, "ground_truth": "A340-200", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 804, "int_label": 57, "ground_truth": "DH-82", "raw_prediction": "DH-82", "parsed_prediction": "DH-82", "confidence": 1.0, "correct": true, "error": false}
+{"index": 805, "int_label": 34, "ground_truth": "ATR-42", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 806, "int_label": 29, "ground_truth": "A340-200", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 807, "int_label": 33, "ground_truth": "A380", "raw_prediction": "A380", "parsed_prediction": "A380", "confidence": 1.0, "correct": true, "error": false}
+{"index": 808, "int_label": 72, "ground_truth": "F-16A/B", "raw_prediction": "F-16A/B", "parsed_prediction": "F-16A/B", "confidence": 1.0, "correct": true, "error": false}
+{"index": 809, "int_label": 2, "ground_truth": "737-200", "raw_prediction": "737-200", "parsed_prediction": "737-200", "confidence": 1.0, "correct": true, "error": false}
+{"index": 810, "int_label": 85, "ground_truth": "MD-11", "raw_prediction": "DC-10", "parsed_prediction": "DC-10", "confidence": 1.0, "correct": false, "error": false}
+{"index": 811, "int_label": 6, "ground_truth": "737-600", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 812, "int_label": 57, "ground_truth": "DH-82", "raw_prediction": "DH-82", "parsed_prediction": "DH-82", "confidence": 1.0, "correct": true, "error": false}
+{"index": 813, "int_label": 24, "ground_truth": "A319", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 814, "int_label": 2, "ground_truth": "737-200", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 815, "int_label": 74, "ground_truth": "Falcon 2000", "raw_prediction": "Falcon 900", "parsed_prediction": "Falcon 900", "confidence": 1.0, "correct": false, "error": false}
+{"index": 816, "int_label": 53, "ground_truth": "DC-3", "raw_prediction": "DC-3", "parsed_prediction": "DC-3", "confidence": 1.0, "correct": true, "error": false}
+{"index": 817, "int_label": 50, "ground_truth": "Cessna 560", "raw_prediction": "Cessna 560", "parsed_prediction": "Cessna 560", "confidence": 1.0, "correct": true, "error": false}
+{"index": 818, "int_label": 6, "ground_truth": "737-600", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 819, "int_label": 18, "ground_truth": "767-400", "raw_prediction": "767-200", "parsed_prediction": "767-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 820, "int_label": 77, "ground_truth": "Fokker 50", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 821, "int_label": 21, "ground_truth": "A300B4", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 822, "int_label": 38, "ground_truth": "BAE 146-300", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 823, "int_label": 21, "ground_truth": "A300B4", "raw_prediction": "767-200", "parsed_prediction": "767-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 824, "int_label": 81, "ground_truth": "Gulfstream V", "raw_prediction": "Global Express", "parsed_prediction": "Global Express", "confidence": 1.0, "correct": false, "error": false}
+{"index": 825, "int_label": 24, "ground_truth": "A319", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 826, "int_label": 47, "ground_truth": "Cessna 172", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": true, "error": false}
+{"index": 827, "int_label": 82, "ground_truth": "Hawk T1", "raw_prediction": "Hawk T1", "parsed_prediction": "Hawk T1", "confidence": 1.0, "correct": true, "error": false}
+{"index": 828, "int_label": 25, "ground_truth": "A320", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": true, "error": false}
+{"index": 829, "int_label": 71, "ground_truth": "Eurofighter Typhoon", "raw_prediction": "Eurofighter Typhoon", "parsed_prediction": "Eurofighter Typhoon", "confidence": 1.0, "correct": true, "error": false}
+{"index": 830, "int_label": 85, "ground_truth": "MD-11", "raw_prediction": "DC-10", "parsed_prediction": "DC-10", "confidence": 1.0, "correct": false, "error": false}
+{"index": 831, "int_label": 94, "ground_truth": "Saab 340", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 832, "int_label": 10, "ground_truth": "747-100", "raw_prediction": "747-400", "parsed_prediction": "747-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 833, "int_label": 59, "ground_truth": "DHC-6", "raw_prediction": "DHC-6", "parsed_prediction": "DHC-6", "confidence": 1.0, "correct": true, "error": false}
+{"index": 834, "int_label": 26, "ground_truth": "A321", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 835, "int_label": 88, "ground_truth": "MD-90", "raw_prediction": "MD-80", "parsed_prediction": "MD-80", "confidence": 1.0, "correct": false, "error": false}
+{"index": 836, "int_label": 65, "ground_truth": "E-190", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 837, "int_label": 47, "ground_truth": "Cessna 172", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": true, "error": false}
+{"index": 838, "int_label": 1, "ground_truth": "727-200", "raw_prediction": "767-200", "parsed_prediction": "767-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 839, "int_label": 12, "ground_truth": "747-300", "raw_prediction": "737-400", "parsed_prediction": "737-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 840, "int_label": 95, "ground_truth": "Spitfire", "raw_prediction": "Spitfire", "parsed_prediction": "Spitfire", "confidence": 1.0, "correct": true, "error": false}
+{"index": 841, "int_label": 85, "ground_truth": "MD-11", "raw_prediction": "MD-11", "parsed_prediction": "MD-11", "confidence": 1.0, "correct": true, "error": false}
+{"index": 842, "int_label": 25, "ground_truth": "A320", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": true, "error": false}
+{"index": 843, "int_label": 18, "ground_truth": "767-400", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 844, "int_label": 11, "ground_truth": "747-200", "raw_prediction": "777-200", "parsed_prediction": "777-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 845, "int_label": 73, "ground_truth": "F/A-18", "raw_prediction": "F/A-18", "parsed_prediction": "F/A-18", "confidence": 1.0, "correct": true, "error": false}
+{"index": 846, "int_label": 14, "ground_truth": "757-200", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": true, "error": false}
+{"index": 847, "int_label": 38, "ground_truth": "BAE 146-300", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 848, "int_label": 94, "ground_truth": "Saab 340", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 849, "int_label": 40, "ground_truth": "Beechcraft 1900", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 850, "int_label": 23, "ground_truth": "A318", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 851, "int_label": 71, "ground_truth": "Eurofighter Typhoon", "raw_prediction": "Eurofighter Typhoon", "parsed_prediction": "Eurofighter Typhoon", "confidence": 1.0, "correct": true, "error": false}
+{"index": 852, "int_label": 46, "ground_truth": "CRJ-900", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 853, "int_label": 3, "ground_truth": "737-300", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 854, "int_label": 86, "ground_truth": "MD-80", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 855, "int_label": 56, "ground_truth": "DC-9-30", "raw_prediction": "DC-9-30", "parsed_prediction": "DC-9-30", "confidence": 1.0, "correct": true, "error": false}
+{"index": 856, "int_label": 85, "ground_truth": "MD-11", "raw_prediction": "A300B4", "parsed_prediction": "A300B4", "confidence": 1.0, "correct": false, "error": false}
+{"index": 857, "int_label": 47, "ground_truth": "Cessna 172", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": true, "error": false}
+{"index": 858, "int_label": 31, "ground_truth": "A340-500", "raw_prediction": "777-300", "parsed_prediction": "777-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 859, "int_label": 78, "ground_truth": "Fokker 70", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 860, "int_label": 15, "ground_truth": "757-300", "raw_prediction": "A321", "parsed_prediction": "A321", "confidence": 1.0, "correct": false, "error": false}
+{"index": 861, "int_label": 49, "ground_truth": "Cessna 525", "raw_prediction": "Cessna 560", "parsed_prediction": "Cessna 560", "confidence": 1.0, "correct": false, "error": false}
+{"index": 862, "int_label": 68, "ground_truth": "ERJ 135", "raw_prediction": "DC-9-30", "parsed_prediction": "DC-9-30", "confidence": 1.0, "correct": false, "error": false}
+{"index": 863, "int_label": 31, "ground_truth": "A340-500", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 864, "int_label": 68, "ground_truth": "ERJ 135", "raw_prediction": "ERJ 145", "parsed_prediction": "ERJ 145", "confidence": 1.0, "correct": false, "error": false}
+{"index": 865, "int_label": 79, "ground_truth": "Global Express", "raw_prediction": "CRJ-700", "parsed_prediction": "CRJ-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 866, "int_label": 39, "ground_truth": "BAE-125", "raw_prediction": "Challenger 600", "parsed_prediction": "Challenger 600", "confidence": 1.0, "correct": false, "error": false}
+{"index": 867, "int_label": 87, "ground_truth": "MD-87", "raw_prediction": "DC-9-30", "parsed_prediction": "DC-9-30", "confidence": 1.0, "correct": false, "error": false}
+{"index": 868, "int_label": 75, "ground_truth": "Falcon 900", "raw_prediction": "Saab 2000", "parsed_prediction": "Saab 2000", "confidence": 1.0, "correct": false, "error": false}
+{"index": 869, "int_label": 62, "ground_truth": "DR-400", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": false, "error": false}
+{"index": 870, "int_label": 44, "ground_truth": "CRJ-200", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 871, "int_label": 41, "ground_truth": "Boeing 717", "raw_prediction": "DC-9-30", "parsed_prediction": "DC-9-30", "confidence": 1.0, "correct": false, "error": false}
+{"index": 872, "int_label": 17, "ground_truth": "767-300", "raw_prediction": "767-300", "parsed_prediction": "767-300", "confidence": 1.0, "correct": true, "error": false}
+{"index": 873, "int_label": 5, "ground_truth": "737-500", "raw_prediction": "737-500", "parsed_prediction": "737-500", "confidence": 1.0, "correct": true, "error": false}
+{"index": 874, "int_label": 6, "ground_truth": "737-600", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 875, "int_label": 58, "ground_truth": "DHC-1", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": false, "error": false}
+{"index": 876, "int_label": 82, "ground_truth": "Hawk T1", "raw_prediction": "Hawk T1", "parsed_prediction": "Hawk T1", "confidence": 1.0, "correct": true, "error": false}
+{"index": 877, "int_label": 60, "ground_truth": "DHC-8-100", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 878, "int_label": 92, "ground_truth": "SR-20", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": false, "error": false}
+{"index": 879, "int_label": 51, "ground_truth": "Challenger 600", "raw_prediction": "CRJ-200", "parsed_prediction": "CRJ-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 880, "int_label": 54, "ground_truth": "DC-6", "raw_prediction": "C-47", "parsed_prediction": "C-47", "confidence": 1.0, "correct": false, "error": false}
+{"index": 881, "int_label": 16, "ground_truth": "767-200", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 882, "int_label": 38, "ground_truth": "BAE 146-300", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 883, "int_label": 39, "ground_truth": "BAE-125", "raw_prediction": "Falcon 900", "parsed_prediction": "Falcon 900", "confidence": 1.0, "correct": false, "error": false}
+{"index": 884, "int_label": 74, "ground_truth": "Falcon 2000", "raw_prediction": "A300B4", "parsed_prediction": "A300B4", "confidence": 1.0, "correct": false, "error": false}
+{"index": 885, "int_label": 64, "ground_truth": "E-170", "raw_prediction": "E-170", "parsed_prediction": "E-170", "confidence": 1.0, "correct": true, "error": false}
+{"index": 886, "int_label": 55, "ground_truth": "DC-8", "raw_prediction": "747-400", "parsed_prediction": "747-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 887, "int_label": 75, "ground_truth": "Falcon 900", "raw_prediction": "DC-10", "parsed_prediction": "DC-10", "confidence": 1.0, "correct": false, "error": false}
+{"index": 888, "int_label": 36, "ground_truth": "An-12", "raw_prediction": "C-130", "parsed_prediction": "C-130", "confidence": 1.0, "correct": false, "error": false}
+{"index": 889, "int_label": 2, "ground_truth": "737-200", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 890, "int_label": 39, "ground_truth": "BAE-125", "raw_prediction": "Cessna 560", "parsed_prediction": "Cessna 560", "confidence": 1.0, "correct": false, "error": false}
+{"index": 891, "int_label": 95, "ground_truth": "Spitfire", "raw_prediction": "Spitfire", "parsed_prediction": "Spitfire", "confidence": 1.0, "correct": true, "error": false}
+{"index": 892, "int_label": 46, "ground_truth": "CRJ-900", "raw_prediction": "CRJ-700", "parsed_prediction": "CRJ-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 893, "int_label": 65, "ground_truth": "E-190", "raw_prediction": "E-190", "parsed_prediction": "E-190", "confidence": 1.0, "correct": true, "error": false}
+{"index": 894, "int_label": 88, "ground_truth": "MD-90", "raw_prediction": "A321", "parsed_prediction": "A321", "confidence": 1.0, "correct": false, "error": false}
+{"index": 895, "int_label": 64, "ground_truth": "E-170", "raw_prediction": "E-190", "parsed_prediction": "E-190", "confidence": 1.0, "correct": false, "error": false}
+{"index": 896, "int_label": 96, "ground_truth": "Tornado", "raw_prediction": "Tornado", "parsed_prediction": "Tornado", "confidence": 1.0, "correct": true, "error": false}
+{"index": 897, "int_label": 33, "ground_truth": "A380", "raw_prediction": "A380", "parsed_prediction": "A380", "confidence": 1.0, "correct": true, "error": false}
+{"index": 898, "int_label": 88, "ground_truth": "MD-90", "raw_prediction": "MD-90", "parsed_prediction": "MD-90", "confidence": 1.0, "correct": true, "error": false}
+{"index": 899, "int_label": 78, "ground_truth": "Fokker 70", "raw_prediction": "CRJ-900", "parsed_prediction": "CRJ-900", "confidence": 1.0, "correct": false, "error": false}
+{"index": 900, "int_label": 78, "ground_truth": "Fokker 70", "raw_prediction": "Fokker 70", "parsed_prediction": "Fokker 70", "confidence": 1.0, "correct": true, "error": false}
+{"index": 901, "int_label": 79, "ground_truth": "Global Express", "raw_prediction": "CRJ-700", "parsed_prediction": "CRJ-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 902, "int_label": 89, "ground_truth": "Metroliner", "raw_prediction": "Saab 340", "parsed_prediction": "Saab 340", "confidence": 1.0, "correct": false, "error": false}
+{"index": 903, "int_label": 19, "ground_truth": "777-200", "raw_prediction": "A330-200", "parsed_prediction": "A330-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 904, "int_label": 38, "ground_truth": "BAE 146-300", "raw_prediction": "A380", "parsed_prediction": "A380", "confidence": 1.0, "correct": false, "error": false}
+{"index": 905, "int_label": 42, "ground_truth": "C-130", "raw_prediction": "C-130", "parsed_prediction": "C-130", "confidence": 1.0, "correct": true, "error": false}
+{"index": 906, "int_label": 30, "ground_truth": "A340-300", "raw_prediction": "A340-300", "parsed_prediction": "A340-300", "confidence": 1.0, "correct": true, "error": false}
+{"index": 907, "int_label": 12, "ground_truth": "747-300", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 908, "int_label": 12, "ground_truth": "747-300", "raw_prediction": "A340-300", "parsed_prediction": "A340-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 909, "int_label": 40, "ground_truth": "Beechcraft 1900", "raw_prediction": "DHC-6", "parsed_prediction": "DHC-6", "confidence": 1.0, "correct": false, "error": false}
+{"index": 910, "int_label": 42, "ground_truth": "C-130", "raw_prediction": "C-130", "parsed_prediction": "C-130", "confidence": 1.0, "correct": true, "error": false}
+{"index": 911, "int_label": 95, "ground_truth": "Spitfire", "raw_prediction": "Spitfire", "parsed_prediction": "Spitfire", "confidence": 1.0, "correct": true, "error": false}
+{"index": 912, "int_label": 19, "ground_truth": "777-200", "raw_prediction": "777-300", "parsed_prediction": "777-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 913, "int_label": 70, "ground_truth": "Embraer Legacy 600", "raw_prediction": "ERJ 145", "parsed_prediction": "ERJ 145", "confidence": 1.0, "correct": false, "error": false}
+{"index": 914, "int_label": 66, "ground_truth": "E-195", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 915, "int_label": 36, "ground_truth": "An-12", "raw_prediction": "C-130", "parsed_prediction": "C-130", "confidence": 1.0, "correct": false, "error": false}
+{"index": 916, "int_label": 20, "ground_truth": "777-300", "raw_prediction": "747-400", "parsed_prediction": "747-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 917, "int_label": 33, "ground_truth": "A380", "raw_prediction": "A380", "parsed_prediction": "A380", "confidence": 1.0, "correct": true, "error": false}
+{"index": 918, "int_label": 14, "ground_truth": "757-200", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 919, "int_label": 5, "ground_truth": "737-500", "raw_prediction": "737-400", "parsed_prediction": "737-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 920, "int_label": 38, "ground_truth": "BAE 146-300", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 921, "int_label": 75, "ground_truth": "Falcon 900", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 922, "int_label": 44, "ground_truth": "CRJ-200", "raw_prediction": "717-200", "parsed_prediction": "727-200", "confidence": 0.8571428571428571, "correct": false, "error": false}
+{"index": 923, "int_label": 56, "ground_truth": "DC-9-30", "raw_prediction": "717-200", "parsed_prediction": "727-200", "confidence": 0.8571428571428571, "correct": false, "error": false}
+{"index": 924, "int_label": 36, "ground_truth": "An-12", "raw_prediction": "C-130", "parsed_prediction": "C-130", "confidence": 1.0, "correct": false, "error": false}
+{"index": 925, "int_label": 12, "ground_truth": "747-300", "raw_prediction": "A300B4", "parsed_prediction": "A300B4", "confidence": 1.0, "correct": false, "error": false}
+{"index": 926, "int_label": 23, "ground_truth": "A318", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 927, "int_label": 72, "ground_truth": "F-16A/B", "raw_prediction": "F-16A/B", "parsed_prediction": "F-16A/B", "confidence": 1.0, "correct": true, "error": false}
+{"index": 928, "int_label": 42, "ground_truth": "C-130", "raw_prediction": "C-130", "parsed_prediction": "C-130", "confidence": 1.0, "correct": true, "error": false}
+{"index": 929, "int_label": 87, "ground_truth": "MD-87", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 930, "int_label": 71, "ground_truth": "Eurofighter Typhoon", "raw_prediction": "Eurofighter Typhoon", "parsed_prediction": "Eurofighter Typhoon", "confidence": 1.0, "correct": true, "error": false}
+{"index": 931, "int_label": 81, "ground_truth": "Gulfstream V", "raw_prediction": "Gulfstream V", "parsed_prediction": "Gulfstream V", "confidence": 1.0, "correct": true, "error": false}
+{"index": 932, "int_label": 92, "ground_truth": "SR-20", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": false, "error": false}
+{"index": 933, "int_label": 99, "ground_truth": "Yak-42", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 934, "int_label": 97, "ground_truth": "Tu-134", "raw_prediction": "Il-76", "parsed_prediction": "Il-76", "confidence": 1.0, "correct": false, "error": false}
+{"index": 935, "int_label": 91, "ground_truth": "PA-28", "raw_prediction": "PA-28", "parsed_prediction": "PA-28", "confidence": 1.0, "correct": true, "error": false}
+{"index": 936, "int_label": 30, "ground_truth": "A340-300", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 937, "int_label": 79, "ground_truth": "Global Express", "raw_prediction": "CRJ-200", "parsed_prediction": "CRJ-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 938, "int_label": 21, "ground_truth": "A300B4", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 939, "int_label": 91, "ground_truth": "PA-28", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": false, "error": false}
+{"index": 940, "int_label": 93, "ground_truth": "Saab 2000", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 941, "int_label": 37, "ground_truth": "BAE 146-200", "raw_prediction": "A340-300", "parsed_prediction": "A340-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 942, "int_label": 26, "ground_truth": "A321", "raw_prediction": "A320", "parsed_prediction": "A320", "confidence": 1.0, "correct": false, "error": false}
+{"index": 943, "int_label": 55, "ground_truth": "DC-8", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 944, "int_label": 76, "ground_truth": "Fokker 100", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 945, "int_label": 34, "ground_truth": "ATR-42", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 946, "int_label": 74, "ground_truth": "Falcon 2000", "raw_prediction": "Falcon 900", "parsed_prediction": "Falcon 900", "confidence": 1.0, "correct": false, "error": false}
+{"index": 947, "int_label": 7, "ground_truth": "737-700", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 948, "int_label": 39, "ground_truth": "BAE-125", "raw_prediction": "Falcon 900", "parsed_prediction": "Falcon 900", "confidence": 1.0, "correct": false, "error": false}
+{"index": 949, "int_label": 87, "ground_truth": "MD-87", "raw_prediction": "CRJ-200", "parsed_prediction": "CRJ-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 950, "int_label": 28, "ground_truth": "A330-300", "raw_prediction": "A330-200", "parsed_prediction": "A330-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 951, "int_label": 31, "ground_truth": "A340-500", "raw_prediction": "A380", "parsed_prediction": "A380", "confidence": 1.0, "correct": false, "error": false}
+{"index": 952, "int_label": 16, "ground_truth": "767-200", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 953, "int_label": 74, "ground_truth": "Falcon 2000", "raw_prediction": "Saab 2000", "parsed_prediction": "Saab 2000", "confidence": 1.0, "correct": false, "error": false}
+{"index": 954, "int_label": 82, "ground_truth": "Hawk T1", "raw_prediction": "Hawk T1", "parsed_prediction": "Hawk T1", "confidence": 1.0, "correct": true, "error": false}
+{"index": 955, "int_label": 99, "ground_truth": "Yak-42", "raw_prediction": "DC-9-30", "parsed_prediction": "DC-9-30", "confidence": 1.0, "correct": false, "error": false}
+{"index": 956, "int_label": 95, "ground_truth": "Spitfire", "raw_prediction": "Spitfire", "parsed_prediction": "Spitfire", "confidence": 1.0, "correct": true, "error": false}
+{"index": 957, "int_label": 13, "ground_truth": "747-400", "raw_prediction": "A330-200", "parsed_prediction": "A330-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 958, "int_label": 19, "ground_truth": "777-200", "raw_prediction": "777-300", "parsed_prediction": "777-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 959, "int_label": 64, "ground_truth": "E-170", "raw_prediction": "E-170", "parsed_prediction": "E-170", "confidence": 1.0, "correct": true, "error": false}
+{"index": 960, "int_label": 31, "ground_truth": "A340-500", "raw_prediction": "A380", "parsed_prediction": "A380", "confidence": 1.0, "correct": false, "error": false}
+{"index": 961, "int_label": 87, "ground_truth": "MD-87", "raw_prediction": "DC-9-30", "parsed_prediction": "DC-9-30", "confidence": 1.0, "correct": false, "error": false}
+{"index": 962, "int_label": 26, "ground_truth": "A321", "raw_prediction": "767-300", "parsed_prediction": "767-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 963, "int_label": 17, "ground_truth": "767-300", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 964, "int_label": 9, "ground_truth": "737-900", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 965, "int_label": 81, "ground_truth": "Gulfstream V", "raw_prediction": "Gulfstream IV", "parsed_prediction": "Gulfstream IV", "confidence": 1.0, "correct": false, "error": false}
+{"index": 966, "int_label": 45, "ground_truth": "CRJ-700", "raw_prediction": "CRJ-700", "parsed_prediction": "CRJ-700", "confidence": 1.0, "correct": true, "error": false}
+{"index": 967, "int_label": 15, "ground_truth": "757-300", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 968, "int_label": 36, "ground_truth": "An-12", "raw_prediction": "C-130", "parsed_prediction": "C-130", "confidence": 1.0, "correct": false, "error": false}
+{"index": 969, "int_label": 81, "ground_truth": "Gulfstream V", "raw_prediction": "Gulfstream V", "parsed_prediction": "Gulfstream V", "confidence": 1.0, "correct": true, "error": false}
+{"index": 970, "int_label": 70, "ground_truth": "Embraer Legacy 600", "raw_prediction": "E-190", "parsed_prediction": "E-190", "confidence": 1.0, "correct": false, "error": false}
+{"index": 971, "int_label": 51, "ground_truth": "Challenger 600", "raw_prediction": "Challenger 600", "parsed_prediction": "Challenger 600", "confidence": 1.0, "correct": true, "error": false}
+{"index": 972, "int_label": 61, "ground_truth": "DHC-8-300", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": true, "error": false}
+{"index": 973, "int_label": 72, "ground_truth": "F-16A/B", "raw_prediction": "F-16A/B", "parsed_prediction": "F-16A/B", "confidence": 1.0, "correct": true, "error": false}
+{"index": 974, "int_label": 92, "ground_truth": "SR-20", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": false, "error": false}
+{"index": 975, "int_label": 55, "ground_truth": "DC-8", "raw_prediction": "A380", "parsed_prediction": "A380", "confidence": 1.0, "correct": false, "error": false}
+{"index": 976, "int_label": 69, "ground_truth": "ERJ 145", "raw_prediction": "E-190", "parsed_prediction": "E-190", "confidence": 1.0, "correct": false, "error": false}
+{"index": 977, "int_label": 7, "ground_truth": "737-700", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": true, "error": false}
+{"index": 978, "int_label": 65, "ground_truth": "E-190", "raw_prediction": "E-170", "parsed_prediction": "E-170", "confidence": 1.0, "correct": false, "error": false}
+{"index": 979, "int_label": 20, "ground_truth": "777-300", "raw_prediction": "757-300", "parsed_prediction": "757-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 980, "int_label": 55, "ground_truth": "DC-8", "raw_prediction": "737-300", "parsed_prediction": "737-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 981, "int_label": 6, "ground_truth": "737-600", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 982, "int_label": 0, "ground_truth": "707-320", "raw_prediction": "747-400", "parsed_prediction": "747-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 983, "int_label": 42, "ground_truth": "C-130", "raw_prediction": "C-130", "parsed_prediction": "C-130", "confidence": 1.0, "correct": true, "error": false}
+{"index": 984, "int_label": 31, "ground_truth": "A340-500", "raw_prediction": "777-300", "parsed_prediction": "777-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 985, "int_label": 66, "ground_truth": "E-195", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 986, "int_label": 13, "ground_truth": "747-400", "raw_prediction": "A300B4", "parsed_prediction": "A300B4", "confidence": 1.0, "correct": false, "error": false}
+{"index": 987, "int_label": 74, "ground_truth": "Falcon 2000", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 988, "int_label": 61, "ground_truth": "DHC-8-300", "raw_prediction": "ATR-72", "parsed_prediction": "ATR-72", "confidence": 1.0, "correct": false, "error": false}
+{"index": 989, "int_label": 47, "ground_truth": "Cessna 172", "raw_prediction": "Cessna 172", "parsed_prediction": "Cessna 172", "confidence": 1.0, "correct": true, "error": false}
+{"index": 990, "int_label": 94, "ground_truth": "Saab 340", "raw_prediction": "ATR-42", "parsed_prediction": "ATR-42", "confidence": 1.0, "correct": false, "error": false}
+{"index": 991, "int_label": 90, "ground_truth": "Model B200", "raw_prediction": "Cessna 208", "parsed_prediction": "Cessna 208", "confidence": 1.0, "correct": false, "error": false}
+{"index": 992, "int_label": 10, "ground_truth": "747-100", "raw_prediction": "747-400", "parsed_prediction": "747-400", "confidence": 1.0, "correct": false, "error": false}
+{"index": 993, "int_label": 64, "ground_truth": "E-170", "raw_prediction": "737-700", "parsed_prediction": "737-700", "confidence": 1.0, "correct": false, "error": false}
+{"index": 994, "int_label": 29, "ground_truth": "A340-200", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 995, "int_label": 13, "ground_truth": "747-400", "raw_prediction": "737-800", "parsed_prediction": "737-800", "confidence": 1.0, "correct": false, "error": false}
+{"index": 996, "int_label": 76, "ground_truth": "Fokker 100", "raw_prediction": "Fokker 70", "parsed_prediction": "Fokker 70", "confidence": 1.0, "correct": false, "error": false}
+{"index": 997, "int_label": 60, "ground_truth": "DHC-8-100", "raw_prediction": "DHC-8-300", "parsed_prediction": "DHC-8-300", "confidence": 1.0, "correct": false, "error": false}
+{"index": 998, "int_label": 15, "ground_truth": "757-300", "raw_prediction": "757-200", "parsed_prediction": "757-200", "confidence": 1.0, "correct": false, "error": false}
+{"index": 999, "int_label": 19, "ground_truth": "777-200", "raw_prediction": "A330-300", "parsed_prediction": "A330-300", "confidence": 1.0, "correct": false, "error": false}
