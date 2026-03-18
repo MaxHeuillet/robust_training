@@ -235,7 +235,17 @@
     "provider": "openai",
     "model": "gpt-4o-mini",
     "run_name": "stanford_cars__openai__test_v1",
-    "batch_id": "batch_69ba2c8410b481909d7b9fecc9f58adf",
+    "batch_id": null,
+    "status": "failed",
+    "experiment": "test_v1"
+  },
+  {
+    "dataset": "stanford_cars",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "stanford_cars__openai__test_v1",
+    "batch_id": "batch_69bad988920c819099eaba05466482d8",
     "status": "submitted",
     "experiment": "test_v1"
   }
