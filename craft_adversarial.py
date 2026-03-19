@@ -357,10 +357,16 @@ def load_siglip2_surrogate(label_to_name: dict, device: torch.device) -> ZeroSho
 
     print(f"  Encoding {len(prompts)} class prompts...")
     with torch.no_grad():
+        # padding="max_length" with the model's own max_position_embeddings is
+        # required for SigLIP2: pooler_output pools at the EOS token position,
+        # which is only correct when every sequence is padded to the fixed
+        # length the model was trained with.
+        max_len = text_model.config.max_position_embeddings
         inputs        = tokenizer(
             prompts,
-            padding=True,
+            padding="max_length",
             truncation=True,
+            max_length=max_len,
             return_tensors="pt",
         ).to(device)
         text_outputs  = text_model(**inputs)
