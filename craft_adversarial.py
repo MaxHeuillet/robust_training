@@ -267,25 +267,37 @@ class ZeroShotSigLIP2(nn.Module):
     SigLIP uses a sigmoid-based contrastive loss rather than softmax, so its
     raw similarity scores are not calibrated as probabilities. We follow the
     standard zero-shot recipe: cosine similarity × temperature, then let
-    AutoAttack treat the result as logits. This is consistent with how
-    google/siglip2 is used in the HuggingFace zero-shot pipeline.
+    AutoAttack treat the result as logits.
 
     Normalisation (mean=0.5, std=0.5) is applied inside forward so
     AutoAttack sees raw [0,1] input — same contract as ZeroShotCLIP.
+
+    IMPORTANT — opaque inner module:
+    AutoAttack (≥0.3) serialises the model to inspect its architecture using a
+    Rust-backed JSON parser. HuggingFace PreTrainedModel configs contain fields
+    (e.g. model_type-specific union variants) that trip this parser with:
+        "data did not match any variant of untagged enum ModelWrapper"
+    The fix is to store the HuggingFace vision model inside a plain Python
+    callable (_SigLIPEncoder) that is NOT registered as an nn.Module submodule.
+    AutoAttack only walks nn.Module children — anything stored as a plain
+    attribute is invisible to its introspection, so the problematic config
+    never gets serialised.
     """
 
-    def __init__(self, vision_model, text_features: torch.Tensor, device, temperature: float = 100.0):
+    def __init__(self, encode_fn, text_features: torch.Tensor, device, temperature: float = 100.0):
         super().__init__()
-        self.vision_model = vision_model
-        self.temperature  = temperature
+        # encode_fn is a plain Python callable, NOT an nn.Module child.
+        # This keeps the HuggingFace PreTrainedModel out of AutoAttack's
+        # module-tree serialiser, avoiding the ModelWrapper JSON parse error.
+        self._encode_fn  = encode_fn
+        self.temperature = temperature
         self.register_buffer("text_features", text_features)
         self.register_buffer("mean", torch.tensor(SIGLIP_MEAN, device=device).view(1, 3, 1, 1))
         self.register_buffer("std",  torch.tensor(SIGLIP_STD,  device=device).view(1, 3, 1, 1))
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = (x - self.mean) / self.std
-        outputs        = self.vision_model(pixel_values=x)
-        image_features = outputs.pooler_output
+        image_features = self._encode_fn(x)
         image_features = F.normalize(image_features, dim=-1)
         return self.temperature * (image_features @ self.text_features.T)
 
@@ -353,7 +365,15 @@ def load_siglip2_surrogate(label_to_name: dict, device: torch.device) -> ZeroSho
     if device.type == "cuda":
         torch.cuda.empty_cache()
 
-    model = ZeroShotSigLIP2(vision_model, text_features, device)
+    # Wrap vision_model in a plain Python callable (NOT an nn.Module).
+    # This keeps HuggingFace's PreTrainedModel out of AutoAttack's module-tree
+    # serialiser, which chokes on SigLIP2's config with:
+    #   "data did not match any variant of untagged enum ModelWrapper"
+    # A lambda/closure is not an nn.Module child, so AutoAttack never sees it.
+    def encode_fn(x: torch.Tensor) -> torch.Tensor:
+        return vision_model(pixel_values=x).pooler_output
+
+    model = ZeroShotSigLIP2(encode_fn, text_features, device)
     model.eval().to(device)
     return model
 
