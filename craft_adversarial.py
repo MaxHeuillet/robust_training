@@ -303,10 +303,30 @@ class ZeroShotSigLIP2(nn.Module):
 
 
 # ---------------------------------------------------------------------------
-# Surrogate loaders
+# Dataset-specific prompt templates for zero-shot classification.
+# Generic "a photo of a {name}" works for coarse-grained datasets but fails
+# for fine-grained ones where class names are highly specific (car models,
+# aircraft variants, pet breeds). Templates are taken from the CLIP/SigLIP
+# zero-shot evaluation literature.
 # ---------------------------------------------------------------------------
 
-def load_clip_surrogate(label_to_name: dict, device: torch.device) -> ZeroShotCLIP:
+DATASET_PROMPT_TEMPLATES = {
+    "caltech101":                lambda name: f"a photo of a {name}",
+    "fgvc-aircraft-2013b":       lambda name: f"a photo of a {name}, a type of aircraft",
+    "flowers-102":               lambda name: f"a photo of a {name}, a type of flower",
+    "oxford-iiit-pet":           lambda name: f"a photo of a {name}, a type of pet",
+    "stanford_cars":             lambda name: f"a photo of a {name}",
+    "uc-merced-land-use-dataset": lambda name: f"a satellite photo of a {name}",
+}
+
+DEFAULT_PROMPT_TEMPLATE = lambda name: f"a photo of a {name}"
+
+
+def build_prompts(dataset: str, class_names: list) -> list:
+    template = DATASET_PROMPT_TEMPLATES.get(dataset, DEFAULT_PROMPT_TEMPLATE)
+    return [template(name) for name in class_names]
+
+def load_clip_surrogate(label_to_name: dict, device: torch.device, dataset: str = "") -> ZeroShotCLIP:
     import open_clip
 
     print(f"\nLoading CLIP surrogate: {CLIP_MODEL} / {CLIP_PRETRAIN}")
@@ -318,7 +338,7 @@ def load_clip_surrogate(label_to_name: dict, device: torch.device) -> ZeroShotCL
 
     tokenizer   = open_clip.get_tokenizer(CLIP_MODEL)
     class_names = [label_to_name[i] for i in sorted(label_to_name.keys())]
-    prompts     = [f"a photo of a {name}" for name in class_names]
+    prompts     = build_prompts(dataset, class_names)
 
     print(f"  Encoding {len(prompts)} class prompts...")
     with torch.no_grad():
@@ -331,7 +351,7 @@ def load_clip_surrogate(label_to_name: dict, device: torch.device) -> ZeroShotCL
     return model
 
 
-def load_siglip2_surrogate(label_to_name: dict, device: torch.device) -> ZeroShotSigLIP2:
+def load_siglip2_surrogate(label_to_name: dict, device: torch.device, dataset: str = "") -> ZeroShotSigLIP2:
     from transformers import AutoTokenizer, SiglipTextModel, SiglipVisionModel
 
     print(f"\nLoading SigLIP2 surrogate: {SIGLIP_MODEL_ID}")
@@ -348,12 +368,11 @@ def load_siglip2_surrogate(label_to_name: dict, device: torch.device) -> ZeroSho
 
     # use_fast=False avoids the Rust tokenizer which fails to parse the
     # Gemma-based SigLIP2 tokenizer.json on older `tokenizers` versions.
-    # truncation=True is required to handle class names that exceed max_length.
     tokenizer   = AutoTokenizer.from_pretrained(
         SIGLIP_MODEL_ID, cache_dir=str(HF_CACHE_DIR), use_fast=False
     )
     class_names = [label_to_name[i] for i in sorted(label_to_name.keys())]
-    prompts     = [f"a photo of a {name}" for name in class_names]
+    prompts     = build_prompts(dataset, class_names)
 
     print(f"  Encoding {len(prompts)} class prompts...")
     with torch.no_grad():
@@ -392,11 +411,11 @@ def load_siglip2_surrogate(label_to_name: dict, device: torch.device) -> ZeroSho
     return model
 
 
-def load_surrogate(surrogate: str, label_to_name: dict, device: torch.device) -> nn.Module:
+def load_surrogate(surrogate: str, label_to_name: dict, device: torch.device, dataset: str = "") -> nn.Module:
     if surrogate == SURROGATE_CLIP:
-        return load_clip_surrogate(label_to_name, device)
+        return load_clip_surrogate(label_to_name, device, dataset=dataset)
     elif surrogate == SURROGATE_SIGLIP:
-        return load_siglip2_surrogate(label_to_name, device)
+        return load_siglip2_surrogate(label_to_name, device, dataset=dataset)
     else:
         raise ValueError(f"Unknown surrogate: {surrogate!r}. Choose from {ALL_SURROGATES}")
 
@@ -463,7 +482,7 @@ def run_dataset(dataset: str, args, device: torch.device):
     print(f"Loaded {len(items)} samples | {len(label_to_name)} classes")
 
     # Surrogate reloaded per dataset — class text features differ per dataset
-    model = load_surrogate(args.surrogate, label_to_name, device)
+    model = load_surrogate(args.surrogate, label_to_name, device, dataset=dataset)
 
     transform = build_transform()
     ds        = AdversarialDataset(items, transform)
