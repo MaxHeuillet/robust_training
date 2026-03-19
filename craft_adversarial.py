@@ -359,7 +359,7 @@ def load_siglip2_surrogate(label_to_name: dict, device: torch.device) -> ZeroSho
     with torch.no_grad():
         inputs        = tokenizer(
             prompts,
-            padding="max_length",
+            padding=True,
             truncation=True,
             return_tensors="pt",
         ).to(device)
