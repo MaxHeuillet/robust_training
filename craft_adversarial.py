@@ -1,20 +1,25 @@
 #!/usr/bin/env python3
 """
 craft_adversarial.py — Craft L_inf adversarial perturbations using AutoAttack
-against a zero-shot CLIP ViT-B/16 surrogate (open_clip, LAION-2B weights).
+against either:
+  • zero-shot CLIP ViT-B/16   (open_clip, LAION-2B weights)
+  • zero-shot SigLIP2-base-patch16-224  (HuggingFace transformers)
 
-Loops over all datasets by default. Skips datasets already completed.
-Writes metadata.jsonl incrementally after each batch (safe to kill and resume).
+Both surrogates use zero-shot classification via textual embeddings.
+Input resolution is 224×224 for both — no resizing mismatch.
 
 Usage:
-    # All datasets
-    python craft_adversarial.py --eps 30 --batch_size 8
+    # CLIP surrogate (default), all datasets
+    python craft_adversarial.py --surrogate clip --eps 30 --batch_size 8
+
+    # SigLIP2 surrogate, all datasets
+    python craft_adversarial.py --surrogate siglip2 --eps 30 --batch_size 8
 
     # Single dataset
-    python craft_adversarial.py --dataset flowers-102 --eps 30 --batch_size 8
+    python craft_adversarial.py --surrogate siglip2 --dataset flowers-102 --eps 30 --batch_size 8
 
     # Quick sanity check
-    python craft_adversarial.py --dataset flowers-102 --eps 30 --batch_size 4 --max_samples 32
+    python craft_adversarial.py --surrogate siglip2 --dataset flowers-102 --eps 30 --batch_size 4 --max_samples 32
 """
 
 import argparse
@@ -27,7 +32,6 @@ from pathlib import Path
 from typing import Optional
 
 import numpy as np
-import open_clip
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -36,6 +40,26 @@ from autoattack import AutoAttack
 from PIL import Image
 from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
+
+
+# ---------------------------------------------------------------------------
+# Surrogate identifiers
+# ---------------------------------------------------------------------------
+
+SURROGATE_CLIP   = "clip"
+SURROGATE_SIGLIP = "siglip2"
+ALL_SURROGATES   = [SURROGATE_CLIP, SURROGATE_SIGLIP]
+
+# CLIP config
+CLIP_MODEL      = "ViT-B-16"
+CLIP_PRETRAIN   = "laion2b_s34b_b88k"
+CLIP_MEAN       = (0.48145466, 0.4578275,  0.40821073)
+CLIP_STD        = (0.26862954, 0.26130258, 0.27577711)
+
+# SigLIP2 config — base patch16 224 is natively 224×224, no resize needed
+SIGLIP_MODEL_ID = "google/siglip2-base-patch16-224"
+SIGLIP_MEAN     = (0.5, 0.5, 0.5)
+SIGLIP_STD      = (0.5, 0.5, 0.5)
 
 
 # ---------------------------------------------------------------------------
@@ -70,7 +94,7 @@ def get_device() -> torch.device:
 
 
 # ---------------------------------------------------------------------------
-# Data loading — copied exactly from llm_classify.py
+# Data loading
 # ---------------------------------------------------------------------------
 
 def extract_archive(data_root: str, dataset_name: str, work_dir: str) -> Path:
@@ -149,17 +173,16 @@ class AdversarialDataset(Dataset):
 
 
 # ---------------------------------------------------------------------------
-# Zero-shot CLIP surrogate
+# Surrogate models
 # AutoAttack expects: model(x) → logits (B, N_classes), x in [0, 1]
 # ---------------------------------------------------------------------------
 
-CLIP_MODEL    = "ViT-B-16"
-CLIP_PRETRAIN = "laion2b_s34b_b88k"
-CLIP_MEAN     = (0.48145466, 0.4578275,  0.40821073)
-CLIP_STD      = (0.26862954, 0.26130258, 0.27577711)
-
-
 class ZeroShotCLIP(nn.Module):
+    """
+    CLIP ViT-B/16 zero-shot surrogate (open_clip, LAION-2B weights).
+    Normalisation is applied inside forward so AutoAttack sees raw [0,1] input.
+    """
+
     def __init__(self, clip_model, text_features: torch.Tensor, device, temperature: float = 100.0):
         super().__init__()
         self.clip_model  = clip_model
@@ -175,8 +198,46 @@ class ZeroShotCLIP(nn.Module):
         return self.temperature * (image_features @ self.text_features.T)
 
 
-def load_zero_shot_clip(label_to_name: dict, device: torch.device) -> ZeroShotCLIP:
-    print(f"\nLoading zero-shot CLIP: {CLIP_MODEL} / {CLIP_PRETRAIN}")
+class ZeroShotSigLIP2(nn.Module):
+    """
+    SigLIP2-base-patch16-224 zero-shot surrogate (HuggingFace transformers).
+
+    SigLIP uses a sigmoid-based contrastive loss rather than softmax, so its
+    raw similarity scores are not calibrated as probabilities. We follow the
+    standard zero-shot recipe: cosine similarity × temperature, then let
+    AutoAttack treat the result as logits. This is consistent with how
+    google/siglip2 is used in the HuggingFace zero-shot pipeline.
+
+    Normalisation (mean=0.5, std=0.5) is applied inside forward so
+    AutoAttack sees raw [0,1] input — same contract as ZeroShotCLIP.
+    """
+
+    def __init__(self, vision_model, text_features: torch.Tensor, device, temperature: float = 100.0):
+        super().__init__()
+        self.vision_model = vision_model
+        self.temperature  = temperature
+        self.register_buffer("text_features", text_features)
+        self.register_buffer("mean", torch.tensor(SIGLIP_MEAN, device=device).view(1, 3, 1, 1))
+        self.register_buffer("std",  torch.tensor(SIGLIP_STD,  device=device).view(1, 3, 1, 1))
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        x = (x - self.mean) / self.std
+        # vision_model is SiglipVisionModel; outputs.last_hidden_state → pool
+        outputs       = self.vision_model(pixel_values=x)
+        # Use the pooled output (mean-pooled patch tokens), same as SiglipModel
+        image_features = outputs.pooler_output
+        image_features = F.normalize(image_features, dim=-1)
+        return self.temperature * (image_features @ self.text_features.T)
+
+
+# ---------------------------------------------------------------------------
+# Surrogate loaders
+# ---------------------------------------------------------------------------
+
+def load_clip_surrogate(label_to_name: dict, device: torch.device) -> ZeroShotCLIP:
+    import open_clip
+
+    print(f"\nLoading CLIP surrogate: {CLIP_MODEL} / {CLIP_PRETRAIN}")
     clip_model, _, _ = open_clip.create_model_and_transforms(CLIP_MODEL, pretrained=CLIP_PRETRAIN)
     clip_model.eval().to(device)
 
@@ -195,7 +256,61 @@ def load_zero_shot_clip(label_to_name: dict, device: torch.device) -> ZeroShotCL
     return model
 
 
+def load_siglip2_surrogate(label_to_name: dict, device: torch.device) -> ZeroShotSigLIP2:
+    from transformers import AutoTokenizer, SiglipTextModel, SiglipVisionModel
+
+    print(f"\nLoading SigLIP2 surrogate: {SIGLIP_MODEL_ID}")
+
+    vision_model = SiglipVisionModel.from_pretrained(SIGLIP_MODEL_ID)
+    vision_model.eval().to(device)
+
+    text_model = SiglipTextModel.from_pretrained(SIGLIP_MODEL_ID)
+    text_model.eval().to(device)
+
+    tokenizer   = AutoTokenizer.from_pretrained(SIGLIP_MODEL_ID)
+    class_names = [label_to_name[i] for i in sorted(label_to_name.keys())]
+    # SigLIP prompt format (matches original training)
+    prompts     = [f"a photo of a {name}" for name in class_names]
+
+    print(f"  Encoding {len(prompts)} class prompts...")
+    with torch.no_grad():
+        inputs        = tokenizer(prompts, padding="max_length", return_tensors="pt").to(device)
+        text_outputs  = text_model(**inputs)
+        # SiglipTextModel pools via the EOS token position
+        text_features = F.normalize(text_outputs.pooler_output, dim=-1)
+
+    print(f"  Text features: {text_features.shape}")
+
+    # Only the vision encoder is needed at attack time; free the text model
+    del text_model
+    if device.type == "cuda":
+        torch.cuda.empty_cache()
+
+    model = ZeroShotSigLIP2(vision_model, text_features, device)
+    model.eval().to(device)
+    return model
+
+
+def load_surrogate(surrogate: str, label_to_name: dict, device: torch.device) -> nn.Module:
+    if surrogate == SURROGATE_CLIP:
+        return load_clip_surrogate(label_to_name, device)
+    elif surrogate == SURROGATE_SIGLIP:
+        return load_siglip2_surrogate(label_to_name, device)
+    else:
+        raise ValueError(f"Unknown surrogate: {surrogate!r}. Choose from {ALL_SURROGATES}")
+
+
+def surrogate_run_name(surrogate: str) -> str:
+    """Canonical slug used in output directory names."""
+    if surrogate == SURROGATE_CLIP:
+        return "zeroshot_clip_vitb16_laion2b"
+    elif surrogate == SURROGATE_SIGLIP:
+        return "zeroshot_siglip2_base_patch16_224"
+    raise ValueError(surrogate)
+
+
 def build_transform() -> T.Compose:
+    """Both surrogates operate at 224×224 — single shared transform."""
     return T.Compose([
         T.Resize((224, 224), interpolation=T.InterpolationMode.BICUBIC),
         T.ToTensor(),
@@ -226,17 +341,18 @@ def save_batch(x_adv, labels, filenames, label_to_name, output_dir: Path) -> lis
 # ---------------------------------------------------------------------------
 
 def run_dataset(dataset: str, args, device: torch.device):
-    eps_float = args.eps / 255.0
-    run_name  = f"{dataset}__zeroshot_clip_vitb16_laion2b__linf_eps{args.eps}__autoattack_standard"
+    eps_float  = args.eps / 255.0
+    slug       = surrogate_run_name(args.surrogate)
+    run_name   = f"{dataset}__{slug}__linf_eps{args.eps}__autoattack_standard"
     output_dir = Path(os.path.expanduser(args.output_dir)) / run_name
 
     print(f"\n{'='*60}")
     print(f"  Dataset   : {dataset}")
+    print(f"  Surrogate : {args.surrogate}")
     print(f"  eps       : {args.eps}/255 = {eps_float:.5f}")
     print(f"  Output    : {output_dir}")
     print(f"{'='*60}")
 
-    # Skip if already fully completed
     if (output_dir / "surrogate_summary.json").exists():
         print(f"  ✓ Already completed — skipping\n")
         return
@@ -248,8 +364,8 @@ def run_dataset(dataset: str, args, device: torch.device):
     label_to_name = load_class_names(args.class_names_dir, dataset)
     print(f"Loaded {len(items)} samples | {len(label_to_name)} classes")
 
-    # Zero-shot CLIP surrogate (reloaded per dataset — class names differ)
-    model = load_zero_shot_clip(label_to_name, device)
+    # Load surrogate (reloaded per dataset — class names / text features differ)
+    model = load_surrogate(args.surrogate, label_to_name, device)
 
     # DataLoader
     transform = build_transform()
@@ -259,12 +375,13 @@ def run_dataset(dataset: str, args, device: torch.device):
 
     output_dir.mkdir(parents=True, exist_ok=True)
     (output_dir / "run_config.json").write_text(json.dumps({
-        "dataset":   dataset,
-        "surrogate": f"zeroshot_{CLIP_MODEL}_{CLIP_PRETRAIN}",
-        "attack":    "autoattack_standard",
-        "eps_pixel": args.eps,
-        "eps_float": eps_float,
-        "norm":      "Linf",
+        "dataset":        dataset,
+        "surrogate":      args.surrogate,
+        "surrogate_slug": slug,
+        "attack":         "autoattack_standard",
+        "eps_pixel":      args.eps,
+        "eps_float":      eps_float,
+        "norm":           "Linf",
     }, indent=2))
 
     # AutoAttack — full standard ensemble (APGD-CE + APGD-DLR + FAB + Square)
@@ -278,7 +395,6 @@ def run_dataset(dataset: str, args, device: torch.device):
     n_correct_adv   = 0
     n_total         = 0
 
-    # Open metadata.jsonl in append mode — safe to kill and partially resume
     meta_file = open(output_dir / "metadata.jsonl", "a")
 
     print(f"\nCrafting adversarial examples → {output_dir}\n")
@@ -298,7 +414,6 @@ def run_dataset(dataset: str, args, device: torch.device):
 
         n_total += x.size(0)
 
-        # Save images + write metadata immediately
         records = save_batch(x_adv, labels_t.cpu().tolist(), filenames, label_to_name, output_dir)
         for rec in records:
             meta_file.write(json.dumps(rec) + "\n")
@@ -306,7 +421,6 @@ def run_dataset(dataset: str, args, device: torch.device):
 
     meta_file.close()
 
-    # Summary — written last so we can use its existence as completion flag
     clean_acc = n_correct_clean / n_total
     adv_acc   = n_correct_adv   / n_total
     (output_dir / "surrogate_summary.json").write_text(json.dumps({
@@ -330,8 +444,11 @@ def run_dataset(dataset: str, args, device: torch.device):
 
 def main():
     p = argparse.ArgumentParser()
+    p.add_argument("--surrogate",       default=SURROGATE_CLIP,
+                   choices=ALL_SURROGATES,
+                   help=f"Surrogate model. One of: {ALL_SURROGATES} (default: clip)")
     p.add_argument("--dataset",         default=None,
-                   help="Single dataset (omit to loop over all datasets)")
+                   help="Single dataset name (omit to loop over all datasets)")
     p.add_argument("--eps",             type=int, default=4,
                    help="L_inf epsilon in pixel units [0-255], default=4")
     p.add_argument("--batch_size",      type=int, default=4)
@@ -345,7 +462,8 @@ def main():
     device   = get_device()
     datasets = [args.dataset] if args.dataset else ALL_DATASETS
 
-    print(f"\nProcessing {len(datasets)} dataset(s): {', '.join(datasets)}")
+    print(f"\nSurrogate : {args.surrogate}")
+    print(f"Processing {len(datasets)} dataset(s): {', '.join(datasets)}")
 
     for dataset in datasets:
         try:
