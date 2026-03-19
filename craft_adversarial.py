@@ -346,43 +346,41 @@ def load_siglip2_surrogate(label_to_name: dict, device: torch.device) -> ZeroSho
     )
     text_model.eval().to(device)
 
-    tokenizer   = AutoTokenizer.from_pretrained(SIGLIP_MODEL_ID, cache_dir=str(HF_CACHE_DIR))
+    # use_fast=False avoids the Rust tokenizer which fails to parse the
+    # Gemma-based SigLIP2 tokenizer.json on older `tokenizers` versions.
+    # truncation=True is required to handle class names that exceed max_length.
+    tokenizer   = AutoTokenizer.from_pretrained(
+        SIGLIP_MODEL_ID, cache_dir=str(HF_CACHE_DIR), use_fast=False
+    )
     class_names = [label_to_name[i] for i in sorted(label_to_name.keys())]
     prompts     = [f"a photo of a {name}" for name in class_names]
 
     print(f"  Encoding {len(prompts)} class prompts...")
     with torch.no_grad():
-        inputs = tokenizer(prompts, padding="max_length", truncation=True, return_tensors="pt").to(device)
-        text_features = F.normalize(text_model(**inputs).pooler_output, dim=-1)
+        inputs        = tokenizer(
+            prompts,
+            padding="max_length",
+            truncation=True,
+            return_tensors="pt",
+        ).to(device)
+        text_outputs  = text_model(**inputs)
+        text_features = F.normalize(text_outputs.pooler_output, dim=-1)
 
+    print(f"  Text features: {text_features.shape}")
+
+    # Free text model before the attack loop to save GPU memory
     del text_model
     if device.type == "cuda":
         torch.cuda.empty_cache()
 
-    # -----------------------------------------------------------------------
-    # KEY FIX: re-save the vision model as a plain .pt checkpoint, then reload
-    # it with torch.load — this gives us an ordinary nn.Module backed by plain
-    # PyTorch tensors, with no safetensors/HuggingFace metadata attached.
-    # AutoAttack's internal state serialiser then never touches safetensors.
-    # -----------------------------------------------------------------------
-    pt_path = HF_CACHE_DIR / "siglip2_vision_plain.pt"
-    if not pt_path.exists():
-        print("  Converting SigLIP2 weights to plain .pt checkpoint...")
-        torch.save(vision_model.state_dict(), pt_path)
-
-    # Reload weights into a fresh instance using torch.load (not from_pretrained)
-    plain_model = SiglipVisionModel(vision_model.config)
-    plain_model.load_state_dict(torch.load(pt_path, map_location=device))
-    plain_model.eval().to(device)
-
-    del vision_model   # drop the HuggingFace-backed original
-    if device.type == "cuda":
-        torch.cuda.empty_cache()
-
+    # Wrap vision_model in a plain Python callable (NOT an nn.Module).
+    # This keeps HuggingFace's PreTrainedModel out of AutoAttack's module-tree
+    # serialiser, which chokes on SigLIP2's config with:
+    #   "data did not match any variant of untagged enum ModelWrapper"
+    # A lambda/closure is not an nn.Module child, so AutoAttack never sees it.
     def encode_fn(x: torch.Tensor) -> torch.Tensor:
-        return plain_model(pixel_values=x).pooler_output
+        return vision_model(pixel_values=x).pooler_output
 
-    print(f"  Text features: {text_features.shape}")
     model = ZeroShotSigLIP2(encode_fn, text_features, device)
     model.eval().to(device)
     return model
