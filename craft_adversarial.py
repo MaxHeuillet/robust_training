@@ -352,7 +352,7 @@ def load_siglip2_surrogate(label_to_name: dict, device: torch.device) -> ZeroSho
 
     print(f"  Encoding {len(prompts)} class prompts...")
     with torch.no_grad():
-        inputs        = tokenizer(prompts, padding="max_length", return_tensors="pt").to(device)
+        inputs = tokenizer(prompts, padding="max_length", truncation=True, return_tensors="pt").to(device)
         text_features = F.normalize(text_model(**inputs).pooler_output, dim=-1)
 
     del text_model
