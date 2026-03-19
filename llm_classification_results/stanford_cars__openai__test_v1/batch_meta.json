@@ -1,10 +1,10 @@
 {
-  "batch_id": "batch_69bad988920c819099eaba05466482d8",
-  "file_id": "file-Ev6HvrmpyC2j5WRfdNZS35",
+  "batch_id": "batch_69bb35d379e88190890d9f2c4ff437fc",
+  "file_id": "file-NaWcvdRn3fD8hAFtWWkKbt",
   "provider": "openai",
   "run_id": "stanford_cars__openai__test_v1",
   "model": "gpt-4o-mini",
-  "num_requests": 1000,
-  "submitted_at": "2026-03-18T12:57:44.771781",
-  "retrieve_cmd": "python llm_classify.py --batch_retrieve batch_69bad988920c819099eaba05466482d8 --provider openai --dataset stanford_cars --data_root /Users/maximeheuillet/data_processed --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name stanford_cars__openai__test_v1"
+  "num_requests": 500,
+  "submitted_at": "2026-03-18T19:31:31.699759",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batch_69bb35d379e88190890d9f2c4ff437fc --provider openai --dataset stanford_cars --data_root /Users/maximeheuillet/data_processed --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name stanford_cars__openai__test_v1"
 }

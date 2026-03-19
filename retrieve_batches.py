@@ -11,9 +11,9 @@ Usage:
     python retrieve_batches.py <manifest.json>
 
     # Override paths if needed
-    python retrieve_batches.py <manifest.json> \\
-        --data_root ~/data_processed \\
-        --class_names_dir ~/data_processed/class_names \\
+    python retrieve_batches.py <manifest.json> \
+        --data_root ~/data_processed \
+        --class_names_dir ~/data_processed/class_names \
         --output_dir ./results
 """
 
@@ -44,6 +44,28 @@ FAILED_SIGNALS = [
 ]
 
 # ---------------------------------------------------------------------------
+
+def merge_complement(run_name: str, output_dir: str):
+    """If a __complement predictions file exists, merge it into the main run."""
+    base = Path(output_dir) / run_name
+    comp = Path(output_dir) / (run_name + "__complement")
+    p1   = base / "predictions.jsonl"
+    p2   = comp / "predictions.jsonl"
+
+    if not p2.exists():
+        return
+
+    recs = [json.loads(l) for p in [p1, p2] for l in p.read_text().splitlines() if l.strip()]
+    seen = {}
+    for r in recs:
+        if r["index"] not in seen:
+            seen[r["index"]] = r
+    deduped = sorted(seen.values(), key=lambda r: r["index"])
+    with open(p1, "w") as f:
+        for r in deduped:
+            f.write(json.dumps(r) + "\n")
+    print(f"   ✓ Merged complement — {len(deduped)} total predictions")
+
 
 def score_predictions(predictions_path: Path) -> dict:
     records = [json.loads(l) for l in predictions_path.read_text().splitlines() if l.strip()]
@@ -151,6 +173,7 @@ def main():
         # Already retrieved in a prior pass
         predictions_path = Path(output_dir) / run_name / "predictions.jsonl"
         if entry.get("status") == "retrieved" and predictions_path.exists():
+            merge_complement(run_name, output_dir)
             scores = score_predictions(predictions_path)
             print(f"   ✓ Already retrieved — acc={scores['accuracy']:.4f} "
                   f"({scores['correct']}/{scores['valid']}, {scores['errors']} errors)")
@@ -163,7 +186,14 @@ def main():
         entry["status"] = status
 
         if status == "retrieved":
-            scores = score_predictions(predictions_path)
+            if run_name.endswith("__complement"):
+                parent_run = run_name[:-len("__complement")]
+                merge_complement(parent_run, output_dir)
+                parent_path = Path(output_dir) / parent_run / "predictions.jsonl"
+                scores = score_predictions(parent_path if parent_path.exists() else predictions_path)
+            else:
+                merge_complement(run_name, output_dir)
+                scores = score_predictions(predictions_path)
             print(f"   ✓ Retrieved — acc={scores['accuracy']:.4f} "
                   f"({scores['correct']}/{scores['valid']}, {scores['errors']} errors)")
             counts["retrieved"] += 1
@@ -192,7 +222,7 @@ def main():
     print()
 
     # Accuracy table for retrieved jobs
-    retrieved_entries = [e for e in manifest if e.get("status") == "retrieved"]
+    retrieved_entries = [e for e in manifest if e.get("status") == "retrieved" and not e["run_name"].endswith("__complement")]
     if retrieved_entries:
         print(f"  {'Dataset':<30} {'Model key':<20} {'Accuracy':>9}  {'Correct':>8}  {'Errors':>7}")
         print(f"  {'-'*80}")

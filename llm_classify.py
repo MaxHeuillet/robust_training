@@ -83,7 +83,6 @@ PROVIDER_MODELS = {
 GOOGLE_MODEL_CONFIG = {
     "gemini-3-flash-preview-nothink": {"model": "gemini-3-flash-preview", "thinking_level": "MINIMAL", "max_output_tokens": 100},
     "gemini-3-flash-preview-think":   {"model": "gemini-3-flash-preview", "thinking_level": "HIGH",    "max_output_tokens": 256},
-    # Non-thinking models: no thinking config needed
     "gemini-2.5-flash": {"model": "gemini-2.5-flash", "thinking_level": None, "max_output_tokens": 100},
     "gemini-2.5-pro":   {"model": "gemini-2.5-pro",   "thinking_level": None, "max_output_tokens": 100},
 }
@@ -147,8 +146,19 @@ def load_local_dataset(dataset_dir: Path, split: str, max_samples: Optional[int]
     return items
 
 
+BASE_DATASETS = [
+    "caltech101", "fgvc-aircraft-2013b", "flowers-102",
+    "oxford-iiit-pet", "stanford_cars", "uc-merced-land-use-dataset",
+]
+
+def get_base_dataset(dataset_name: str) -> str:
+    for base in BASE_DATASETS:
+        if dataset_name.startswith(base):
+            return base
+    return dataset_name
+
 def load_class_names(class_names_dir: str, dataset_name: str) -> dict[int, str]:
-    path = Path(class_names_dir) / f"{dataset_name}.json"
+    path = Path(class_names_dir) / f"{get_base_dataset(dataset_name)}.json"
     if not path.exists():
         raise FileNotFoundError(f"Class names not found: {path}")
     with open(path, "r") as f:
@@ -195,12 +205,7 @@ def load_and_encode_image(img_path: Path, transform=None) -> str:
 # ---------------------------------------------------------------------------
 
 def build_classification_prompt(class_names: list[str]) -> str:
-    """
-    Build a highly token-efficient system prompt for image classification.
-    """
-    # Join classes with a simple comma and space to minimize syntax tokens
     class_list = ", ".join(class_names)
-    
     return (
         "Classify the image into exactly one of these classes: "
         f"{class_list}. "
@@ -209,42 +214,26 @@ def build_classification_prompt(class_names: list[str]) -> str:
     )
 
 
-
-
 # ---------------------------------------------------------------------------
-# Output parser — fuzzy match LLM response to closest class name
+# Output parser
 # ---------------------------------------------------------------------------
 
 def normalize(s: str) -> str:
-    """Lowercase, strip punctuation, collapse whitespace."""
     s = s.lower().strip()
-    s = re.sub(r"[^a-z0-9\s]", " ", s)  # remove all non-alphanumeric
+    s = re.sub(r"[^a-z0-9\s]", " ", s)
     return " ".join(s.split())
 
 
 def parse_prediction(raw_prediction: str, class_names: list[str]) -> tuple[str, float]:
-    """
-    Parse LLM output and match to the closest class name.
-
-    Returns (matched_class_name, confidence_score).
-    confidence_score is 1.0 for exact match, <1.0 for fuzzy match.
-    """
     if raw_prediction == "__ERROR__":
         return "__ERROR__", 0.0
 
     pred_norm = normalize(raw_prediction)
+    norm_to_original = {normalize(cls): cls for cls in class_names}
 
-    # Build normalized class name lookup
-    norm_to_original = {}
-    for cls in class_names:
-        norm_to_original[normalize(cls)] = cls
-
-    # 1. Exact match after normalization
     if pred_norm in norm_to_original:
         return norm_to_original[pred_norm], 1.0
 
-    # 2. Check if any class name is contained in the prediction
-    #    (handles "cape flower* (" → matches "cape flower")
     best_contained = None
     best_contained_len = 0
     for cls_norm, cls_orig in norm_to_original.items():
@@ -254,12 +243,10 @@ def parse_prediction(raw_prediction: str, class_names: list[str]) -> tuple[str, 
     if best_contained and best_contained_len > 3:
         return best_contained, 0.95
 
-    # 3. Check if prediction is contained in any class name
     for cls_norm, cls_orig in norm_to_original.items():
         if pred_norm in cls_norm and len(pred_norm) > 3:
             return cls_orig, 0.9
 
-    # 4. Fuzzy match using SequenceMatcher
     best_match = None
     best_score = 0.0
     for cls_norm, cls_orig in norm_to_original.items():
@@ -271,7 +258,6 @@ def parse_prediction(raw_prediction: str, class_names: list[str]) -> tuple[str, 
     if best_score >= 0.6:
         return best_match, best_score
 
-    # 5. No good match — return raw prediction as-is
     return raw_prediction, 0.0
 
 
@@ -280,11 +266,10 @@ def parse_prediction(raw_prediction: str, class_names: list[str]) -> tuple[str, 
 # ---------------------------------------------------------------------------
 
 MAX_RETRIES = 3
-RETRY_BASE_DELAY = 5  # seconds
+RETRY_BASE_DELAY = 5
 
 
 async def _retry_on_rate_limit(fn, *args, retries=MAX_RETRIES):
-    """Wrapper that retries on rate limit (429) errors."""
     for attempt in range(retries + 1):
         result = await fn(*args)
         if result != "__RATE_LIMITED__":
@@ -347,7 +332,6 @@ async def classify_google(img_b64, system_prompt, model, semaphore):
         logger.error("pip install google-genai")
         return "__ERROR__"
 
-    # Resolve virtual model name to actual API model + thinking config
     gcfg = GOOGLE_MODEL_CONFIG.get(model, {"model": model, "thinking_level": None, "max_output_tokens": 100})
     actual_model = gcfg["model"]
     thinking_level = gcfg["thinking_level"]
@@ -412,11 +396,11 @@ PROVIDER_FN = {
 }
 
 # ---------------------------------------------------------------------------
-# Batch API (Anthropic) — 50% discount, async processing
+# Batch API (Anthropic)
 # ---------------------------------------------------------------------------
 
 async def run_batch_anthropic(
-    items: list[tuple[Path, int]],
+    items: list[tuple[int, Path, int]],  # (orig_idx, path, label)
     label_to_name: dict[int, str],
     class_names_list: list[str],
     system_prompt: str,
@@ -427,7 +411,6 @@ async def run_batch_anthropic(
     data_root: str = "",
     class_names_dir: str = "",
 ):
-    """Submit classification requests as an Anthropic Batch API job."""
     import anthropic
 
     logger.info("Preparing Anthropic batch request...")
@@ -435,12 +418,11 @@ async def run_batch_anthropic(
     run_dir = output_dir / run_id
     run_dir.mkdir(parents=True, exist_ok=True)
 
-    # Build batch requests
     requests = []
-    for idx, (img_path, int_label) in enumerate(items):
+    for orig_idx, img_path, int_label in items:
         img_b64 = load_and_encode_image(img_path, transform=transform)
         requests.append({
-            "custom_id": f"img-{idx:05d}-label-{int_label}",
+            "custom_id": f"img-{orig_idx:05d}-label-{int_label}",
             "params": {
                 "model": model,
                 "max_tokens": 100,
@@ -452,7 +434,6 @@ async def run_batch_anthropic(
             },
         })
 
-    # Write JSONL file
     batch_input_file = run_dir / "batch_input.jsonl"
     with open(batch_input_file, "w") as f:
         for req in requests:
@@ -460,26 +441,20 @@ async def run_batch_anthropic(
 
     logger.info(f"Wrote {len(requests)} requests to {batch_input_file}")
 
-    # Submit batch
     client = anthropic.Anthropic()
-    batch = client.messages.batches.create(
-        requests=requests,
-    )
+    batch = client.messages.batches.create(requests=requests)
 
     logger.info(f"Batch submitted: id={batch.id}")
     logger.info(f"Status: {batch.processing_status}")
-    logger.info(f"Monitor at: https://console.anthropic.com/batches/{batch.id}")
-    logger.info(f"")
+
     retrieve_cmd = (
         f"python llm_classify.py --batch_retrieve {batch.id} "
         f"--dataset {dataset_name} --data_root {data_root} "
         f"--class_names_dir {class_names_dir} "
         f"--output_dir {output_dir} --run_name {run_id}"
     )
-    logger.info(f"To retrieve results when complete, run:")
-    logger.info(f"  {retrieve_cmd}")
+    logger.info(f"To retrieve: {retrieve_cmd}")
 
-    # Save batch metadata
     meta = {
         "batch_id": batch.id,
         "run_id": run_id,
@@ -488,8 +463,7 @@ async def run_batch_anthropic(
         "submitted_at": datetime.now().isoformat(),
         "retrieve_cmd": retrieve_cmd,
     }
-    meta_file = run_dir / "batch_meta.json"
-    with open(meta_file, "w") as f:
+    with open(run_dir / "batch_meta.json", "w") as f:
         json.dump(meta, f, indent=2)
 
     return batch.id
@@ -502,34 +476,27 @@ def retrieve_batch_results(
     output_dir: Path,
     run_id: str,
 ):
-    """Retrieve and score results from an Anthropic batch job."""
     import anthropic
 
     client = anthropic.Anthropic()
-
-    # Check status
     batch = client.messages.batches.retrieve(batch_id)
     logger.info(f"Batch {batch_id}: {batch.processing_status}")
 
     if batch.processing_status != "ended":
-        logger.info(f"Batch not yet complete. Check back later.")
+        logger.info(f"Batch not yet complete.")
         logger.info(f"  Counts: {batch.request_counts}")
         return
 
-    # Load class names
     label_to_name = load_class_names(class_names_dir, dataset_name)
     class_names_list = [label_to_name[i] for i in sorted(label_to_name.keys())]
 
-    # Stream results
     run_dir = output_dir / run_id
     run_dir.mkdir(parents=True, exist_ok=True)
     predictions_file = run_dir / "predictions.jsonl"
     records = []
 
     for result in client.messages.batches.results(batch_id):
-        custom_id = result.custom_id
-        # Parse "img-00042-label-15"
-        parts = custom_id.split("-")
+        parts = result.custom_id.split("-")
         idx = int(parts[1])
         int_label = int(parts[3])
         gt_name = label_to_name[int_label]
@@ -550,7 +517,6 @@ def retrieve_batch_results(
                 "confidence": 0.0, "correct": False, "error": True,
             })
 
-    # Save
     with open(predictions_file, "w") as f:
         for rec in records:
             f.write(json.dumps(rec) + "\n")
@@ -559,41 +525,16 @@ def retrieve_batch_results(
     errors = sum(1 for r in records if r["error"])
     valid = len(records) - errors
     acc = correct / valid if valid > 0 else 0
-
     logger.info(f"Results: {correct}/{valid} correct ({acc:.4f}), {errors} errors")
     logger.info(f"Saved to {predictions_file}")
 
 
 # ---------------------------------------------------------------------------
-# Batch API (Google) — 50% discount, async processing
+# Batch API (Google)
 # ---------------------------------------------------------------------------
 
-"""
-PATCH for llm_classify.py — replace run_batch_google and retrieve_batch_results_google
-with a file-upload based approach that supports per-request `key` tracking.
-
-The inline request format does NOT support a `key` field (pydantic rejects it).
-The file-upload JSONL format does support `key`, and responses echo it back,
-allowing reliable input↔output correlation.
-
-HOW TO APPLY:
-  Replace the two functions `run_batch_google` and `retrieve_batch_results_google`
-  in llm_classify.py with the versions below.
-"""
-
-import asyncio
-import base64
-import json
-import logging
-import os
-import tempfile
-from pathlib import Path
-from typing import Optional
-
-
-
 async def run_batch_google(
-    items: list,
+    items: list[tuple[int, Path, int]],  # (orig_idx, path, label)
     label_to_name: dict,
     class_names_list: list,
     system_prompt: str,
@@ -604,26 +545,12 @@ async def run_batch_google(
     data_root: str = "",
     class_names_dir: str = "",
 ):
-    """
-    Submit a Google Batch API job using the file-upload approach.
-
-    The inline-request format does not support per-request `key` fields —
-    only the JSONL file-upload approach does. We:
-      1. Build a JSONL file where each line is:
-            {"key": "img-00042-label-15", "request": {contents: [...], config: {...}}}
-      2. Upload it via the Files API
-      3. Create the batch job referencing the uploaded file
-      4. On completion, responses echo the `key` back, enabling correlation.
-    """
     try:
         from google import genai
         from google.genai import types
     except ImportError:
         logger.error("pip install google-genai")
         return None
-
-    # Resolve virtual model name
-    from llm_classify import GOOGLE_MODEL_CONFIG, get_test_transform, load_and_encode_image
 
     gcfg = GOOGLE_MODEL_CONFIG.get(model, {"model": model, "thinking_level": None, "max_output_tokens": 100})
     actual_model = gcfg["model"]
@@ -635,18 +562,16 @@ async def run_batch_google(
     run_dir = output_dir / run_id
     run_dir.mkdir(parents=True, exist_ok=True)
 
-    # Build per-request config
     req_config: dict = {"max_output_tokens": max_tokens}
     if thinking_level is not None:
         req_config["thinking_config"] = {"thinking_budget": -1 if thinking_level == "HIGH" else 0}
 
-    # Write JSONL file
     jsonl_path = run_dir / "batch_input.jsonl"
     with open(jsonl_path, "w") as f:
-        for idx, (img_path, int_label) in enumerate(items):
+        for i, (orig_idx, img_path, int_label) in enumerate(items):
             img_b64 = load_and_encode_image(img_path, transform=transform)
             record = {
-                "key": f"img-{idx:05d}-label-{int_label}",
+                "key": f"img-{orig_idx:05d}-label-{int_label}",
                 "request": {
                     "contents": [{
                         "role": "user",
@@ -659,12 +584,11 @@ async def run_batch_google(
                 },
             }
             f.write(json.dumps(record) + "\n")
-            if (idx + 1) % 100 == 0:
-                logger.info(f"  Encoded {idx + 1}/{len(items)} images...")
+            if (i + 1) % 100 == 0:
+                logger.info(f"  Encoded {i + 1}/{len(items)} images...")
 
     logger.info(f"Wrote {len(items)} requests to {jsonl_path}")
 
-    # Upload the JSONL file
     client = genai.Client()
     logger.info("Uploading JSONL to Files API...")
     uploaded_file = await asyncio.to_thread(
@@ -677,7 +601,6 @@ async def run_batch_google(
     )
     logger.info(f"Uploaded file: {uploaded_file.name}")
 
-    # Create batch job
     batch_job = await asyncio.to_thread(
         client.batches.create,
         model=actual_model,
@@ -694,10 +617,8 @@ async def run_batch_google(
         f"--data_root {data_root} --class_names_dir {class_names_dir} "
         f"--output_dir {output_dir} --run_name {run_id}"
     )
-    logger.info(f"To retrieve results when complete, run:")
-    logger.info(f"  {retrieve_cmd}")
+    logger.info(f"To retrieve: {retrieve_cmd}")
 
-    # Save metadata
     meta = {
         "batch_name": batch_job.name,
         "uploaded_file": uploaded_file.name,
@@ -708,8 +629,7 @@ async def run_batch_google(
         "num_requests": len(items),
         "retrieve_cmd": retrieve_cmd,
     }
-    meta_file = run_dir / "batch_meta.json"
-    with open(meta_file, "w") as f:
+    with open(run_dir / "batch_meta.json", "w") as f:
         json.dump(meta, f, indent=2)
 
     return batch_job.name
@@ -722,20 +642,10 @@ def retrieve_batch_results_google(
     output_dir: Path,
     run_id: str,
 ):
-    """
-    Retrieve and score results from a Google batch job submitted via file upload.
-
-    The result file is a JSONL where each line is:
-        {"key": "img-00042-label-15", "response": {...}}
-    We download it, parse keys for ground-truth labels, and score predictions.
-    """
     from google import genai
-
-    # Import helpers from llm_classify
     from llm_classify import load_class_names, parse_prediction, normalize
 
     client = genai.Client()
-
     job = client.batches.get(name=batch_name)
     completed_states = {"JOB_STATE_SUCCEEDED", "JOB_STATE_FAILED", "JOB_STATE_CANCELLED", "JOB_STATE_EXPIRED"}
 
@@ -749,7 +659,6 @@ def retrieve_batch_results_google(
         logger.error(f"Batch job did not succeed: {job.state.name}")
         return
 
-    # Load class names
     label_to_name = load_class_names(class_names_dir, dataset_name)
     class_names_list = [label_to_name[i] for i in sorted(label_to_name.keys())]
 
@@ -757,7 +666,6 @@ def retrieve_batch_results_google(
     run_dir.mkdir(parents=True, exist_ok=True)
     predictions_file = run_dir / "predictions.jsonl"
 
-    # Download result file
     result_file_name = job.dest.file_name
     logger.info(f"Downloading result file: {result_file_name}")
     file_content_bytes = client.files.download(file=result_file_name)
@@ -771,7 +679,6 @@ def retrieve_batch_results_google(
         try:
             result = json.loads(line)
             key = result["key"]
-            # Parse "img-00042-label-15"
             parts = key.split("-")
             idx = int(parts[1])
             int_label = int(parts[3])
@@ -810,17 +717,16 @@ def retrieve_batch_results_google(
     errors  = sum(1 for r in records if r["error"])
     valid   = len(records) - errors
     acc     = correct / valid if valid > 0 else 0
-
     logger.info(f"Results: {correct}/{valid} correct ({acc:.4f}), {errors} errors")
     logger.info(f"Saved to {predictions_file}")
 
 
 # ---------------------------------------------------------------------------
-# Batch API (OpenAI) — 50% discount, async processing
+# Batch API (OpenAI)
 # ---------------------------------------------------------------------------
 
 async def run_batch_openai(
-    items: list[tuple[Path, int]],
+    items: list[tuple[int, Path, int]],  # (orig_idx, path, label)
     label_to_name: dict[int, str],
     class_names_list: list[str],
     system_prompt: str,
@@ -831,7 +737,6 @@ async def run_batch_openai(
     data_root: str = "",
     class_names_dir: str = "",
 ):
-    """Submit classification requests as an OpenAI Batch API job."""
     import openai
 
     logger.info("Preparing OpenAI batch request...")
@@ -839,13 +744,12 @@ async def run_batch_openai(
     run_dir = output_dir / run_id
     run_dir.mkdir(parents=True, exist_ok=True)
 
-    # Build JSONL requests
     batch_input_file = run_dir / "batch_input.jsonl"
     with open(batch_input_file, "w") as f:
-        for idx, (img_path, int_label) in enumerate(items):
+        for i, (orig_idx, img_path, int_label) in enumerate(items):
             img_b64 = load_and_encode_image(img_path, transform=transform)
             request = {
-                "custom_id": f"img-{idx:05d}-label-{int_label}",
+                "custom_id": f"img-{orig_idx:05d}-label-{int_label}",
                 "method": "POST",
                 "url": "/v1/chat/completions",
                 "body": {
@@ -861,13 +765,11 @@ async def run_batch_openai(
                 },
             }
             f.write(json.dumps(request) + "\n")
-
-            if (idx + 1) % 100 == 0:
-                logger.info(f"  Encoded {idx + 1}/{len(items)} images...")
+            if (i + 1) % 100 == 0:
+                logger.info(f"  Encoded {i + 1}/{len(items)} images...")
 
     logger.info(f"Wrote {len(items)} requests to {batch_input_file}")
 
-    # Upload file and create batch
     client = openai.OpenAI()
     uploaded_file = client.files.create(
         file=open(batch_input_file, "rb"),
@@ -883,17 +785,15 @@ async def run_batch_openai(
 
     logger.info(f"Batch submitted: id={batch.id}")
     logger.info(f"Status: {batch.status}")
-    logger.info(f"")
+
     retrieve_cmd = (
         f"python llm_classify.py --batch_retrieve {batch.id} "
         f"--provider openai --dataset {dataset_name} --data_root {data_root} "
         f"--class_names_dir {class_names_dir} "
         f"--output_dir {output_dir} --run_name {run_id}"
     )
-    logger.info(f"To retrieve results when complete, run:")
-    logger.info(f"  {retrieve_cmd}")
+    logger.info(f"To retrieve: {retrieve_cmd}")
 
-    # Save metadata
     meta = {
         "batch_id": batch.id,
         "file_id": uploaded_file.id,
@@ -904,8 +804,7 @@ async def run_batch_openai(
         "submitted_at": datetime.now().isoformat(),
         "retrieve_cmd": retrieve_cmd,
     }
-    meta_file = run_dir / "batch_meta.json"
-    with open(meta_file, "w") as f:
+    with open(run_dir / "batch_meta.json", "w") as f:
         json.dump(meta, f, indent=2)
 
     return batch.id
@@ -918,11 +817,9 @@ def retrieve_batch_results_openai(
     output_dir: Path,
     run_id: str,
 ):
-    """Retrieve and score results from an OpenAI batch job."""
     import openai
 
     client = openai.OpenAI()
-
     batch = client.batches.retrieve(batch_id)
     logger.info(f"Batch {batch_id}: {batch.status}")
 
@@ -933,11 +830,9 @@ def retrieve_batch_results_openai(
                         f"failed={batch.request_counts.failed}, total={batch.request_counts.total}")
         return
 
-    # Load class names
     label_to_name = load_class_names(class_names_dir, dataset_name)
     class_names_list = [label_to_name[i] for i in sorted(label_to_name.keys())]
 
-    # Download results
     result_content = client.files.content(batch.output_file_id).content
     run_dir = output_dir / run_id
     run_dir.mkdir(parents=True, exist_ok=True)
@@ -947,7 +842,6 @@ def retrieve_batch_results_openai(
     for line in result_content.decode("utf-8").strip().split("\n"):
         result = json.loads(line)
         custom_id = result["custom_id"]
-        # Parse "img-00042-label-15"
         parts = custom_id.split("-")
         idx = int(parts[1])
         int_label = int(parts[3])
@@ -976,7 +870,6 @@ def retrieve_batch_results_openai(
                     "confidence": 0.0, "correct": False, "error": True,
                 })
 
-    # Save
     with open(predictions_file, "w") as f:
         for rec in records:
             f.write(json.dumps(rec) + "\n")
@@ -985,7 +878,6 @@ def retrieve_batch_results_openai(
     errors = sum(1 for r in records if r["error"])
     valid = len(records) - errors
     acc = correct / valid if valid > 0 else 0
-
     logger.info(f"Results: {correct}/{valid} correct ({acc:.4f}), {errors} errors")
     logger.info(f"Saved to {predictions_file}")
 
@@ -1039,15 +931,13 @@ async def evaluate(
     results_file = run_dir / "results.json"
     predictions_file = run_dir / "predictions.jsonl"
 
-    # ---- Extract & load ----
     dataset_dir = extract_archive(data_root, dataset_name, work_dir)
     items = load_local_dataset(dataset_dir, split, max_samples)
     label_to_name = load_class_names(class_names_dir, dataset_name)
     class_names_list = [label_to_name[i] for i in sorted(label_to_name.keys())]
     system_prompt = build_classification_prompt(class_names_list)
 
-    # ---- Auto-resume or overwrite ----
-    already_done = {}  # index -> record
+    already_done = {}
     if predictions_file.exists():
         with open(predictions_file, "r") as f:
             for line in f:
@@ -1061,20 +951,16 @@ async def evaluate(
             if results_file.exists():
                 results_file.unlink()
         else:
-            # Filter to only non-error results (retry errors automatically)
             successful = {idx: rec for idx, rec in already_done.items() if not rec["error"]}
             errors_prev = len(already_done) - len(successful)
             already_done = successful
 
-            # Determine what's left to do
             target_indices = set(range(len(items)))
             done_indices = set(already_done.keys()) & target_indices
             remaining = len(target_indices) - len(done_indices)
 
             if remaining == 0:
                 logger.info(f"All {len(items)} samples already completed.")
-                logger.info(f"Use --overwrite to start fresh.")
-                # Recompute from existing predictions and return
                 all_records = list(already_done.values())
                 result = RunResult(
                     provider=provider, model=model, dataset=dataset_name,
@@ -1091,25 +977,23 @@ async def evaluate(
             if done_indices:
                 logger.info(f"Resuming: {len(done_indices)} done, {remaining} remaining"
                             + (f", {errors_prev} previous errors will be retried" if errors_prev else ""))
-                # Rewrite predictions file with only successful results
                 with open(predictions_file, "w") as f:
                     for rec in already_done.values():
                         f.write(json.dumps(rec) + "\n")
 
     done_indices = set(already_done.keys())
-
     classify_fn = PROVIDER_FN[provider]
     semaphore = asyncio.Semaphore(batch_concurrency)
 
     remaining = len(items) - len(done_indices)
     print(f"\n{'='*60}")
-    print(f"  Run:       {run_id}")
-    print(f"  Provider:  {provider}/{model}")
-    print(f"  Dataset:   {dataset_name}/{split} ({len(items)} samples)")
-    print(f"  Classes:   {len(class_names_list)}")
-    print(f"  Remaining: {remaining} to classify")
+    print(f"  Run:         {run_id}")
+    print(f"  Provider:    {provider}/{model}")
+    print(f"  Dataset:     {dataset_name}/{split} ({len(items)} samples)")
+    print(f"  Classes:     {len(class_names_list)}")
+    print(f"  Remaining:   {remaining} to classify")
     print(f"  Concurrency: {batch_concurrency}")
-    print(f"  Output:    {run_dir}")
+    print(f"  Output:      {run_dir}")
     print(f"{'='*60}\n")
 
     result = RunResult(
@@ -1118,15 +1002,12 @@ async def evaluate(
     )
 
     t0 = time.time()
-
-    # ---- Encode ----
-    logger.info("Encoding images (Resize 224×224 → RGB → ToTensor → JPEG)...")
+    logger.info("Encoding images...")
     transform = get_test_transform()
     encoded = []
     for idx, (img_path, label) in enumerate(items):
         encoded.append(None if idx in done_indices else load_and_encode_image(img_path, transform=transform))
 
-    # ---- Send requests ----
     logger.info("Classifying...")
 
     async def process_one(idx, img_b64, int_label):
@@ -1168,7 +1049,6 @@ async def evaluate(
                 acc = correct_so_far / completed if completed > 0 else 0
                 logger.info(f"  [{completed:>4}/{total}]  running acc: {acc:.3f}")
 
-    # ---- Aggregate ----
     all_records = []
     with open(predictions_file, "r") as f:
         for line in f:
@@ -1226,8 +1106,7 @@ async def run_multiple(
         for r in results:
             print(f"{r.dataset:<30} {r.accuracy:>10.4f} {r.correct:>10} {r.errors:>8} {r.elapsed_seconds:>7.0f}s")
 
-        summary_file = output_dir / "summary.json"
-        with open(summary_file, "w") as f:
+        with open(output_dir / "summary.json", "w") as f:
             json.dump([{k: v for k, v in asdict(r).items() if k != "per_sample"} for r in results], f, indent=2)
     return results
 
@@ -1239,34 +1118,28 @@ async def run_multiple(
 def parse_args():
     p = argparse.ArgumentParser(description="LLM Vision Classification Benchmark")
 
-    # Mode
     p.add_argument("--run_grid", action="store_true")
     p.add_argument("--all_datasets", action="store_true")
-    p.add_argument("--batch", action="store_true",
-                   help="Submit as batch job (Anthropic only, 50%% discount)")
-    p.add_argument("--batch_retrieve", type=str, metavar="BATCH_ID",
-                   help="Retrieve results from a batch job")
+    p.add_argument("--batch", action="store_true")
+    p.add_argument("--batch_retrieve", type=str, metavar="BATCH_ID")
 
-    # Single run
     p.add_argument("--provider", type=str, choices=list(PROVIDER_MODELS.keys()))
     p.add_argument("--model", type=str)
-    p.add_argument("--dataset", type=str, choices=DATASETS)
+    p.add_argument("--dataset", type=str)
 
-    # Paths
     p.add_argument("--data_root", type=str, required=True)
     p.add_argument("--class_names_dir", type=str, default="./class_names")
     p.add_argument("--work_dir", type=str, default="/tmp/llm_classify")
     p.add_argument("--split", type=str, default="test",
                    choices=["train", "val", "test", "test_common"])
 
-    # Options
-    p.add_argument("--run_name", type=str, default="",
-                   help="Name for this run (used in output filenames)")
+    p.add_argument("--run_name", type=str, default="")
     p.add_argument("--max_samples", type=int, default=None)
+    p.add_argument("--indices", type=str, default=None,
+                   help="Comma-separated list of dataset indices to process (for complement batches)")
     p.add_argument("--batch_concurrency", type=int, default=5)
     p.add_argument("--output_dir", type=str, default="./llm_classification_results")
-    p.add_argument("--overwrite", action="store_true",
-                   help="Discard existing results and start fresh")
+    p.add_argument("--overwrite", action="store_true")
     p.add_argument("--list_models", action="store_true")
 
     return p.parse_args()
@@ -1276,12 +1149,9 @@ def main():
     args = parse_args()
 
     if args.list_models:
-        print("\nAvailable models:\n")
         for provider, models in PROVIDER_MODELS.items():
             for m in models:
-                tag = " ← cheapest" if m == models[0] else ""
-                print(f"  --provider {provider:<10}  --model {m}{tag}")
-        print()
+                print(f"  --provider {provider:<10}  --model {m}")
         sys.exit(0)
 
     output_dir = Path(args.output_dir)
@@ -1295,7 +1165,6 @@ def main():
         run_name = args.run_name or args.batch_retrieve
         provider = args.provider or ""
 
-        # Auto-detect provider from batch ID format
         if provider == "google" or args.batch_retrieve.startswith("batches/"):
             retrieve_batch_results_google(
                 args.batch_retrieve, args.dataset, args.class_names_dir,
@@ -1325,7 +1194,17 @@ def main():
         run_id = args.run_name or f"batch__{model}__{args.dataset}".replace("/", "_")
 
         dataset_dir = extract_archive(args.data_root, args.dataset, args.work_dir)
-        items = load_local_dataset(dataset_dir, args.split, args.max_samples)
+        raw_items = load_local_dataset(dataset_dir, args.split, args.max_samples)
+
+        # Build (orig_idx, path, label) triples — orig_idx is the dataset index
+        # that will appear in custom_id/key, enabling correct merge after retrieval
+        if args.indices:
+            idx_set = set(int(i) for i in args.indices.split(","))
+            items = [(i, path, label) for i, (path, label) in enumerate(raw_items) if i in idx_set]
+            logger.info(f"Filtered to {len(items)} items from --indices (indices {min(idx_set)}-{max(idx_set)})")
+        else:
+            items = [(i, path, label) for i, (path, label) in enumerate(raw_items)]
+
         label_to_name = load_class_names(args.class_names_dir, args.dataset)
         class_names_list = [label_to_name[i] for i in sorted(label_to_name.keys())]
         system_prompt = build_classification_prompt(class_names_list)
@@ -1366,7 +1245,6 @@ def main():
             args.run_name, args.work_dir,
         ))
 
-    # ---- All datasets ----
     elif args.all_datasets:
         if not args.provider:
             logger.error("--all_datasets requires --provider")
@@ -1379,7 +1257,6 @@ def main():
             args.run_name, args.work_dir,
         ))
 
-    # ---- Single run ----
     else:
         if not args.provider or not args.dataset:
             logger.error("Specify --provider and --dataset")
