@@ -5,8 +5,8 @@ against either:
   • zero-shot CLIP ViT-B/16   (open_clip, LAION-2B weights)
   • zero-shot SigLIP2-base-patch16-224  (HuggingFace transformers)
 
-Both surrogates use zero-shot classification via textual embeddings.
-Input resolution is 224×224 for both — no resizing mismatch.
+Data is downloaded automatically from HuggingFace Hub (MaxHeuillet/RobustGenBench)
+on first run. Everything is stored under /tmp to stay cluster-friendly.
 
 Usage:
     # CLIP surrogate (default), all datasets
@@ -20,6 +20,9 @@ Usage:
 
     # Quick sanity check
     python craft_adversarial.py --surrogate siglip2 --dataset flowers-102 --eps 30 --batch_size 4 --max_samples 32
+
+    # Force re-download even if data already present
+    python craft_adversarial.py --surrogate siglip2 --force_download
 """
 
 import argparse
@@ -40,6 +43,20 @@ from autoattack import AutoAttack
 from PIL import Image
 from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
+
+
+# ---------------------------------------------------------------------------
+# Cluster-friendly /tmp paths (no home-dir quota issues)
+# ---------------------------------------------------------------------------
+
+TMP_ROOT       = Path("/tmp/robustgenbench")
+DATA_ROOT      = TMP_ROOT / "data_processed"       # extracted archives land here
+HF_CACHE_DIR   = TMP_ROOT / "hf_cache"             # HuggingFace model + dataset cache
+OUTPUT_ROOT    = TMP_ROOT / "adversarial_examples"  # adversarial images output
+WORK_DIR       = TMP_ROOT / "work"                  # temp extraction workspace
+
+HF_DATASET_REPO = "MaxHeuillet/RobustGenBench"
+CLASS_NAMES_DIR = DATA_ROOT / "class_names"
 
 
 # ---------------------------------------------------------------------------
@@ -94,26 +111,71 @@ def get_device() -> torch.device:
 
 
 # ---------------------------------------------------------------------------
+# Automatic data download
+# ---------------------------------------------------------------------------
+
+def ensure_data_downloaded(force: bool = False):
+    """
+    Downloads the full RobustGenBench dataset from HuggingFace Hub into
+    DATA_ROOT (/tmp/robustgenbench/data_processed) if not already present.
+
+    Sets HF_HOME to HF_CACHE_DIR so all HuggingFace artefacts stay in /tmp.
+    """
+    os.environ["HF_HOME"] = str(HF_CACHE_DIR)
+
+    # Sentinel file avoids re-downloading on every run
+    sentinel = DATA_ROOT / ".download_complete"
+    if sentinel.exists() and not force:
+        print(f"Data already present at {DATA_ROOT} (use --force_download to re-fetch).")
+        return
+
+    try:
+        from huggingface_hub import snapshot_download
+    except ImportError:
+        print("pip install huggingface_hub")
+        sys.exit(1)
+
+    print(f"\nDownloading dataset {HF_DATASET_REPO!r} → {DATA_ROOT}")
+    print("This may take a while on first run...\n")
+
+    DATA_ROOT.mkdir(parents=True, exist_ok=True)
+    HF_CACHE_DIR.mkdir(parents=True, exist_ok=True)
+
+    snapshot_download(
+        repo_id=HF_DATASET_REPO,
+        repo_type="dataset",
+        local_dir=str(DATA_ROOT),
+        cache_dir=str(HF_CACHE_DIR),
+    )
+
+    sentinel.touch()
+    print(f"\nDownload complete. Data stored at {DATA_ROOT}\n")
+
+
+# ---------------------------------------------------------------------------
 # Data loading
 # ---------------------------------------------------------------------------
 
-def extract_archive(data_root: str, dataset_name: str, work_dir: str) -> Path:
+def extract_archive(dataset_name: str) -> Path:
     try:
         import zstandard as zstd
     except ImportError:
         print("pip install zstandard")
         sys.exit(1)
 
-    archive_path = Path(data_root) / f"{dataset_name}_processed.tar.zst"
-    dest_dir     = Path(work_dir)  / dataset_name
+    archive_path = DATA_ROOT / f"{dataset_name}_processed.tar.zst"
+    dest_dir     = WORK_DIR  / dataset_name
 
     if not archive_path.exists():
-        raise FileNotFoundError(f"Archive not found: {archive_path}")
+        raise FileNotFoundError(
+            f"Archive not found: {archive_path}\n"
+            f"Run with --force_download to re-fetch the dataset."
+        )
 
     if (dest_dir / "test" / "labels.csv").exists():
         return dest_dir
 
-    print(f"Extracting {archive_path.name}...")
+    print(f"Extracting {archive_path.name} → {dest_dir}")
     dest_dir.mkdir(parents=True, exist_ok=True)
 
     with open(archive_path, "rb") as compressed:
@@ -144,8 +206,8 @@ def load_local_dataset(dataset_dir: Path, split: str, max_samples: Optional[int]
     return items
 
 
-def load_class_names(class_names_dir: str, dataset_name: str) -> dict:
-    path = Path(os.path.expanduser(class_names_dir)) / f"{dataset_name}.json"
+def load_class_names(dataset_name: str) -> dict:
+    path = CLASS_NAMES_DIR / f"{dataset_name}.json"
     if not path.exists():
         raise FileNotFoundError(f"Class names not found: {path}")
     with open(path, "r") as f:
@@ -222,9 +284,7 @@ class ZeroShotSigLIP2(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = (x - self.mean) / self.std
-        # vision_model is SiglipVisionModel; outputs.last_hidden_state → pool
-        outputs       = self.vision_model(pixel_values=x)
-        # Use the pooled output (mean-pooled patch tokens), same as SiglipModel
+        outputs        = self.vision_model(pixel_values=x)
         image_features = outputs.pooler_output
         image_features = F.normalize(image_features, dim=-1)
         return self.temperature * (image_features @ self.text_features.T)
@@ -238,7 +298,10 @@ def load_clip_surrogate(label_to_name: dict, device: torch.device) -> ZeroShotCL
     import open_clip
 
     print(f"\nLoading CLIP surrogate: {CLIP_MODEL} / {CLIP_PRETRAIN}")
-    clip_model, _, _ = open_clip.create_model_and_transforms(CLIP_MODEL, pretrained=CLIP_PRETRAIN)
+    clip_model, _, _ = open_clip.create_model_and_transforms(
+        CLIP_MODEL, pretrained=CLIP_PRETRAIN,
+        cache_dir=str(HF_CACHE_DIR),
+    )
     clip_model.eval().to(device)
 
     tokenizer   = open_clip.get_tokenizer(CLIP_MODEL)
@@ -261,27 +324,31 @@ def load_siglip2_surrogate(label_to_name: dict, device: torch.device) -> ZeroSho
 
     print(f"\nLoading SigLIP2 surrogate: {SIGLIP_MODEL_ID}")
 
-    vision_model = SiglipVisionModel.from_pretrained(SIGLIP_MODEL_ID)
+    vision_model = SiglipVisionModel.from_pretrained(
+        SIGLIP_MODEL_ID, cache_dir=str(HF_CACHE_DIR)
+    )
     vision_model.eval().to(device)
 
-    text_model = SiglipTextModel.from_pretrained(SIGLIP_MODEL_ID)
+    text_model = SiglipTextModel.from_pretrained(
+        SIGLIP_MODEL_ID, cache_dir=str(HF_CACHE_DIR)
+    )
     text_model.eval().to(device)
 
-    tokenizer   = AutoTokenizer.from_pretrained(SIGLIP_MODEL_ID)
+    tokenizer   = AutoTokenizer.from_pretrained(
+        SIGLIP_MODEL_ID, cache_dir=str(HF_CACHE_DIR)
+    )
     class_names = [label_to_name[i] for i in sorted(label_to_name.keys())]
-    # SigLIP prompt format (matches original training)
     prompts     = [f"a photo of a {name}" for name in class_names]
 
     print(f"  Encoding {len(prompts)} class prompts...")
     with torch.no_grad():
         inputs        = tokenizer(prompts, padding="max_length", return_tensors="pt").to(device)
         text_outputs  = text_model(**inputs)
-        # SiglipTextModel pools via the EOS token position
         text_features = F.normalize(text_outputs.pooler_output, dim=-1)
 
     print(f"  Text features: {text_features.shape}")
 
-    # Only the vision encoder is needed at attack time; free the text model
+    # Free text model before the attack loop to save GPU memory
     del text_model
     if device.type == "cuda":
         torch.cuda.empty_cache()
@@ -300,8 +367,7 @@ def load_surrogate(surrogate: str, label_to_name: dict, device: torch.device) ->
         raise ValueError(f"Unknown surrogate: {surrogate!r}. Choose from {ALL_SURROGATES}")
 
 
-def surrogate_run_name(surrogate: str) -> str:
-    """Canonical slug used in output directory names."""
+def surrogate_slug(surrogate: str) -> str:
     if surrogate == SURROGATE_CLIP:
         return "zeroshot_clip_vitb16_laion2b"
     elif surrogate == SURROGATE_SIGLIP:
@@ -342,9 +408,9 @@ def save_batch(x_adv, labels, filenames, label_to_name, output_dir: Path) -> lis
 
 def run_dataset(dataset: str, args, device: torch.device):
     eps_float  = args.eps / 255.0
-    slug       = surrogate_run_name(args.surrogate)
+    slug       = surrogate_slug(args.surrogate)
     run_name   = f"{dataset}__{slug}__linf_eps{args.eps}__autoattack_standard"
-    output_dir = Path(os.path.expanduser(args.output_dir)) / run_name
+    output_dir = OUTPUT_ROOT / run_name
 
     print(f"\n{'='*60}")
     print(f"  Dataset   : {dataset}")
@@ -357,17 +423,14 @@ def run_dataset(dataset: str, args, device: torch.device):
         print(f"  ✓ Already completed — skipping\n")
         return
 
-    # Load data
-    data_root     = os.path.expanduser(args.data_root)
-    dataset_dir   = extract_archive(data_root, dataset, args.work_dir)
+    dataset_dir   = extract_archive(dataset)
     items         = load_local_dataset(dataset_dir, split="test", max_samples=args.max_samples)
-    label_to_name = load_class_names(args.class_names_dir, dataset)
+    label_to_name = load_class_names(dataset)
     print(f"Loaded {len(items)} samples | {len(label_to_name)} classes")
 
-    # Load surrogate (reloaded per dataset — class names / text features differ)
+    # Surrogate reloaded per dataset — class text features differ per dataset
     model = load_surrogate(args.surrogate, label_to_name, device)
 
-    # DataLoader
     transform = build_transform()
     ds        = AdversarialDataset(items, transform)
     loader    = DataLoader(ds, batch_size=args.batch_size, shuffle=False,
@@ -384,7 +447,6 @@ def run_dataset(dataset: str, args, device: torch.device):
         "norm":           "Linf",
     }, indent=2))
 
-    # AutoAttack — full standard ensemble (APGD-CE + APGD-DLR + FAB + Square)
     adversary = AutoAttack(
         model, norm="Linf", eps=eps_float,
         version="standard",
@@ -396,7 +458,6 @@ def run_dataset(dataset: str, args, device: torch.device):
     n_total         = 0
 
     meta_file = open(output_dir / "metadata.jsonl", "a")
-
     print(f"\nCrafting adversarial examples → {output_dir}\n")
 
     for x, labels, filenames in tqdm(loader, desc=dataset):
@@ -444,25 +505,32 @@ def run_dataset(dataset: str, args, device: torch.device):
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument("--surrogate",       default=SURROGATE_CLIP,
+    p.add_argument("--surrogate",      default=SURROGATE_CLIP,
                    choices=ALL_SURROGATES,
                    help=f"Surrogate model. One of: {ALL_SURROGATES} (default: clip)")
-    p.add_argument("--dataset",         default=None,
+    p.add_argument("--dataset",        default=None,
                    help="Single dataset name (omit to loop over all datasets)")
-    p.add_argument("--eps",             type=int, default=4,
+    p.add_argument("--eps",            type=int, default=4,
                    help="L_inf epsilon in pixel units [0-255], default=4")
-    p.add_argument("--batch_size",      type=int, default=4)
-    p.add_argument("--data_root",       default="~/data_processed")
-    p.add_argument("--class_names_dir", default="~/data_processed/class_names")
-    p.add_argument("--work_dir",        default="/tmp/llm_classify")
-    p.add_argument("--output_dir",      default="./adversarial_examples")
-    p.add_argument("--max_samples",     type=int, default=None)
+    p.add_argument("--batch_size",     type=int, default=4)
+    p.add_argument("--max_samples",    type=int, default=None)
+    p.add_argument("--force_download", action="store_true",
+                   help="Re-download the dataset even if already present in /tmp")
     args = p.parse_args()
+
+    # Ensure all /tmp dirs exist upfront
+    for d in [TMP_ROOT, DATA_ROOT, HF_CACHE_DIR, OUTPUT_ROOT, WORK_DIR]:
+        d.mkdir(parents=True, exist_ok=True)
+
+    # Download data if needed (no-op if sentinel present and not forced)
+    ensure_data_downloaded(force=args.force_download)
 
     device   = get_device()
     datasets = [args.dataset] if args.dataset else ALL_DATASETS
 
     print(f"\nSurrogate : {args.surrogate}")
+    print(f"Data      : {DATA_ROOT}")
+    print(f"Output    : {OUTPUT_ROOT}")
     print(f"Processing {len(datasets)} dataset(s): {', '.join(datasets)}")
 
     for dataset in datasets:
