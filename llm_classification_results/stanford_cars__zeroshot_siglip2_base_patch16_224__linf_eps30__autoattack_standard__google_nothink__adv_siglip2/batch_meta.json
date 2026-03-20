@@ -1,0 +1,10 @@
+{
+  "batch_name": "batches/yh6krhujkemh1uhupgeubsy43f2lhs77g04m",
+  "uploaded_file": "files/md0osfffu882",
+  "provider": "google",
+  "run_id": "stanford_cars__zeroshot_siglip2_base_patch16_224__linf_eps30__autoattack_standard__google_nothink__adv_siglip2",
+  "model": "gemini-3-flash-preview-nothink",
+  "actual_model": "gemini-3-flash-preview",
+  "num_requests": 1000,
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batches/yh6krhujkemh1uhupgeubsy43f2lhs77g04m --provider google --dataset stanford_cars__zeroshot_siglip2_base_patch16_224__linf_eps30__autoattack_standard --data_root /Users/maximeheuillet/data/adversarial/zeroshot_siglip2_base_patch16_224 --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name stanford_cars__zeroshot_siglip2_base_patch16_224__linf_eps30__autoattack_standard__google_nothink__adv_siglip2"
+}

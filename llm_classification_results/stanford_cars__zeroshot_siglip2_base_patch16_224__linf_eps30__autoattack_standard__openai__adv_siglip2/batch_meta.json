@@ -1,0 +1,10 @@
+{
+  "batch_id": "batch_69bc48134ae881909639b9c00065c6c0",
+  "file_id": "file-QVyEdpPtqHSNfVMSHniPk5",
+  "provider": "openai",
+  "run_id": "stanford_cars__zeroshot_siglip2_base_patch16_224__linf_eps30__autoattack_standard__openai__adv_siglip2",
+  "model": "gpt-4o-mini",
+  "num_requests": 500,
+  "submitted_at": "2026-03-19T15:01:39.418590",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batch_69bc48134ae881909639b9c00065c6c0 --provider openai --dataset stanford_cars__zeroshot_siglip2_base_patch16_224__linf_eps30__autoattack_standard --data_root /Users/maximeheuillet/data/adversarial/zeroshot_siglip2_base_patch16_224 --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name stanford_cars__zeroshot_siglip2_base_patch16_224__linf_eps30__autoattack_standard__openai__adv_siglip2"
+}

@@ -1,0 +1,12 @@
+[
+  {
+    "dataset": "oxford-iiit-pet__zeroshot_siglip2_base_patch16_224__linf_eps30__autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "oxford-iiit-pet__zeroshot_siglip2_base_patch16_224__linf_eps30__autoattack_standard__openai__adv_siglip2",
+    "batch_id": "batch_69bc46ef7a1c81908e71d7741be3306a",
+    "status": "submitted",
+    "experiment": "adv_siglip2"
+  }
+]

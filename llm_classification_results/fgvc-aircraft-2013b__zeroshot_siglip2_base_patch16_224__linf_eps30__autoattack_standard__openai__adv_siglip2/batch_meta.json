@@ -1,0 +1,10 @@
+{
+  "batch_id": "batch_69bc27bfae788190b2bc2f1c6156b481",
+  "file_id": "file-FptuzSboTYAk9CLbGgXaSL",
+  "provider": "openai",
+  "run_id": "fgvc-aircraft-2013b__zeroshot_siglip2_base_patch16_224__linf_eps30__autoattack_standard__openai__adv_siglip2",
+  "model": "gpt-4o-mini",
+  "num_requests": 1000,
+  "submitted_at": "2026-03-19T12:43:43.906688",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batch_69bc27bfae788190b2bc2f1c6156b481 --provider openai --dataset fgvc-aircraft-2013b__zeroshot_siglip2_base_patch16_224__linf_eps30__autoattack_standard --data_root /Users/maximeheuillet/data/adversarial/zeroshot_siglip2_base_patch16_224 --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name fgvc-aircraft-2013b__zeroshot_siglip2_base_patch16_224__linf_eps30__autoattack_standard__openai__adv_siglip2"
+}

@@ -32,18 +32,18 @@ import numpy as np
 # ---------------------------------------------------------------------------
 
 ALL_DATASETS = [
-    "caltech101",
-    "fgvc-aircraft-2013b",
-    "flowers-102",
-    "oxford-iiit-pet",
+    # "caltech101",
+    # "fgvc-aircraft-2013b",
+    # "flowers-102",
+    # "oxford-iiit-pet",
     "stanford_cars",
-    "uc-merced-land-use-dataset",
+    # "uc-merced-land-use-dataset",
 ]
 
 MODELS = [
-    {"key": "google_think",   "provider": "google",    "model": "gemini-3-flash-preview-think"},
-    {"key": "google_nothink", "provider": "google",    "model": "gemini-3-flash-preview-nothink"},
-    {"key": "anthropic",      "provider": "anthropic", "model": "claude-haiku-4-5-20251001"},
+    # {"key": "google_think",   "provider": "google",    "model": "gemini-3-flash-preview-think"},
+    # {"key": "google_nothink", "provider": "google",    "model": "gemini-3-flash-preview-nothink"},
+    # {"key": "anthropic",      "provider": "anthropic", "model": "claude-haiku-4-5-20251001"},
     {"key": "openai",         "provider": "openai",    "model": "gpt-4o-mini"},
 ]
 
@@ -230,7 +230,7 @@ def main():
     output_dir.mkdir(parents=True, exist_ok=True)
 
     tag = "__".join(filter(None, [
-        "_".join(d.replace("-", "").replace("_", "") for d in datasets)[:40] if len(datasets) <= 3 else "all_datasets",
+        "all_datasets" if args.all_datasets else "_".join(d.replace("-", "").replace("_", "") for d in datasets)[:40],
         args.name,
     ])) or "experiment"
     manifest_path = output_dir / f"batch_manifest__{tag}.json"
@@ -352,7 +352,8 @@ def main():
                     class_names_dir = class_names_dir,
                     output_dir      = str(output_dir),
                     split           = args.split,
-                    max_samples     = None,  # full dataset — llm_classify will skip already-done via --overwrite=False
+                    max_samples     = None,
+                    indices         = missing,
                 )
 
                 # Note: llm_classify.py auto-resumes from existing predictions.jsonl
