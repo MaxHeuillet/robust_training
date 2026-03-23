@@ -32,19 +32,19 @@ import numpy as np
 # ---------------------------------------------------------------------------
 
 ALL_DATASETS = [
-    # "caltech101",
-    # "fgvc-aircraft-2013b",
-    # "flowers-102",
-    # "oxford-iiit-pet",
+    "caltech101",
+    "fgvc-aircraft-2013b",
+    "flowers-102",
+    "oxford-iiit-pet",
     "stanford_cars",
-    # "uc-merced-land-use-dataset",
+    "uc-merced-land-use-dataset",
 ]
 
 MODELS = [
     # {"key": "google_think",   "provider": "google",    "model": "gemini-3-flash-preview-think"},
-    # {"key": "google_nothink", "provider": "google",    "model": "gemini-3-flash-preview-nothink"},
+    {"key": "google_nothink", "provider": "google",    "model": "gemini-3-flash-preview-nothink"},
     # {"key": "anthropic",      "provider": "anthropic", "model": "claude-haiku-4-5-20251001"},
-    {"key": "openai",         "provider": "openai",    "model": "gpt-4o-mini"},
+    # {"key": "openai",         "provider": "openai",    "model": "gpt-4o-mini"},
 ]
 
 # ---------------------------------------------------------------------------

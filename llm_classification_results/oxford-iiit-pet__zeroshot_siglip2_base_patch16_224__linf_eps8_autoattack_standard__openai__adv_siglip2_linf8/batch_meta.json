@@ -1,0 +1,10 @@
+{
+  "batch_id": "batch_69bf113ec4088190b1bd27a089304219",
+  "file_id": "file-96yBhocR5tzHtENezWuurA",
+  "provider": "openai",
+  "run_id": "oxford-iiit-pet__zeroshot_siglip2_base_patch16_224__linf_eps8_autoattack_standard__openai__adv_siglip2_linf8",
+  "model": "gpt-4o-mini",
+  "num_requests": 1000,
+  "submitted_at": "2026-03-21T17:44:30.979596",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batch_69bf113ec4088190b1bd27a089304219 --provider openai --dataset oxford-iiit-pet__zeroshot_siglip2_base_patch16_224__linf_eps8_autoattack_standard --data_root /Users/maximeheuillet/data/adversarial/zeroshot_siglip2_base_patch16_224/linf_eps8_autoattack_standard --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name oxford-iiit-pet__zeroshot_siglip2_base_patch16_224__linf_eps8_autoattack_standard__openai__adv_siglip2_linf8"
+}
