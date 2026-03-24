@@ -525,7 +525,7 @@ def apply_corruption(img_pil: Image.Image, corruption_name: str, severity: int) 
     Uses the same corrupt() dispatcher as databases/__init__.py.
     Returns a PIL image.
     """
-    from databases import corrupt   # uses corruption_dict inside databases/__init__.py
+    from corruptions.common import corrupt   # uses corruption_dict inside databases/__init__.py
     img_np = np.array(img_pil.convert("RGB"))
     if img_np.dtype != np.uint8:
         img_np = (img_np * 255).astype(np.uint8)
