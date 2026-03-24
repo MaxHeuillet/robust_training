@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
 """
-craft_adversarial.py — Craft adversarial perturbations using AutoAttack
-against either:
+craft_adversarial.py — Craft adversarial / corrupted images using AutoAttack
+or common corruptions (ImageNet-C style), against either:
   • zero-shot CLIP ViT-B/16   (open_clip, LAION-2B weights)
   • zero-shot SigLIP2-base-patch16-224  (HuggingFace transformers)
 
-Supports Linf, L1, L2 norms.
+Supports Linf, L1, L2 norms (gradient-based) and common corruptions
+(no surrogate needed — corruption is applied directly to clean images).
 
 Epsilon conventions (matching AutoAttack's [0,1] input space):
   Linf : specified in pixel units /255   e.g. --eps 30  → 30/255 ≈ 0.118
   L2   : specified directly in [0,1]     e.g. --eps 2.0 → 2.0
   L1   : specified directly in [0,1]     e.g. --eps 75  → 75.0
+  common: no epsilon — severity controlled by --severity (1-5, default 3)
 
 Usage:
     # Linf ε=30/255, all datasets
@@ -24,6 +26,9 @@ Usage:
     # L1 ε=75
     python craft_adversarial.py --surrogate clip    --norm L1   --eps 75  --batch_size 32 --upload_hf
     python craft_adversarial.py --surrogate siglip2 --norm L1   --eps 75  --batch_size 32 --upload_hf
+
+    # Common corruptions (no surrogate needed — same output for all surrogates)
+    python craft_adversarial.py --norm common --severity 3 --upload_hf
 
     # Single dataset / sanity check
     python craft_adversarial.py --surrogate clip --norm L2 --eps 2.0 --dataset flowers-102 --max_samples 32
@@ -91,7 +96,17 @@ ALL_DATASETS = [
     "uc-merced-land-use-dataset",
 ]
 
-ALL_NORMS = ["Linf", "L2", "L1"]
+ALL_NORMS = ["Linf", "L2", "L1", "common"]
+
+# Common corruptions applied at this severity level (1-5)
+DEFAULT_SEVERITY = 3
+
+# Corruption types drawn from ImageNet-C (portfolio: one per image, cycling)
+CORRUPTION_TYPES = [
+    "shot_noise", "impulse_noise", "defocus_blur", "motion_blur",
+    "zoom_blur", "snow", "brightness", "contrast", "elastic_transform",
+    "pixelate", "jpeg_compression",
+]
 
 
 # ---------------------------------------------------------------------------
@@ -131,17 +146,26 @@ def surrogate_slug(surrogate: str) -> str:
     raise ValueError(surrogate)
 
 
-def threat_model_slug(norm: str, eps: float) -> str:
-    """e.g. 'linf_eps30_autoattack_standard', 'l2_eps2_0_autoattack_standard'"""
+def threat_model_slug(norm: str, eps: float = 0, severity: int = DEFAULT_SEVERITY) -> str:
+    """e.g. 'linf_eps30_autoattack_standard', 'l2_eps2_0_autoattack_standard', 'common_severity3'"""
+    if norm == "common":
+        return f"common_severity{severity}"
     return f"{norm.lower()}_eps{eps_slug(eps)}_autoattack_standard"
 
 
-def run_dir_name(dataset: str, surrogate: str, norm: str, eps: float) -> str:
+def run_dir_name(dataset: str, surrogate: str, norm: str, eps: float = 0,
+                 severity: int = DEFAULT_SEVERITY) -> str:
+    if norm == "common":
+        # Common corruptions are surrogate-independent
+        return f"{dataset}__common_severity{severity}"
     return f"{dataset}__{surrogate_slug(surrogate)}__{threat_model_slug(norm, eps)}"
 
 
-def hf_archive_path(surrogate: str, norm: str, eps: float, archive_filename: str) -> str:
+def hf_archive_path(surrogate: str, norm: str, eps: float,
+                    archive_filename: str, severity: int = DEFAULT_SEVERITY) -> str:
     """Full path within the HF repo for a given archive."""
+    if norm == "common":
+        return f"adversarial/common/{threat_model_slug(norm, severity=severity)}/{archive_filename}"
     return (
         f"adversarial/{surrogate_slug(surrogate)}"
         f"/{threat_model_slug(norm, eps)}"
@@ -464,17 +488,22 @@ def package_run(adv_dir: Path, output_dir: Path) -> Path:
 # HuggingFace upload
 # ---------------------------------------------------------------------------
 
-def upload_to_hf(archive_path: Path, surrogate: str, norm: str, eps: float):
+def upload_to_hf(archive_path: Path, surrogate: str, norm: str,
+                 eps: float = 0, severity: int = DEFAULT_SEVERITY):
     """
-    Uploads archive to:
-      adversarial/<surrogate_slug>/<threat_model_slug>/<archive_filename>
+    Uploads archive to the correct HF repo path.
+    Restores default HF_HOME so the token saved by huggingface-cli login is found.
     """
     try:
         from huggingface_hub import HfApi
     except ImportError:
         print("pip install huggingface_hub"); sys.exit(1)
 
-    path_in_repo = hf_archive_path(surrogate, norm, eps, archive_path.name)
+    # Restore default token location — the script sets HF_HOME to /tmp which
+    # hides the token saved by huggingface-cli login.
+    os.environ.pop("HF_HOME", None)
+
+    path_in_repo = hf_archive_path(surrogate, norm, eps, archive_path.name, severity)
     print(f"  Uploading → {HF_DATASET_REPO}/{path_in_repo}")
     api = HfApi()
     api.upload_file(
@@ -487,7 +516,109 @@ def upload_to_hf(archive_path: Path, surrogate: str, norm: str, eps: float):
 
 
 # ---------------------------------------------------------------------------
-# Per-dataset runner
+# Common corruptions runner (no surrogate, no gradient)
+# ---------------------------------------------------------------------------
+
+def apply_corruption(img_pil: Image.Image, corruption_name: str, severity: int) -> Image.Image:
+    """
+    Apply one ImageNet-C corruption to a PIL image.
+    Uses the same corrupt() dispatcher as databases/__init__.py.
+    Returns a PIL image.
+    """
+    from databases import corrupt   # uses corruption_dict inside databases/__init__.py
+    img_np = np.array(img_pil.convert("RGB"))
+    if img_np.dtype != np.uint8:
+        img_np = (img_np * 255).astype(np.uint8)
+    corrupted = corrupt(img_np, corruption_name=corruption_name, severity=severity)
+    return Image.fromarray(np.uint8(corrupted))
+
+
+def run_dataset_common(dataset: str, args):
+    """
+    Apply the portfolio of common corruptions to the clean test set.
+    Each image receives one corruption type based on its index (cycling).
+    No surrogate model is needed.
+    """
+    severity  = args.severity
+    rname     = f"{dataset}__common_severity{severity}"
+    output_dir = OUTPUT_ROOT / rname
+
+    print(f"\n{'='*60}")
+    print(f"  Dataset   : {dataset}")
+    print(f"  Norm      : common  severity={severity}")
+    print(f"  Output    : {output_dir}")
+    print(f"{'='*60}")
+
+    if (output_dir / "surrogate_summary.json").exists():
+        print(f"  ✓ Already completed — skipping\n")
+        if args.package or args.upload_hf:
+            archive_path = package_run(output_dir, PACKAGED_ROOT)
+            if args.upload_hf:
+                upload_to_hf(archive_path, args.surrogate, "common",
+                             severity=severity)
+        return
+
+    dataset_dir   = extract_archive(dataset)
+    items         = load_local_dataset(dataset_dir, split="test",
+                                       max_samples=args.max_samples)
+    label_to_name = load_class_names(dataset)
+    print(f"Loaded {len(items)} samples | {len(label_to_name)} classes")
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    (output_dir / "run_config.json").write_text(json.dumps({
+        "dataset":   dataset,
+        "norm":      "common",
+        "severity":  severity,
+        "corruptions": CORRUPTION_TYPES,
+    }, indent=2))
+
+    n_total   = 0
+    meta_file = open(output_dir / "metadata.jsonl", "a")
+    print(f"\nApplying common corruptions → {output_dir}\n")
+
+    for idx, (img_path, label) in enumerate(tqdm(items, desc=dataset)):
+        corruption_name = CORRUPTION_TYPES[idx % len(CORRUPTION_TYPES)]
+        img_pil         = Image.open(img_path).convert("RGB")
+        img_pil         = img_pil.resize((224, 224), Image.BICUBIC)
+        corrupted_pil   = apply_corruption(img_pil, corruption_name, severity)
+
+        out = output_dir / Path(img_path).with_suffix(".png").name
+        out.parent.mkdir(parents=True, exist_ok=True)
+        corrupted_pil.save(out, format="PNG")
+
+        meta_file.write(json.dumps({
+            "image_path":      out.name,
+            "label_idx":       int(label),
+            "label_name":      label_to_name.get(int(label), "unknown"),
+            "corruption_type": corruption_name,
+            "severity":        severity,
+        }) + "\n")
+        meta_file.flush()
+        n_total += 1
+
+    meta_file.close()
+
+    # No surrogate accuracy for common — write a summary stub
+    (output_dir / "surrogate_summary.json").write_text(json.dumps({
+        "n_total":             n_total,
+        "surrogate_clean_acc": None,
+        "surrogate_adv_acc":   None,
+        "attack_success_rate": None,
+        "note":                "common corruptions — no surrogate used",
+    }, indent=2))
+
+    print(f"\n{'='*60}")
+    print(f"  {n_total} images saved to : {output_dir}")
+    print(f"{'='*60}\n")
+
+    if args.package or args.upload_hf:
+        archive_path = package_run(output_dir, PACKAGED_ROOT)
+        if args.upload_hf:
+            upload_to_hf(archive_path, args.surrogate, "common", severity=severity)
+
+
+# ---------------------------------------------------------------------------
+# Per-dataset runner (gradient-based attacks)
 # ---------------------------------------------------------------------------
 
 def run_dataset(dataset: str, args, device: torch.device):
@@ -599,26 +730,30 @@ def main():
     p.add_argument("--surrogate",      default=SURROGATE_CLIP, choices=ALL_SURROGATES,
                    help=f"Surrogate model. One of: {ALL_SURROGATES} (default: clip)")
     p.add_argument("--norm",           default="Linf", choices=ALL_NORMS,
-                   help="Attack norm: Linf | L2 | L1  (default: Linf)")
+                   help="Attack norm: Linf | L2 | L1 | common  (default: Linf)")
     p.add_argument("--eps",            type=float, default=None,
                    help=(
-                       "Epsilon. "
+                       "Epsilon (gradient-based attacks only). "
                        "Linf: pixel integer e.g. 30 → 30/255. "
                        "L2/L1: float in [0,1] space e.g. 2.0 or 75. "
-                       "Defaults: Linf=30, L2=2.0, L1=75"
+                       "Defaults: Linf=30, L2=2.0, L1=75. "
+                       "Ignored for --norm common."
                    ))
+    p.add_argument("--severity",       type=int, default=DEFAULT_SEVERITY,
+                   help="Corruption severity for --norm common (1-5, default: 3)")
     p.add_argument("--dataset",        default=None, choices=ALL_DATASETS,
                    help="Single dataset (default: all)")
     p.add_argument("--batch_size",     type=int, default=32)
     p.add_argument("--max_samples",    type=int, default=None)
     p.add_argument("--force_download", action="store_true")
     p.add_argument("--package",        action="store_true",
-                   help="Package adversarial PNGs into tar.zst after crafting")
+                   help="Package PNGs into tar.zst after crafting")
     p.add_argument("--upload_hf",      action="store_true",
                    help="Package + upload to HuggingFace after crafting (implies --package)")
     args = p.parse_args()
 
-    if args.eps is None:
+    # eps only matters for gradient-based attacks
+    if args.norm != "common" and args.eps is None:
         args.eps = {"Linf": 30, "L2": 2.0, "L1": 75}[args.norm]
         print(f"Using default eps={args.eps} for norm={args.norm}")
 
@@ -627,22 +762,34 @@ def main():
 
     ensure_data_downloaded(force=args.force_download)
 
-    device   = get_device()
     datasets = [args.dataset] if args.dataset else ALL_DATASETS
 
-    print(f"\nSurrogate : {args.surrogate}")
-    print(f"Norm      : {args.norm}  eps={args.eps}  → AutoAttack eps={eps_to_float(args.norm, args.eps):.5f}")
-    print(f"Datasets  : {', '.join(datasets)}")
-    if args.upload_hf:
-        slug = f"adversarial/{surrogate_slug(args.surrogate)}/{threat_model_slug(args.norm, args.eps)}/"
-        print(f"HF path   : {HF_DATASET_REPO}/{slug}")
-
-    for dataset in datasets:
-        try:
-            run_dataset(dataset, args, device)
-        except Exception as e:
-            print(f"\n  ERROR on {dataset}: {e} — skipping and continuing\n")
-            continue
+    if args.norm == "common":
+        print(f"\nNorm      : common  severity={args.severity}")
+        print(f"Datasets  : {', '.join(datasets)}")
+        if args.upload_hf:
+            slug = f"adversarial/common/{threat_model_slug('common', severity=args.severity)}/"
+            print(f"HF path   : {HF_DATASET_REPO}/{slug}")
+        for dataset in datasets:
+            try:
+                run_dataset_common(dataset, args)
+            except Exception as e:
+                print(f"\n  ERROR on {dataset}: {e} — skipping and continuing\n")
+                continue
+    else:
+        device = get_device()
+        print(f"\nSurrogate : {args.surrogate}")
+        print(f"Norm      : {args.norm}  eps={args.eps}  → AutoAttack eps={eps_to_float(args.norm, args.eps):.5f}")
+        print(f"Datasets  : {', '.join(datasets)}")
+        if args.upload_hf:
+            slug = f"adversarial/{surrogate_slug(args.surrogate)}/{threat_model_slug(args.norm, args.eps)}/"
+            print(f"HF path   : {HF_DATASET_REPO}/{slug}")
+        for dataset in datasets:
+            try:
+                run_dataset(dataset, args, device)
+            except Exception as e:
+                print(f"\n  ERROR on {dataset}: {e} — skipping and continuing\n")
+                continue
 
     print("\nAll done!")
 

@@ -1,0 +1,10 @@
+{
+  "batch_id": "batch_69c1b42a281c819088e33e9e961e0b28",
+  "file_id": "file-PDKEbscMSukBYvC4FPVSX7",
+  "provider": "openai",
+  "run_id": "oxford-iiit-pet__zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard__openai__adv_clip_l1_eps75",
+  "model": "gpt-4o-mini",
+  "num_requests": 1000,
+  "submitted_at": "2026-03-23T17:44:10.325862",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batch_69c1b42a281c819088e33e9e961e0b28 --provider openai --dataset oxford-iiit-pet__zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard --data_root /Users/maximeheuillet/data/adversarial/zeroshot_clip_vitb16_laion2b/l1_eps75_autoattack_standard --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name oxford-iiit-pet__zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard__openai__adv_clip_l1_eps75"
+}

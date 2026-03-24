@@ -1,0 +1,22 @@
+[
+  {
+    "dataset": "caltech101__zeroshot_clip_vitb16_laion2b__l2_eps8_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "caltech101__zeroshot_clip_vitb16_laion2b__l2_eps8_autoattack_standard__openai__adv_clip_l2_eps8",
+    "batch_id": "batch_69c2d50222ec819086500f5e91b6bae8",
+    "status": "retrieved",
+    "experiment": "adv_clip_l2_eps8"
+  },
+  {
+    "dataset": "fgvc-aircraft-2013b__zeroshot_clip_vitb16_laion2b__l2_eps8_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "fgvc-aircraft-2013b__zeroshot_clip_vitb16_laion2b__l2_eps8_autoattack_standard__openai__adv_clip_l2_eps8",
+    "batch_id": "batch_69c2d782f7fc81908f22b1ea71ab233b",
+    "status": "submitted",
+    "experiment": "adv_clip_l2_eps8"
+  }
+]
