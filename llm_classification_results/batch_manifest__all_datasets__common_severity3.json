@@ -1,0 +1,142 @@
+[
+  {
+    "dataset": "caltech101__common_severity3",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "caltech101__common_severity3__openai__common_severity3",
+    "batch_id": "batch_69c308ef487081908a74e44aa637c570",
+    "status": "retrieved",
+    "experiment": "common_severity3"
+  },
+  {
+    "dataset": "fgvc-aircraft-2013b__common_severity3",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "fgvc-aircraft-2013b__common_severity3__openai__common_severity3",
+    "batch_id": "batch_69c30f03d0f881908f6c89b36112ed29",
+    "status": "retrieved",
+    "experiment": "common_severity3"
+  },
+  {
+    "dataset": "flowers-102__common_severity3",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "flowers-102__common_severity3__openai__common_severity3",
+    "batch_id": "batch_69c31064c8288190969a392ea3692453",
+    "status": "retrieved",
+    "experiment": "common_severity3"
+  },
+  {
+    "dataset": "oxford-iiit-pet__common_severity3",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "oxford-iiit-pet__common_severity3__openai__common_severity3",
+    "batch_id": "batch_69c317ab047c81909161807af4e5b2a1",
+    "status": "retrieved",
+    "experiment": "common_severity3"
+  },
+  {
+    "dataset": "stanford_cars__common_severity3",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "stanford_cars__common_severity3__openai__common_severity3",
+    "batch_id": "batch_69c31938d2e08190abd7bcafbd77629e",
+    "status": "retrieved",
+    "experiment": "common_severity3"
+  },
+  {
+    "dataset": "stanford_cars__common_severity3",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "stanford_cars__common_severity3__openai__common_severity3__complement",
+    "batch_id": "batch_69c31a0f296c8190a71743ca379e4e4a",
+    "status": "retrieved",
+    "experiment": "common_severity3"
+  },
+  {
+    "dataset": "uc-merced-land-use-dataset__common_severity3",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "uc-merced-land-use-dataset__common_severity3__openai__common_severity3",
+    "batch_id": "batch_69c31b184e9c8190b900f7275a0b880b",
+    "status": "retrieved",
+    "experiment": "common_severity3"
+  },
+  {
+    "dataset": "caltech101__common_severity3",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "caltech101__common_severity3__google_nothink__adv_clip_common_severity3",
+    "batch_id": "batches/4x4ry17b90ii80jemkhklt0ogua73z2u73e4",
+    "status": "retrieved",
+    "experiment": "adv_clip_common_severity3"
+  },
+  {
+    "dataset": "fgvc-aircraft-2013b__common_severity3",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "fgvc-aircraft-2013b__common_severity3__google_nothink__adv_clip_common_severity3",
+    "batch_id": "batches/mz2yznc017syq094fusvfo8lwy6ap0aan2ag",
+    "status": "retrieved",
+    "experiment": "adv_clip_common_severity3"
+  },
+  {
+    "dataset": "flowers-102__common_severity3",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "flowers-102__common_severity3__google_nothink__adv_clip_common_severity3",
+    "batch_id": "batches/jaeo33l7bfjzhyflhayr71wrgpunbdaur2wn",
+    "status": "retrieved",
+    "experiment": "adv_clip_common_severity3"
+  },
+  {
+    "dataset": "oxford-iiit-pet__common_severity3",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "oxford-iiit-pet__common_severity3__google_nothink__adv_clip_common_severity3",
+    "batch_id": "batches/h67jr3r8ltgdpds8uekodtuafdffoyrik22b",
+    "status": "retrieved",
+    "experiment": "adv_clip_common_severity3"
+  },
+  {
+    "dataset": "uc-merced-land-use-dataset__common_severity3",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "uc-merced-land-use-dataset__common_severity3__google_nothink__adv_clip_common_severity3",
+    "batch_id": "batches/6z4vc7uah7yoxv9vvz533dss5my3oa2s76s4",
+    "status": "retrieved",
+    "experiment": "adv_clip_common_severity3"
+  },
+  {
+    "dataset": "stanford_cars__common_severity3",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "stanford_cars__common_severity3__google_nothink__common_severity3",
+    "batch_id": "batches/f8me4lz6ysn8jzhj4lotk2x1iu3u93ixtwom",
+    "status": "retrieved",
+    "experiment": "common_severity3"
+  },
+  {
+    "dataset": "stanford_cars__common_severity3",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "stanford_cars__common_severity3__google_nothink__common_severity3__complement",
+    "batch_id": "batches/e94il8sfrc8g1kd8rnt35fi6ftd8sxjykx74",
+    "status": "retrieved",
+    "experiment": "common_severity3"
+  }
+]

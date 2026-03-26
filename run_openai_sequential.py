@@ -58,7 +58,7 @@ DATASET_SIZES = {
 }
 DEFAULT_DATASET_SIZE = 1000
 
-POLL_INTERVAL = 300   # seconds between status checks
+POLL_INTERVAL = 60   # seconds between status checks
 PROVIDER      = "openai"
 MODEL         = "gpt-4o-mini"
 OUTPUT_DIR    = Path("./llm_classification_results")
@@ -379,7 +379,7 @@ def main():
                    help="Path to folder containing *_processed.tar.zst archives")
     p.add_argument("--class_names_dir", default="~/data_processed/class_names")
     p.add_argument("--datasets",        nargs="+", default=ALL_DATASETS)
-    p.add_argument("--poll_interval",   type=int, default=300)
+    p.add_argument("--poll_interval",   type=int, default=60)
     args = p.parse_args()
 
     global POLL_INTERVAL

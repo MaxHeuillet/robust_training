@@ -1,0 +1,10 @@
+{
+  "batch_name": "batches/mz2yznc017syq094fusvfo8lwy6ap0aan2ag",
+  "uploaded_file": "files/p8ml00rjs4xe",
+  "provider": "google",
+  "run_id": "fgvc-aircraft-2013b__common_severity3__google_nothink__adv_clip_common_severity3",
+  "model": "gemini-3-flash-preview-nothink",
+  "actual_model": "gemini-3-flash-preview",
+  "num_requests": 1000,
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batches/mz2yznc017syq094fusvfo8lwy6ap0aan2ag --provider google --dataset fgvc-aircraft-2013b__common_severity3 --data_root /Users/maximeheuillet/data/adversarial/common/common_severity3 --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name fgvc-aircraft-2013b__common_severity3__google_nothink__adv_clip_common_severity3"
+}

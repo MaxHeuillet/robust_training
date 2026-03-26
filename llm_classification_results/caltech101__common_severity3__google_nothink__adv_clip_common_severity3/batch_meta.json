@@ -1,0 +1,10 @@
+{
+  "batch_name": "batches/4x4ry17b90ii80jemkhklt0ogua73z2u73e4",
+  "uploaded_file": "files/60tfsn40ixmg",
+  "provider": "google",
+  "run_id": "caltech101__common_severity3__google_nothink__adv_clip_common_severity3",
+  "model": "gemini-3-flash-preview-nothink",
+  "actual_model": "gemini-3-flash-preview",
+  "num_requests": 1000,
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batches/4x4ry17b90ii80jemkhklt0ogua73z2u73e4 --provider google --dataset caltech101__common_severity3 --data_root /Users/maximeheuillet/data/adversarial/common/common_severity3 --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name caltech101__common_severity3__google_nothink__adv_clip_common_severity3"
+}

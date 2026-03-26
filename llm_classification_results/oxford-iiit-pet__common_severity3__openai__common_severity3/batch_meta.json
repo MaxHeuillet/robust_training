@@ -1,0 +1,10 @@
+{
+  "batch_id": "batch_69c317ab047c81909161807af4e5b2a1",
+  "file_id": "file-VAjjaKhcscF2D6EKTbW2o6",
+  "provider": "openai",
+  "run_id": "oxford-iiit-pet__common_severity3__openai__common_severity3",
+  "model": "gpt-4o-mini",
+  "num_requests": 1000,
+  "submitted_at": "2026-03-24T19:00:59.217009",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batch_69c317ab047c81909161807af4e5b2a1 --provider openai --dataset oxford-iiit-pet__common_severity3 --data_root /Users/maximeheuillet/data/adversarial/common/common_severity3 --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name oxford-iiit-pet__common_severity3__openai__common_severity3"
+}

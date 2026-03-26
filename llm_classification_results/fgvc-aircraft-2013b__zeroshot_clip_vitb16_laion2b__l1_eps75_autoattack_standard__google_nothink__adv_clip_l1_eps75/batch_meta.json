@@ -1,0 +1,10 @@
+{
+  "batch_name": "batches/7s0mqq7nirkx0hqt32da8xcb7u3rpxlzfw5l",
+  "uploaded_file": "files/m8yasn7uvv09",
+  "provider": "google",
+  "run_id": "fgvc-aircraft-2013b__zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard__google_nothink__adv_clip_l1_eps75",
+  "model": "gemini-3-flash-preview-nothink",
+  "actual_model": "gemini-3-flash-preview",
+  "num_requests": 1000,
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batches/7s0mqq7nirkx0hqt32da8xcb7u3rpxlzfw5l --provider google --dataset fgvc-aircraft-2013b__zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard --data_root /Users/maximeheuillet/data/adversarial/zeroshot_clip_vitb16_laion2b/l1_eps75_autoattack_standard --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name fgvc-aircraft-2013b__zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard__google_nothink__adv_clip_l1_eps75"
+}

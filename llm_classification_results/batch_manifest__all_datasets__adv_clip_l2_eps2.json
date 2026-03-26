@@ -68,5 +68,75 @@
     "batch_id": "batch_69c1dc602d78819082223fdf1bee476e",
     "status": "retrieved",
     "experiment": "adv_clip_l2_eps2"
+  },
+  {
+    "dataset": "caltech101__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "caltech101__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard__google_nothink__adv_clip_l2_eps2",
+    "batch_id": "batches/0ke47bbiw9x93x8sf6ylun4cmyav2xcadww4",
+    "status": "retrieved",
+    "experiment": "adv_clip_l2_eps2"
+  },
+  {
+    "dataset": "fgvc-aircraft-2013b__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "fgvc-aircraft-2013b__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard__google_nothink__adv_clip_l2_eps2",
+    "batch_id": "batches/qoa2p7eibn2luacef646c754frg5woi8dbek",
+    "status": "retrieved",
+    "experiment": "adv_clip_l2_eps2"
+  },
+  {
+    "dataset": "flowers-102__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "flowers-102__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard__google_nothink__adv_clip_l2_eps2",
+    "batch_id": "batches/ny5umh2gqcs8fhzfa56864lvitcvq9c5c6k3",
+    "status": "retrieved",
+    "experiment": "adv_clip_l2_eps2"
+  },
+  {
+    "dataset": "oxford-iiit-pet__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "oxford-iiit-pet__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard__google_nothink__adv_clip_l2_eps2",
+    "batch_id": "batches/kllfw5xd4eygn49l2exvsqpp0xqhlybvccx1",
+    "status": "retrieved",
+    "experiment": "adv_clip_l2_eps2"
+  },
+  {
+    "dataset": "uc-merced-land-use-dataset__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "uc-merced-land-use-dataset__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard__google_nothink__adv_clip_l2_eps2",
+    "batch_id": "batches/ouhoz71lbweeqkp1xrk64d5xq5dfjt0idss3",
+    "status": "retrieved",
+    "experiment": "adv_clip_l2_eps2"
+  },
+  {
+    "dataset": "stanford_cars__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "stanford_cars__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard__google_nothink__adv_clip_l2_eps2",
+    "batch_id": "batches/s6xwywvippjfm76gurbgegder352m5yaiivx",
+    "status": "retrieved",
+    "experiment": "adv_clip_l2_eps2"
+  },
+  {
+    "dataset": "stanford_cars__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "stanford_cars__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard__google_nothink__adv_clip_l2_eps2__complement",
+    "batch_id": "batches/n74cvwdjorhew7vd1bqp1b5j7hv1yv8wwo02",
+    "status": "retrieved",
+    "experiment": "adv_clip_l2_eps2"
   }
 ]

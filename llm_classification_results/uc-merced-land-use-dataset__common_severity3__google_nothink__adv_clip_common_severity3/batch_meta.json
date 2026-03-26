@@ -1,0 +1,10 @@
+{
+  "batch_name": "batches/6z4vc7uah7yoxv9vvz533dss5my3oa2s76s4",
+  "uploaded_file": "files/lt95oq8z143b",
+  "provider": "google",
+  "run_id": "uc-merced-land-use-dataset__common_severity3__google_nothink__adv_clip_common_severity3",
+  "model": "gemini-3-flash-preview-nothink",
+  "actual_model": "gemini-3-flash-preview",
+  "num_requests": 420,
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batches/6z4vc7uah7yoxv9vvz533dss5my3oa2s76s4 --provider google --dataset uc-merced-land-use-dataset__common_severity3 --data_root /Users/maximeheuillet/data/adversarial/common/common_severity3 --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name uc-merced-land-use-dataset__common_severity3__google_nothink__adv_clip_common_severity3"
+}

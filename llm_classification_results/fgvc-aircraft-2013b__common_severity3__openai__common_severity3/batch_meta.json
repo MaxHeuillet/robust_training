@@ -1,0 +1,10 @@
+{
+  "batch_id": "batch_69c30f03d0f881908f6c89b36112ed29",
+  "file_id": "file-3FR2qEV6Xhs88HFLUEdaX7",
+  "provider": "openai",
+  "run_id": "fgvc-aircraft-2013b__common_severity3__openai__common_severity3",
+  "model": "gpt-4o-mini",
+  "num_requests": 1000,
+  "submitted_at": "2026-03-24T18:24:03.938000",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batch_69c30f03d0f881908f6c89b36112ed29 --provider openai --dataset fgvc-aircraft-2013b__common_severity3 --data_root /Users/maximeheuillet/data/adversarial/common/common_severity3 --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name fgvc-aircraft-2013b__common_severity3__openai__common_severity3"
+}

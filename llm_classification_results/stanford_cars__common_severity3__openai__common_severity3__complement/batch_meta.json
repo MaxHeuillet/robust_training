@@ -1,0 +1,10 @@
+{
+  "batch_id": "batch_69c31a0f296c8190a71743ca379e4e4a",
+  "file_id": "file-D4VVF1ycfZguTGXatFBYBY",
+  "provider": "openai",
+  "run_id": "stanford_cars__common_severity3__openai__common_severity3__complement",
+  "model": "gpt-4o-mini",
+  "num_requests": 500,
+  "submitted_at": "2026-03-24T19:11:11.287153",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batch_69c31a0f296c8190a71743ca379e4e4a --provider openai --dataset stanford_cars__common_severity3 --data_root /Users/maximeheuillet/data/adversarial/common/common_severity3 --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name stanford_cars__common_severity3__openai__common_severity3__complement"
+}

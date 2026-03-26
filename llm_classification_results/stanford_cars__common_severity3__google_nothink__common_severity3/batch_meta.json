@@ -1,0 +1,10 @@
+{
+  "batch_name": "batches/f8me4lz6ysn8jzhj4lotk2x1iu3u93ixtwom",
+  "uploaded_file": "files/0sxtxy8whu1w",
+  "provider": "google",
+  "run_id": "stanford_cars__common_severity3__google_nothink__common_severity3",
+  "model": "gemini-3-flash-preview-nothink",
+  "actual_model": "gemini-3-flash-preview",
+  "num_requests": 500,
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batches/f8me4lz6ysn8jzhj4lotk2x1iu3u93ixtwom --provider google --dataset stanford_cars__common_severity3 --data_root /Users/maximeheuillet/data/adversarial/common/common_severity3 --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name stanford_cars__common_severity3__google_nothink__common_severity3"
+}

@@ -1,0 +1,10 @@
+{
+  "batch_id": "batch_69c31064c8288190969a392ea3692453",
+  "file_id": "file-TRrZogFtans9noaS9Q9VoE",
+  "provider": "openai",
+  "run_id": "flowers-102__common_severity3__openai__common_severity3",
+  "model": "gpt-4o-mini",
+  "num_requests": 1000,
+  "submitted_at": "2026-03-24T18:29:57.037416",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batch_69c31064c8288190969a392ea3692453 --provider openai --dataset flowers-102__common_severity3 --data_root /Users/maximeheuillet/data/adversarial/common/common_severity3 --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name flowers-102__common_severity3__openai__common_severity3"
+}

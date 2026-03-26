@@ -1,0 +1,10 @@
+{
+  "batch_name": "batches/0i0rxkc0sxayrv2djq8u6ww57a0usfg2rlgs",
+  "uploaded_file": "files/tf9ezgc2bk6d",
+  "provider": "google",
+  "run_id": "flowers-102__zeroshot_clip_vitb16_laion2b__l2_eps8_autoattack_standard__google_nothink__adv_clip_l2_eps8",
+  "model": "gemini-3-flash-preview-nothink",
+  "actual_model": "gemini-3-flash-preview",
+  "num_requests": 1000,
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batches/0i0rxkc0sxayrv2djq8u6ww57a0usfg2rlgs --provider google --dataset flowers-102__zeroshot_clip_vitb16_laion2b__l2_eps8_autoattack_standard --data_root /Users/maximeheuillet/data/adversarial/zeroshot_clip_vitb16_laion2b/l2_eps8_autoattack_standard --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name flowers-102__zeroshot_clip_vitb16_laion2b__l2_eps8_autoattack_standard__google_nothink__adv_clip_l2_eps8"
+}
