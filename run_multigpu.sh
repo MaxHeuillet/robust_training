@@ -2,14 +2,7 @@
 # ============================================================
 # run_clip_vith14_multigpu.sh
 # Craft all threat models with CLIP ViT-H/14 using 4 GPUs.
-#
-# Strategy: dispatch each dataset to a GPU slot (0-3).
-# Up to 4 datasets run in parallel per threat model.
-# Waits for all 4 to finish before starting the next batch.
-#
-# Usage:
-#   bash run_clip_vith14_multigpu.sh              # all threat models
-#   bash run_clip_vith14_multigpu.sh linf8 linf30 # specific models
+# Ctrl+C cleanly kills all child processes.
 # ============================================================
 
 set -euo pipefail
@@ -20,6 +13,31 @@ LOG_DIR="$SCRIPT_DIR/logs/clip_vith14"
 mkdir -p "$LOG_DIR"
 
 export HF_HOME="$HOME/.cache/huggingface"
+
+# ── Graceful Ctrl+C — kill all child processes ────────────────
+PIDS=()
+cleanup() {
+    echo ""
+    echo "Interrupted — killing all child processes..."
+    for PID in "${PIDS[@]}"; do
+        kill "$PID" 2>/dev/null && echo "  Killed PID $PID" || true
+    done
+    # Also kill any lingering python processes in this process group
+    kill -- -$$ 2>/dev/null || true
+    echo "Done."
+    exit 1
+}
+trap cleanup SIGINT SIGTERM
+
+# ── HF token ──────────────────────────────────────────────────
+TOKEN_FILE="$HOME/.cache/huggingface/token"
+if [[ -f "$TOKEN_FILE" ]]; then
+    export HF_TOKEN="$(cat "$TOKEN_FILE")"
+    echo "  HF token : found"
+else
+    echo "  WARNING: no HF token at $TOKEN_FILE — downloads may be rate-limited"
+    echo "  Run: huggingface-cli login"
+fi
 
 SURROGATE="clip_vith14"
 BATCH_SIZE=32
@@ -36,7 +54,6 @@ DATASETS=(
 
 ALL_THREAT_MODELS=(linf8 linf30 l2_2 l2_8 l1_75 l1_300)
 
-# If arguments provided, run only those threat models
 if [[ $# -gt 0 ]]; then
     ALL_THREAT_MODELS=("$@")
 fi
@@ -48,6 +65,17 @@ echo "  GPUs         : $N_GPUS"
 echo "  Datasets     : ${DATASETS[*]}"
 echo "  Logs         : $LOG_DIR"
 echo "============================================================"
+
+# ── Pre-download ALL data sequentially ───────────────────────
+echo ""
+echo "Step 1/2 — pre-downloading datasets (sequential)..."
+CUDA_VISIBLE_DEVICES=0 python "$CRAFT" \
+    --surrogate clip \
+    --norm Linf --eps 8 \
+    --max_samples 1 \
+    2>&1 | grep -E "Download|already present|Extracting|ERROR" || true
+echo "  Data ready."
+echo ""
 
 parse_threat_model() {
     case "$1" in
@@ -61,24 +89,42 @@ parse_threat_model() {
     esac
 }
 
+wait_for_batch() {
+    local FAILED=0
+    for PID in "${PIDS[@]}"; do
+        if wait "$PID"; then
+            echo "    PID $PID OK"
+        else
+            echo "    PID $PID FAILED — check $LOG_DIR"
+            FAILED=1
+        fi
+    done
+    PIDS=()
+    return $FAILED
+}
+
+echo "Step 2/2 — crafting adversarial examples (parallel)..."
+
 for THREAT_MODEL in "${ALL_THREAT_MODELS[@]}"; do
     READ_ARGS=($(parse_threat_model "$THREAT_MODEL"))
     NORM="${READ_ARGS[0]}"
     EPS="${READ_ARGS[1]}"
 
     echo ""
-    echo "============================================================"
+    echo "------------------------------------------------------------"
     echo "  Threat model : $NORM eps=$EPS"
-    echo "============================================================"
+    echo "------------------------------------------------------------"
 
     PIDS=()
     GPU_IDX=0
 
     for DATASET in "${DATASETS[@]}"; do
         LOG_FILE="$LOG_DIR/${THREAT_MODEL}__${DATASET}.log"
-        echo "  GPU $GPU_IDX ← $DATASET  (log: $LOG_FILE)"
+        echo "  GPU $GPU_IDX ← $DATASET"
 
-        CUDA_VISIBLE_DEVICES=$GPU_IDX python "$CRAFT" \
+        CUDA_VISIBLE_DEVICES=$GPU_IDX \
+        HF_TOKEN="$HF_TOKEN" \
+        python "$CRAFT" \
             --surrogate  "$SURROGATE" \
             --norm       "$NORM" \
             --eps        "$EPS" \
@@ -90,36 +136,22 @@ for THREAT_MODEL in "${ALL_THREAT_MODELS[@]}"; do
         PIDS+=($!)
         GPU_IDX=$(( (GPU_IDX + 1) % N_GPUS ))
 
-        # If we've filled all GPU slots, wait for the current batch to finish
         if [[ ${#PIDS[@]} -eq $N_GPUS ]]; then
-            echo "  Waiting for batch of $N_GPUS to complete..."
-            for PID in "${PIDS[@]}"; do
-                if wait "$PID"; then
-                    echo "    PID $PID finished OK"
-                else
-                    echo "    PID $PID FAILED — check logs in $LOG_DIR"
-                fi
-            done
-            PIDS=()
+            echo "  Waiting for batch of $N_GPUS..."
+            wait_for_batch || echo "  WARNING: one or more jobs failed, continuing..."
             GPU_IDX=0
         fi
     done
 
-    # Wait for any remaining jobs (last batch may be < N_GPUS)
+    # Wait for remaining jobs
     if [[ ${#PIDS[@]} -gt 0 ]]; then
         echo "  Waiting for remaining ${#PIDS[@]} job(s)..."
-        for PID in "${PIDS[@]}"; do
-            if wait "$PID"; then
-                echo "    PID $PID finished OK"
-            else
-                echo "    PID $PID FAILED — check logs in $LOG_DIR"
-            fi
-        done
+        wait_for_batch || echo "  WARNING: one or more jobs failed."
     fi
 
-    echo "  ✓ $NORM eps=$EPS — all datasets done"
+    echo "  ✓ $NORM eps=$EPS complete"
 done
 
 echo ""
 echo "All threat models complete."
-echo "Logs saved to: $LOG_DIR"
+echo "Logs: $LOG_DIR"
