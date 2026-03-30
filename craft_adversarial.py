@@ -456,7 +456,20 @@ def package_run(adv_dir: Path, output_dir: Path) -> Path:
     meta_path = adv_dir / "metadata.jsonl"
     if not meta_path.exists():
         raise FileNotFoundError(f"metadata.jsonl not found in {adv_dir}")
-    records = [json.loads(l) for l in meta_path.read_text().splitlines() if l.strip()]
+
+    all_records = [json.loads(l) for l in meta_path.read_text().splitlines() if l.strip()]
+
+    # Deduplicate by filename — metadata.jsonl can accumulate duplicates
+    # across resumed runs. Keep first occurrence (earliest = correct).
+    seen, records = set(), []
+    for rec in all_records:
+        fname = rec["image_path"]
+        if fname not in seen:
+            seen.add(fname)
+            records.append(rec)
+
+    if len(all_records) != len(records):
+        print(f"  ⚠ Deduplicated metadata: {len(all_records)} → {len(records)} records")
 
     archive_name = f"{adv_dir.name}_processed.tar.zst"
     archive_path = output_dir / archive_name

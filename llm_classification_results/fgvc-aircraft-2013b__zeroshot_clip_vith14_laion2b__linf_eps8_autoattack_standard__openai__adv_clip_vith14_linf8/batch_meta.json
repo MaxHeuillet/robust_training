@@ -1,0 +1,10 @@
+{
+  "batch_id": "batch_69c9c40f5e2081908d50ef1f61aa92ab",
+  "file_id": "file-JS1vkQznutUCyExqw9KMU9",
+  "provider": "openai",
+  "run_id": "fgvc-aircraft-2013b__zeroshot_clip_vith14_laion2b__linf_eps8_autoattack_standard__openai__adv_clip_vith14_linf8",
+  "model": "gpt-4o-mini",
+  "num_requests": 1000,
+  "submitted_at": "2026-03-29T20:30:07.851269",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batch_69c9c40f5e2081908d50ef1f61aa92ab --provider openai --dataset fgvc-aircraft-2013b__zeroshot_clip_vith14_laion2b__linf_eps8_autoattack_standard --data_root /Users/maximeheuillet/data/adversarial/zeroshot_clip_vith14_laion2b/linf_eps8_autoattack_standard --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name fgvc-aircraft-2013b__zeroshot_clip_vith14_laion2b__linf_eps8_autoattack_standard__openai__adv_clip_vith14_linf8"
+}

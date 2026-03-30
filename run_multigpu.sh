@@ -41,7 +41,7 @@ fi
 SURROGATE="clip_vith14"
 SURROGATE_SLUG="zeroshot_clip_vith14_laion2b"
 HF_REPO="MaxHeuillet/RobustGenBench"
-BATCH_SIZE=32
+BATCH_SIZE=64
 N_GPUS=4
 
 DATASETS=(
