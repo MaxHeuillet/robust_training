@@ -288,6 +288,13 @@ def process_dataset(dataset: str, resolved_dataset: str,
         print(f"  ✓ Already complete — skipping")
         return manifest
 
+    # ── ADD THIS ──────────────────────────────────────────────
+    existing = next((e for e in manifest if e["run_name"] == run_name), None)
+    if existing and existing.get("status") == "retrieved":
+        print(f"  ✓ Already retrieved in manifest — skipping")
+        return manifest
+    # ──────────────────────────────────────────────────────────
+
     # Phase 1
     existing = next((e for e in manifest if e["run_name"] == run_name), None)
     if existing and existing.get("batch_id") and existing.get("status") not in ("retrieved", "failed", None):

@@ -4,12 +4,13 @@ craft_shard.py — Run craft_adversarial.py on a subset of a dataset (one GPU),
 then optionally merge all shards into the main output and package/upload.
 
 Shard mode (called once per GPU):
-    python craft_shard.py --dataset caltech101 --norm L1 --eps 75
-        --surrogate clip_vith14 --batch_size 128
-        --shard_idx 0 --n_shards 4 --gpu 0
+    CUDA_VISIBLE_DEVICES=0 python craft_shard.py \
+        --dataset caltech101 --norm L1 --eps 75 \
+        --surrogate clip_vith14 --batch_size 64 \
+        --shard_idx 0 --n_shards 4
 
 Merge mode (called once after all shards finish):
-    python craft_shard.py --dataset caltech101 --norm L1 --eps 75
+    python craft_shard.py --dataset caltech101 --norm L1 --eps 75 \
         --surrogate clip_vith14 --merge --upload_hf
 """
 
@@ -18,11 +19,11 @@ import csv
 import io
 import json
 import os
+import shutil
 import sys
 import tarfile
 from pathlib import Path
 
-# Reuse helpers from craft_adversarial
 sys.path.insert(0, str(Path(__file__).parent))
 from craft_adversarial import (
     OUTPUT_ROOT, PACKAGED_ROOT, DATA_ROOT, WORK_DIR, HF_CACHE_DIR,
@@ -33,7 +34,6 @@ from craft_adversarial import (
     save_batch, package_run, upload_to_hf, ensure_data_downloaded,
 )
 
-import numpy as np
 import torch
 from autoattack import AutoAttack
 from torch.utils.data import DataLoader
@@ -48,7 +48,6 @@ def run_shard(args):
     shard_idx = args.shard_idx
     n_shards  = args.n_shards
 
-    # Each shard writes to its own subdirectory to avoid conflicts
     base_rname = run_dir_name(dataset, args.surrogate, norm, eps)
     shard_dir  = OUTPUT_ROOT / f"{base_rname}__shard{shard_idx}"
     done_flag  = shard_dir / "shard_done.json"
@@ -57,22 +56,26 @@ def run_shard(args):
         print(f"  Shard {shard_idx}/{n_shards} already complete — skipping")
         return
 
+    # CUDA_VISIBLE_DEVICES must be set before Python starts (in the shell).
+    # Here we always use cuda:0 since each process sees only one GPU.
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    if torch.cuda.is_available():
+        print(f"  Using: {torch.cuda.get_device_name(0)}")
+    else:
+        print("  Warning: no GPU found, using CPU")
+
     print(f"\n{'='*60}")
     print(f"  Dataset   : {dataset}  [shard {shard_idx+1}/{n_shards}]")
     print(f"  Surrogate : {args.surrogate}")
     print(f"  Norm      : {norm}  eps={eps}  (AA: {eps_float:.5f})")
-    print(f"  GPU       : {args.gpu}")
+    print(f"  Device    : {device}")
     print(f"{'='*60}")
-
-    os.environ["CUDA_VISIBLE_DEVICES"] = str(args.gpu)
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"  Using: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'CPU'}")
 
     dataset_dir   = extract_archive(dataset)
     all_items     = load_local_dataset(dataset_dir, split="test")
     label_to_name = load_class_names(dataset)
 
-    # Split indices across shards
+    # Split indices evenly across shards
     total      = len(all_items)
     shard_size = (total + n_shards - 1) // n_shards
     start      = shard_idx * shard_size
@@ -134,9 +137,9 @@ def run_shard(args):
 
 
 def merge_shards(args):
-    dataset  = args.dataset
-    norm     = args.norm
-    eps      = float(args.eps)
+    dataset = args.dataset
+    norm    = args.norm
+    eps     = float(args.eps)
 
     base_rname = run_dir_name(dataset, args.surrogate, norm, eps)
     output_dir = OUTPUT_ROOT / base_rname
@@ -149,7 +152,6 @@ def merge_shards(args):
             upload_to_hf(archive_path, args.surrogate, norm, eps)
         return
 
-    # Collect all shard dirs
     shard_dirs = sorted(OUTPUT_ROOT.glob(f"{base_rname}__shard*"))
     if not shard_dirs:
         print(f"  ERROR: no shard directories found for {base_rname}")
@@ -164,9 +166,9 @@ def merge_shards(args):
     for sd in shard_dirs:
         done_path = sd / "shard_done.json"
         if not done_path.exists():
-            print(f"  WARNING: shard {sd.name} not complete (no shard_done.json) — skipping")
+            print(f"  WARNING: shard {sd.name} not complete — skipping")
             continue
-        info = json.loads(done_path.read_text())
+        info     = json.loads(done_path.read_text())
         n_total += info["n_total"]
         n_clean += round(info["clean_acc"] * info["n_total"])
         n_adv   += round(info["adv_acc"]   * info["n_total"])
@@ -175,17 +177,13 @@ def merge_shards(args):
         if meta_path.exists():
             for line in meta_path.read_text().splitlines():
                 if line.strip():
-                    rec = json.loads(line)
-                    all_records.append(rec)
+                    all_records.append(json.loads(line))
 
-        # Copy images
         for img_file in sd.glob("*.png"):
             dest = output_dir / img_file.name
             if not dest.exists():
-                import shutil
                 shutil.copy2(img_file, dest)
 
-    # Write merged metadata.jsonl
     with open(output_dir / "metadata.jsonl", "w") as f:
         for rec in all_records:
             f.write(json.dumps(rec) + "\n")
@@ -214,10 +212,9 @@ def main():
     p.add_argument("--norm",       required=True)
     p.add_argument("--eps",        type=float, required=True)
     p.add_argument("--surrogate",  default="clip_vith14")
-    p.add_argument("--batch_size", type=int, default=128)
+    p.add_argument("--batch_size", type=int, default=64)
     p.add_argument("--n_shards",   type=int, default=4)
     p.add_argument("--shard_idx",  type=int, default=None)
-    p.add_argument("--gpu",        type=int, default=0)
     p.add_argument("--merge",      action="store_true")
     p.add_argument("--upload_hf",  action="store_true")
 

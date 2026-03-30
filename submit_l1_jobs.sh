@@ -38,7 +38,7 @@ L1_300_DATASETS=(
 )
 
 N_SHARDS=4
-BATCH_SIZE=128
+BATCH_SIZE=64
 SURROGATE="clip_vith14"
 TIME_LIMIT="02:59:00"
 
@@ -93,12 +93,14 @@ nvidia-smi --query-gpu=name --format=csv,noheader
 python ${SCRIPT_DIR}/craft_shard.py \
     --dataset ${DATASET} --norm ${NORM} --eps ${EPS} \
     --surrogate ${SURROGATE} --shard_idx 0 --n_shards 1 \
-    --gpu 0 --batch_size 1 2>&1 | grep -E 'Download|already present|Extracting|ERROR' || true
+    --batch_size 1 2>&1 | grep -E 'Download|already present|Extracting|ERROR' || true
 
 # Step 2 — run 4 shards in parallel, one per GPU
+# CUDA_VISIBLE_DEVICES is set in the shell before Python starts
+# so each process sees exactly one GPU as cuda:0
 echo "[\$(date)] Launching 4 shards..."
 for SHARD_IDX in 0 1 2 3; do
-    python ${SCRIPT_DIR}/craft_shard.py \
+    CUDA_VISIBLE_DEVICES=\${SHARD_IDX} python ${SCRIPT_DIR}/craft_shard.py \
         --dataset    ${DATASET} \
         --norm       ${NORM} \
         --eps        ${EPS} \
@@ -106,7 +108,6 @@ for SHARD_IDX in 0 1 2 3; do
         --batch_size ${BATCH_SIZE} \
         --shard_idx  \${SHARD_IDX} \
         --n_shards   ${N_SHARDS} \
-        --gpu        \${SHARD_IDX} \
         > ${LOG_DIR}/${SLUG}__${DATASET}__shard\${SHARD_IDX}.log 2>&1 &
 done
 
