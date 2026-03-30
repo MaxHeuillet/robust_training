@@ -50,75 +50,63 @@ submit_job() {
     local DATASET="$1"
     local NORM="$2"
     local EPS="$3"
-    local SLUG="${NORM,,}_eps${EPS}"   # e.g. l1_eps75
+    local SLUG="${NORM,,}_eps${EPS}"
 
     local JOB_NAME="craft_${SLUG}__${DATASET}"
     local OUT_LOG="$LOG_DIR/slurm-%j__${SLUG}__${DATASET}.out"
     local ERR_LOG="$LOG_DIR/slurm-%j__${SLUG}__${DATASET}.err"
+    local JOB_SCRIPT="$LOG_DIR/job_${SLUG}__${DATASET}.sh"
 
-    echo "  Submitting: $DATASET  $NORM eps=$EPS"
+    # Write a proper bash job script instead of using --wrap
+    cat > "$JOB_SCRIPT" << JOBEOF
+#!/bin/bash
+#SBATCH --account=aip-adurand
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=48
+#SBATCH --gres=gpu:h100:4
+#SBATCH --mem=480G
+#SBATCH --time=$TIME_LIMIT
+#SBATCH --job-name=$JOB_NAME
+#SBATCH --mail-type=ALL
+#SBATCH --output=$OUT_LOG
+#SBATCH --error=$ERR_LOG
 
-    sbatch \
-        --account=aip-adurand \
-        --nodes=1 \
-        --ntasks-per-node=1 \
-        --cpus-per-task=48 \
-        --gres=gpu:h100:4 \
-        --mem=480G \
-        --time="$TIME_LIMIT" \
-        --job-name="$JOB_NAME" \
-        --mail-type=ALL \
-        --output="$OUT_LOG" \
-        --error="$ERR_LOG" \
-        --wrap="
 set -euo pipefail
 source $SCRIPT_DIR/execute_setup.sh
 
-echo \"[\$(date)] Starting $DATASET $NORM eps=$EPS on \$(hostname)\"
-echo \"GPUs available: \$(nvidia-smi --query-gpu=name --format=csv,noheader | tr '\n' ' ')\"
+echo "[\$(date)] Starting $DATASET $NORM eps=$EPS on \$(hostname)"
+nvidia-smi --query-gpu=name --format=csv,noheader
 
-# Step 1 — ensure data is downloaded (only rank 0 does this, others wait)
+# Step 1 — ensure data is downloaded
 python $SCRIPT_DIR/craft_shard.py \
-    --dataset   $DATASET \
-    --norm      $NORM \
-    --eps       $EPS \
-    --surrogate $SURROGATE \
-    --shard_idx 0 \
-    --n_shards  1 \
-    --gpu       0 \
-    --batch_size 1 \
-    2>&1 | grep -E 'Download|already present|Extracting|ERROR' || true
+    --dataset $DATASET --norm $NORM --eps $EPS \
+    --surrogate $SURROGATE --shard_idx 0 --n_shards 1 \
+    --gpu 0 --batch_size 1 2>&1 | grep -E 'Download|already present|Extracting|ERROR' || true
 
-# Step 2 — run 4 shards in parallel (one per GPU)
-echo \"[\$(date)] Launching 4 shards...\"
+# Step 2 — run 4 shards in parallel
+echo "[\$(date)] Launching 4 shards..."
 for SHARD_IDX in 0 1 2 3; do
     python $SCRIPT_DIR/craft_shard.py \
-        --dataset    $DATASET \
-        --norm       $NORM \
-        --eps        $EPS \
-        --surrogate  $SURROGATE \
-        --batch_size $BATCH_SIZE \
-        --shard_idx  \$SHARD_IDX \
-        --n_shards   $N_SHARDS \
-        --gpu        \$SHARD_IDX \
+        --dataset $DATASET --norm $NORM --eps $EPS \
+        --surrogate $SURROGATE --batch_size $BATCH_SIZE \
+        --shard_idx \$SHARD_IDX --n_shards $N_SHARDS --gpu \$SHARD_IDX \
         > $LOG_DIR/${SLUG}__${DATASET}__shard\${SHARD_IDX}.log 2>&1 &
 done
 
-echo \"[\$(date)] Waiting for all shards to complete...\"
 wait
-echo \"[\$(date)] All shards done — merging and uploading\"
+echo "[\$(date)] All shards done — merging and uploading"
 
-# Step 3 — merge shards and upload to HuggingFace
+# Step 3 — merge and upload
 python $SCRIPT_DIR/craft_shard.py \
-    --dataset    $DATASET \
-    --norm       $NORM \
-    --eps        $EPS \
-    --surrogate  $SURROGATE \
-    --merge \
-    --upload_hf
+    --dataset $DATASET --norm $NORM --eps $EPS \
+    --surrogate $SURROGATE --merge --upload_hf
 
-echo \"[\$(date)] Done: $DATASET $NORM eps=$EPS\"
-"
+echo "[\$(date)] Done: $DATASET $NORM eps=$EPS"
+JOBEOF
+
+    echo "  Submitting: $DATASET  $NORM eps=$EPS"
+    sbatch "$JOB_SCRIPT"
     echo "    → submitted"
 }
 
