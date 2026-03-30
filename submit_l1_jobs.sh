@@ -89,12 +89,6 @@ export HUGGING_FACE_HUB_TOKEN="${HF_TOKEN_VALUE}"
 echo "[\$(date)] Starting ${DATASET} ${NORM} eps=${EPS} on \$(hostname)"
 nvidia-smi --query-gpu=name --format=csv,noheader
 
-# Step 1 — ensure data is downloaded (sequential, avoids race condition)
-python ${SCRIPT_DIR}/craft_shard.py \
-    --dataset ${DATASET} --norm ${NORM} --eps ${EPS} \
-    --surrogate ${SURROGATE} --shard_idx 0 --n_shards 1 \
-    --batch_size 1 2>&1 | grep -E 'Download|already present|Extracting|ERROR' || true
-
 # Step 2 — run 4 shards in parallel, one per GPU
 # CUDA_VISIBLE_DEVICES is set in the shell before Python starts
 # so each process sees exactly one GPU as cuda:0
