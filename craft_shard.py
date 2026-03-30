@@ -3,7 +3,7 @@
 craft_shard.py — Run craft_adversarial.py on a subset of a dataset (one GPU),
 then optionally merge all shards into the main output and package/upload.
 
-Shard mode (called once per GPU):
+Shard mode (called once per GPU, CUDA_VISIBLE_DEVICES set in shell):
     CUDA_VISIBLE_DEVICES=0 python craft_shard.py \
         --dataset caltech101 --norm L1 --eps 75 \
         --surrogate clip_vith14 --batch_size 64 \
@@ -15,13 +15,11 @@ Merge mode (called once after all shards finish):
 """
 
 import argparse
-import csv
-import io
+import fcntl
 import json
 import os
 import shutil
 import sys
-import tarfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
@@ -40,6 +38,22 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 
 
+def ensure_data_downloaded_once():
+    """
+    Only one shard per node downloads the data.
+    Others wait on the file lock, then see the sentinel and skip.
+    """
+    lock_path = TMP_ROOT / "download.lock"
+    TMP_ROOT.mkdir(parents=True, exist_ok=True)
+    with open(lock_path, "w") as lock_f:
+        print(f"  [shard] Waiting for download lock...")
+        fcntl.flock(lock_f, fcntl.LOCK_EX)
+        try:
+            ensure_data_downloaded()
+        finally:
+            fcntl.flock(lock_f, fcntl.LOCK_UN)
+
+
 def run_shard(args):
     dataset   = args.dataset
     norm      = args.norm
@@ -56,8 +70,8 @@ def run_shard(args):
         print(f"  Shard {shard_idx}/{n_shards} already complete — skipping")
         return
 
-    # CUDA_VISIBLE_DEVICES must be set before Python starts (in the shell).
-    # Here we always use cuda:0 since each process sees only one GPU.
+    # CUDA_VISIBLE_DEVICES must be set in the shell before Python starts.
+    # Each process sees only one GPU as cuda:0.
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     if torch.cuda.is_available():
         print(f"  Using: {torch.cuda.get_device_name(0)}")
@@ -70,6 +84,9 @@ def run_shard(args):
     print(f"  Norm      : {norm}  eps={eps}  (AA: {eps_float:.5f})")
     print(f"  Device    : {device}")
     print(f"{'='*60}")
+
+    # Only one shard downloads — others wait then skip via sentinel
+    ensure_data_downloaded_once()
 
     dataset_dir   = extract_archive(dataset)
     all_items     = load_local_dataset(dataset_dir, split="test")
@@ -222,8 +239,6 @@ def main():
 
     for d in [TMP_ROOT, DATA_ROOT, HF_CACHE_DIR, OUTPUT_ROOT, PACKAGED_ROOT, WORK_DIR]:
         d.mkdir(parents=True, exist_ok=True)
-
-    ensure_data_downloaded()
 
     if args.merge:
         merge_shards(args)
