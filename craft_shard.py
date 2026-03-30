@@ -23,12 +23,13 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
+
 from craft_adversarial import (
     OUTPUT_ROOT, PACKAGED_ROOT, DATA_ROOT, WORK_DIR, HF_CACHE_DIR,
     TMP_ROOT, CLASS_NAMES_DIR,
     run_dir_name, surrogate_slug, threat_model_slug, hf_archive_path,
     eps_to_float, load_surrogate, build_transform, AdversarialDataset,
-    extract_archive, load_local_dataset, load_class_names,
+    extract_archive, load_local_dataset, load_class_names,    # ← already there
     save_batch, package_run, upload_to_hf, ensure_data_downloaded,
 )
 
@@ -38,11 +39,7 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 
 
-def ensure_data_downloaded_once():
-    """
-    Only one shard per node downloads the data.
-    Others wait on the file lock, then see the sentinel and skip.
-    """
+def ensure_data_downloaded_once(dataset: str):
     lock_path = TMP_ROOT / "download.lock"
     TMP_ROOT.mkdir(parents=True, exist_ok=True)
     with open(lock_path, "w") as lock_f:
@@ -50,6 +47,7 @@ def ensure_data_downloaded_once():
         fcntl.flock(lock_f, fcntl.LOCK_EX)
         try:
             ensure_data_downloaded()
+            extract_archive(dataset)
         finally:
             fcntl.flock(lock_f, fcntl.LOCK_UN)
 
@@ -86,9 +84,9 @@ def run_shard(args):
     print(f"{'='*60}")
 
     # Only one shard downloads — others wait then skip via sentinel
-    ensure_data_downloaded_once()
+    ensure_data_downloaded_once(dataset)
 
-    dataset_dir   = extract_archive(dataset)
+    dataset_dir = WORK_DIR / dataset
     all_items     = load_local_dataset(dataset_dir, split="test")
     label_to_name = load_class_names(dataset)
 

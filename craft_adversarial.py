@@ -49,11 +49,11 @@ from tqdm import tqdm
 # ---------------------------------------------------------------------------
 
 TMP_ROOT        = Path("/tmp/robustgenbench")
-DATA_ROOT       = TMP_ROOT / "data_processed"
-HF_CACHE_DIR    = TMP_ROOT / "hf_cache"
+DATA_ROOT       = Path(os.path.expanduser("~/links/scratch/robustgenbench/data_processed"))
+HF_CACHE_DIR    = Path(os.path.expanduser("~/links/scratch/robustgenbench/hf_cache"))
 OUTPUT_ROOT     = TMP_ROOT / "adversarial_examples"
 PACKAGED_ROOT   = TMP_ROOT / "adversarial_packaged"
-WORK_DIR        = TMP_ROOT / "work"
+WORK_DIR        = Path(os.path.expanduser("~/links/scratch/robustgenbench/work"))
 
 HF_DATASET_REPO = "MaxHeuillet/RobustGenBench"
 CLASS_NAMES_DIR = DATA_ROOT / "class_names"
@@ -227,6 +227,7 @@ def extract_archive(dataset_name: str) -> Path:
 
     print(f"Extracting {archive_path.name} → {dest_dir}")
     dest_dir.mkdir(parents=True, exist_ok=True)
+
     with open(archive_path, "rb") as compressed:
         dctx = zstd.ZstdDecompressor()
         with dctx.stream_reader(compressed) as reader:
