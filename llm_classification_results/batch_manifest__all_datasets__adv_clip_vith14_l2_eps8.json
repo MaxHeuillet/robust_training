@@ -6,7 +6,7 @@
     "model": "gpt-4o-mini",
     "run_name": "caltech101__zeroshot_clip_vith14_laion2b__l2_eps8_autoattack_standard__openai__adv_clip_vith14_l2_eps8",
     "batch_id": "batch_69ca8142e2548190b270b13a8bfb3622",
-    "status": "submitted",
+    "status": "retrieved",
     "experiment": "adv_clip_vith14_l2_eps8"
   }
 ]
