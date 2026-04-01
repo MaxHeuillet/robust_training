@@ -1,0 +1,69 @@
+Data already present at /tmp/robustgenbench/data_processed.
+Using CUDA: NVIDIA H100 80GB HBM3
+
+============================================================
+  Dataset   : caltech101
+  Surrogate : clip_vith14  (zeroshot_clip_vith14_laion2b)
+  Norm      : L1  eps=75.0  (AA: 75.00000)
+============================================================
+  1000 samples | 101 classes
+
+Loading CLIP ViT-H/14 surrogate: ViT-H-14 / laion2b_s32b_b79k
+  Encoding 101 class prompts...
+setting parameters for standard version
+caltech101:   0%|          | 0/16 [00:00<?, ?it/s]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 43 out of 60 successfully perturbed
+robust accuracy after APGD-CE: 26.56% (total time 296.4 s)
+apgd-t - 1/1 - 3 out of 17 successfully perturbed
+robust accuracy after APGD-T: 21.88% (total time 453.8 s)
+fab-t - 1/1 - 0 out of 14 successfully perturbed
+robust accuracy after FAB-T: 21.88% (total time 916.1 s)
+square - 1/1 - 0 out of 14 successfully perturbed
+robust accuracy after SQUARE: 21.88% (total time 1593.1 s)
+max L1 perturbation: 75.00208, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 21.88%
+caltech101:   6%|▋         | 1/16 [26:41<6:40:18, 1601.25s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 87.50%
+apgd-ce - 1/1 - 40 out of 56 successfully perturbed
+robust accuracy after APGD-CE: 25.00% (total time 275.5 s)
+apgd-t - 1/1 - 2 out of 16 successfully perturbed
+robust accuracy after APGD-T: 21.88% (total time 429.1 s)
+fab-t - 1/1 - 0 out of 14 successfully perturbed
+robust accuracy after FAB-T: 21.88% (total time 895.6 s)
+square - 1/1 - 0 out of 14 successfully perturbed
+robust accuracy after SQUARE: 21.88% (total time 1572.8 s)
+max L1 perturbation: 75.00121, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 21.88%
+caltech101:  12%|█▎        | 2/16 [53:01<6:10:47, 1589.11s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 92.19%
+apgd-ce - 1/1 - 47 out of 59 successfully perturbed
+robust accuracy after APGD-CE: 18.75% (total time 255.2 s)
+apgd-t - 1/1 - 1 out of 12 successfully perturbed
+robust accuracy after APGD-T: 17.19% (total time 372.9 s)
+fab-t - 1/1 - 0 out of 11 successfully perturbed
+robust accuracy after FAB-T: 17.19% (total time 728.0 s)
+square - 1/1 - 0 out of 11 successfully perturbed
+robust accuracy after SQUARE: 17.19% (total time 1228.3 s)
+max L1 perturbation: 75.00087, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 17.19%
+caltech101:  19%|█▉        | 3/16 [1:13:37<5:09:19, 1427.64s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 92.19%
+apgd-ce - 1/1 - 47 out of 59 successfully perturbed
+robust accuracy after APGD-CE: 18.75% (total time 264.8 s)
+apgd-t - 1/1 - 2 out of 12 successfully perturbed
+robust accuracy after APGD-T: 15.62% (total time 380.1 s)
+fab-t - 1/1 - 0 out of 10 successfully perturbed
+robust accuracy after FAB-T: 15.62% (total time 722.7 s)
+square - 1/1 - 0 out of 10 successfully perturbed
+robust accuracy after SQUARE: 15.62% (total time 1215.2 s)
+max L1 perturbation: 75.00091, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 15.62%
+caltech101:  25%|██▌       | 4/16 [1:33:59<4:29:19, 1346.64s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 92.19%
+apgd-ce - 1/1 - 40 out of 59 successfully perturbed
+robust accuracy after APGD-CE: 29.69% (total time 303.7 s)
+apgd-t - 1/1 - 4 out of 19 successfully perturbed
+robust accuracy after APGD-T: 23.44% (total time 480.8 s)
+fab-t - 1/1 - 0 out of 15 successfully perturbed
+robust accuracy after FAB-T: 23.44% (total time 973.6 s)

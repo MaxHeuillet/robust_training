@@ -1,0 +1,42 @@
+  Using: NVIDIA H100 80GB HBM3
+
+============================================================
+  Dataset   : uc-merced-land-use-dataset  [shard 1/4]
+  Surrogate : clip_vith14
+  Norm      : L1  eps=75.0  (AA: 75.00000)
+  Device    : cuda
+============================================================
+  [shard] Waiting for download lock...
+
+Downloading 'MaxHeuillet/RobustGenBench' → /tmp/robustgenbench/data_processed
+Fetching 13 files:   0%|          | 0/13 [00:00<?, ?it/s]Fetching 13 files:   8%|▊         | 1/13 [00:00<00:01,  6.47it/s]Fetching 13 files:  15%|█▌        | 2/13 [02:02<13:10, 71.86s/it]Fetching 13 files: 100%|██████████| 13/13 [02:02<00:00,  9.40s/it]
+
+Download complete. Data stored at /tmp/robustgenbench/data_processed
+
+Extracting uc-merced-land-use-dataset_processed.tar.zst → /tmp/robustgenbench/work/uc-merced-land-use-dataset
+  Shard indices: 0–104  (105 samples of 420 total)
+
+Loading CLIP ViT-H/14 surrogate: ViT-H-14 / laion2b_s32b_b79k
+  Encoding 21 class prompts...
+setting parameters for standard version
+shard0:   0%|          | 0/2 [00:00<?, ?it/s]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 75.00%
+apgd-ce - 1/1 - 47 out of 48 successfully perturbed
+robust accuracy after APGD-CE: 1.56% (total time 111.9 s)
+apgd-t - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after APGD-T: 1.56% (total time 139.0 s)
+fab-t - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after FAB-T: 1.56% (total time 202.3 s)
+square - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after SQUARE: 1.56% (total time 322.5 s)
+max L1 perturbation: 75.00084, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 1.56%
+shard0:  50%|█████     | 1/2 [05:28<05:28, 328.78s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 73.17%
+apgd-ce - 1/1 - 30 out of 30 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 59.1 s)
+max L1 perturbation: 75.00073, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard0: 100%|██████████| 2/2 [06:31<00:00, 172.47s/it]shard0: 100%|██████████| 2/2 [06:31<00:00, 195.96s/it]
+
+  Shard 0 done: 105 images | clean=0.7429 | adv=0.0095

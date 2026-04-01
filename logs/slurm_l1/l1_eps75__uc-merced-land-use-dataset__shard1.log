@@ -1,0 +1,33 @@
+  Using: NVIDIA H100 80GB HBM3
+
+============================================================
+  Dataset   : uc-merced-land-use-dataset  [shard 2/4]
+  Surrogate : clip_vith14
+  Norm      : L1  eps=75.0  (AA: 75.00000)
+  Device    : cuda
+============================================================
+  [shard] Waiting for download lock...
+Data already present at /tmp/robustgenbench/data_processed.
+Extracting uc-merced-land-use-dataset_processed.tar.zst → /tmp/robustgenbench/work/uc-merced-land-use-dataset
+  Shard indices: 105–209  (105 samples of 420 total)
+
+Loading CLIP ViT-H/14 surrogate: ViT-H-14 / laion2b_s32b_b79k
+  Encoding 21 class prompts...
+setting parameters for standard version
+shard1:   0%|          | 0/2 [00:00<?, ?it/s]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 67.19%
+apgd-ce - 1/1 - 42 out of 43 successfully perturbed
+robust accuracy after APGD-CE: 1.56% (total time 105.1 s)
+apgd-t - 1/1 - 1 out of 1 successfully perturbed
+robust accuracy after APGD-T: 0.00% (total time 115.9 s)
+max L1 perturbation: 75.00103, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard1:  50%|█████     | 1/2 [02:02<02:02, 122.04s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 68.29%
+apgd-ce - 1/1 - 28 out of 28 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 65.6 s)
+max L1 perturbation: 75.00071, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard1: 100%|██████████| 2/2 [03:11<00:00, 91.16s/it] shard1: 100%|██████████| 2/2 [03:11<00:00, 95.82s/it]
+
+  Shard 1 done: 105 images | clean=0.6762 | adv=0.0000

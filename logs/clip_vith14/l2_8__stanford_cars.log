@@ -1,0 +1,322 @@
+Data already present at /tmp/robustgenbench/data_processed.
+Using CUDA: NVIDIA H100 80GB HBM3
+
+============================================================
+  Dataset   : stanford_cars
+  Surrogate : clip_vith14  (zeroshot_clip_vith14_laion2b)
+  Norm      : L2  eps=8.0  (AA: 8.00000)
+============================================================
+  1000 samples | 196 classes
+
+Loading CLIP ViT-H/14 surrogate: ViT-H-14 / laion2b_s32b_b79k
+  Encoding 196 class prompts...
+setting parameters for standard version
+stanford_cars:   0%|          | 0/32 [00:00<?, ?it/s]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 30 out of 30 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 57.4 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars:   3%|▎         | 1/32 [01:01<31:38, 61.25s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 30 out of 30 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 57.3 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars:   6%|▋         | 2/32 [02:02<30:32, 61.08s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 96.88%
+apgd-ce - 1/1 - 31 out of 31 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 58.5 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars:   9%|▉         | 3/32 [03:04<29:45, 61.58s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 87.50%
+apgd-ce - 1/1 - 28 out of 28 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 53.7 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars:  12%|█▎        | 4/32 [04:01<27:52, 59.72s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 96.88%
+apgd-ce - 1/1 - 31 out of 31 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 58.5 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars:  16%|█▌        | 5/32 [05:02<27:11, 60.43s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 96.88%
+apgd-ce - 1/1 - 31 out of 31 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 58.5 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars:  19%|█▉        | 6/32 [06:04<26:20, 60.80s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 96.88%
+apgd-ce - 1/1 - 31 out of 31 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 58.5 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars:  22%|██▏       | 7/32 [07:06<25:30, 61.22s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 90.62%
+apgd-ce - 1/1 - 29 out of 29 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 54.4 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars:  25%|██▌       | 8/32 [08:04<24:05, 60.21s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 87.50%
+apgd-ce - 1/1 - 28 out of 28 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 53.7 s)
+max L2 perturbation: 7.99999, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars:  28%|██▊       | 9/32 [09:01<22:40, 59.15s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 96.88%
+apgd-ce - 1/1 - 31 out of 31 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 58.5 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars:  31%|███▏      | 10/32 [10:02<21:57, 59.88s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 30 out of 30 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 57.3 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars:  34%|███▍      | 11/32 [11:03<21:00, 60.03s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 30 out of 30 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 57.3 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars:  38%|███▊      | 12/32 [12:03<20:02, 60.11s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 96.88%
+apgd-ce - 1/1 - 31 out of 31 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 58.5 s)
+max L2 perturbation: 7.99998, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars:  41%|████      | 13/32 [13:05<19:09, 60.52s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 30 out of 30 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 57.3 s)
+max L2 perturbation: 7.99998, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars:  44%|████▍     | 14/32 [14:05<18:08, 60.46s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 96.88%
+apgd-ce - 1/1 - 31 out of 31 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 58.5 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars:  47%|████▋     | 15/32 [15:06<17:12, 60.76s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 96.88%
+apgd-ce - 1/1 - 31 out of 31 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 58.5 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars:  50%|█████     | 16/32 [16:08<16:15, 60.96s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 96.88%
+apgd-ce - 1/1 - 31 out of 31 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 58.5 s)
+max L2 perturbation: 7.99994, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars:  53%|█████▎    | 17/32 [17:09<15:16, 61.10s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 96.88%
+apgd-ce - 1/1 - 31 out of 31 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 58.5 s)
+max L2 perturbation: 7.99981, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars:  56%|█████▋    | 18/32 [18:11<14:17, 61.22s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 90.62%
+apgd-ce - 1/1 - 29 out of 29 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 54.4 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars:  59%|█████▉    | 19/32 [19:08<13:01, 60.10s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 96.88%
+apgd-ce - 1/1 - 31 out of 31 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 58.5 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars:  62%|██████▎   | 20/32 [20:10<12:06, 60.51s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 30 out of 30 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 57.3 s)
+max L2 perturbation: 7.99998, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars:  66%|██████▌   | 21/32 [21:10<11:04, 60.44s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 100.00%
+apgd-ce - 1/1 - 32 out of 32 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 59.4 s)
+max L2 perturbation: 7.99999, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars:  69%|██████▉   | 22/32 [22:12<10:10, 61.03s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 30 out of 30 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 57.3 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars:  72%|███████▏  | 23/32 [23:13<09:07, 60.81s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 90.62%
+apgd-ce - 1/1 - 29 out of 29 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 54.4 s)
+max L2 perturbation: 7.99998, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars:  75%|███████▌  | 24/32 [24:10<07:58, 59.77s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 100.00%
+apgd-ce - 1/1 - 32 out of 32 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 59.4 s)
+max L2 perturbation: 7.99999, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars:  78%|███████▊  | 25/32 [25:12<07:03, 60.57s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 90.62%
+apgd-ce - 1/1 - 29 out of 29 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 54.4 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars:  81%|████████▏ | 26/32 [26:10<05:57, 59.61s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 90.62%
+apgd-ce - 1/1 - 29 out of 29 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 54.4 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars:  84%|████████▍ | 27/32 [27:07<04:54, 58.93s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 30 out of 30 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 57.3 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars:  88%|████████▊ | 28/32 [28:07<03:57, 59.33s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 96.88%
+apgd-ce - 1/1 - 31 out of 31 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 58.5 s)
+max L2 perturbation: 7.99999, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars:  91%|█████████ | 29/32 [29:09<02:59, 59.97s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 87.50%
+apgd-ce - 1/1 - 28 out of 28 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 53.7 s)
+max L2 perturbation: 7.99999, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars:  94%|█████████▍| 30/32 [30:06<01:57, 59.00s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 75.00%
+apgd-ce - 1/1 - 24 out of 24 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 44.3 s)
+max L2 perturbation: 7.99999, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars:  97%|█████████▋| 31/32 [30:53<00:55, 55.50s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 100.00%
+apgd-ce - 1/1 - 8 out of 8 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 16.3 s)
+max L2 perturbation: 7.99979, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+stanford_cars: 100%|██████████| 32/32 [31:10<00:00, 44.00s/it]stanford_cars: 100%|██████████| 32/32 [31:10<00:00, 58.45s/it]
+
+  1000 images | clean=0.9370 | adv=0.0000 | success=1.0000
+  Packaging 1000 images → stanford_cars__zeroshot_clip_vith14_laion2b__l2_eps8_autoattack_standard_processed.tar.zst
+  Compressing:   0%|          | 0/1000 [00:00<?, ?it/s]  Compressing:  32%|███▏      | 319/1000 [00:00<00:00, 3188.45it/s]  Compressing:  64%|██████▍   | 644/1000 [00:00<00:00, 3219.76it/s]  Compressing:  97%|█████████▋| 969/1000 [00:00<00:00, 3233.26it/s]                                                                     ✓ stanford_cars__zeroshot_clip_vith14_laion2b__l2_eps8_autoattack_standard_processed.tar.zst (98.0 MB)
+  Uploading → MaxHeuillet/RobustGenBench/adversarial/zeroshot_clip_vith14_laion2b/l2_eps8_autoattack_standard/stanford_cars__zeroshot_clip_vith14_laion2b__l2_eps8_autoattack_standard_processed.tar.zst
+Processing Files (0 / 0)      : |          |  0.00B /  0.00B            
+New Data Upload               : |          |  0.00B /  0.00B            [A
+
+  ...tandard_processed.tar.zst:   0%|          | 37.0kB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst:   0%|          | 37.0kB / 98.0MB            [A[AProcessing Files (0 / 1)      :   0%|          | 37.0kB / 98.0MB,   ???B/s  
+
+  ...tandard_processed.tar.zst:   0%|          | 88.7kB / 98.0MB            [A[AProcessing Files (0 / 1)      :   0%|          | 88.7kB / 98.0MB,  260kB/s  
+
+  ...tandard_processed.tar.zst:   4%|▍         | 3.87MB / 98.0MB            [A[AProcessing Files (0 / 1)      :   4%|▍         | 3.87MB / 98.0MB, 9.59MB/s  
+New Data Upload               :   4%|▍         | 3.69MB / 97.8MB, 9.25MB/s  [A
+
+  ...tandard_processed.tar.zst:  18%|█▊        | 17.6MB / 98.0MB            [A[AProcessing Files (0 / 1)      :  18%|█▊        | 17.6MB / 98.0MB, 29.3MB/s  
+New Data Upload               :  18%|█▊        | 17.4MB / 97.8MB, 29.0MB/s  [A
+
+  ...tandard_processed.tar.zst:  37%|███▋      | 36.0MB / 98.0MB            [A[AProcessing Files (0 / 1)      :  37%|███▋      | 36.0MB / 98.0MB, 45.0MB/s  
+New Data Upload               :  37%|███▋      | 35.9MB / 97.8MB, 44.9MB/s  [A
+
+  ...tandard_processed.tar.zst:  52%|█████▏    | 51.3MB / 98.0MB            [A[AProcessing Files (0 / 1)      :  52%|█████▏    | 51.3MB / 98.0MB, 51.3MB/s  
+New Data Upload               :  52%|█████▏    | 51.2MB / 97.8MB, 51.2MB/s  [A
+
+  ...tandard_processed.tar.zst:  67%|██████▋   | 65.6MB / 98.0MB            [A[AProcessing Files (0 / 1)      :  67%|██████▋   | 65.6MB / 98.0MB, 54.6MB/s  
+New Data Upload               :  67%|██████▋   | 65.4MB / 97.8MB, 54.5MB/s  [A
+
+  ...tandard_processed.tar.zst:  69%|██████▊   | 67.2MB / 98.0MB            [A[AProcessing Files (0 / 1)      :  69%|██████▊   | 67.2MB / 98.0MB, 48.0MB/s  
+New Data Upload               :  68%|██████▊   | 67.0MB / 97.8MB, 47.9MB/s  [A
+
+  ...tandard_processed.tar.zst:  69%|██████▊   | 67.2MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst:  69%|██████▊   | 67.2MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst:  69%|██████▊   | 67.2MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst:  69%|██████▊   | 67.2MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst:  69%|██████▊   | 67.2MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst:  69%|██████▊   | 67.2MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst:  69%|██████▊   | 67.2MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst:  69%|██████▊   | 67.2MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst:  69%|██████▊   | 67.2MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst:  69%|██████▊   | 67.2MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst:  69%|██████▊   | 67.2MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst:  69%|██████▊   | 67.2MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst:  69%|██████▊   | 67.2MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst:  69%|██████▊   | 67.2MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst:  69%|██████▊   | 67.2MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst:  69%|██████▊   | 67.2MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst:  69%|██████▊   | 67.2MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst:  69%|██████▊   | 67.2MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst:  69%|██████▊   | 67.2MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst:  69%|██████▊   | 67.2MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst:  69%|██████▊   | 67.2MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst:  69%|██████▊   | 67.2MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst:  69%|██████▊   | 67.2MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst:  69%|██████▊   | 67.2MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst:  69%|██████▊   | 67.2MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst:  69%|██████▊   | 67.2MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst:  69%|██████▊   | 67.2MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst:  69%|██████▊   | 67.2MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst:  69%|██████▊   | 67.2MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst:  82%|████████▏ | 80.5MB / 98.0MB            [A[AProcessing Files (0 / 1)      :  82%|████████▏ | 80.5MB / 98.0MB, 10.9MB/s  
+New Data Upload               :  82%|████████▏ | 80.3MB / 97.8MB, 10.8MB/s  [A
+
+  ...tandard_processed.tar.zst:  93%|█████████▎| 91.0MB / 98.0MB            [A[AProcessing Files (0 / 1)      :  93%|█████████▎| 91.0MB / 98.0MB, 12.0MB/s  
+New Data Upload               :  93%|█████████▎| 90.8MB / 97.8MB, 12.0MB/s  [A
+
+  ...tandard_processed.tar.zst: 100%|█████████▉| 97.9MB / 98.0MB            [A[AProcessing Files (0 / 1)      : 100%|█████████▉| 97.9MB / 98.0MB, 12.5MB/s  
+New Data Upload               : 100%|█████████▉| 97.7MB / 97.8MB, 12.5MB/s  [A
+
+  ...tandard_processed.tar.zst: 100%|█████████▉| 97.9MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|█████████▉| 97.9MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|██████████| 98.0MB / 98.0MB            [A[AProcessing Files (1 / 1)      : 100%|██████████| 98.0MB / 98.0MB, 11.7MB/s  
+New Data Upload               : 100%|██████████| 97.8MB / 97.8MB, 11.6MB/s  [A
+
+  ...tandard_processed.tar.zst: 100%|██████████| 98.0MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|██████████| 98.0MB / 98.0MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|██████████| 98.0MB / 98.0MB            [A[AProcessing Files (1 / 1)      : 100%|██████████| 98.0MB / 98.0MB, 11.1MB/s  
+New Data Upload               : 100%|██████████| 97.8MB / 97.8MB, 11.1MB/s  
+  ...tandard_processed.tar.zst: 100%|██████████| 98.0MB / 98.0MB            
+  ✓ Upload complete: stanford_cars__zeroshot_clip_vith14_laion2b__l2_eps8_autoattack_standard_processed.tar.zst
+
+All done!

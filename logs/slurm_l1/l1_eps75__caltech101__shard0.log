@@ -1,0 +1,68 @@
+  Using: NVIDIA H100 80GB HBM3
+
+============================================================
+  Dataset   : caltech101  [shard 1/4]
+  Surrogate : clip_vith14
+  Norm      : L1  eps=75.0  (AA: 75.00000)
+  Device    : cuda
+============================================================
+  [shard] Waiting for download lock...
+Data already present at /home/m/mheuill/links/scratch/robustgenbench/data_processed.
+  Shard indices: 0–249  (250 samples of 1000 total)
+
+Loading CLIP ViT-H/14 surrogate: ViT-H-14 / laion2b_s32b_b79k
+  Encoding 101 class prompts...
+setting parameters for standard version
+shard0:   0%|          | 0/4 [00:00<?, ?it/s]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 43 out of 60 successfully perturbed
+robust accuracy after APGD-CE: 26.56% (total time 292.8 s)
+apgd-t - 1/1 - 4 out of 17 successfully perturbed
+robust accuracy after APGD-T: 20.31% (total time 451.7 s)
+fab-t - 1/1 - 0 out of 13 successfully perturbed
+robust accuracy after FAB-T: 20.31% (total time 902.5 s)
+square - 1/1 - 0 out of 13 successfully perturbed
+robust accuracy after SQUARE: 20.31% (total time 1567.5 s)
+max L1 perturbation: 75.00121, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 20.31%
+shard0:  25%|██▌       | 1/4 [26:13<1:18:40, 1573.63s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 87.50%
+apgd-ce - 1/1 - 38 out of 56 successfully perturbed
+robust accuracy after APGD-CE: 28.12% (total time 293.9 s)
+apgd-t - 1/1 - 3 out of 18 successfully perturbed
+robust accuracy after APGD-T: 23.44% (total time 463.7 s)
+fab-t - 1/1 - 0 out of 15 successfully perturbed
+robust accuracy after FAB-T: 23.44% (total time 956.5 s)
+square - 1/1 - 1 out of 15 successfully perturbed
+robust accuracy after SQUARE: 21.88% (total time 1657.1 s)
+Warning: Square Attack has decreased the robust accuracy of 1.56%. This might indicate that the robustness evaluation using AutoAttack is unreliable. Consider running Square Attack with more iterations and restarts or an adaptive attack. See flags_doc.md for details.
+max L1 perturbation: 75.00065, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 21.88%
+shard0:  50%|█████     | 2/4 [53:56<54:12, 1626.08s/it]  using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 92.19%
+apgd-ce - 1/1 - 44 out of 59 successfully perturbed
+robust accuracy after APGD-CE: 23.44% (total time 275.0 s)
+apgd-t - 1/1 - 1 out of 15 successfully perturbed
+robust accuracy after APGD-T: 21.88% (total time 432.1 s)
+fab-t - 1/1 - 0 out of 14 successfully perturbed
+robust accuracy after FAB-T: 21.88% (total time 894.9 s)
+square - 1/1 - 0 out of 14 successfully perturbed
+robust accuracy after SQUARE: 21.88% (total time 1568.4 s)
+max L1 perturbation: 75.00063, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 21.88%
+shard0:  75%|███████▌  | 3/4 [1:20:10<26:42, 1602.28s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 91.38%
+apgd-ce - 1/1 - 42 out of 53 successfully perturbed
+robust accuracy after APGD-CE: 18.97% (total time 254.3 s)
+apgd-t - 1/1 - 2 out of 11 successfully perturbed
+robust accuracy after APGD-T: 15.52% (total time 363.1 s)
+fab-t - 1/1 - 0 out of 9 successfully perturbed
+robust accuracy after FAB-T: 15.52% (total time 670.7 s)
+square - 1/1 - 1 out of 9 successfully perturbed
+robust accuracy after SQUARE: 13.79% (total time 1084.7 s)
+Warning: Square Attack has decreased the robust accuracy of 1.72%. This might indicate that the robustness evaluation using AutoAttack is unreliable. Consider running Square Attack with more iterations and restarts or an adaptive attack. See flags_doc.md for details.
+max L1 perturbation: 75.00088, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 13.79%
+shard0: 100%|██████████| 4/4 [1:38:20<00:00, 1400.01s/it]shard0: 100%|██████████| 4/4 [1:38:20<00:00, 1475.09s/it]
+
+  Shard 0 done: 250 images | clean=0.9120 | adv=0.1960

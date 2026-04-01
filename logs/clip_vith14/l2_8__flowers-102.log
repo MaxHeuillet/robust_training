@@ -1,0 +1,271 @@
+Data already present at /tmp/robustgenbench/data_processed.
+Using CUDA: NVIDIA H100 80GB HBM3
+
+============================================================
+  Dataset   : flowers-102
+  Surrogate : clip_vith14  (zeroshot_clip_vith14_laion2b)
+  Norm      : L2  eps=8.0  (AA: 8.00000)
+============================================================
+  1000 samples | 102 classes
+
+Loading CLIP ViT-H/14 surrogate: ViT-H-14 / laion2b_s32b_b79k
+  Encoding 102 class prompts...
+setting parameters for standard version
+flowers-102:   0%|          | 0/32 [00:00<?, ?it/s]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 81.25%
+apgd-ce - 1/1 - 26 out of 26 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 49.3 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102:   3%|▎         | 1/32 [00:53<27:38, 53.50s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 90.62%
+apgd-ce - 1/1 - 29 out of 29 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 54.4 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102:   6%|▋         | 2/32 [01:51<28:05, 56.17s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 75.00%
+apgd-ce - 1/1 - 24 out of 24 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 44.3 s)
+max L2 perturbation: 7.99998, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102:   9%|▉         | 3/32 [02:39<25:20, 52.44s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 68.75%
+apgd-ce - 1/1 - 22 out of 22 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 41.4 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102:  12%|█▎        | 4/32 [03:24<23:07, 49.56s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 78.12%
+apgd-ce - 1/1 - 25 out of 25 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 44.9 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102:  16%|█▌        | 5/32 [04:13<22:08, 49.20s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 75.00%
+apgd-ce - 1/1 - 24 out of 24 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 44.3 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102:  19%|█▉        | 6/32 [05:01<21:08, 48.81s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 84.38%
+apgd-ce - 1/1 - 27 out of 27 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 53.3 s)
+max L2 perturbation: 7.99996, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102:  22%|██▏       | 7/32 [05:58<21:26, 51.47s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 75.00%
+apgd-ce - 1/1 - 24 out of 24 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 44.3 s)
+max L2 perturbation: 7.99965, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102:  25%|██▌       | 8/32 [06:46<20:08, 50.36s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 84.38%
+apgd-ce - 1/1 - 27 out of 27 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 53.1 s)
+max L2 perturbation: 7.99999, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102:  28%|██▊       | 9/32 [07:43<20:04, 52.36s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 81.25%
+apgd-ce - 1/1 - 26 out of 26 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 49.2 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102:  31%|███▏      | 10/32 [08:35<19:15, 52.51s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 84.38%
+apgd-ce - 1/1 - 27 out of 27 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 53.3 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102:  34%|███▍      | 11/32 [09:32<18:50, 53.82s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 84.38%
+apgd-ce - 1/1 - 27 out of 27 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 53.2 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102:  38%|███▊      | 12/32 [10:29<18:14, 54.74s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 65.62%
+apgd-ce - 1/1 - 21 out of 21 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 40.0 s)
+max L2 perturbation: 7.99992, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102:  41%|████      | 13/32 [11:13<16:16, 51.42s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 87.50%
+apgd-ce - 1/1 - 28 out of 28 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 53.7 s)
+max L2 perturbation: 7.99999, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102:  44%|████▍     | 14/32 [12:10<15:57, 53.21s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 84.38%
+apgd-ce - 1/1 - 27 out of 27 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 53.3 s)
+max L2 perturbation: 7.99999, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102:  47%|████▋     | 15/32 [13:07<15:23, 54.35s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 75.00%
+apgd-ce - 1/1 - 24 out of 24 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 44.3 s)
+max L2 perturbation: 7.99997, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102:  50%|█████     | 16/32 [13:55<13:59, 52.46s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 84.38%
+apgd-ce - 1/1 - 27 out of 27 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 53.1 s)
+max L2 perturbation: 7.99999, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102:  53%|█████▎    | 17/32 [14:52<13:26, 53.77s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 84.38%
+apgd-ce - 1/1 - 27 out of 27 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 53.1 s)
+max L2 perturbation: 7.99982, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102:  56%|█████▋    | 18/32 [15:49<12:45, 54.69s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 81.25%
+apgd-ce - 1/1 - 26 out of 26 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 49.5 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102:  59%|█████▉    | 19/32 [16:42<11:45, 54.24s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 30 out of 30 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 57.3 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102:  62%|██████▎   | 20/32 [17:43<11:15, 56.27s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 71.88%
+apgd-ce - 1/1 - 23 out of 23 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 43.6 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102:  66%|██████▌   | 21/32 [18:30<09:49, 53.56s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 81.25%
+apgd-ce - 1/1 - 26 out of 26 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 49.5 s)
+max L2 perturbation: 7.99999, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102:  69%|██████▉   | 22/32 [19:23<08:54, 53.44s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 78.12%
+apgd-ce - 1/1 - 25 out of 25 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 44.9 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102:  72%|███████▏  | 23/32 [20:12<07:47, 51.99s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 84.38%
+apgd-ce - 1/1 - 27 out of 27 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 53.1 s)
+max L2 perturbation: 7.99979, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102:  75%|███████▌  | 24/32 [21:08<07:06, 53.31s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 84.38%
+apgd-ce - 1/1 - 27 out of 27 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 53.1 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102:  78%|███████▊  | 25/32 [22:05<06:20, 54.35s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 90.62%
+apgd-ce - 1/1 - 29 out of 29 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 54.4 s)
+max L2 perturbation: 7.99998, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102:  81%|████████▏ | 26/32 [23:03<05:32, 55.45s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 75.00%
+apgd-ce - 1/1 - 24 out of 24 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 44.3 s)
+max L2 perturbation: 7.99999, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102:  84%|████████▍ | 27/32 [23:51<04:25, 53.12s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 81.25%
+apgd-ce - 1/1 - 26 out of 26 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 49.5 s)
+max L2 perturbation: 7.99998, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102:  88%|████████▊ | 28/32 [24:44<03:32, 53.12s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 30 out of 30 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 57.3 s)
+max L2 perturbation: 8.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102:  91%|█████████ | 29/32 [25:45<02:46, 55.48s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 81.25%
+apgd-ce - 1/1 - 26 out of 26 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 49.3 s)
+max L2 perturbation: 7.99971, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102:  94%|█████████▍| 30/32 [26:38<01:49, 54.71s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 81.25%
+apgd-ce - 1/1 - 26 out of 26 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 49.5 s)
+max L2 perturbation: 7.99968, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102:  97%|█████████▋| 31/32 [27:31<00:54, 54.26s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 100.00%
+apgd-ce - 1/1 - 8 out of 8 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 16.3 s)
+max L2 perturbation: 7.99995, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+flowers-102: 100%|██████████| 32/32 [27:48<00:00, 43.18s/it]flowers-102: 100%|██████████| 32/32 [27:48<00:00, 52.15s/it]
+
+  1000 images | clean=0.8150 | adv=0.0000 | success=1.0000
+  Packaging 1000 images → flowers-102__zeroshot_clip_vith14_laion2b__l2_eps8_autoattack_standard_processed.tar.zst
+  Compressing:   0%|          | 0/1000 [00:00<?, ?it/s]  Compressing:  32%|███▏      | 323/1000 [00:00<00:00, 3224.96it/s]  Compressing:  66%|██████▌   | 662/1000 [00:00<00:00, 3320.33it/s]                                                                     ✓ flowers-102__zeroshot_clip_vith14_laion2b__l2_eps8_autoattack_standard_processed.tar.zst (95.7 MB)
+  Uploading → MaxHeuillet/RobustGenBench/adversarial/zeroshot_clip_vith14_laion2b/l2_eps8_autoattack_standard/flowers-102__zeroshot_clip_vith14_laion2b__l2_eps8_autoattack_standard_processed.tar.zst
+Processing Files (0 / 0)      : |          |  0.00B /  0.00B            
+New Data Upload               : |          |  0.00B /  0.00B            [A
+
+  ...tandard_processed.tar.zst:   0%|          |  141kB / 95.7MB            [A[A
+
+  ...tandard_processed.tar.zst:   0%|          |  141kB / 95.7MB            [A[AProcessing Files (0 / 1)      :   0%|          |  141kB / 95.7MB,   ???B/s  
+
+  ...tandard_processed.tar.zst:   1%|          |  931kB / 95.7MB            [A[AProcessing Files (0 / 1)      :   1%|          |  931kB / 95.7MB, 3.94MB/s  
+
+  ...tandard_processed.tar.zst:   2%|▏         | 2.28MB / 95.7MB            [A[AProcessing Files (0 / 1)      :   2%|▏         | 2.28MB / 95.7MB, 5.34MB/s  
+New Data Upload               :   1%|          | 1.05MB / 94.5MB, 2.63MB/s  [A
+
+  ...tandard_processed.tar.zst:  15%|█▌        | 14.4MB / 95.7MB            [A[AProcessing Files (0 / 1)      :  15%|█▌        | 14.4MB / 95.7MB, 23.8MB/s  
+New Data Upload               :  14%|█▍        | 13.2MB / 94.5MB, 22.0MB/s  [A
+
+  ...tandard_processed.tar.zst:  38%|███▊      | 36.0MB / 95.7MB            [A[AProcessing Files (0 / 1)      :  38%|███▊      | 36.0MB / 95.7MB, 44.8MB/s  
+New Data Upload               :  37%|███▋      | 34.8MB / 94.5MB, 43.5MB/s  [A
+
+  ...tandard_processed.tar.zst:  54%|█████▍    | 51.8MB / 95.7MB            [A[AProcessing Files (0 / 1)      :  54%|█████▍    | 51.8MB / 95.7MB, 51.7MB/s  
+New Data Upload               :  54%|█████▎    | 50.6MB / 94.5MB, 50.6MB/s  [A
+
+  ...tandard_processed.tar.zst:  67%|██████▋   | 64.0MB / 95.7MB            [A[AProcessing Files (0 / 1)      :  67%|██████▋   | 64.0MB / 95.7MB, 53.2MB/s  
+New Data Upload               :  66%|██████▋   | 62.7MB / 94.5MB, 52.3MB/s  [A
+
+  ...tandard_processed.tar.zst:  71%|███████▏  | 68.2MB / 95.7MB            [A[AProcessing Files (0 / 1)      :  71%|███████▏  | 68.2MB / 95.7MB, 48.6MB/s  
+New Data Upload               :  71%|███████   | 67.0MB / 94.5MB, 47.8MB/s  [A
+
+  ...tandard_processed.tar.zst:  71%|███████▏  | 68.2MB / 95.7MB            [A[A
+
+  ...tandard_processed.tar.zst:  71%|███████▏  | 68.2MB / 95.7MB            [A[A
+
+  ...tandard_processed.tar.zst:  71%|███████▏  | 68.2MB / 95.7MB            [A[A
+
+  ...tandard_processed.tar.zst:  71%|███████▏  | 68.2MB / 95.7MB            [A[A
+
+  ...tandard_processed.tar.zst:  87%|████████▋ | 83.1MB / 95.7MB            [A[AProcessing Files (0 / 1)      :  87%|████████▋ | 83.1MB / 95.7MB, 34.6MB/s  
+New Data Upload               :  87%|████████▋ | 81.9MB / 94.5MB, 34.1MB/s  [A
+
+  ...tandard_processed.tar.zst: 100%|█████████▉| 95.2MB / 95.7MB            [A[AProcessing Files (0 / 1)      : 100%|█████████▉| 95.2MB / 95.7MB, 36.6MB/s  
+New Data Upload               :  99%|█████████▉| 94.0MB / 94.5MB, 36.1MB/s  [A
+
+  ...tandard_processed.tar.zst: 100%|█████████▉| 95.2MB / 95.7MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|█████████▉| 95.2MB / 95.7MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|██████████| 95.7MB / 95.7MB            [A[AProcessing Files (1 / 1)      : 100%|██████████| 95.7MB / 95.7MB, 29.9MB/s  
+New Data Upload               : 100%|██████████| 94.5MB / 94.5MB, 29.5MB/s  [A
+
+  ...tandard_processed.tar.zst: 100%|██████████| 95.7MB / 95.7MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|██████████| 95.7MB / 95.7MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|██████████| 95.7MB / 95.7MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|██████████| 95.7MB / 95.7MB            [A[AProcessing Files (1 / 1)      : 100%|██████████| 95.7MB / 95.7MB, 25.1MB/s  
+New Data Upload               : 100%|██████████| 94.5MB / 94.5MB, 24.9MB/s  
+  ...tandard_processed.tar.zst: 100%|██████████| 95.7MB / 95.7MB            
+  ✓ Upload complete: flowers-102__zeroshot_clip_vith14_laion2b__l2_eps8_autoattack_standard_processed.tar.zst
+
+All done!
