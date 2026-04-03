@@ -1,0 +1,10 @@
+{
+  "batch_id": "batch_69cb276d3cb481909f827c3c54673926",
+  "file_id": "file-6Rd3wbRByhsoVbZpwmKTF6",
+  "provider": "openai",
+  "run_id": "uc-merced-land-use-dataset__zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard__openai__adv_clip_vith14_l1_eps75",
+  "model": "gpt-4o-mini",
+  "num_requests": 420,
+  "submitted_at": "2026-03-30T22:46:21.355995",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batch_69cb276d3cb481909f827c3c54673926 --provider openai --dataset uc-merced-land-use-dataset__zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard --data_root /Users/maximeheuillet/data/adversarial/zeroshot_clip_vith14_laion2b/l1_eps75_autoattack_standard --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name uc-merced-land-use-dataset__zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard__openai__adv_clip_vith14_l1_eps75"
+}

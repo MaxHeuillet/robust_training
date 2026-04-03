@@ -11,9 +11,12 @@ from pathlib import Path
 BASE = Path("llm_classification_results")
 
 MANIFESTS = [
+    "batch_manifest__all_datasets__adv_clip_vith14_l2_eps2.json",
     "batch_manifest__all_datasets__adv_clip_vith14_l2_eps8.json",
     "batch_manifest__all_datasets__adv_clip_vith14_linf8.json",
     "batch_manifest__all_datasets__adv_clip_vith14_linf30.json",
+    "batch_manifest__all_datasets__adv_clip_vith14_l1_eps75.json",
+    "batch_manifest__all_datasets__adv_clip_vith14_l1_eps300.json",
 ]
 
 DATASETS = [

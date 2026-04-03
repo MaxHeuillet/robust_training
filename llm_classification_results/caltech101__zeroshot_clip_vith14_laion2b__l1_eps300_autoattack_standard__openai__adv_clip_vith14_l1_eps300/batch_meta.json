@@ -1,0 +1,10 @@
+{
+  "batch_id": "batch_69cbbc0faad0819096cba0511ae239a8",
+  "file_id": "file-X3c7PUKy73RQJGWopEvUUw",
+  "provider": "openai",
+  "run_id": "caltech101__zeroshot_clip_vith14_laion2b__l1_eps300_autoattack_standard__openai__adv_clip_vith14_l1_eps300",
+  "model": "gpt-4o-mini",
+  "num_requests": 1000,
+  "submitted_at": "2026-03-31T09:20:32.891366",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batch_69cbbc0faad0819096cba0511ae239a8 --provider openai --dataset caltech101__zeroshot_clip_vith14_laion2b__l1_eps300_autoattack_standard --data_root /Users/maximeheuillet/data/adversarial/zeroshot_clip_vith14_laion2b/l1_eps300_autoattack_standard --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name caltech101__zeroshot_clip_vith14_laion2b__l1_eps300_autoattack_standard__openai__adv_clip_vith14_l1_eps300"
+}

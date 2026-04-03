@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
 """
-eval_surrogate_clean.py — Measure zero-shot clean accuracy for all 5 surrogate
+eval_surrogate_clean.py — Measure zero-shot clean accuracy for all 9 surrogate
 models across all 6 benchmark datasets.
 
 Surrogates:
   1. CLIP ViT-B/16      (open_clip, LAION-2B)
-  2. SigLIP2 base       (google/siglip2-base-patch16-224)
-  3. CLIP ViT-H/14      (open_clip, OpenAI)
-  4. SigLIP2 SO400M     (google/siglip2-so400m-patch14-384, bicubic upsample to 384)
-  5. DINOv2 ViT-L/14    (facebook/dinov2-large, cosine sim over text features via OpenCLIP text encoder)
+  2. SigLIP2 base        (google/siglip2-base-patch16-224)
+  3. CLIP ViT-H/14       (open_clip, LAION-2B)
+  4. SigLIP2 SO400M      (google/siglip2-so400m-patch14-384, bicubic upsample to 384)
+  5. DINOv2 ViT-L/14     (facebook/dinov2-large, cosine sim over text features via OpenCLIP text encoder)
+  6. SigLIP2 SO400M NaFlex (google/siglip2-so400m-patch16-naflex, dynamic resolution)
+  7. MetaCLIP ViT-H/14   (open_clip, FullCC-2.5B)
+  8. DFN5B CLIP ViT-H/14 (open_clip, apple/DFN5B)
+  9. EVA-CLIP-18B         (BAAI/EVA-CLIP-18B, 18B params, eva_clip package)
 
 All paths are /tmp-based for cluster compatibility.
 Data is downloaded automatically from MaxHeuillet/RobustGenBench if not present.
@@ -61,6 +65,10 @@ ALL_SURROGATES = [
     "clip_vith14",
     "siglip2_so400m",
     "dinov2_vitl14",
+    "siglip2_so400m_naflex",
+    "metaclip_h14_fullcc",
+    "dfn5b_vith14",
+    "eva_clip_18b",
 ]
 
 ALL_DATASETS = [
@@ -178,10 +186,11 @@ def load_class_names(dataset_name: str) -> dict:
 
 
 # ---------------------------------------------------------------------------
-# Dataset wrapper
+# Dataset wrappers
 # ---------------------------------------------------------------------------
 
 class EvalDataset(Dataset):
+    """Standard dataset returning (tensor, label) with a torchvision transform."""
     def __init__(self, items: list, transform):
         self.items     = items
         self.transform = transform
@@ -193,6 +202,21 @@ class EvalDataset(Dataset):
         img_path, label = self.items[idx]
         img = Image.open(img_path).convert("RGB")
         return self.transform(img), label
+
+
+class EvalDatasetPIL(Dataset):
+    """Dataset returning (PIL.Image, label) — for models that need their own
+    processor (e.g. NaFlex which handles dynamic resizing internally)."""
+    def __init__(self, items: list):
+        self.items = items
+
+    def __len__(self):
+        return len(self.items)
+
+    def __getitem__(self, idx):
+        img_path, label = self.items[idx]
+        img = Image.open(img_path).convert("RGB")
+        return img, label
 
 
 # ---------------------------------------------------------------------------
@@ -235,10 +259,38 @@ class ZeroShotSigLIP2(nn.Module):
         return self.temperature * (feats @ self.text_features.T)
 
 
+class ZeroShotSigLIP2NaFlex(nn.Module):
+    """
+    SigLIP2 SO400M NaFlex variant with dynamic resolution support.
+    Unlike other surrogates, this model uses a HuggingFace AutoProcessor that
+    handles image resizing/patching internally. The forward pass receives
+    pre-processed pixel_values (and attention_mask for NaFlex) from the processor.
+    """
+    def __init__(self, model, processor, text_features, device, temperature=100.0):
+        super().__init__()
+        self._model      = model
+        self._processor  = processor
+        self.temperature = temperature
+        self.register_buffer("text_features", text_features)
+
+    def forward_pil(self, pil_images):
+        """Accept a list of PIL images, process and classify."""
+        inputs = self._processor(images=pil_images, return_tensors="pt", padding="max_length")
+        inputs = {k: v.to(self.text_features.device) for k, v in inputs.items()}
+        with torch.no_grad():
+            img_emb = self._model.get_image_features(**inputs)
+        img_emb = F.normalize(img_emb, dim=-1)
+        return self.temperature * (img_emb @ self.text_features.T)
+
+    def forward(self, x):
+        # Fallback for tensor input — not used with NaFlex but keeps interface uniform
+        raise NotImplementedError("Use forward_pil() for NaFlex models")
+
+
 class ZeroShotDINOv2(nn.Module):
     """
-    DINOv2 has no text encoder. We use OpenCLIP's ViT-L/14 text encoder
-    (OpenAI weights) to produce text embeddings, and DINOv2 ViT-L/14 for image
+    DINOv2 has no text encoder. We use OpenCLIP's ViT-H/14 text encoder
+    to produce text embeddings, and DINOv2 ViT-L/14 for image
     embeddings. Both produce 1024-dim features — compatible for cosine similarity.
     """
     def __init__(self, dino_model, text_features, device, temperature=100.0):
@@ -282,7 +334,7 @@ def load_clip_vitb16(label_to_name, dataset, device):
 
 def load_clip_vith14(label_to_name, dataset, device):
     import open_clip
-    print("  Loading CLIP ViT-H/14 (OpenAI)...")
+    print("  Loading CLIP ViT-H/14 (LAION-2B)...")
     model, _, _ = open_clip.create_model_and_transforms(
         "ViT-H-14", pretrained="laion2b_s32b_b79k", cache_dir=str(HF_CACHE_DIR))
     model.eval().to(device)
@@ -338,19 +390,88 @@ def load_siglip2_so400m(label_to_name, dataset, device):
         upsample_to=384)
 
 
+def load_siglip2_so400m_naflex(label_to_name, dataset, device):
+    """
+    SigLIP2 SO400M NaFlex — uses HuggingFace AutoModel/AutoProcessor.
+    NaFlex handles dynamic resolution and aspect-ratio-preserving resizing
+    internally via the processor, so we do NOT use the shared 224×224 transform.
+    """
+    from transformers import AutoModel, AutoProcessor, AutoTokenizer
+    model_id = "google/siglip2-so400m-patch16-naflex"
+    print(f"  Loading {model_id}...")
+
+    model     = AutoModel.from_pretrained(model_id, cache_dir=str(HF_CACHE_DIR))
+    model.eval().to(device)
+    processor = AutoProcessor.from_pretrained(model_id, cache_dir=str(HF_CACHE_DIR))
+    tokenizer = AutoTokenizer.from_pretrained(model_id, cache_dir=str(HF_CACHE_DIR))
+
+    class_names = [label_to_name[i] for i in sorted(label_to_name)]
+    prompts     = build_prompts(dataset, class_names)
+
+    # Encode text prompts
+    max_len = model.config.text_config.max_position_embeddings
+    with torch.no_grad():
+        text_inputs = tokenizer(
+            prompts, padding="max_length", truncation=True,
+            max_length=max_len, return_tensors="pt"
+        ).to(device)
+        text_f = F.normalize(model.get_text_features(**text_inputs), dim=-1)
+
+    return ZeroShotSigLIP2NaFlex(model, processor, text_f, device)
+
+
+def load_metaclip_h14_fullcc(label_to_name, dataset, device):
+    """
+    MetaCLIP ViT-H/14 trained on FullCC-2.5B (facebook/metaclip-h14-fullcc2.5b).
+    Loaded via open_clip with model="ViT-H-14-quickgelu", pretrained="metaclip_fullcc".
+    Uses QuickGELU activation. Same CLIP normalisation as OpenAI CLIP.
+    """
+    import open_clip
+    print("  Loading MetaCLIP ViT-H/14 (FullCC-2.5B)...")
+    model, _, _ = open_clip.create_model_and_transforms(
+        "ViT-H-14-quickgelu", pretrained="metaclip_fullcc",
+        cache_dir=str(HF_CACHE_DIR))
+    model.eval().to(device)
+    tokenizer   = open_clip.get_tokenizer("ViT-H-14-quickgelu")
+    class_names = [label_to_name[i] for i in sorted(label_to_name)]
+    prompts     = build_prompts(dataset, class_names)
+    with torch.no_grad():
+        tokens = tokenizer(prompts).to(device)
+        text_f = F.normalize(model.encode_text(tokens), dim=-1)
+    return ZeroShotCLIP(model, text_f, device, CLIP_MEAN, CLIP_STD)
+
+
+def load_dfn5b_vith14(label_to_name, dataset, device):
+    """
+    DFN5B CLIP ViT-H/14 (apple/DFN5B-CLIP-ViT-H-14).
+    Data Filtering Networks trained on 5B curated image-text pairs.
+    Loaded via open_clip. Uses QuickGELU activation and bicubic squash resize.
+    """
+    import open_clip
+    print("  Loading DFN5B CLIP ViT-H/14...")
+    model, _, _ = open_clip.create_model_and_transforms(
+        "ViT-H-14-quickgelu", pretrained="dfn5b",
+        cache_dir=str(HF_CACHE_DIR))
+    model.eval().to(device)
+    tokenizer   = open_clip.get_tokenizer("ViT-H-14-quickgelu")
+    class_names = [label_to_name[i] for i in sorted(label_to_name)]
+    prompts     = build_prompts(dataset, class_names)
+    with torch.no_grad():
+        tokens = tokenizer(prompts).to(device)
+        text_f = F.normalize(model.encode_text(tokens), dim=-1)
+    return ZeroShotCLIP(model, text_f, device, CLIP_MEAN, CLIP_STD)
+
+
 def load_dinov2_vitl14(label_to_name, dataset, device):
     import open_clip
-    print("  Loading DINOv2 ViT-L/14 + CLIP ViT-L/14 text encoder...")
+    print("  Loading DINOv2 ViT-L/14 + CLIP ViT-H/14 text encoder...")
 
     # Image encoder: DINOv2 ViT-L/14 (outputs 1024-dim CLS token)
     dino = torch.hub.load("facebookresearch/dinov2", "dinov2_vitl14",
                            source="github")
     dino.eval().to(device)
 
-    # Text encoder: OpenCLIP ViT-L/14 (also 768-dim) — use projection to 1024
-    # Actually ViT-L/14 in open_clip outputs 768-dim text features.
-    # DINOv2 ViT-L/14 outputs 1024-dim. We need matching dims.
-    # Solution: use ViT-H/14 text encoder which outputs 1024-dim to match DINOv2.
+    # Text encoder: OpenCLIP ViT-H/14 which outputs 1024-dim to match DINOv2.
     clip_model, _, _ = open_clip.create_model_and_transforms(
         "ViT-H-14", pretrained="laion2b_s32b_b79k", cache_dir=str(HF_CACHE_DIR))
     clip_model.eval().to(device)
@@ -368,25 +489,103 @@ def load_dinov2_vitl14(label_to_name, dataset, device):
     return ZeroShotDINOv2(dino, text_f, device)
 
 
+def load_eva_clip_18b(label_to_name, dataset, device):
+    """
+    EVA-CLIP-18B (BAAI/EVA-CLIP-18B) — 18B parameter CLIP model.
+    Uses the `eva_clip` package from baaivision/EVA.
+    Requires: pip install eva-clip  (or clone EVA repo and install from EVA-CLIP-18B/)
+    Also needs: apex (fused layer norm), xformers (memory-efficient attention).
+    Uses standard CLIP normalisation and 224×224 images.
+    On 4×H100 the model fits comfortably; for tighter memory use torch.cuda.amp.autocast.
+
+    Falls back to HuggingFace Transformers loading if eva_clip is not installed.
+    """
+    class_names = [label_to_name[i] for i in sorted(label_to_name)]
+    prompts     = build_prompts(dataset, class_names)
+
+    try:
+        from eva_clip import create_model_and_transforms as eva_create, get_tokenizer as eva_tokenizer
+        print("  Loading EVA-CLIP-18B via eva_clip package...")
+
+        model, _, _ = eva_create("EVA-CLIP-18B", "eva_clip", force_custom_clip=True)
+        model.eval().to(device)
+        tokenizer = eva_tokenizer("EVA-CLIP-18B")
+
+        with torch.no_grad(), torch.cuda.amp.autocast():
+            tokens = tokenizer(prompts).to(device)
+            text_f = model.encode_text(tokens)
+            text_f = F.normalize(text_f.float(), dim=-1)
+
+        return ZeroShotCLIP(model, text_f, device, CLIP_MEAN, CLIP_STD)
+
+    except ImportError:
+        # Fallback: load via HuggingFace Transformers (trust_remote_code=True)
+        from transformers import AutoModel, CLIPImageProcessor, CLIPTokenizer
+        print("  Loading EVA-CLIP-18B via HuggingFace Transformers (fallback)...")
+        print("  (For best results install eva_clip: pip install eva-clip)")
+
+        hf_id = "BAAI/EVA-CLIP-18B"
+        model = AutoModel.from_pretrained(
+            hf_id, trust_remote_code=True, cache_dir=str(HF_CACHE_DIR))
+        model.eval().to(device)
+        tokenizer = CLIPTokenizer.from_pretrained(
+            "openai/clip-vit-large-patch14", cache_dir=str(HF_CACHE_DIR))
+
+        with torch.no_grad(), torch.cuda.amp.autocast():
+            tokens = tokenizer(prompts, padding=True, return_tensors="pt").to(device)
+            text_f = model.get_text_features(**tokens)
+            text_f = F.normalize(text_f.float(), dim=-1)
+
+        # Wrap in a simple module that matches ZeroShotCLIP interface
+        class _EVACLIPHFWrapper(nn.Module):
+            def __init__(self, hf_model, text_features, dev, mean, std, temperature=100.0):
+                super().__init__()
+                self._hf_model   = hf_model
+                self.temperature = temperature
+                self.register_buffer("text_features", text_features)
+                self.register_buffer("mean", torch.tensor(mean, device=dev).view(1,3,1,1))
+                self.register_buffer("std",  torch.tensor(std,  device=dev).view(1,3,1,1))
+
+            def forward(self, x):
+                x = (x - self.mean) / self.std
+                with torch.cuda.amp.autocast():
+                    feats = self._hf_model.get_image_features(pixel_values=x)
+                feats = F.normalize(feats.float(), dim=-1)
+                return self.temperature * (feats @ self.text_features.T)
+
+        return _EVACLIPHFWrapper(model, text_f, device, CLIP_MEAN, CLIP_STD)
+
+
 SURROGATE_LOADERS = {
-    "clip_vitb16":    load_clip_vitb16,
-    "siglip2_base":   load_siglip2_base,
-    "clip_vith14":    load_clip_vith14,
-    "siglip2_so400m": load_siglip2_so400m,
-    "dinov2_vitl14":  load_dinov2_vitl14,
+    "clip_vitb16":           load_clip_vitb16,
+    "siglip2_base":          load_siglip2_base,
+    "clip_vith14":           load_clip_vith14,
+    "siglip2_so400m":        load_siglip2_so400m,
+    "dinov2_vitl14":         load_dinov2_vitl14,
+    "siglip2_so400m_naflex": load_siglip2_so400m_naflex,
+    "metaclip_h14_fullcc":   load_metaclip_h14_fullcc,
+    "dfn5b_vith14":          load_dfn5b_vith14,
+    "eva_clip_18b":          load_eva_clip_18b,
 }
 
 SURROGATE_LABELS = {
-    "clip_vitb16":    "CLIP ViT-B/16 (LAION-2B)",
-    "siglip2_base":   "SigLIP2 base-patch16-224",
-    "clip_vith14":    "CLIP ViT-H/14 (OpenAI)",
-    "siglip2_so400m": "SigLIP2 SO400M-patch14-384",
-    "dinov2_vitl14":  "DINOv2 ViT-L/14",
+    "clip_vitb16":           "CLIP ViT-B/16 (LAION-2B)",
+    "siglip2_base":          "SigLIP2 base-patch16-224",
+    "clip_vith14":           "CLIP ViT-H/14 (LAION-2B)",
+    "siglip2_so400m":        "SigLIP2 SO400M-patch14-384",
+    "dinov2_vitl14":         "DINOv2 ViT-L/14",
+    "siglip2_so400m_naflex": "SigLIP2 SO400M-patch16-NaFlex",
+    "metaclip_h14_fullcc":   "MetaCLIP ViT-H/14 (FullCC-2.5B)",
+    "dfn5b_vith14":          "DFN5B CLIP ViT-H/14",
+    "eva_clip_18b":          "EVA-CLIP-18B",
 }
+
+# Which surrogates require PIL-based evaluation (no shared tensor transform)
+NAFLEX_SURROGATES = {"siglip2_so400m_naflex"}
 
 
 # ---------------------------------------------------------------------------
-# Shared image transform — 224×224 for all surrogates.
+# Shared image transform — 224×224 for all surrogates except NaFlex.
 # SO400M upsamples internally in its encode_fn.
 # ---------------------------------------------------------------------------
 
@@ -398,10 +597,11 @@ def build_transform() -> T.Compose:
 
 
 # ---------------------------------------------------------------------------
-# Evaluation loop
+# Evaluation loops
 # ---------------------------------------------------------------------------
 
 def evaluate(model: nn.Module, loader: DataLoader, device: torch.device) -> tuple:
+    """Standard evaluation for tensor-input models."""
     model.eval()
     correct = total = 0
     with torch.no_grad():
@@ -415,6 +615,29 @@ def evaluate(model: nn.Module, loader: DataLoader, device: torch.device) -> tupl
     return correct, total
 
 
+def evaluate_naflex(model: ZeroShotSigLIP2NaFlex, loader: DataLoader, device: torch.device) -> tuple:
+    """
+    Evaluation for NaFlex models that accept PIL images.
+    The DataLoader yields (list[PIL.Image], labels) via a custom collate.
+    """
+    correct = total = 0
+    with torch.no_grad():
+        for pil_images, labels in loader:
+            labels = labels.to(device) if isinstance(labels, torch.Tensor) \
+                     else torch.tensor(labels, dtype=torch.long).to(device)
+            logits = model.forward_pil(pil_images)
+            preds  = logits.argmax(1)
+            correct += (preds == labels).sum().item()
+            total   += len(pil_images)
+    return correct, total
+
+
+def _naflex_collate(batch):
+    """Collate for NaFlex: keep images as a list of PIL, stack labels."""
+    images, labels = zip(*batch)
+    return list(images), torch.tensor(labels, dtype=torch.long)
+
+
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
@@ -423,6 +646,8 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--surrogate",      default=None, choices=ALL_SURROGATES,
                    help="Single surrogate to evaluate (default: all)")
+    p.add_argument("--surrogates",     default=None, nargs="+", choices=ALL_SURROGATES,
+                   help="Multiple surrogates to evaluate (default: all)")
     p.add_argument("--dataset",        default=None, choices=ALL_DATASETS,
                    help="Single dataset (default: all)")
     p.add_argument("--batch_size",     type=int, default=64)
@@ -439,7 +664,9 @@ def main():
     ensure_data_downloaded(force=args.force_download)
 
     device     = get_device()
-    surrogates = [args.surrogate] if args.surrogate else ALL_SURROGATES
+    surrogates = (args.surrogates if args.surrogates
+                  else [args.surrogate] if args.surrogate
+                  else ALL_SURROGATES)
     datasets   = [args.dataset]   if args.dataset   else ALL_DATASETS
     transform  = build_transform()
     results    = {}
@@ -452,21 +679,31 @@ def main():
 
     for surrogate in surrogates:
         results[surrogate] = {}
-        loader_fn = SURROGATE_LOADERS[surrogate]
+        loader_fn  = SURROGATE_LOADERS[surrogate]
+        is_naflex  = surrogate in NAFLEX_SURROGATES
 
         for dataset in datasets:
             try:
                 label_to_name = load_class_names(dataset)
                 model         = loader_fn(label_to_name, dataset, device)
-                model.eval().to(device)
+                if not is_naflex:
+                    model.eval().to(device)
 
                 dataset_dir = extract_archive(dataset)
                 items       = load_local_dataset(dataset_dir, "test", args.max_samples)
-                ds          = EvalDataset(items, transform)
-                loader      = DataLoader(ds, batch_size=args.batch_size,
-                                         shuffle=False, num_workers=0)
 
-                correct, total = evaluate(model, loader, device)
+                if is_naflex:
+                    ds     = EvalDatasetPIL(items)
+                    loader = DataLoader(ds, batch_size=args.batch_size,
+                                        shuffle=False, num_workers=0,
+                                        collate_fn=_naflex_collate)
+                    correct, total = evaluate_naflex(model, loader, device)
+                else:
+                    ds     = EvalDataset(items, transform)
+                    loader = DataLoader(ds, batch_size=args.batch_size,
+                                        shuffle=False, num_workers=0)
+                    correct, total = evaluate(model, loader, device)
+
                 acc = correct / total
 
                 results[surrogate][dataset] = {
