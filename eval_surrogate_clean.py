@@ -286,7 +286,8 @@ class ZeroShotSigLIP2NaFlex(nn.Module):
         inputs = {k: v.to(self.text_features.device) for k, v in inputs.items()
                 if isinstance(v, torch.Tensor)}
         with torch.no_grad():
-            img_emb = self._model.get_image_features(**inputs)
+            out = self._model.get_image_features(**inputs)
+            img_emb = out.pooler_output if hasattr(out, 'pooler_output') else out
         img_emb = F.normalize(img_emb, dim=-1)
         return self.temperature * (img_emb @ self.text_features.T)
 
