@@ -1,0 +1,222 @@
+Data already present at /tmp/robustgenbench/data_processed.
+Using CUDA: NVIDIA H100 80GB HBM3
+
+============================================================
+  Dataset   : fgvc-aircraft-2013b
+  Surrogate : clip_vith14  (zeroshot_clip_vith14_laion2b)
+  Norm      : L1  eps=75.0  (AA: 75.00000)
+============================================================
+  1000 samples | 100 classes
+
+Loading CLIP ViT-H/14 surrogate: ViT-H-14 / laion2b_s32b_b79k
+  Encoding 100 class prompts...
+setting parameters for standard version
+fgvc-aircraft-2013b:   0%|          | 0/16 [00:00<?, ?it/s]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 40.62%
+apgd-ce - 1/1 - 25 out of 26 successfully perturbed
+robust accuracy after APGD-CE: 1.56% (total time 81.5 s)
+apgd-t - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after APGD-T: 1.56% (total time 108.6 s)
+fab-t - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after FAB-T: 1.56% (total time 172.0 s)
+square - 1/1 - 1 out of 1 successfully perturbed
+robust accuracy after SQUARE: 0.00% (total time 192.6 s)
+Warning: Square Attack has decreased the robust accuracy of 1.56%. This might indicate that the robustness evaluation using AutoAttack is unreliable. Consider running Square Attack with more iterations and restarts or an adaptive attack. See flags_doc.md for details.
+max L1 perturbation: 75.00143, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+fgvc-aircraft-2013b:   6%|▋         | 1/16 [03:23<50:48, 203.26s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 48.44%
+apgd-ce - 1/1 - 30 out of 31 successfully perturbed
+robust accuracy after APGD-CE: 1.56% (total time 86.8 s)
+apgd-t - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after APGD-T: 1.56% (total time 113.8 s)
+fab-t - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after FAB-T: 1.56% (total time 177.0 s)
+square - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after SQUARE: 1.56% (total time 298.0 s)
+max L1 perturbation: 75.00189, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 1.56%
+fgvc-aircraft-2013b:  12%|█▎        | 2/16 [08:28<1:01:28, 263.50s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 37.50%
+apgd-ce - 1/1 - 24 out of 24 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 50.8 s)
+max L1 perturbation: 75.00124, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+fgvc-aircraft-2013b:  19%|█▉        | 3/16 [09:27<36:47, 169.82s/it]  using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 54.69%
+apgd-ce - 1/1 - 33 out of 35 successfully perturbed
+robust accuracy after APGD-CE: 3.12% (total time 104.7 s)
+apgd-t - 1/1 - 1 out of 2 successfully perturbed
+robust accuracy after APGD-T: 1.56% (total time 134.5 s)
+fab-t - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after FAB-T: 1.56% (total time 197.8 s)
+square - 1/1 - 1 out of 1 successfully perturbed
+robust accuracy after SQUARE: 0.00% (total time 237.3 s)
+Warning: Square Attack has decreased the robust accuracy of 1.56%. This might indicate that the robustness evaluation using AutoAttack is unreliable. Consider running Square Attack with more iterations and restarts or an adaptive attack. See flags_doc.md for details.
+max L1 perturbation: 75.00137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+fgvc-aircraft-2013b:  25%|██▌       | 4/16 [13:32<39:53, 199.47s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 48.44%
+apgd-ce - 1/1 - 30 out of 31 successfully perturbed
+robust accuracy after APGD-CE: 1.56% (total time 103.3 s)
+apgd-t - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after APGD-T: 1.56% (total time 127.7 s)
+fab-t - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after FAB-T: 1.56% (total time 191.3 s)
+square - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after SQUARE: 1.56% (total time 312.3 s)
+max L1 perturbation: 75.00136, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 1.56%
+fgvc-aircraft-2013b:  31%|███▏      | 5/16 [18:52<44:32, 242.91s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 40.62%
+apgd-ce - 1/1 - 24 out of 26 successfully perturbed
+robust accuracy after APGD-CE: 3.12% (total time 82.7 s)
+apgd-t - 1/1 - 0 out of 2 successfully perturbed
+robust accuracy after APGD-T: 3.12% (total time 116.7 s)
+fab-t - 1/1 - 0 out of 2 successfully perturbed
+robust accuracy after FAB-T: 3.12% (total time 217.7 s)
+square - 1/1 - 1 out of 2 successfully perturbed
+robust accuracy after SQUARE: 1.56% (total time 350.4 s)
+Warning: Square Attack has decreased the robust accuracy of 1.56%. This might indicate that the robustness evaluation using AutoAttack is unreliable. Consider running Square Attack with more iterations and restarts or an adaptive attack. See flags_doc.md for details.
+max L1 perturbation: 75.00166, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 1.56%
+fgvc-aircraft-2013b:  38%|███▊      | 6/16 [24:50<47:00, 282.07s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 43.75%
+apgd-ce - 1/1 - 27 out of 28 successfully perturbed
+robust accuracy after APGD-CE: 1.56% (total time 84.8 s)
+apgd-t - 1/1 - 1 out of 1 successfully perturbed
+robust accuracy after APGD-T: 0.00% (total time 101.0 s)
+max L1 perturbation: 75.00148, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+fgvc-aircraft-2013b:  44%|████▍     | 7/16 [26:38<33:48, 225.37s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 46.88%
+apgd-ce - 1/1 - 28 out of 30 successfully perturbed
+robust accuracy after APGD-CE: 3.12% (total time 90.7 s)
+apgd-t - 1/1 - 1 out of 2 successfully perturbed
+robust accuracy after APGD-T: 1.56% (total time 119.1 s)
+fab-t - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after FAB-T: 1.56% (total time 182.4 s)
+square - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after SQUARE: 1.56% (total time 303.0 s)
+max L1 perturbation: 75.00121, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 1.56%
+fgvc-aircraft-2013b:  50%|█████     | 8/16 [31:50<33:41, 252.72s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 53.12%
+apgd-ce - 1/1 - 33 out of 34 successfully perturbed
+robust accuracy after APGD-CE: 1.56% (total time 88.6 s)
+apgd-t - 1/1 - 1 out of 1 successfully perturbed
+robust accuracy after APGD-T: 0.00% (total time 94.0 s)
+max L1 perturbation: 75.00095, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+fgvc-aircraft-2013b:  56%|█████▋    | 9/16 [33:31<23:58, 205.50s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 53.12%
+apgd-ce - 1/1 - 33 out of 34 successfully perturbed
+robust accuracy after APGD-CE: 1.56% (total time 98.3 s)
+apgd-t - 1/1 - 1 out of 1 successfully perturbed
+robust accuracy after APGD-T: 0.00% (total time 103.7 s)
+max L1 perturbation: 75.00166, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+fgvc-aircraft-2013b:  62%|██████▎   | 10/16 [35:23<17:38, 176.43s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 46.88%
+apgd-ce - 1/1 - 30 out of 30 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 81.6 s)
+max L1 perturbation: 75.00093, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+fgvc-aircraft-2013b:  69%|██████▉   | 11/16 [36:52<12:28, 149.75s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 42.19%
+apgd-ce - 1/1 - 27 out of 27 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 66.5 s)
+max L1 perturbation: 75.00160, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+fgvc-aircraft-2013b:  75%|███████▌  | 12/16 [38:06<08:27, 126.76s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 54.69%
+apgd-ce - 1/1 - 35 out of 35 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 97.9 s)
+max L1 perturbation: 75.00099, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+fgvc-aircraft-2013b:  81%|████████▏ | 13/16 [39:52<06:01, 120.34s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 53.12%
+apgd-ce - 1/1 - 33 out of 34 successfully perturbed
+robust accuracy after APGD-CE: 1.56% (total time 103.6 s)
+apgd-t - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after APGD-T: 1.56% (total time 129.1 s)
+fab-t - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after FAB-T: 1.56% (total time 192.7 s)
+square - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after SQUARE: 1.56% (total time 313.2 s)
+max L1 perturbation: 75.00060, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 1.56%
+fgvc-aircraft-2013b:  88%|████████▊ | 14/16 [45:13<06:01, 180.91s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 53.12%
+apgd-ce - 1/1 - 33 out of 34 successfully perturbed
+robust accuracy after APGD-CE: 1.56% (total time 118.6 s)
+apgd-t - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after APGD-T: 1.56% (total time 144.0 s)
+fab-t - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after FAB-T: 1.56% (total time 206.9 s)
+square - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after SQUARE: 1.56% (total time 328.2 s)
+max L1 perturbation: 75.00166, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 1.56%
+fgvc-aircraft-2013b:  94%|█████████▍| 15/16 [50:48<03:47, 227.65s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 42.50%
+apgd-ce - 1/1 - 17 out of 17 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 44.1 s)
+max L1 perturbation: 75.00143, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+fgvc-aircraft-2013b: 100%|██████████| 16/16 [51:38<00:00, 173.93s/it]fgvc-aircraft-2013b: 100%|██████████| 16/16 [51:38<00:00, 193.63s/it]
+
+  1000 images | clean=0.4760 | adv=0.0080 | success=0.9920
+  Packaging 1000 images → fgvc-aircraft-2013b__zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard_processed.tar.zst
+  Compressing:   0%|          | 0/1000 [00:00<?, ?it/s]  Compressing:  39%|███▉      | 394/1000 [00:00<00:00, 3932.14it/s]  Compressing:  81%|████████  | 808/1000 [00:00<00:00, 4049.14it/s]                                                                     ✓ fgvc-aircraft-2013b__zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard_processed.tar.zst (66.4 MB)
+  Uploading → MaxHeuillet/RobustGenBench/adversarial/zeroshot_clip_vith14_laion2b/l1_eps75_autoattack_standard/fgvc-aircraft-2013b__zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard_processed.tar.zst
+Processing Files (0 / 0)      : |          |  0.00B /  0.00B            
+New Data Upload               : |          |  0.00B /  0.00B            [A
+
+  ...tandard_processed.tar.zst:   2%|▏         | 1.44MB / 66.4MB            [A[A
+
+  ...tandard_processed.tar.zst:   2%|▏         | 1.44MB / 66.4MB            [A[AProcessing Files (0 / 1)      :   2%|▏         | 1.44MB / 66.4MB, 7.19MB/s  
+
+  ...tandard_processed.tar.zst:   2%|▏         | 1.44MB / 66.4MB            [A[A
+
+  ...tandard_processed.tar.zst:  15%|█▍        | 9.84MB / 66.4MB            [A[AProcessing Files (0 / 1)      :  15%|█▍        | 9.84MB / 66.4MB, 16.4MB/s  
+New Data Upload               :  13%|█▎        | 8.40MB / 65.0MB, 14.0MB/s  [A
+
+  ...tandard_processed.tar.zst:  47%|████▋     | 31.4MB / 66.4MB            [A[AProcessing Files (0 / 1)      :  47%|████▋     | 31.4MB / 66.4MB, 39.2MB/s  
+New Data Upload               :  46%|████▌     | 29.9MB / 65.0MB, 37.4MB/s  [A
+
+  ...tandard_processed.tar.zst:  67%|██████▋   | 44.5MB / 66.4MB            [A[AProcessing Files (0 / 1)      :  67%|██████▋   | 44.5MB / 66.4MB, 44.5MB/s  
+New Data Upload               :  66%|██████▌   | 43.1MB / 65.0MB, 43.1MB/s  [A
+
+  ...tandard_processed.tar.zst:  78%|███████▊  | 51.8MB / 66.4MB            [A[AProcessing Files (0 / 1)      :  78%|███████▊  | 51.8MB / 66.4MB, 43.2MB/s  
+New Data Upload               :  78%|███████▊  | 50.4MB / 65.0MB, 42.0MB/s  [A
+
+  ...tandard_processed.tar.zst:  92%|█████████▏| 61.3MB / 66.4MB            [A[AProcessing Files (0 / 1)      :  92%|█████████▏| 61.3MB / 66.4MB, 43.8MB/s  
+New Data Upload               :  92%|█████████▏| 59.9MB / 65.0MB, 42.8MB/s  [A
+
+  ...tandard_processed.tar.zst:  99%|█████████▉| 66.0MB / 66.4MB            [A[AProcessing Files (0 / 1)      :  99%|█████████▉| 66.0MB / 66.4MB, 41.3MB/s  
+New Data Upload               :  99%|█████████▉| 64.6MB / 65.0MB, 40.4MB/s  [A
+
+  ...tandard_processed.tar.zst:  99%|█████████▉| 66.0MB / 66.4MB            [A[A
+
+  ...tandard_processed.tar.zst:  99%|█████████▉| 66.0MB / 66.4MB            [A[A
+
+  ...tandard_processed.tar.zst:  99%|█████████▉| 66.0MB / 66.4MB            [A[A
+
+  ...tandard_processed.tar.zst:  99%|█████████▉| 66.0MB / 66.4MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|██████████| 66.4MB / 66.4MB            [A[AProcessing Files (1 / 1)      : 100%|██████████| 66.4MB / 66.4MB, 25.6MB/s  
+New Data Upload               : 100%|██████████| 65.0MB / 65.0MB, 25.0MB/s  [A
+
+  ...tandard_processed.tar.zst: 100%|██████████| 66.4MB / 66.4MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|██████████| 66.4MB / 66.4MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|██████████| 66.4MB / 66.4MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|██████████| 66.4MB / 66.4MB            [A[AProcessing Files (1 / 1)      : 100%|██████████| 66.4MB / 66.4MB, 20.8MB/s  
+New Data Upload               : 100%|██████████| 65.0MB / 65.0MB, 20.3MB/s  
+  ...tandard_processed.tar.zst: 100%|██████████| 66.4MB / 66.4MB            
+  ✓ Upload complete: fgvc-aircraft-2013b__zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard_processed.tar.zst
+
+All done!

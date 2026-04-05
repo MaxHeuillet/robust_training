@@ -1,0 +1,279 @@
+Data already present at /tmp/robustgenbench/data_processed.
+Using CUDA: NVIDIA H100 80GB HBM3
+
+============================================================
+  Dataset   : caltech101
+  Surrogate : clip_vith14  (zeroshot_clip_vith14_laion2b)
+  Norm      : Linf  eps=8.0  (AA: 0.03137)
+============================================================
+  1000 samples | 101 classes
+
+Loading CLIP ViT-H/14 surrogate: ViT-H-14 / laion2b_s32b_b79k
+  Encoding 101 class prompts...
+setting parameters for standard version
+caltech101:   0%|          | 0/32 [00:00<?, ?it/s]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 30 out of 30 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 57.4 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101:   3%|▎         | 1/32 [01:02<32:04, 62.08s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 30 out of 30 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 57.3 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101:   6%|▋         | 2/32 [02:03<30:48, 61.60s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 90.62%
+apgd-ce - 1/1 - 29 out of 29 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 54.4 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101:   9%|▉         | 3/32 [03:01<28:59, 59.97s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 84.38%
+apgd-ce - 1/1 - 27 out of 27 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 53.3 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101:  12%|█▎        | 4/32 [03:58<27:26, 58.80s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 90.62%
+apgd-ce - 1/1 - 29 out of 29 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 54.4 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101:  16%|█▌        | 5/32 [04:56<26:19, 58.50s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 30 out of 30 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 57.3 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101:  19%|█▉        | 6/32 [05:57<25:42, 59.31s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 90.62%
+apgd-ce - 1/1 - 29 out of 29 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 54.4 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101:  22%|██▏       | 7/32 [06:55<24:34, 58.97s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 30 out of 30 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 57.3 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101:  25%|██▌       | 8/32 [07:56<23:49, 59.57s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 96.88%
+apgd-ce - 1/1 - 31 out of 31 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 58.4 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101:  28%|██▊       | 9/32 [08:58<23:07, 60.34s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 87.50%
+apgd-ce - 1/1 - 28 out of 28 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 53.7 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101:  31%|███▏      | 10/32 [09:55<21:46, 59.40s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 90.62%
+apgd-ce - 1/1 - 29 out of 29 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 54.4 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101:  34%|███▍      | 11/32 [10:53<20:38, 58.97s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 30 out of 30 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 57.3 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101:  38%|███▊      | 12/32 [11:54<19:50, 59.54s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 84.38%
+apgd-ce - 1/1 - 27 out of 27 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 53.2 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101:  41%|████      | 13/32 [12:51<18:35, 58.72s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 90.62%
+apgd-ce - 1/1 - 29 out of 29 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 54.4 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101:  44%|████▍     | 14/32 [13:49<17:32, 58.49s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 30 out of 30 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 57.3 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101:  47%|████▋     | 15/32 [14:50<16:46, 59.20s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 84.38%
+apgd-ce - 1/1 - 27 out of 27 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 53.2 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101:  50%|█████     | 16/32 [15:46<15:35, 58.48s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 87.50%
+apgd-ce - 1/1 - 28 out of 28 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 53.7 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101:  53%|█████▎    | 17/32 [16:44<14:31, 58.13s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 84.38%
+apgd-ce - 1/1 - 27 out of 27 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 53.3 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101:  56%|█████▋    | 18/32 [17:40<13:27, 57.66s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 30 out of 30 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 57.3 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101:  59%|█████▉    | 19/32 [18:41<12:42, 58.63s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 96.88%
+apgd-ce - 1/1 - 31 out of 31 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 58.5 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101:  62%|██████▎   | 20/32 [19:43<11:55, 59.66s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 87.50%
+apgd-ce - 1/1 - 28 out of 28 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 53.7 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101:  66%|██████▌   | 21/32 [20:40<10:47, 58.84s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 84.38%
+apgd-ce - 1/1 - 27 out of 27 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 53.5 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101:  69%|██████▉   | 22/32 [21:37<09:43, 58.32s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 30 out of 30 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 57.3 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101:  72%|███████▏  | 23/32 [22:38<08:50, 58.93s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 90.62%
+apgd-ce - 1/1 - 29 out of 29 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 54.4 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101:  75%|███████▌  | 24/32 [23:36<07:49, 58.65s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 96.88%
+apgd-ce - 1/1 - 31 out of 31 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 58.5 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101:  78%|███████▊  | 25/32 [24:38<06:57, 59.67s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 30 out of 30 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 57.3 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101:  81%|████████▏ | 26/32 [25:39<06:00, 60.02s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 81.25%
+apgd-ce - 1/1 - 26 out of 26 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 49.1 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101:  84%|████████▍ | 27/32 [26:31<04:49, 57.82s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 84.38%
+apgd-ce - 1/1 - 27 out of 27 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 53.1 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101:  88%|████████▊ | 28/32 [27:28<03:49, 57.50s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 90.62%
+apgd-ce - 1/1 - 29 out of 29 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 54.4 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101:  91%|█████████ | 29/32 [28:26<02:52, 57.65s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 84.38%
+apgd-ce - 1/1 - 27 out of 27 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 53.1 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101:  94%|█████████▍| 30/32 [29:23<01:54, 57.38s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 87.50%
+apgd-ce - 1/1 - 28 out of 28 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 53.7 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101:  97%|█████████▋| 31/32 [30:20<00:57, 57.38s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 100.00%
+apgd-ce - 1/1 - 8 out of 8 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 16.4 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+caltech101: 100%|██████████| 32/32 [30:37<00:00, 45.37s/it]caltech101: 100%|██████████| 32/32 [30:38<00:00, 57.44s/it]
+
+  1000 images | clean=0.9010 | adv=0.0000 | success=1.0000
+  Packaging 1096 images → caltech101__zeroshot_clip_vith14_laion2b__linf_eps8_autoattack_standard_processed.tar.zst
+  Compressing:   0%|          | 0/1096 [00:00<?, ?it/s]  Compressing:  33%|███▎      | 363/1096 [00:00<00:00, 3629.05it/s]  Compressing:  67%|██████▋   | 732/1096 [00:00<00:00, 3664.05it/s]                                                                     ✓ caltech101__zeroshot_clip_vith14_laion2b__linf_eps8_autoattack_standard_processed.tar.zst (108.9 MB)
+  Uploading → MaxHeuillet/RobustGenBench/adversarial/zeroshot_clip_vith14_laion2b/linf_eps8_autoattack_standard/caltech101__zeroshot_clip_vith14_laion2b__linf_eps8_autoattack_standard_processed.tar.zst
+Processing Files (0 / 0)      : |          |  0.00B /  0.00B            
+New Data Upload               : |          |  0.00B /  0.00B            [A
+
+  ...tandard_processed.tar.zst:   0%|          | 50.1kB /  109MB            [A[A
+
+  ...tandard_processed.tar.zst:   0%|          | 50.1kB /  109MB            [A[AProcessing Files (0 / 1)      :   0%|          | 50.1kB /  109MB,   ???B/s  
+
+  ...tandard_processed.tar.zst:   0%|          |  349kB /  109MB            [A[AProcessing Files (0 / 1)      :   0%|          |  349kB /  109MB, 1.50MB/s  
+
+  ...tandard_processed.tar.zst:   2%|▏         | 2.19MB /  109MB            [A[AProcessing Files (0 / 1)      :   2%|▏         | 2.19MB /  109MB, 5.35MB/s  
+New Data Upload               :   1%|▏         | 1.58MB /  106MB, 3.96MB/s  [A
+
+  ...tandard_processed.tar.zst:  13%|█▎        | 14.3MB /  109MB            [A[AProcessing Files (0 / 1)      :  13%|█▎        | 14.3MB /  109MB, 23.8MB/s  
+New Data Upload               :  13%|█▎        | 13.7MB /  106MB, 22.9MB/s  [A
+
+  ...tandard_processed.tar.zst:  32%|███▏      | 34.4MB /  109MB            [A[AProcessing Files (0 / 1)      :  32%|███▏      | 34.4MB /  109MB, 42.9MB/s  
+New Data Upload               :  32%|███▏      | 33.8MB /  106MB, 42.2MB/s  [A
+
+  ...tandard_processed.tar.zst:  46%|████▌     | 49.7MB /  109MB            [A[AProcessing Files (0 / 1)      :  46%|████▌     | 49.7MB /  109MB, 49.6MB/s  
+New Data Upload               :  46%|████▌     | 49.0MB /  106MB, 49.0MB/s  [A
+
+  ...tandard_processed.tar.zst:  60%|█████▉    | 64.9MB /  109MB            [A[AProcessing Files (0 / 1)      :  60%|█████▉    | 64.9MB /  109MB, 54.1MB/s  
+New Data Upload               :  61%|██████    | 64.3MB /  106MB, 53.6MB/s  [A
+
+  ...tandard_processed.tar.zst:  62%|██████▏   | 67.6MB /  109MB            [A[AProcessing Files (0 / 1)      :  62%|██████▏   | 67.6MB /  109MB, 48.3MB/s  
+New Data Upload               :  63%|██████▎   | 67.0MB /  106MB, 47.9MB/s  [A
+
+  ...tandard_processed.tar.zst:  62%|██████▏   | 67.6MB /  109MB            [A[A
+
+  ...tandard_processed.tar.zst:  62%|██████▏   | 67.6MB /  109MB            [A[A
+
+  ...tandard_processed.tar.zst:  62%|██████▏   | 67.6MB /  109MB            [A[A
+
+  ...tandard_processed.tar.zst:  62%|██████▏   | 67.6MB /  109MB            [A[A
+
+  ...tandard_processed.tar.zst:  62%|██████▏   | 67.6MB /  109MB            [A[A
+
+  ...tandard_processed.tar.zst:  70%|███████   | 76.6MB /  109MB            [A[AProcessing Files (0 / 1)      :  70%|███████   | 76.6MB /  109MB, 29.4MB/s  
+New Data Upload               :  72%|███████▏  | 76.0MB /  106MB, 29.2MB/s  [A
+
+  ...tandard_processed.tar.zst:  84%|████████▍ | 91.4MB /  109MB            [A[AProcessing Files (0 / 1)      :  84%|████████▍ | 91.4MB /  109MB, 32.6MB/s  
+New Data Upload               :  86%|████████▌ | 90.8MB /  106MB, 32.4MB/s  [A
+
+  ...tandard_processed.tar.zst:  94%|█████████▎|  102MB /  109MB            [A[AProcessing Files (0 / 1)      :  94%|█████████▎|  102MB /  109MB, 34.0MB/s  
+New Data Upload               :  95%|█████████▌|  101MB /  106MB, 33.8MB/s  [A
+
+  ...tandard_processed.tar.zst:  98%|█████████▊|  107MB /  109MB            [A[AProcessing Files (0 / 1)      :  98%|█████████▊|  107MB /  109MB, 33.3MB/s  
+New Data Upload               : 100%|█████████▉|  106MB /  106MB, 33.2MB/s  [A
+
+  ...tandard_processed.tar.zst:  98%|█████████▊|  107MB /  109MB            [A[A
+
+  ...tandard_processed.tar.zst:  98%|█████████▊|  107MB /  109MB            [A[A
+
+  ...tandard_processed.tar.zst:  98%|█████████▊|  107MB /  109MB            [A[AProcessing Files (0 / 1)      :  98%|█████████▊|  107MB /  109MB, 28.1MB/s  
+New Data Upload               : 100%|██████████|  106MB /  106MB, 27.9MB/s  [A
+
+  ...tandard_processed.tar.zst:  98%|█████████▊|  107MB /  109MB            [A[A
+
+  ...tandard_processed.tar.zst:  98%|█████████▊|  107MB /  109MB            [A[A
+
+  ...tandard_processed.tar.zst:  98%|█████████▊|  107MB /  109MB            [A[A
+
+  ...tandard_processed.tar.zst:  98%|█████████▊|  107MB /  109MB            [A[AProcessing Files (0 / 1)      :  98%|█████████▊|  107MB /  109MB, 24.2MB/s  
+New Data Upload               : 100%|██████████|  106MB /  106MB, 24.1MB/s  
+  ...tandard_processed.tar.zst:  98%|█████████▊|  107MB /  109MB            
+  ✓ Upload complete: caltech101__zeroshot_clip_vith14_laion2b__linf_eps8_autoattack_standard_processed.tar.zst
+
+All done!

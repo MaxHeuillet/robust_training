@@ -1,0 +1,285 @@
+Data already present at /tmp/robustgenbench/data_processed.
+Using CUDA: NVIDIA H100 80GB HBM3
+
+============================================================
+  Dataset   : oxford-iiit-pet
+  Surrogate : clip_vith14  (zeroshot_clip_vith14_laion2b)
+  Norm      : Linf  eps=30.0  (AA: 0.11765)
+============================================================
+  1000 samples | 37 classes
+
+Loading CLIP ViT-H/14 surrogate: ViT-H-14 / laion2b_s32b_b79k
+  Encoding 37 class prompts...
+setting parameters for standard version
+oxford-iiit-pet:   0%|          | 0/32 [00:00<?, ?it/s]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 90.62%
+apgd-ce - 1/1 - 29 out of 29 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 54.4 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet:   3%|▎         | 1/32 [00:59<30:52, 59.74s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 87.50%
+apgd-ce - 1/1 - 28 out of 28 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 53.7 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet:   6%|▋         | 2/32 [01:56<29:07, 58.26s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 100.00%
+apgd-ce - 1/1 - 32 out of 32 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 59.3 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet:   9%|▉         | 3/32 [02:59<29:10, 60.35s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 100.00%
+apgd-ce - 1/1 - 32 out of 32 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 59.3 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet:  12%|█▎        | 4/32 [04:02<28:36, 61.31s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 30 out of 30 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 57.2 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet:  16%|█▌        | 5/32 [05:03<27:30, 61.11s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 90.62%
+apgd-ce - 1/1 - 29 out of 29 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 54.3 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet:  19%|█▉        | 6/32 [06:01<26:00, 60.00s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 96.88%
+apgd-ce - 1/1 - 31 out of 31 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 58.4 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet:  22%|██▏       | 7/32 [07:04<25:24, 60.97s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 96.88%
+apgd-ce - 1/1 - 31 out of 31 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 58.4 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet:  25%|██▌       | 8/32 [08:06<24:30, 61.26s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 100.00%
+apgd-ce - 1/1 - 32 out of 32 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 59.3 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet:  28%|██▊       | 9/32 [09:08<23:40, 61.75s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 90.62%
+apgd-ce - 1/1 - 29 out of 29 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 54.3 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet:  31%|███▏      | 10/32 [10:06<22:12, 60.55s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 90.62%
+apgd-ce - 1/1 - 29 out of 29 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 54.3 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet:  34%|███▍      | 11/32 [11:04<20:54, 59.72s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 84.38%
+apgd-ce - 1/1 - 27 out of 27 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 53.2 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet:  38%|███▊      | 12/32 [12:01<19:36, 58.80s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 90.62%
+apgd-ce - 1/1 - 29 out of 29 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 54.3 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet:  41%|████      | 13/32 [12:59<18:31, 58.52s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 30 out of 30 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 57.2 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet:  44%|████▍     | 14/32 [13:59<17:45, 59.19s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 90.62%
+apgd-ce - 1/1 - 29 out of 29 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 54.3 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet:  47%|████▋     | 15/32 [14:57<16:39, 58.79s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 100.00%
+apgd-ce - 1/1 - 32 out of 32 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 59.3 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet:  50%|█████     | 16/32 [16:00<15:59, 60.00s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 96.88%
+apgd-ce - 1/1 - 31 out of 31 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 58.4 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet:  53%|█████▎    | 17/32 [17:02<15:08, 60.57s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 30 out of 30 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 57.2 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet:  56%|█████▋    | 18/32 [18:03<14:08, 60.63s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 90.62%
+apgd-ce - 1/1 - 29 out of 29 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 54.3 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet:  59%|█████▉    | 19/32 [19:01<12:57, 59.79s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 30 out of 30 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 57.2 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet:  62%|██████▎   | 20/32 [20:01<12:00, 60.08s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 96.88%
+apgd-ce - 1/1 - 31 out of 31 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 58.4 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet:  66%|██████▌   | 21/32 [21:03<11:06, 60.62s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 96.88%
+apgd-ce - 1/1 - 31 out of 31 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 58.4 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet:  69%|██████▉   | 22/32 [22:05<10:10, 61.01s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 96.88%
+apgd-ce - 1/1 - 31 out of 31 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 58.4 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet:  72%|███████▏  | 23/32 [23:07<09:12, 61.40s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 100.00%
+apgd-ce - 1/1 - 32 out of 32 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 59.3 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet:  75%|███████▌  | 24/32 [24:10<08:14, 61.82s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 100.00%
+apgd-ce - 1/1 - 32 out of 32 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 59.3 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet:  78%|███████▊  | 25/32 [25:13<07:14, 62.12s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 30 out of 30 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 57.2 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet:  81%|████████▏ | 26/32 [26:14<06:10, 61.71s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 90.62%
+apgd-ce - 1/1 - 29 out of 29 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 54.3 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet:  84%|████████▍ | 27/32 [27:12<05:02, 60.54s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 96.88%
+apgd-ce - 1/1 - 31 out of 31 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 58.4 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet:  88%|████████▊ | 28/32 [28:13<04:03, 60.95s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 96.88%
+apgd-ce - 1/1 - 31 out of 31 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 58.4 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet:  91%|█████████ | 29/32 [29:15<03:03, 61.08s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 30 out of 30 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 57.2 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet:  94%|█████████▍| 30/32 [30:15<02:01, 60.80s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 90.62%
+apgd-ce - 1/1 - 29 out of 29 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 54.3 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet:  97%|█████████▋| 31/32 [31:13<00:59, 59.91s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 100.00%
+apgd-ce - 1/1 - 8 out of 8 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 16.3 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+oxford-iiit-pet: 100%|██████████| 32/32 [31:30<00:00, 47.06s/it]oxford-iiit-pet: 100%|██████████| 32/32 [31:30<00:00, 59.08s/it]
+
+  1000 images | clean=0.9440 | adv=0.0000 | success=1.0000
+  Packaging 1000 images → oxford-iiit-pet__zeroshot_clip_vith14_laion2b__linf_eps30_autoattack_standard_processed.tar.zst
+  Compressing:   0%|          | 0/1000 [00:00<?, ?it/s]  Compressing:  34%|███▍      | 342/1000 [00:00<00:00, 3418.67it/s]  Compressing:  70%|██████▉   | 695/1000 [00:00<00:00, 3481.32it/s]                                                                     ✓ oxford-iiit-pet__zeroshot_clip_vith14_laion2b__linf_eps30_autoattack_standard_processed.tar.zst (125.8 MB)
+  Uploading → MaxHeuillet/RobustGenBench/adversarial/zeroshot_clip_vith14_laion2b/linf_eps30_autoattack_standard/oxford-iiit-pet__zeroshot_clip_vith14_laion2b__linf_eps30_autoattack_standard_processed.tar.zst
+Processing Files (0 / 0)      : |          |  0.00B /  0.00B            
+New Data Upload               : |          |  0.00B /  0.00B            [A
+
+  ...tandard_processed.tar.zst:   0%|          | 86.9kB /  126MB            [A[A
+
+  ...tandard_processed.tar.zst:   0%|          | 86.9kB /  126MB            [A[AProcessing Files (0 / 1)      :   0%|          | 86.9kB /  126MB,   ???B/s  
+
+  ...tandard_processed.tar.zst:   0%|          |  148kB /  126MB            [A[AProcessing Files (0 / 1)      :   0%|          |  148kB /  126MB,  306kB/s  
+
+  ...tandard_processed.tar.zst:   4%|▍         | 5.43MB /  126MB            [A[AProcessing Files (0 / 1)      :   4%|▍         | 5.43MB /  126MB, 13.4MB/s  
+New Data Upload               :   4%|▍         | 5.28MB /  126MB, 13.2MB/s  [A
+
+  ...tandard_processed.tar.zst:  19%|█▉        | 23.9MB /  126MB            [A[AProcessing Files (0 / 1)      :  19%|█▉        | 23.9MB /  126MB, 39.7MB/s  
+New Data Upload               :  19%|█▉        | 23.8MB /  126MB, 39.6MB/s  [A
+
+  ...tandard_processed.tar.zst:  32%|███▏      | 40.3MB /  126MB            [A[AProcessing Files (0 / 1)      :  32%|███▏      | 40.3MB /  126MB, 50.2MB/s  
+New Data Upload               :  32%|███▏      | 40.1MB /  126MB, 50.2MB/s  [A
+
+  ...tandard_processed.tar.zst:  41%|████      | 51.9MB /  126MB            [A[AProcessing Files (0 / 1)      :  41%|████      | 51.9MB /  126MB, 51.8MB/s  
+New Data Upload               :  41%|████      | 51.7MB /  126MB, 51.7MB/s  [A
+
+  ...tandard_processed.tar.zst:  51%|█████     | 64.0MB /  126MB            [A[AProcessing Files (0 / 1)      :  51%|█████     | 64.0MB /  126MB, 53.3MB/s  
+New Data Upload               :  51%|█████     | 63.9MB /  126MB, 53.2MB/s  [A
+
+  ...tandard_processed.tar.zst:  53%|█████▎    | 67.2MB /  126MB            [A[AProcessing Files (0 / 1)      :  53%|█████▎    | 67.2MB /  126MB, 47.9MB/s  
+New Data Upload               :  53%|█████▎    | 67.1MB /  126MB, 47.9MB/s  [A
+
+  ...tandard_processed.tar.zst:  53%|█████▎    | 67.2MB /  126MB            [A[A
+
+  ...tandard_processed.tar.zst:  53%|█████▎    | 67.2MB /  126MB            [A[A
+
+  ...tandard_processed.tar.zst:  53%|█████▎    | 67.2MB /  126MB            [A[A
+
+  ...tandard_processed.tar.zst:  53%|█████▎    | 67.2MB /  126MB            [A[AProcessing Files (0 / 1)      :  53%|█████▎    | 67.2MB /  126MB, 30.5MB/s  
+New Data Upload               :  53%|█████▎    | 67.1MB /  126MB, 30.5MB/s  [A
+
+  ...tandard_processed.tar.zst:  67%|██████▋   | 84.6MB /  126MB            [A[AProcessing Files (0 / 1)      :  67%|██████▋   | 84.6MB /  126MB, 35.2MB/s  
+New Data Upload               :  67%|██████▋   | 84.5MB /  126MB, 35.2MB/s  [A
+
+  ...tandard_processed.tar.zst:  77%|███████▋  | 96.8MB /  126MB            [A[AProcessing Files (0 / 1)      :  77%|███████▋  | 96.8MB /  126MB, 37.2MB/s  
+New Data Upload               :  77%|███████▋  | 96.6MB /  126MB, 37.2MB/s  [A
+
+  ...tandard_processed.tar.zst:  87%|████████▋ |  110MB /  126MB            [A[AProcessing Files (0 / 1)      :  87%|████████▋ |  110MB /  126MB, 39.3MB/s  
+New Data Upload               :  87%|████████▋ |  110MB /  126MB, 39.2MB/s  [A
+
+  ...tandard_processed.tar.zst:  97%|█████████▋|  122MB /  126MB            [A[AProcessing Files (0 / 1)      :  97%|█████████▋|  122MB /  126MB, 40.7MB/s  
+New Data Upload               :  97%|█████████▋|  122MB /  126MB, 40.7MB/s  [A
+
+  ...tandard_processed.tar.zst: 100%|█████████▉|  125MB /  126MB            [A[AProcessing Files (0 / 1)      : 100%|█████████▉|  125MB /  126MB, 39.1MB/s  
+New Data Upload               : 100%|█████████▉|  125MB /  126MB, 39.1MB/s  [A
+
+  ...tandard_processed.tar.zst: 100%|█████████▉|  125MB /  126MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|█████████▉|  125MB /  126MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|█████████▉|  125MB /  126MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|█████████▉|  125MB /  126MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|█████████▉|  125MB /  126MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|██████████|  126MB /  126MB            [A[AProcessing Files (1 / 1)      : 100%|██████████|  126MB /  126MB, 28.6MB/s  
+New Data Upload               : 100%|██████████|  126MB /  126MB, 28.6MB/s  [A
+
+  ...tandard_processed.tar.zst: 100%|██████████|  126MB /  126MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|██████████|  126MB /  126MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|██████████|  126MB /  126MB            [A[AProcessing Files (1 / 1)      : 100%|██████████|  126MB /  126MB, 26.2MB/s  
+New Data Upload               : 100%|██████████|  126MB /  126MB, 26.2MB/s  
+  ...tandard_processed.tar.zst: 100%|██████████|  126MB /  126MB            
+  ✓ Upload complete: oxford-iiit-pet__zeroshot_clip_vith14_laion2b__linf_eps30_autoattack_standard_processed.tar.zst
+
+All done!
