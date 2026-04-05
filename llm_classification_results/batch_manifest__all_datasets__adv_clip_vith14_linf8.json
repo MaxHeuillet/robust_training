@@ -76,7 +76,7 @@
     "model": "gemini-3-flash-preview-nothink",
     "run_name": "caltech101__zeroshot_clip_vith14_laion2b__linf_eps8_autoattack_standard__google_nothink__adv_clip_vith14_linf8",
     "batch_id": "batches/pyhxmhok0uis1sfe94zu4kkg306rnpohneme",
-    "status": "pending",
+    "status": "retrieved",
     "experiment": "adv_clip_vith14_linf8"
   },
   {
@@ -86,7 +86,7 @@
     "model": "gemini-3-flash-preview-nothink",
     "run_name": "fgvc-aircraft-2013b__zeroshot_clip_vith14_laion2b__linf_eps8_autoattack_standard__google_nothink__adv_clip_vith14_linf8",
     "batch_id": "batches/1ni5b99tng3losws83h2nynh5rqx40mmq8o8",
-    "status": "pending",
+    "status": "retrieved",
     "experiment": "adv_clip_vith14_linf8"
   },
   {
@@ -96,7 +96,7 @@
     "model": "gemini-3-flash-preview-nothink",
     "run_name": "flowers-102__zeroshot_clip_vith14_laion2b__linf_eps8_autoattack_standard__google_nothink__adv_clip_vith14_linf8",
     "batch_id": "batches/5jnsldg1yyz1ywcai1d9i3umzbp8c0riipxc",
-    "status": "pending",
+    "status": "retrieved",
     "experiment": "adv_clip_vith14_linf8"
   },
   {
@@ -106,7 +106,7 @@
     "model": "gemini-3-flash-preview-nothink",
     "run_name": "oxford-iiit-pet__zeroshot_clip_vith14_laion2b__linf_eps8_autoattack_standard__google_nothink__adv_clip_vith14_linf8",
     "batch_id": "batches/n1xtflp6va4pyvu3tps1t1kjq9c7461s88md",
-    "status": "pending",
+    "status": "retrieved",
     "experiment": "adv_clip_vith14_linf8"
   },
   {
@@ -116,7 +116,7 @@
     "model": "gemini-3-flash-preview-nothink",
     "run_name": "stanford_cars__zeroshot_clip_vith14_laion2b__linf_eps8_autoattack_standard__google_nothink__adv_clip_vith14_linf8",
     "batch_id": "batches/mkvuloi2d9lwgg379ycnhssy13fy6qe949e0",
-    "status": "pending",
+    "status": "retrieved",
     "experiment": "adv_clip_vith14_linf8"
   },
   {
@@ -136,7 +136,7 @@
     "model": "gemini-3-flash-preview-nothink",
     "run_name": "uc-merced-land-use-dataset__zeroshot_clip_vith14_laion2b__linf_eps8_autoattack_standard__google_nothink__adv_clip_vith14_linf8",
     "batch_id": "batches/8y3mdlyzatgi53kcwlqcpyu6672enhp0lwqp",
-    "status": "pending",
+    "status": "retrieved",
     "experiment": "adv_clip_vith14_linf8"
   }
 ]
