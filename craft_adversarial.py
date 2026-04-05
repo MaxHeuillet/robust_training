@@ -3,7 +3,8 @@
 craft_adversarial.py — Craft adversarial / corrupted images using AutoAttack
 or common corruptions (ImageNet-C style), against either:
   • zero-shot CLIP ViT-B/16   (open_clip, LAION-2B weights)
-  • zero-shot CLIP ViT-H/14   (open_clip, LAION-2B weights)  ← NEW
+  • zero-shot CLIP ViT-H/14   (open_clip, LAION-2B weights)
+  • zero-shot MetaCLIP ViT-H/14 (open_clip, fullcc2.5b weights)  ← NEW
   • zero-shot SigLIP2-base-patch16-224  (HuggingFace transformers)
 
 Supports Linf, L1, L2 norms (gradient-based) and common corruptions.
@@ -15,12 +16,12 @@ Epsilon conventions (matching AutoAttack's [0,1] input space):
   common: no epsilon — severity controlled by --severity (1-5, default 3)
 
 Usage:
-    python craft_adversarial.py --surrogate clip_vith14 --norm Linf --eps 8  --upload_hf
-    python craft_adversarial.py --surrogate clip_vith14 --norm Linf --eps 30 --upload_hf
-    python craft_adversarial.py --surrogate clip_vith14 --norm L2   --eps 2  --upload_hf
-    python craft_adversarial.py --surrogate clip_vith14 --norm L2   --eps 8  --upload_hf
-    python craft_adversarial.py --surrogate clip_vith14 --norm L1   --eps 75 --upload_hf
-    python craft_adversarial.py --surrogate clip_vith14 --norm L1   --eps 300 --upload_hf
+    python craft_adversarial.py --surrogate metaclip_h14 --norm Linf --eps 8  --upload_hf
+    python craft_adversarial.py --surrogate metaclip_h14 --norm Linf --eps 30 --upload_hf
+    python craft_adversarial.py --surrogate metaclip_h14 --norm L2   --eps 2  --upload_hf
+    python craft_adversarial.py --surrogate metaclip_h14 --norm L2   --eps 8  --upload_hf
+    python craft_adversarial.py --surrogate metaclip_h14 --norm L1   --eps 75 --upload_hf
+    python craft_adversarial.py --surrogate metaclip_h14 --norm L1   --eps 300 --upload_hf
 """
 
 import argparse
@@ -66,10 +67,12 @@ REAL_HF_HOME    = os.path.expanduser("~/.cache/huggingface")
 # Surrogate identifiers
 # ---------------------------------------------------------------------------
 
-SURROGATE_CLIP    = "clip"
-SURROGATE_SIGLIP  = "siglip2"
-SURROGATE_CLIP_H  = "clip_vith14"
-ALL_SURROGATES    = [SURROGATE_CLIP, SURROGATE_SIGLIP, SURROGATE_CLIP_H]
+SURROGATE_CLIP       = "clip"
+SURROGATE_SIGLIP     = "siglip2"
+SURROGATE_CLIP_H     = "clip_vith14"
+SURROGATE_METACLIP_H = "metaclip_h14"
+ALL_SURROGATES       = [SURROGATE_CLIP, SURROGATE_SIGLIP, SURROGATE_CLIP_H,
+                        SURROGATE_METACLIP_H]
 
 # CLIP ViT-B/16
 CLIP_MODEL      = "ViT-B-16"
@@ -81,6 +84,11 @@ CLIP_STD        = (0.26862954, 0.26130258, 0.27577711)
 CLIP_H_MODEL    = "ViT-H-14"
 CLIP_H_PRETRAIN = "laion2b_s32b_b79k"
 # ViT-H/14 uses same normalization as ViT-B/16 (OpenCLIP default)
+
+# MetaCLIP ViT-H/14 fullcc2.5b
+METACLIP_H_MODEL    = "ViT-H-14-quickgelu"
+METACLIP_H_PRETRAIN = "metaclip_fullcc"
+# MetaCLIP uses the same OpenAI CLIP normalization constants
 
 # SigLIP2
 SIGLIP_MODEL_ID = "google/siglip2-base-patch16-224"
@@ -134,6 +142,8 @@ def surrogate_slug(surrogate: str) -> str:
         return "zeroshot_siglip2_base_patch16_224"
     elif surrogate == SURROGATE_CLIP_H:
         return "zeroshot_clip_vith14_laion2b"
+    elif surrogate == SURROGATE_METACLIP_H:
+        return "zeroshot_metaclip_vith14_fullcc2_5b"
     raise ValueError(surrogate)
 
 
@@ -377,6 +387,27 @@ def load_clip_h_surrogate(label_to_name: dict, device: torch.device,
     return model
 
 
+def load_metaclip_h_surrogate(label_to_name: dict, device: torch.device,
+                               dataset: str = "") -> ZeroShotCLIP:
+    import open_clip
+    print(f"\nLoading MetaCLIP ViT-H/14 surrogate: {METACLIP_H_MODEL} / {METACLIP_H_PRETRAIN}")
+    clip_model, _, _ = open_clip.create_model_and_transforms(
+        METACLIP_H_MODEL, pretrained=METACLIP_H_PRETRAIN, cache_dir=str(HF_CACHE_DIR))
+    clip_model.eval().to(device)
+    tokenizer   = open_clip.get_tokenizer(METACLIP_H_MODEL)
+    class_names = [label_to_name[i] for i in sorted(label_to_name.keys())]
+    prompts     = build_prompts(dataset, class_names)
+    print(f"  Encoding {len(prompts)} class prompts...")
+    with torch.no_grad():
+        tokens        = tokenizer(prompts).to(device)
+        text_features = F.normalize(clip_model.encode_text(tokens), dim=-1)
+    # MetaCLIP uses the same CLIP normalization constants (OpenAI defaults)
+    model = ZeroShotCLIP(clip_model, text_features, device,
+                         mean=CLIP_MEAN, std=CLIP_STD)
+    model.eval().to(device)
+    return model
+
+
 def load_siglip2_surrogate(label_to_name: dict, device: torch.device,
                             dataset: str = "") -> ZeroShotSigLIP2:
     from transformers import AutoTokenizer, SiglipTextModel, SiglipVisionModel
@@ -413,6 +444,8 @@ def load_surrogate(surrogate: str, label_to_name: dict,
         return load_clip_surrogate(label_to_name, device, dataset=dataset)
     elif surrogate == SURROGATE_CLIP_H:
         return load_clip_h_surrogate(label_to_name, device, dataset=dataset)
+    elif surrogate == SURROGATE_METACLIP_H:
+        return load_metaclip_h_surrogate(label_to_name, device, dataset=dataset)
     elif surrogate == SURROGATE_SIGLIP:
         return load_siglip2_surrogate(label_to_name, device, dataset=dataset)
     raise ValueError(f"Unknown surrogate: {surrogate!r}")
