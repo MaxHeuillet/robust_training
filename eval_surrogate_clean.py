@@ -284,18 +284,12 @@ class ZeroShotSigLIP2NaFlex(nn.Module):
     def forward_pil(self, pil_images):
         """Accept a list of PIL images, process and classify."""
         inputs = self._processor(images=pil_images, return_tensors="pt", padding="max_length")
-        # Move all tensor inputs to device
         inputs = {k: v.to(self.text_features.device) for k, v in inputs.items()
-                  if isinstance(v, torch.Tensor)}
+                if isinstance(v, torch.Tensor)}
         with torch.no_grad():
-            # Use the vision_model directly to avoid the .norm() issue
-            # in get_image_features with some transformers versions
-            vision_outputs = self._model.vision_model(**inputs)
-            # pooler_output is the projected CLS embedding
-            img_emb = vision_outputs.pooler_output
-            if img_emb is None:
-                # Fallback: use CLS token from last_hidden_state
-                img_emb = vision_outputs.last_hidden_state[:, 0]
+            # Use the full model forward which handles attention_mask routing
+            outputs = self._model(**inputs)
+            img_emb = outputs.image_embeds
         img_emb = F.normalize(img_emb, dim=-1)
         return self.temperature * (img_emb @ self.text_features.T)
 
@@ -523,83 +517,57 @@ def load_dinov2_vitl14(label_to_name, dataset, device):
 
 def load_eva_clip_18b(label_to_name, dataset, device):
     """
-    EVA-CLIP-18B (BAAI/EVA-CLIP-18B) — 18B parameter CLIP model.
-    Uses the `eva_clip` package from baaivision/EVA.
-    Requires: pip install eva-clip  (or clone EVA repo and install from EVA-CLIP-18B/)
-    Also needs: apex (fused layer norm), xformers (memory-efficient attention).
-    Uses standard CLIP normalisation and 224×224 images.
-    On 4×H100 the model fits comfortably; for tighter memory use torch.cuda.amp.autocast.
-
-    Falls back to HuggingFace Transformers loading if eva_clip is not installed.
-
-    FIX: The HF fallback now uses CLIPTokenizer (matching the official HF example)
-    instead of AutoTokenizer, which was producing token IDs exceeding the model's
-    vocabulary size and causing CUDA index-out-of-range assertions.
+    EVA-CLIP-18B — hybrid approach:
+    - Text features: OpenCLIP ViT-H/14 text encoder (1024-dim, same as EVA-CLIP-18B)
+    - Image features: HF AutoModel for BAAI/EVA-CLIP-18B encode_image()
+    
+    The HF repo's bundled tokenizer has a vocab mismatch with the model's
+    embedding table, and eva-clip can't be installed on this cluster.
+    EVA-CLIP-18B's text encoder was initialized from EVA02_CLIP_E_psz14_plus_s9B
+    which shares the same architecture/dim as OpenCLIP ViT-H/14.
     """
+    import open_clip
     class_names = [label_to_name[i] for i in sorted(label_to_name)]
     prompts     = build_prompts(dataset, class_names)
 
-    try:
-        from eva_clip import create_model_and_transforms as eva_create, get_tokenizer as eva_tokenizer
-        print("  Loading EVA-CLIP-18B via eva_clip package...")
+    # Text features via OpenCLIP ViT-H/14 (1024-dim, compatible)
+    print("  Loading EVA-CLIP-18B (HF image encoder + OpenCLIP text encoder)...")
+    clip_model, _, _ = open_clip.create_model_and_transforms(
+        "ViT-H-14", pretrained="laion2b_s32b_b79k", cache_dir=str(HF_CACHE_DIR))
+    clip_model.eval().to(device)
+    tokenizer = open_clip.get_tokenizer("ViT-H-14")
+    with torch.no_grad():
+        tokens = tokenizer(prompts).to(device)
+        text_f = F.normalize(clip_model.encode_text(tokens), dim=-1)
+    del clip_model
+    if device.type == "cuda":
+        torch.cuda.empty_cache()
 
-        model, _, _ = eva_create("EVA-CLIP-18B", "eva_clip", force_custom_clip=True)
-        model.eval().to(device)
-        tokenizer = eva_tokenizer("EVA-CLIP-18B")
+    # Image encoder via HF
+    from transformers import AutoModel
+    hf_id = "BAAI/EVA-CLIP-18B"
+    model = AutoModel.from_pretrained(
+        hf_id, trust_remote_code=True, cache_dir=str(HF_CACHE_DIR),
+        torch_dtype=torch.float16)
+    model.eval().to(device)
 
-        with torch.no_grad(), torch.amp.autocast('cuda'):
-            tokens = tokenizer(prompts).to(device)
-            text_f = model.encode_text(tokens)
-            text_f = F.normalize(text_f.float(), dim=-1)
+    class _EVACLIPHFWrapper(nn.Module):
+        def __init__(self, hf_model, text_features, dev, mean, std, temperature=100.0):
+            super().__init__()
+            self._hf_model   = hf_model
+            self.temperature = temperature
+            self.register_buffer("text_features", text_features)
+            self.register_buffer("mean", torch.tensor(mean, device=dev).view(1,3,1,1))
+            self.register_buffer("std",  torch.tensor(std,  device=dev).view(1,3,1,1))
 
-        return ZeroShotCLIP(model, text_f, device, CLIP_MEAN, CLIP_STD)
+        def forward(self, x):
+            x = (x - self.mean) / self.std
+            with torch.amp.autocast('cuda'):
+                feats = self._hf_model.encode_image(x)
+            feats = F.normalize(feats.float(), dim=-1)
+            return self.temperature * (feats @ self.text_features.T)
 
-    except ImportError:
-        # Fallback: load via HuggingFace Transformers (trust_remote_code=True)
-        # Following the official HF example from the BAAI/EVA-CLIP-18B model card:
-        #   - Use CLIPTokenizer.from_pretrained("BAAI/EVA-CLIP-18B") for text
-        #   - Use AutoModel with trust_remote_code=True for the model
-        from transformers import AutoModel, CLIPTokenizer
-        print("  Loading EVA-CLIP-18B via HuggingFace Transformers (fallback)...")
-        print("  (For best results install eva_clip: pip install eva-clip)")
-
-        hf_id = "BAAI/EVA-CLIP-18B"
-        model = AutoModel.from_pretrained(
-            hf_id, trust_remote_code=True, cache_dir=str(HF_CACHE_DIR),
-            torch_dtype=torch.float16)
-        model.eval().to(device)
-
-        # Use CLIPTokenizer as specified in the official HF example.
-        # AutoTokenizer can load a mismatched tokenizer whose vocab exceeds
-        # the model's embedding table, causing CUDA assertions.
-        tokenizer = CLIPTokenizer.from_pretrained(
-            hf_id, cache_dir=str(HF_CACHE_DIR))
-
-        with torch.no_grad(), torch.amp.autocast('cuda'):
-            tokens = tokenizer(prompts, padding=True, truncation=True,
-                               max_length=77, return_tensors="pt")
-            input_ids = tokens["input_ids"].to(device)
-            text_f = model.encode_text(input_ids)
-            text_f = F.normalize(text_f.float(), dim=-1)
-
-        # Wrap in a simple module that matches ZeroShotCLIP interface
-        class _EVACLIPHFWrapper(nn.Module):
-            def __init__(self, hf_model, text_features, dev, mean, std, temperature=100.0):
-                super().__init__()
-                self._hf_model   = hf_model
-                self.temperature = temperature
-                self.register_buffer("text_features", text_features)
-                self.register_buffer("mean", torch.tensor(mean, device=dev).view(1,3,1,1))
-                self.register_buffer("std",  torch.tensor(std,  device=dev).view(1,3,1,1))
-
-            def forward(self, x):
-                x = (x - self.mean) / self.std
-                with torch.amp.autocast('cuda'):
-                    feats = self._hf_model.encode_image(x)
-                feats = F.normalize(feats.float(), dim=-1)
-                return self.temperature * (feats @ self.text_features.T)
-
-        return _EVACLIPHFWrapper(model, text_f, device, CLIP_MEAN, CLIP_STD)
+    return _EVACLIPHFWrapper(model, text_f, device, CLIP_MEAN, CLIP_STD)
 
 
 SURROGATE_LOADERS = {
