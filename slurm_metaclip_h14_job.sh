@@ -27,6 +27,9 @@
 #   bash submit_all_metaclip_h14.sh
 # ============================================================
 
+# Source environment setup before strict mode (it may have non-fatal errors)
+source ./execute_setup.sh || true
+
 set -euo pipefail
 
 THREAT_MODEL="${1:?Usage: sbatch slurm_metaclip_h14_job.sh <threat_model>}"
