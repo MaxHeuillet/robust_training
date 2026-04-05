@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
-#SBATCH --job-name=metaclip_%x
+#SBATCH --account=aip-adurand
 #SBATCH --nodes=1
-#SBATCH --ntasks=1
-#SBATCH --cpus-per-task=16
-#SBATCH --gres=gpu:4
-#SBATCH --mem=64G
-#SBATCH --time=24:00:00
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=48
+#SBATCH --gres=gpu:h100:4
+#SBATCH --mem=480G
+#SBATCH --time=2:59:00
+#SBATCH --mail-type=ALL
 #SBATCH --output=logs/metaclip_h14/%x_%j.out
 #SBATCH --error=logs/metaclip_h14/%x_%j.err
 
