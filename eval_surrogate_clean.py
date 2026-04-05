@@ -285,15 +285,8 @@ class ZeroShotSigLIP2NaFlex(nn.Module):
         inputs = self._processor(images=pil_images, return_tensors="pt", padding="max_length")
         inputs = {k: v.to(self.text_features.device) for k, v in inputs.items()
                 if isinstance(v, torch.Tensor)}
-        # Rename pixel_attention_mask -> attention_mask for the vision model
-        vision_inputs = {"pixel_values": inputs["pixel_values"]}
-        if "pixel_attention_mask" in inputs:
-            vision_inputs["attention_mask"] = inputs["pixel_attention_mask"]
         with torch.no_grad():
-            vision_outputs = self._model.vision_model(**vision_inputs)
-            img_emb = vision_outputs.pooler_output
-            if img_emb is None:
-                img_emb = vision_outputs.last_hidden_state[:, 0]
+            img_emb = self._model.get_image_features(**inputs)
         img_emb = F.normalize(img_emb, dim=-1)
         return self.temperature * (img_emb @ self.text_features.T)
 
