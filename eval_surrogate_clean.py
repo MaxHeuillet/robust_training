@@ -288,7 +288,14 @@ class ZeroShotSigLIP2NaFlex(nn.Module):
         inputs = {k: v.to(self.text_features.device) for k, v in inputs.items()
                   if isinstance(v, torch.Tensor)}
         with torch.no_grad():
-            img_emb = self._model.get_image_features(**inputs)
+            # Use the vision_model directly to avoid the .norm() issue
+            # in get_image_features with some transformers versions
+            vision_outputs = self._model.vision_model(**inputs)
+            # pooler_output is the projected CLS embedding
+            img_emb = vision_outputs.pooler_output
+            if img_emb is None:
+                # Fallback: use CLS token from last_hidden_state
+                img_emb = vision_outputs.last_hidden_state[:, 0]
         img_emb = F.normalize(img_emb, dim=-1)
         return self.temperature * (img_emb @ self.text_features.T)
 
@@ -405,6 +412,15 @@ def load_siglip2_so400m_naflex(label_to_name, dataset, device):
     SigLIP2 SO400M NaFlex — uses HuggingFace AutoModel/AutoProcessor.
     NaFlex handles dynamic resolution and aspect-ratio-preserving resizing
     internally via the processor, so we do NOT use the shared 224×224 transform.
+
+    FIX: Use model.vision_model() directly instead of model.get_image_features()
+    to avoid 'BaseModelOutputWithPooling has no attribute norm' errors that occur
+    in some transformers versions where get_image_features calls .norm() on the
+    vision output object.
+
+    For text features, we also go through the text_model directly and apply
+    the head projection manually, avoiding the same class of issues with
+    get_text_features().
     """
     from transformers import AutoModel, AutoProcessor, AutoTokenizer
     model_id = "google/siglip2-so400m-patch16-naflex"
@@ -418,14 +434,18 @@ def load_siglip2_so400m_naflex(label_to_name, dataset, device):
     class_names = [label_to_name[i] for i in sorted(label_to_name)]
     prompts     = build_prompts(dataset, class_names)
 
-    # Encode text prompts via get_text_features (handles internal routing)
+    # Encode text prompts via the text_model directly
     max_len = model.config.text_config.max_position_embeddings
     with torch.no_grad():
         text_inputs = tokenizer(
             prompts, padding="max_length", truncation=True,
             max_length=max_len, return_tensors="pt"
         ).to(device)
-        text_f = model.get_text_features(**text_inputs)
+        text_outputs = model.text_model(**text_inputs)
+        text_f = text_outputs.pooler_output
+        # Apply the text projection head if it exists
+        if hasattr(model, 'text_projection') and model.text_projection is not None:
+            text_f = model.text_projection(text_f)
         text_f = F.normalize(text_f, dim=-1)
 
     return ZeroShotSigLIP2NaFlex(model, processor, text_f, device)
@@ -511,6 +531,10 @@ def load_eva_clip_18b(label_to_name, dataset, device):
     On 4×H100 the model fits comfortably; for tighter memory use torch.cuda.amp.autocast.
 
     Falls back to HuggingFace Transformers loading if eva_clip is not installed.
+
+    FIX: The HF fallback now uses CLIPTokenizer (matching the official HF example)
+    instead of AutoTokenizer, which was producing token IDs exceeding the model's
+    vocabulary size and causing CUDA index-out-of-range assertions.
     """
     class_names = [label_to_name[i] for i in sorted(label_to_name)]
     prompts     = build_prompts(dataset, class_names)
@@ -532,7 +556,10 @@ def load_eva_clip_18b(label_to_name, dataset, device):
 
     except ImportError:
         # Fallback: load via HuggingFace Transformers (trust_remote_code=True)
-        from transformers import AutoModel, AutoTokenizer, CLIPTokenizer
+        # Following the official HF example from the BAAI/EVA-CLIP-18B model card:
+        #   - Use CLIPTokenizer.from_pretrained("BAAI/EVA-CLIP-18B") for text
+        #   - Use AutoModel with trust_remote_code=True for the model
+        from transformers import AutoModel, CLIPTokenizer
         print("  Loading EVA-CLIP-18B via HuggingFace Transformers (fallback)...")
         print("  (For best results install eva_clip: pip install eva-clip)")
 
@@ -542,13 +569,11 @@ def load_eva_clip_18b(label_to_name, dataset, device):
             torch_dtype=torch.float16)
         model.eval().to(device)
 
-        # Use the tokenizer bundled with the EVA-CLIP-18B repo
-        try:
-            tokenizer = AutoTokenizer.from_pretrained(
-                hf_id, trust_remote_code=True, cache_dir=str(HF_CACHE_DIR))
-        except Exception:
-            tokenizer = CLIPTokenizer.from_pretrained(
-                hf_id, cache_dir=str(HF_CACHE_DIR))
+        # Use CLIPTokenizer as specified in the official HF example.
+        # AutoTokenizer can load a mismatched tokenizer whose vocab exceeds
+        # the model's embedding table, causing CUDA assertions.
+        tokenizer = CLIPTokenizer.from_pretrained(
+            hf_id, cache_dir=str(HF_CACHE_DIR))
 
         with torch.no_grad(), torch.amp.autocast('cuda'):
             tokens = tokenizer(prompts, padding=True, truncation=True,
