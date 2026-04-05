@@ -8,7 +8,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-JOB_SCRIPT="$SCRIPT_DIR/slurm_metaclip_h14_sharded.sh"
+JOB_SCRIPT="$SCRIPT_DIR/slurm_metaclip_sharded.sh"
 
 mkdir -p "$SCRIPT_DIR/logs/metaclip_h14"
 
