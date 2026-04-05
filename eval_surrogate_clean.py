@@ -44,15 +44,23 @@ from tqdm import tqdm
 
 
 # ---------------------------------------------------------------------------
-# /tmp paths
+# Paths — persistent storage on scratch so compute nodes need no internet.
+# Pre-download models & data on a login node, then jobs reuse the cache.
 # ---------------------------------------------------------------------------
 
-TMP_ROOT        = Path("/tmp/robustgenbench")
-DATA_ROOT       = TMP_ROOT / "data_processed"
-HF_CACHE_DIR    = TMP_ROOT / "hf_cache"
-WORK_DIR        = TMP_ROOT / "work"
+SCRATCH_ROOT    = Path(os.path.expanduser("~/links/scratch/robustgenbench"))
+DATA_ROOT       = SCRATCH_ROOT / "data_processed"
+HF_CACHE_DIR    = SCRATCH_ROOT / "hf_cache"
+WORK_DIR        = SCRATCH_ROOT / "work"
+MODEL_CACHE_DIR = SCRATCH_ROOT / "model_cache"   # open_clip, torch.hub, etc.
 CLASS_NAMES_DIR = DATA_ROOT / "class_names"
 HF_DATASET_REPO = "MaxHeuillet/RobustGenBench"
+
+# Point all caches to scratch (survives across jobs, no internet needed on compute)
+os.environ["HF_HOME"]       = str(HF_CACHE_DIR)
+os.environ["HF_HUB_CACHE"]  = str(HF_CACHE_DIR)
+os.environ["TORCH_HOME"]    = str(MODEL_CACHE_DIR)  # torch.hub downloads
+os.environ["XDG_CACHE_HOME"] = str(SCRATCH_ROOT / "xdg_cache")
 
 
 # ---------------------------------------------------------------------------
@@ -467,8 +475,9 @@ def load_dinov2_vitl14(label_to_name, dataset, device):
     print("  Loading DINOv2 ViT-L/14 + CLIP ViT-H/14 text encoder...")
 
     # Image encoder: DINOv2 ViT-L/14 (outputs 1024-dim CLS token)
-    dino = torch.hub.load("facebookresearch/dinov2", "dinov2_vitl14",
-                           source="github")
+    # torch.hub caches to TORCH_HOME (set to scratch above).
+    # Pre-download on login node: torch.hub.load("facebookresearch/dinov2", "dinov2_vitl14")
+    dino = torch.hub.load("facebookresearch/dinov2", "dinov2_vitl14")
     dino.eval().to(device)
 
     # Text encoder: OpenCLIP ViT-H/14 which outputs 1024-dim to match DINOv2.
@@ -658,7 +667,7 @@ def main():
                    help="Path to save results as JSON")
     args = p.parse_args()
 
-    for d in [TMP_ROOT, DATA_ROOT, HF_CACHE_DIR, WORK_DIR]:
+    for d in [SCRATCH_ROOT, DATA_ROOT, HF_CACHE_DIR, WORK_DIR, MODEL_CACHE_DIR]:
         d.mkdir(parents=True, exist_ok=True)
 
     ensure_data_downloaded(force=args.force_download)
