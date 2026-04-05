@@ -284,10 +284,11 @@ class ZeroShotSigLIP2NaFlex(nn.Module):
     def forward_pil(self, pil_images):
         """Accept a list of PIL images, process and classify."""
         inputs = self._processor(images=pil_images, return_tensors="pt", padding="max_length")
-        inputs = {k: v.to(self.text_features.device) for k, v in inputs.items()}
+        # Move all tensor inputs to device
+        inputs = {k: v.to(self.text_features.device) for k, v in inputs.items()
+                  if isinstance(v, torch.Tensor)}
         with torch.no_grad():
-            vision_out = self._model.vision_model(**inputs)
-            img_emb = vision_out.pooler_output
+            img_emb = self._model.get_image_features(**inputs)
         img_emb = F.normalize(img_emb, dim=-1)
         return self.temperature * (img_emb @ self.text_features.T)
 
@@ -417,15 +418,15 @@ def load_siglip2_so400m_naflex(label_to_name, dataset, device):
     class_names = [label_to_name[i] for i in sorted(label_to_name)]
     prompts     = build_prompts(dataset, class_names)
 
-    # Encode text prompts — use the text model directly for pooled output
+    # Encode text prompts via get_text_features (handles internal routing)
     max_len = model.config.text_config.max_position_embeddings
     with torch.no_grad():
         text_inputs = tokenizer(
             prompts, padding="max_length", truncation=True,
             max_length=max_len, return_tensors="pt"
         ).to(device)
-        text_out = model.text_model(**text_inputs)
-        text_f = F.normalize(text_out.pooler_output, dim=-1)
+        text_f = model.get_text_features(**text_inputs)
+        text_f = F.normalize(text_f, dim=-1)
 
     return ZeroShotSigLIP2NaFlex(model, processor, text_f, device)
 
@@ -531,19 +532,27 @@ def load_eva_clip_18b(label_to_name, dataset, device):
 
     except ImportError:
         # Fallback: load via HuggingFace Transformers (trust_remote_code=True)
-        from transformers import AutoModel, CLIPImageProcessor, CLIPTokenizer
+        from transformers import AutoModel, AutoTokenizer, CLIPTokenizer
         print("  Loading EVA-CLIP-18B via HuggingFace Transformers (fallback)...")
         print("  (For best results install eva_clip: pip install eva-clip)")
 
         hf_id = "BAAI/EVA-CLIP-18B"
         model = AutoModel.from_pretrained(
-            hf_id, trust_remote_code=True, cache_dir=str(HF_CACHE_DIR))
+            hf_id, trust_remote_code=True, cache_dir=str(HF_CACHE_DIR),
+            torch_dtype=torch.float16)
         model.eval().to(device)
-        tokenizer = CLIPTokenizer.from_pretrained(
-            "openai/clip-vit-large-patch14", cache_dir=str(HF_CACHE_DIR))
+
+        # Use the tokenizer bundled with the EVA-CLIP-18B repo
+        try:
+            tokenizer = AutoTokenizer.from_pretrained(
+                hf_id, trust_remote_code=True, cache_dir=str(HF_CACHE_DIR))
+        except Exception:
+            tokenizer = CLIPTokenizer.from_pretrained(
+                hf_id, cache_dir=str(HF_CACHE_DIR))
 
         with torch.no_grad(), torch.amp.autocast('cuda'):
-            tokens = tokenizer(prompts, padding=True, return_tensors="pt")
+            tokens = tokenizer(prompts, padding=True, truncation=True,
+                               max_length=77, return_tensors="pt")
             input_ids = tokens["input_ids"].to(device)
             text_f = model.encode_text(input_ids)
             text_f = F.normalize(text_f.float(), dim=-1)
