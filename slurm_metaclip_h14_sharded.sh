@@ -36,7 +36,7 @@ set -euo pipefail
 
 THREAT_MODEL="${1:?Usage: sbatch slurm_metaclip_h14_sharded.sh <threat_model>}"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+SCRIPT_DIR="${SLURM_SUBMIT_DIR:-.}"
 CRAFT="$SCRIPT_DIR/craft_adversarial.py"
 SHARD="$SCRIPT_DIR/craft_shard.py"
 LOG_DIR="$SCRIPT_DIR/logs/metaclip_h14"

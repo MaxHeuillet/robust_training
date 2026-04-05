@@ -34,7 +34,7 @@ set -euo pipefail
 
 THREAT_MODEL="${1:?Usage: sbatch slurm_metaclip_h14_job.sh <threat_model>}"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+SCRIPT_DIR="${SLURM_SUBMIT_DIR:-.}"
 CRAFT="$SCRIPT_DIR/craft_adversarial.py"
 LOG_DIR="$SCRIPT_DIR/logs/metaclip_h14"
 mkdir -p "$LOG_DIR"
