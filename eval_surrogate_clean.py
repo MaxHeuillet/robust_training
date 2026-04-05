@@ -286,7 +286,8 @@ class ZeroShotSigLIP2NaFlex(nn.Module):
         inputs = self._processor(images=pil_images, return_tensors="pt", padding="max_length")
         inputs = {k: v.to(self.text_features.device) for k, v in inputs.items()}
         with torch.no_grad():
-            img_emb = self._model.get_image_features(**inputs)
+            vision_out = self._model.vision_model(**inputs)
+            img_emb = vision_out.pooler_output
         img_emb = F.normalize(img_emb, dim=-1)
         return self.temperature * (img_emb @ self.text_features.T)
 
@@ -416,14 +417,15 @@ def load_siglip2_so400m_naflex(label_to_name, dataset, device):
     class_names = [label_to_name[i] for i in sorted(label_to_name)]
     prompts     = build_prompts(dataset, class_names)
 
-    # Encode text prompts
+    # Encode text prompts — use the text model directly for pooled output
     max_len = model.config.text_config.max_position_embeddings
     with torch.no_grad():
         text_inputs = tokenizer(
             prompts, padding="max_length", truncation=True,
             max_length=max_len, return_tensors="pt"
         ).to(device)
-        text_f = F.normalize(model.get_text_features(**text_inputs), dim=-1)
+        text_out = model.text_model(**text_inputs)
+        text_f = F.normalize(text_out.pooler_output, dim=-1)
 
     return ZeroShotSigLIP2NaFlex(model, processor, text_f, device)
 
@@ -520,7 +522,7 @@ def load_eva_clip_18b(label_to_name, dataset, device):
         model.eval().to(device)
         tokenizer = eva_tokenizer("EVA-CLIP-18B")
 
-        with torch.no_grad(), torch.cuda.amp.autocast():
+        with torch.no_grad(), torch.amp.autocast('cuda'):
             tokens = tokenizer(prompts).to(device)
             text_f = model.encode_text(tokens)
             text_f = F.normalize(text_f.float(), dim=-1)
@@ -540,9 +542,10 @@ def load_eva_clip_18b(label_to_name, dataset, device):
         tokenizer = CLIPTokenizer.from_pretrained(
             "openai/clip-vit-large-patch14", cache_dir=str(HF_CACHE_DIR))
 
-        with torch.no_grad(), torch.cuda.amp.autocast():
-            tokens = tokenizer(prompts, padding=True, return_tensors="pt").to(device)
-            text_f = model.get_text_features(**tokens)
+        with torch.no_grad(), torch.amp.autocast('cuda'):
+            tokens = tokenizer(prompts, padding=True, return_tensors="pt")
+            input_ids = tokens["input_ids"].to(device)
+            text_f = model.encode_text(input_ids)
             text_f = F.normalize(text_f.float(), dim=-1)
 
         # Wrap in a simple module that matches ZeroShotCLIP interface
@@ -557,8 +560,8 @@ def load_eva_clip_18b(label_to_name, dataset, device):
 
             def forward(self, x):
                 x = (x - self.mean) / self.std
-                with torch.cuda.amp.autocast():
-                    feats = self._hf_model.get_image_features(pixel_values=x)
+                with torch.amp.autocast('cuda'):
+                    feats = self._hf_model.encode_image(x)
                 feats = F.normalize(feats.float(), dim=-1)
                 return self.temperature * (feats @ self.text_features.T)
 
