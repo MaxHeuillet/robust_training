@@ -1,0 +1,10 @@
+{
+  "batch_name": "batches/r051mgxg9fuh8xqeb9zay9jc76grt6av8stw",
+  "uploaded_file": "files/myy6p7mgeh8g",
+  "provider": "google",
+  "run_id": "flowers-102__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps8_autoattack_standard__google_nothink__adv_metaclip_l2_eps8",
+  "model": "gemini-3-flash-preview-nothink",
+  "actual_model": "gemini-3-flash-preview",
+  "num_requests": 1000,
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batches/r051mgxg9fuh8xqeb9zay9jc76grt6av8stw --provider google --dataset flowers-102__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps8_autoattack_standard --data_root /Users/maximeheuillet/data/adversarial/zeroshot_metaclip_vith14_fullcc2_5b/l2_eps8_autoattack_standard --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name flowers-102__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps8_autoattack_standard__google_nothink__adv_metaclip_l2_eps8"
+}

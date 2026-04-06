@@ -1,0 +1,10 @@
+{
+  "batch_name": "batches/qjfi09paaoeahjkjgb88bp4uoqwgh7d89jdk",
+  "uploaded_file": "files/av00dzww03gb",
+  "provider": "google",
+  "run_id": "fgvc-aircraft-2013b__zeroshot_metaclip_vith14_fullcc2_5b__linf_eps8_autoattack_standard__google_nothink__adv_metaclip_linf_eps8",
+  "model": "gemini-3-flash-preview-nothink",
+  "actual_model": "gemini-3-flash-preview",
+  "num_requests": 1000,
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batches/qjfi09paaoeahjkjgb88bp4uoqwgh7d89jdk --provider google --dataset fgvc-aircraft-2013b__zeroshot_metaclip_vith14_fullcc2_5b__linf_eps8_autoattack_standard --data_root /Users/maximeheuillet/data/adversarial/zeroshot_metaclip_vith14_fullcc2_5b/linf_eps8_autoattack_standard --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name fgvc-aircraft-2013b__zeroshot_metaclip_vith14_fullcc2_5b__linf_eps8_autoattack_standard__google_nothink__adv_metaclip_linf_eps8"
+}

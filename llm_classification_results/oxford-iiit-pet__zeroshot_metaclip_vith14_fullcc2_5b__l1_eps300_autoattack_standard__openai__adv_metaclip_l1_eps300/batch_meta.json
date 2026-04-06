@@ -1,0 +1,10 @@
+{
+  "batch_id": "batch_69d30f160f9481908751aac64442a86a",
+  "file_id": "file-KzputyC898vfRvZ9Z32S7z",
+  "provider": "openai",
+  "run_id": "oxford-iiit-pet__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps300_autoattack_standard__openai__adv_metaclip_l1_eps300",
+  "model": "gpt-4o-mini",
+  "num_requests": 1000,
+  "submitted_at": "2026-04-05T22:40:38.034566",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batch_69d30f160f9481908751aac64442a86a --provider openai --dataset oxford-iiit-pet__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps300_autoattack_standard --data_root /Users/maximeheuillet/data/adversarial/zeroshot_metaclip_vith14_fullcc2_5b/l1_eps300_autoattack_standard --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name oxford-iiit-pet__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps300_autoattack_standard__openai__adv_metaclip_l1_eps300"
+}

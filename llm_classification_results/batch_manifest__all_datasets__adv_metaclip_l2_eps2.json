@@ -1,0 +1,152 @@
+[
+  {
+    "dataset": "caltech101__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "caltech101__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard__google_nothink__adv_metaclip_l2_eps2",
+    "batch_id": null,
+    "status": "failed",
+    "experiment": "adv_metaclip_l2_eps2"
+  },
+  {
+    "dataset": "fgvc-aircraft-2013b__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "fgvc-aircraft-2013b__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard__google_nothink__adv_metaclip_l2_eps2",
+    "batch_id": "batches/tl2dsghmb6cahb2g32lvknviuwgbtnjjqx9z",
+    "status": "retrieved",
+    "experiment": "adv_metaclip_l2_eps2"
+  },
+  {
+    "dataset": "flowers-102__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "flowers-102__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard__google_nothink__adv_metaclip_l2_eps2",
+    "batch_id": "batches/m44rz7rc3forkepn5jp8vh54p3a883xq0hml",
+    "status": "retrieved",
+    "experiment": "adv_metaclip_l2_eps2"
+  },
+  {
+    "dataset": "oxford-iiit-pet__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "oxford-iiit-pet__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard__google_nothink__adv_metaclip_l2_eps2",
+    "batch_id": "batches/tv8c5grild9g6s06imxynnqjyqwrq5s1joe0",
+    "status": "retrieved",
+    "experiment": "adv_metaclip_l2_eps2"
+  },
+  {
+    "dataset": "stanford_cars__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "stanford_cars__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard__google_nothink__adv_metaclip_l2_eps2",
+    "batch_id": "batches/ts4iuj6svh0ck3dr9cwrle9nti6rvotldau8",
+    "status": "retrieved",
+    "experiment": "adv_metaclip_l2_eps2"
+  },
+  {
+    "dataset": "uc-merced-land-use-dataset__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "uc-merced-land-use-dataset__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard__google_nothink__adv_metaclip_l2_eps2",
+    "batch_id": "batches/oopt2f3zirttebfh2b8pxtoy6e9zw5vjgvy2",
+    "status": "retrieved",
+    "experiment": "adv_metaclip_l2_eps2"
+  },
+  {
+    "dataset": "caltech101__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "caltech101__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard__openai__adv_metaclip_l2_eps2",
+    "batch_id": "batch_69d2f5c1279c81908bd0a6cef55de224",
+    "status": "retrieved",
+    "experiment": "adv_metaclip_l2_eps2"
+  },
+  {
+    "dataset": "fgvc-aircraft-2013b__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "fgvc-aircraft-2013b__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard__openai__adv_metaclip_l2_eps2",
+    "batch_id": "batch_69d2f79134f08190901e5504f717e418",
+    "status": "retrieved",
+    "experiment": "adv_metaclip_l2_eps2"
+  },
+  {
+    "dataset": "flowers-102__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "flowers-102__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard__openai__adv_metaclip_l2_eps2",
+    "batch_id": "batch_69d2f8ef8ed08190ba64b063017fab14",
+    "status": "retrieved",
+    "experiment": "adv_metaclip_l2_eps2"
+  },
+  {
+    "dataset": "oxford-iiit-pet__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "oxford-iiit-pet__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard__openai__adv_metaclip_l2_eps2",
+    "batch_id": "batch_69d2fa1255dc81908e80c36bbdf13d86",
+    "status": "retrieved",
+    "experiment": "adv_metaclip_l2_eps2"
+  },
+  {
+    "dataset": "stanford_cars__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "stanford_cars__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard__openai__adv_metaclip_l2_eps2",
+    "batch_id": "batch_69d2fb2bb53c81908f6a336361fa37fa",
+    "status": "retrieved",
+    "experiment": "adv_metaclip_l2_eps2"
+  },
+  {
+    "dataset": "stanford_cars__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "stanford_cars__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard__openai__adv_metaclip_l2_eps2__complement",
+    "batch_id": "batch_69d2fc3ee6dc81908933cf3b50988b3e",
+    "status": "retrieved",
+    "experiment": "adv_metaclip_l2_eps2"
+  },
+  {
+    "dataset": "uc-merced-land-use-dataset__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "uc-merced-land-use-dataset__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard__openai__adv_metaclip_l2_eps2",
+    "batch_id": "batch_69d2fd887fac8190a75cec49db296c1e",
+    "status": "retrieved",
+    "experiment": "adv_metaclip_l2_eps2"
+  },
+  {
+    "dataset": "caltech101__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "caltech101__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard__google_nothink__adv_metaclip_l2_eps2",
+    "batch_id": null,
+    "status": "failed",
+    "experiment": "adv_metaclip_l2_eps2"
+  },
+  {
+    "dataset": "caltech101__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "caltech101__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard__google_nothink__adv_metaclip_l2_eps2",
+    "batch_id": "batches/tljfqhr9u78ei71evt9nasagx7o3n7rykc7c",
+    "status": "pending",
+    "experiment": "adv_metaclip_l2_eps2"
+  }
+]

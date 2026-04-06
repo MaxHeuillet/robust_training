@@ -1,0 +1,10 @@
+{
+  "batch_name": "batches/tljfqhr9u78ei71evt9nasagx7o3n7rykc7c",
+  "uploaded_file": "files/g7k7wn7t0w5y",
+  "provider": "google",
+  "run_id": "caltech101__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard__google_nothink__adv_metaclip_l2_eps2",
+  "model": "gemini-3-flash-preview-nothink",
+  "actual_model": "gemini-3-flash-preview",
+  "num_requests": 1000,
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batches/tljfqhr9u78ei71evt9nasagx7o3n7rykc7c --provider google --dataset caltech101__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard --data_root /Users/maximeheuillet/data/adversarial/zeroshot_metaclip_vith14_fullcc2_5b/l2_eps2_autoattack_standard --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name caltech101__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard__google_nothink__adv_metaclip_l2_eps2"
+}
