@@ -446,11 +446,10 @@ def load_siglip2_surrogate(label_to_name: dict, device: torch.device,
     model = ZeroShotSigLIP2(encode_fn, text_features, device)
     model.eval().to(device)
     return model
+
 def load_siglip2_so400m_surrogate(label_to_name: dict, device: torch.device,
                                    dataset: str = "") -> ZeroShotSigLIP2:
     from transformers import AutoModel, AutoProcessor, AutoTokenizer
-    from PIL import Image
-    import numpy as np
 
     model_id = "google/siglip2-so400m-patch16-naflex"
     print(f"\nLoading SigLIP2-SO400M-NaFlex surrogate: {model_id}")
@@ -479,26 +478,41 @@ def load_siglip2_so400m_surrogate(label_to_name: dict, device: torch.device,
             text_f = hf_model.text_projection(text_f)
         text_features = F.normalize(text_f, dim=-1)
 
-    # Ask the processor once what spatial_shapes it produces for a 224×224 image.
-    # Since all our inputs are 224×224, this shape is fixed for every batch.
-    dummy_pil    = Image.fromarray(np.zeros((224, 224, 3), dtype=np.uint8))
-    dummy_inputs = processor(images=dummy_pil, return_tensors="pt")
-    # spatial_shapes is (1, 2) → [[n_patches_h, n_patches_w]]
-    fixed_spatial_shapes = dummy_inputs["spatial_shapes"]  # CPU tensor, shape (1,2)
+    # Use a custom wrapper that bypasses ZeroShotSigLIP2's normalization
+    # and instead uses the processor to prepare inputs with correct format.
+    # This preserves gradients through pixel_values for AutoAttack.
+    class NaFlexWrapper(nn.Module):
+        def __init__(self, model, proc, text_feats, dev, temperature=100.0):
+            super().__init__()
+            self._model      = model
+            self._proc       = proc
+            self.temperature = temperature
+            self.register_buffer("text_features", text_feats)
+            # Cache the non-pixel processor outputs for 224×224 (fixed across batches)
+            self._cached_extra = None
 
-    def encode_fn(x: torch.Tensor) -> torch.Tensor:
-        B = x.shape[0]
-        spatial_shapes = fixed_spatial_shapes.to(x.device).expand(B, -1)
-        vision_out = hf_model.vision_model(
-            pixel_values=x, spatial_shapes=spatial_shapes)
-        img_f = vision_out.pooler_output
-        if hasattr(hf_model, 'visual_projection') and hf_model.visual_projection is not None:
-            img_f = hf_model.visual_projection(img_f)
-        return img_f
+        def _get_extra_inputs(self, x: torch.Tensor) -> dict:
+            # Run processor once on a dummy image to get spatial_shapes,
+            # attention_mask etc. — everything except pixel_values.
+            if self._cached_extra is None:
+                from PIL import Image
+                import numpy as np
+                dummy = Image.fromarray(np.zeros((224, 224, 3), dtype=np.uint8))
+                out   = self._proc(images=dummy, return_tensors="pt")
+                self._cached_extra = {
+                    k: v.to(x.device) for k, v in out.items()
+                    if k != "pixel_values"
+                }
+            return {k: v.expand(x.shape[0], *v.shape[1:])
+                    for k, v in self._cached_extra.items()}
 
-    wrapper = ZeroShotSigLIP2(encode_fn, text_features, device)
-    wrapper.eval().to(device)
-    return wrapper
+        def forward(self, x: torch.Tensor) -> torch.Tensor:
+            extra  = self._get_extra_inputs(x)
+            img_f  = self._model.get_image_features(pixel_values=x, **extra)
+            img_f  = F.normalize(img_f, dim=-1)
+            return self.temperature * (img_f @ self.text_features.T)
+
+    return NaFlexWrapper(hf_model, processor, text_features, device).to(device)
 
 def load_surrogate(surrogate: str, label_to_name: dict,
                    device: torch.device, dataset: str = "") -> nn.Module:
