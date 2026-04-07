@@ -446,27 +446,27 @@ def load_siglip2_surrogate(label_to_name: dict, device: torch.device,
     model = ZeroShotSigLIP2(encode_fn, text_features, device)
     model.eval().to(device)
     return model
-
-# ── Add new loader function (after load_siglip2_surrogate) ───
 def load_siglip2_so400m_surrogate(label_to_name: dict, device: torch.device,
                                    dataset: str = "") -> ZeroShotSigLIP2:
     from transformers import AutoModel, AutoProcessor, AutoTokenizer
-    print(f"\nLoading SigLIP2-SO400M-NaFlex surrogate: {SIGLIP_SO400M_MODEL_ID}")
+    from PIL import Image
+    import numpy as np
+
+    model_id = "google/siglip2-so400m-patch16-naflex"
+    print(f"\nLoading SigLIP2-SO400M-NaFlex surrogate: {model_id}")
 
     hf_model  = AutoModel.from_pretrained(
-        SIGLIP_SO400M_MODEL_ID, cache_dir=str(HF_CACHE_DIR))
+        model_id, cache_dir=str(HF_CACHE_DIR))
     hf_model.eval().to(device)
     processor = AutoProcessor.from_pretrained(
-        SIGLIP_SO400M_MODEL_ID, cache_dir=str(HF_CACHE_DIR))
+        model_id, cache_dir=str(HF_CACHE_DIR))
     tokenizer = AutoTokenizer.from_pretrained(
-        SIGLIP_SO400M_MODEL_ID, cache_dir=str(HF_CACHE_DIR))
+        model_id, cache_dir=str(HF_CACHE_DIR))
 
     class_names = [label_to_name[i] for i in sorted(label_to_name.keys())]
     prompts     = build_prompts(dataset, class_names)
     print(f"  Encoding {len(prompts)} class prompts...")
 
-    # Go through text_model directly — get_text_features() returns
-    # BaseModelOutputWithPooling in some transformers versions, not a tensor.
     max_len = hf_model.config.text_config.max_position_embeddings
     with torch.no_grad():
         text_inputs  = tokenizer(
@@ -479,31 +479,24 @@ def load_siglip2_so400m_surrogate(label_to_name: dict, device: torch.device,
             text_f = hf_model.text_projection(text_f)
         text_features = F.normalize(text_f, dim=-1)
 
-    ph = pw = SIGLIP_SO400M_SIZE // 16  # 384 // 16 = 24
-    n_patches = ph * pw  # 576
+    # Ask the processor once what spatial_shapes it produces for a 224×224 image.
+    # Since all our inputs are 224×224, this shape is fixed for every batch.
+    dummy_pil    = Image.fromarray(np.zeros((224, 224, 3), dtype=np.uint8))
+    dummy_inputs = processor(images=dummy_pil, return_tensors="pt")
+    # spatial_shapes is (1, 2) → [[n_patches_h, n_patches_w]]
+    fixed_spatial_shapes = dummy_inputs["spatial_shapes"]  # CPU tensor, shape (1,2)
 
     def encode_fn(x: torch.Tensor) -> torch.Tensor:
         B = x.shape[0]
-        spatial_shapes = torch.tensor(
-            [[ph, pw]], dtype=torch.long, device=x.device
-        ).expand(B, -1)
-        # All patches are real (no padding) since we use fixed square images
-        attention_mask = torch.ones(
-            B, n_patches, dtype=torch.long, device=x.device
-        )
+        spatial_shapes = fixed_spatial_shapes.to(x.device).expand(B, -1)
         vision_out = hf_model.vision_model(
-            pixel_values=x,
-            spatial_shapes=spatial_shapes,
-            attention_mask=attention_mask,
-        )
+            pixel_values=x, spatial_shapes=spatial_shapes)
         img_f = vision_out.pooler_output
         if hasattr(hf_model, 'visual_projection') and hf_model.visual_projection is not None:
             img_f = hf_model.visual_projection(img_f)
         return img_f
 
     wrapper = ZeroShotSigLIP2(encode_fn, text_features, device)
-    wrapper.mean = torch.tensor(SIGLIP_SO400M_MEAN, device=device).view(1, 3, 1, 1)
-    wrapper.std  = torch.tensor(SIGLIP_SO400M_STD,  device=device).view(1, 3, 1, 1)
     wrapper.eval().to(device)
     return wrapper
 
