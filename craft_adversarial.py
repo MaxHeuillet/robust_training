@@ -99,7 +99,7 @@ SIGLIP_MEAN     = (0.5, 0.5, 0.5)
 SIGLIP_STD      = (0.5, 0.5, 0.5)
 
 SIGLIP_SO400M_MODEL_ID     = "google/siglip2-so400m-patch16-naflex"
-SIGLIP_SO400M_SIZE         = 384
+SIGLIP_SO400M_SIZE = 224  # input size; patchify upsamples to correct patch grid internally
 SIGLIP_SO400M_MEAN         = (0.5, 0.5, 0.5)
 SIGLIP_SO400M_STD          = (0.5, 0.5, 0.5)
 
@@ -545,9 +545,7 @@ def build_transform(size: int = 224) -> T.Compose:
     ])
 
 def surrogate_img_size(surrogate: str) -> int:
-    if surrogate == SURROGATE_SIGLIP_SO400M:
-        return SIGLIP_SO400M_SIZE
-    return 224
+    return 224  # all surrogates use 224×224 input; patchify handles NaFlex internally
 
 
 # ---------------------------------------------------------------------------
