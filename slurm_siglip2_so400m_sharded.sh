@@ -5,7 +5,7 @@
 #SBATCH --cpus-per-task=48
 #SBATCH --gres=gpu:h100:4
 #SBATCH --mem=480G
-#SBATCH --time=11:59:00
+#SBATCH --time=02:59:00
 #SBATCH --mail-type=ALL
 #SBATCH --output=logs/metaclip_h14/%x_%j.out
 #SBATCH --error=logs/metaclip_h14/%x_%j.err
