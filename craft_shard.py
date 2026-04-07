@@ -28,8 +28,9 @@ from craft_adversarial import (
     OUTPUT_ROOT, PACKAGED_ROOT, DATA_ROOT, WORK_DIR, HF_CACHE_DIR,
     TMP_ROOT, CLASS_NAMES_DIR,
     run_dir_name, surrogate_slug, threat_model_slug, hf_archive_path,
-    eps_to_float, load_surrogate, build_transform, AdversarialDataset,
-    extract_archive, load_local_dataset, load_class_names,    # ← already there
+    eps_to_float, load_surrogate, build_transform, surrogate_img_size,  # ← added
+    AdversarialDataset,
+    extract_archive, load_local_dataset, load_class_names,
     save_batch, package_run, upload_to_hf, ensure_data_downloaded,
 )
 
@@ -100,7 +101,8 @@ def run_shard(args):
     print(f"  Shard indices: {start}–{end-1}  ({len(items)} samples of {total} total)")
 
     model     = load_surrogate(args.surrogate, label_to_name, device, dataset=dataset)
-    transform = build_transform()
+    img_size  = surrogate_img_size(args.surrogate)
+    transform = build_transform(size=img_size)
     ds        = AdversarialDataset(items, transform)
     loader    = DataLoader(ds, batch_size=args.batch_size, shuffle=False,
                            num_workers=4, pin_memory=True)

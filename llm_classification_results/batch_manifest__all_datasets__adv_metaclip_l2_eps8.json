@@ -186,7 +186,7 @@
     "model": "gemini-3-flash-preview-nothink",
     "run_name": "caltech101__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps8_autoattack_standard__google_nothink__adv_metaclip_l2_eps8",
     "batch_id": "batches/9oyqpd5ga9lsvtjbwqwcq8m4bznndg3100m2",
-    "status": "pending",
+    "status": "retrieved",
     "experiment": "adv_metaclip_l2_eps8"
   }
 ]

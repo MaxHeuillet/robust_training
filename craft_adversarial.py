@@ -71,8 +71,11 @@ SURROGATE_CLIP       = "clip"
 SURROGATE_SIGLIP     = "siglip2"
 SURROGATE_CLIP_H     = "clip_vith14"
 SURROGATE_METACLIP_H = "metaclip_h14"
-ALL_SURROGATES       = [SURROGATE_CLIP, SURROGATE_SIGLIP, SURROGATE_CLIP_H,
-                        SURROGATE_METACLIP_H]
+SURROGATE_SIGLIP_SO400M    = "siglip2_so400m"
+
+
+ALL_SURROGATES = [SURROGATE_CLIP, SURROGATE_SIGLIP, SURROGATE_CLIP_H,
+                  SURROGATE_METACLIP_H, SURROGATE_SIGLIP_SO400M]
 
 # CLIP ViT-B/16
 CLIP_MODEL      = "ViT-B-16"
@@ -94,6 +97,11 @@ METACLIP_H_PRETRAIN = "metaclip_fullcc"
 SIGLIP_MODEL_ID = "google/siglip2-base-patch16-224"
 SIGLIP_MEAN     = (0.5, 0.5, 0.5)
 SIGLIP_STD      = (0.5, 0.5, 0.5)
+
+SIGLIP_SO400M_MODEL_ID     = "google/siglip2-so400m-patch16-naflex"
+SIGLIP_SO400M_SIZE         = 384
+SIGLIP_SO400M_MEAN         = (0.5, 0.5, 0.5)
+SIGLIP_SO400M_STD          = (0.5, 0.5, 0.5)
 
 ALL_DATASETS = [
     "caltech101",
@@ -144,6 +152,8 @@ def surrogate_slug(surrogate: str) -> str:
         return "zeroshot_clip_vith14_laion2b"
     elif surrogate == SURROGATE_METACLIP_H:
         return "zeroshot_metaclip_vith14_fullcc2_5b"
+    elif surrogate == SURROGATE_SIGLIP_SO400M:
+        return "zeroshot_siglip2_so400m_patch16_naflex"
     raise ValueError(surrogate)
 
 
@@ -437,6 +447,52 @@ def load_siglip2_surrogate(label_to_name: dict, device: torch.device,
     model.eval().to(device)
     return model
 
+# ── Add new loader function (after load_siglip2_surrogate) ───
+def load_siglip2_so400m_surrogate(label_to_name: dict, device: torch.device,
+                                   dataset: str = "") -> ZeroShotSigLIP2:
+    from transformers import AutoProcessor, AutoModel
+    print(f"\nLoading SigLIP2-SO400M-NaFlex surrogate: {SIGLIP_SO400M_MODEL_ID}")
+
+    hf_model = AutoModel.from_pretrained(
+        SIGLIP_SO400M_MODEL_ID, cache_dir=str(HF_CACHE_DIR))
+    hf_model.eval().to(device)
+
+    processor = AutoProcessor.from_pretrained(
+        SIGLIP_SO400M_MODEL_ID, cache_dir=str(HF_CACHE_DIR))
+
+    class_names = [label_to_name[i] for i in sorted(label_to_name.keys())]
+    prompts     = build_prompts(dataset, class_names)
+    print(f"  Encoding {len(prompts)} class prompts...")
+
+    with torch.no_grad():
+        text_inputs   = processor(
+            text=prompts, padding="max_length",
+            truncation=True, return_tensors="pt"
+        ).to(device)
+        text_features = F.normalize(
+            hf_model.get_text_features(**text_inputs), dim=-1)
+
+    # NaFlex vision forward requires spatial_shapes when bypassing the processor.
+    # We fix all images to SIGLIP_SO400M_SIZE so patch grid is constant.
+    ph = pw = SIGLIP_SO400M_SIZE // 16   # patch_size=16 → e.g. 384//16=24
+
+    def encode_fn(x: torch.Tensor) -> torch.Tensor:
+        B = x.shape[0]
+        spatial_shapes = torch.tensor(
+            [[ph, pw]], dtype=torch.long, device=x.device
+        ).expand(B, -1)
+        return hf_model.get_image_features(
+            pixel_values=x, spatial_shapes=spatial_shapes)
+
+    wrapper = ZeroShotSigLIP2(encode_fn, text_features, device)
+    # Override mean/std buffers registered by ZeroShotSigLIP2.__init__
+    wrapper.mean = torch.tensor(
+        SIGLIP_SO400M_MEAN, device=device).view(1, 3, 1, 1)
+    wrapper.std  = torch.tensor(
+        SIGLIP_SO400M_STD,  device=device).view(1, 3, 1, 1)
+    wrapper.eval().to(device)
+    return wrapper
+
 
 def load_surrogate(surrogate: str, label_to_name: dict,
                    device: torch.device, dataset: str = "") -> nn.Module:
@@ -448,14 +504,21 @@ def load_surrogate(surrogate: str, label_to_name: dict,
         return load_metaclip_h_surrogate(label_to_name, device, dataset=dataset)
     elif surrogate == SURROGATE_SIGLIP:
         return load_siglip2_surrogate(label_to_name, device, dataset=dataset)
+    elif surrogate == SURROGATE_SIGLIP_SO400M:
+        return load_siglip2_so400m_surrogate(label_to_name, device, dataset=dataset)
     raise ValueError(f"Unknown surrogate: {surrogate!r}")
 
 
-def build_transform() -> T.Compose:
+def build_transform(size: int = 224) -> T.Compose:
     return T.Compose([
-        T.Resize((224, 224), interpolation=T.InterpolationMode.BICUBIC),
+        T.Resize((size, size), interpolation=T.InterpolationMode.BICUBIC),
         T.ToTensor(),
     ])
+
+def surrogate_img_size(surrogate: str) -> int:
+    if surrogate == SURROGATE_SIGLIP_SO400M:
+        return SIGLIP_SO400M_SIZE
+    return 224
 
 
 # ---------------------------------------------------------------------------
@@ -673,7 +736,9 @@ def run_dataset(dataset: str, args, device: torch.device):
 
     model = load_surrogate(args.surrogate, label_to_name, device, dataset=dataset)
 
-    transform = build_transform()
+    img_size  = surrogate_img_size(args.surrogate)
+    transform = build_transform(size=img_size)
+
     ds        = AdversarialDataset(items, transform)
     loader    = DataLoader(ds, batch_size=args.batch_size, shuffle=False,
                            num_workers=0, pin_memory=False)

@@ -12,9 +12,11 @@ BASE = Path("llm_classification_results")
 
 MANIFESTS = [
     "batch_manifest__all_datasets__adv_metaclip_l1_eps300.json",
+    "batch_manifest__all_datasets__adv_metaclip_l1_eps75.json",
     "batch_manifest__all_datasets__adv_metaclip_l2_eps2.json",
     "batch_manifest__all_datasets__adv_metaclip_l2_eps8.json",
-    "batch_manifest__all_datasets__adv_metaclip_linf_eps8.json"
+    "batch_manifest__all_datasets__adv_metaclip_linf_eps8.json",
+    "batch_manifest__all_datasets__adv_metaclip_linf_eps30.json"
 ]
 
 DATASETS = [
