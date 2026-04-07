@@ -136,7 +136,7 @@
     "model": "gemini-3-flash-preview-nothink",
     "run_name": "uc-merced-land-use-dataset__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard__google_nothink__adv_metaclip_l1_eps75",
     "batch_id": "batches/1q0dtq6yp85yy6hm4dj0wxlms7exo95ahzk4",
-    "status": "submitted",
+    "status": "retrieved",
     "experiment": "adv_metaclip_l1_eps75"
   }
 ]

@@ -450,49 +450,55 @@ def load_siglip2_surrogate(label_to_name: dict, device: torch.device,
 # ── Add new loader function (after load_siglip2_surrogate) ───
 def load_siglip2_so400m_surrogate(label_to_name: dict, device: torch.device,
                                    dataset: str = "") -> ZeroShotSigLIP2:
-    from transformers import AutoProcessor, AutoModel
+    from transformers import AutoModel, AutoProcessor, AutoTokenizer
     print(f"\nLoading SigLIP2-SO400M-NaFlex surrogate: {SIGLIP_SO400M_MODEL_ID}")
 
-    hf_model = AutoModel.from_pretrained(
+    hf_model  = AutoModel.from_pretrained(
         SIGLIP_SO400M_MODEL_ID, cache_dir=str(HF_CACHE_DIR))
     hf_model.eval().to(device)
-
     processor = AutoProcessor.from_pretrained(
+        SIGLIP_SO400M_MODEL_ID, cache_dir=str(HF_CACHE_DIR))
+    tokenizer = AutoTokenizer.from_pretrained(
         SIGLIP_SO400M_MODEL_ID, cache_dir=str(HF_CACHE_DIR))
 
     class_names = [label_to_name[i] for i in sorted(label_to_name.keys())]
     prompts     = build_prompts(dataset, class_names)
     print(f"  Encoding {len(prompts)} class prompts...")
 
+    # Go through text_model directly — get_text_features() returns
+    # BaseModelOutputWithPooling in some transformers versions, not a tensor.
+    max_len = hf_model.config.text_config.max_position_embeddings
     with torch.no_grad():
-        text_inputs   = processor(
-            text=prompts, padding="max_length",
-            truncation=True, return_tensors="pt"
+        text_inputs  = tokenizer(
+            prompts, padding="max_length", truncation=True,
+            max_length=max_len, return_tensors="pt"
         ).to(device)
-        text_features = F.normalize(
-            hf_model.get_text_features(**text_inputs), dim=-1)
+        text_outputs = hf_model.text_model(**text_inputs)
+        text_f       = text_outputs.pooler_output
+        if hasattr(hf_model, 'text_projection') and hf_model.text_projection is not None:
+            text_f = hf_model.text_projection(text_f)
+        text_features = F.normalize(text_f, dim=-1)
 
-    # NaFlex vision forward requires spatial_shapes when bypassing the processor.
-    # We fix all images to SIGLIP_SO400M_SIZE so patch grid is constant.
-    ph = pw = SIGLIP_SO400M_SIZE // 16   # patch_size=16 → e.g. 384//16=24
+    ph = pw = SIGLIP_SO400M_SIZE // 16  # 384 // 16 = 24
 
     def encode_fn(x: torch.Tensor) -> torch.Tensor:
         B = x.shape[0]
         spatial_shapes = torch.tensor(
             [[ph, pw]], dtype=torch.long, device=x.device
         ).expand(B, -1)
-        return hf_model.get_image_features(
+        # Go through vision_model directly for the same reason
+        vision_out = hf_model.vision_model(
             pixel_values=x, spatial_shapes=spatial_shapes)
+        img_f = vision_out.pooler_output
+        if hasattr(hf_model, 'visual_projection') and hf_model.visual_projection is not None:
+            img_f = hf_model.visual_projection(img_f)
+        return img_f
 
     wrapper = ZeroShotSigLIP2(encode_fn, text_features, device)
-    # Override mean/std buffers registered by ZeroShotSigLIP2.__init__
-    wrapper.mean = torch.tensor(
-        SIGLIP_SO400M_MEAN, device=device).view(1, 3, 1, 1)
-    wrapper.std  = torch.tensor(
-        SIGLIP_SO400M_STD,  device=device).view(1, 3, 1, 1)
+    wrapper.mean = torch.tensor(SIGLIP_SO400M_MEAN, device=device).view(1, 3, 1, 1)
+    wrapper.std  = torch.tensor(SIGLIP_SO400M_STD,  device=device).view(1, 3, 1, 1)
     wrapper.eval().to(device)
     return wrapper
-
 
 def load_surrogate(surrogate: str, label_to_name: dict,
                    device: torch.device, dataset: str = "") -> nn.Module:
