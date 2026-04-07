@@ -480,15 +480,22 @@ def load_siglip2_so400m_surrogate(label_to_name: dict, device: torch.device,
         text_features = F.normalize(text_f, dim=-1)
 
     ph = pw = SIGLIP_SO400M_SIZE // 16  # 384 // 16 = 24
+    n_patches = ph * pw  # 576
 
     def encode_fn(x: torch.Tensor) -> torch.Tensor:
         B = x.shape[0]
         spatial_shapes = torch.tensor(
             [[ph, pw]], dtype=torch.long, device=x.device
         ).expand(B, -1)
-        # Go through vision_model directly for the same reason
+        # All patches are real (no padding) since we use fixed square images
+        attention_mask = torch.ones(
+            B, n_patches, dtype=torch.long, device=x.device
+        )
         vision_out = hf_model.vision_model(
-            pixel_values=x, spatial_shapes=spatial_shapes)
+            pixel_values=x,
+            spatial_shapes=spatial_shapes,
+            attention_mask=attention_mask,
+        )
         img_f = vision_out.pooler_output
         if hasattr(hf_model, 'visual_projection') and hf_model.visual_projection is not None:
             img_f = hf_model.visual_projection(img_f)
