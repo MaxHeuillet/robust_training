@@ -449,7 +449,7 @@ def load_siglip2_surrogate(label_to_name: dict, device: torch.device,
 
 def load_siglip2_so400m_surrogate(label_to_name: dict, device: torch.device,
                                    dataset: str = "") -> ZeroShotSigLIP2:
-    from transformers import AutoModel, AutoProcessor, AutoTokenizer
+    from transformers import AutoModel, AutoTokenizer
 
     model_id = "google/siglip2-so400m-patch16-naflex"
     print(f"\nLoading SigLIP2-SO400M-NaFlex surrogate: {model_id}")
@@ -457,8 +457,6 @@ def load_siglip2_so400m_surrogate(label_to_name: dict, device: torch.device,
     hf_model  = AutoModel.from_pretrained(
         model_id, cache_dir=str(HF_CACHE_DIR))
     hf_model.eval().to(device)
-    processor = AutoProcessor.from_pretrained(
-        model_id, cache_dir=str(HF_CACHE_DIR))
     tokenizer = AutoTokenizer.from_pretrained(
         model_id, cache_dir=str(HF_CACHE_DIR))
 
@@ -478,41 +476,52 @@ def load_siglip2_so400m_surrogate(label_to_name: dict, device: torch.device,
             text_f = hf_model.text_projection(text_f)
         text_features = F.normalize(text_f, dim=-1)
 
-    # Use a custom wrapper that bypasses ZeroShotSigLIP2's normalization
-    # and instead uses the processor to prepare inputs with correct format.
-    # This preserves gradients through pixel_values for AutoAttack.
-    class NaFlexWrapper(nn.Module):
-        def __init__(self, model, proc, text_feats, dev, temperature=100.0):
-            super().__init__()
-            self._model      = model
-            self._proc       = proc
-            self.temperature = temperature
-            self.register_buffer("text_features", text_feats)
-            # Cache the non-pixel processor outputs for 224×224 (fixed across batches)
-            self._cached_extra = None
+    patch_size = 16
+    # 224 / 16 = 14 patches per side
+    ph = pw = 224 // patch_size  # = 14
 
-        def _get_extra_inputs(self, x: torch.Tensor) -> dict:
-            # Run processor once on a dummy image to get spatial_shapes,
-            # attention_mask etc. — everything except pixel_values.
-            if self._cached_extra is None:
-                from PIL import Image
-                import numpy as np
-                dummy = Image.fromarray(np.zeros((224, 224, 3), dtype=np.uint8))
-                out   = self._proc(images=dummy, return_tensors="pt")
-                self._cached_extra = {
-                    k: v.to(x.device) for k, v in out.items()
-                    if k != "pixel_values"
-                }
-            return {k: v.expand(x.shape[0], *v.shape[1:])
-                    for k, v in self._cached_extra.items()}
+    def patchify(x: torch.Tensor) -> torch.Tensor:
+        """
+        Convert (B, 3, 224, 224) image tensor → (B, 196, 768) patch sequence.
+        Uses unfold so gradients flow through cleanly.
+        Normalizes to [-1, 1] (SigLIP mean=0.5, std=0.5).
+        """
+        x = (x - 0.5) / 0.5  # normalize
+        B = x.shape[0]
+        # unfold H and W dimensions into patches
+        # result: (B, 3, 14, 16, 14, 16)
+        x = x.unfold(2, patch_size, patch_size).unfold(3, patch_size, patch_size)
+        # → (B, 3, 14, 14, 16, 16)
+        # → (B, 14, 14, 3, 16, 16)
+        x = x.permute(0, 2, 3, 1, 4, 5).contiguous()
+        # → (B, 196, 768)
+        x = x.view(B, ph * pw, 3 * patch_size * patch_size)
+        return x
 
-        def forward(self, x: torch.Tensor) -> torch.Tensor:
-            extra  = self._get_extra_inputs(x)
-            img_f  = self._model.get_image_features(pixel_values=x, **extra)
-            img_f  = F.normalize(img_f, dim=-1)
-            return self.temperature * (img_f @ self.text_features.T)
+    def encode_fn(x: torch.Tensor) -> torch.Tensor:
+        B = x.shape[0]
+        pixel_values   = patchify(x)
+        spatial_shapes = torch.tensor(
+            [[ph, pw]], dtype=torch.long, device=x.device
+        ).expand(B, -1)
+        attention_mask = torch.ones(
+            B, ph * pw, dtype=torch.long, device=x.device)
+        vision_out = hf_model.vision_model(
+            pixel_values=pixel_values,
+            attention_mask=attention_mask,
+            spatial_shapes=spatial_shapes,
+        )
+        img_f = vision_out.pooler_output
+        if hasattr(hf_model, 'visual_projection') and hf_model.visual_projection is not None:
+            img_f = hf_model.visual_projection(img_f)
+        return img_f
 
-    return NaFlexWrapper(hf_model, processor, text_features, device).to(device)
+    wrapper = ZeroShotSigLIP2(encode_fn, text_features, device)
+    # Override mean/std to identity since patchify handles normalization
+    wrapper.mean = torch.zeros(1, 3, 1, 1, device=device)
+    wrapper.std  = torch.ones(1, 3, 1, 1, device=device)
+    wrapper.eval().to(device)
+    return wrapper
 
 def load_surrogate(surrogate: str, label_to_name: dict,
                    device: torch.device, dataset: str = "") -> nn.Module:
