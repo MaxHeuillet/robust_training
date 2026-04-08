@@ -447,121 +447,121 @@ def load_siglip2_surrogate(label_to_name: dict, device: torch.device,
     model.eval().to(device)
     return model
 
-def load_siglip2_so400m_surrogate(label_to_name: dict, device: torch.device,
-                                   dataset: str = "") -> ZeroShotSigLIP2:
-    from transformers import AutoTokenizer, SiglipTextModel, SiglipVisionModel
-
-    model_id = "google/siglip2-so400m-patch16-naflex"
-    print(f"\nLoading SigLIP2-SO400M-NaFlex surrogate: {model_id}")
-
-    vision_model = SiglipVisionModel.from_pretrained(
-        model_id, cache_dir=str(HF_CACHE_DIR))
-    vision_model.eval().to(device)
-    text_model = SiglipTextModel.from_pretrained(
-        model_id, cache_dir=str(HF_CACHE_DIR))
-    text_model.eval().to(device)
-    tokenizer = AutoTokenizer.from_pretrained(
-        model_id, cache_dir=str(HF_CACHE_DIR), use_fast=False)
-
-    class_names = [label_to_name[i] for i in sorted(label_to_name.keys())]
-    prompts     = build_prompts(dataset, class_names)
-    print(f"  Encoding {len(prompts)} class prompts...")
-
-    max_len = text_model.config.max_position_embeddings
-    with torch.no_grad():
-        text_inputs   = tokenizer(
-            prompts, padding="max_length", truncation=True,
-            max_length=max_len, return_tensors="pt"
-        ).to(device)
-        text_features = F.normalize(
-            text_model(**text_inputs).pooler_output, dim=-1)
-
-    del text_model
-    if device.type == "cuda":
-        torch.cuda.empty_cache()
-
-    def encode_fn(x: torch.Tensor) -> torch.Tensor:
-        return vision_model(pixel_values=x).pooler_output
-
-    wrapper = ZeroShotSigLIP2(encode_fn, text_features, device)
-    wrapper.eval().to(device)
-    return wrapper
-
 # def load_siglip2_so400m_surrogate(label_to_name: dict, device: torch.device,
 #                                    dataset: str = "") -> ZeroShotSigLIP2:
-#     from transformers import AutoModel, AutoTokenizer
+#     from transformers import AutoTokenizer, SiglipTextModel, SiglipVisionModel
 
 #     model_id = "google/siglip2-so400m-patch16-naflex"
 #     print(f"\nLoading SigLIP2-SO400M-NaFlex surrogate: {model_id}")
 
-#     hf_model  = AutoModel.from_pretrained(
+#     vision_model = SiglipVisionModel.from_pretrained(
 #         model_id, cache_dir=str(HF_CACHE_DIR))
-#     hf_model.eval().to(device)
+#     vision_model.eval().to(device)
+#     text_model = SiglipTextModel.from_pretrained(
+#         model_id, cache_dir=str(HF_CACHE_DIR))
+#     text_model.eval().to(device)
 #     tokenizer = AutoTokenizer.from_pretrained(
-#         model_id, cache_dir=str(HF_CACHE_DIR))
+#         model_id, cache_dir=str(HF_CACHE_DIR), use_fast=False)
 
 #     class_names = [label_to_name[i] for i in sorted(label_to_name.keys())]
 #     prompts     = build_prompts(dataset, class_names)
 #     print(f"  Encoding {len(prompts)} class prompts...")
 
-#     max_len = hf_model.config.text_config.max_position_embeddings
+#     max_len = text_model.config.max_position_embeddings
 #     with torch.no_grad():
-#         text_inputs  = tokenizer(
+#         text_inputs   = tokenizer(
 #             prompts, padding="max_length", truncation=True,
 #             max_length=max_len, return_tensors="pt"
 #         ).to(device)
-#         text_outputs = hf_model.text_model(**text_inputs)
-#         text_f       = text_outputs.pooler_output
-#         if hasattr(hf_model, 'text_projection') and hf_model.text_projection is not None:
-#             text_f = hf_model.text_projection(text_f)
-#         text_features = F.normalize(text_f, dim=-1)
+#         text_features = F.normalize(
+#             text_model(**text_inputs).pooler_output, dim=-1)
 
-#     patch_size = 16
-#     # 224 / 16 = 14 patches per side
-#     ph = pw = 224 // patch_size  # = 14
-
-#     def patchify(x: torch.Tensor) -> torch.Tensor:
-#         """
-#         Convert (B, 3, 224, 224) image tensor → (B, 196, 768) patch sequence.
-#         Uses unfold so gradients flow through cleanly.
-#         Normalizes to [-1, 1] (SigLIP mean=0.5, std=0.5).
-#         """
-#         x = (x - 0.5) / 0.5  # normalize
-#         B = x.shape[0]
-#         # unfold H and W dimensions into patches
-#         # result: (B, 3, 14, 16, 14, 16)
-#         x = x.unfold(2, patch_size, patch_size).unfold(3, patch_size, patch_size)
-#         # → (B, 3, 14, 14, 16, 16)
-#         # → (B, 14, 14, 3, 16, 16)
-#         x = x.permute(0, 2, 3, 1, 4, 5).contiguous()
-#         # → (B, 196, 768)
-#         x = x.view(B, ph * pw, 3 * patch_size * patch_size)
-#         return x
+#     del text_model
+#     if device.type == "cuda":
+#         torch.cuda.empty_cache()
 
 #     def encode_fn(x: torch.Tensor) -> torch.Tensor:
-#         B = x.shape[0]
-#         pixel_values   = patchify(x)
-#         spatial_shapes = torch.tensor(
-#             [[ph, pw]], dtype=torch.long, device=x.device
-#         ).expand(B, -1)
-#         attention_mask = torch.ones(
-#             B, ph * pw, dtype=torch.long, device=x.device)
-#         vision_out = hf_model.vision_model(
-#             pixel_values=pixel_values,
-#             attention_mask=attention_mask,
-#             spatial_shapes=spatial_shapes,
-#         )
-#         img_f = vision_out.pooler_output
-#         if hasattr(hf_model, 'visual_projection') and hf_model.visual_projection is not None:
-#             img_f = hf_model.visual_projection(img_f)
-#         return img_f
+#         return vision_model(pixel_values=x).pooler_output
 
 #     wrapper = ZeroShotSigLIP2(encode_fn, text_features, device)
-#     # Override mean/std to identity since patchify handles normalization
-#     wrapper.mean = torch.zeros(1, 3, 1, 1, device=device)
-#     wrapper.std  = torch.ones(1, 3, 1, 1, device=device)
 #     wrapper.eval().to(device)
 #     return wrapper
+
+def load_siglip2_so400m_surrogate(label_to_name: dict, device: torch.device,
+                                   dataset: str = "") -> ZeroShotSigLIP2:
+    from transformers import AutoModel, AutoTokenizer
+
+    model_id = "google/siglip2-so400m-patch16-naflex"
+    print(f"\nLoading SigLIP2-SO400M-NaFlex surrogate: {model_id}")
+
+    hf_model  = AutoModel.from_pretrained(
+        model_id, cache_dir=str(HF_CACHE_DIR))
+    hf_model.eval().to(device)
+    tokenizer = AutoTokenizer.from_pretrained(
+        model_id, cache_dir=str(HF_CACHE_DIR))
+
+    class_names = [label_to_name[i] for i in sorted(label_to_name.keys())]
+    prompts     = build_prompts(dataset, class_names)
+    print(f"  Encoding {len(prompts)} class prompts...")
+
+    max_len = hf_model.config.text_config.max_position_embeddings
+    with torch.no_grad():
+        text_inputs  = tokenizer(
+            prompts, padding="max_length", truncation=True,
+            max_length=max_len, return_tensors="pt"
+        ).to(device)
+        text_outputs = hf_model.text_model(**text_inputs)
+        text_f       = text_outputs.pooler_output
+        if hasattr(hf_model, 'text_projection') and hf_model.text_projection is not None:
+            text_f = hf_model.text_projection(text_f)
+        text_features = F.normalize(text_f, dim=-1)
+
+    patch_size = 16
+    # 224 / 16 = 14 patches per side
+    ph = pw = 224 // patch_size  # = 14
+
+    def patchify(x: torch.Tensor) -> torch.Tensor:
+        """
+        Convert (B, 3, 224, 224) image tensor → (B, 196, 768) patch sequence.
+        Uses unfold so gradients flow through cleanly.
+        Normalizes to [-1, 1] (SigLIP mean=0.5, std=0.5).
+        """
+        x = (x - 0.5) / 0.5  # normalize
+        B = x.shape[0]
+        # unfold H and W dimensions into patches
+        # result: (B, 3, 14, 16, 14, 16)
+        x = x.unfold(2, patch_size, patch_size).unfold(3, patch_size, patch_size)
+        # → (B, 3, 14, 14, 16, 16)
+        # → (B, 14, 14, 3, 16, 16)
+        x = x.permute(0, 2, 3, 1, 4, 5).contiguous()
+        # → (B, 196, 768)
+        x = x.view(B, ph * pw, 3 * patch_size * patch_size)
+        return x
+
+    def encode_fn(x: torch.Tensor) -> torch.Tensor:
+        B = x.shape[0]
+        pixel_values   = patchify(x)
+        spatial_shapes = torch.tensor(
+            [[ph, pw]], dtype=torch.long, device=x.device
+        ).expand(B, -1)
+        attention_mask = torch.ones(
+            B, ph * pw, dtype=torch.long, device=x.device)
+        vision_out = hf_model.vision_model(
+            pixel_values=pixel_values,
+            attention_mask=attention_mask,
+            spatial_shapes=spatial_shapes,
+        )
+        img_f = vision_out.pooler_output
+        if hasattr(hf_model, 'visual_projection') and hf_model.visual_projection is not None:
+            img_f = hf_model.visual_projection(img_f)
+        return img_f
+
+    wrapper = ZeroShotSigLIP2(encode_fn, text_features, device)
+    # Override mean/std to identity since patchify handles normalization
+    wrapper.mean = torch.zeros(1, 3, 1, 1, device=device)
+    wrapper.std  = torch.ones(1, 3, 1, 1, device=device)
+    wrapper.eval().to(device)
+    return wrapper
 
 def load_surrogate(surrogate: str, label_to_name: dict,
                    device: torch.device, dataset: str = "") -> nn.Module:
