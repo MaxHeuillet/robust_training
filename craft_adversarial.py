@@ -517,25 +517,16 @@ def load_siglip2_so400m_surrogate(label_to_name: dict, device: torch.device,
         text_features = F.normalize(text_f, dim=-1)
 
     patch_size = 16
-    # 224 / 16 = 14 patches per side
-    ph = pw = 224 // patch_size  # = 14
+    ph = pw = 256 // patch_size  # = 16, giving 256 patches
 
     def patchify(x: torch.Tensor) -> torch.Tensor:
-        """
-        Convert (B, 3, 224, 224) image tensor → (B, 196, 768) patch sequence.
-        Uses unfold so gradients flow through cleanly.
-        Normalizes to [-1, 1] (SigLIP mean=0.5, std=0.5).
-        """
-        x = (x - 0.5) / 0.5  # normalize
+        # NaFlex processor resizes to 256×256 before patchifying
+        x = F.interpolate(x, size=(256, 256), mode="bicubic", align_corners=False)
+        x = (x - 0.5) / 0.5
         B = x.shape[0]
-        # unfold H and W dimensions into patches
-        # result: (B, 3, 14, 16, 14, 16)
         x = x.unfold(2, patch_size, patch_size).unfold(3, patch_size, patch_size)
-        # → (B, 3, 14, 14, 16, 16)
-        # → (B, 14, 14, 3, 16, 16)
         x = x.permute(0, 2, 3, 1, 4, 5).contiguous()
-        # → (B, 196, 768)
-        x = x.view(B, ph * pw, 3 * patch_size * patch_size)
+        x = x.reshape(B, ph * pw, 3 * patch_size * patch_size)
         return x
 
     def encode_fn(x: torch.Tensor) -> torch.Tensor:
