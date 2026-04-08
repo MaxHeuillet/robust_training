@@ -550,19 +550,18 @@ def load_siglip2_so400m_surrogate(label_to_name: dict, device: torch.device,
             B = x.shape[0]
             # Step 1: resize to 256×256
             x = F.interpolate(x, size=(self.h, self.w),
-                            mode="bicubic", align_corners=False)
+                            mode="bilinear", align_corners=False)  # bilinear, not bicubic
             # Step 2: normalize
             x = (x - 0.5) / 0.5
-            # Step 3: patchify into (B, N, patch_dim)
+            # Step 3: patchify into (B, N, patch_dim) — H,W,C ordering
             x = x.unfold(2, 16, 16).unfold(3, 16, 16)
-            x = x.permute(0, 2, 3, 1, 4, 5).contiguous()
+            x = x.permute(0, 2, 3, 4, 5, 1).contiguous()  # (B, nh, nw, ph, pw, C)
             x = x.reshape(B, self.n, self.pdim)
             # Step 4: expand fixed metadata to batch size and rename key
             meta = {}
             for k in self._meta_keys:
                 v = getattr(self, f"_meta_{k}").expand(
                     B, *getattr(self, f"_meta_{k}").shape[1:])
-                # processor returns 'pixel_attention_mask', model expects 'attention_mask'
                 out_key = "attention_mask" if k == "pixel_attention_mask" else k
                 meta[out_key] = v
             # Step 5: forward through vision model
