@@ -515,18 +515,16 @@ def load_siglip2_so400m_surrogate(label_to_name: dict, device: torch.device,
             text_f = hf_model.text_projection(text_f)
         text_features = F.normalize(text_f, dim=-1)
 
-    # Pre-compute fixed processor metadata for a 224×224 image.
-    # spatial_shapes and attention_mask are identical for all 224×224 inputs.
     from PIL import Image
     import numpy as np
-    dummy     = Image.fromarray(np.zeros((224, 224, 3), dtype=np.uint8))
-    proc_out  = processor(images=dummy, return_tensors="pt")
-    # Everything except pixel_values: spatial_shapes, attention_mask
+    dummy    = Image.fromarray(np.zeros((224, 224, 3), dtype=np.uint8))
+    proc_out = processor(images=dummy, return_tensors="pt", padding="max_length")
     fixed_meta = {k: v.to(device) for k, v in proc_out.items()
                   if k != "pixel_values"}
-    # pixel_values shape: (1, N, patch_dim) e.g. (1, 256, 768)
+    print(f"  Fixed meta keys: {list(fixed_meta.keys())}")
     _, N, patch_dim = proc_out["pixel_values"].shape
     print(f"  NaFlex: N={N} patches, patch_dim={patch_dim}")
+    H = W = int(N ** 0.5) * 16
 
     # Replicate exactly what the processor does to pixel_values:
     # resize to 256×256, normalize with mean=0.5 std=0.5, then patchify.
