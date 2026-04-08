@@ -1,0 +1,72 @@
+[
+  {
+    "dataset": "caltech101__zeroshot_siglip2_so400m_patch16_naflex__l1_eps300_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "caltech101__zeroshot_siglip2_so400m_patch16_naflex__l1_eps300_autoattack_standard__openai__adv_msiglip2_naflex_l1_eps300",
+    "batch_id": "batch_69d57c7999408190ab21b66cd408878b",
+    "status": "retrieved",
+    "experiment": "adv_msiglip2_naflex_l1_eps300"
+  },
+  {
+    "dataset": "fgvc-aircraft-2013b__zeroshot_siglip2_so400m_patch16_naflex__l1_eps300_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "fgvc-aircraft-2013b__zeroshot_siglip2_so400m_patch16_naflex__l1_eps300_autoattack_standard__openai__adv_msiglip2_naflex_l1_eps300",
+    "batch_id": "batch_69d57d88d3b88190824528278f9b8e2f",
+    "status": "retrieved",
+    "experiment": "adv_msiglip2_naflex_l1_eps300"
+  },
+  {
+    "dataset": "flowers-102__zeroshot_siglip2_so400m_patch16_naflex__l1_eps300_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "flowers-102__zeroshot_siglip2_so400m_patch16_naflex__l1_eps300_autoattack_standard__openai__adv_msiglip2_naflex_l1_eps300",
+    "batch_id": "batch_69d57f56049c81908300c37db7a5023a",
+    "status": "retrieved",
+    "experiment": "adv_msiglip2_naflex_l1_eps300"
+  },
+  {
+    "dataset": "oxford-iiit-pet__zeroshot_siglip2_so400m_patch16_naflex__l1_eps300_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "oxford-iiit-pet__zeroshot_siglip2_so400m_patch16_naflex__l1_eps300_autoattack_standard__openai__adv_msiglip2_naflex_l1_eps300",
+    "batch_id": "batch_69d5802e97e08190a78398cbe599e437",
+    "status": "retrieved",
+    "experiment": "adv_msiglip2_naflex_l1_eps300"
+  },
+  {
+    "dataset": "stanford_cars__zeroshot_siglip2_so400m_patch16_naflex__l1_eps300_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "stanford_cars__zeroshot_siglip2_so400m_patch16_naflex__l1_eps300_autoattack_standard__openai__adv_msiglip2_naflex_l1_eps300",
+    "batch_id": "batch_69d5848511f8819092822f5460d3957d",
+    "status": "retrieved",
+    "experiment": "adv_msiglip2_naflex_l1_eps300"
+  },
+  {
+    "dataset": "stanford_cars__zeroshot_siglip2_so400m_patch16_naflex__l1_eps300_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "stanford_cars__zeroshot_siglip2_so400m_patch16_naflex__l1_eps300_autoattack_standard__openai__adv_msiglip2_naflex_l1_eps300__complement",
+    "batch_id": "batch_69d58515e9f88190bd3d054404d87482",
+    "status": "retrieved",
+    "experiment": "adv_msiglip2_naflex_l1_eps300"
+  },
+  {
+    "dataset": "uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch16_naflex__l1_eps300_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch16_naflex__l1_eps300_autoattack_standard__openai__adv_msiglip2_naflex_l1_eps300",
+    "batch_id": "batch_69d5861b13ec8190b4a5d82e7088533a",
+    "status": "retrieved",
+    "experiment": "adv_msiglip2_naflex_l1_eps300"
+  }
+]

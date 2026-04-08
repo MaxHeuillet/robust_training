@@ -1,0 +1,10 @@
+{
+  "batch_name": "batches/64srtp0je6iscrklwpxnupu3ewgpds3h2wrb",
+  "uploaded_file": "files/oyu6xbmb0dz5",
+  "provider": "google",
+  "run_id": "fgvc-aircraft-2013b__zeroshot_siglip2_so400m_patch16_naflex__linf_eps8_autoattack_standard__google_nothink__adv_siglip2_naflex_linf_eps8",
+  "model": "gemini-3-flash-preview-nothink",
+  "actual_model": "gemini-3-flash-preview",
+  "num_requests": 1000,
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batches/64srtp0je6iscrklwpxnupu3ewgpds3h2wrb --provider google --dataset fgvc-aircraft-2013b__zeroshot_siglip2_so400m_patch16_naflex__linf_eps8_autoattack_standard --data_root /Users/maximeheuillet/data/adversarial/zeroshot_siglip2_so400m_patch16_naflex/linf_eps8_autoattack_standard --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name fgvc-aircraft-2013b__zeroshot_siglip2_so400m_patch16_naflex__linf_eps8_autoattack_standard__google_nothink__adv_siglip2_naflex_linf_eps8"
+}

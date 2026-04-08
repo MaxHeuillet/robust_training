@@ -1,0 +1,10 @@
+{
+  "batch_id": "batch_69d5880942648190893b0221fdebbe53",
+  "file_id": "file-Sv5EzgvQGSUiS2PxExsFPZ",
+  "provider": "openai",
+  "run_id": "fgvc-aircraft-2013b__zeroshot_siglip2_so400m_patch16_naflex__l2_eps2_autoattack_standard__openai__adv_msiglip2_naflex_l2_eps2",
+  "model": "gpt-4o-mini",
+  "num_requests": 1000,
+  "submitted_at": "2026-04-07T19:41:13.371600",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batch_69d5880942648190893b0221fdebbe53 --provider openai --dataset fgvc-aircraft-2013b__zeroshot_siglip2_so400m_patch16_naflex__l2_eps2_autoattack_standard --data_root /Users/maximeheuillet/data/adversarial/zeroshot_siglip2_so400m_patch16_naflex/l2_eps2_autoattack_standard --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name fgvc-aircraft-2013b__zeroshot_siglip2_so400m_patch16_naflex__l2_eps2_autoattack_standard__openai__adv_msiglip2_naflex_l2_eps2"
+}

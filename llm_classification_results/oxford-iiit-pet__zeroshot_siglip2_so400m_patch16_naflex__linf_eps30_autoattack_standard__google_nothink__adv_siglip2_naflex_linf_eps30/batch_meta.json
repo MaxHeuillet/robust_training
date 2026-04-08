@@ -1,0 +1,10 @@
+{
+  "batch_name": "batches/qguhassw9kwmuur2zuw5tjyes4pwtkjef1g5",
+  "uploaded_file": "files/ch0da1e6kgnp",
+  "provider": "google",
+  "run_id": "oxford-iiit-pet__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard__google_nothink__adv_siglip2_naflex_linf_eps30",
+  "model": "gemini-3-flash-preview-nothink",
+  "actual_model": "gemini-3-flash-preview",
+  "num_requests": 1000,
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batches/qguhassw9kwmuur2zuw5tjyes4pwtkjef1g5 --provider google --dataset oxford-iiit-pet__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard --data_root /Users/maximeheuillet/data/adversarial/zeroshot_siglip2_so400m_patch16_naflex/linf_eps30_autoattack_standard --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name oxford-iiit-pet__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard__google_nothink__adv_siglip2_naflex_linf_eps30"
+}

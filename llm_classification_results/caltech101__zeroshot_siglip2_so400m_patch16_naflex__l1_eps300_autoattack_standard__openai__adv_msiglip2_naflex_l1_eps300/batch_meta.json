@@ -1,0 +1,10 @@
+{
+  "batch_id": "batch_69d57c7999408190ab21b66cd408878b",
+  "file_id": "file-QWZDhbNPshd2wRmUKkBgKA",
+  "provider": "openai",
+  "run_id": "caltech101__zeroshot_siglip2_so400m_patch16_naflex__l1_eps300_autoattack_standard__openai__adv_msiglip2_naflex_l1_eps300",
+  "model": "gpt-4o-mini",
+  "num_requests": 1000,
+  "submitted_at": "2026-04-07T18:51:53.780751",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batch_69d57c7999408190ab21b66cd408878b --provider openai --dataset caltech101__zeroshot_siglip2_so400m_patch16_naflex__l1_eps300_autoattack_standard --data_root /Users/maximeheuillet/data/adversarial/zeroshot_siglip2_so400m_patch16_naflex/l1_eps300_autoattack_standard --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name caltech101__zeroshot_siglip2_so400m_patch16_naflex__l1_eps300_autoattack_standard__openai__adv_msiglip2_naflex_l1_eps300"
+}

@@ -1,0 +1,10 @@
+{
+  "batch_name": "batches/wj1mkb26f0g08cp8es3ykgh5hivn9b4422r5",
+  "uploaded_file": "files/qwa8suh58ryz",
+  "provider": "google",
+  "run_id": "caltech101__zeroshot_siglip2_so400m_patch16_naflex__linf_eps8_autoattack_standard__google_nothink__adv_siglip2_naflex_linf_eps8",
+  "model": "gemini-3-flash-preview-nothink",
+  "actual_model": "gemini-3-flash-preview",
+  "num_requests": 1000,
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batches/wj1mkb26f0g08cp8es3ykgh5hivn9b4422r5 --provider google --dataset caltech101__zeroshot_siglip2_so400m_patch16_naflex__linf_eps8_autoattack_standard --data_root /Users/maximeheuillet/data/adversarial/zeroshot_siglip2_so400m_patch16_naflex/linf_eps8_autoattack_standard --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name caltech101__zeroshot_siglip2_so400m_patch16_naflex__linf_eps8_autoattack_standard__google_nothink__adv_siglip2_naflex_linf_eps8"
+}

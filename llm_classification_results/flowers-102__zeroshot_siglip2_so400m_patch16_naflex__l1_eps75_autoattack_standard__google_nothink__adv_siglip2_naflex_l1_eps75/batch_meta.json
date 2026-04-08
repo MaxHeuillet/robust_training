@@ -1,0 +1,10 @@
+{
+  "batch_name": "batches/d5hwv1ryvce8sdg5bd29e9bnzu3lq1y9z00n",
+  "uploaded_file": "files/lb8v57efki4f",
+  "provider": "google",
+  "run_id": "flowers-102__zeroshot_siglip2_so400m_patch16_naflex__l1_eps75_autoattack_standard__google_nothink__adv_siglip2_naflex_l1_eps75",
+  "model": "gemini-3-flash-preview-nothink",
+  "actual_model": "gemini-3-flash-preview",
+  "num_requests": 1000,
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batches/d5hwv1ryvce8sdg5bd29e9bnzu3lq1y9z00n --provider google --dataset flowers-102__zeroshot_siglip2_so400m_patch16_naflex__l1_eps75_autoattack_standard --data_root /Users/maximeheuillet/data/adversarial/zeroshot_siglip2_so400m_patch16_naflex/l1_eps75_autoattack_standard --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name flowers-102__zeroshot_siglip2_so400m_patch16_naflex__l1_eps75_autoattack_standard__google_nothink__adv_siglip2_naflex_l1_eps75"
+}

@@ -1,0 +1,172 @@
+[
+  {
+    "dataset": "caltech101__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "caltech101__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard__google_nothink__adv_siglip2_naflex_linf_eps30",
+    "batch_id": "batches/nqt650f3flguqvwq4jwjyzxt4pmnugsih0f2",
+    "status": "retrieved",
+    "experiment": "adv_siglip2_naflex_linf_eps30"
+  },
+  {
+    "dataset": "fgvc-aircraft-2013b__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "fgvc-aircraft-2013b__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard__google_nothink__adv_siglip2_naflex_linf_eps30",
+    "batch_id": null,
+    "status": "failed",
+    "experiment": "adv_siglip2_naflex_linf_eps30"
+  },
+  {
+    "dataset": "flowers-102__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "flowers-102__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard__google_nothink__adv_siglip2_naflex_linf_eps30",
+    "batch_id": null,
+    "status": "failed",
+    "experiment": "adv_siglip2_naflex_linf_eps30"
+  },
+  {
+    "dataset": "oxford-iiit-pet__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "oxford-iiit-pet__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard__google_nothink__adv_siglip2_naflex_linf_eps30",
+    "batch_id": "batches/qguhassw9kwmuur2zuw5tjyes4pwtkjef1g5",
+    "status": "retrieved",
+    "experiment": "adv_siglip2_naflex_linf_eps30"
+  },
+  {
+    "dataset": "stanford_cars__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "stanford_cars__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard__google_nothink__adv_siglip2_naflex_linf_eps30",
+    "batch_id": null,
+    "status": "failed",
+    "experiment": "adv_siglip2_naflex_linf_eps30"
+  },
+  {
+    "dataset": "uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard__google_nothink__adv_siglip2_naflex_linf_eps30",
+    "batch_id": null,
+    "status": "failed",
+    "experiment": "adv_siglip2_naflex_linf_eps30"
+  },
+  {
+    "dataset": "caltech101__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "caltech101__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard__openai__adv_metaclip_linf_eps30",
+    "batch_id": "batch_69d53cddb57c8190805c6c4f458c5216",
+    "status": "retrieved",
+    "experiment": "adv_metaclip_linf_eps30"
+  },
+  {
+    "dataset": "fgvc-aircraft-2013b__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "fgvc-aircraft-2013b__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard__openai__adv_metaclip_linf_eps30",
+    "batch_id": "batch_69d54c9449a88190931b0aaf427b0833",
+    "status": "retrieved",
+    "experiment": "adv_metaclip_linf_eps30"
+  },
+  {
+    "dataset": "flowers-102__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "flowers-102__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard__openai__adv_metaclip_linf_eps30",
+    "batch_id": "batch_69d54e2767fc81908647a29bf1695e5c",
+    "status": "retrieved",
+    "experiment": "adv_metaclip_linf_eps30"
+  },
+  {
+    "dataset": "oxford-iiit-pet__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "oxford-iiit-pet__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard__openai__adv_metaclip_linf_eps30",
+    "batch_id": "batch_69d552a299b0819092a2508122ca3e2e",
+    "status": "retrieved",
+    "experiment": "adv_metaclip_linf_eps30"
+  },
+  {
+    "dataset": "stanford_cars__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "stanford_cars__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard__openai__adv_metaclip_linf_eps30",
+    "batch_id": "batch_69d553f4c06881909549af9b593bc160",
+    "status": "retrieved",
+    "experiment": "adv_metaclip_linf_eps30"
+  },
+  {
+    "dataset": "stanford_cars__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "stanford_cars__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard__openai__adv_metaclip_linf_eps30__complement",
+    "batch_id": "batch_69d55f5f8d4481908fb87c58a501d365",
+    "status": "retrieved",
+    "experiment": "adv_metaclip_linf_eps30"
+  },
+  {
+    "dataset": "uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard__openai__adv_metaclip_linf_eps30",
+    "batch_id": "batch_69d560a2fd188190a3a00b5a78495144",
+    "status": "retrieved",
+    "experiment": "adv_metaclip_linf_eps30"
+  },
+  {
+    "dataset": "fgvc-aircraft-2013b__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "fgvc-aircraft-2013b__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard__google_nothink__adv_siglip2_naflex_linf_eps30",
+    "batch_id": "batches/d793rz6u5erzddxrp0bvggjp7nf7dtpr05r5",
+    "status": "retrieved",
+    "experiment": "adv_siglip2_naflex_linf_eps30"
+  },
+  {
+    "dataset": "flowers-102__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "flowers-102__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard__google_nothink__adv_siglip2_naflex_linf_eps30",
+    "batch_id": "batches/3b6oe4r2axcb88gffzshnkr42sdtbyg653x3",
+    "status": "retrieved",
+    "experiment": "adv_siglip2_naflex_linf_eps30"
+  },
+  {
+    "dataset": "stanford_cars__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "stanford_cars__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard__google_nothink__adv_siglip2_naflex_linf_eps30",
+    "batch_id": "batches/a846hsyyy7b6jj4ap6da64dersm348ha2t2r",
+    "status": "retrieved",
+    "experiment": "adv_siglip2_naflex_linf_eps30"
+  },
+  {
+    "dataset": "uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard__google_nothink__adv_siglip2_naflex_linf_eps30",
+    "batch_id": "batches/vsllt5b6m9d4gohmz08ux9vkh5dhow1jr2kr",
+    "status": "retrieved",
+    "experiment": "adv_siglip2_naflex_linf_eps30"
+  }
+]
