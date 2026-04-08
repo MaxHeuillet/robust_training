@@ -488,17 +488,16 @@ def load_siglip2_surrogate(label_to_name: dict, device: torch.device,
 #     return wrapper
 
 def load_siglip2_so400m_surrogate(label_to_name: dict, device: torch.device,
-                                   dataset: str = "") -> ZeroShotSigLIP2:
-    from transformers import AutoModel, AutoTokenizer
+                                   dataset: str = "") -> nn.Module:
+    from transformers import AutoModel, AutoProcessor, AutoTokenizer
 
     model_id = "google/siglip2-so400m-patch16-naflex"
     print(f"\nLoading SigLIP2-SO400M-NaFlex surrogate: {model_id}")
 
-    hf_model  = AutoModel.from_pretrained(
-        model_id, cache_dir=str(HF_CACHE_DIR))
+    hf_model  = AutoModel.from_pretrained(model_id, cache_dir=str(HF_CACHE_DIR))
     hf_model.eval().to(device)
-    tokenizer = AutoTokenizer.from_pretrained(
-        model_id, cache_dir=str(HF_CACHE_DIR))
+    processor = AutoProcessor.from_pretrained(model_id, cache_dir=str(HF_CACHE_DIR))
+    tokenizer = AutoTokenizer.from_pretrained(model_id, cache_dir=str(HF_CACHE_DIR))
 
     class_names = [label_to_name[i] for i in sorted(label_to_name.keys())]
     prompts     = build_prompts(dataset, class_names)
@@ -516,43 +515,66 @@ def load_siglip2_so400m_surrogate(label_to_name: dict, device: torch.device,
             text_f = hf_model.text_projection(text_f)
         text_features = F.normalize(text_f, dim=-1)
 
-    patch_size = 16
-    ph = pw = 256 // patch_size  # = 16, giving 256 patches
+    # Pre-compute fixed processor metadata for a 224×224 image.
+    # spatial_shapes and attention_mask are identical for all 224×224 inputs.
+    from PIL import Image
+    import numpy as np
+    dummy     = Image.fromarray(np.zeros((224, 224, 3), dtype=np.uint8))
+    proc_out  = processor(images=dummy, return_tensors="pt")
+    # Everything except pixel_values: spatial_shapes, attention_mask
+    fixed_meta = {k: v.to(device) for k, v in proc_out.items()
+                  if k != "pixel_values"}
+    # pixel_values shape: (1, N, patch_dim) e.g. (1, 256, 768)
+    _, N, patch_dim = proc_out["pixel_values"].shape
+    print(f"  NaFlex: N={N} patches, patch_dim={patch_dim}")
 
-    def patchify(x: torch.Tensor) -> torch.Tensor:
-        # NaFlex processor resizes to 256×256 before patchifying
-        x = F.interpolate(x, size=(256, 256), mode="bicubic", align_corners=False)
-        x = (x - 0.5) / 0.5
-        B = x.shape[0]
-        x = x.unfold(2, patch_size, patch_size).unfold(3, patch_size, patch_size)
-        x = x.permute(0, 2, 3, 1, 4, 5).contiguous()
-        x = x.reshape(B, ph * pw, 3 * patch_size * patch_size)
-        return x
+    # Replicate exactly what the processor does to pixel_values:
+    # resize to 256×256, normalize with mean=0.5 std=0.5, then patchify.
+    # This is differentiable so AutoAttack gradients flow through correctly.
+    H = W = int(N ** 0.5) * 16  # 256 for this model
 
-    def encode_fn(x: torch.Tensor) -> torch.Tensor:
-        B = x.shape[0]
-        pixel_values   = patchify(x)
-        spatial_shapes = torch.tensor(
-            [[ph, pw]], dtype=torch.long, device=x.device
-        ).expand(B, -1)
-        attention_mask = torch.ones(
-            B, ph * pw, dtype=torch.long, device=x.device)
-        vision_out = hf_model.vision_model(
-            pixel_values=pixel_values,
-            attention_mask=attention_mask,
-            spatial_shapes=spatial_shapes,
-        )
-        img_f = vision_out.pooler_output
-        if hasattr(hf_model, 'visual_projection') and hf_model.visual_projection is not None:
-            img_f = hf_model.visual_projection(img_f)
-        return img_f
+    class NaFlexSurrogate(nn.Module):
+        def __init__(self, model, text_feats, meta, n, pdim, h, w, dev,
+                     temperature=100.0):
+            super().__init__()
+            self._model      = model
+            self.temperature = temperature
+            self.n           = n
+            self.pdim        = pdim
+            self.h           = h
+            self.w           = w
+            self.register_buffer("text_features", text_feats)
+            for k, v in meta.items():
+                self.register_buffer(f"_meta_{k}", v)
+            self._meta_keys = list(meta.keys())
 
-    wrapper = ZeroShotSigLIP2(encode_fn, text_features, device)
-    # Override mean/std to identity since patchify handles normalization
-    wrapper.mean = torch.zeros(1, 3, 1, 1, device=device)
-    wrapper.std  = torch.ones(1, 3, 1, 1, device=device)
-    wrapper.eval().to(device)
-    return wrapper
+        def forward(self, x: torch.Tensor) -> torch.Tensor:
+            B = x.shape[0]
+            # Step 1: resize to what processor uses (256×256)
+            x = F.interpolate(x, size=(self.h, self.w),
+                              mode="bicubic", align_corners=False)
+            # Step 2: normalize (mean=0.5, std=0.5) — same as processor
+            x = (x - 0.5) / 0.5
+            # Step 3: patchify into (B, N, patch_dim)
+            x = x.unfold(2, 16, 16).unfold(3, 16, 16)
+            x = x.permute(0, 2, 3, 1, 4, 5).contiguous()
+            x = x.reshape(B, self.n, self.pdim)
+            # Step 4: expand fixed metadata to batch size
+            meta = {k: getattr(self, f"_meta_{k}").expand(
+                        B, *getattr(self, f"_meta_{k}").shape[1:])
+                    for k in self._meta_keys}
+            # Step 5: forward through vision model
+            vision_out = self._model.vision_model(pixel_values=x, **meta)
+            img_f = vision_out.pooler_output
+            if hasattr(self._model, 'visual_projection') and \
+               self._model.visual_projection is not None:
+                img_f = self._model.visual_projection(img_f)
+            img_f = F.normalize(img_f, dim=-1)
+            return self.temperature * (img_f @ self.text_features.T)
+
+    return NaFlexSurrogate(
+        hf_model, text_features, fixed_meta, N, patch_dim, H, W, device
+    ).to(device)
 
 def load_surrogate(surrogate: str, label_to_name: dict,
                    device: torch.device, dataset: str = "") -> nn.Module:
