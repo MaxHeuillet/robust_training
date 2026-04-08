@@ -73,6 +73,12 @@ SURROGATE_CLIP_H     = "clip_vith14"
 SURROGATE_METACLIP_H = "metaclip_h14"
 SURROGATE_SIGLIP_SO400M    = "siglip2_so400m"
 
+SURROGATE_SIGLIP_SO400M_384 = "siglip2_so400m_384"
+
+ALL_SURROGATES = [SURROGATE_CLIP, SURROGATE_SIGLIP, SURROGATE_CLIP_H,
+                  SURROGATE_METACLIP_H, SURROGATE_SIGLIP_SO400M,
+                  SURROGATE_SIGLIP_SO400M_384]
+
 
 ALL_SURROGATES = [SURROGATE_CLIP, SURROGATE_SIGLIP, SURROGATE_CLIP_H,
                   SURROGATE_METACLIP_H, SURROGATE_SIGLIP_SO400M]
@@ -154,6 +160,8 @@ def surrogate_slug(surrogate: str) -> str:
         return "zeroshot_metaclip_vith14_fullcc2_5b"
     elif surrogate == SURROGATE_SIGLIP_SO400M:
         return "zeroshot_siglip2_so400m_patch16_naflex"
+    elif surrogate == SURROGATE_SIGLIP_SO400M_384:
+        return "zeroshot_siglip2_so400m_patch14_384"
     raise ValueError(surrogate)
 
 
@@ -447,46 +455,6 @@ def load_siglip2_surrogate(label_to_name: dict, device: torch.device,
     model.eval().to(device)
     return model
 
-# def load_siglip2_so400m_surrogate(label_to_name: dict, device: torch.device,
-#                                    dataset: str = "") -> ZeroShotSigLIP2:
-#     from transformers import AutoTokenizer, SiglipTextModel, SiglipVisionModel
-
-#     model_id = "google/siglip2-so400m-patch16-naflex"
-#     print(f"\nLoading SigLIP2-SO400M-NaFlex surrogate: {model_id}")
-
-#     vision_model = SiglipVisionModel.from_pretrained(
-#         model_id, cache_dir=str(HF_CACHE_DIR))
-#     vision_model.eval().to(device)
-#     text_model = SiglipTextModel.from_pretrained(
-#         model_id, cache_dir=str(HF_CACHE_DIR))
-#     text_model.eval().to(device)
-#     tokenizer = AutoTokenizer.from_pretrained(
-#         model_id, cache_dir=str(HF_CACHE_DIR), use_fast=False)
-
-#     class_names = [label_to_name[i] for i in sorted(label_to_name.keys())]
-#     prompts     = build_prompts(dataset, class_names)
-#     print(f"  Encoding {len(prompts)} class prompts...")
-
-#     max_len = text_model.config.max_position_embeddings
-#     with torch.no_grad():
-#         text_inputs   = tokenizer(
-#             prompts, padding="max_length", truncation=True,
-#             max_length=max_len, return_tensors="pt"
-#         ).to(device)
-#         text_features = F.normalize(
-#             text_model(**text_inputs).pooler_output, dim=-1)
-
-#     del text_model
-#     if device.type == "cuda":
-#         torch.cuda.empty_cache()
-
-#     def encode_fn(x: torch.Tensor) -> torch.Tensor:
-#         return vision_model(pixel_values=x).pooler_output
-
-#     wrapper = ZeroShotSigLIP2(encode_fn, text_features, device)
-#     wrapper.eval().to(device)
-#     return wrapper
-
 def load_siglip2_so400m_surrogate(label_to_name: dict, device: torch.device,
                                    dataset: str = "") -> nn.Module:
     from transformers import AutoModel, AutoProcessor, AutoTokenizer
@@ -577,6 +545,34 @@ def load_siglip2_so400m_surrogate(label_to_name: dict, device: torch.device,
         hf_model, text_features, fixed_meta, N, patch_dim, H, W, device
     ).to(device)
 
+def load_siglip2_so400m_384_surrogate(label_to_name: dict, device: torch.device,
+                                       dataset: str = "") -> ZeroShotSigLIP2:
+    from transformers import AutoTokenizer, SiglipTextModel, SiglipVisionModel
+    model_id = "google/siglip2-so400m-patch14-384"
+    print(f"\nLoading SigLIP2-SO400M-384 surrogate: {model_id}")
+    vision_model = SiglipVisionModel.from_pretrained(model_id, cache_dir=str(HF_CACHE_DIR))
+    vision_model.eval().to(device)
+    text_model   = SiglipTextModel.from_pretrained(model_id, cache_dir=str(HF_CACHE_DIR))
+    text_model.eval().to(device)
+    tokenizer    = AutoTokenizer.from_pretrained(model_id, cache_dir=str(HF_CACHE_DIR), use_fast=False)
+    class_names  = [label_to_name[i] for i in sorted(label_to_name.keys())]
+    prompts      = build_prompts(dataset, class_names)
+    print(f"  Encoding {len(prompts)} class prompts...")
+    max_len = text_model.config.max_position_embeddings
+    with torch.no_grad():
+        text_inputs   = tokenizer(prompts, padding="max_length", truncation=True,
+                                  max_length=max_len, return_tensors="pt").to(device)
+        text_features = F.normalize(text_model(**text_inputs).pooler_output, dim=-1)
+    del text_model
+    if device.type == "cuda":
+        torch.cuda.empty_cache()
+    def encode_fn(x: torch.Tensor) -> torch.Tensor:
+        x_up = F.interpolate(x, size=(384, 384), mode="bicubic", align_corners=False)
+        return vision_model(pixel_values=x_up).pooler_output
+    wrapper = ZeroShotSigLIP2(encode_fn, text_features, device)
+    wrapper.eval().to(device)
+    return wrapper
+
 def load_surrogate(surrogate: str, label_to_name: dict,
                    device: torch.device, dataset: str = "") -> nn.Module:
     if surrogate == SURROGATE_CLIP:
@@ -589,6 +585,8 @@ def load_surrogate(surrogate: str, label_to_name: dict,
         return load_siglip2_surrogate(label_to_name, device, dataset=dataset)
     elif surrogate == SURROGATE_SIGLIP_SO400M:
         return load_siglip2_so400m_surrogate(label_to_name, device, dataset=dataset)
+    elif surrogate == SURROGATE_SIGLIP_SO400M_384:
+        return load_siglip2_so400m_384_surrogate(label_to_name, device, dataset=dataset)
     raise ValueError(f"Unknown surrogate: {surrogate!r}")
 
 

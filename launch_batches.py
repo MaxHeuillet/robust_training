@@ -33,10 +33,10 @@ import numpy as np
 
 ALL_DATASETS = [
     "caltech101",
-    "fgvc-aircraft-2013b",
+    # "fgvc-aircraft-2013b",
     "flowers-102",
-    "oxford-iiit-pet",
-    "stanford_cars",
+    # "oxford-iiit-pet",
+    # "stanford_cars",
     "uc-merced-land-use-dataset",
 ]
 

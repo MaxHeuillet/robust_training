@@ -11,20 +11,20 @@ from pathlib import Path
 BASE = Path("llm_classification_results")
 
 MANIFESTS = [
-    "batch_manifest__all_datasets__adv_siglip2_naflex_l1_eps75.json",
-    "batch_manifest__all_datasets__adv_siglip2_naflex_l1_eps300.json",
-    "batch_manifest__all_datasets__adv_siglip2_naflex_l2_eps2.json",
-    "batch_manifest__all_datasets__adv_siglip2_naflex_l2_eps8.json",
-    "batch_manifest__all_datasets__adv_siglip2_naflex_linf_eps8.json",
-    "batch_manifest__all_datasets__adv_siglip2_naflex_linf_eps30.json",
+    # "batch_manifest__all_datasets__adv_siglip2_conaflex_l1_eps75.json",
+    # "batch_manifest__all_datasets__adv_siglip2_naflex_l1_eps300.json",
+    # "batch_manifest__all_datasets__adv_siglip2_naflex_l2_eps2.json",
+    # "batch_manifest__all_datasets__adv_siglip2_naflex_l2_eps8.json",
+    # "batch_manifest__all_datasets__adv_siglip2_naflex_linf_eps8.json",
+    "batch_manifest__all_datasets__adv_siglip2_correct_naflex_linf_eps30.json",
 ]
 
 DATASETS = [
     "caltech101",
-    "fgvc-aircraft-2013b",
+    # "fgvc-aircraft-2013b",
     "flowers-102",
-    "oxford-iiit-pet",
-    "stanford_cars",
+    # "oxford-iiit-pet",
+    # "stanford_cars",
     "uc-merced-land-use-dataset",
 ]
 

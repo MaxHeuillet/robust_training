@@ -1,0 +1,12 @@
+[
+  {
+    "dataset": "caltech101__zeroshot_siglip2_so400m_patch16_naflex__linf_eps8_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "caltech101__zeroshot_siglip2_so400m_patch16_naflex__linf_eps8_autoattack_standard__openai__adv_siglip2_correct_naflex_linf_eps8",
+    "batch_id": "batch_69d6721580f08190b154f5adeb53a633",
+    "status": "submitted",
+    "experiment": "adv_siglip2_correct_naflex_linf_eps8"
+  }
+]

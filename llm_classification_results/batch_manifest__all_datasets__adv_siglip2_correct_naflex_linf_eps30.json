@@ -1,0 +1,102 @@
+[
+  {
+    "dataset": "caltech101__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "caltech101__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard__openai__adv_siglip2_correct_naflex_linf_eps30",
+    "batch_id": "batch_69d66d7328748190b6329b443ae6875d",
+    "status": "retrieved",
+    "experiment": "adv_siglip2_correct_naflex_linf_eps30"
+  },
+  {
+    "dataset": "flowers-102__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "flowers-102__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard__openai__adv_siglip2_correct_naflex_linf_eps30",
+    "batch_id": "batch_69d66fb9d0e0819097e0281aa9f47f2b",
+    "status": "retrieved",
+    "experiment": "adv_siglip2_correct_naflex_linf_eps30"
+  },
+  {
+    "dataset": "uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard__openai__adv_siglip2_correct_naflex_linf_eps30",
+    "batch_id": "batch_69d670fc15cc8190ad2ce36aa0ab04a7",
+    "status": "retrieved",
+    "experiment": "adv_siglip2_correct_naflex_linf_eps30"
+  },
+  {
+    "dataset": "caltech101__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "caltech101__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard__google_nothink__adv_siglip2_correct_naflex_linf_eps30",
+    "batch_id": null,
+    "status": "failed",
+    "experiment": "adv_siglip2_correct_naflex_linf_eps30"
+  },
+  {
+    "dataset": "flowers-102__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "flowers-102__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard__google_nothink__adv_siglip2_correct_naflex_linf_eps30",
+    "batch_id": null,
+    "status": "failed",
+    "experiment": "adv_siglip2_correct_naflex_linf_eps30"
+  },
+  {
+    "dataset": "uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard__google_nothink__adv_siglip2_correct_naflex_linf_eps30",
+    "batch_id": null,
+    "status": "failed",
+    "experiment": "adv_siglip2_correct_naflex_linf_eps30"
+  },
+  {
+    "dataset": "caltech101__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "caltech101__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard__google_nothink__adv_siglip2_correct_naflex_linf_eps30",
+    "batch_id": null,
+    "status": "failed",
+    "experiment": "adv_siglip2_correct_naflex_linf_eps30"
+  },
+  {
+    "dataset": "caltech101__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "caltech101__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard__google_nothink__adv_siglip2_correct_naflex_linf_eps30",
+    "batch_id": null,
+    "status": "failed",
+    "experiment": "adv_siglip2_correct_naflex_linf_eps30"
+  },
+  {
+    "dataset": "flowers-102__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "flowers-102__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard__google_nothink__adv_siglip2_correct_naflex_linf_eps30",
+    "batch_id": null,
+    "status": "failed",
+    "experiment": "adv_siglip2_correct_naflex_linf_eps30"
+  },
+  {
+    "dataset": "uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard__google_nothink__adv_siglip2_correct_naflex_linf_eps30",
+    "batch_id": null,
+    "status": "failed",
+    "experiment": "adv_siglip2_correct_naflex_linf_eps30"
+  }
+]
