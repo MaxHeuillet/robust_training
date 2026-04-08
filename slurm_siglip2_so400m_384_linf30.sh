@@ -42,7 +42,7 @@ HF_REPO="MaxHeuillet/RobustGenBench"
 NORM="Linf"
 EPS="30"
 TM_SLUG="linf_eps30_autoattack_standard"
-BATCH_SIZE=64
+BATCH_SIZE=32
 N_GPUS=4
 N_SHARDS=$N_GPUS
 
