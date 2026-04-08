@@ -548,24 +548,28 @@ def load_siglip2_so400m_surrogate(label_to_name: dict, device: torch.device,
 
         def forward(self, x: torch.Tensor) -> torch.Tensor:
             B = x.shape[0]
-            # Step 1: resize to what processor uses (256×256)
+            # Step 1: resize to 256×256
             x = F.interpolate(x, size=(self.h, self.w),
-                              mode="bicubic", align_corners=False)
-            # Step 2: normalize (mean=0.5, std=0.5) — same as processor
+                            mode="bicubic", align_corners=False)
+            # Step 2: normalize
             x = (x - 0.5) / 0.5
             # Step 3: patchify into (B, N, patch_dim)
             x = x.unfold(2, 16, 16).unfold(3, 16, 16)
             x = x.permute(0, 2, 3, 1, 4, 5).contiguous()
             x = x.reshape(B, self.n, self.pdim)
-            # Step 4: expand fixed metadata to batch size
-            meta = {k: getattr(self, f"_meta_{k}").expand(
-                        B, *getattr(self, f"_meta_{k}").shape[1:])
-                    for k in self._meta_keys}
+            # Step 4: expand fixed metadata to batch size and rename key
+            meta = {}
+            for k in self._meta_keys:
+                v = getattr(self, f"_meta_{k}").expand(
+                    B, *getattr(self, f"_meta_{k}").shape[1:])
+                # processor returns 'pixel_attention_mask', model expects 'attention_mask'
+                out_key = "attention_mask" if k == "pixel_attention_mask" else k
+                meta[out_key] = v
             # Step 5: forward through vision model
             vision_out = self._model.vision_model(pixel_values=x, **meta)
             img_f = vision_out.pooler_output
             if hasattr(self._model, 'visual_projection') and \
-               self._model.visual_projection is not None:
+            self._model.visual_projection is not None:
                 img_f = self._model.visual_projection(img_f)
             img_f = F.normalize(img_f, dim=-1)
             return self.temperature * (img_f @ self.text_features.T)
