@@ -1,0 +1,41 @@
+  Using: NVIDIA H100 80GB HBM3
+
+============================================================
+  Dataset   : stanford_cars  [shard 3/4]
+  Surrogate : siglip2_so400m
+  Norm      : L1  eps=300.0  (AA: 300.00000)
+  Device    : cuda
+============================================================
+  [shard] Waiting for download lock...
+Data already present at /home/m/mheuill/links/scratch/robustgenbench/data_processed.
+  Shard indices: 500–749  (250 samples of 1000 total)
+
+Loading SigLIP2-SO400M-NaFlex surrogate: google/siglip2-so400m-patch16-naflex
+Loading weights:   0%|          | 0/888 [00:00<?, ?it/s]Loading weights:  84%|████████▎ | 743/888 [00:00<00:00, 7331.44it/s]Loading weights: 100%|██████████| 888/888 [00:00<00:00, 6824.59it/s]
+  Encoding 196 class prompts...
+setting parameters for standard version
+shard2:   0%|          | 0/4 [00:00<?, ?it/s]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 0.00%
+max L1 perturbation: 0.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard2:  25%|██▌       | 1/4 [00:04<00:12,  4.28s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 1.56%
+apgd-ce - 1/1 - 1 out of 1 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 4.9 s)
+max L1 perturbation: 300.00095, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard2:  50%|█████     | 2/4 [00:12<00:13,  6.82s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 1.56%
+apgd-ce - 1/1 - 1 out of 1 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 5.1 s)
+max L1 perturbation: 300.00107, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard2:  75%|███████▌  | 3/4 [00:21<00:07,  7.71s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 1.72%
+apgd-ce - 1/1 - 1 out of 1 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 5.0 s)
+max L1 perturbation: 300.00064, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard2: 100%|██████████| 4/4 [00:30<00:00,  8.03s/it]shard2: 100%|██████████| 4/4 [00:30<00:00,  7.56s/it]
+
+  Shard 2 done: 250 images | clean=0.0120 | adv=0.0000

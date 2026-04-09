@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/craft_adversarial.py", line 37, in <module>
+    import numpy as np
+ModuleNotFoundError: No module named 'numpy'

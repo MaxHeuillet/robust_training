@@ -1,0 +1,44 @@
+  Using: NVIDIA H100 80GB HBM3
+
+============================================================
+  Dataset   : fgvc-aircraft-2013b  [shard 3/4]
+  Surrogate : metaclip_h14
+  Norm      : L2  eps=2.0  (AA: 2.00000)
+  Device    : cuda
+============================================================
+  [shard] Waiting for download lock...
+Data already present at /home/m/mheuill/links/scratch/robustgenbench/data_processed.
+  Shard indices: 500–749  (250 samples of 1000 total)
+
+Loading MetaCLIP ViT-H/14 surrogate: ViT-H-14-quickgelu / metaclip_fullcc
+  Encoding 100 class prompts...
+setting parameters for standard version
+shard2:   0%|          | 0/4 [00:00<?, ?it/s]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 64.06%
+apgd-ce - 1/1 - 41 out of 41 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 80.6 s)
+max L2 perturbation: 2.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard2:  25%|██▌       | 1/4 [01:27<04:23, 87.75s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 53.12%
+apgd-ce - 1/1 - 34 out of 34 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 65.9 s)
+max L2 perturbation: 2.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard2:  50%|█████     | 2/4 [02:40<02:37, 78.65s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 48.44%
+apgd-ce - 1/1 - 31 out of 31 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 61.2 s)
+max L2 perturbation: 2.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard2:  75%|███████▌  | 3/4 [03:47<01:13, 73.59s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 41.38%
+apgd-ce - 1/1 - 23 out of 24 successfully perturbed
+robust accuracy after APGD-CE: 1.72% (total time 46.5 s)
+apgd-t - 1/1 - 1 out of 1 successfully perturbed
+robust accuracy after APGD-T: 0.00% (total time 51.4 s)
+max L2 perturbation: 2.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard2: 100%|██████████| 4/4 [04:44<00:00, 67.14s/it]shard2: 100%|██████████| 4/4 [04:44<00:00, 71.23s/it]
+
+  Shard 2 done: 250 images | clean=0.5200 | adv=0.0000

@@ -1,0 +1,164 @@
+  Using: NVIDIA H100 80GB HBM3
+
+============================================================
+  Dataset   : caltech101  [shard 3/4]
+  Surrogate : siglip2_so400m_384
+  Norm      : Linf  eps=30.0  (AA: 0.11765)
+  Device    : cuda
+============================================================
+  [shard] Waiting for download lock...
+Data already present at /home/m/mheuill/links/scratch/robustgenbench/data_processed.
+  Shard indices: 500–749  (250 samples of 1000 total)
+
+Loading SigLIP2-SO400M-384 surrogate: google/siglip2-so400m-patch14-384
+Loading weights:   0%|          | 0/448 [00:00<?, ?it/s]Loading weights:  71%|███████   | 316/448 [00:00<00:00, 3128.67it/s]Loading weights: 100%|██████████| 448/448 [00:00<00:00, 3058.82it/s]
+[1mSiglipVisionModel LOAD REPORT[0m from: google/siglip2-so400m-patch14-384
+Key                                                          | Status     |  | 
+-------------------------------------------------------------+------------+--+-
+text_model.encoder.layers.{0...26}.self_attn.out_proj.weight | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.self_attn.k_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.self_attn.q_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.layer_norm1.bias          | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.self_attn.v_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.self_attn.q_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.mlp.fc2.weight            | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.self_attn.k_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.layer_norm2.weight        | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.mlp.fc1.weight            | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.layer_norm1.weight        | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.self_attn.v_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.self_attn.out_proj.bias   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.mlp.fc1.bias              | UNEXPECTED |  | 
+text_model.embeddings.position_embedding.weight              | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.mlp.fc2.bias              | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.layer_norm2.bias          | UNEXPECTED |  | 
+logit_scale                                                  | UNEXPECTED |  | 
+text_model.embeddings.token_embedding.weight                 | UNEXPECTED |  | 
+text_model.head.weight                                       | UNEXPECTED |  | 
+logit_bias                                                   | UNEXPECTED |  | 
+text_model.head.bias                                         | UNEXPECTED |  | 
+text_model.final_layer_norm.weight                           | UNEXPECTED |  | 
+text_model.final_layer_norm.bias                             | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+Loading weights:   0%|          | 0/438 [00:00<?, ?it/s]Loading weights:  82%|████████▏ | 358/438 [00:00<00:00, 3567.08it/s]Loading weights: 100%|██████████| 438/438 [00:00<00:00, 3409.11it/s]
+[1mSiglipTextModel LOAD REPORT[0m from: google/siglip2-so400m-patch14-384
+Key                                                            | Status     |  | 
+---------------------------------------------------------------+------------+--+-
+vision_model.encoder.layers.{0...26}.self_attn.q_proj.bias     | UNEXPECTED |  | 
+vision_model.post_layernorm.bias                               | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.self_attn.k_proj.weight   | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.self_attn.out_proj.weight | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.mlp.fc1.bias              | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.self_attn.out_proj.bias   | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.layer_norm2.weight        | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.layer_norm1.bias          | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.self_attn.k_proj.bias     | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.self_attn.q_proj.weight   | UNEXPECTED |  | 
+vision_model.embeddings.patch_embedding.weight                 | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.mlp.fc2.bias              | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.self_attn.v_proj.weight   | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.layer_norm1.weight        | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.mlp.fc1.weight            | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.mlp.fc2.weight            | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.layer_norm2.bias          | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.self_attn.v_proj.bias     | UNEXPECTED |  | 
+logit_scale                                                    | UNEXPECTED |  | 
+vision_model.head.mlp.fc2.weight                               | UNEXPECTED |  | 
+vision_model.head.attention.in_proj_weight                     | UNEXPECTED |  | 
+vision_model.post_layernorm.weight                             | UNEXPECTED |  | 
+vision_model.embeddings.patch_embedding.bias                   | UNEXPECTED |  | 
+vision_model.head.mlp.fc1.bias                                 | UNEXPECTED |  | 
+vision_model.head.attention.out_proj.weight                    | UNEXPECTED |  | 
+vision_model.embeddings.position_embedding.weight              | UNEXPECTED |  | 
+vision_model.head.mlp.fc1.weight                               | UNEXPECTED |  | 
+vision_model.head.layernorm.weight                             | UNEXPECTED |  | 
+logit_bias                                                     | UNEXPECTED |  | 
+vision_model.head.attention.out_proj.bias                      | UNEXPECTED |  | 
+vision_model.head.layernorm.bias                               | UNEXPECTED |  | 
+vision_model.head.attention.in_proj_bias                       | UNEXPECTED |  | 
+vision_model.head.mlp.fc2.bias                                 | UNEXPECTED |  | 
+vision_model.head.probe                                        | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+  Encoding 101 class prompts...
+setting parameters for standard version
+shard2:   0%|          | 0/4 [00:00<?, ?it/s]using standard version including apgd-ce, apgd-t, fab-t, square.
+shard2:   0%|          | 0/4 [00:08<?, ?it/s]
+Traceback (most recent call last):
+  File "/project/6102313/mheuill/robust_training/craft_shard.py", line 253, in <module>
+    main()
+  File "/project/6102313/mheuill/robust_training/craft_shard.py", line 246, in main
+    run_shard(args)
+  File "/project/6102313/mheuill/robust_training/craft_shard.py", line 128, in run_shard
+    x_adv = adversary.run_standard_evaluation(x, labels_t, bs=x.size(0))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/autoattack/autoattack.py", line 116, in run_standard_evaluation
+    checks.check_dynamic(self.model, x_orig[:bs].to(self.device), self.is_tf_model,
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/autoattack/checks.py", line 101, in check_dynamic
+    model(x)
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/project/6102313/mheuill/robust_training/craft_adversarial.py", line 337, in forward
+    image_features = F.normalize(self._encode_fn(x), dim=-1)
+                                 ^^^^^^^^^^^^^^^^^^
+  File "/project/6102313/mheuill/robust_training/craft_adversarial.py", line 567, in encode_fn
+    return vision_model(pixel_values=x_up).pooler_output
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/transformers/utils/generic.py", line 952, in wrapper
+    output = func(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/transformers/utils/output_capturing.py", line 248, in wrapper
+    outputs = func(self, *args, **kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/transformers/models/siglip/modeling_siglip.py", line 705, in forward
+    return self.vision_model(
+           ^^^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/transformers/models/siglip/modeling_siglip.py", line 612, in forward
+    encoder_outputs: BaseModelOutput = self.encoder(
+                                       ^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/transformers/models/siglip/modeling_siglip.py", line 464, in forward
+    hidden_states = encoder_layer(
+                    ^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/transformers/modeling_layers.py", line 93, in __call__
+    return super().__call__(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/transformers/models/siglip/modeling_siglip.py", line 354, in forward
+    hidden_states = residual + hidden_states
+                    ~~~~~~~~~^~~~~~~~~~~~~~~
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 206.00 MiB. GPU 0 has a total capacity of 79.19 GiB of which 125.25 MiB is free. Including non-PyTorch memory, this process has 79.06 GiB memory in use. Of the allocated memory 77.83 GiB is allocated by PyTorch, and 572.28 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)
+Exception ignored in: <function WeakValueDictionary.__init__.<locals>.remove at 0x736f6c970fe0>
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/Compiler/gcccore/python/3.11.5/lib/python3.11/weakref.py", line 105, in remove
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/autoattack/checks.py", line 91, in tracefunc
+AttributeError: 'NoneType' object has no attribute 'keys'

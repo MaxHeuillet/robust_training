@@ -1,0 +1,13 @@
+  Using: NVIDIA H100 80GB HBM3
+
+============================================================
+  Dataset   : caltech101  [shard 2/4]
+  Surrogate : siglip2_so400m
+  Norm      : L2  eps=2.0  (AA: 2.00000)
+  Device    : cuda
+============================================================
+  [shard] Waiting for download lock...
+Data already present at /home/m/mheuill/links/scratch/robustgenbench/data_processed.
+  Shard indices: 250–499  (250 samples of 1000 total)
+
+Loading SigLIP2-SO400M-NaFlex surrogate: google/siglip2-so400m-patch16-naflex

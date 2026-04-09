@@ -1,0 +1,37 @@
+  Using: NVIDIA H100 80GB HBM3
+
+============================================================
+  Dataset   : fgvc-aircraft-2013b  [shard 4/4]
+  Surrogate : siglip2_so400m
+  Norm      : Linf  eps=30.0  (AA: 0.11765)
+  Device    : cuda
+============================================================
+  [shard] Waiting for download lock...
+Data already present at /home/m/mheuill/links/scratch/robustgenbench/data_processed.
+  Shard indices: 750–999  (250 samples of 1000 total)
+
+Loading SigLIP2-SO400M-NaFlex surrogate: google/siglip2-so400m-patch16-naflex
+Loading weights:   0%|          | 0/888 [00:00<?, ?it/s]Loading weights:  22%|██▏       | 199/888 [00:00<00:00, 1918.09it/s]Loading weights:  44%|████▍     | 391/888 [00:00<00:00, 1494.15it/s]Loading weights:  64%|██████▎   | 566/888 [00:00<00:00, 1588.89it/s]Loading weights:  85%|████████▍ | 753/888 [00:00<00:00, 1652.46it/s]Loading weights: 100%|██████████| 888/888 [00:00<00:00, 1695.56it/s]
+  Encoding 100 class prompts...
+setting parameters for standard version
+shard3:   0%|          | 0/4 [00:00<?, ?it/s]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 6.25%
+apgd-ce - 1/1 - 4 out of 4 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 5.3 s)
+max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard3:  25%|██▌       | 1/4 [00:09<00:29,  9.97s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 0.00%
+max Linf perturbation: 0.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard3:  50%|█████     | 2/4 [00:13<00:12,  6.47s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 0.00%
+max Linf perturbation: 0.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard3:  75%|███████▌  | 3/4 [00:18<00:05,  5.36s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 0.00%
+max Linf perturbation: 0.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard3: 100%|██████████| 4/4 [00:21<00:00,  4.74s/it]shard3: 100%|██████████| 4/4 [00:21<00:00,  5.46s/it]
+
+  Shard 3 done: 250 images | clean=0.0160 | adv=0.0000

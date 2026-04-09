@@ -1,0 +1,41 @@
+  Using: NVIDIA H100 80GB HBM3
+
+============================================================
+  Dataset   : flowers-102  [shard 3/4]
+  Surrogate : siglip2_so400m
+  Norm      : Linf  eps=8.0  (AA: 0.03137)
+  Device    : cuda
+============================================================
+  [shard] Waiting for download lock...
+Data already present at /home/m/mheuill/links/scratch/robustgenbench/data_processed.
+  Shard indices: 500–749  (250 samples of 1000 total)
+
+Loading SigLIP2-SO400M-NaFlex surrogate: google/siglip2-so400m-patch16-naflex
+Loading weights:   0%|          | 0/888 [00:00<?, ?it/s]Loading weights:  56%|█████▋    | 500/888 [00:00<00:00, 4999.33it/s]Loading weights: 100%|██████████| 888/888 [00:00<00:00, 4748.85it/s]
+  Encoding 102 class prompts...
+setting parameters for standard version
+shard2:   0%|          | 0/4 [00:00<?, ?it/s]shard2:   0%|          | 0/4 [00:00<?, ?it/s]
+Traceback (most recent call last):
+  File "/project/6102313/mheuill/robust_training/craft_shard.py", line 253, in <module>
+    main()
+  File "/project/6102313/mheuill/robust_training/craft_shard.py", line 246, in main
+    run_shard(args)
+  File "/project/6102313/mheuill/robust_training/craft_shard.py", line 126, in run_shard
+    n_correct_clean += (model(x).argmax(1) == labels_t).sum().item()
+                        ^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/project/6102313/mheuill/robust_training/craft_adversarial.py", line 333, in forward
+    image_features = F.normalize(self._encode_fn(x), dim=-1)
+                                 ^^^^^^^^^^^^^^^^^^
+  File "/project/6102313/mheuill/robust_training/craft_adversarial.py", line 503, in encode_fn
+    pixel_values   = patchify(x)
+                     ^^^^^^^^^^^
+  File "/project/6102313/mheuill/robust_training/craft_adversarial.py", line 498, in patchify
+    x = x.view(B, ph * pw, 3 * patch_size * patch_size)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: shape '[64, 196, 768]' is invalid for input of size 28311552

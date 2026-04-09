@@ -1,0 +1,30 @@
+  Using: NVIDIA H100 80GB HBM3
+
+============================================================
+  Dataset   : uc-merced-land-use-dataset  [shard 1/4]
+  Surrogate : metaclip_h14
+  Norm      : Linf  eps=8.0  (AA: 0.03137)
+  Device    : cuda
+============================================================
+  [shard] Waiting for download lock...
+Data already present at /home/m/mheuill/links/scratch/robustgenbench/data_processed.
+  Shard indices: 0–104  (105 samples of 420 total)
+
+Loading MetaCLIP ViT-H/14 surrogate: ViT-H-14-quickgelu / metaclip_fullcc
+  Encoding 21 class prompts...
+setting parameters for standard version
+shard0:   0%|          | 0/2 [00:00<?, ?it/s]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 78.12%
+apgd-ce - 1/1 - 50 out of 50 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 94.0 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard0:  50%|█████     | 1/2 [01:40<01:40, 100.29s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 80.49%
+apgd-ce - 1/1 - 33 out of 33 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 65.2 s)
+max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard0: 100%|██████████| 2/2 [02:49<00:00, 81.89s/it] shard0: 100%|██████████| 2/2 [02:49<00:00, 84.68s/it]
+
+  Shard 0 done: 105 images | clean=0.7905 | adv=0.0000

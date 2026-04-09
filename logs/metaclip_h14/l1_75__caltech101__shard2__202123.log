@@ -1,0 +1,69 @@
+  Using: NVIDIA H100 80GB HBM3
+
+============================================================
+  Dataset   : caltech101  [shard 3/4]
+  Surrogate : metaclip_h14
+  Norm      : L1  eps=75.0  (AA: 75.00000)
+  Device    : cuda
+============================================================
+  [shard] Waiting for download lock...
+Data already present at /home/m/mheuill/links/scratch/robustgenbench/data_processed.
+  Shard indices: 500–749  (250 samples of 1000 total)
+
+Loading MetaCLIP ViT-H/14 surrogate: ViT-H-14-quickgelu / metaclip_fullcc
+  Encoding 101 class prompts...
+setting parameters for standard version
+shard2:   0%|          | 0/4 [00:00<?, ?it/s]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 89.06%
+apgd-ce - 1/1 - 32 out of 57 successfully perturbed
+robust accuracy after APGD-CE: 39.06% (total time 379.2 s)
+apgd-t - 1/1 - 2 out of 25 successfully perturbed
+robust accuracy after APGD-T: 35.94% (total time 621.1 s)
+fab-t - 1/1 - 0 out of 23 successfully perturbed
+robust accuracy after FAB-T: 35.94% (total time 1351.2 s)
+square - 1/1 - 1 out of 23 successfully perturbed
+robust accuracy after SQUARE: 34.38% (total time 2326.7 s)
+Warning: Square Attack has decreased the robust accuracy of 1.56%. This might indicate that the robustness evaluation using AutoAttack is unreliable. Consider running Square Attack with more iterations and restarts or an adaptive attack. See flags_doc.md for details.
+max L1 perturbation: 75.00146, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 34.38%
+shard2:  25%|██▌       | 1/4 [38:53<1:56:39, 2333.26s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 90.62%
+apgd-ce - 1/1 - 26 out of 58 successfully perturbed
+robust accuracy after APGD-CE: 50.00% (total time 416.0 s)
+apgd-t - 1/1 - 2 out of 32 successfully perturbed
+robust accuracy after APGD-T: 46.88% (total time 731.9 s)
+fab-t - 1/1 - 0 out of 30 successfully perturbed
+robust accuracy after FAB-T: 46.88% (total time 1686.5 s)
+square - 1/1 - 4 out of 30 successfully perturbed
+robust accuracy after SQUARE: 40.62% (total time 2952.1 s)
+Warning: Square Attack has decreased the robust accuracy of 6.25%. This might indicate that the robustness evaluation using AutoAttack is unreliable. Consider running Square Attack with more iterations and restarts or an adaptive attack. See flags_doc.md for details.
+max L1 perturbation: 75.00092, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 40.62%
+shard2:  50%|█████     | 2/4 [1:28:11<1:30:01, 2700.66s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 85.94%
+apgd-ce - 1/1 - 28 out of 55 successfully perturbed
+robust accuracy after APGD-CE: 42.19% (total time 368.6 s)
+apgd-t - 1/1 - 2 out of 27 successfully perturbed
+robust accuracy after APGD-T: 39.06% (total time 635.5 s)
+fab-t - 1/1 - 0 out of 25 successfully perturbed
+robust accuracy after FAB-T: 39.06% (total time 1393.1 s)
+square - 1/1 - 0 out of 25 successfully perturbed
+robust accuracy after SQUARE: 39.06% (total time 2412.6 s)
+max L1 perturbation: 75.00093, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 39.06%
+shard2:  75%|███████▌  | 3/4 [2:08:29<42:51, 2571.73s/it]  using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 86.21%
+apgd-ce - 1/1 - 31 out of 50 successfully perturbed
+robust accuracy after APGD-CE: 32.76% (total time 298.4 s)
+apgd-t - 1/1 - 2 out of 19 successfully perturbed
+robust accuracy after APGD-T: 29.31% (total time 490.0 s)
+fab-t - 1/1 - 0 out of 17 successfully perturbed
+robust accuracy after FAB-T: 29.31% (total time 1050.8 s)
+square - 1/1 - 1 out of 17 successfully perturbed
+robust accuracy after SQUARE: 27.59% (total time 1813.0 s)
+Warning: Square Attack has decreased the robust accuracy of 1.72%. This might indicate that the robustness evaluation using AutoAttack is unreliable. Consider running Square Attack with more iterations and restarts or an adaptive attack. See flags_doc.md for details.
+max L1 perturbation: 75.00093, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 27.59%
+shard2: 100%|██████████| 4/4 [2:38:47<00:00, 2274.34s/it]shard2: 100%|██████████| 4/4 [2:38:47<00:00, 2381.98s/it]
+
+  Shard 2 done: 250 images | clean=0.8800 | adv=0.3560

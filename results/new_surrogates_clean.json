@@ -1,42 +1,34 @@
 {
   "siglip2_so400m_naflex": {
     "caltech101": {
-      "error": "'BaseModelOutputWithPooling' object has no attribute 'norm'"
+      "accuracy": 0.906,
+      "correct": 906,
+      "total": 1000
     },
     "fgvc-aircraft-2013b": {
-      "error": "'BaseModelOutputWithPooling' object has no attribute 'norm'"
+      "accuracy": 0.272,
+      "correct": 272,
+      "total": 1000
     },
     "flowers-102": {
-      "error": "'BaseModelOutputWithPooling' object has no attribute 'norm'"
+      "accuracy": 0.908,
+      "correct": 908,
+      "total": 1000
     },
     "oxford-iiit-pet": {
-      "error": "'BaseModelOutputWithPooling' object has no attribute 'norm'"
+      "accuracy": 0.158,
+      "correct": 158,
+      "total": 1000
     },
     "stanford_cars": {
-      "error": "'BaseModelOutputWithPooling' object has no attribute 'norm'"
+      "accuracy": 0.05,
+      "correct": 50,
+      "total": 1000
     },
     "uc-merced-land-use-dataset": {
-      "error": "'BaseModelOutputWithPooling' object has no attribute 'norm'"
-    }
-  },
-  "eva_clip_18b": {
-    "caltech101": {
-      "error": "CUDA error: device-side assert triggered\nSearch for `cudaErrorAssert' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.\nCUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.\nFor debugging consider passing CUDA_LAUNCH_BLOCKING=1\nCompile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.\n"
-    },
-    "fgvc-aircraft-2013b": {
-      "error": "CUDA error: device-side assert triggered\nSearch for `cudaErrorAssert' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.\nCUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.\nFor debugging consider passing CUDA_LAUNCH_BLOCKING=1\nCompile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.\n"
-    },
-    "flowers-102": {
-      "error": "CUDA error: device-side assert triggered\nSearch for `cudaErrorAssert' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.\nCUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.\nFor debugging consider passing CUDA_LAUNCH_BLOCKING=1\nCompile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.\n"
-    },
-    "oxford-iiit-pet": {
-      "error": "CUDA error: device-side assert triggered\nSearch for `cudaErrorAssert' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.\nCUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.\nFor debugging consider passing CUDA_LAUNCH_BLOCKING=1\nCompile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.\n"
-    },
-    "stanford_cars": {
-      "error": "CUDA error: device-side assert triggered\nSearch for `cudaErrorAssert' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.\nCUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.\nFor debugging consider passing CUDA_LAUNCH_BLOCKING=1\nCompile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.\n"
-    },
-    "uc-merced-land-use-dataset": {
-      "error": "CUDA error: device-side assert triggered\nSearch for `cudaErrorAssert' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.\nCUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.\nFor debugging consider passing CUDA_LAUNCH_BLOCKING=1\nCompile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.\n"
+      "accuracy": 0.819,
+      "correct": 344,
+      "total": 420
     }
   }
 }

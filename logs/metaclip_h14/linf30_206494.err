@@ -1,0 +1,2 @@
+  Running command git clone --filter=blob:none --quiet https://github.com/fra31/auto-attack /tmp/pip-req-build-rgs97k3d
+slurmstepd: error: *** JOB 206494 ON tg11105 CANCELLED AT 2026-04-07T15:33:15 ***

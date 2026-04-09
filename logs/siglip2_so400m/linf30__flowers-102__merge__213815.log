@@ -1,0 +1,85 @@
+  Merging 4 shards → flowers-102__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard
+  Merged 1000 images | clean=0.9080 | adv=0.0000
+  Packaging 1000 images → flowers-102__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard_processed.tar.zst
+  Compressing:   0%|          | 0/1000 [00:00<?, ?it/s]  Compressing:  36%|███▌      | 360/1000 [00:00<00:00, 3589.63it/s]  Compressing:  72%|███████▏  | 722/1000 [00:00<00:00, 3605.81it/s]                                                                     ✓ flowers-102__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard_processed.tar.zst (121.5 MB)
+  Uploading → MaxHeuillet/RobustGenBench/adversarial/zeroshot_siglip2_so400m_patch16_naflex/linf_eps30_autoattack_standard/flowers-102__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard_processed.tar.zst
+Processing Files (0 / 0)      : |          |  0.00B /  0.00B            
+New Data Upload               : |          |  0.00B /  0.00B            [A
+
+  ...tandard_processed.tar.zst:   0%|          |  211kB /  122MB            [A[A
+
+  ...tandard_processed.tar.zst:   0%|          |  211kB /  122MB            [A[AProcessing Files (0 / 1)      :   0%|          |  211kB /  122MB, 1.05MB/s  
+
+  ...tandard_processed.tar.zst:   0%|          |  315kB /  122MB            [A[AProcessing Files (0 / 1)      :   0%|          |  315kB /  122MB,  789kB/s  
+
+  ...tandard_processed.tar.zst:   5%|▌         | 6.28MB /  122MB            [A[AProcessing Files (0 / 1)      :   5%|▌         | 6.28MB /  122MB, 10.5MB/s  
+New Data Upload               :   5%|▍         | 5.81MB /  121MB, 9.68MB/s  [A
+
+  ...tandard_processed.tar.zst:  13%|█▎        | 15.8MB /  122MB            [A[AProcessing Files (0 / 1)      :  13%|█▎        | 15.8MB /  122MB, 19.7MB/s  
+New Data Upload               :  13%|█▎        | 15.3MB /  121MB, 19.1MB/s  [A
+
+  ...tandard_processed.tar.zst:  22%|██▏       | 26.3MB /  122MB            [A[AProcessing Files (0 / 1)      :  22%|██▏       | 26.3MB /  122MB, 26.4MB/s  
+New Data Upload               :  21%|██▏       | 25.9MB /  121MB, 25.9MB/s  [A
+
+  ...tandard_processed.tar.zst:  30%|██▉       | 36.4MB /  122MB            [A[AProcessing Files (0 / 1)      :  30%|██▉       | 36.4MB /  122MB, 30.3MB/s  
+New Data Upload               :  30%|██▉       | 35.9MB /  121MB, 29.9MB/s  [A
+
+  ...tandard_processed.tar.zst:  37%|███▋      | 45.4MB /  122MB            [A[AProcessing Files (0 / 1)      :  37%|███▋      | 45.4MB /  122MB, 32.4MB/s  
+New Data Upload               :  37%|███▋      | 44.9MB /  121MB, 32.0MB/s  [A
+
+  ...tandard_processed.tar.zst:  45%|████▌     | 54.9MB /  122MB            [A[AProcessing Files (0 / 1)      :  45%|████▌     | 54.9MB /  122MB, 34.3MB/s  
+New Data Upload               :  45%|████▍     | 54.4MB /  121MB, 34.0MB/s  [A
+
+  ...tandard_processed.tar.zst:  54%|█████▍    | 65.4MB /  122MB            [A[AProcessing Files (0 / 1)      :  54%|█████▍    | 65.4MB /  122MB, 36.3MB/s  
+New Data Upload               :  54%|█████▎    | 64.9MB /  121MB, 36.1MB/s  [A
+
+  ...tandard_processed.tar.zst:  56%|█████▌    | 67.5MB /  122MB            [A[AProcessing Files (0 / 1)      :  56%|█████▌    | 67.5MB /  122MB, 33.8MB/s  
+New Data Upload               :  55%|█████▌    | 67.0MB /  121MB, 33.5MB/s  [A
+
+  ...tandard_processed.tar.zst:  56%|█████▌    | 67.5MB /  122MB            [A[A
+
+  ...tandard_processed.tar.zst:  56%|█████▌    | 67.5MB /  122MB            [A[A
+
+  ...tandard_processed.tar.zst:  56%|█████▌    | 67.5MB /  122MB            [A[A
+
+  ...tandard_processed.tar.zst:  56%|█████▌    | 67.5MB /  122MB            [A[A
+
+  ...tandard_processed.tar.zst:  56%|█████▌    | 67.6MB /  122MB            [A[AProcessing Files (0 / 1)      :  56%|█████▌    | 67.6MB /  122MB, 22.5MB/s  
+New Data Upload               :  55%|█████▌    | 67.1MB /  121MB, 22.4MB/s  [A
+
+  ...tandard_processed.tar.zst:  64%|██████▍   | 78.1MB /  122MB            [A[AProcessing Files (0 / 1)      :  64%|██████▍   | 78.1MB /  122MB, 24.4MB/s  
+New Data Upload               :  64%|██████▍   | 77.7MB /  121MB, 24.3MB/s  [A
+
+  ...tandard_processed.tar.zst:  74%|███████▍  | 89.7MB /  122MB            [A[AProcessing Files (0 / 1)      :  74%|███████▍  | 89.7MB /  122MB, 26.4MB/s  
+New Data Upload               :  74%|███████▎  | 89.3MB /  121MB, 26.3MB/s  [A
+
+  ...tandard_processed.tar.zst:  84%|████████▍ |  102MB /  122MB            [A[AProcessing Files (0 / 1)      :  84%|████████▍ |  102MB /  122MB, 28.3MB/s  
+New Data Upload               :  84%|████████▍ |  101MB /  121MB, 28.2MB/s  [A
+
+  ...tandard_processed.tar.zst:  93%|█████████▎|  113MB /  122MB            [A[AProcessing Files (0 / 1)      :  93%|█████████▎|  113MB /  122MB, 29.7MB/s  
+New Data Upload               :  93%|█████████▎|  112MB /  121MB, 29.6MB/s  [A
+
+  ...tandard_processed.tar.zst: 100%|█████████▉|  121MB /  122MB            [A[AProcessing Files (0 / 1)      : 100%|█████████▉|  121MB /  122MB, 30.4MB/s  
+New Data Upload               : 100%|█████████▉|  121MB /  121MB, 30.2MB/s  [A
+
+  ...tandard_processed.tar.zst: 100%|█████████▉|  121MB /  122MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|█████████▉|  121MB /  122MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|█████████▉|  121MB /  122MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|█████████▉|  121MB /  122MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|██████████|  122MB /  122MB            [A[AProcessing Files (1 / 1)      : 100%|██████████|  122MB /  122MB, 24.3MB/s  
+New Data Upload               : 100%|██████████|  121MB /  121MB, 24.2MB/s  [A
+
+  ...tandard_processed.tar.zst: 100%|██████████|  122MB /  122MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|██████████|  122MB /  122MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|██████████|  122MB /  122MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|██████████|  122MB /  122MB            [A[AProcessing Files (1 / 1)      : 100%|██████████|  122MB /  122MB, 21.7MB/s  
+New Data Upload               : 100%|██████████|  121MB /  121MB, 21.6MB/s  
+  ...tandard_processed.tar.zst: 100%|██████████|  122MB /  122MB            
+  ✓ Upload complete: flowers-102__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard_processed.tar.zst

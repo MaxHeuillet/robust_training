@@ -1,0 +1,36 @@
+  Using: NVIDIA H100 80GB HBM3
+
+============================================================
+  Dataset   : uc-merced-land-use-dataset  [shard 3/4]
+  Surrogate : metaclip_h14
+  Norm      : L1  eps=75.0  (AA: 75.00000)
+  Device    : cuda
+============================================================
+  [shard] Waiting for download lock...
+Data already present at /home/m/mheuill/links/scratch/robustgenbench/data_processed.
+  Shard indices: 210–314  (105 samples of 420 total)
+
+Loading MetaCLIP ViT-H/14 surrogate: ViT-H-14-quickgelu / metaclip_fullcc
+  Encoding 21 class prompts...
+setting parameters for standard version
+shard2:   0%|          | 0/2 [00:00<?, ?it/s]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 87.50%
+apgd-ce - 1/1 - 56 out of 56 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 158.3 s)
+max L1 perturbation: 75.00121, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard2:  50%|█████     | 1/2 [02:44<02:44, 164.66s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 78.05%
+apgd-ce - 1/1 - 31 out of 32 successfully perturbed
+robust accuracy after APGD-CE: 2.44% (total time 93.3 s)
+apgd-t - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after APGD-T: 2.44% (total time 121.0 s)
+fab-t - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after FAB-T: 2.44% (total time 185.7 s)
+square - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after SQUARE: 2.44% (total time 306.8 s)
+max L1 perturbation: 75.00180, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 2.44%
+shard2: 100%|██████████| 2/2 [07:55<00:00, 250.66s/it]shard2: 100%|██████████| 2/2 [07:55<00:00, 237.78s/it]
+
+  Shard 2 done: 105 images | clean=0.8381 | adv=0.0095
