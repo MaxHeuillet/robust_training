@@ -1,0 +1,92 @@
+[
+  {
+    "dataset": "caltech101__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "caltech101__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard__google_nothink__adv_siglip2_384_l1_eps75",
+    "batch_id": null,
+    "status": "failed",
+    "experiment": "adv_siglip2_384_l1_eps75"
+  },
+  {
+    "dataset": "flowers-102__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "flowers-102__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard__google_nothink__adv_siglip2_384_l1_eps75",
+    "batch_id": null,
+    "status": "failed",
+    "experiment": "adv_siglip2_384_l1_eps75"
+  },
+  {
+    "dataset": "uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard__google_nothink__adv_siglip2_384_l1_eps75",
+    "batch_id": "batches/bwk824iu95ter2ip5ndz1knlq57hmvj3ibts",
+    "status": "retrieved",
+    "experiment": "adv_siglip2_384_l1_eps75"
+  },
+  {
+    "dataset": "caltech101__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "caltech101__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard__openai__adv_siglip2_384_l1_eps75",
+    "batch_id": "batch_69d8440cd1c881908d80a8c05e5b7452",
+    "status": "retrieved",
+    "experiment": "adv_siglip2_384_l1_eps75"
+  },
+  {
+    "dataset": "flowers-102__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "flowers-102__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard__openai__adv_siglip2_384_l1_eps75",
+    "batch_id": "batch_69d845ac6a0081909ce31546403b0eb6",
+    "status": "retrieved",
+    "experiment": "adv_siglip2_384_l1_eps75"
+  },
+  {
+    "dataset": "uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard__openai__adv_siglip2_384_l1_eps75",
+    "batch_id": "batch_69d8476c880c8190a1390811f9f627ad",
+    "status": "retrieved",
+    "experiment": "adv_siglip2_384_l1_eps75"
+  },
+  {
+    "dataset": "caltech101__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "caltech101__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard__google_nothink__adv_siglip2_384_l1_eps75",
+    "batch_id": null,
+    "status": "failed",
+    "experiment": "adv_siglip2_384_l1_eps75"
+  },
+  {
+    "dataset": "flowers-102__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "flowers-102__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard__google_nothink__adv_siglip2_384_l1_eps75",
+    "batch_id": "batches/ccmxfte957b78f46a1w5qwyw9izqvg6yw86z",
+    "status": "retrieved",
+    "experiment": "adv_siglip2_384_l1_eps75"
+  },
+  {
+    "dataset": "caltech101__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "caltech101__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard__google_nothink__adv_siglip2_384_l1_eps75",
+    "batch_id": "batches/kgpzk0ugeikgrhm2bq6nfyhlu54pau7j7kqj",
+    "status": "retrieved",
+    "experiment": "adv_siglip2_384_l1_eps75"
+  }
+]

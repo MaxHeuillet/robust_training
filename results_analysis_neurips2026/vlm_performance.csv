@@ -1,0 +1,8 @@
+Dataset,CLIP B/16,CLIP H/14,MetaCLIP H/14,SigLIP2 base,SigLIP2 SO400M,SO400M NaFlex
+Caltech-101,88.9,90.1,89.0,92.1,92.1,90.6
+FGVC Aircraft,29.2,47.6,53.5,13.7,23.8,27.2
+Flowers-102,71.5,81.5,84.5,84.7,91.7,90.8
+Oxford Pet,91.7,94.4,95.4,15.1,14.0,15.8
+Stanford Cars,88.7,93.7,87.9,4.2,5.3,5.0
+UC Merced,68.1,74.5,79.3,73.8,87.6,81.9
+Average,73.0,80.3,81.6,47.3,52.4,51.9
