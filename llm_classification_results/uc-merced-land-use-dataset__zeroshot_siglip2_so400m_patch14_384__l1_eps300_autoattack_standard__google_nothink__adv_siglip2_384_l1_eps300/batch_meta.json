@@ -1,0 +1,10 @@
+{
+  "batch_name": "batches/co4u8v65m9nyga58ylufbm0zs28iuvvuve9x",
+  "uploaded_file": "files/cr9t3a70wu6w",
+  "provider": "google",
+  "run_id": "uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch14_384__l1_eps300_autoattack_standard__google_nothink__adv_siglip2_384_l1_eps300",
+  "model": "gemini-3-flash-preview-nothink",
+  "actual_model": "gemini-3-flash-preview",
+  "num_requests": 420,
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batches/co4u8v65m9nyga58ylufbm0zs28iuvvuve9x --provider google --dataset uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch14_384__l1_eps300_autoattack_standard --data_root /Users/maximeheuillet/data/adversarial/zeroshot_siglip2_so400m_patch14_384/l1_eps300_autoattack_standard --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch14_384__l1_eps300_autoattack_standard__google_nothink__adv_siglip2_384_l1_eps300"
+}

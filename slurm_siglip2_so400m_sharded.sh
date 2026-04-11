@@ -84,6 +84,7 @@ trap cleanup SIGINT SIGTERM
 # ── Parse threat model ────────────────────────────────────────
 parse_threat_model() {
     case "$1" in
+        linf4)   echo "Linf 4"    ;;
         linf8)   echo "Linf 8"    ;;
         linf30)  echo "Linf 30"   ;;
         l2_2)    echo "L2 2.0"    ;;
@@ -96,6 +97,7 @@ parse_threat_model() {
 
 threat_model_slug() {
     case "$1" in
+        linf4)   echo "linf_eps4_autoattack_standard"   ;;
         linf8)   echo "linf_eps8_autoattack_standard"   ;;
         linf30)  echo "linf_eps30_autoattack_standard"  ;;
         l2_2)    echo "l2_eps2_autoattack_standard"     ;;

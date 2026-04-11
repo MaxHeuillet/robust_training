@@ -1,0 +1,10 @@
+{
+  "batch_id": "batch_69d8476c880c8190a1390811f9f627ad",
+  "file_id": "file-6iqLaQb11SCFg42MrCqSpj",
+  "provider": "openai",
+  "run_id": "uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard__openai__adv_siglip2_384_l1_eps75",
+  "model": "gpt-4o-mini",
+  "num_requests": 420,
+  "submitted_at": "2026-04-09T21:42:20.620460",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batch_69d8476c880c8190a1390811f9f627ad --provider openai --dataset uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard --data_root /Users/maximeheuillet/data/adversarial/zeroshot_siglip2_so400m_patch14_384/l1_eps75_autoattack_standard --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard__openai__adv_siglip2_384_l1_eps75"
+}

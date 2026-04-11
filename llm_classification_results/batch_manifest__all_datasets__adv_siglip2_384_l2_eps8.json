@@ -1,0 +1,62 @@
+[
+  {
+    "dataset": "caltech101__zeroshot_siglip2_so400m_patch14_384__l2_eps8_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "caltech101__zeroshot_siglip2_so400m_patch14_384__l2_eps8_autoattack_standard__google_nothink__adv_siglip2_384_l2_eps8",
+    "batch_id": "batches/wpmpdw6rv04yntds3qcfvpcghl42qnswxt2k",
+    "status": "retrieved",
+    "experiment": "adv_siglip2_384_l2_eps8"
+  },
+  {
+    "dataset": "flowers-102__zeroshot_siglip2_so400m_patch14_384__l2_eps8_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "flowers-102__zeroshot_siglip2_so400m_patch14_384__l2_eps8_autoattack_standard__google_nothink__adv_siglip2_384_l2_eps8",
+    "batch_id": "batches/fcrro278djft3tgx9z8o5682xbdtnwxc457u",
+    "status": "retrieved",
+    "experiment": "adv_siglip2_384_l2_eps8"
+  },
+  {
+    "dataset": "uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch14_384__l2_eps8_autoattack_standard",
+    "key": "google_nothink",
+    "provider": "google",
+    "model": "gemini-3-flash-preview-nothink",
+    "run_name": "uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch14_384__l2_eps8_autoattack_standard__google_nothink__adv_siglip2_384_l2_eps8",
+    "batch_id": "batches/s2fu5s1236v6exeufgpeesx4oyob7clte3m0",
+    "status": "retrieved",
+    "experiment": "adv_siglip2_384_l2_eps8"
+  },
+  {
+    "dataset": "caltech101__zeroshot_siglip2_so400m_patch14_384__l2_eps8_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "caltech101__zeroshot_siglip2_so400m_patch14_384__l2_eps8_autoattack_standard__openai__adv_siglip2_384_l2_eps8",
+    "batch_id": "batch_69d83cdc18808190976db75f4c01ea7a",
+    "status": "retrieved",
+    "experiment": "adv_siglip2_384_l2_eps8"
+  },
+  {
+    "dataset": "flowers-102__zeroshot_siglip2_so400m_patch14_384__l2_eps8_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "flowers-102__zeroshot_siglip2_so400m_patch14_384__l2_eps8_autoattack_standard__openai__adv_siglip2_384_l2_eps8",
+    "batch_id": null,
+    "status": "failed",
+    "experiment": "adv_siglip2_384_l2_eps8"
+  },
+  {
+    "dataset": "uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch14_384__l2_eps8_autoattack_standard",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch14_384__l2_eps8_autoattack_standard__openai__adv_siglip2_384_l2_eps8",
+    "batch_id": "batch_69d83e9bb9408190bcd4927f9721214f",
+    "status": "retrieved",
+    "experiment": "adv_siglip2_384_l2_eps8"
+  }
+]

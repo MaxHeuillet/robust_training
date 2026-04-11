@@ -6,7 +6,7 @@ JOB_SCRIPT="$SCRIPT_DIR/slurm_siglip2_so400m_sharded.sh"
 
 mkdir -p "$SCRIPT_DIR/logs/siglip2_so400m"
 
-THREAT_MODELS=(linf8 linf30 l2_2 l2_8 l1_75 l1_300)
+THREAT_MODELS=( linf4 ) # linf8 linf30 l2_2 l2_8 l1_75 l1_300
 
 echo "Submitting 6 sharded jobs for SigLIP2-SO400M-NaFlex..."
 echo "  (4 GPUs per dataset, datasets sequential within each job)"

@@ -1,0 +1,26 @@
+% Requires: booktabs, multirow
+\begin{table}[t]
+\centering
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.08}
+\small
+\caption{%
+  Transfer accuracy (\%) of SigLIP2 variants under $\ell_\infty^{30}$
+  for each target model, on coarse-grained datasets.
+  Clean accuracy reported alongside each target block for reference.
+  {\textemdash}: not evaluated.
+}
+\label{tab:siglip2_linf30}
+\begin{tabular}{l || r | rrr || r | rrr}
+\toprule
+\multirow{2}{*}{\textbf{Dataset}} & \multicolumn{4}{c||}{\textbf{Gemini Flash (no think)}} & \multicolumn{4}{c}{\textbf{GPT-4o}} \\
+ & Clean & \textit{base} & \textit{SO400M} & \textit{NaFlex} & Clean & \textit{base} & \textit{SO400M} & \textit{NaFlex} \\
+\midrule
+Caltech-101 & 93.0 & 87.2 & 71.9 & 92.8 & 90.6 & 79.3 & 65.3 & 90.6 \\
+Flowers-102 & 95.7 & 80.2 & 56.2 & 95.3 & 73.7 & 48.8 & 35.2 & 74.9 \\
+UC Merced & 90.7 & 58.8 & 35.5 & 88.8 & 77.6 & 47.9 & 29.4 & 76.9 \\
+\midrule
+\textbf{Average} & \textbf{93.1} & \textbf{75.4} & \textbf{54.5} & \textbf{92.3} & \textbf{80.6} & \textbf{58.7} & \textbf{43.3} & \textbf{80.8} \\
+\bottomrule
+\end{tabular}
+\end{table}
