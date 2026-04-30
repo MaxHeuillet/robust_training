@@ -1,0 +1,481 @@
+backbone_name,model_size,model_type,loss_function,pre_training_strategy,dataset
+"eva02_b,mim,ink22k",large,fully attention,TRADES,self-supervised,uc-merced-land-use-dataset
+"eva02_b,mim,ink22k",large,fully attention,TRADES,self-supervised,stanford_cars
+"eva02_b,mim,ink22k",large,fully attention,TRADES,self-supervised,caltech101
+"eva02_b,mim,ink22k",large,fully attention,TRADES,self-supervised,fgvc-aircraft-2013b
+"eva02_b,mim,ink22k",large,fully attention,TRADES,self-supervised,flowers-102
+"eva02_b,mim,ink22k",large,fully attention,TRADES,self-supervised,oxford-iiit-pet
+"eva02_b,mim,ink22k",large,fully attention,Classic AT,self-supervised,uc-merced-land-use-dataset
+"eva02_b,mim,ink22k",large,fully attention,Classic AT,self-supervised,stanford_cars
+"eva02_b,mim,ink22k",large,fully attention,Classic AT,self-supervised,caltech101
+"eva02_b,mim,ink22k",large,fully attention,Classic AT,self-supervised,fgvc-aircraft-2013b
+"eva02_b,mim,ink22k",large,fully attention,Classic AT,self-supervised,flowers-102
+"eva02_b,mim,ink22k",large,fully attention,Classic AT,self-supervised,oxford-iiit-pet
+"swin_b,sup,ink22k-in1k",large,fully attention,TRADES,supervised (multistep),uc-merced-land-use-dataset
+"swin_b,sup,ink22k-in1k",large,fully attention,TRADES,supervised (multistep),stanford_cars
+"swin_b,sup,ink22k-in1k",large,fully attention,TRADES,supervised (multistep),caltech101
+"swin_b,sup,ink22k-in1k",large,fully attention,TRADES,supervised (multistep),fgvc-aircraft-2013b
+"swin_b,sup,ink22k-in1k",large,fully attention,TRADES,supervised (multistep),flowers-102
+"swin_b,sup,ink22k-in1k",large,fully attention,TRADES,supervised (multistep),oxford-iiit-pet
+"swin_b,sup,ink22k-in1k",large,fully attention,Classic AT,supervised (multistep),uc-merced-land-use-dataset
+"swin_b,sup,ink22k-in1k",large,fully attention,Classic AT,supervised (multistep),stanford_cars
+"swin_b,sup,ink22k-in1k",large,fully attention,Classic AT,supervised (multistep),caltech101
+"swin_b,sup,ink22k-in1k",large,fully attention,Classic AT,supervised (multistep),fgvc-aircraft-2013b
+"swin_b,sup,ink22k-in1k",large,fully attention,Classic AT,supervised (multistep),flowers-102
+"swin_b,sup,ink22k-in1k",large,fully attention,Classic AT,supervised (multistep),oxford-iiit-pet
+"vit_b,clip,laion2b",large,fully attention,TRADES,self-supervised (multimodal),uc-merced-land-use-dataset
+"vit_b,clip,laion2b",large,fully attention,TRADES,fusion,uc-merced-land-use-dataset
+"vit_b,clip,laion2b",large,fully attention,TRADES,self-supervised (multimodal),stanford_cars
+"vit_b,clip,laion2b",large,fully attention,TRADES,fusion,stanford_cars
+"vit_b,clip,laion2b",large,fully attention,TRADES,self-supervised (multimodal),caltech101
+"vit_b,clip,laion2b",large,fully attention,TRADES,fusion,caltech101
+"vit_b,clip,laion2b",large,fully attention,TRADES,self-supervised (multimodal),fgvc-aircraft-2013b
+"vit_b,clip,laion2b",large,fully attention,TRADES,fusion,fgvc-aircraft-2013b
+"vit_b,clip,laion2b",large,fully attention,TRADES,self-supervised (multimodal),flowers-102
+"vit_b,clip,laion2b",large,fully attention,TRADES,fusion,flowers-102
+"vit_b,clip,laion2b",large,fully attention,TRADES,self-supervised (multimodal),oxford-iiit-pet
+"vit_b,clip,laion2b",large,fully attention,TRADES,fusion,oxford-iiit-pet
+"vit_b,clip,laion2b",large,fully attention,Classic AT,self-supervised (multimodal),uc-merced-land-use-dataset
+"vit_b,clip,laion2b",large,fully attention,Classic AT,fusion,uc-merced-land-use-dataset
+"vit_b,clip,laion2b",large,fully attention,Classic AT,self-supervised (multimodal),stanford_cars
+"vit_b,clip,laion2b",large,fully attention,Classic AT,fusion,stanford_cars
+"vit_b,clip,laion2b",large,fully attention,Classic AT,self-supervised (multimodal),caltech101
+"vit_b,clip,laion2b",large,fully attention,Classic AT,fusion,caltech101
+"vit_b,clip,laion2b",large,fully attention,Classic AT,self-supervised (multimodal),fgvc-aircraft-2013b
+"vit_b,clip,laion2b",large,fully attention,Classic AT,fusion,fgvc-aircraft-2013b
+"vit_b,clip,laion2b",large,fully attention,Classic AT,self-supervised (multimodal),flowers-102
+"vit_b,clip,laion2b",large,fully attention,Classic AT,fusion,flowers-102
+"vit_b,clip,laion2b",large,fully attention,Classic AT,self-supervised (multimodal),oxford-iiit-pet
+"vit_b,clip,laion2b",large,fully attention,Classic AT,fusion,oxford-iiit-pet
+"vit_b,mae,in1k",large,fully attention,TRADES,self-supervised,uc-merced-land-use-dataset
+"vit_b,mae,in1k",large,fully attention,TRADES,self-supervised,stanford_cars
+"vit_b,mae,in1k",large,fully attention,TRADES,self-supervised,caltech101
+"vit_b,mae,in1k",large,fully attention,TRADES,self-supervised,fgvc-aircraft-2013b
+"vit_b,mae,in1k",large,fully attention,TRADES,self-supervised,flowers-102
+"vit_b,mae,in1k",large,fully attention,TRADES,self-supervised,oxford-iiit-pet
+"vit_b,mae,in1k",large,fully attention,Classic AT,self-supervised,uc-merced-land-use-dataset
+"vit_b,mae,in1k",large,fully attention,Classic AT,self-supervised,stanford_cars
+"vit_b,mae,in1k",large,fully attention,Classic AT,self-supervised,caltech101
+"vit_b,mae,in1k",large,fully attention,Classic AT,self-supervised,fgvc-aircraft-2013b
+"vit_b,mae,in1k",large,fully attention,Classic AT,self-supervised,flowers-102
+"vit_b,mae,in1k",large,fully attention,Classic AT,self-supervised,oxford-iiit-pet
+"vit_b,rob-sup,in1k",large,fully attention,TRADES,supervised (robust),uc-merced-land-use-dataset
+"vit_b,rob-sup,in1k",large,fully attention,TRADES,supervised (robust),stanford_cars
+"vit_b,rob-sup,in1k",large,fully attention,TRADES,supervised (robust),caltech101
+"vit_b,rob-sup,in1k",large,fully attention,TRADES,supervised (robust),fgvc-aircraft-2013b
+"vit_b,rob-sup,in1k",large,fully attention,TRADES,supervised (robust),flowers-102
+"vit_b,rob-sup,in1k",large,fully attention,TRADES,supervised (robust),oxford-iiit-pet
+"vit_b,rob-sup,in1k",large,fully attention,Classic AT,supervised (robust),uc-merced-land-use-dataset
+"vit_b,rob-sup,in1k",large,fully attention,Classic AT,supervised (robust),stanford_cars
+"vit_b,rob-sup,in1k",large,fully attention,Classic AT,supervised (robust),caltech101
+"vit_b,rob-sup,in1k",large,fully attention,Classic AT,supervised (robust),fgvc-aircraft-2013b
+"vit_b,rob-sup,in1k",large,fully attention,Classic AT,supervised (robust),flowers-102
+"vit_b,rob-sup,in1k",large,fully attention,Classic AT,supervised (robust),oxford-iiit-pet
+"vit_b,sup,in1k",large,fully attention,TRADES,supervised,uc-merced-land-use-dataset
+"vit_b,sup,in1k",large,fully attention,TRADES,supervised,stanford_cars
+"vit_b,sup,in1k",large,fully attention,TRADES,supervised,caltech101
+"vit_b,sup,in1k",large,fully attention,TRADES,supervised,fgvc-aircraft-2013b
+"vit_b,sup,in1k",large,fully attention,TRADES,supervised,flowers-102
+"vit_b,sup,in1k",large,fully attention,TRADES,supervised,oxford-iiit-pet
+"vit_b,sup,in1k",large,fully attention,Classic AT,supervised,uc-merced-land-use-dataset
+"vit_b,sup,in1k",large,fully attention,Classic AT,supervised,stanford_cars
+"vit_b,sup,in1k",large,fully attention,Classic AT,supervised,caltech101
+"vit_b,sup,in1k",large,fully attention,Classic AT,supervised,fgvc-aircraft-2013b
+"vit_b,sup,in1k",large,fully attention,Classic AT,supervised,flowers-102
+"vit_b,sup,in1k",large,fully attention,Classic AT,supervised,oxford-iiit-pet
+"vit_b,sup,in22k",large,fully attention,TRADES,supervised,uc-merced-land-use-dataset
+"vit_b,sup,in22k",large,fully attention,TRADES,supervised,stanford_cars
+"vit_b,sup,in22k",large,fully attention,TRADES,supervised,caltech101
+"vit_b,sup,in22k",large,fully attention,TRADES,supervised,fgvc-aircraft-2013b
+"vit_b,sup,in22k",large,fully attention,TRADES,supervised,flowers-102
+"vit_b,sup,in22k",large,fully attention,TRADES,supervised,oxford-iiit-pet
+"vit_b,sup,in22k",large,fully attention,Classic AT,supervised,uc-merced-land-use-dataset
+"vit_b,sup,in22k",large,fully attention,Classic AT,supervised,stanford_cars
+"vit_b,sup,in22k",large,fully attention,Classic AT,supervised,caltech101
+"vit_b,sup,in22k",large,fully attention,Classic AT,supervised,fgvc-aircraft-2013b
+"vit_b,sup,in22k",large,fully attention,Classic AT,supervised,flowers-102
+"vit_b,sup,in22k",large,fully attention,Classic AT,supervised,oxford-iiit-pet
+"vit_b,sup,ink22k-in1k",large,fully attention,TRADES,supervised (multistep),uc-merced-land-use-dataset
+"vit_b,sup,ink22k-in1k",large,fully attention,TRADES,supervised (multistep),stanford_cars
+"vit_b,sup,ink22k-in1k",large,fully attention,TRADES,supervised (multistep),caltech101
+"vit_b,sup,ink22k-in1k",large,fully attention,TRADES,supervised (multistep),fgvc-aircraft-2013b
+"vit_b,sup,ink22k-in1k",large,fully attention,TRADES,supervised (multistep),flowers-102
+"vit_b,sup,ink22k-in1k",large,fully attention,TRADES,supervised (multistep),oxford-iiit-pet
+"vit_b,sup,ink22k-in1k",large,fully attention,Classic AT,supervised (multistep),uc-merced-land-use-dataset
+"vit_b,sup,ink22k-in1k",large,fully attention,Classic AT,supervised (multistep),stanford_cars
+"vit_b,sup,ink22k-in1k",large,fully attention,Classic AT,supervised (multistep),caltech101
+"vit_b,sup,ink22k-in1k",large,fully attention,Classic AT,supervised (multistep),fgvc-aircraft-2013b
+"vit_b,sup,ink22k-in1k",large,fully attention,Classic AT,supervised (multistep),flowers-102
+"vit_b,sup,ink22k-in1k",large,fully attention,Classic AT,supervised (multistep),oxford-iiit-pet
+"deit_s,rob-sup,in1k",medium,fully attention,TRADES,supervised (robust),uc-merced-land-use-dataset
+"deit_s,rob-sup,in1k",medium,fully attention,TRADES,supervised (robust),stanford_cars
+"deit_s,rob-sup,in1k",medium,fully attention,TRADES,supervised (robust),caltech101
+"deit_s,rob-sup,in1k",medium,fully attention,TRADES,supervised (robust),fgvc-aircraft-2013b
+"deit_s,rob-sup,in1k",medium,fully attention,TRADES,supervised (robust),flowers-102
+"deit_s,rob-sup,in1k",medium,fully attention,TRADES,supervised (robust),oxford-iiit-pet
+"deit_s,rob-sup,in1k",medium,fully attention,Classic AT,supervised (robust),uc-merced-land-use-dataset
+"deit_s,rob-sup,in1k",medium,fully attention,Classic AT,supervised (robust),stanford_cars
+"deit_s,rob-sup,in1k",medium,fully attention,Classic AT,supervised (robust),caltech101
+"deit_s,rob-sup,in1k",medium,fully attention,Classic AT,supervised (robust),fgvc-aircraft-2013b
+"deit_s,rob-sup,in1k",medium,fully attention,Classic AT,supervised (robust),flowers-102
+"deit_s,rob-sup,in1k",medium,fully attention,Classic AT,supervised (robust),oxford-iiit-pet
+"deit_s,sup,in1k",medium,fully attention,TRADES,supervised,uc-merced-land-use-dataset
+"deit_s,sup,in1k",medium,fully attention,TRADES,supervised,stanford_cars
+"deit_s,sup,in1k",medium,fully attention,TRADES,supervised,caltech101
+"deit_s,sup,in1k",medium,fully attention,TRADES,supervised,fgvc-aircraft-2013b
+"deit_s,sup,in1k",medium,fully attention,TRADES,supervised,flowers-102
+"deit_s,sup,in1k",medium,fully attention,TRADES,supervised,oxford-iiit-pet
+"deit_s,sup,in1k",medium,fully attention,Classic AT,supervised,uc-merced-land-use-dataset
+"deit_s,sup,in1k",medium,fully attention,Classic AT,supervised,stanford_cars
+"deit_s,sup,in1k",medium,fully attention,Classic AT,supervised,caltech101
+"deit_s,sup,in1k",medium,fully attention,Classic AT,supervised,fgvc-aircraft-2013b
+"deit_s,sup,in1k",medium,fully attention,Classic AT,supervised,flowers-102
+"deit_s,sup,in1k",medium,fully attention,Classic AT,supervised,oxford-iiit-pet
+"eva02_b,mim,ink22k",medium,fully attention,TRADES,self-supervised,uc-merced-land-use-dataset
+"eva02_b,mim,ink22k",medium,fully attention,TRADES,self-supervised,stanford_cars
+"eva02_b,mim,ink22k",medium,fully attention,TRADES,self-supervised,caltech101
+"eva02_b,mim,ink22k",medium,fully attention,TRADES,self-supervised,fgvc-aircraft-2013b
+"eva02_b,mim,ink22k",medium,fully attention,TRADES,self-supervised,flowers-102
+"eva02_b,mim,ink22k",medium,fully attention,TRADES,self-supervised,oxford-iiit-pet
+"eva02_b,mim,ink22k",medium,fully attention,Classic AT,self-supervised,uc-merced-land-use-dataset
+"eva02_b,mim,ink22k",medium,fully attention,Classic AT,self-supervised,stanford_cars
+"eva02_b,mim,ink22k",medium,fully attention,Classic AT,self-supervised,caltech101
+"eva02_b,mim,ink22k",medium,fully attention,Classic AT,self-supervised,fgvc-aircraft-2013b
+"eva02_b,mim,ink22k",medium,fully attention,Classic AT,self-supervised,flowers-102
+"eva02_b,mim,ink22k",medium,fully attention,Classic AT,self-supervised,oxford-iiit-pet
+"swin_t,sup,in1k",medium,fully attention,TRADES,supervised,uc-merced-land-use-dataset
+"swin_t,sup,in1k",medium,fully attention,TRADES,supervised,stanford_cars
+"swin_t,sup,in1k",medium,fully attention,TRADES,supervised,caltech101
+"swin_t,sup,in1k",medium,fully attention,TRADES,supervised,fgvc-aircraft-2013b
+"swin_t,sup,in1k",medium,fully attention,TRADES,supervised,flowers-102
+"swin_t,sup,in1k",medium,fully attention,TRADES,supervised,oxford-iiit-pet
+"swin_t,sup,in1k",medium,fully attention,Classic AT,supervised,uc-merced-land-use-dataset
+"swin_t,sup,in1k",medium,fully attention,Classic AT,supervised,stanford_cars
+"swin_t,sup,in1k",medium,fully attention,Classic AT,supervised,caltech101
+"swin_t,sup,in1k",medium,fully attention,Classic AT,supervised,fgvc-aircraft-2013b
+"swin_t,sup,in1k",medium,fully attention,Classic AT,supervised,flowers-102
+"swin_t,sup,in1k",medium,fully attention,Classic AT,supervised,oxford-iiit-pet
+"vit_b,dino,in1k",medium,fully attention,TRADES,self-supervised,uc-merced-land-use-dataset
+"vit_b,dino,in1k",medium,fully attention,TRADES,self-supervised,stanford_cars
+"vit_b,dino,in1k",medium,fully attention,TRADES,self-supervised,caltech101
+"vit_b,dino,in1k",medium,fully attention,TRADES,self-supervised,fgvc-aircraft-2013b
+"vit_b,dino,in1k",medium,fully attention,TRADES,self-supervised,flowers-102
+"vit_b,dino,in1k",medium,fully attention,TRADES,self-supervised,oxford-iiit-pet
+"vit_b,dino,in1k",medium,fully attention,Classic AT,self-supervised,uc-merced-land-use-dataset
+"vit_b,dino,in1k",medium,fully attention,Classic AT,self-supervised,stanford_cars
+"vit_b,dino,in1k",medium,fully attention,Classic AT,self-supervised,caltech101
+"vit_b,dino,in1k",medium,fully attention,Classic AT,self-supervised,fgvc-aircraft-2013b
+"vit_b,dino,in1k",medium,fully attention,Classic AT,self-supervised,flowers-102
+"vit_b,dino,in1k",medium,fully attention,Classic AT,self-supervised,oxford-iiit-pet
+"vit_s,sup,in1k",medium,fully attention,TRADES,supervised,uc-merced-land-use-dataset
+"vit_s,sup,in1k",medium,fully attention,TRADES,supervised,stanford_cars
+"vit_s,sup,in1k",medium,fully attention,TRADES,supervised,caltech101
+"vit_s,sup,in1k",medium,fully attention,TRADES,supervised,fgvc-aircraft-2013b
+"vit_s,sup,in1k",medium,fully attention,TRADES,supervised,flowers-102
+"vit_s,sup,in1k",medium,fully attention,TRADES,supervised,oxford-iiit-pet
+"vit_s,sup,in1k",medium,fully attention,Classic AT,supervised,uc-merced-land-use-dataset
+"vit_s,sup,in1k",medium,fully attention,Classic AT,supervised,stanford_cars
+"vit_s,sup,in1k",medium,fully attention,Classic AT,supervised,caltech101
+"vit_s,sup,in1k",medium,fully attention,Classic AT,supervised,fgvc-aircraft-2013b
+"vit_s,sup,in1k",medium,fully attention,Classic AT,supervised,flowers-102
+"vit_s,sup,in1k",medium,fully attention,Classic AT,supervised,oxford-iiit-pet
+"vit_s,sup,in22k",medium,fully attention,TRADES,supervised,uc-merced-land-use-dataset
+"vit_s,sup,in22k",medium,fully attention,TRADES,supervised,stanford_cars
+"vit_s,sup,in22k",medium,fully attention,TRADES,supervised,caltech101
+"vit_s,sup,in22k",medium,fully attention,TRADES,supervised,fgvc-aircraft-2013b
+"vit_s,sup,in22k",medium,fully attention,TRADES,supervised,flowers-102
+"vit_s,sup,in22k",medium,fully attention,TRADES,supervised,oxford-iiit-pet
+"vit_s,sup,in22k",medium,fully attention,Classic AT,supervised,uc-merced-land-use-dataset
+"vit_s,sup,in22k",medium,fully attention,Classic AT,supervised,stanford_cars
+"vit_s,sup,in22k",medium,fully attention,Classic AT,supervised,caltech101
+"vit_s,sup,in22k",medium,fully attention,Classic AT,supervised,fgvc-aircraft-2013b
+"vit_s,sup,in22k",medium,fully attention,Classic AT,supervised,flowers-102
+"vit_s,sup,in22k",medium,fully attention,Classic AT,supervised,oxford-iiit-pet
+"vit_s,sup,ink22k-in1k",medium,fully attention,TRADES,supervised (multistep),uc-merced-land-use-dataset
+"vit_s,sup,ink22k-in1k",medium,fully attention,TRADES,supervised (multistep),stanford_cars
+"vit_s,sup,ink22k-in1k",medium,fully attention,TRADES,supervised (multistep),caltech101
+"vit_s,sup,ink22k-in1k",medium,fully attention,TRADES,supervised (multistep),fgvc-aircraft-2013b
+"vit_s,sup,ink22k-in1k",medium,fully attention,TRADES,supervised (multistep),flowers-102
+"vit_s,sup,ink22k-in1k",medium,fully attention,TRADES,supervised (multistep),oxford-iiit-pet
+"vit_s,sup,ink22k-in1k",medium,fully attention,Classic AT,supervised (multistep),uc-merced-land-use-dataset
+"vit_s,sup,ink22k-in1k",medium,fully attention,Classic AT,supervised (multistep),stanford_cars
+"vit_s,sup,ink22k-in1k",medium,fully attention,Classic AT,supervised (multistep),caltech101
+"vit_s,sup,ink22k-in1k",medium,fully attention,Classic AT,supervised (multistep),fgvc-aircraft-2013b
+"vit_s,sup,ink22k-in1k",medium,fully attention,Classic AT,supervised (multistep),flowers-102
+"vit_s,sup,ink22k-in1k",medium,fully attention,Classic AT,supervised (multistep),oxford-iiit-pet
+"deit_t,sup,in1k",small,fully attention,TRADES,supervised,uc-merced-land-use-dataset
+"deit_t,sup,in1k",small,fully attention,TRADES,supervised,stanford_cars
+"deit_t,sup,in1k",small,fully attention,TRADES,supervised,caltech101
+"deit_t,sup,in1k",small,fully attention,TRADES,supervised,fgvc-aircraft-2013b
+"deit_t,sup,in1k",small,fully attention,TRADES,supervised,flowers-102
+"deit_t,sup,in1k",small,fully attention,TRADES,supervised,oxford-iiit-pet
+"deit_t,sup,in1k",small,fully attention,Classic AT,supervised,uc-merced-land-use-dataset
+"deit_t,sup,in1k",small,fully attention,Classic AT,supervised,stanford_cars
+"deit_t,sup,in1k",small,fully attention,Classic AT,supervised,caltech101
+"deit_t,sup,in1k",small,fully attention,Classic AT,supervised,fgvc-aircraft-2013b
+"deit_t,sup,in1k",small,fully attention,Classic AT,supervised,flowers-102
+"deit_t,sup,in1k",small,fully attention,Classic AT,supervised,oxford-iiit-pet
+"convnext_b,clip,laion2b",large,fully convolutional,TRADES,self-supervised (multimodal),uc-merced-land-use-dataset
+"convnext_b,clip,laion2b",large,fully convolutional,TRADES,self-supervised (multimodal),stanford_cars
+"convnext_b,clip,laion2b",large,fully convolutional,TRADES,self-supervised (multimodal),caltech101
+"convnext_b,clip,laion2b",large,fully convolutional,TRADES,self-supervised (multimodal),fgvc-aircraft-2013b
+"convnext_b,clip,laion2b",large,fully convolutional,TRADES,self-supervised (multimodal),flowers-102
+"convnext_b,clip,laion2b",large,fully convolutional,TRADES,self-supervised (multimodal),oxford-iiit-pet
+"convnext_b,clip,laion2b",large,fully convolutional,Classic AT,self-supervised (multimodal),uc-merced-land-use-dataset
+"convnext_b,clip,laion2b",large,fully convolutional,Classic AT,self-supervised (multimodal),stanford_cars
+"convnext_b,clip,laion2b",large,fully convolutional,Classic AT,self-supervised (multimodal),caltech101
+"convnext_b,clip,laion2b",large,fully convolutional,Classic AT,self-supervised (multimodal),fgvc-aircraft-2013b
+"convnext_b,clip,laion2b",large,fully convolutional,Classic AT,self-supervised (multimodal),flowers-102
+"convnext_b,clip,laion2b",large,fully convolutional,Classic AT,self-supervised (multimodal),oxford-iiit-pet
+"convnext_b,clip,laiona",large,fully convolutional,TRADES,self-supervised (multimodal),uc-merced-land-use-dataset
+"convnext_b,clip,laiona",large,fully convolutional,TRADES,self-supervised (multimodal),stanford_cars
+"convnext_b,clip,laiona",large,fully convolutional,TRADES,self-supervised (multimodal),caltech101
+"convnext_b,clip,laiona",large,fully convolutional,TRADES,self-supervised (multimodal),fgvc-aircraft-2013b
+"convnext_b,clip,laiona",large,fully convolutional,TRADES,self-supervised (multimodal),flowers-102
+"convnext_b,clip,laiona",large,fully convolutional,TRADES,self-supervised (multimodal),oxford-iiit-pet
+"convnext_b,clip,laiona",large,fully convolutional,Classic AT,self-supervised (multimodal),uc-merced-land-use-dataset
+"convnext_b,clip,laiona",large,fully convolutional,Classic AT,self-supervised (multimodal),stanford_cars
+"convnext_b,clip,laiona",large,fully convolutional,Classic AT,self-supervised (multimodal),caltech101
+"convnext_b,clip,laiona",large,fully convolutional,Classic AT,self-supervised (multimodal),fgvc-aircraft-2013b
+"convnext_b,clip,laiona",large,fully convolutional,Classic AT,self-supervised (multimodal),flowers-102
+"convnext_b,clip,laiona",large,fully convolutional,Classic AT,self-supervised (multimodal),oxford-iiit-pet
+"convnext_b,hybrid,laion2b-in12k-in1k",large,fully convolutional,TRADES,fusion,uc-merced-land-use-dataset
+"convnext_b,hybrid,laion2b-in12k-in1k",large,fully convolutional,TRADES,fusion,stanford_cars
+"convnext_b,hybrid,laion2b-in12k-in1k",large,fully convolutional,TRADES,fusion,caltech101
+"convnext_b,hybrid,laion2b-in12k-in1k",large,fully convolutional,TRADES,fusion,fgvc-aircraft-2013b
+"convnext_b,hybrid,laion2b-in12k-in1k",large,fully convolutional,TRADES,fusion,flowers-102
+"convnext_b,hybrid,laion2b-in12k-in1k",large,fully convolutional,TRADES,fusion,oxford-iiit-pet
+"convnext_b,hybrid,laion2b-in12k-in1k",large,fully convolutional,Classic AT,fusion,uc-merced-land-use-dataset
+"convnext_b,hybrid,laion2b-in12k-in1k",large,fully convolutional,Classic AT,fusion,stanford_cars
+"convnext_b,hybrid,laion2b-in12k-in1k",large,fully convolutional,Classic AT,fusion,caltech101
+"convnext_b,hybrid,laion2b-in12k-in1k",large,fully convolutional,Classic AT,fusion,fgvc-aircraft-2013b
+"convnext_b,hybrid,laion2b-in12k-in1k",large,fully convolutional,Classic AT,fusion,flowers-102
+"convnext_b,hybrid,laion2b-in12k-in1k",large,fully convolutional,Classic AT,fusion,oxford-iiit-pet
+"convnext_b,rob-sup,in1k",large,fully convolutional,TRADES,supervised (robust),uc-merced-land-use-dataset
+"convnext_b,rob-sup,in1k",large,fully convolutional,TRADES,supervised (robust),stanford_cars
+"convnext_b,rob-sup,in1k",large,fully convolutional,TRADES,supervised (robust),caltech101
+"convnext_b,rob-sup,in1k",large,fully convolutional,TRADES,supervised (robust),fgvc-aircraft-2013b
+"convnext_b,rob-sup,in1k",large,fully convolutional,TRADES,supervised (robust),flowers-102
+"convnext_b,rob-sup,in1k",large,fully convolutional,TRADES,supervised (robust),oxford-iiit-pet
+"convnext_b,rob-sup,in1k",large,fully convolutional,Classic AT,supervised (robust),uc-merced-land-use-dataset
+"convnext_b,rob-sup,in1k",large,fully convolutional,Classic AT,supervised (robust),stanford_cars
+"convnext_b,rob-sup,in1k",large,fully convolutional,Classic AT,supervised (robust),caltech101
+"convnext_b,rob-sup,in1k",large,fully convolutional,Classic AT,supervised (robust),fgvc-aircraft-2013b
+"convnext_b,rob-sup,in1k",large,fully convolutional,Classic AT,supervised (robust),flowers-102
+"convnext_b,rob-sup,in1k",large,fully convolutional,Classic AT,supervised (robust),oxford-iiit-pet
+"convnext_b,sup,in1k",large,fully convolutional,TRADES,supervised,uc-merced-land-use-dataset
+"convnext_b,sup,in1k",large,fully convolutional,TRADES,supervised,stanford_cars
+"convnext_b,sup,in1k",large,fully convolutional,TRADES,supervised,caltech101
+"convnext_b,sup,in1k",large,fully convolutional,TRADES,supervised,fgvc-aircraft-2013b
+"convnext_b,sup,in1k",large,fully convolutional,TRADES,supervised,flowers-102
+"convnext_b,sup,in1k",large,fully convolutional,TRADES,supervised,oxford-iiit-pet
+"convnext_b,sup,in1k",large,fully convolutional,Classic AT,supervised,uc-merced-land-use-dataset
+"convnext_b,sup,in1k",large,fully convolutional,Classic AT,supervised,stanford_cars
+"convnext_b,sup,in1k",large,fully convolutional,Classic AT,supervised,caltech101
+"convnext_b,sup,in1k",large,fully convolutional,Classic AT,supervised,fgvc-aircraft-2013b
+"convnext_b,sup,in1k",large,fully convolutional,Classic AT,supervised,flowers-102
+"convnext_b,sup,in1k",large,fully convolutional,Classic AT,supervised,oxford-iiit-pet
+"convnext_b,sup,in22k",large,fully convolutional,TRADES,supervised,uc-merced-land-use-dataset
+"convnext_b,sup,in22k",large,fully convolutional,TRADES,supervised,stanford_cars
+"convnext_b,sup,in22k",large,fully convolutional,TRADES,supervised,caltech101
+"convnext_b,sup,in22k",large,fully convolutional,TRADES,supervised,fgvc-aircraft-2013b
+"convnext_b,sup,in22k",large,fully convolutional,TRADES,supervised,flowers-102
+"convnext_b,sup,in22k",large,fully convolutional,TRADES,supervised,oxford-iiit-pet
+"convnext_b,sup,in22k",large,fully convolutional,Classic AT,supervised,uc-merced-land-use-dataset
+"convnext_b,sup,in22k",large,fully convolutional,Classic AT,supervised,stanford_cars
+"convnext_b,sup,in22k",large,fully convolutional,Classic AT,supervised,caltech101
+"convnext_b,sup,in22k",large,fully convolutional,Classic AT,supervised,fgvc-aircraft-2013b
+"convnext_b,sup,in22k",large,fully convolutional,Classic AT,supervised,flowers-102
+"convnext_b,sup,in22k",large,fully convolutional,Classic AT,supervised,oxford-iiit-pet
+"convnext_b,sup,in22k-in1k",large,fully convolutional,TRADES,supervised (multistep),uc-merced-land-use-dataset
+"convnext_b,sup,in22k-in1k",large,fully convolutional,TRADES,supervised (multistep),stanford_cars
+"convnext_b,sup,in22k-in1k",large,fully convolutional,TRADES,supervised (multistep),caltech101
+"convnext_b,sup,in22k-in1k",large,fully convolutional,TRADES,supervised (multistep),fgvc-aircraft-2013b
+"convnext_b,sup,in22k-in1k",large,fully convolutional,TRADES,supervised (multistep),flowers-102
+"convnext_b,sup,in22k-in1k",large,fully convolutional,TRADES,supervised (multistep),oxford-iiit-pet
+"convnext_b,sup,in22k-in1k",large,fully convolutional,Classic AT,supervised (multistep),uc-merced-land-use-dataset
+"convnext_b,sup,in22k-in1k",large,fully convolutional,Classic AT,supervised (multistep),stanford_cars
+"convnext_b,sup,in22k-in1k",large,fully convolutional,Classic AT,supervised (multistep),caltech101
+"convnext_b,sup,in22k-in1k",large,fully convolutional,Classic AT,supervised (multistep),fgvc-aircraft-2013b
+"convnext_b,sup,in22k-in1k",large,fully convolutional,Classic AT,supervised (multistep),flowers-102
+"convnext_b,sup,in22k-in1k",large,fully convolutional,Classic AT,supervised (multistep),oxford-iiit-pet
+"convnext_t,rob-sup,in1k",medium,fully convolutional,TRADES,supervised (robust),uc-merced-land-use-dataset
+"convnext_t,rob-sup,in1k",medium,fully convolutional,TRADES,supervised (robust),stanford_cars
+"convnext_t,rob-sup,in1k",medium,fully convolutional,TRADES,supervised (robust),caltech101
+"convnext_t,rob-sup,in1k",medium,fully convolutional,TRADES,supervised (robust),fgvc-aircraft-2013b
+"convnext_t,rob-sup,in1k",medium,fully convolutional,TRADES,supervised (robust),flowers-102
+"convnext_t,rob-sup,in1k",medium,fully convolutional,TRADES,supervised (robust),oxford-iiit-pet
+"convnext_t,rob-sup,in1k",medium,fully convolutional,Classic AT,supervised (robust),uc-merced-land-use-dataset
+"convnext_t,rob-sup,in1k",medium,fully convolutional,Classic AT,supervised (robust),stanford_cars
+"convnext_t,rob-sup,in1k",medium,fully convolutional,Classic AT,supervised (robust),caltech101
+"convnext_t,rob-sup,in1k",medium,fully convolutional,Classic AT,supervised (robust),fgvc-aircraft-2013b
+"convnext_t,rob-sup,in1k",medium,fully convolutional,Classic AT,supervised (robust),flowers-102
+"convnext_t,rob-sup,in1k",medium,fully convolutional,Classic AT,supervised (robust),oxford-iiit-pet
+"convnext_t,sup,in1k",medium,fully convolutional,TRADES,supervised,uc-merced-land-use-dataset
+"convnext_t,sup,in1k",medium,fully convolutional,TRADES,supervised,stanford_cars
+"convnext_t,sup,in1k",medium,fully convolutional,TRADES,supervised,caltech101
+"convnext_t,sup,in1k",medium,fully convolutional,TRADES,supervised,fgvc-aircraft-2013b
+"convnext_t,sup,in1k",medium,fully convolutional,TRADES,supervised,flowers-102
+"convnext_t,sup,in1k",medium,fully convolutional,TRADES,supervised,oxford-iiit-pet
+"convnext_t,sup,in1k",medium,fully convolutional,Classic AT,supervised,uc-merced-land-use-dataset
+"convnext_t,sup,in1k",medium,fully convolutional,Classic AT,supervised,stanford_cars
+"convnext_t,sup,in1k",medium,fully convolutional,Classic AT,supervised,caltech101
+"convnext_t,sup,in1k",medium,fully convolutional,Classic AT,supervised,fgvc-aircraft-2013b
+"convnext_t,sup,in1k",medium,fully convolutional,Classic AT,supervised,flowers-102
+"convnext_t,sup,in1k",medium,fully convolutional,Classic AT,supervised,oxford-iiit-pet
+"convnext_t,sup,in22k",medium,fully convolutional,TRADES,supervised,uc-merced-land-use-dataset
+"convnext_t,sup,in22k",medium,fully convolutional,TRADES,supervised,stanford_cars
+"convnext_t,sup,in22k",medium,fully convolutional,TRADES,supervised,caltech101
+"convnext_t,sup,in22k",medium,fully convolutional,TRADES,supervised,fgvc-aircraft-2013b
+"convnext_t,sup,in22k",medium,fully convolutional,TRADES,supervised,flowers-102
+"convnext_t,sup,in22k",medium,fully convolutional,TRADES,supervised,oxford-iiit-pet
+"convnext_t,sup,in22k",medium,fully convolutional,Classic AT,supervised,uc-merced-land-use-dataset
+"convnext_t,sup,in22k",medium,fully convolutional,Classic AT,supervised,stanford_cars
+"convnext_t,sup,in22k",medium,fully convolutional,Classic AT,supervised,caltech101
+"convnext_t,sup,in22k",medium,fully convolutional,Classic AT,supervised,fgvc-aircraft-2013b
+"convnext_t,sup,in22k",medium,fully convolutional,Classic AT,supervised,flowers-102
+"convnext_t,sup,in22k",medium,fully convolutional,Classic AT,supervised,oxford-iiit-pet
+"convnext_t,sup,in22k-in1k",medium,fully convolutional,TRADES,supervised (multistep),uc-merced-land-use-dataset
+"convnext_t,sup,in22k-in1k",medium,fully convolutional,TRADES,supervised (multistep),stanford_cars
+"convnext_t,sup,in22k-in1k",medium,fully convolutional,TRADES,supervised (multistep),caltech101
+"convnext_t,sup,in22k-in1k",medium,fully convolutional,TRADES,supervised (multistep),fgvc-aircraft-2013b
+"convnext_t,sup,in22k-in1k",medium,fully convolutional,TRADES,supervised (multistep),flowers-102
+"convnext_t,sup,in22k-in1k",medium,fully convolutional,TRADES,supervised (multistep),oxford-iiit-pet
+"convnext_t,sup,in22k-in1k",medium,fully convolutional,Classic AT,supervised (multistep),uc-merced-land-use-dataset
+"convnext_t,sup,in22k-in1k",medium,fully convolutional,Classic AT,supervised (multistep),stanford_cars
+"convnext_t,sup,in22k-in1k",medium,fully convolutional,Classic AT,supervised (multistep),caltech101
+"convnext_t,sup,in22k-in1k",medium,fully convolutional,Classic AT,supervised (multistep),fgvc-aircraft-2013b
+"convnext_t,sup,in22k-in1k",medium,fully convolutional,Classic AT,supervised (multistep),flowers-102
+"convnext_t,sup,in22k-in1k",medium,fully convolutional,Classic AT,supervised (multistep),oxford-iiit-pet
+"resnet50,rob-sup,in1k",medium,fully convolutional,TRADES,supervised (robust),uc-merced-land-use-dataset
+"resnet50,rob-sup,in1k",medium,fully convolutional,TRADES,supervised (robust),stanford_cars
+"resnet50,rob-sup,in1k",medium,fully convolutional,TRADES,supervised (robust),caltech101
+"resnet50,rob-sup,in1k",medium,fully convolutional,TRADES,supervised (robust),fgvc-aircraft-2013b
+"resnet50,rob-sup,in1k",medium,fully convolutional,TRADES,supervised (robust),flowers-102
+"resnet50,rob-sup,in1k",medium,fully convolutional,TRADES,supervised (robust),oxford-iiit-pet
+"resnet50,rob-sup,in1k",medium,fully convolutional,Classic AT,supervised (robust),uc-merced-land-use-dataset
+"resnet50,rob-sup,in1k",medium,fully convolutional,Classic AT,supervised (robust),stanford_cars
+"resnet50,rob-sup,in1k",medium,fully convolutional,Classic AT,supervised (robust),caltech101
+"resnet50,rob-sup,in1k",medium,fully convolutional,Classic AT,supervised (robust),fgvc-aircraft-2013b
+"resnet50,rob-sup,in1k",medium,fully convolutional,Classic AT,supervised (robust),flowers-102
+"resnet50,rob-sup,in1k",medium,fully convolutional,Classic AT,supervised (robust),oxford-iiit-pet
+"resnet50,sup,in1k",medium,fully convolutional,TRADES,supervised,uc-merced-land-use-dataset
+"resnet50,sup,in1k",medium,fully convolutional,TRADES,supervised,stanford_cars
+"resnet50,sup,in1k",medium,fully convolutional,TRADES,supervised,caltech101
+"resnet50,sup,in1k",medium,fully convolutional,TRADES,supervised,fgvc-aircraft-2013b
+"resnet50,sup,in1k",medium,fully convolutional,TRADES,supervised,flowers-102
+"resnet50,sup,in1k",medium,fully convolutional,TRADES,supervised,oxford-iiit-pet
+"resnet50,sup,in1k",medium,fully convolutional,Classic AT,supervised,uc-merced-land-use-dataset
+"resnet50,sup,in1k",medium,fully convolutional,Classic AT,supervised,stanford_cars
+"resnet50,sup,in1k",medium,fully convolutional,Classic AT,supervised,caltech101
+"resnet50,sup,in1k",medium,fully convolutional,Classic AT,supervised,fgvc-aircraft-2013b
+"resnet50,sup,in1k",medium,fully convolutional,Classic AT,supervised,flowers-102
+"resnet50,sup,in1k",medium,fully convolutional,Classic AT,supervised,oxford-iiit-pet
+"efficientnet_b0,sup,in1k",small,fully convolutional,TRADES,supervised,uc-merced-land-use-dataset
+"efficientnet_b0,sup,in1k",small,fully convolutional,TRADES,supervised,stanford_cars
+"efficientnet_b0,sup,in1k",small,fully convolutional,TRADES,supervised,caltech101
+"efficientnet_b0,sup,in1k",small,fully convolutional,TRADES,supervised,fgvc-aircraft-2013b
+"efficientnet_b0,sup,in1k",small,fully convolutional,TRADES,supervised,flowers-102
+"efficientnet_b0,sup,in1k",small,fully convolutional,TRADES,supervised,oxford-iiit-pet
+"efficientnet_b0,sup,in1k",small,fully convolutional,Classic AT,supervised,uc-merced-land-use-dataset
+"efficientnet_b0,sup,in1k",small,fully convolutional,Classic AT,supervised,stanford_cars
+"efficientnet_b0,sup,in1k",small,fully convolutional,Classic AT,supervised,caltech101
+"efficientnet_b0,sup,in1k",small,fully convolutional,Classic AT,supervised,fgvc-aircraft-2013b
+"efficientnet_b0,sup,in1k",small,fully convolutional,Classic AT,supervised,flowers-102
+"efficientnet_b0,sup,in1k",small,fully convolutional,Classic AT,supervised,oxford-iiit-pet
+"mobilenet_v3,sup,in1k",small,fully convolutional,TRADES,supervised,uc-merced-land-use-dataset
+"mobilenet_v3,sup,in1k",small,fully convolutional,TRADES,supervised,stanford_cars
+"mobilenet_v3,sup,in1k",small,fully convolutional,TRADES,supervised,caltech101
+"mobilenet_v3,sup,in1k",small,fully convolutional,TRADES,supervised,fgvc-aircraft-2013b
+"mobilenet_v3,sup,in1k",small,fully convolutional,TRADES,supervised,flowers-102
+"mobilenet_v3,sup,in1k",small,fully convolutional,TRADES,supervised,oxford-iiit-pet
+"mobilenet_v3,sup,in1k",small,fully convolutional,Classic AT,supervised,uc-merced-land-use-dataset
+"mobilenet_v3,sup,in1k",small,fully convolutional,Classic AT,supervised,stanford_cars
+"mobilenet_v3,sup,in1k",small,fully convolutional,Classic AT,supervised,caltech101
+"mobilenet_v3,sup,in1k",small,fully convolutional,Classic AT,supervised,fgvc-aircraft-2013b
+"mobilenet_v3,sup,in1k",small,fully convolutional,Classic AT,supervised,flowers-102
+"mobilenet_v3,sup,in1k",small,fully convolutional,Classic AT,supervised,oxford-iiit-pet
+"regnetx_004,sup,in1k",small,fully convolutional,TRADES,supervised,uc-merced-land-use-dataset
+"regnetx_004,sup,in1k",small,fully convolutional,TRADES,supervised,stanford_cars
+"regnetx_004,sup,in1k",small,fully convolutional,TRADES,supervised,caltech101
+"regnetx_004,sup,in1k",small,fully convolutional,TRADES,supervised,fgvc-aircraft-2013b
+"regnetx_004,sup,in1k",small,fully convolutional,TRADES,supervised,flowers-102
+"regnetx_004,sup,in1k",small,fully convolutional,TRADES,supervised,oxford-iiit-pet
+"regnetx_004,sup,in1k",small,fully convolutional,Classic AT,supervised,uc-merced-land-use-dataset
+"regnetx_004,sup,in1k",small,fully convolutional,Classic AT,supervised,stanford_cars
+"regnetx_004,sup,in1k",small,fully convolutional,Classic AT,supervised,caltech101
+"regnetx_004,sup,in1k",small,fully convolutional,Classic AT,supervised,fgvc-aircraft-2013b
+"regnetx_004,sup,in1k",small,fully convolutional,Classic AT,supervised,flowers-102
+"regnetx_004,sup,in1k",small,fully convolutional,Classic AT,supervised,oxford-iiit-pet
+"coatnet_2,sup,in12k",large,hybrid,TRADES,supervised,uc-merced-land-use-dataset
+"coatnet_2,sup,in12k",large,hybrid,TRADES,supervised,stanford_cars
+"coatnet_2,sup,in12k",large,hybrid,TRADES,supervised,caltech101
+"coatnet_2,sup,in12k",large,hybrid,TRADES,supervised,fgvc-aircraft-2013b
+"coatnet_2,sup,in12k",large,hybrid,TRADES,supervised,flowers-102
+"coatnet_2,sup,in12k",large,hybrid,TRADES,supervised,oxford-iiit-pet
+"coatnet_2,sup,in12k",large,hybrid,Classic AT,supervised,uc-merced-land-use-dataset
+"coatnet_2,sup,in12k",large,hybrid,Classic AT,supervised,stanford_cars
+"coatnet_2,sup,in12k",large,hybrid,Classic AT,supervised,caltech101
+"coatnet_2,sup,in12k",large,hybrid,Classic AT,supervised,fgvc-aircraft-2013b
+"coatnet_2,sup,in12k",large,hybrid,Classic AT,supervised,flowers-102
+"coatnet_2,sup,in12k",large,hybrid,Classic AT,supervised,oxford-iiit-pet
+"coatnet_2,sup,in12k-in1k",large,hybrid,TRADES,supervised (multistep),uc-merced-land-use-dataset
+"coatnet_2,sup,in12k-in1k",large,hybrid,TRADES,supervised (multistep),stanford_cars
+"coatnet_2,sup,in12k-in1k",large,hybrid,TRADES,supervised (multistep),caltech101
+"coatnet_2,sup,in12k-in1k",large,hybrid,TRADES,supervised (multistep),fgvc-aircraft-2013b
+"coatnet_2,sup,in12k-in1k",large,hybrid,TRADES,supervised (multistep),flowers-102
+"coatnet_2,sup,in12k-in1k",large,hybrid,TRADES,supervised (multistep),oxford-iiit-pet
+"coatnet_2,sup,in12k-in1k",large,hybrid,Classic AT,supervised (multistep),uc-merced-land-use-dataset
+"coatnet_2,sup,in12k-in1k",large,hybrid,Classic AT,supervised (multistep),stanford_cars
+"coatnet_2,sup,in12k-in1k",large,hybrid,Classic AT,supervised (multistep),caltech101
+"coatnet_2,sup,in12k-in1k",large,hybrid,Classic AT,supervised (multistep),fgvc-aircraft-2013b
+"coatnet_2,sup,in12k-in1k",large,hybrid,Classic AT,supervised (multistep),flowers-102
+"coatnet_2,sup,in12k-in1k",large,hybrid,Classic AT,supervised (multistep),oxford-iiit-pet
+"coatnet_0,sup,in1k",medium,hybrid,TRADES,supervised,uc-merced-land-use-dataset
+"coatnet_0,sup,in1k",medium,hybrid,TRADES,supervised,stanford_cars
+"coatnet_0,sup,in1k",medium,hybrid,TRADES,supervised,caltech101
+"coatnet_0,sup,in1k",medium,hybrid,TRADES,supervised,fgvc-aircraft-2013b
+"coatnet_0,sup,in1k",medium,hybrid,TRADES,supervised,flowers-102
+"coatnet_0,sup,in1k",medium,hybrid,TRADES,supervised,oxford-iiit-pet
+"coatnet_0,sup,in1k",medium,hybrid,Classic AT,supervised,uc-merced-land-use-dataset
+"coatnet_0,sup,in1k",medium,hybrid,Classic AT,supervised,stanford_cars
+"coatnet_0,sup,in1k",medium,hybrid,Classic AT,supervised,caltech101
+"coatnet_0,sup,in1k",medium,hybrid,Classic AT,supervised,fgvc-aircraft-2013b
+"coatnet_0,sup,in1k",medium,hybrid,Classic AT,supervised,flowers-102
+"coatnet_0,sup,in1k",medium,hybrid,Classic AT,supervised,oxford-iiit-pet
+"coat_t,sup,in1k",small,hybrid,TRADES,supervised,uc-merced-land-use-dataset
+"coat_t,sup,in1k",small,hybrid,TRADES,supervised,stanford_cars
+"coat_t,sup,in1k",small,hybrid,TRADES,supervised,caltech101
+"coat_t,sup,in1k",small,hybrid,TRADES,supervised,fgvc-aircraft-2013b
+"coat_t,sup,in1k",small,hybrid,TRADES,supervised,flowers-102
+"coat_t,sup,in1k",small,hybrid,TRADES,supervised,oxford-iiit-pet
+"coat_t,sup,in1k",small,hybrid,Classic AT,supervised,uc-merced-land-use-dataset
+"coat_t,sup,in1k",small,hybrid,Classic AT,supervised,stanford_cars
+"coat_t,sup,in1k",small,hybrid,Classic AT,supervised,caltech101
+"coat_t,sup,in1k",small,hybrid,Classic AT,supervised,fgvc-aircraft-2013b
+"coat_t,sup,in1k",small,hybrid,Classic AT,supervised,flowers-102
+"coat_t,sup,in1k",small,hybrid,Classic AT,supervised,oxford-iiit-pet
+"edgenetx_s,sup,in1k",small,hybrid,TRADES,supervised,uc-merced-land-use-dataset
+"edgenetx_s,sup,in1k",small,hybrid,TRADES,supervised,stanford_cars
+"edgenetx_s,sup,in1k",small,hybrid,TRADES,supervised,caltech101
+"edgenetx_s,sup,in1k",small,hybrid,TRADES,supervised,fgvc-aircraft-2013b
+"edgenetx_s,sup,in1k",small,hybrid,TRADES,supervised,flowers-102
+"edgenetx_s,sup,in1k",small,hybrid,TRADES,supervised,oxford-iiit-pet
+"edgenetx_s,sup,in1k",small,hybrid,Classic AT,supervised,uc-merced-land-use-dataset
+"edgenetx_s,sup,in1k",small,hybrid,Classic AT,supervised,stanford_cars
+"edgenetx_s,sup,in1k",small,hybrid,Classic AT,supervised,caltech101
+"edgenetx_s,sup,in1k",small,hybrid,Classic AT,supervised,fgvc-aircraft-2013b
+"edgenetx_s,sup,in1k",small,hybrid,Classic AT,supervised,flowers-102
+"edgenetx_s,sup,in1k",small,hybrid,Classic AT,supervised,oxford-iiit-pet
+"mobilevit_s,sup,in1k",small,hybrid,TRADES,supervised,uc-merced-land-use-dataset
+"mobilevit_s,sup,in1k",small,hybrid,TRADES,supervised,stanford_cars
+"mobilevit_s,sup,in1k",small,hybrid,TRADES,supervised,caltech101
+"mobilevit_s,sup,in1k",small,hybrid,TRADES,supervised,fgvc-aircraft-2013b
+"mobilevit_s,sup,in1k",small,hybrid,TRADES,supervised,flowers-102
+"mobilevit_s,sup,in1k",small,hybrid,TRADES,supervised,oxford-iiit-pet
+"mobilevit_s,sup,in1k",small,hybrid,Classic AT,supervised,uc-merced-land-use-dataset
+"mobilevit_s,sup,in1k",small,hybrid,Classic AT,supervised,stanford_cars
+"mobilevit_s,sup,in1k",small,hybrid,Classic AT,supervised,caltech101
+"mobilevit_s,sup,in1k",small,hybrid,Classic AT,supervised,fgvc-aircraft-2013b
+"mobilevit_s,sup,in1k",small,hybrid,Classic AT,supervised,flowers-102
+"mobilevit_s,sup,in1k",small,hybrid,Classic AT,supervised,oxford-iiit-pet

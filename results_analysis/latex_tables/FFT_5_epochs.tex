@@ -1,17 +1,46 @@
 \begin{table}[ht]
 \centering
-\caption{Top fine‑tuning configurations in FFT (5 epochs), with global ranking (GR) below. }
-\label{tab:FFT_5_epochs}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{|c|c|c|c|}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\caption{\small Top FFT-5 configurations per architecture size, ranked by Borda score (BS). Global ranking (GR) and sum score (SS) also reported. Mapping to Hugging Face model cards available in Table \ref{tab:backbone_config_refs}.}
+\begin{tabular}{@{}l ccc@{}}
 \toprule
-\textbf{Size} & \textbf{Gold (1st)} & \textbf{Silver (2nd)} & \textbf{Bronze (3rd)} \\
+\textbf{Size}
+  & \textbf{Gold (1st)}
+  & \textbf{Silver (2nd)}
+  & \textbf{Bronze (3rd)} \\
 \midrule
-small & \makecell{edgenetx\_s,sup,in1k, TRADES \\[0.3ex] \footnotesize (GR:16)} & \makecell{mobilevit\_s,sup,in1k, Classic AT \\[0.3ex] \footnotesize (GR:18)} & \makecell{edgenetx\_s,sup,in1k, Classic AT \\[0.3ex] \footnotesize (GR:34)} \\
-medium & \makecell{convnext\_t,rob-sup,in1k, TRADES \\[0.3ex] \footnotesize (GR:1)} & \makecell{resnet50,rob-sup,in1k, Classic AT \\[0.3ex] \footnotesize (GR:2)} & \makecell{convnext\_t,rob-sup,in1k, Classic AT \\[0.3ex] \footnotesize (GR:3)} \\
-large & \makecell{vit\_b,sup,in1k, Classic AT \\[0.3ex] \footnotesize (GR:6)} & \makecell{convnext\_b,clip,laion2b, TRADES \\[0.3ex] \footnotesize (GR:7)} & \makecell{convnext\_b,rob-sup,in1k, TRADES \\[0.3ex] \footnotesize (GR:8)} \\
+\multirow{3}{*}{Tiny}
+  & \texttt{\small edgenext\_s,sup,in1k}
+  & \texttt{\small mobilevit\_s,sup,in1k}
+  & \texttt{\small edgenext\_s,sup,in1k} \\
+  & \lossbadge{TRADES}
+  & \lossbadge{Classic AT}
+  & \lossbadge{Classic AT} \\
+  & {\scriptsize\color{scoregray} GR:16\,\textbar\,BS:1319\,\textbar\,SS:3.86}
+  & {\scriptsize\color{scoregray} GR:18\,\textbar\,BS:1294\,\textbar\,SS:1.21}
+  & {\scriptsize\color{scoregray} GR:34\,\textbar\,BS:1113\,\textbar\,SS:1.37} \\
+\multirow{3}{*}{Small}
+  & \texttt{\small convnext\_t,rob-sup,in1k}
+  & \texttt{\small resnet50,rob-sup,in1k}
+  & \texttt{\small convnext\_t,rob-sup,in1k} \\
+  & \lossbadge{TRADES}
+  & \lossbadge{Classic AT}
+  & \lossbadge{Classic AT} \\
+  & {\scriptsize\color{scoregray} GR:1\,\textbar\,BS:1987\,\textbar\,SS:6.07}
+  & {\scriptsize\color{scoregray} GR:2\,\textbar\,BS:1770\,\textbar\,SS:6.60}
+  & {\scriptsize\color{scoregray} GR:3\,\textbar\,BS:1761\,\textbar\,SS:7.73} \\
+\multirow{3}{*}{Base}
+  & \texttt{\small vit\_b,sup,in1k}
+  & \texttt{\small convnext\_b,clip,laion2b}
+  & \texttt{\small convnext\_b,rob-sup,in1k} \\
+  & \lossbadge{Classic AT}
+  & \lossbadge{TRADES}
+  & \lossbadge{TRADES} \\
+  & {\scriptsize\color{scoregray} GR:6\,\textbar\,BS:1502\,\textbar\,SS:2.72}
+  & {\scriptsize\color{scoregray} GR:7\,\textbar\,BS:1499\,\textbar\,SS:4.63}
+  & {\scriptsize\color{scoregray} GR:8\,\textbar\,BS:1474\,\textbar\,SS:3.35} \\
 \bottomrule
 \end{tabular}
-
-}
+\label{tab:FFT_5_epochs}
 \end{table}

@@ -1,0 +1,35 @@
+\begin{wraptable}{r}{0.5\textwidth}
+\vspace{-1em}
+\centering
+\caption{Mean Absolute Correlation (MAC) in FFT-50. $\widehat{\texttt{MAC}}$ is computed over all configurations in subset $J$. $\widehat{\texttt{MAC}}_s$ corrects for confounding via stratification by model size (or by architecture type for the size category). \colorbox{green!15}{Green} indicates rank agreement; \colorbox{red!15}{red} indicates a rank flip between the two estimates. $^\dagger$Some strata excluded due to insufficient observations ($<4$ per dataset).}
+\label{tab:spearman_corr}
+\vspace{0.3em}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{@{}ll r cc@{}}
+\toprule
+& & $n$ & $\widehat{\texttt{MAC}}$ & $\widehat{\texttt{MAC}}_s$ \\
+\midrule
+\multicolumn{2}{@{}l}{\textit{All 80 configs}} & 80 & 0.795 & --- \\
+\midrule
+  \multirow{2}{*}{\rotatebox[origin=c]{90}{\small Loss}} & Classic AT & 40 & \cellcolor{green!15}0.822 & \cellcolor{green!15}0.744 \\
+   & TRADES & 40 & \cellcolor{green!15}0.813 & \cellcolor{green!15}0.741 \\
+\midrule
+  \multirow{3}{*}{\rotatebox[origin=c]{90}{\small Size}} & Base & 36 & \cellcolor{green!15}0.850 & \cellcolor{green!15}0.784 \\
+   & Small & 30 & \cellcolor{red!15}0.681 & \cellcolor{red!15}0.662$^{\dagger}$ \\
+   & Tiny & 14 & \cellcolor{red!15}0.611 & \cellcolor{red!15}0.705$^{\dagger}$ \\
+\midrule
+  \multirow{3}{*}{\rotatebox[origin=c]{90}{\small Type}} & fully attention & 36 & \cellcolor{green!15}0.816 & \cellcolor{green!15}0.796$^{\dagger}$ \\
+   & fully convolutional & 32 & \cellcolor{green!15}0.740 & \cellcolor{green!15}0.617 \\
+   & hybrid & 12 & \cellcolor{green!15}0.871 & \cellcolor{green!15}0.822$^{\dagger}$ \\
+\midrule
+  \multirow{6}{*}{\rotatebox[origin=c]{90}{\small Pre-training}} & fusion & 4 & \cellcolor{red!15}0.837 & \cellcolor{red!15}0.837 \\
+   & self-supervised & 8 & \cellcolor{red!15}0.791 & \cellcolor{red!15}0.757 \\
+   & self-supervised (multimodal) & 6 & \cellcolor{red!15}0.760 & \cellcolor{red!15}0.760 \\
+   & supervised & 40 & \cellcolor{red!15}0.783 & \cellcolor{red!15}0.733 \\
+   & supervised (multistep) & 12 & \cellcolor{red!15}0.845 & \cellcolor{red!15}0.792 \\
+   & supervised (robust) & 10 & \cellcolor{red!15}0.714 & \cellcolor{red!15}0.790 \\
+\bottomrule
+\end{tabular}%
+}
+\vspace{-1em}
+\end{wraptable}

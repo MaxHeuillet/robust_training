@@ -1,0 +1,49 @@
+surrogate,dataset,target,clean,l1@75,l1@300,l2@2,l2@8,linf@4,linf@8,linf@30,sev@3,avg_robust
+CLIP ViT-B/16,Caltech-101,Gemini Flash (no think),93.0,92.7,91.9,93.5,90.9,93.8,92.1,86.8,90.3,91.5
+CLIP ViT-B/16,Caltech-101,GPT-4o,90.6,90.8,90.3,90.3,87.7,89.4,89.8,80.3,85.4,88.0
+CLIP ViT-B/16,FGVC Aircraft,Gemini Flash (no think),80.8,80.2,79.6,79.8,78.4,79.3,79.1,74.4,53.9,75.59
+CLIP ViT-B/16,FGVC Aircraft,GPT-4o,45.8,44.2,44.3,44.9,39.8,44.4,43.5,38.2,27.3,40.83
+CLIP ViT-B/16,Flowers-102,Gemini Flash (no think),95.7,95.6,95.7,95.7,94.3,95.6,95.3,84.8,88.1,93.14
+CLIP ViT-B/16,Flowers-102,GPT-4o,73.7,74.3,73.7,74.0,68.2,72.8,72.7,54.4,62.6,69.09
+CLIP ViT-B/16,Oxford Pet,Gemini Flash (no think),96.5,95.6,94.3,95.8,89.5,95.4,94.8,76.6,87.2,91.15
+CLIP ViT-B/16,Oxford Pet,GPT-4o,87.4,84.0,81.2,84.1,71.1,84.4,81.1,59.1,76.1,77.64
+CLIP ViT-B/16,Stanford Cars,Gemini Flash (no think),93.9,93.8,93.0,93.8,89.1,93.8,92.4,82.7,76.5,89.39
+CLIP ViT-B/16,Stanford Cars,GPT-4o,72.2,70.6,67.6,71.3,52.6,70.5,64.7,37.3,48.6,60.4
+CLIP ViT-B/16,UC Merced,Gemini Flash (no think),90.71,89.29,88.33,90.0,79.76,89.29,85.0,64.76,72.38,82.35
+CLIP ViT-B/16,UC Merced,GPT-4o,77.62,77.62,76.19,76.43,71.19,75.95,75.0,54.05,62.62,71.13
+CLIP ViT-H/14,Caltech-101,Gemini Flash (no think),93.0,93.6,92.4,92.2,89.4,93.3,91.2,81.2,90.3,90.45
+CLIP ViT-H/14,Caltech-101,GPT-4o,90.6,90.1,89.4,89.63,85.99,90.0,89.2,69.2,85.4,86.11
+CLIP ViT-H/14,FGVC Aircraft,Gemini Flash (no think),80.8,80.8,78.9,79.6,75.3,77.8,78.7,69.2,53.9,74.28
+CLIP ViT-H/14,FGVC Aircraft,GPT-4o,45.8,45.4,42.7,43.3,38.72,45.9,41.1,28.8,27.3,39.15
+CLIP ViT-H/14,Flowers-102,Gemini Flash (no think),95.7,95.6,95.5,95.4,92.5,95.3,94.8,72.1,88.1,91.16
+CLIP ViT-H/14,Flowers-102,GPT-4o,73.7,74.4,72.4,72.0,60.8,72.3,66.9,33.3,62.6,64.34
+CLIP ViT-H/14,Oxford Pet,Gemini Flash (no think),96.5,94.8,93.4,94.7,83.4,94.6,91.6,54.0,87.2,86.71
+CLIP ViT-H/14,Oxford Pet,GPT-4o,87.4,83.4,75.7,80.9,58.5,82.5,75.2,33.9,76.1,70.78
+CLIP ViT-H/14,Stanford Cars,Gemini Flash (no think),93.9,93.6,92.2,92.4,88.2,93.2,90.6,73.9,76.5,87.58
+CLIP ViT-H/14,Stanford Cars,GPT-4o,72.2,71.3,66.8,69.6,52.6,69.5,64.0,27.4,48.6,58.72
+CLIP ViT-H/14,UC Merced,Gemini Flash (no think),90.71,89.76,89.05,88.33,78.33,89.52,85.24,50.95,72.38,80.45
+CLIP ViT-H/14,UC Merced,GPT-4o,77.62,77.62,75.25,75.71,60.0,76.19,70.0,36.43,62.62,66.73
+MetaCLIP ViT-H/14,Caltech-101,Gemini Flash (no think),93.0,93.2,92.3,92.4,91.1,92.1,93.0,86.4,90.3,91.35
+MetaCLIP ViT-H/14,Caltech-101,GPT-4o,90.6,90.6,89.7,90.4,87.8,90.1,88.4,76.0,85.4,87.3
+MetaCLIP ViT-H/14,FGVC Aircraft,Gemini Flash (no think),80.8,80.5,78.5,79.2,77.5,80.0,78.7,67.3,53.9,74.45
+MetaCLIP ViT-H/14,FGVC Aircraft,GPT-4o,45.8,44.3,43.3,44.3,40.8,45.2,41.7,29.2,27.3,39.51
+MetaCLIP ViT-H/14,Flowers-102,Gemini Flash (no think),95.7,95.6,95.5,94.6,93.9,95.8,94.9,77.9,88.1,92.04
+MetaCLIP ViT-H/14,Flowers-102,GPT-4o,73.7,73.6,72.4,72.0,63.7,70.9,68.8,43.0,62.6,65.88
+MetaCLIP ViT-H/14,Oxford Pet,Gemini Flash (no think),96.5,95.7,93.2,94.9,87.9,94.2,92.3,62.6,87.2,88.5
+MetaCLIP ViT-H/14,Oxford Pet,GPT-4o,87.4,83.0,78.5,81.0,68.9,80.9,73.6,42.8,76.1,73.1
+MetaCLIP ViT-H/14,Stanford Cars,Gemini Flash (no think),93.9,93.4,92.6,93.1,91.3,93.7,92.5,79.7,76.5,89.1
+MetaCLIP ViT-H/14,Stanford Cars,GPT-4o,72.2,72.4,68.6,69.7,60.1,68.3,63.2,33.9,48.6,60.6
+MetaCLIP ViT-H/14,UC Merced,Gemini Flash (no think),90.71,90.24,86.43,88.81,80.48,88.57,83.33,52.62,72.38,80.36
+MetaCLIP ViT-H/14,UC Merced,GPT-4o,77.62,76.19,73.1,75.48,62.62,75.48,69.29,38.33,62.62,66.64
+SigLIP2 SO400M,Caltech-101,Gemini Flash (no think),93.0,92.6,92.6,91.5,89.0,91.5,91.5,71.9,90.3,88.86
+SigLIP2 SO400M,Caltech-101,GPT-4o,90.6,90.8,88.4,90.1,85.6,89.8,88.35,65.3,85.4,85.47
+SigLIP2 SO400M,FGVC Aircraft,Gemini Flash (no think),80.8,,,,,,,,53.9,53.9
+SigLIP2 SO400M,FGVC Aircraft,GPT-4o,45.8,,,,,,,,27.3,27.3
+SigLIP2 SO400M,Flowers-102,Gemini Flash (no think),95.7,95.8,95.2,95.3,88.3,95.2,93.1,56.2,88.1,88.4
+SigLIP2 SO400M,Flowers-102,GPT-4o,73.7,74.6,72.7,72.7,,72.4,67.7,35.2,62.6,65.41
+SigLIP2 SO400M,Oxford Pet,Gemini Flash (no think),96.5,,,,,,,,87.2,87.2
+SigLIP2 SO400M,Oxford Pet,GPT-4o,87.4,,,,,,,,76.1,76.1
+SigLIP2 SO400M,Stanford Cars,Gemini Flash (no think),93.9,,,,,,,,76.5,76.5
+SigLIP2 SO400M,Stanford Cars,GPT-4o,72.2,,,,,,,,48.6,48.6
+SigLIP2 SO400M,UC Merced,Gemini Flash (no think),90.71,88.81,86.67,86.9,70.24,87.86,77.86,35.48,72.38,75.77
+SigLIP2 SO400M,UC Merced,GPT-4o,77.62,75.24,73.57,76.19,60.24,74.52,69.05,29.43,62.62,65.11

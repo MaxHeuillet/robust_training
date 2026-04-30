@@ -1,0 +1,10 @@
+{
+  "batch_name": "batches/7yl1n8uyxu3obs1sdkn06nu2z3ol68ubrdl3",
+  "uploaded_file": "files/gzjcsyt53tk7",
+  "provider": "google",
+  "run_id": "stanford_cars__random__linf_eps30_random_uniform__google_nothink__random_linf30",
+  "model": "gemini-3-flash-preview-nothink",
+  "actual_model": "gemini-3-flash-preview",
+  "num_requests": 1000,
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batches/7yl1n8uyxu3obs1sdkn06nu2z3ol68ubrdl3 --provider google --dataset stanford_cars__random__linf_eps30_random_uniform --data_root /Users/maximeheuillet/data/adversarial/random/linf_eps30_random_uniform --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name stanford_cars__random__linf_eps30_random_uniform__google_nothink__random_linf30"
+}

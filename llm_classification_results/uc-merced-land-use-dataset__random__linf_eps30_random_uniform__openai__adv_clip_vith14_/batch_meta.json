@@ -1,0 +1,10 @@
+{
+  "batch_id": "batch_69e15dd6581c81908a3efe67d947b3dc",
+  "file_id": "file-WPFTQRjN1dVfSRD3YuV5DF",
+  "provider": "openai",
+  "run_id": "uc-merced-land-use-dataset__random__linf_eps30_random_uniform__openai__adv_clip_vith14_",
+  "model": "gpt-4o-mini",
+  "num_requests": 420,
+  "submitted_at": "2026-04-16T18:08:22.865534",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batch_69e15dd6581c81908a3efe67d947b3dc --provider openai --dataset uc-merced-land-use-dataset__random__linf_eps30_random_uniform --data_root /Users/maximeheuillet/data/adversarial/random/linf_eps30_random_uniform --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name uc-merced-land-use-dataset__random__linf_eps30_random_uniform__openai__adv_clip_vith14_"
+}

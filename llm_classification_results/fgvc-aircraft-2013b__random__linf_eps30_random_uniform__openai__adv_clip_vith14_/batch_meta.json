@@ -1,0 +1,10 @@
+{
+  "batch_id": "batch_69e1502dfd808190a97a8fb1f66718ee",
+  "file_id": "file-LTFVMx9gQuy2UppxWSKsbA",
+  "provider": "openai",
+  "run_id": "fgvc-aircraft-2013b__random__linf_eps30_random_uniform__openai__adv_clip_vith14_",
+  "model": "gpt-4o-mini",
+  "num_requests": 1000,
+  "submitted_at": "2026-04-16T17:10:06.102626",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batch_69e1502dfd808190a97a8fb1f66718ee --provider openai --dataset fgvc-aircraft-2013b__random__linf_eps30_random_uniform --data_root /Users/maximeheuillet/data/adversarial/random/linf_eps30_random_uniform --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name fgvc-aircraft-2013b__random__linf_eps30_random_uniform__openai__adv_clip_vith14_"
+}

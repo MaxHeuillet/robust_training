@@ -1,0 +1,10 @@
+{
+  "batch_name": "batches/erf34j1lpdqcxxwcbdimbyt3f0tua5xg00fv",
+  "uploaded_file": "files/rzhdzjllahjb",
+  "provider": "google",
+  "run_id": "flowers-102__zeroshot_siglip2_so400m_patch14_384__linf_eps4_autoattack_standard__google_nothink__adv_siglip2_384_linf_eps4",
+  "model": "gemini-3-flash-preview-nothink",
+  "actual_model": "gemini-3-flash-preview",
+  "num_requests": 1000,
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batches/erf34j1lpdqcxxwcbdimbyt3f0tua5xg00fv --provider google --dataset flowers-102__zeroshot_siglip2_so400m_patch14_384__linf_eps4_autoattack_standard --data_root /Users/maximeheuillet/data/adversarial/zeroshot_siglip2_so400m_patch14_384/linf_eps4_autoattack_standard --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name flowers-102__zeroshot_siglip2_so400m_patch14_384__linf_eps4_autoattack_standard__google_nothink__adv_siglip2_384_linf_eps4"
+}

@@ -1,0 +1,10 @@
+{
+  "batch_name": "batches/2r362csjhzklbhz5m031sq3dnc9qck4th837",
+  "uploaded_file": "files/tfbjqjdy4m8p",
+  "provider": "google",
+  "run_id": "oxford-iiit-pet__zeroshot_metaclip_vith14_fullcc2_5b__linf_eps4_autoattack_standard__google_nothink__adv_metaclip_linf_eps4",
+  "model": "gemini-3-flash-preview-nothink",
+  "actual_model": "gemini-3-flash-preview",
+  "num_requests": 1000,
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batches/2r362csjhzklbhz5m031sq3dnc9qck4th837 --provider google --dataset oxford-iiit-pet__zeroshot_metaclip_vith14_fullcc2_5b__linf_eps4_autoattack_standard --data_root /Users/maximeheuillet/data/adversarial/zeroshot_metaclip_vith14_fullcc2_5b/linf_eps4_autoattack_standard --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name oxford-iiit-pet__zeroshot_metaclip_vith14_fullcc2_5b__linf_eps4_autoattack_standard__google_nothink__adv_metaclip_linf_eps4"
+}

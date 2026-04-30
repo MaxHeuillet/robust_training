@@ -1,0 +1,10 @@
+{
+  "batch_id": "batch_69e1586ffe048190b2a7819a3b1caf16",
+  "file_id": "file-VYaGBVZne4Gzt9JtzLJZVV",
+  "provider": "openai",
+  "run_id": "stanford_cars__random__linf_eps30_random_uniform__openai__adv_clip_vith14_",
+  "model": "gpt-4o-mini",
+  "num_requests": 500,
+  "submitted_at": "2026-04-16T17:45:20.084000",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batch_69e1586ffe048190b2a7819a3b1caf16 --provider openai --dataset stanford_cars__random__linf_eps30_random_uniform --data_root /Users/maximeheuillet/data/adversarial/random/linf_eps30_random_uniform --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name stanford_cars__random__linf_eps30_random_uniform__openai__adv_clip_vith14_"
+}

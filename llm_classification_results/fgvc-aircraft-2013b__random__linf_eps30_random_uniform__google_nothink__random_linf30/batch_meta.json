@@ -1,0 +1,10 @@
+{
+  "batch_name": "batches/sf4vn15q0hguo8kr3c1az8ti6dd7wmycampm",
+  "uploaded_file": "files/d2tayn57u51e",
+  "provider": "google",
+  "run_id": "fgvc-aircraft-2013b__random__linf_eps30_random_uniform__google_nothink__random_linf30",
+  "model": "gemini-3-flash-preview-nothink",
+  "actual_model": "gemini-3-flash-preview",
+  "num_requests": 1000,
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batches/sf4vn15q0hguo8kr3c1az8ti6dd7wmycampm --provider google --dataset fgvc-aircraft-2013b__random__linf_eps30_random_uniform --data_root /Users/maximeheuillet/data/adversarial/random/linf_eps30_random_uniform --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name fgvc-aircraft-2013b__random__linf_eps30_random_uniform__google_nothink__random_linf30"
+}

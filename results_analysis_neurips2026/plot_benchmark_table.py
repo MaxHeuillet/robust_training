@@ -21,7 +21,6 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
-from matplotlib.ticker import MaxNLocator
 import numpy as np
 
 try:
@@ -32,16 +31,16 @@ except ImportError:
 # ── dataset metadata ──────────────────────────────────────────────────────────
 
 DATASETS = [
-    dict(key="uc-merced-land-use-dataset", name="UC Merced",      task="coarse-grained", domain="satellite"),
-    dict(key="caltech101",                 name="Caltech-101",     task="coarse-grained", domain="natural"),
-    dict(key="flowers-102",                name="Flowers-102",     task="fine-grained",   domain="natural"),
-    dict(key="oxford-iiit-pet",            name="Oxford-IIIT Pet", task="fine-grained",   domain="natural"),
-    dict(key="stanford_cars",              name="Stanford Cars",   task="fine-grained",   domain="natural"),
-    dict(key="fgvc-aircraft-2013b",        name="FGVC Aircraft",   task="fine-grained",   domain="natural"),
+    dict(key="uc-merced-land-use-dataset", name="UC Merced",      task="coarse", domain="satellite"),
+    dict(key="caltech101",                 name="Caltech-101",     task="coarse", domain="natural"),
+    dict(key="flowers-102",                name="Flowers-102",     task="fine",   domain="natural"),
+    dict(key="oxford-iiit-pet",            name="Oxford-IIIT Pet", task="fine",   domain="natural"),
+    dict(key="stanford_cars",              name="Stanford Cars",   task="fine",   domain="natural"),
+    dict(key="fgvc-aircraft-2013b",        name="FGVC Aircraft",   task="fine",   domain="natural"),
 ]
 
-TASK_COLORS   = {"coarse-grained": "#888780", "fine-grained": "#7F77DD"}
-BAR_COLOR     = "#7F77DD"   # unified for all distributions
+TASK_COLORS   = {"coarse": "#2C2C2A", "fine": "#2C2C2A"}
+BAR_COLOR     = "#7F77DD"
 DIVIDER_COLOR = "#d8d6ce"
 TEXT_PRIMARY  = "#2C2C2A"
 TEXT_MUTED    = "#888780"
@@ -69,16 +68,21 @@ def read_test_labels(archive_path: Path):
 def make_figure(dest: Path, out: Path):
     n = len(DATASETS)
 
-    # cols: dataset | task | domain | classes | test obs | distribution
-    col_widths = [0.9, 0.8, 0.55, 0.42, 0.42, 3.6]
-    row_height = 0.38
-    fig_w      = sum(col_widths) + 0.15
-    fig_h      = row_height * n + 0.38
+    # ── NeurIPS half-column: 3.25 in wide ────────────────────────────────────
+    # Slightly increased font sizes for readability
+    FS       = 5.5          # font size for all text  (was 4.5)
+    FS_TICK  = 4.5          # annotation inside bar   (was 3.5)
+
+    col_widths = [0.72, 0.35, 0.37, 0.37, 0.38, 0.94]
+    row_height = 0.26       # taller rows (was 0.22)
+    header_pad = 0.22       # more header room (was 0.18)
+    fig_w = sum(col_widths)                     # ~3.25 in
+    fig_h = row_height * n + header_pad         # ~1.78 in
 
     fig = plt.figure(figsize=(fig_w, fig_h))
 
-    top_frac    = 1.0 - 0.05 / fig_h
-    bottom_frac = 0.04 / fig_h
+    top_frac    = 1.0 - header_pad / fig_h
+    bottom_frac = 0.0
 
     gs = gridspec.GridSpec(
         nrows=n, ncols=6,
@@ -90,9 +94,7 @@ def make_figure(dest: Path, out: Path):
         height_ratios=[1] * n,
     )
 
-    # vertical separator x-positions in figure coords — computed after first axes placed
-    # we draw them via fig.lines after the loop using the stored axes bbox info
-    sep_axes = []   # (col_idx, ax) for first row only
+    sep_axes = []
 
     for ri, ds in enumerate(DATASETS):
         archive = dest / f"{ds['key']}_processed.tar.zst"
@@ -108,11 +110,11 @@ def make_figure(dest: Path, out: Path):
 
         # ── text columns ──────────────────────────────────────────────────────
         text_cols = [
-            (ds["name"],                         True,  "left",   0.05),
-            (ds["task"],  TASK_COLORS[ds["task"]], False, "left",  0.06),
-            (ds["domain"],                        False, "left",   0.06),
-            (str(n_classes),                      False, "center", 0.5 ),
-            (f"{n_test:,}",                       False, "center", 0.5 ),
+            (ds["name"],                          True,  "left",   0.04),
+            (ds["task"],  TASK_COLORS[ds["task"]], False, "left",   0.04),
+            (ds["domain"],                         False, "left",   0.06),
+            (str(n_classes),                       False, "center", 0.5 ),
+            (f"{n_test:,}",                        False, "center", 0.5 ),
         ]
         for ci, col_def in enumerate(text_cols):
             if len(col_def) == 4:
@@ -122,18 +124,19 @@ def make_figure(dest: Path, out: Path):
                 txt, color, bold, ha, xoff = col_def
 
             ax = fig.add_subplot(gs[ri, ci])
+            ax.set_xlim(0, 1); ax.set_ylim(0, 1)
             ax.axis("off")
             ax.text(xoff, 0.5, txt,
-                    transform=ax.transAxes, fontsize=6.5,
+                    transform=ax.transAxes, fontsize=FS,
                     fontweight="bold" if bold else "normal",
-                    color=TEXT_PRIMARY, va="center", ha=ha)
+                    color=color, va="center", ha=ha,
+                    clip_on=True)
 
-            # horizontal rules
             if is_first:
-                ax.plot([0, 1], [1, 1], color=DIVIDER_COLOR, lw=0.8,
+                ax.plot([0, 1], [1, 1], color=DIVIDER_COLOR, lw=0.7,
                         transform=ax.transAxes, clip_on=False)
             ax.plot([0, 1], [0, 0], color=DIVIDER_COLOR,
-                    lw=0.8 if is_last else 0.4,
+                    lw=0.7 if is_last else 0.35,
                     ls="-"  if is_last else "--",
                     transform=ax.transAxes, clip_on=False)
 
@@ -147,87 +150,67 @@ def make_figure(dest: Path, out: Path):
 
         if sorted_counts:
             x = np.arange(len(sorted_counts))
-            ax_bar.bar(x, sorted_counts, width=0.85,
+            ax_bar.bar(x, sorted_counts, width=0.9,
                        color=BAR_COLOR, alpha=0.78, linewidth=0)
-            ax_bar.set_xlim(-1, len(sorted_counts))
-            ax_bar.set_ylim(0, max(sorted_counts) * 1.55)
-            ax_bar.yaxis.set_major_locator(MaxNLocator(integer=True, nbins=2, prune="both"))
-            ax_bar.tick_params(axis="y", labelsize=5, length=2,
-                               pad=1, color=DIVIDER_COLOR, direction="in")
+            ax_bar.set_xlim(-0.5, len(sorted_counts) - 0.5)
+            ax_bar.set_ylim(0, max(sorted_counts) * 1.12)
+            ax_bar.set_yticks([])
             ax_bar.tick_params(axis="x", bottom=False, labelbottom=False)
-            for lbl in ax_bar.get_yticklabels():
-                lbl.set_color(TEXT_PRIMARY)
-                lbl.set_horizontalalignment("left")
-            ax_bar.yaxis.set_tick_params(which="both", left=False)
-            ax_bar.set_yticks(ax_bar.get_yticks())
-            ax_bar.yaxis.set_label_position("right")
-            ax_bar.yaxis.set_tick_params(pad=0)
-
-            mean_obs = n_test / n_classes if n_classes else 0
-            cv = np.std(sorted_counts) / mean_obs if mean_obs > 0 else 0
-            # if cv < 0.05:
-            #     ann = f"balanced ({int(round(mean_obs))}/class)"
-            # elif cv < 0.3:
-            #     ann = f"mildly imbalanced  (CV={cv:.2f})"
-            # else:
-            #     ann = f"imbalanced  (CV={cv:.2f})"
-            # ax_bar.text(0.5, 0.97, ann, transform=ax_bar.transAxes,
-            #             fontsize=5, color=TEXT_MUTED, ha="center", va="top")
+            # max-count annotation top-left
+            ax_bar.text(0.02, 0.95, str(max(sorted_counts)),
+                        transform=ax_bar.transAxes, fontsize=FS_TICK,
+                        color=TEXT_MUTED, va="top", ha="left")
         else:
             ax_bar.text(0.5, 0.5, "archive not found",
-                        transform=ax_bar.transAxes, fontsize=6,
+                        transform=ax_bar.transAxes, fontsize=FS_TICK,
                         color=TEXT_MUTED, ha="center", va="center")
 
         for spine in ax_bar.spines.values():
             spine.set_visible(False)
         ax_bar.spines["bottom"].set_visible(True)
         ax_bar.spines["bottom"].set_color(DIVIDER_COLOR)
-        ax_bar.spines["bottom"].set_linewidth(0.4 if not is_last else 0.8)
+        ax_bar.spines["bottom"].set_linewidth(0.35 if not is_last else 0.7)
         ax_bar.set_facecolor("none")
         if is_first:
-            ax_bar.plot([0, 1], [1, 1], color=DIVIDER_COLOR, lw=0.8,
+            ax_bar.plot([0, 1], [1, 1], color=DIVIDER_COLOR, lw=0.7,
                         transform=ax_bar.transAxes, clip_on=False)
         ax_bar.plot([0, 1], [0, 0], color=DIVIDER_COLOR,
-                    lw=0.8 if is_last else 0.4,
+                    lw=0.7 if is_last else 0.35,
                     ls="-"  if is_last else "--",
                     transform=ax_bar.transAxes, clip_on=False)
 
-    # ── column headers ────────────────────────────────────────────────────────
-    headers = ["Dataset", "Task", "Domain", "Classes", "Nb. Obs",
-               "Test class distribution  (sorted · 1 bar = 1 class)"]
-    x_offs  = [0.05, 0.06, 0.06, 0.5, 0.5, 0.01]
-    for ci, (hdr, xoff) in enumerate(zip(headers, x_offs)):
-        ax_h = fig.add_subplot(gs[0, ci])
-        ax_h.axis("off")
-        ha = "center" if xoff == 0.5 else "left"
-        ax_h.text(xoff, 1.28, hdr,
-                  transform=ax_h.transAxes,
-                  fontsize=6.5, fontweight="bold", color=TEXT_PRIMARY,
-                  va="bottom", ha=ha)
-        ax_h.set_zorder(10)
+    # ── column headers (placed in figure coords above the grid) ───────────────
+    headers = ["Dataset", "Task", "Domain", "Classes", "Size",
+               "Class distrib. (test)"]
+    has     = ["left", "left", "left", "center", "center", "left"]
+    x_offs  = [0.04,   0.04,   0.06,   0.5,      0.5,      0.02]
+    for ci, (hdr, ha, xoff) in enumerate(zip(headers, has, x_offs)):
+        ax_ref = fig.add_subplot(gs[0, ci])
+        ax_ref.axis("off")
+        ax_ref.text(xoff, 1.22, hdr,
+                    transform=ax_ref.transAxes,
+                    fontsize=FS, fontweight="bold", color=TEXT_PRIMARY,
+                    va="bottom", ha=ha)
+        ax_ref.set_zorder(10)
 
-    # ── vertical separators between all columns ───────────────────────────────
-    # draw after layout is committed so bbox is correct
+    # ── vertical separators ───────────────────────────────────────────────────
     fig.canvas.draw()
     for ci, ax in sep_axes:
         bbox = ax.get_position()
-        # draw at the LEFT edge of this column (right edge of previous)
-        x = bbox.x0
         fig.add_artist(plt.Line2D(
-            [x, x], [bottom_frac, top_frac],
+            [bbox.x0, bbox.x0], [bottom_frac, top_frac + header_pad / fig_h * 0.75],
             transform=fig.transFigure,
-            color=DIVIDER_COLOR, linewidth=0.6, zorder=5,
+            color=DIVIDER_COLOR, linewidth=0.5, zorder=5,
         ))
-    # also draw rightmost border
     bbox_last = fig.axes[-1].get_position()
-    x_right = bbox_last.x1
     fig.add_artist(plt.Line2D(
-        [x_right, x_right], [bottom_frac, top_frac],
+        [bbox_last.x1, bbox_last.x1],
+        [bottom_frac, top_frac + header_pad / fig_h * 0.75],
         transform=fig.transFigure,
-        color=DIVIDER_COLOR, linewidth=0.6, zorder=5,
+        color=DIVIDER_COLOR, linewidth=0.5, zorder=5,
     ))
 
-    plt.savefig(out, bbox_inches="tight", dpi=300,
+    plt.savefig(out, bbox_inches="tight", pad_inches=0, dpi=300,
                 facecolor="white", edgecolor="none")
     plt.close()
     print(f"Saved → {out}")
@@ -245,7 +228,7 @@ def main():
     args = parser.parse_args()
 
     dest = Path(args.dest).expanduser()
-    out  = "/Users/maximeheuillet/Desktop/robust_training/results_analysis_neurips2026/benchmark_table.pdf" #Path(args.out).expanduser() if args.out else dest / "benchmark_table.pdf"
+    out  = "./results_analysis_neurips2026/benchmark_table.pdf"
     print(f"Reading archives from {dest} …")
     make_figure(dest, out)
 

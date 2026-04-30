@@ -1,0 +1,10 @@
+{
+  "batch_name": "batches/x79mpt7hhuewwwnl8yhsfycc8sygobt15xog",
+  "uploaded_file": "files/zm2xsydzc8iq",
+  "provider": "google",
+  "run_id": "flowers-102__random__linf_eps30_random_uniform__google_nothink__random_linf30",
+  "model": "gemini-3-flash-preview-nothink",
+  "actual_model": "gemini-3-flash-preview",
+  "num_requests": 1000,
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batches/x79mpt7hhuewwwnl8yhsfycc8sygobt15xog --provider google --dataset flowers-102__random__linf_eps30_random_uniform --data_root /Users/maximeheuillet/data/adversarial/random/linf_eps30_random_uniform --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name flowers-102__random__linf_eps30_random_uniform__google_nothink__random_linf30"
+}

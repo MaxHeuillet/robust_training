@@ -1,0 +1,10 @@
+{
+  "batch_id": "batch_69db1477cc9081909969541d3fd4c1db",
+  "file_id": "file-GV7t1xaQRddRoaetHTn5qG",
+  "provider": "openai",
+  "run_id": "flowers-102__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard__openai__adv_clip_vith14_linf_eps4",
+  "model": "gpt-4o-mini",
+  "num_requests": 1000,
+  "submitted_at": "2026-04-11T23:41:43.955253",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batch_69db1477cc9081909969541d3fd4c1db --provider openai --dataset flowers-102__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard --data_root /Users/maximeheuillet/data/adversarial/zeroshot_clip_vith14_laion2b/linf_eps4_autoattack_standard --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name flowers-102__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard__openai__adv_clip_vith14_linf_eps4"
+}
