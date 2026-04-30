@@ -1,143 +1,0 @@
-Data already present at /tmp/robustgenbench/data_processed.
-Using CUDA: NVIDIA H100 80GB HBM3
-
-============================================================
-  Dataset   : uc-merced-land-use-dataset
-  Surrogate : clip_vith14  (zeroshot_clip_vith14_laion2b)
-  Norm      : Linf  eps=30.0  (AA: 0.11765)
-============================================================
-  420 samples | 21 classes
-
-Loading CLIP ViT-H/14 surrogate: ViT-H-14 / laion2b_s32b_b79k
-  Encoding 21 class prompts...
-setting parameters for standard version
-uc-merced-land-use-dataset:   0%|          | 0/14 [00:00<?, ?it/s]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 84.38%
-apgd-ce - 1/1 - 27 out of 27 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 53.2 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-uc-merced-land-use-dataset:   7%|▋         | 1/14 [00:56<12:19, 56.87s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 65.62%
-apgd-ce - 1/1 - 21 out of 21 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 40.0 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-uc-merced-land-use-dataset:  14%|█▍        | 2/14 [01:40<09:48, 49.07s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 75.00%
-apgd-ce - 1/1 - 24 out of 24 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 44.2 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-uc-merced-land-use-dataset:  21%|██▏       | 3/14 [02:28<08:53, 48.49s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 75.00%
-apgd-ce - 1/1 - 24 out of 24 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 44.2 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-uc-merced-land-use-dataset:  29%|██▊       | 4/14 [03:16<08:02, 48.22s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 62.50%
-apgd-ce - 1/1 - 20 out of 20 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 38.9 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-uc-merced-land-use-dataset:  36%|███▌      | 5/14 [03:58<06:55, 46.17s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 59.38%
-apgd-ce - 1/1 - 19 out of 19 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 35.7 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-uc-merced-land-use-dataset:  43%|████▎     | 6/14 [04:37<05:50, 43.79s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 81.25%
-apgd-ce - 1/1 - 26 out of 26 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 49.1 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-uc-merced-land-use-dataset:  50%|█████     | 7/14 [05:29<05:25, 46.49s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 87.50%
-apgd-ce - 1/1 - 28 out of 28 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 53.6 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-uc-merced-land-use-dataset:  57%|█████▋    | 8/14 [06:27<04:59, 49.89s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 71.88%
-apgd-ce - 1/1 - 23 out of 23 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 43.5 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-uc-merced-land-use-dataset:  64%|██████▍   | 9/14 [07:14<04:05, 49.00s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 71.88%
-apgd-ce - 1/1 - 23 out of 23 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 43.5 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-uc-merced-land-use-dataset:  71%|███████▏  | 10/14 [08:01<03:13, 48.42s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 84.38%
-apgd-ce - 1/1 - 27 out of 27 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 53.1 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-uc-merced-land-use-dataset:  79%|███████▊  | 11/14 [08:57<02:32, 50.94s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 81.25%
-apgd-ce - 1/1 - 26 out of 26 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 49.2 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-uc-merced-land-use-dataset:  86%|████████▌ | 12/14 [09:50<01:43, 51.54s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 75.00%
-apgd-ce - 1/1 - 24 out of 24 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 44.2 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-uc-merced-land-use-dataset:  93%|█████████▎| 13/14 [10:38<00:50, 50.26s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 100.00%
-apgd-ce - 1/1 - 4 out of 4 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 9.4 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-uc-merced-land-use-dataset: 100%|██████████| 14/14 [10:47<00:00, 38.08s/it]uc-merced-land-use-dataset: 100%|██████████| 14/14 [10:47<00:00, 46.29s/it]
-
-  420 images | clean=0.7524 | adv=0.0000 | success=1.0000
-  Packaging 420 images → uc-merced-land-use-dataset__zeroshot_clip_vith14_laion2b__linf_eps30_autoattack_standard_processed.tar.zst
-  Compressing:   0%|          | 0/420 [00:00<?, ?it/s]  Compressing:  81%|████████  | 339/420 [00:00<00:00, 3381.79it/s]                                                                    ✓ uc-merced-land-use-dataset__zeroshot_clip_vith14_laion2b__linf_eps30_autoattack_standard_processed.tar.zst (50.4 MB)
-  Uploading → MaxHeuillet/RobustGenBench/adversarial/zeroshot_clip_vith14_laion2b/linf_eps30_autoattack_standard/uc-merced-land-use-dataset__zeroshot_clip_vith14_laion2b__linf_eps30_autoattack_standard_processed.tar.zst
-Processing Files (0 / 0)      : |          |  0.00B /  0.00B            
-New Data Upload               : |          |  0.00B /  0.00B            [A
-
-  ...tandard_processed.tar.zst:   1%|          |  489kB / 50.4MB            [A[A
-
-  ...tandard_processed.tar.zst:   1%|          |  489kB / 50.4MB            [A[AProcessing Files (0 / 1)      :   1%|          |  489kB / 50.4MB,   ???B/s  
-
-  ...tandard_processed.tar.zst:   1%|▏         |  731kB / 50.4MB            [A[AProcessing Files (0 / 1)      :   1%|▏         |  731kB / 50.4MB, 1.21MB/s  
-
-  ...tandard_processed.tar.zst:  17%|█▋        | 8.65MB / 50.4MB            [A[AProcessing Files (0 / 1)      :  17%|█▋        | 8.65MB / 50.4MB, 20.4MB/s  
-New Data Upload               :  16%|█▌        | 7.92MB / 49.7MB, 19.8MB/s  [A
-
-  ...tandard_processed.tar.zst:  58%|█████▊    | 29.2MB / 50.4MB            [A[AProcessing Files (0 / 1)      :  58%|█████▊    | 29.2MB / 50.4MB, 47.9MB/s  
-New Data Upload               :  57%|█████▋    | 28.5MB / 49.7MB, 47.5MB/s  [A
-
-  ...tandard_processed.tar.zst:  82%|████████▏ | 41.4MB / 50.4MB            [A[AProcessing Files (0 / 1)      :  82%|████████▏ | 41.4MB / 50.4MB, 51.1MB/s  
-New Data Upload               :  82%|████████▏ | 40.6MB / 49.7MB, 50.8MB/s  [A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 50.4MB / 50.4MB            [A[AProcessing Files (0 / 1)      : 100%|█████████▉| 50.4MB / 50.4MB, 49.9MB/s  
-New Data Upload               : 100%|█████████▉| 49.6MB / 49.7MB, 49.6MB/s  [A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 50.4MB / 50.4MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 50.4MB / 50.4MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 50.4MB / 50.4MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 50.4MB / 50.4MB            [A[AProcessing Files (1 / 1)      : 100%|██████████| 50.4MB / 50.4MB, 27.7MB/s  
-New Data Upload               : 100%|██████████| 49.7MB / 49.7MB, 27.6MB/s  [A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 50.4MB / 50.4MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 50.4MB / 50.4MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 50.4MB / 50.4MB            [A[AProcessing Files (1 / 1)      : 100%|██████████| 50.4MB / 50.4MB, 22.7MB/s  
-New Data Upload               : 100%|██████████| 49.7MB / 49.7MB, 22.6MB/s  
-  ...tandard_processed.tar.zst: 100%|██████████| 50.4MB / 50.4MB            
-  ✓ Upload complete: uc-merced-land-use-dataset__zeroshot_clip_vith14_laion2b__linf_eps30_autoattack_standard_processed.tar.zst
-
-All done!

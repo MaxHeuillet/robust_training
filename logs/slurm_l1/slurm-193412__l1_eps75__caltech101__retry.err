@@ -1,55 +1,0 @@
-  Running command git clone --filter=blob:none --quiet https://github.com/fra31/auto-attack /tmp/pip-req-build-b3z3nf55
-ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
-torchaudio 2.3.1+computecanada requires torch~=2.3.0, but you have torch 2.11.0+computecanada which is incompatible.
-  Compressing:   0%|          | 0/1000 [00:00<?, ?it/s]  Compressing:  38%|███▊      | 375/1000 [00:00<00:00, 3743.54it/s]  Compressing:  75%|███████▌  | 750/1000 [00:00<00:00, 3717.16it/s]                                                                   Processing Files (0 / 0)      : |          |  0.00B /  0.00B            
-New Data Upload               : |          |  0.00B /  0.00B            [A
-
-  ...tandard_processed.tar.zst:   1%|          |  532kB / 75.3MB            [A[A
-
-  ...tandard_processed.tar.zst:   1%|          |  532kB / 75.3MB            [A[AProcessing Files (0 / 1)      :   1%|          |  532kB / 75.3MB, 2.78MB/s  
-
-  ...tandard_processed.tar.zst:   1%|          |  771kB / 75.3MB            [A[AProcessing Files (0 / 1)      :   1%|          |  771kB / 75.3MB, 1.97MB/s  
-
-  ...tandard_processed.tar.zst:   7%|▋         | 5.51MB / 75.3MB            [A[AProcessing Files (0 / 1)      :   7%|▋         | 5.51MB / 75.3MB, 9.32MB/s  
-New Data Upload               :   6%|▋         | 4.73MB / 74.5MB, 8.01MB/s  [A
-
-  ...tandard_processed.tar.zst:  30%|██▉       | 22.3MB / 75.3MB            [A[AProcessing Files (0 / 1)      :  30%|██▉       | 22.3MB / 75.3MB, 28.2MB/s  
-New Data Upload               :  29%|██▉       | 21.6MB / 74.5MB, 27.3MB/s  [A
-
-  ...tandard_processed.tar.zst:  49%|████▊     | 36.5MB / 75.3MB            [A[AProcessing Files (0 / 1)      :  49%|████▊     | 36.5MB / 75.3MB, 36.9MB/s  
-New Data Upload               :  48%|████▊     | 35.8MB / 74.5MB, 36.1MB/s  [A
-
-  ...tandard_processed.tar.zst:  62%|██████▏   | 47.1MB / 75.3MB            [A[AProcessing Files (0 / 1)      :  62%|██████▏   | 47.1MB / 75.3MB, 39.5MB/s  
-New Data Upload               :  62%|██████▏   | 46.3MB / 74.5MB, 38.9MB/s  [A
-
-  ...tandard_processed.tar.zst:  76%|███████▋  | 57.6MB / 75.3MB            [A[AProcessing Files (0 / 1)      :  76%|███████▋  | 57.6MB / 75.3MB, 41.4MB/s  
-New Data Upload               :  76%|███████▌  | 56.8MB / 74.5MB, 40.9MB/s  [A
-
-  ...tandard_processed.tar.zst:  90%|████████▉ | 67.6MB / 75.3MB            [A[AProcessing Files (0 / 1)      :  90%|████████▉ | 67.6MB / 75.3MB, 42.5MB/s  
-New Data Upload               :  90%|████████▉ | 66.8MB / 74.5MB, 42.0MB/s  [A
-
-  ...tandard_processed.tar.zst:  90%|████████▉ | 67.6MB / 75.3MB            [A[A
-
-  ...tandard_processed.tar.zst:  90%|████████▉ | 67.6MB / 75.3MB            [A[A
-
-  ...tandard_processed.tar.zst:  90%|████████▉ | 67.6MB / 75.3MB            [A[A
-
-  ...tandard_processed.tar.zst:  90%|████████▉ | 67.6MB / 75.3MB            [A[A
-
-  ...tandard_processed.tar.zst:  90%|████████▉ | 67.6MB / 75.3MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 75.1MB / 75.3MB            [A[AProcessing Files (0 / 1)      : 100%|█████████▉| 75.1MB / 75.3MB, 26.9MB/s  
-New Data Upload               : 100%|█████████▉| 74.4MB / 74.5MB, 26.6MB/s  [A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 75.1MB / 75.3MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 75.3MB / 75.3MB            [A[AProcessing Files (1 / 1)      : 100%|██████████| 75.3MB / 75.3MB, 23.6MB/s  
-New Data Upload               : 100%|██████████| 74.5MB / 74.5MB, 23.4MB/s  [A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 75.3MB / 75.3MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 75.3MB / 75.3MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 75.3MB / 75.3MB            [A[AProcessing Files (1 / 1)      : 100%|██████████| 75.3MB / 75.3MB, 21.0MB/s  
-New Data Upload               : 100%|██████████| 74.5MB / 74.5MB, 20.8MB/s  
-  ...tandard_processed.tar.zst: 100%|██████████| 75.3MB / 75.3MB            

@@ -1,320 +1,0 @@
-Data already present at /tmp/robustgenbench/data_processed.
-Using CUDA: NVIDIA H100 80GB HBM3
-
-============================================================
-  Dataset   : flowers-102
-  Surrogate : clip_vith14  (zeroshot_clip_vith14_laion2b)
-  Norm      : Linf  eps=30.0  (AA: 0.11765)
-============================================================
-  1000 samples | 102 classes
-
-Loading CLIP ViT-H/14 surrogate: ViT-H-14 / laion2b_s32b_b79k
-  Encoding 102 class prompts...
-setting parameters for standard version
-flowers-102:   0%|          | 0/32 [00:00<?, ?it/s]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 81.25%
-apgd-ce - 1/1 - 26 out of 26 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 49.4 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102:   3%|▎         | 1/32 [00:53<27:40, 53.57s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 90.62%
-apgd-ce - 1/1 - 29 out of 29 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 54.4 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102:   6%|▋         | 2/32 [01:51<28:03, 56.12s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 75.00%
-apgd-ce - 1/1 - 24 out of 24 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 44.3 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102:   9%|▉         | 3/32 [02:39<25:17, 52.34s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 68.75%
-apgd-ce - 1/1 - 22 out of 22 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 41.4 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102:  12%|█▎        | 4/32 [03:24<23:07, 49.56s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 78.12%
-apgd-ce - 1/1 - 25 out of 25 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 44.8 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102:  16%|█▌        | 5/32 [04:13<22:07, 49.15s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 75.00%
-apgd-ce - 1/1 - 24 out of 24 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 44.3 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102:  19%|█▉        | 6/32 [05:00<21:06, 48.72s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 84.38%
-apgd-ce - 1/1 - 27 out of 27 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 53.1 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102:  22%|██▏       | 7/32 [05:57<21:22, 51.32s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 75.00%
-apgd-ce - 1/1 - 24 out of 24 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 44.3 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102:  25%|██▌       | 8/32 [06:46<20:10, 50.45s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 84.38%
-apgd-ce - 1/1 - 27 out of 27 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 53.1 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102:  28%|██▊       | 9/32 [07:42<20:05, 52.40s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 81.25%
-apgd-ce - 1/1 - 26 out of 26 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 49.1 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102:  31%|███▏      | 10/32 [08:35<19:14, 52.47s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 84.38%
-apgd-ce - 1/1 - 27 out of 27 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 53.1 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102:  34%|███▍      | 11/32 [09:32<18:48, 53.75s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 84.38%
-apgd-ce - 1/1 - 27 out of 27 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 53.1 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102:  38%|███▊      | 12/32 [10:28<18:12, 54.63s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 65.62%
-apgd-ce - 1/1 - 21 out of 21 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 40.0 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102:  41%|████      | 13/32 [11:12<16:14, 51.30s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 87.50%
-apgd-ce - 1/1 - 28 out of 28 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 53.7 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102:  44%|████▍     | 14/32 [12:09<15:55, 53.08s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 84.38%
-apgd-ce - 1/1 - 27 out of 27 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 53.1 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102:  47%|████▋     | 15/32 [13:06<15:20, 54.16s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 75.00%
-apgd-ce - 1/1 - 24 out of 24 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 44.3 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102:  50%|█████     | 16/32 [13:54<13:57, 52.36s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 84.38%
-apgd-ce - 1/1 - 27 out of 27 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 53.1 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102:  53%|█████▎    | 17/32 [14:51<13:24, 53.65s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 84.38%
-apgd-ce - 1/1 - 27 out of 27 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 53.1 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102:  56%|█████▋    | 18/32 [15:47<12:43, 54.56s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 81.25%
-apgd-ce - 1/1 - 26 out of 26 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 49.1 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102:  59%|█████▉    | 19/32 [16:40<11:41, 53.98s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 93.75%
-apgd-ce - 1/1 - 30 out of 30 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 57.3 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102:  62%|██████▎   | 20/32 [17:41<11:12, 56.08s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 71.88%
-apgd-ce - 1/1 - 23 out of 23 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 43.5 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102:  66%|██████▌   | 21/32 [18:28<09:47, 53.38s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 81.25%
-apgd-ce - 1/1 - 26 out of 26 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 49.1 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102:  69%|██████▉   | 22/32 [19:21<08:51, 53.16s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 78.12%
-apgd-ce - 1/1 - 25 out of 25 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 44.9 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102:  72%|███████▏  | 23/32 [20:09<07:45, 51.74s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 84.38%
-apgd-ce - 1/1 - 27 out of 27 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 53.1 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102:  75%|███████▌  | 24/32 [21:05<07:04, 53.12s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 84.38%
-apgd-ce - 1/1 - 27 out of 27 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 53.1 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102:  78%|███████▊  | 25/32 [22:02<06:19, 54.17s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 90.62%
-apgd-ce - 1/1 - 29 out of 29 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 54.4 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102:  81%|████████▏ | 26/32 [23:00<05:31, 55.31s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 75.00%
-apgd-ce - 1/1 - 24 out of 24 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 44.3 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102:  84%|████████▍ | 27/32 [23:48<04:25, 53.07s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 81.25%
-apgd-ce - 1/1 - 26 out of 26 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 49.1 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102:  88%|████████▊ | 28/32 [24:40<03:31, 52.94s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 93.75%
-apgd-ce - 1/1 - 30 out of 30 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 57.3 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102:  91%|█████████ | 29/32 [25:41<02:45, 55.29s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 81.25%
-apgd-ce - 1/1 - 26 out of 26 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 49.1 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102:  94%|█████████▍| 30/32 [26:34<01:48, 54.50s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 81.25%
-apgd-ce - 1/1 - 26 out of 26 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 49.1 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102:  97%|█████████▋| 31/32 [27:26<00:53, 53.93s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 100.00%
-apgd-ce - 1/1 - 8 out of 8 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 16.2 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-flowers-102: 100%|██████████| 32/32 [27:44<00:00, 42.89s/it]flowers-102: 100%|██████████| 32/32 [27:44<00:00, 52.00s/it]
-
-  1000 images | clean=0.8150 | adv=0.0000 | success=1.0000
-  Packaging 1000 images → flowers-102__zeroshot_clip_vith14_laion2b__linf_eps30_autoattack_standard_processed.tar.zst
-  Compressing:   0%|          | 0/1000 [00:00<?, ?it/s]  Compressing:  34%|███▍      | 342/1000 [00:00<00:00, 3412.20it/s]  Compressing:  69%|██████▉   | 693/1000 [00:00<00:00, 3467.67it/s]                                                                     ✓ flowers-102__zeroshot_clip_vith14_laion2b__linf_eps30_autoattack_standard_processed.tar.zst (118.8 MB)
-  Uploading → MaxHeuillet/RobustGenBench/adversarial/zeroshot_clip_vith14_laion2b/linf_eps30_autoattack_standard/flowers-102__zeroshot_clip_vith14_laion2b__linf_eps30_autoattack_standard_processed.tar.zst
-Processing Files (0 / 0)      : |          |  0.00B /  0.00B            
-New Data Upload               : |          |  0.00B /  0.00B            [A
-
-  ...tandard_processed.tar.zst:   0%|          |  243kB /  119MB            [A[A
-
-  ...tandard_processed.tar.zst:   0%|          |  243kB /  119MB            [A[AProcessing Files (0 / 1)      :   0%|          |  243kB /  119MB,   ???B/s  
-
-  ...tandard_processed.tar.zst:   0%|          |  560kB /  119MB            [A[AProcessing Files (0 / 1)      :   0%|          |  560kB /  119MB, 1.59MB/s  
-
-  ...tandard_processed.tar.zst:   4%|▍         | 4.71MB /  119MB            [A[AProcessing Files (0 / 1)      :   4%|▍         | 4.71MB /  119MB, 11.2MB/s  
-New Data Upload               :   3%|▎         | 3.70MB /  118MB, 9.25MB/s  [A
-
-  ...tandard_processed.tar.zst:  15%|█▌        | 17.9MB /  119MB            [A[AProcessing Files (0 / 1)      :  15%|█▌        | 17.9MB /  119MB, 29.5MB/s  
-New Data Upload               :  14%|█▍        | 16.9MB /  118MB, 28.2MB/s  [A
-
-  ...tandard_processed.tar.zst:  24%|██▍       | 29.0MB /  119MB            [A[AProcessing Files (0 / 1)      :  24%|██▍       | 29.0MB /  119MB, 36.0MB/s  
-New Data Upload               :  24%|██▍       | 28.0MB /  118MB, 35.0MB/s  [A
-
-  ...tandard_processed.tar.zst:  28%|██▊       | 33.2MB /  119MB            [A[AProcessing Files (0 / 1)      :  28%|██▊       | 33.2MB /  119MB, 33.0MB/s  
-New Data Upload               :  27%|██▋       | 32.2MB /  118MB, 32.2MB/s  [A
-
-  ...tandard_processed.tar.zst:  31%|███       | 36.4MB /  119MB            [A[AProcessing Files (0 / 1)      :  31%|███       | 36.4MB /  119MB, 30.1MB/s  
-New Data Upload               :  30%|███       | 35.4MB /  118MB, 29.5MB/s  [A
-
-  ...tandard_processed.tar.zst:  34%|███▍      | 40.6MB /  119MB            [A[AProcessing Files (0 / 1)      :  34%|███▍      | 40.6MB /  119MB, 28.9MB/s  
-New Data Upload               :  34%|███▎      | 39.6MB /  118MB, 28.3MB/s  [A
-
-  ...tandard_processed.tar.zst:  37%|███▋      | 43.8MB /  119MB            [A[AProcessing Files (0 / 1)      :  37%|███▋      | 43.8MB /  119MB, 27.2MB/s  
-New Data Upload               :  36%|███▋      | 42.8MB /  118MB, 26.7MB/s  [A
-
-  ...tandard_processed.tar.zst:  41%|████      | 48.5MB /  119MB            [A[AProcessing Files (0 / 1)      :  41%|████      | 48.5MB /  119MB, 26.8MB/s  
-New Data Upload               :  40%|████      | 47.5MB /  118MB, 26.4MB/s  [A
-
-  ...tandard_processed.tar.zst:  44%|████▍     | 52.8MB /  119MB            [A[AProcessing Files (0 / 1)      :  44%|████▍     | 52.8MB /  119MB, 26.3MB/s  
-New Data Upload               :  44%|████▍     | 51.7MB /  118MB, 25.9MB/s  [A
-
-  ...tandard_processed.tar.zst:  48%|████▊     | 57.5MB /  119MB            [A[AProcessing Files (0 / 1)      :  48%|████▊     | 57.5MB /  119MB, 26.0MB/s  
-New Data Upload               :  48%|████▊     | 56.5MB /  118MB, 25.7MB/s  [A
-
-  ...tandard_processed.tar.zst:  51%|█████     | 60.7MB /  119MB            [A[AProcessing Files (0 / 1)      :  51%|█████     | 60.7MB /  119MB, 25.2MB/s  
-New Data Upload               :  51%|█████     | 59.7MB /  118MB, 24.9MB/s  [A
-
-  ...tandard_processed.tar.zst:  55%|█████▍    | 64.9MB /  119MB            [A[AProcessing Files (0 / 1)      :  55%|█████▍    | 64.9MB /  119MB, 24.9MB/s  
-New Data Upload               :  54%|█████▍    | 63.9MB /  118MB, 24.6MB/s  [A
-
-  ...tandard_processed.tar.zst:  57%|█████▋    | 67.5MB /  119MB            [A[AProcessing Files (0 / 1)      :  57%|█████▋    | 67.5MB /  119MB, 24.0MB/s  
-New Data Upload               :  56%|█████▋    | 66.5MB /  118MB, 23.8MB/s  [A
-
-  ...tandard_processed.tar.zst:  57%|█████▋    | 67.5MB /  119MB            [A[A
-
-  ...tandard_processed.tar.zst:  57%|█████▋    | 67.5MB /  119MB            [A[A
-
-  ...tandard_processed.tar.zst:  57%|█████▋    | 67.5MB /  119MB            [A[A
-
-  ...tandard_processed.tar.zst:  57%|█████▋    | 67.5MB /  119MB            [A[A
-
-  ...tandard_processed.tar.zst:  57%|█████▋    | 67.5MB /  119MB            [A[A
-
-  ...tandard_processed.tar.zst:  57%|█████▋    | 68.0MB /  119MB            [A[AProcessing Files (0 / 1)      :  57%|█████▋    | 68.0MB /  119MB, 16.9MB/s  
-New Data Upload               :  57%|█████▋    | 67.0MB /  118MB, 16.8MB/s  [A
-
-  ...tandard_processed.tar.zst:  67%|██████▋   | 79.6MB /  119MB            [A[AProcessing Files (0 / 1)      :  67%|██████▋   | 79.6MB /  119MB, 18.9MB/s  
-New Data Upload               :  67%|██████▋   | 78.6MB /  118MB, 18.7MB/s  [A
-
-  ...tandard_processed.tar.zst:  72%|███████▏  | 86.0MB /  119MB            [A[AProcessing Files (0 / 1)      :  72%|███████▏  | 86.0MB /  119MB, 19.5MB/s  
-New Data Upload               :  72%|███████▏  | 84.9MB /  118MB, 19.3MB/s  [A
-
-  ...tandard_processed.tar.zst:  76%|███████▌  | 90.2MB /  119MB            [A[AProcessing Files (0 / 1)      :  76%|███████▌  | 90.2MB /  119MB, 19.6MB/s  
-New Data Upload               :  76%|███████▌  | 89.2MB /  118MB, 19.4MB/s  [A
-
-  ...tandard_processed.tar.zst:  80%|███████▉  | 94.9MB /  119MB            [A[AProcessing Files (0 / 1)      :  80%|███████▉  | 94.9MB /  119MB, 19.7MB/s  
-New Data Upload               :  80%|███████▉  | 93.9MB /  118MB, 19.6MB/s  [A
-
-  ...tandard_processed.tar.zst:  84%|████████▍ | 99.7MB /  119MB            [A[AProcessing Files (0 / 1)      :  84%|████████▍ | 99.7MB /  119MB, 19.9MB/s  
-New Data Upload               :  84%|████████▍ | 98.7MB /  118MB, 19.7MB/s  [A
-
-  ...tandard_processed.tar.zst:  89%|████████▉ |  105MB /  119MB            [A[AProcessing Files (0 / 1)      :  89%|████████▉ |  105MB /  119MB, 20.2MB/s  
-New Data Upload               :  89%|████████▊ |  104MB /  118MB, 20.1MB/s  [A
-
-  ...tandard_processed.tar.zst:  93%|█████████▎|  110MB /  119MB            [A[AProcessing Files (0 / 1)      :  93%|█████████▎|  110MB /  119MB, 20.4MB/s  
-New Data Upload               :  93%|█████████▎|  109MB /  118MB, 20.2MB/s  [A
-
-  ...tandard_processed.tar.zst:  98%|█████████▊|  117MB /  119MB            [A[AProcessing Files (0 / 1)      :  98%|█████████▊|  117MB /  119MB, 20.8MB/s  
-New Data Upload               :  98%|█████████▊|  116MB /  118MB, 20.6MB/s  [A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉|  119MB /  119MB            [A[AProcessing Files (0 / 1)      : 100%|█████████▉|  119MB /  119MB, 20.4MB/s  
-New Data Upload               : 100%|█████████▉|  118MB /  118MB, 20.3MB/s  [A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉|  119MB /  119MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉|  119MB /  119MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉|  119MB /  119MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉|  119MB /  119MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████|  119MB /  119MB            [A[AProcessing Files (1 / 1)      : 100%|██████████|  119MB /  119MB, 17.4MB/s  
-New Data Upload               : 100%|██████████|  118MB /  118MB, 17.3MB/s  [A
-
-  ...tandard_processed.tar.zst: 100%|██████████|  119MB /  119MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████|  119MB /  119MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████|  119MB /  119MB            [A[AProcessing Files (1 / 1)      : 100%|██████████|  119MB /  119MB, 16.5MB/s  
-New Data Upload               : 100%|██████████|  118MB /  118MB, 16.4MB/s  
-  ...tandard_processed.tar.zst: 100%|██████████|  119MB /  119MB            
-  ✓ Upload complete: flowers-102__zeroshot_clip_vith14_laion2b__linf_eps30_autoattack_standard_processed.tar.zst
-
-All done!
