@@ -271,7 +271,8 @@ def load_trained_model(args, N: int, rank: int):
 
     # Build a minimal config for model construction
     # We load the optimal config from the HPO results
-    config_path = Path(args.configs_path) / "HPO_results" / args.project / f"{args.exp_id}.yaml"
+    hpo_source = args.hpo_source_project or args.project
+    config_path = Path(args.configs_path) / "HPO_results" / hpo_source / f"{args.exp_id}.yaml"
     if not config_path.exists():
         raise FileNotFoundError(
             f"HPO config not found at {config_path}. "
@@ -382,6 +383,8 @@ def main():
     parser.add_argument("--seed",       type=int, default=1)
     parser.add_argument("--project",    required=True,
                         help="Project name where trained model is saved")
+    parser.add_argument("--hpo_source_project", default=None,
+                        help="Project name to load HPO yaml from. Defaults to --project if not set.")
     parser.add_argument("--batch_size", type=int, default=64)
     parser.add_argument("--configs_path",
                         default=os.environ.get("CONFIGS_PATH", "./configs"))
@@ -402,7 +405,7 @@ def main():
         os.path.expanduser(args.configs_path))
 
     # exp_id follows the same convention as distributed_experiment_final.py
-    args.exp_id = f"{args.backbone}_{args.dataset}_{args.loss}"
+    args.exp_id = f"{args.backbone}__{args.dataset}__{args.loss}"
 
     print("=" * 60)
     print(f"  RobustGenBench Evaluation")
@@ -416,7 +419,8 @@ def main():
 
     # Number of classes — load from the HPO config
     from omegaconf import OmegaConf
-    config_path = Path(args.configs_path) / "HPO_results" / args.project / f"{args.exp_id}.yaml"
+    hpo_source = args.hpo_source_project or args.project
+    config_path = Path(args.configs_path) / "HPO_results" / hpo_source / f"{args.exp_id}.yaml"
     config      = OmegaConf.load(config_path)
     N           = config.get("num_classes", None)
     if N is None:

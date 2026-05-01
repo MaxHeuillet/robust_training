@@ -41,6 +41,7 @@ python ./evaluate_robustgenbench.py \
     --loss     "${LOSS}" \
     --seed     "${SEED}" \
     --project  "${PRNM}" \
+    --hpo_source_project "full_fine_tuning50" \
     > stdout_test_"${SLURM_JOB_ID}" 2> stderr_test_"${SLURM_JOB_ID}"
 
 exit_code=$?
