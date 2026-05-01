@@ -433,11 +433,24 @@ def main():
     hpo_source = args.hpo_source_project or args.project
     config_path = Path(args.configs_path) / "HPO_results" / hpo_source / f"{args.exp_id}.yaml"
     config      = OmegaConf.load(config_path)
-    N           = config.get("num_classes", None)
-    if N is None:
-        # Fallback: infer from class_names file on HF
-        print("  WARNING: num_classes not in config, defaulting to None — "
-              "load_architecture must handle this.")
+    # Get num_classes from the dataset's class_names file
+    import json
+    class_names_path = Path(args.configs_path).parent / "data" / "class_names" / f"{args.dataset}.json"
+    # Try common locations
+    for candidate in [
+        Path(args.configs_path).parent / "data" / "class_names" / f"{args.dataset}.json",
+        Path(os.path.expandvars("$SLURM_TMPDIR")) / "data" / "class_names" / f"{args.dataset}.json",
+    ]:
+        if candidate.exists():
+            with open(candidate) as f:
+                N = len(json.load(f))
+            print(f"  num_classes={N} (from {candidate})")
+            break
+    else:
+        N = config.get("num_classes", None)
+        if N is None:
+            raise ValueError(f"Cannot determine num_classes for dataset {args.dataset}. "
+                             f"Please ensure class_names/{args.dataset}.json is accessible.")
 
     # Output CSV
     results_dir = Path(args.results_path) / args.project
