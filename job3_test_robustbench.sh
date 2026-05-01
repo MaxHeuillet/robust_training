@@ -10,12 +10,16 @@
 #   ACCOUNT, BCKBN, DATA, SEED, LOSS, PRNM, EMAIL
 # =============================================================================
 
+#SBATCH --account=aip-adurand
+#SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=38
-#SBATCH --gpus-per-node=4
-#SBATCH --mem-per-cpu=5000M
-#SBATCH --time=02:58:00
+#SBATCH --cpus-per-task=48
+#SBATCH --gres=gpu:h100:4
+#SBATCH --mem=480G
+#SBATCH --time=02:59:00
 #SBATCH --mail-type=ALL
+#SBATCH --output=./logs/slurm-%j.out
+#SBATCH --error=./logs/slurm-%j.err
 
 source ./execute_setup.sh
 source ./setup_paths.sh

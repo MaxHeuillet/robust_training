@@ -10,12 +10,16 @@
 #   ACCOUNT, BCKBN, DATA, SEED, LOSS, PRNM, HPO_SOURCE_PRNM, EMAIL
 # =============================================================================
 
+#SBATCH --account=aip-adurand
+#SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=38
-#SBATCH --gpus-per-node=4
-#SBATCH --mem-per-cpu=5000M
-#SBATCH --time=02:58:00
+#SBATCH --cpus-per-task=48
+#SBATCH --gres=gpu:h100:4
+#SBATCH --mem=480G
+#SBATCH --time=02:59:00
 #SBATCH --mail-type=ALL
+#SBATCH --output=./logs/slurm-%j.out
+#SBATCH --error=./logs/slurm-%j.err
 
 source ./execute_setup.sh
 source ./setup_paths.sh
@@ -84,17 +88,11 @@ echo "Training exit code: ${exit_code}"
 # --- Chain test job on success ---
 if [ ${exit_code} -eq 0 ]; then
     echo "Training succeeded. Submitting test job..."
-    sbatch --account="${ACCOUNT}" \
-           --mail-user="${EMAIL}" \
-           --export=ALL,\
-ACCOUNT="${ACCOUNT}",\
-BCKBN="${BCKBN}",\
-DATA="${DATA}",\
-SEED="${SEED}",\
-LOSS="${LOSS}",\
-PRNM="${PRNM}",\
-EMAIL="${EMAIL}" \
-           ./job3_test_robustgenbench.sh
+    sbatch \
+      --account="${ACCOUNT}" \
+      --mail-user="${EMAIL}" \
+      --export="ALL,ACCOUNT=${ACCOUNT},BCKBN=${BCKBN},DATA=${DATA},SEED=${SEED},LOSS=${LOSS},PRNM=${PRNM},EMAIL=${EMAIL}" \
+      ./job3_test_robustgenbench.sh
 else
     echo "Training failed. No test job submitted."
     echo "Check stderr_train_${SLURM_JOB_ID} for details."
