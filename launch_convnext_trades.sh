@@ -13,7 +13,7 @@ LOSS="TRADES_v2"
 SEED=1
 PRNM="convnext_base_fb_in22k_TRADES_v2"
 HPO_SOURCE_PRNM="full_fine_tuning50"
-EMAIL="TODO"          # <-- set your email here
+EMAIL="maxime.heuillet.1@ulaval.ca"          # <-- set your email here
 ACCOUNT="aip-adurand"
 
 DATASETS=(
