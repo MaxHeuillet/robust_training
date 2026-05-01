@@ -596,6 +596,7 @@ def main():
     mode = args_dict['mode']
     args_dict.pop("mode")
 
+    hpo_source_project = args_dict.pop('hpo_source_project', None)
     config_base = OmegaConf.merge(local_config, args_dict)
     config_base.exp_id = get_config_id(config_base)
 
@@ -616,7 +617,7 @@ def main():
         torch.multiprocessing.set_start_method("spawn", force=True)
         print("Training step", flush=True)
         # Load HPO yaml from hpo_source_project (may differ from project_name)
-        hpo_source = args_dict.get("hpo_source_project") or config_base.project_name
+        hpo_source = hpo_source_project or config_base.project_name
         path = os.path.join(config_base.configs_path, "HPO_results",
                           hpo_source, f"{config_base.exp_id}.yaml")
         print(f"Loading HPO config from: {path}", flush=True)
