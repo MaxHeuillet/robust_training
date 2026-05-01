@@ -433,24 +433,19 @@ def main():
     hpo_source = args.hpo_source_project or args.project
     config_path = Path(args.configs_path) / "HPO_results" / hpo_source / f"{args.exp_id}.yaml"
     config      = OmegaConf.load(config_path)
-    # Get num_classes from the dataset's class_names file
+    # Download class_names json from HF to get num_classes
     import json
-    class_names_path = Path(args.configs_path).parent / "data" / "class_names" / f"{args.dataset}.json"
-    # Try common locations
-    for candidate in [
-        Path(args.configs_path).parent / "data" / "class_names" / f"{args.dataset}.json",
-        Path(os.path.expandvars("$SLURM_TMPDIR")) / "data" / "class_names" / f"{args.dataset}.json",
-    ]:
-        if candidate.exists():
-            with open(candidate) as f:
-                N = len(json.load(f))
-            print(f"  num_classes={N} (from {candidate})")
-            break
-    else:
-        N = config.get("num_classes", None)
-        if N is None:
-            raise ValueError(f"Cannot determine num_classes for dataset {args.dataset}. "
-                             f"Please ensure class_names/{args.dataset}.json is accessible.")
+    from huggingface_hub import hf_hub_download
+    class_names_file = hf_hub_download(
+        repo_id=HF_REPO,
+        repo_type="dataset",
+        filename=f"class_names/{args.dataset}.json",
+        local_dir=str(WORK_DIR / "class_names"),
+        cache_dir=str(HF_CACHE_DIR),
+    )
+    with open(class_names_file) as f:
+        N = len(json.load(f))
+    print(f"  num_classes={N} (from class_names/{args.dataset}.json)")
 
     # Output CSV
     results_dir = Path(args.results_path) / args.project
