@@ -70,6 +70,26 @@ if [ $dl_exit -ne 0 ]; then
     exit 1
 fi
 
+# --- Download backbone weights if not already present ---
+echo "Checking backbone weights..."
+python - <<'PYEOF'
+import os, timm, torch
+from pathlib import Path
+
+backbone = os.environ["BCKBN"]
+dest_dir = Path(os.path.expanduser("~/links/scratch/mheuill/my_backbones/"))
+dest_dir.mkdir(parents=True, exist_ok=True)
+dest_path = dest_dir / f"{backbone}.pt"
+
+if dest_path.exists():
+    print(f"  Backbone weights already exist: {dest_path}")
+else:
+    print(f"  Downloading {backbone} from timm...")
+    model = timm.create_model(backbone, pretrained=True)
+    torch.save(model.state_dict(), dest_path)
+    print(f"  Saved to {dest_path}")
+PYEOF
+
 # --- Training step (mode=train, loads HPO yaml from HPO_SOURCE_PRNM) ---
 echo "Starting training..."
 python ./distributed_experiment_final.py \
