@@ -295,7 +295,8 @@ def load_trained_model(args, N: int, rank: int):
     model = CustomModel(config, model)
 
     # Load trained weights
-    state_dict_path = Path(args.trained_statedicts_path) / args.project / f"{args.exp_id}.pt"
+    state_dict_filename = f"{args.backbone}_{args.dataset}_{args.loss}.pt"
+    state_dict_path = Path(os.path.expanduser(args.trained_statedicts_path)) / args.project / state_dict_filename
     if not state_dict_path.exists():
         raise FileNotFoundError(f"State dict not found at {state_dict_path}")
 
