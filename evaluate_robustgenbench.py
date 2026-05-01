@@ -280,6 +280,17 @@ def load_trained_model(args, N: int, rank: int):
         )
     config = OmegaConf.load(config_path)
 
+    # Copy backbone .pt to work_path so load_architecture can find it
+    import shutil
+    backbone_src = Path(os.path.expanduser("~/links/scratch/mheuill/my_backbones")) / f"{config.backbone}.pt"
+    backbone_dst = Path(os.path.expandvars(config.work_path)).expanduser().resolve()
+    backbone_dst.mkdir(parents=True, exist_ok=True)
+    if backbone_src.exists():
+        shutil.copy2(str(backbone_src), str(backbone_dst))
+        print(f"  Copied backbone weights to {backbone_dst}")
+    else:
+        print(f"  WARNING: backbone not found at {backbone_src}")
+
     model = load_architecture(config, N)
     model = CustomModel(config, model)
 
