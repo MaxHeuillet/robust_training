@@ -1,270 +1,0 @@
-Data already present at /tmp/robustgenbench/data_processed.
-Using CUDA: NVIDIA H100 80GB HBM3
-
-============================================================
-  Dataset   : fgvc-aircraft-2013b
-  Surrogate : clip_vith14  (zeroshot_clip_vith14_laion2b)
-  Norm      : Linf  eps=30.0  (AA: 0.11765)
-============================================================
-  1000 samples | 100 classes
-
-Loading CLIP ViT-H/14 surrogate: ViT-H-14 / laion2b_s32b_b79k
-  Encoding 100 class prompts...
-setting parameters for standard version
-fgvc-aircraft-2013b:   0%|          | 0/32 [00:00<?, ?it/s]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 37.50%
-apgd-ce - 1/1 - 12 out of 12 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 22.4 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b:   3%|▎         | 1/32 [00:26<13:53, 26.89s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 43.75%
-apgd-ce - 1/1 - 14 out of 14 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 28.0 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b:   6%|▋         | 2/32 [00:58<14:52, 29.74s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 46.88%
-apgd-ce - 1/1 - 15 out of 15 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 30.0 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b:   9%|▉         | 3/32 [01:32<15:16, 31.59s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 50.00%
-apgd-ce - 1/1 - 16 out of 16 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 30.9 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b:  12%|█▎        | 4/32 [02:07<15:17, 32.78s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 43.75%
-apgd-ce - 1/1 - 14 out of 14 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 28.0 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b:  16%|█▌        | 5/32 [02:38<14:35, 32.41s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 31.25%
-apgd-ce - 1/1 - 10 out of 10 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 20.9 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b:  19%|█▉        | 6/32 [03:03<12:58, 29.93s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 50.00%
-apgd-ce - 1/1 - 16 out of 16 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 30.8 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b:  22%|██▏       | 7/32 [03:38<13:06, 31.45s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 59.38%
-apgd-ce - 1/1 - 19 out of 19 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 35.7 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b:  25%|██▌       | 8/32 [04:17<13:35, 33.99s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 43.75%
-apgd-ce - 1/1 - 14 out of 14 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 27.9 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b:  28%|██▊       | 9/32 [04:49<12:43, 33.20s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 53.12%
-apgd-ce - 1/1 - 17 out of 17 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 32.9 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b:  31%|███▏      | 10/32 [05:25<12:33, 34.26s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 43.75%
-apgd-ce - 1/1 - 14 out of 14 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 27.9 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b:  34%|███▍      | 11/32 [05:57<11:43, 33.48s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 37.50%
-apgd-ce - 1/1 - 12 out of 12 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 22.3 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b:  38%|███▊      | 12/32 [06:24<10:29, 31.45s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 43.75%
-apgd-ce - 1/1 - 14 out of 14 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 27.9 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b:  41%|████      | 13/32 [06:56<09:59, 31.54s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 43.75%
-apgd-ce - 1/1 - 14 out of 14 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 27.9 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b:  44%|████▍     | 14/32 [07:27<09:27, 31.55s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 56.25%
-apgd-ce - 1/1 - 18 out of 18 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 35.1 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b:  47%|████▋     | 15/32 [08:06<09:33, 33.75s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 37.50%
-apgd-ce - 1/1 - 12 out of 12 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 22.3 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b:  50%|█████     | 16/32 [08:32<08:23, 31.46s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 46.88%
-apgd-ce - 1/1 - 15 out of 15 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 30.0 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b:  53%|█████▎    | 17/32 [09:06<08:02, 32.16s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 59.38%
-apgd-ce - 1/1 - 19 out of 19 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 35.7 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b:  56%|█████▋    | 18/32 [09:46<08:00, 34.34s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 56.25%
-apgd-ce - 1/1 - 18 out of 18 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 35.1 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b:  59%|█████▉    | 19/32 [10:24<07:43, 35.69s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 50.00%
-apgd-ce - 1/1 - 16 out of 16 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 30.8 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b:  62%|██████▎   | 20/32 [10:59<07:04, 35.36s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 43.75%
-apgd-ce - 1/1 - 14 out of 14 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 27.9 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b:  66%|██████▌   | 21/32 [11:31<06:16, 34.26s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 50.00%
-apgd-ce - 1/1 - 16 out of 16 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 30.9 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b:  69%|██████▉   | 22/32 [12:05<05:43, 34.37s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 46.88%
-apgd-ce - 1/1 - 15 out of 15 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 30.0 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b:  72%|███████▏  | 23/32 [12:39<05:07, 34.20s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 37.50%
-apgd-ce - 1/1 - 12 out of 12 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 22.3 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b:  75%|███████▌  | 24/32 [13:05<04:14, 31.78s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 40.62%
-apgd-ce - 1/1 - 13 out of 13 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 27.4 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b:  78%|███████▊  | 25/32 [13:37<03:42, 31.72s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 68.75%
-apgd-ce - 1/1 - 22 out of 22 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 41.4 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b:  81%|████████▏ | 26/32 [14:22<03:34, 35.71s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 62.50%
-apgd-ce - 1/1 - 20 out of 20 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 39.0 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b:  84%|████████▍ | 27/32 [15:05<03:09, 37.82s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 43.75%
-apgd-ce - 1/1 - 14 out of 14 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 27.9 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b:  88%|████████▊ | 28/32 [15:36<02:23, 35.99s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 50.00%
-apgd-ce - 1/1 - 16 out of 16 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 30.8 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b:  91%|█████████ | 29/32 [16:11<01:46, 35.56s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 56.25%
-apgd-ce - 1/1 - 18 out of 18 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 35.1 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b:  94%|█████████▍| 30/32 [16:50<01:13, 36.54s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 46.88%
-apgd-ce - 1/1 - 15 out of 15 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 30.0 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b:  97%|█████████▋| 31/32 [17:23<00:35, 35.71s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 25.00%
-apgd-ce - 1/1 - 2 out of 2 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 6.0 s)
-max Linf perturbation: 0.11765, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-fgvc-aircraft-2013b: 100%|██████████| 32/32 [17:30<00:00, 27.10s/it]fgvc-aircraft-2013b: 100%|██████████| 32/32 [17:30<00:00, 32.84s/it]
-
-  1000 images | clean=0.4760 | adv=0.0000 | success=1.0000
-  Packaging 1000 images → fgvc-aircraft-2013b__zeroshot_clip_vith14_laion2b__linf_eps30_autoattack_standard_processed.tar.zst
-  Compressing:   0%|          | 0/1000 [00:00<?, ?it/s]  Compressing:  37%|███▋      | 374/1000 [00:00<00:00, 3739.63it/s]  Compressing:  76%|███████▌  | 760/1000 [00:00<00:00, 3807.44it/s]                                                                     ✓ fgvc-aircraft-2013b__zeroshot_clip_vith14_laion2b__linf_eps30_autoattack_standard_processed.tar.zst (94.8 MB)
-  Uploading → MaxHeuillet/RobustGenBench/adversarial/zeroshot_clip_vith14_laion2b/linf_eps30_autoattack_standard/fgvc-aircraft-2013b__zeroshot_clip_vith14_laion2b__linf_eps30_autoattack_standard_processed.tar.zst
-Processing Files (0 / 0)      : |          |  0.00B /  0.00B            
-New Data Upload               : |          |  0.00B /  0.00B            [A
-
-  ...tandard_processed.tar.zst:   0%|          |  246kB / 94.8MB            [A[A
-
-  ...tandard_processed.tar.zst:   0%|          |  246kB / 94.8MB            [A[AProcessing Files (0 / 1)      :   0%|          |  246kB / 94.8MB,   ???B/s  
-
-  ...tandard_processed.tar.zst:   1%|▏         | 1.28MB / 94.8MB            [A[AProcessing Files (0 / 1)      :   1%|▏         | 1.28MB / 94.8MB, 5.17MB/s  
-
-  ...tandard_processed.tar.zst:   2%|▏         | 2.15MB / 94.8MB            [A[AProcessing Files (0 / 1)      :   2%|▏         | 2.15MB / 94.8MB, 4.76MB/s  
-New Data Upload               :   1%|          |  527kB / 93.2MB, 1.32MB/s  [A
-
-  ...tandard_processed.tar.zst:  17%|█▋        | 15.9MB / 94.8MB            [A[AProcessing Files (0 / 1)      :  17%|█▋        | 15.9MB / 94.8MB, 26.0MB/s  
-New Data Upload               :  15%|█▌        | 14.2MB / 93.2MB, 23.7MB/s  [A
-
-  ...tandard_processed.tar.zst:  35%|███▍      | 32.7MB / 94.8MB            [A[AProcessing Files (0 / 1)      :  35%|███▍      | 32.7MB / 94.8MB, 40.6MB/s  
-New Data Upload               :  33%|███▎      | 31.1MB / 93.2MB, 38.9MB/s  [A
-
-  ...tandard_processed.tar.zst:  51%|█████     | 48.0MB / 94.8MB            [A[AProcessing Files (0 / 1)      :  51%|█████     | 48.0MB / 94.8MB, 47.8MB/s  
-New Data Upload               :  50%|████▉     | 46.4MB / 93.2MB, 46.4MB/s  [A
-
-  ...tandard_processed.tar.zst:  65%|██████▌   | 61.7MB / 94.8MB            [A[AProcessing Files (0 / 1)      :  65%|██████▌   | 61.7MB / 94.8MB, 51.2MB/s  
-New Data Upload               :  64%|██████▍   | 60.1MB / 93.2MB, 50.0MB/s  [A
-
-  ...tandard_processed.tar.zst:  72%|███████▏  | 68.5MB / 94.8MB            [A[AProcessing Files (0 / 1)      :  72%|███████▏  | 68.5MB / 94.8MB, 48.8MB/s  
-New Data Upload               :  72%|███████▏  | 66.9MB / 93.2MB, 47.8MB/s  [A
-
-  ...tandard_processed.tar.zst:  72%|███████▏  | 68.5MB / 94.8MB            [A[A
-
-  ...tandard_processed.tar.zst:  72%|███████▏  | 68.5MB / 94.8MB            [A[A
-
-  ...tandard_processed.tar.zst:  72%|███████▏  | 68.5MB / 94.8MB            [A[A
-
-  ...tandard_processed.tar.zst:  72%|███████▏  | 68.6MB / 94.8MB            [A[AProcessing Files (0 / 1)      :  72%|███████▏  | 68.6MB / 94.8MB, 31.1MB/s  
-New Data Upload               :  72%|███████▏  | 67.0MB / 93.2MB, 30.5MB/s  [A
-
-  ...tandard_processed.tar.zst:  94%|█████████▎| 88.7MB / 94.8MB            [A[AProcessing Files (0 / 1)      :  94%|█████████▎| 88.7MB / 94.8MB, 36.9MB/s  
-New Data Upload               :  93%|█████████▎| 87.1MB / 93.2MB, 36.3MB/s  [A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 94.5MB / 94.8MB            [A[AProcessing Files (0 / 1)      : 100%|█████████▉| 94.5MB / 94.8MB, 36.2MB/s  
-New Data Upload               : 100%|█████████▉| 92.9MB / 93.2MB, 35.7MB/s  [A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 94.5MB / 94.8MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 94.5MB / 94.8MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 94.8MB / 94.8MB            [A[AProcessing Files (1 / 1)      : 100%|██████████| 94.8MB / 94.8MB, 29.5MB/s  
-New Data Upload               : 100%|██████████| 93.2MB / 93.2MB, 29.1MB/s  [A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 94.8MB / 94.8MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 94.8MB / 94.8MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 94.8MB / 94.8MB            [A[AProcessing Files (1 / 1)      : 100%|██████████| 94.8MB / 94.8MB, 26.3MB/s  
-New Data Upload               : 100%|██████████| 93.2MB / 93.2MB, 25.9MB/s  
-  ...tandard_processed.tar.zst: 100%|██████████| 94.8MB / 94.8MB            
-  ✓ Upload complete: fgvc-aircraft-2013b__zeroshot_clip_vith14_laion2b__linf_eps30_autoattack_standard_processed.tar.zst
-
-All done!

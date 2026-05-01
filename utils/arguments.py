@@ -12,6 +12,7 @@ def get_args2():
     parser.add_argument("--project_name", default = 'full_fine_tuning_reproduce', type=str, help="task")
     parser.add_argument("--mode", default='test-common', type=str, choices=['hpo', 'train', 'test-Linf', 'test-L1', 'test-L2', 'test-common'], 
                         help="Choose among: hpo, train, test-L1, test-L2, test-common" )
+    parser.add_argument("--hpo_source_project", type=str, default=None, help="Project name to load HPO yaml from. Defaults to --project_name if not set.")
         
     args, unknown = parser.parse_known_args()
     args_dict = vars(args)

@@ -1,17 +1,46 @@
 \begin{table}[ht]
 \centering
-\caption{Top fine‑tuning configurations in LP (50 epochs), with global ranking (GR) below. }
-\label{tab:LP_50_epochs}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{|c|c|c|c|}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\caption{\small Top LP-50 configurations per architecture size, ranked by Borda score (BS). Global ranking (GR) and sum score (SS) also reported. Mapping to Hugging Face model cards available in Table \ref{tab:backbone_config_refs}.}
+\begin{tabular}{@{}l ccc@{}}
 \toprule
-\textbf{Size} & \textbf{Gold (1st)} & \textbf{Silver (2nd)} & \textbf{Bronze (3rd)} \\
+\textbf{Size}
+  & \textbf{Gold (1st)}
+  & \textbf{Silver (2nd)}
+  & \textbf{Bronze (3rd)} \\
 \midrule
-small & \makecell{efficientnet\_b0,sup,in1k, Classic AT \\[0.3ex] \footnotesize (GR:9)} & \makecell{efficientnet\_b0,sup,in1k, TRADES \\[0.3ex] \footnotesize (GR:10)} & \makecell{mobilenet\_v3,sup,in1k, Classic AT \\[0.3ex] \footnotesize (GR:43)} \\
-medium & \makecell{deit\_s,rob-sup,in1k, Classic AT \\[0.3ex] \footnotesize (GR:1)} & \makecell{deit\_s,rob-sup,in1k, TRADES \\[0.3ex] \footnotesize (GR:2)} & \makecell{convnext\_t,rob-sup,in1k, TRADES \\[0.3ex] \footnotesize (GR:3)} \\
-large & \makecell{convnext\_b,rob-sup,in1k, TRADES \\[0.3ex] \footnotesize (GR:6)} & \makecell{convnext\_b,rob-sup,in1k, Classic AT \\[0.3ex] \footnotesize (GR:8)} & \makecell{swin\_b,sup,ink22k-in1k, TRADES \\[0.3ex] \footnotesize (GR:11)} \\
+\multirow{3}{*}{Tiny}
+  & \texttt{\small efficientnet\_b0,sup,in1k}
+  & \texttt{\small efficientnet\_b0,sup,in1k}
+  & \texttt{\small mobilenet\_v3,sup,in1k} \\
+  & \lossbadge{Classic AT}
+  & \lossbadge{TRADES}
+  & \lossbadge{Classic AT} \\
+  & {\scriptsize\color{scoregray} GR:9\,\textbar\,BS:1435\,\textbar\,SS:0.98}
+  & {\scriptsize\color{scoregray} GR:10\,\textbar\,BS:1387\,\textbar\,SS:0.54}
+  & {\scriptsize\color{scoregray} GR:43\,\textbar\,BS:613\,\textbar\,SS:3.83} \\
+\multirow{3}{*}{Small}
+  & \texttt{\small deit\_s,rob-sup,in1k}
+  & \texttt{\small deit\_s,rob-sup,in1k}
+  & \texttt{\small convnext\_t,rob-sup,in1k} \\
+  & \lossbadge{Classic AT}
+  & \lossbadge{TRADES}
+  & \lossbadge{TRADES} \\
+  & {\scriptsize\color{scoregray} GR:1\,\textbar\,BS:1889\,\textbar\,SS:9.13}
+  & {\scriptsize\color{scoregray} GR:2\,\textbar\,BS:1725\,\textbar\,SS:6.97}
+  & {\scriptsize\color{scoregray} GR:3\,\textbar\,BS:1667\,\textbar\,SS:7.57} \\
+\multirow{3}{*}{Base}
+  & \texttt{\small convnext\_b,rob-sup,in1k}
+  & \texttt{\small convnext\_b,rob-sup,in1k}
+  & \texttt{\small swin\_b,sup,in22k-in1k} \\
+  & \lossbadge{TRADES}
+  & \lossbadge{Classic AT}
+  & \lossbadge{TRADES} \\
+  & {\scriptsize\color{scoregray} GR:6\,\textbar\,BS:1484\,\textbar\,SS:3.39}
+  & {\scriptsize\color{scoregray} GR:8\,\textbar\,BS:1459\,\textbar\,SS:2.81}
+  & {\scriptsize\color{scoregray} GR:11\,\textbar\,BS:967\,\textbar\,SS:8.00} \\
 \bottomrule
 \end{tabular}
-
-}
+\label{tab:LP_50_epochs}
 \end{table}

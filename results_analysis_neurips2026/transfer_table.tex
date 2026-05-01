@@ -8,63 +8,63 @@
   Adversarial transfer accuracy (\%) under each surrogate and threat model,
   evaluated on two closed-source VLMs (column super-groups).
   \emph{Clean}: no attack.
-  Sev.$^3$: common corruptions at severity 3 (surrogate-independent).
   Bold values = column/block averages.
   {\textemdash}: not evaluated.
+  See \cref{tab:common} for common corruption results.
 }
 \label{tab:transfer_full}
 \resizebox{\textwidth}{!}{%
-\begin{tabular}{l || r | rrrrrr r | r || r | rrrrrr r | r}
+\begin{tabular}{l || r | rrrrrrrr | r || r | rrrrrrrr | r}
 \toprule
-\multirow{3}{*}{\textbf{Dataset}}  & \multicolumn{9}{c||}{\textbf{Gemini Flash (no think)}}  & \multicolumn{9}{c}{\textbf{GPT-4o}} \\
-  & \multirow{2}{*}{Clean} & \multicolumn{6}{c|}{Adversarial} & \multirow{2}{*}{Sev.$^3$} & \multirow{2}{*}{\textbf{Avg.}}  & \multirow{2}{*}{Clean} & \multicolumn{6}{c|}{Adversarial} & \multirow{2}{*}{Sev.$^3$} & \multirow{2}{*}{\textbf{Avg.}} \\
-  & & $\ell_1^{75}$ & $\ell_1^{300}$ & $\ell_2^{2}$ & $\ell_2^{8}$ & $\ell_\infty^{8}$ & $\ell_\infty^{30}$ & &  & & $\ell_1^{75}$ & $\ell_1^{300}$ & $\ell_2^{2}$ & $\ell_2^{8}$ & $\ell_\infty^{8}$ & $\ell_\infty^{30}$ & & \\
+\multirow{3}{*}{\textbf{Dataset}}  & \multicolumn{10}{c||}{\textbf{Gemini Flash (no think)}}  & \multicolumn{10}{c}{\textbf{GPT-4o}} \\
+  & \multirow{2}{*}{Clean} & \multicolumn{8}{c|}{Adversarial} & \multirow{2}{*}{\textbf{Avg.}}  & \multirow{2}{*}{Clean} & \multicolumn{8}{c|}{Adversarial} & \multirow{2}{*}{\textbf{Avg.}} \\
+  & & $\ell_1^{75}$ & $\ell_1^{300}$ & $\ell_2^{2}$ & $\ell_2^{8}$ & $\ell_\infty^{4}$ & $\ell_\infty^{8}$ & $\ell_\infty^{30}$ & $\text{sev@3}$ &  & & $\ell_1^{75}$ & $\ell_1^{300}$ & $\ell_2^{2}$ & $\ell_2^{8}$ & $\ell_\infty^{4}$ & $\ell_\infty^{8}$ & $\ell_\infty^{30}$ & $\text{sev@3}$ & \\
 \midrule
-\multicolumn{19}{l}{\textit{Surrogate: \textbf{CLIP ViT-B/16}}}  \\
+\multicolumn{21}{l}{\textit{Surrogate: \textbf{CLIP ViT-B/16}}}  \\
 \addlinespace[1pt]
-\hspace{4pt}Caltech-101 & 93.0 & 92.7 & 91.9 & 93.5 & 90.9 & 92.1 & 86.8 & 90.3 & 91.2 & 90.6 & 90.8 & 90.3 & 90.3 & 87.7 & 89.8 & 80.3 & 85.4 & 87.8 \\
-\hspace{4pt}FGVC Aircraft & 80.8 & 80.2 & 79.6 & 79.8 & 78.4 & 79.1 & 74.4 & 53.9 & 75.1 & 45.8 & 44.2 & 44.3 & 44.9 & 39.8 & 43.5 & 38.2 & 27.3 & 40.3 \\
-\hspace{4pt}Flowers-102 & 95.7 & 95.6 & 95.7 & 95.7 & 94.3 & 95.3 & 84.8 & 88.1 & 92.8 & 73.7 & 74.3 & 73.7 & 74.0 & 68.2 & 72.7 & 54.4 & 62.6 & 68.6 \\
-\hspace{4pt}Oxford Pet & 96.5 & 95.6 & 94.3 & 95.8 & 89.5 & 94.8 & 76.6 & 87.2 & 90.5 & 87.4 & 84.0 & 81.2 & 84.1 & 71.1 & 81.1 & 59.1 & 76.1 & 76.7 \\
-\hspace{4pt}Stanford Cars & 93.9 & 93.8 & 93.0 & 93.8 & 89.1 & 92.4 & 82.7 & 76.5 & 88.8 & 72.2 & 70.6 & 67.6 & 71.3 & 52.6 & 64.7 & 37.3 & 48.6 & 59.0 \\
-\hspace{4pt}UC Merced & 90.7 & 89.3 & 88.3 & 90.0 & 79.8 & 85.0 & 64.8 & 72.4 & 81.4 & 77.6 & 77.6 & 76.2 & 76.4 & 71.2 & 75.0 & 54.0 & 62.6 & 70.4 \\
+\hspace{4pt}Caltech-101 & 93.0 & 92.7 & 91.9 & 93.5 & 90.9 & 93.8 & 92.1 & 86.8 & 90.3 & 91.5 & 90.6 & 90.8 & 90.3 & 90.3 & 87.7 & 89.4 & 89.8 & 80.3 & 85.4 & 88.0 \\
+\hspace{4pt}FGVC Aircraft & 80.8 & 80.2 & 79.6 & 79.8 & 78.4 & 79.3 & 79.1 & 74.4 & 53.9 & 75.6 & 45.8 & 44.2 & 44.3 & 44.9 & 39.8 & 44.4 & 43.5 & 38.2 & 27.3 & 40.8 \\
+\hspace{4pt}Flowers-102 & 95.7 & 95.6 & 95.7 & 95.7 & 94.3 & 95.6 & 95.3 & 84.8 & 88.1 & 93.1 & 73.7 & 74.3 & 73.7 & 74.0 & 68.2 & 72.8 & 72.7 & 54.4 & 62.6 & 69.1 \\
+\hspace{4pt}Oxford Pet & 96.5 & 95.6 & 94.3 & 95.8 & 89.5 & 95.4 & 94.8 & 76.6 & 87.2 & 91.1 & 87.4 & 84.0 & 81.2 & 84.1 & 71.1 & 84.4 & 81.1 & 59.1 & 76.1 & 77.6 \\
+\hspace{4pt}Stanford Cars & 93.9 & 93.8 & 93.0 & 93.8 & 89.1 & 93.8 & 92.4 & 82.7 & 76.5 & 89.4 & 72.2 & 70.6 & 67.6 & 71.3 & 52.6 & 70.5 & 64.7 & 37.3 & 48.6 & 60.4 \\
+\hspace{4pt}UC Merced & 90.7 & 89.3 & 88.3 & 90.0 & 79.8 & 89.3 & 85.0 & 64.8 & 72.4 & 82.4 & 77.6 & 77.6 & 76.2 & 76.4 & 71.2 & 76.0 & 75.0 & 54.0 & 62.6 & 71.1 \\
 \addlinespace[1pt]
-\hspace{4pt}\textit{Avg.} & \textbf{91.8} & \textbf{91.2} & \textbf{90.5} & \textbf{91.4} & \textbf{87.0} & \textbf{89.8} & \textbf{78.3} & \textbf{78.1} & \textbf{86.6} & \textbf{74.6} & \textbf{73.6} & \textbf{72.2} & \textbf{73.5} & \textbf{65.1} & \textbf{71.1} & \textbf{53.9} & \textbf{60.4} & \textbf{67.1} \\
+\hspace{4pt}\textit{Avg.} & \textbf{91.8} & \textbf{91.2} & \textbf{90.5} & \textbf{91.4} & \textbf{87.0} & \textbf{91.2} & \textbf{89.8} & \textbf{78.3} & \textbf{78.1} & \textbf{87.2} & \textbf{74.6} & \textbf{73.6} & \textbf{72.2} & \textbf{73.5} & \textbf{65.1} & \textbf{72.9} & \textbf{71.1} & \textbf{53.9} & \textbf{60.4} & \textbf{67.8} \\
 \midrule
-\multicolumn{19}{l}{\textit{Surrogate: \textbf{CLIP ViT-H/14}}}  \\
+\multicolumn{21}{l}{\textit{Surrogate: \textbf{CLIP ViT-H/14}}}  \\
 \addlinespace[1pt]
-\hspace{4pt}Caltech-101 & 93.0 & 93.6 & 92.4 & 92.2 & 89.4 & 91.2 & 81.2 & 90.3 & 90.0 & 90.6 & 90.1 & 89.4 & 89.6 & 86.0 & 89.2 & 69.2 & 85.4 & 85.6 \\
-\hspace{4pt}FGVC Aircraft & 80.8 & 80.8 & 78.9 & 79.6 & 75.3 & 78.7 & 69.2 & 53.9 & 73.8 & 45.8 & 45.4 & 42.7 & 43.3 & 38.7 & 41.1 & 28.8 & 27.3 & 38.2 \\
-\hspace{4pt}Flowers-102 & 95.7 & 95.6 & 95.5 & 95.4 & 92.5 & 94.8 & 72.1 & 88.1 & 90.6 & 73.7 & 74.4 & 72.4 & 72.0 & 60.8 & 66.9 & 33.3 & 62.6 & 63.2 \\
-\hspace{4pt}Oxford Pet & 96.5 & 94.8 & 93.4 & 94.7 & 83.4 & 91.6 & 54.0 & 87.2 & 85.6 & 87.4 & 83.4 & 75.7 & 80.9 & 58.5 & 75.2 & 33.9 & 76.1 & 69.1 \\
-\hspace{4pt}Stanford Cars & 93.9 & 93.6 & 92.2 & 92.4 & 88.2 & 90.6 & 73.9 & 76.5 & 86.8 & 72.2 & 71.3 & 66.8 & 69.6 & 52.6 & 64.0 & 27.4 & 48.6 & 57.2 \\
-\hspace{4pt}UC Merced & 90.7 & 89.8 & 89.0 & 88.3 & 78.3 & 85.2 & 51.0 & 72.4 & 79.1 & 77.6 & 77.6 & 75.3 & 75.7 & 60.0 & 70.0 & 36.4 & 62.6 & 65.4 \\
+\hspace{4pt}Caltech-101 & 93.0 & 93.6 & 92.4 & 92.2 & 89.4 & 93.3 & 91.2 & 81.2 & 90.3 & 90.5 & 90.6 & 90.1 & 89.4 & 89.6 & 86.0 & 90.0 & 89.2 & 69.2 & 85.4 & 86.1 \\
+\hspace{4pt}FGVC Aircraft & 80.8 & 80.8 & 78.9 & 79.6 & 75.3 & 77.8 & 78.7 & 69.2 & 53.9 & 74.3 & 45.8 & 45.4 & 42.7 & 43.3 & 38.7 & 45.9 & 41.1 & 28.8 & 27.3 & 39.2 \\
+\hspace{4pt}Flowers-102 & 95.7 & 95.6 & 95.5 & 95.4 & 92.5 & 95.3 & 94.8 & 72.1 & 88.1 & 91.2 & 73.7 & 74.4 & 72.4 & 72.0 & 60.8 & 72.3 & 66.9 & 33.3 & 62.6 & 64.3 \\
+\hspace{4pt}Oxford Pet & 96.5 & 94.8 & 93.4 & 94.7 & 83.4 & 94.6 & 91.6 & 54.0 & 87.2 & 86.7 & 87.4 & 83.4 & 75.7 & 80.9 & 58.5 & 82.5 & 75.2 & 33.9 & 76.1 & 70.8 \\
+\hspace{4pt}Stanford Cars & 93.9 & 93.6 & 92.2 & 92.4 & 88.2 & 93.2 & 90.6 & 73.9 & 76.5 & 87.6 & 72.2 & 71.3 & 66.8 & 69.6 & 52.6 & 69.5 & 64.0 & 27.4 & 48.6 & 58.7 \\
+\hspace{4pt}UC Merced & 90.7 & 89.8 & 89.0 & 88.3 & 78.3 & 89.5 & 85.2 & 51.0 & 72.4 & 80.4 & 77.6 & 77.6 & 75.3 & 75.7 & 60.0 & 76.2 & 70.0 & 36.4 & 62.6 & 66.7 \\
 \addlinespace[1pt]
-\hspace{4pt}\textit{Avg.} & \textbf{91.8} & \textbf{91.4} & \textbf{90.2} & \textbf{90.4} & \textbf{84.5} & \textbf{88.7} & \textbf{66.9} & \textbf{78.1} & \textbf{84.3} & \textbf{74.6} & \textbf{73.7} & \textbf{70.4} & \textbf{71.9} & \textbf{59.4} & \textbf{67.7} & \textbf{38.2} & \textbf{60.4} & \textbf{63.1} \\
+\hspace{4pt}\textit{Avg.} & \textbf{91.8} & \textbf{91.4} & \textbf{90.2} & \textbf{90.4} & \textbf{84.5} & \textbf{90.6} & \textbf{88.7} & \textbf{66.9} & \textbf{78.1} & \textbf{85.1} & \textbf{74.6} & \textbf{73.7} & \textbf{70.4} & \textbf{71.9} & \textbf{59.4} & \textbf{72.7} & \textbf{67.7} & \textbf{38.2} & \textbf{60.4} & \textbf{64.3} \\
 \midrule
-\multicolumn{19}{l}{\textit{Surrogate: \textbf{MetaCLIP ViT-H/14}}}  \\
+\multicolumn{21}{l}{\textit{Surrogate: \textbf{MetaCLIP ViT-H/14}}}  \\
 \addlinespace[1pt]
-\hspace{4pt}Caltech-101 & 93.0 & 93.2 & 92.3 & 92.4 & 91.1 & 93.0 & 86.4 & 90.3 & 91.2 & 90.6 & 90.6 & 89.7 & 90.4 & 87.8 & 88.4 & 76.0 & 85.4 & 86.9 \\
-\hspace{4pt}FGVC Aircraft & 80.8 & 80.5 & 78.5 & 79.2 & 77.5 & 78.7 & 67.3 & 53.9 & 73.7 & 45.8 & 44.3 & 43.3 & 44.3 & 40.8 & 41.7 & 29.2 & 27.3 & 38.7 \\
-\hspace{4pt}Flowers-102 & 95.7 & 95.6 & 95.5 & 94.6 & 93.9 & 94.9 & 77.9 & 88.1 & 91.5 & 73.7 & 73.6 & 72.4 & 72.0 & 63.7 & 68.8 & 43.0 & 62.6 & 65.2 \\
-\hspace{4pt}Oxford Pet & 96.5 & 95.7 & 93.2 & 94.9 & 87.9 & 92.3 & 62.6 & 87.2 & 87.7 & 87.4 & 83.0 & 78.5 & 81.0 & 68.9 & 73.6 & 42.8 & 76.1 & 72.0 \\
-\hspace{4pt}Stanford Cars & 93.9 & 93.4 & 92.6 & 93.1 & 91.3 & 92.5 & 79.7 & 76.5 & 88.4 & 72.2 & 72.4 & 68.6 & 69.7 & 60.1 & 63.2 & 33.9 & 48.6 & 59.5 \\
-\hspace{4pt}UC Merced & 90.7 & 90.2 & 86.4 & 88.8 & 80.5 & 83.3 & 52.6 & 72.4 & 79.2 & 77.6 & 76.2 & 73.1 & 75.5 & 62.6 & 69.3 & 38.3 & 62.6 & 65.4 \\
+\hspace{4pt}Caltech-101 & 93.0 & 93.2 & 92.3 & 92.4 & 91.1 & 92.1 & 93.0 & 86.4 & 90.3 & 91.3 & 90.6 & 90.6 & 89.7 & 90.4 & 87.8 & 90.1 & 88.4 & 76.0 & 85.4 & 87.3 \\
+\hspace{4pt}FGVC Aircraft & 80.8 & 80.5 & 78.5 & 79.2 & 77.5 & 80.0 & 78.7 & 67.3 & 53.9 & 74.5 & 45.8 & 44.3 & 43.3 & 44.3 & 40.8 & 45.2 & 41.7 & 29.2 & 27.3 & 39.5 \\
+\hspace{4pt}Flowers-102 & 95.7 & 95.6 & 95.5 & 94.6 & 93.9 & 95.8 & 94.9 & 77.9 & 88.1 & 92.0 & 73.7 & 73.6 & 72.4 & 72.0 & 63.7 & 70.9 & 68.8 & 43.0 & 62.6 & 65.9 \\
+\hspace{4pt}Oxford Pet & 96.5 & 95.7 & 93.2 & 94.9 & 87.9 & 94.2 & 92.3 & 62.6 & 87.2 & 88.5 & 87.4 & 83.0 & 78.5 & 81.0 & 68.9 & 80.9 & 73.6 & 42.8 & 76.1 & 73.1 \\
+\hspace{4pt}Stanford Cars & 93.9 & 93.4 & 92.6 & 93.1 & 91.3 & 93.7 & 92.5 & 79.7 & 76.5 & 89.1 & 72.2 & 72.4 & 68.6 & 69.7 & 60.1 & 68.3 & 63.2 & 33.9 & 48.6 & 60.6 \\
+\hspace{4pt}UC Merced & 90.7 & 90.2 & 86.4 & 88.8 & 80.5 & 88.6 & 83.3 & 52.6 & 72.4 & 80.4 & 77.6 & 76.2 & 73.1 & 75.5 & 62.6 & 75.5 & 69.3 & 38.3 & 62.6 & 66.6 \\
 \addlinespace[1pt]
-\hspace{4pt}\textit{Avg.} & \textbf{91.8} & \textbf{91.4} & \textbf{89.8} & \textbf{90.5} & \textbf{87.0} & \textbf{89.1} & \textbf{71.1} & \textbf{78.1} & \textbf{85.3} & \textbf{74.6} & \textbf{73.3} & \textbf{70.9} & \textbf{72.1} & \textbf{64.0} & \textbf{67.5} & \textbf{43.9} & \textbf{60.4} & \textbf{64.6} \\
+\hspace{4pt}\textit{Avg.} & \textbf{91.8} & \textbf{91.4} & \textbf{89.8} & \textbf{90.5} & \textbf{87.0} & \textbf{90.7} & \textbf{89.1} & \textbf{71.1} & \textbf{78.1} & \textbf{86.0} & \textbf{74.6} & \textbf{73.3} & \textbf{70.9} & \textbf{72.1} & \textbf{64.0} & \textbf{71.8} & \textbf{67.5} & \textbf{43.9} & \textbf{60.4} & \textbf{65.5} \\
 \midrule
-\multicolumn{19}{l}{\textit{Surrogate: \textbf{SigLIP2 SO400M}}}  \\
+\multicolumn{21}{l}{\textit{Surrogate: \textbf{SigLIP2 SO400M}}}  \\
 \addlinespace[1pt]
-\hspace{4pt}Caltech-101 & 93.0 & 92.6 & 92.6 & 91.5 & 89.0 & 91.5 & 71.9 & 90.3 & 88.5 & 90.6 & 90.8 & 88.4 & 90.1 & 85.6 & 88.4 & 65.3 & 85.4 & 84.9 \\
-\hspace{4pt}FGVC Aircraft & 80.8 & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & 53.9 & 53.9 & 45.8 & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & 27.3 & 27.3 \\
-\hspace{4pt}Flowers-102 & 95.7 & 95.8 & 95.2 & 95.3 & 88.3 & 93.1 & 56.2 & 88.1 & 87.4 & 73.7 & 74.6 & 72.7 & 72.7 & {\textemdash} & 67.7 & 35.2 & 62.6 & 64.2 \\
-\hspace{4pt}Oxford Pet & 96.5 & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & 87.2 & 87.2 & 87.4 & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & 76.1 & 76.1 \\
-\hspace{4pt}Stanford Cars & 93.9 & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & 76.5 & 76.5 & 72.2 & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & 48.6 & 48.6 \\
-\hspace{4pt}UC Merced & 90.7 & 88.8 & 86.7 & 86.9 & 70.2 & 77.9 & 35.5 & 72.4 & 74.0 & 77.6 & 75.2 & 73.6 & 76.2 & 60.2 & 69.0 & 29.4 & 62.6 & 63.8 \\
+\hspace{4pt}Caltech-101 & 93.0 & 92.6 & 92.6 & 91.5 & 89.0 & 91.5 & 91.5 & 71.9 & 90.3 & 88.9 & 90.6 & 90.8 & 88.4 & 90.1 & 85.6 & 89.8 & 88.4 & 65.3 & 85.4 & 85.5 \\
+\hspace{4pt}FGVC Aircraft & 80.8 & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & 53.9 & 53.9 & 45.8 & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & 27.3 & 27.3 \\
+\hspace{4pt}Flowers-102 & 95.7 & 95.8 & 95.2 & 95.3 & 88.3 & 95.2 & 93.1 & 56.2 & 88.1 & 88.4 & 73.7 & 74.6 & 72.7 & 72.7 & {\textemdash} & 72.4 & 67.7 & 35.2 & 62.6 & 65.4 \\
+\hspace{4pt}Oxford Pet & 96.5 & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & 87.2 & 87.2 & 87.4 & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & 76.1 & 76.1 \\
+\hspace{4pt}Stanford Cars & 93.9 & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & 76.5 & 76.5 & 72.2 & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & {\textemdash} & 48.6 & 48.6 \\
+\hspace{4pt}UC Merced & 90.7 & 88.8 & 86.7 & 86.9 & 70.2 & 87.9 & 77.9 & 35.5 & 72.4 & 75.8 & 77.6 & 75.2 & 73.6 & 76.2 & 60.2 & 74.5 & 69.0 & 29.4 & 62.6 & 65.1 \\
 \addlinespace[1pt]
-\hspace{4pt}\textit{Avg.} & \textbf{91.8} & \textbf{92.4} & \textbf{91.5} & \textbf{91.2} & \textbf{82.5} & \textbf{87.5} & \textbf{54.5} & \textbf{78.1} & \textbf{82.0} & \textbf{74.6} & \textbf{80.2} & \textbf{78.2} & \textbf{79.7} & \textbf{72.9} & \textbf{75.0} & \textbf{43.3} & \textbf{60.4} & \textbf{68.6} \\
+\hspace{4pt}\textit{Avg.} & \textbf{91.8} & \textbf{92.4} & \textbf{91.5} & \textbf{91.2} & \textbf{82.5} & \textbf{91.5} & \textbf{87.5} & \textbf{54.5} & \textbf{78.1} & \textbf{83.0} & \textbf{74.6} & \textbf{80.2} & \textbf{78.2} & \textbf{79.7} & \textbf{72.9} & \textbf{78.9} & \textbf{75.0} & \textbf{43.3} & \textbf{60.4} & \textbf{69.8} \\
 \midrule
-\textbf{Global avg.} & \textbf{91.8} & \textbf{91.5} & \textbf{90.3} & \textbf{90.9} & \textbf{85.7} & \textbf{89.0} & \textbf{69.6} & \textbf{78.1} & \textbf{85.8} & \textbf{74.6} & \textbf{74.5} & \textbf{72.2} & \textbf{73.5} & \textbf{63.8} & \textbf{69.7} & \textbf{45.0} & \textbf{60.4} & \textbf{66.2} \\
+\textbf{Global avg.} & \textbf{91.8} & \textbf{91.5} & \textbf{90.3} & \textbf{90.9} & \textbf{85.7} & \textbf{90.9} & \textbf{89.0} & \textbf{69.6} & \textbf{78.1} & \textbf{85.6} & \textbf{74.6} & \textbf{74.5} & \textbf{72.2} & \textbf{73.5} & \textbf{63.8} & \textbf{73.4} & \textbf{69.7} & \textbf{45.0} & \textbf{60.4} & \textbf{66.5} \\
 \bottomrule
 \end{tabular}
 }

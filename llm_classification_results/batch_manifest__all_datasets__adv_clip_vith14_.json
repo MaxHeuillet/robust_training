@@ -1,0 +1,72 @@
+[
+  {
+    "dataset": "caltech101__random__linf_eps30_random_uniform",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "caltech101__random__linf_eps30_random_uniform__openai__adv_clip_vith14_",
+    "batch_id": "batch_69e14eae0b6081909e304d31c29d64f9",
+    "status": "retrieved",
+    "experiment": "adv_clip_vith14_"
+  },
+  {
+    "dataset": "fgvc-aircraft-2013b__random__linf_eps30_random_uniform",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "fgvc-aircraft-2013b__random__linf_eps30_random_uniform__openai__adv_clip_vith14_",
+    "batch_id": "batch_69e1502dfd808190a97a8fb1f66718ee",
+    "status": "retrieved",
+    "experiment": "adv_clip_vith14_"
+  },
+  {
+    "dataset": "flowers-102__random__linf_eps30_random_uniform",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "flowers-102__random__linf_eps30_random_uniform__openai__adv_clip_vith14_",
+    "batch_id": "batch_69e1555008ac819081d0eb4e481d8be9",
+    "status": "retrieved",
+    "experiment": "adv_clip_vith14_"
+  },
+  {
+    "dataset": "oxford-iiit-pet__random__linf_eps30_random_uniform",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "oxford-iiit-pet__random__linf_eps30_random_uniform__openai__adv_clip_vith14_",
+    "batch_id": "batch_69e157619e288190b0cae53a2ecd9cb4",
+    "status": "retrieved",
+    "experiment": "adv_clip_vith14_"
+  },
+  {
+    "dataset": "stanford_cars__random__linf_eps30_random_uniform",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "stanford_cars__random__linf_eps30_random_uniform__openai__adv_clip_vith14_",
+    "batch_id": "batch_69e1586ffe048190b2a7819a3b1caf16",
+    "status": "retrieved",
+    "experiment": "adv_clip_vith14_"
+  },
+  {
+    "dataset": "stanford_cars__random__linf_eps30_random_uniform",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "stanford_cars__random__linf_eps30_random_uniform__openai__adv_clip_vith14___complement",
+    "batch_id": "batch_69e15c8f2540819096dc121f5fcb4a73",
+    "status": "retrieved",
+    "experiment": "adv_clip_vith14_"
+  },
+  {
+    "dataset": "uc-merced-land-use-dataset__random__linf_eps30_random_uniform",
+    "key": "openai",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "run_name": "uc-merced-land-use-dataset__random__linf_eps30_random_uniform__openai__adv_clip_vith14_",
+    "batch_id": "batch_69e15dd6581c81908a3efe67d947b3dc",
+    "status": "retrieved",
+    "experiment": "adv_clip_vith14_"
+  }
+]

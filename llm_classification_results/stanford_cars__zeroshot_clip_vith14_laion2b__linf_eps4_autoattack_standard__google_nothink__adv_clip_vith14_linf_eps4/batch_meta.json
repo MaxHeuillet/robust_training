@@ -1,0 +1,10 @@
+{
+  "batch_name": "batches/gjzrow6a4hkxihf2k0juiixc5x1dwlrre10o",
+  "uploaded_file": "files/lk5b6coyjgmd",
+  "provider": "google",
+  "run_id": "stanford_cars__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard__google_nothink__adv_clip_vith14_linf_eps4",
+  "model": "gemini-3-flash-preview-nothink",
+  "actual_model": "gemini-3-flash-preview",
+  "num_requests": 1000,
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batches/gjzrow6a4hkxihf2k0juiixc5x1dwlrre10o --provider google --dataset stanford_cars__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard --data_root /Users/maximeheuillet/data/adversarial/zeroshot_clip_vith14_laion2b/linf_eps4_autoattack_standard --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name stanford_cars__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard__google_nothink__adv_clip_vith14_linf_eps4"
+}

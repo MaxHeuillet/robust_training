@@ -1,0 +1,10 @@
+{
+  "batch_name": "batches/azjhmsgvoepz8p0616aj09nqq0rectjn7oum",
+  "uploaded_file": "files/m7uos9y0uk61",
+  "provider": "google",
+  "run_id": "caltech101__random__linf_eps30_random_uniform__google_nothink__random_linf30",
+  "model": "gemini-3-flash-preview-nothink",
+  "actual_model": "gemini-3-flash-preview",
+  "num_requests": 1000,
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batches/azjhmsgvoepz8p0616aj09nqq0rectjn7oum --provider google --dataset caltech101__random__linf_eps30_random_uniform --data_root /Users/maximeheuillet/data/adversarial/random/linf_eps30_random_uniform --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name caltech101__random__linf_eps30_random_uniform__google_nothink__random_linf30"
+}

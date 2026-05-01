@@ -1,221 +1,0 @@
-Data already present at /tmp/robustgenbench/data_processed.
-Using CUDA: NVIDIA H100 80GB HBM3
-
-============================================================
-  Dataset   : oxford-iiit-pet
-  Surrogate : clip_vith14  (zeroshot_clip_vith14_laion2b)
-  Norm      : L1  eps=75.0  (AA: 75.00000)
-============================================================
-  1000 samples | 37 classes
-
-Loading CLIP ViT-H/14 surrogate: ViT-H-14 / laion2b_s32b_b79k
-  Encoding 37 class prompts...
-setting parameters for standard version
-oxford-iiit-pet:   0%|          | 0/16 [00:00<?, ?it/s]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 89.06%
-apgd-ce - 1/1 - 56 out of 57 successfully perturbed
-robust accuracy after APGD-CE: 1.56% (total time 140.8 s)
-apgd-t - 1/1 - 1 out of 1 successfully perturbed
-robust accuracy after APGD-T: 0.00% (total time 146.1 s)
-max L1 perturbation: 75.00071, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-oxford-iiit-pet:   6%|▋         | 1/16 [02:35<38:59, 155.95s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 100.00%
-apgd-ce - 1/1 - 62 out of 64 successfully perturbed
-robust accuracy after APGD-CE: 3.12% (total time 162.3 s)
-apgd-t - 1/1 - 0 out of 2 successfully perturbed
-robust accuracy after APGD-T: 3.12% (total time 196.1 s)
-fab-t - 1/1 - 0 out of 2 successfully perturbed
-robust accuracy after FAB-T: 3.12% (total time 296.8 s)
-square - 1/1 - 0 out of 2 successfully perturbed
-robust accuracy after SQUARE: 3.12% (total time 469.1 s)
-max L1 perturbation: 75.00078, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 3.12%
-oxford-iiit-pet:  12%|█▎        | 2/16 [10:32<1:20:21, 344.42s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 92.19%
-apgd-ce - 1/1 - 59 out of 59 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 142.6 s)
-max L1 perturbation: 75.00070, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-oxford-iiit-pet:  19%|█▉        | 3/16 [13:01<55:20, 255.44s/it]  using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 96.88%
-apgd-ce - 1/1 - 61 out of 62 successfully perturbed
-robust accuracy after APGD-CE: 1.56% (total time 155.6 s)
-apgd-t - 1/1 - 1 out of 1 successfully perturbed
-robust accuracy after APGD-T: 0.00% (total time 165.3 s)
-max L1 perturbation: 75.00059, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-oxford-iiit-pet:  25%|██▌       | 4/16 [15:54<44:33, 222.75s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 95.31%
-apgd-ce - 1/1 - 60 out of 61 successfully perturbed
-robust accuracy after APGD-CE: 1.56% (total time 144.9 s)
-apgd-t - 1/1 - 0 out of 1 successfully perturbed
-robust accuracy after APGD-T: 1.56% (total time 171.0 s)
-fab-t - 1/1 - 0 out of 1 successfully perturbed
-robust accuracy after FAB-T: 1.56% (total time 234.4 s)
-square - 1/1 - 0 out of 1 successfully perturbed
-robust accuracy after SQUARE: 1.56% (total time 353.8 s)
-max L1 perturbation: 75.00073, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 1.56%
-oxford-iiit-pet:  31%|███▏      | 5/16 [21:55<49:59, 272.68s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 87.50%
-apgd-ce - 1/1 - 56 out of 56 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 129.0 s)
-max L1 perturbation: 75.00059, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-oxford-iiit-pet:  38%|███▊      | 6/16 [24:12<37:43, 226.32s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 92.19%
-apgd-ce - 1/1 - 58 out of 59 successfully perturbed
-robust accuracy after APGD-CE: 1.56% (total time 145.1 s)
-apgd-t - 1/1 - 1 out of 1 successfully perturbed
-robust accuracy after APGD-T: 0.00% (total time 150.5 s)
-max L1 perturbation: 75.00060, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-oxford-iiit-pet:  44%|████▍     | 7/16 [26:49<30:35, 203.93s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 95.31%
-apgd-ce - 1/1 - 61 out of 61 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 123.0 s)
-max L1 perturbation: 75.00102, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-oxford-iiit-pet:  50%|█████     | 8/16 [29:00<24:03, 180.50s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 95.31%
-apgd-ce - 1/1 - 60 out of 61 successfully perturbed
-robust accuracy after APGD-CE: 1.56% (total time 143.1 s)
-apgd-t - 1/1 - 1 out of 1 successfully perturbed
-robust accuracy after APGD-T: 0.00% (total time 159.3 s)
-max L1 perturbation: 75.00044, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-oxford-iiit-pet:  56%|█████▋    | 9/16 [31:46<20:33, 176.16s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 92.19%
-apgd-ce - 1/1 - 57 out of 59 successfully perturbed
-robust accuracy after APGD-CE: 3.12% (total time 157.2 s)
-apgd-t - 1/1 - 0 out of 2 successfully perturbed
-robust accuracy after APGD-T: 3.12% (total time 191.1 s)
-fab-t - 1/1 - 0 out of 2 successfully perturbed
-robust accuracy after FAB-T: 3.12% (total time 291.7 s)
-square - 1/1 - 0 out of 2 successfully perturbed
-robust accuracy after SQUARE: 3.12% (total time 464.2 s)
-max L1 perturbation: 75.00116, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 3.12%
-oxford-iiit-pet:  62%|██████▎   | 10/16 [39:38<26:43, 267.32s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 96.88%
-apgd-ce - 1/1 - 61 out of 62 successfully perturbed
-robust accuracy after APGD-CE: 1.56% (total time 160.0 s)
-apgd-t - 1/1 - 1 out of 1 successfully perturbed
-robust accuracy after APGD-T: 0.00% (total time 174.8 s)
-max L1 perturbation: 75.00108, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-oxford-iiit-pet:  69%|██████▉   | 11/16 [42:40<20:06, 241.23s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 98.44%
-apgd-ce - 1/1 - 61 out of 63 successfully perturbed
-robust accuracy after APGD-CE: 3.12% (total time 153.4 s)
-apgd-t - 1/1 - 0 out of 2 successfully perturbed
-robust accuracy after APGD-T: 3.12% (total time 187.9 s)
-fab-t - 1/1 - 0 out of 2 successfully perturbed
-robust accuracy after FAB-T: 3.12% (total time 288.8 s)
-square - 1/1 - 0 out of 2 successfully perturbed
-robust accuracy after SQUARE: 3.12% (total time 461.7 s)
-max L1 perturbation: 75.00143, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 3.12%
-oxford-iiit-pet:  75%|███████▌  | 12/16 [50:29<20:42, 310.53s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 96.88%
-apgd-ce - 1/1 - 61 out of 62 successfully perturbed
-robust accuracy after APGD-CE: 1.56% (total time 146.7 s)
-apgd-t - 1/1 - 0 out of 1 successfully perturbed
-robust accuracy after APGD-T: 1.56% (total time 173.8 s)
-fab-t - 1/1 - 0 out of 1 successfully perturbed
-robust accuracy after FAB-T: 1.56% (total time 236.9 s)
-square - 1/1 - 0 out of 1 successfully perturbed
-robust accuracy after SQUARE: 1.56% (total time 356.5 s)
-max L1 perturbation: 75.00089, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 1.56%
-oxford-iiit-pet:  81%|████████▏ | 13/16 [56:33<16:19, 326.65s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 93.75%
-apgd-ce - 1/1 - 58 out of 60 successfully perturbed
-robust accuracy after APGD-CE: 3.12% (total time 146.0 s)
-apgd-t - 1/1 - 1 out of 2 successfully perturbed
-robust accuracy after APGD-T: 1.56% (total time 178.3 s)
-fab-t - 1/1 - 0 out of 1 successfully perturbed
-robust accuracy after FAB-T: 1.56% (total time 241.0 s)
-square - 1/1 - 0 out of 1 successfully perturbed
-robust accuracy after SQUARE: 1.56% (total time 360.3 s)
-max L1 perturbation: 75.00090, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 1.56%
-oxford-iiit-pet:  88%|████████▊ | 14/16 [1:02:40<11:18, 339.01s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 95.31%
-apgd-ce - 1/1 - 61 out of 61 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 166.9 s)
-max L1 perturbation: 75.00108, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-oxford-iiit-pet:  94%|█████████▍| 15/16 [1:05:34<04:49, 289.32s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 92.50%
-apgd-ce - 1/1 - 37 out of 37 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 75.8 s)
-max L1 perturbation: 75.00063, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-oxford-iiit-pet: 100%|██████████| 16/16 [1:06:55<00:00, 226.59s/it]oxford-iiit-pet: 100%|██████████| 16/16 [1:06:55<00:00, 250.99s/it]
-
-  1000 images | clean=0.9440 | adv=0.0090 | success=0.9910
-  Packaging 1000 images → oxford-iiit-pet__zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard_processed.tar.zst
-  Compressing:   0%|          | 0/1000 [00:00<?, ?it/s]  Compressing:  35%|███▌      | 351/1000 [00:00<00:00, 3508.31it/s]  Compressing:  72%|███████▏  | 715/1000 [00:00<00:00, 3581.76it/s]                                                                     ✓ oxford-iiit-pet__zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard_processed.tar.zst (86.2 MB)
-  Uploading → MaxHeuillet/RobustGenBench/adversarial/zeroshot_clip_vith14_laion2b/l1_eps75_autoattack_standard/oxford-iiit-pet__zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard_processed.tar.zst
-Processing Files (0 / 0)      : |          |  0.00B /  0.00B            
-New Data Upload               : |          |  0.00B /  0.00B            [A
-
-  ...tandard_processed.tar.zst:   0%|          |  136kB / 86.2MB            [A[A
-
-  ...tandard_processed.tar.zst:   0%|          |  136kB / 86.2MB            [A[AProcessing Files (0 / 1)      :   0%|          |  136kB / 86.2MB,   ???B/s  
-
-  ...tandard_processed.tar.zst:   0%|          |  177kB / 86.2MB            [A[AProcessing Files (0 / 1)      :   0%|          |  177kB / 86.2MB,  208kB/s  
-
-  ...tandard_processed.tar.zst:   4%|▍         | 3.86MB / 86.2MB            [A[AProcessing Files (0 / 1)      :   4%|▍         | 3.86MB / 86.2MB, 9.30MB/s  
-New Data Upload               :   4%|▍         | 3.69MB / 86.0MB, 9.20MB/s  [A
-
-  ...tandard_processed.tar.zst:  25%|██▌       | 21.8MB / 86.2MB            [A[AProcessing Files (0 / 1)      :  25%|██▌       | 21.8MB / 86.2MB, 36.0MB/s  
-New Data Upload               :  25%|██▌       | 21.6MB / 86.0MB, 36.0MB/s  [A
-
-  ...tandard_processed.tar.zst:  39%|███▉      | 33.9MB / 86.2MB            [A[AProcessing Files (0 / 1)      :  39%|███▉      | 33.9MB / 86.2MB, 42.2MB/s  
-New Data Upload               :  39%|███▉      | 33.7MB / 86.0MB, 42.1MB/s  [A
-
-  ...tandard_processed.tar.zst:  53%|█████▎    | 46.0MB / 86.2MB            [A[AProcessing Files (0 / 1)      :  53%|█████▎    | 46.0MB / 86.2MB, 45.9MB/s  
-New Data Upload               :  53%|█████▎    | 45.8MB / 86.0MB, 45.8MB/s  [A
-
-  ...tandard_processed.tar.zst:  68%|██████▊   | 58.6MB / 86.2MB            [A[AProcessing Files (0 / 1)      :  68%|██████▊   | 58.6MB / 86.2MB, 48.7MB/s  
-New Data Upload               :  68%|██████▊   | 58.5MB / 86.0MB, 48.7MB/s  [A
-
-  ...tandard_processed.tar.zst:  78%|███████▊  | 67.1MB / 86.2MB            [A[AProcessing Files (0 / 1)      :  78%|███████▊  | 67.1MB / 86.2MB, 47.8MB/s  
-New Data Upload               :  78%|███████▊  | 66.9MB / 86.0MB, 47.8MB/s  [A
-
-  ...tandard_processed.tar.zst:  78%|███████▊  | 67.1MB / 86.2MB            [A[A
-
-  ...tandard_processed.tar.zst:  78%|███████▊  | 67.1MB / 86.2MB            [A[A
-
-  ...tandard_processed.tar.zst:  78%|███████▊  | 67.1MB / 86.2MB            [A[A
-
-  ...tandard_processed.tar.zst:  78%|███████▊  | 67.1MB / 86.2MB            [A[A
-
-  ...tandard_processed.tar.zst:  93%|█████████▎| 80.4MB / 86.2MB            [A[AProcessing Files (0 / 1)      :  93%|█████████▎| 80.4MB / 86.2MB, 33.5MB/s  
-New Data Upload               :  93%|█████████▎| 80.3MB / 86.0MB, 33.4MB/s  [A
-
-  ...tandard_processed.tar.zst:  99%|█████████▉| 85.7MB / 86.2MB            [A[AProcessing Files (0 / 1)      :  99%|█████████▉| 85.7MB / 86.2MB, 32.9MB/s  
-New Data Upload               :  99%|█████████▉| 85.5MB / 86.0MB, 32.9MB/s  [A
-
-  ...tandard_processed.tar.zst:  99%|█████████▉| 85.7MB / 86.2MB            [A[A
-
-  ...tandard_processed.tar.zst:  99%|█████████▉| 85.7MB / 86.2MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 86.2MB / 86.2MB            [A[AProcessing Files (1 / 1)      : 100%|██████████| 86.2MB / 86.2MB, 26.9MB/s  
-New Data Upload               : 100%|██████████| 86.0MB / 86.0MB, 26.9MB/s  [A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 86.2MB / 86.2MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 86.2MB / 86.2MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 86.2MB / 86.2MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 86.2MB / 86.2MB            [A[AProcessing Files (1 / 1)      : 100%|██████████| 86.2MB / 86.2MB, 22.6MB/s  
-New Data Upload               : 100%|██████████| 86.0MB / 86.0MB, 22.6MB/s  
-  ...tandard_processed.tar.zst: 100%|██████████| 86.2MB / 86.2MB            
-  ✓ Upload complete: oxford-iiit-pet__zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard_processed.tar.zst
-
-All done!

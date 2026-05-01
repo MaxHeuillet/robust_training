@@ -1,0 +1,10 @@
+{
+  "batch_id": "batch_69e157619e288190b0cae53a2ecd9cb4",
+  "file_id": "file-CU2JVQjbQ3nEZNM1JpGCrG",
+  "provider": "openai",
+  "run_id": "oxford-iiit-pet__random__linf_eps30_random_uniform__openai__adv_clip_vith14_",
+  "model": "gpt-4o-mini",
+  "num_requests": 1000,
+  "submitted_at": "2026-04-16T17:40:49.781807",
+  "retrieve_cmd": "python llm_classify.py --batch_retrieve batch_69e157619e288190b0cae53a2ecd9cb4 --provider openai --dataset oxford-iiit-pet__random__linf_eps30_random_uniform --data_root /Users/maximeheuillet/data/adversarial/random/linf_eps30_random_uniform --class_names_dir /Users/maximeheuillet/data_processed/class_names --output_dir llm_classification_results --run_name oxford-iiit-pet__random__linf_eps30_random_uniform__openai__adv_clip_vith14_"
+}

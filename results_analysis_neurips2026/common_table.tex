@@ -1,0 +1,29 @@
+% Requires: booktabs, multirow
+\begin{table}[t]
+\centering
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.08}
+\small
+\caption{%
+  Robustness to common corruptions (severity 3).
+  Results are surrogate-independent: the same corrupted images
+  are used regardless of attack surrogate.
+  \emph{Clean} accuracy repeated for reference.
+}
+\label{tab:common}
+\begin{tabular}{l || r r || r r}
+\toprule
+\multirow{2}{*}{\textbf{Dataset}} & \multicolumn{2}{c||}{\textbf{Gemini Flash (no think)}} & \multicolumn{2}{c}{\textbf{GPT-4o}} \\
+ & Clean & Sev.$^3$ & Clean & Sev.$^3$ \\
+\midrule
+Caltech-101 & 93.0 & 90.3 & 90.6 & 85.4 \\
+FGVC Aircraft & 80.8 & 53.9 & 45.8 & 27.3 \\
+Flowers-102 & 95.7 & 88.1 & 73.7 & 62.6 \\
+Oxford Pet & 96.5 & 87.2 & 87.4 & 76.1 \\
+Stanford Cars & 93.9 & 76.5 & 72.2 & 48.6 \\
+UC Merced & 90.7 & 72.4 & 77.6 & 62.6 \\
+\midrule
+\textbf{Average} & \textbf{91.8} & \textbf{78.1} & \textbf{74.6} & \textbf{60.4} \\
+\bottomrule
+\end{tabular}
+\end{table}
