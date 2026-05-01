@@ -587,6 +587,8 @@ def main():
         local_config = compose(config_name="default_config_fullfinetuning50")
     elif 'full_fine_tuning_reproduce' in args_dict['project_name']:
         local_config = compose(config_name="default_config_fullfinetuning_reproduce")
+    elif 'convnext_base_fb_in22k' in args_dict['project_name']:
+        local_config = compose(config_name="default_config_fullfinetuning50")
     else:
         print('error in the experiment name', flush=True)
         sys.exit(1)
