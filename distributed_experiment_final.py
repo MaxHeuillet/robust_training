@@ -270,7 +270,6 @@ class BaseExperiment:
                     optimizer.zero_grad() # Clear gradients after optimizer step
 
                     update_step += 1
-                break
 
             if self.setup.hp_opt:
                 self.validation( config, valloader, model, logger, iteration, rank)
@@ -281,8 +280,6 @@ class BaseExperiment:
             if scheduler is not None: scheduler.step()
 
             print(f'Rank {rank}, Iteration {iteration},', flush=True) 
-
-            break
 
 
     def hyperparameter_optimization(self, config):  
