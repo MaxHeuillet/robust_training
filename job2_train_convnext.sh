@@ -40,28 +40,28 @@ echo "============================================"
 echo "Downloading training data for ${DATA}..."
 python - <<'PYEOF'
 import os, sys
-from huggingface_hub import snapshot_download
+from huggingface_hub import hf_hub_download
 
-dataset  = os.environ["DATA"]
-hf_repo  = "legolasflagstaff/RobustGenBench"
-data_dir = os.path.expandvars(os.environ.get("DATASET_PATH", "/tmp/robustgenbench/data_processed"))
+dataset   = os.environ["DATA"]
+hf_repo   = "legolasflagstaff/RobustGenBench"
+# movers.py expects the .tar.zst archive at config.datasets_path
+data_dir  = os.path.join(os.environ.get("SLURM_TMPDIR", "/tmp"), "datasets")
+archive   = f"{dataset}_processed.tar.zst"
+dest_path = os.path.join(data_dir, archive)
 
-sentinel = os.path.join(data_dir, f".{dataset}_downloaded")
-if os.path.exists(sentinel):
-    print(f"  Training data for {dataset} already present, skipping download.")
+if os.path.exists(dest_path):
+    print(f"  Archive already present: {dest_path}")
     sys.exit(0)
 
 os.makedirs(data_dir, exist_ok=True)
-print(f"  Downloading {dataset} from {hf_repo} ...")
-snapshot_download(
+print(f"  Downloading {archive} from {hf_repo} ...")
+hf_hub_download(
     repo_id=hf_repo,
     repo_type="dataset",
+    filename=archive,
     local_dir=data_dir,
-    allow_patterns=[f"{dataset}_processed.tar.zst", "class_names/*"],
-    ignore_patterns=["adversarial/*"],
 )
-open(sentinel, "w").close()
-print(f"  Done. Data at {data_dir}")
+print(f"  Done. Archive at {dest_path}")
 PYEOF
 
 dl_exit=$?
