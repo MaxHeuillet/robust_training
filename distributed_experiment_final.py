@@ -53,7 +53,7 @@ def check_for_nans(tensors, tensor_names):
 
 def get_config_id(cfg) -> str:
     # Join the values into a string
-    serialized_values = cfg.backbone + '_' + cfg.dataset + '_' + cfg.loss_function
+    serialized_values = cfg.backbone + '__' + cfg.dataset + '__' + cfg.loss_function
     print('serialized_values', serialized_values)
     return serialized_values
 
