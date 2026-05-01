@@ -110,7 +110,6 @@ if [ ${exit_code} -eq 0 ]; then
     echo "Training succeeded. Submitting test job..."
     sbatch \
       --account="${ACCOUNT}" \
-      --mail-user="${EMAIL}" \
       --export="ALL,ACCOUNT=${ACCOUNT},BCKBN=${BCKBN},DATA=${DATA},SEED=${SEED},LOSS=${LOSS},PRNM=${PRNM},EMAIL=${EMAIL}" \
       ./job3_test_robustgenbench.sh
 else
