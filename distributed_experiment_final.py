@@ -610,16 +610,19 @@ def main():
     if mode == "hpo":
         print("HPO step", flush=True)
         experiment.hyperparameter_optimization(config_base)
-
     elif mode == "train":
         torch.multiprocessing.set_start_method("spawn", force=True)
         print("Training step", flush=True)
-        # load best config from HPO results
+        # Load HPO yaml from hpo_source_project (may differ from project_name)
+        hpo_source = args_dict.get("hpo_source_project") or config_base.project_name
         path = os.path.join(config_base.configs_path, "HPO_results",
-                            config_base.project_name, f"{config_base.exp_id}.yaml")
+                          hpo_source, f"{config_base.exp_id}.yaml")
+        print(f"Loading HPO config from: {path}", flush=True)
         config_optimal = OmegaConf.load(path)
+        # Override project_name so results are saved under the new project
+        config_optimal.project_name = config_base.project_name
         mp.spawn(training_wrapper, args=(experiment, config_optimal),
-                 nprocs=world_size, join=True)
+               nprocs=world_size, join=True)
 
     elif mode.startswith("test"):
         # e.g. test-linf, test-l1, test-l2, test-common
