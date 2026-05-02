@@ -56,11 +56,11 @@ import torchvision.transforms as T
 
 HF_REPO          = "legolasflagstaff/RobustGenBench"
 HF_CACHE_DIR     = Path(os.path.expandvars(
-    os.environ.get("HF_CACHE_DIR", "/tmp/robustgenbench/hf_cache")))
+    os.environ.get("HF_HOME", "/tmp/hf_cache")))
 WORK_DIR         = Path(os.path.expandvars(
-    os.environ.get("WORK_DIR", "/tmp/robustgenbench/work")))
+    os.environ.get("WORK_DIR", "/tmp/work")))
 RESULTS_BASE_DIR = Path(os.path.expandvars(
-    os.environ.get("RESULTS_PATH", "$SCRATCH/results")))
+    os.environ.get("ROBUSTGENBENCH_RESULTS_PATH", "./robustgenbench_eval")))
 
 # ---------------------------------------------------------------------------
 # Evaluation matrix
@@ -258,6 +258,34 @@ def build_transform():
 # Model loading
 # ---------------------------------------------------------------------------
 
+def load_clean_test_items(args, N) -> Optional[list]:
+    """
+    Downloads and extracts the clean test set from HF (data_processed folder).
+    Returns list of (img_path, label) tuples, or None on failure.
+    """
+    from huggingface_hub import hf_hub_download
+    archive_name = f"{args.dataset}_processed.tar.zst"
+    clean_dir = WORK_DIR / "clean" / args.dataset
+    sentinel = clean_dir / "test" / "labels.csv"
+    if not sentinel.exists():
+        try:
+            print(f"  Downloading clean test set: {archive_name}")
+            local = hf_hub_download(
+                repo_id=HF_REPO,
+                repo_type="dataset",
+                filename=archive_name,
+                local_dir=str(WORK_DIR / "clean_archives"),
+                cache_dir=str(HF_CACHE_DIR),
+            )
+            extract_dir = load_archive_to_tmpdir(Path(local), WORK_DIR / "clean")
+            if extract_dir is None:
+                return None
+        except Exception as e:
+            print(f"  WARNING: Could not download clean test set: {e}")
+            return None
+    return read_labels_csv(clean_dir)
+
+
 def load_trained_model(args, N: int, rank: int):
     """
     Loads architecture + trained state dict onto the given rank/GPU.
@@ -271,8 +299,7 @@ def load_trained_model(args, N: int, rank: int):
 
     # Build a minimal config for model construction
     # We load the optimal config from the HPO results
-    hpo_source = args.hpo_source_project or args.project
-    config_path = Path(args.configs_path) / "HPO_results" / hpo_source / f"{args.exp_id}.yaml"
+    config_path = Path(args.configs_path) / "HPO_results" / args.project / f"{args.exp_id}.yaml"
     if not config_path.exists():
         raise FileNotFoundError(
             f"HPO config not found at {config_path}. "
@@ -280,23 +307,11 @@ def load_trained_model(args, N: int, rank: int):
         )
     config = OmegaConf.load(config_path)
 
-    # Copy backbone .pt to work_path so load_architecture can find it
-    import shutil
-    backbone_src = Path(os.path.expanduser("~/links/scratch/mheuill/my_backbones")) / f"{config.backbone}.pt"
-    backbone_dst = Path(os.path.expandvars(config.work_path)).expanduser().resolve()
-    backbone_dst.mkdir(parents=True, exist_ok=True)
-    if backbone_src.exists():
-        shutil.copy2(str(backbone_src), str(backbone_dst))
-        print(f"  Copied backbone weights to {backbone_dst}")
-    else:
-        print(f"  WARNING: backbone not found at {backbone_src}")
-
     model = load_architecture(config, N)
     model = CustomModel(config, model)
 
     # Load trained weights
-    state_dict_filename = f"{args.backbone}_{args.dataset}_{args.loss}.pt"
-    state_dict_path = Path(os.path.expanduser(args.trained_statedicts_path)) / args.project / state_dict_filename
+    state_dict_path = Path(args.trained_statedicts_path) / args.project / f"{args.exp_id}.pt"
     if not state_dict_path.exists():
         raise FileNotFoundError(f"State dict not found at {state_dict_path}")
 
@@ -395,8 +410,6 @@ def main():
     parser.add_argument("--seed",       type=int, default=1)
     parser.add_argument("--project",    required=True,
                         help="Project name where trained model is saved")
-    parser.add_argument("--hpo_source_project", default=None,
-                        help="Project name to load HPO yaml from. Defaults to --project if not set.")
     parser.add_argument("--batch_size", type=int, default=64)
     parser.add_argument("--configs_path",
                         default=os.environ.get("CONFIGS_PATH", "./configs"))
@@ -404,8 +417,8 @@ def main():
                         default=os.environ.get("TRAINED_STATEDICTS_PATH",
                                                "$SCRATCH/trained_statedicts"))
     parser.add_argument("--results_path",
-                        default=os.environ.get("RESULTS_PATH",
-                                               "$SCRATCH/results"))
+                        default=os.environ.get("ROBUSTGENBENCH_RESULTS_PATH",
+                                               "./robustgenbench_eval"))
     args = parser.parse_args()
 
     # Resolve env vars in paths
@@ -417,7 +430,7 @@ def main():
         os.path.expanduser(args.configs_path))
 
     # exp_id follows the same convention as distributed_experiment_final.py
-    args.exp_id = f"{args.backbone}__{args.dataset}__{args.loss}"
+    args.exp_id = f"{args.backbone}_{args.dataset}_{args.loss}"
 
     print("=" * 60)
     print(f"  RobustGenBench Evaluation")
@@ -431,39 +444,28 @@ def main():
 
     # Number of classes — load from the HPO config
     from omegaconf import OmegaConf
-    hpo_source = args.hpo_source_project or args.project
-    config_path = Path(args.configs_path) / "HPO_results" / hpo_source / f"{args.exp_id}.yaml"
+    config_path = Path(args.configs_path) / "HPO_results" / args.project / f"{args.exp_id}.yaml"
     config      = OmegaConf.load(config_path)
-    # Download class_names json from HF to get num_classes
-    import json
-    from huggingface_hub import hf_hub_download
-    class_names_file = hf_hub_download(
-        repo_id=HF_REPO,
-        repo_type="dataset",
-        filename=f"class_names/{args.dataset}.json",
-        local_dir=str(WORK_DIR / "class_names"),
-        cache_dir=str(HF_CACHE_DIR),
-    )
-    with open(class_names_file) as f:
-        N = len(json.load(f))
-    print(f"  num_classes={N} (from class_names/{args.dataset}.json)")
+    N           = config.get("num_classes", None)
+    if N is None:
+        # Fallback: infer from class_names file on HF
+        print("  WARNING: num_classes not in config, defaulting to None — "
+              "load_architecture must handle this.")
 
     # Output CSV
     results_dir = Path(args.results_path) / args.project
     results_dir.mkdir(parents=True, exist_ok=True)
     csv_path = results_dir / f"{args.exp_id}__robustgenbench_results.csv"
 
-    # Load existing results to allow resuming
-    completed_labels = set()
+    # Always overwrite CSV — delete existing results for fresh run
     if csv_path.exists():
-        with open(csv_path, "r") as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                completed_labels.add(row["label"])
-        print(f"  Resuming: {len(completed_labels)} evaluations already done.")
+        csv_path.unlink()
+        print(f"  Deleted existing CSV for fresh evaluation.")
+    completed_labels = set()
 
     # Local cache dirs
-    archives_dir  = WORK_DIR / "archives"  / args.dataset
+    adv_archives_base = Path(os.path.expandvars(os.environ.get("ADV_ARCHIVES_PATH", str(WORK_DIR / "adv_archives"))))
+    archives_dir  = adv_archives_base / args.dataset
     extracted_dir = WORK_DIR / "extracted" / args.dataset
     archives_dir.mkdir(parents=True, exist_ok=True)
     extracted_dir.mkdir(parents=True, exist_ok=True)
@@ -482,12 +484,32 @@ def main():
 
     torch.multiprocessing.set_start_method("spawn", force=True)
 
+    # --- Clean accuracy evaluation ---
+    print(f"\n{'='*60}")
+    print(f"  Evaluating: CLEAN (no adversarial perturbation)")
+    clean_items = load_clean_test_items(args, N)
+    if clean_items is not None:
+        print(f"  Loaded {len(clean_items)} clean test images.")
+        # Image sanity check: print pixel stats of first image
+        img, lbl = clean_items[0]
+        import numpy as np
+        arr = np.array(Image.open(img).convert("RGB")) / 255.0
+        print(f"  Clean img[0] pixel stats: min={arr.min():.3f} max={arr.max():.3f} mean={arr.mean():.3f}")
+        clean_stats = run_distributed_inference(clean_items, args, N)
+        print(f"  Clean accuracy: {clean_stats['nb_correct']}/{clean_stats['nb_examples']} = {clean_stats['accuracy']:.4f}")
+        writer.writerow({
+            "dataset": args.dataset, "project": args.project,
+            "backbone": args.backbone, "loss": args.loss,
+            "surrogate": "none", "threat_model": "clean",
+            "label": "clean", "nb_correct": clean_stats["nb_correct"],
+            "nb_examples": clean_stats["nb_examples"], "accuracy": clean_stats["accuracy"],
+        })
+        csv_file.flush()
+    else:
+        print(f"  WARNING: Could not load clean test set, skipping clean accuracy.")
+
     for job in eval_matrix:
         label = job["label"]
-
-        if label in completed_labels:
-            print(f"\n  [SKIP] {label} (already evaluated)")
-            continue
 
         print(f"\n{'='*60}")
         print(f"  Evaluating: {label}")
@@ -515,6 +537,12 @@ def main():
         # 4. Load items
         items = read_labels_csv(extract_dir)
         print(f"  Loaded {len(items)} test images.")
+
+        # Image sanity check: verify adversarial images differ from clean
+        import numpy as np
+        adv_img_path, _ = items[0]
+        adv_arr = np.array(Image.open(adv_img_path).convert("RGB")) / 255.0
+        print(f"  Adv img[0] pixel stats: min={adv_arr.min():.3f} max={adv_arr.max():.3f} mean={adv_arr.mean():.3f}")
 
         # 5. Run distributed inference
         print(f"  Running inference on {torch.cuda.device_count()} GPUs...")
