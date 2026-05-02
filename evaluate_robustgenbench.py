@@ -4,44 +4,27 @@ evaluate_robustgenbench.py
 ==========================
 Evaluates a trained convnext model on all RobustGenBench adversarial test sets.
 
-For each (surrogate × threat_model) combination it:
-  1. Downloads the .tar.zst archive from HuggingFace (legolasflagstaff/RobustGenBench)
-  2. Extracts images + labels.csv from the archive (in-memory, no persistent extraction)
-  3. Loads the trained model state dict
-  4. Runs distributed inference across all available GPUs (DDP-style via mp.spawn)
-  5. Aggregates results and saves a CSV summary
-
-Surrogates evaluated:
-  - zeroshot_clip_vitb16_laion2b
-  - zeroshot_clip_vith14_laion2b
-  - zeroshot_metaclip_vith14_fullcc2_5b
-  - zeroshot_siglip2_so400m_patch14_384
-
-Threat models:
-  - linf_eps4_autoattack_standard   (Linf 4/255)
-  - l2_eps2_autoattack_standard     (L2 2.0)
-  - l1_eps75_autoattack_standard    (L1 75.0)
-  + common_severity3                (no surrogate)
-
 Usage (called from job3_test_robustgenbench.sh):
   python evaluate_robustgenbench.py \
       --backbone convnext_base.fb_in22k \
       --dataset  flowers-102 \
       --loss     TRADES_v2 \
       --seed     1 \
-      --project  convnext_base_fb_in22k_TRADES_v2
+      --project  convnext_base_fb_in22k_TRADES_v2 \
+      --hpo_source_project full_fine_tuning50
 """
 
 import argparse
 import csv
 import io
+import json
 import os
 import sys
 import tarfile
-import tempfile
 from pathlib import Path
 from typing import Optional
 
+import numpy as np
 import torch
 import torch.distributed as dist
 import torch.multiprocessing as mp
@@ -51,16 +34,12 @@ from PIL import Image
 import torchvision.transforms as T
 
 # ---------------------------------------------------------------------------
-# Paths — adjust to match your cluster's layout (same vars as main codebase)
+# Paths
 # ---------------------------------------------------------------------------
 
-HF_REPO          = "legolasflagstaff/RobustGenBench"
-HF_CACHE_DIR     = Path(os.path.expandvars(
-    os.environ.get("HF_HOME", "/tmp/hf_cache")))
-WORK_DIR         = Path(os.path.expandvars(
-    os.environ.get("WORK_DIR", "/tmp/work")))
-RESULTS_BASE_DIR = Path(os.path.expandvars(
-    os.environ.get("ROBUSTGENBENCH_RESULTS_PATH", "./robustgenbench_eval")))
+HF_REPO      = "legolasflagstaff/RobustGenBench"
+HF_CACHE_DIR = Path(os.path.expandvars(os.environ.get("HF_HOME", "/tmp/hf_cache")))
+WORK_DIR     = Path(os.path.expandvars(os.environ.get("WORK_DIR", "/tmp/work")))
 
 # ---------------------------------------------------------------------------
 # Evaluation matrix
@@ -79,17 +58,9 @@ THREAT_MODELS = [
     "l1_eps75_autoattack_standard",
 ]
 
-COMMON_SPLIT = "common/common_severity3"
-
 
 def build_eval_matrix():
-    """
-    Returns a list of dicts, each describing one evaluation run:
-      { hf_path, archive_name, surrogate, threat_model, label }
-    """
     jobs = []
-
-    # Surrogate × threat model combinations
     for surrogate in SURROGATES:
         for threat in THREAT_MODELS:
             jobs.append({
@@ -98,37 +69,23 @@ def build_eval_matrix():
                 "hf_dir":       f"adversarial/{surrogate}/{threat}",
                 "label":        f"{surrogate}__{threat}",
             })
-
-    # Common corruptions (no surrogate)
     jobs.append({
         "surrogate":    "common",
         "threat_model": "common_severity3",
         "hf_dir":       "adversarial/common/common_severity3",
         "label":        "common__common_severity3",
     })
-
     return jobs
 
 
 # ---------------------------------------------------------------------------
-# HuggingFace download helpers
+# HuggingFace helpers
 # ---------------------------------------------------------------------------
 
 def find_archive_name(hf_dir: str, dataset: str) -> Optional[str]:
-    """
-    Finds the correct .tar.zst filename within hf_dir for a given dataset.
-    Archive naming convention (from craft_adversarial.py):
-      {dataset}__{surrogate_slug}__{threat_slug}_processed.tar.zst  (adversarial)
-      {dataset}__common_severity3_processed.tar.zst                  (common)
-    We list files in the HF directory and match by dataset prefix.
-    """
     from huggingface_hub import list_repo_tree
     try:
-        entries = list_repo_tree(
-            repo_id=HF_REPO,
-            repo_type="dataset",
-            path_in_repo=hf_dir,
-        )
+        entries = list_repo_tree(repo_id=HF_REPO, repo_type="dataset", path_in_repo=hf_dir)
         for entry in entries:
             name = Path(entry.path).name
             if name.startswith(dataset) and name.endswith(".tar.zst"):
@@ -139,30 +96,19 @@ def find_archive_name(hf_dir: str, dataset: str) -> Optional[str]:
 
 
 def download_archive(hf_dir: str, archive_name: str, local_dir: Path) -> Optional[Path]:
-    """
-    Downloads {hf_dir}/{archive_name} from HF to local_dir.
-    Returns local path, or None on failure.
-    Skips download if file already exists.
-    """
     from huggingface_hub import hf_hub_download
-
     local_path = local_dir / archive_name
     if local_path.exists():
         print(f"  Already cached: {archive_name}")
         return local_path
-
     local_dir.mkdir(parents=True, exist_ok=True)
     hf_path = f"{hf_dir}/{archive_name}"
     print(f"  Downloading: {hf_path}")
     try:
         downloaded = hf_hub_download(
-            repo_id=HF_REPO,
-            repo_type="dataset",
-            filename=hf_path,
-            local_dir=str(local_dir),
-            cache_dir=str(HF_CACHE_DIR),
+            repo_id=HF_REPO, repo_type="dataset", filename=hf_path,
+            local_dir=str(local_dir), cache_dir=str(HF_CACHE_DIR),
         )
-        # hf_hub_download may place the file in a subdirectory mirroring hf_path
         src = Path(downloaded)
         if src != local_path:
             local_path.parent.mkdir(parents=True, exist_ok=True)
@@ -175,24 +121,18 @@ def download_archive(hf_dir: str, archive_name: str, local_dir: Path) -> Optiona
 
 
 # ---------------------------------------------------------------------------
-# Archive extraction helpers
+# Archive extraction
 # ---------------------------------------------------------------------------
 
 def load_archive_to_tmpdir(archive_path: Path, tmp_dir: Path) -> Optional[Path]:
-    """
-    Extracts a .tar.zst archive to tmp_dir.
-    Returns the extracted directory path (tmp_dir/stem), or None on failure.
-    """
     try:
         import zstandard as zstd
     except ImportError:
-        print("ERROR: 'zstandard' package not installed. Run: pip install zstandard")
-        sys.exit(1)
+        print("ERROR: zstandard not installed"); sys.exit(1)
 
     stem     = archive_path.name.replace("_processed.tar.zst", "")
     dest_dir = tmp_dir / stem
 
-    # Check if already extracted
     if (dest_dir / "test" / "labels.csv").exists():
         print(f"  Already extracted: {dest_dir.name}")
         return dest_dir
@@ -212,19 +152,50 @@ def load_archive_to_tmpdir(archive_path: Path, tmp_dir: Path) -> Optional[Path]:
 
 
 def read_labels_csv(extract_dir: Path) -> list:
-    """
-    Reads test/labels.csv from extracted archive.
-    Returns list of (img_path: Path, label: int) tuples.
-    """
     csv_path = extract_dir / "test" / "labels.csv"
-    items    = []
+    items = []
     with open(csv_path, "r") as f:
         reader = csv.DictReader(f)
         for row in reader:
             img_path = extract_dir / "test" / row["filename"]
-            label    = int(row["label"])
-            items.append((img_path, label))
+            items.append((img_path, int(row["label"])))
     return items
+
+
+# ---------------------------------------------------------------------------
+# Clean test set loader
+# ---------------------------------------------------------------------------
+
+def load_clean_test_items(args) -> Optional[list]:
+    from huggingface_hub import hf_hub_download
+    archive_name = f"{args.dataset}_processed.tar.zst"
+    clean_archives_dir = WORK_DIR / "clean_archives"
+    clean_extract_dir  = WORK_DIR / "clean"
+    sentinel = clean_extract_dir / archive_name.replace("_processed.tar.zst", "") / "test" / "labels.csv"
+
+    if not sentinel.exists():
+        try:
+            print(f"  Downloading clean test archive: {archive_name}")
+            downloaded = hf_hub_download(
+                repo_id=HF_REPO, repo_type="dataset",
+                filename=archive_name,
+                local_dir=str(clean_archives_dir),
+                cache_dir=str(HF_CACHE_DIR),
+            )
+            extract_dir = load_archive_to_tmpdir(Path(downloaded), clean_extract_dir)
+            if extract_dir is None:
+                return None
+        except Exception as e:
+            print(f"  WARNING: Could not load clean test set: {e}")
+            return None
+
+    dataset_dir = clean_extract_dir / args.dataset.replace("_processed", "")
+    # find the extracted folder
+    candidates = list(clean_extract_dir.glob(f"{args.dataset}*"))
+    if not candidates:
+        print(f"  WARNING: Could not find extracted clean dir for {args.dataset}")
+        return None
+    return read_labels_csv(candidates[0])
 
 
 # ---------------------------------------------------------------------------
@@ -232,7 +203,7 @@ def read_labels_csv(extract_dir: Path) -> list:
 # ---------------------------------------------------------------------------
 
 class RobustGenBenchDataset(Dataset):
-    def __init__(self, items: list, transform):
+    def __init__(self, items, transform):
         self.items     = items
         self.transform = transform
 
@@ -246,8 +217,8 @@ class RobustGenBenchDataset(Dataset):
 
 
 def build_transform():
-    # Images in the archive are already 224×224 PNGs (saved by craft_adversarial.py)
-    # We just convert to tensor; no normalization here — the model handles it internally.
+    # Images are already 224×224; just convert to tensor.
+    # CustomModel handles normalization internally.
     return T.Compose([
         T.Resize((224, 224), interpolation=T.InterpolationMode.BICUBIC),
         T.ToTensor(),
@@ -258,61 +229,34 @@ def build_transform():
 # Model loading
 # ---------------------------------------------------------------------------
 
-def load_clean_test_items(args, N) -> Optional[list]:
-    """
-    Downloads and extracts the clean test set from HF (data_processed folder).
-    Returns list of (img_path, label) tuples, or None on failure.
-    """
-    from huggingface_hub import hf_hub_download
-    archive_name = f"{args.dataset}_processed.tar.zst"
-    clean_dir = WORK_DIR / "clean" / args.dataset
-    sentinel = clean_dir / "test" / "labels.csv"
-    if not sentinel.exists():
-        try:
-            print(f"  Downloading clean test set: {archive_name}")
-            local = hf_hub_download(
-                repo_id=HF_REPO,
-                repo_type="dataset",
-                filename=archive_name,
-                local_dir=str(WORK_DIR / "clean_archives"),
-                cache_dir=str(HF_CACHE_DIR),
-            )
-            extract_dir = load_archive_to_tmpdir(Path(local), WORK_DIR / "clean")
-            if extract_dir is None:
-                return None
-        except Exception as e:
-            print(f"  WARNING: Could not download clean test set: {e}")
-            return None
-    return read_labels_csv(clean_dir)
-
-
 def load_trained_model(args, N: int, rank: int):
-    """
-    Loads architecture + trained state dict onto the given rank/GPU.
-    Reuses the same load_architecture + CustomModel pattern from the main codebase.
-    """
-    # Import from main codebase
+    import shutil
     sys.path.insert(0, str(Path(__file__).parent))
     from architectures import load_architecture, CustomModel
-    from hydra import initialize_config_dir, compose
     from omegaconf import OmegaConf
 
-    # Build a minimal config for model construction
-    # We load the optimal config from the HPO results
-    hpo_source = getattr(args, "hpo_source_project", None) or args.project
+    # Load HPO config from hpo_source_project (may differ from project)
+    hpo_source  = args.hpo_source_project or args.project
     config_path = Path(args.configs_path) / "HPO_results" / hpo_source / f"{args.exp_id}.yaml"
     if not config_path.exists():
-        raise FileNotFoundError(
-            f"HPO config not found at {config_path}. "
-            f"Make sure training completed successfully."
-        )
+        raise FileNotFoundError(f"HPO config not found at {config_path}")
     config = OmegaConf.load(config_path)
+
+    # Copy backbone .pt to work_path so load_architecture can find it
+    backbone_src = Path(os.path.expanduser("~/links/scratch/mheuill/my_backbones")) / f"{config.backbone}.pt"
+    backbone_dst = Path(os.path.expandvars(config.work_path)).expanduser().resolve()
+    backbone_dst.mkdir(parents=True, exist_ok=True)
+    if backbone_src.exists():
+        shutil.copy2(str(backbone_src), str(backbone_dst))
+    else:
+        print(f"  WARNING: backbone not found at {backbone_src}")
 
     model = load_architecture(config, N)
     model = CustomModel(config, model)
 
-    # Load trained weights
-    state_dict_path = Path(args.trained_statedicts_path) / args.project / f"{args.exp_id}.pt"
+    # Load trained weights — saved with single _ separator
+    state_dict_filename = f"{args.backbone}_{args.dataset}_{args.loss}.pt"
+    state_dict_path = Path(os.path.expanduser(args.trained_statedicts_path)) / args.project / state_dict_filename
     if not state_dict_path.exists():
         raise FileNotFoundError(f"State dict not found at {state_dict_path}")
 
@@ -325,15 +269,10 @@ def load_trained_model(args, N: int, rank: int):
 
 
 # ---------------------------------------------------------------------------
-# Distributed inference worker
+# Distributed inference
 # ---------------------------------------------------------------------------
 
 def inference_worker(rank, world_size, items, args, result_queue, N):
-    """
-    Each process evaluates its shard of the dataset.
-    Puts (rank, nb_correct, nb_examples) into result_queue.
-    """
-    # Init process group
     os.environ["MASTER_ADDR"] = "localhost"
     os.environ["MASTER_PORT"] = os.environ.get("MASTER_PORT", "29500")
     dist.init_process_group("nccl", rank=rank, world_size=world_size)
@@ -356,11 +295,8 @@ def inference_worker(rank, world_size, items, args, result_queue, N):
         for images, labels in loader:
             images = images.to(rank)
             labels = labels.to(rank)
-
-            # CustomModel forward: pass same tensor twice (no adversarial generation here)
             logits_nat, _ = model(images, images)
             preds = logits_nat.argmax(dim=1)
-
             nb_correct  += (preds == labels).sum().item()
             nb_examples += labels.size(0)
 
@@ -370,206 +306,155 @@ def inference_worker(rank, world_size, items, args, result_queue, N):
 
 
 def run_distributed_inference(items, args, N) -> dict:
-    """
-    Spawns world_size processes, aggregates accuracy.
-    Returns { 'nb_correct': int, 'nb_examples': int, 'accuracy': float }
-    """
     world_size   = torch.cuda.device_count()
     result_queue = mp.Queue()
-
-    mp.spawn(
-        inference_worker,
-        args=(world_size, items, args, result_queue, N),
-        nprocs=world_size,
-        join=True,
-    )
-
+    mp.spawn(inference_worker, args=(world_size, items, args, result_queue, N),
+             nprocs=world_size, join=True)
     total_correct  = 0
     total_examples = 0
     while not result_queue.empty():
         rank, nb_correct, nb_examples = result_queue.get()
         total_correct  += nb_correct
         total_examples += nb_examples
-
     accuracy = total_correct / total_examples if total_examples > 0 else 0.0
-    return {
-        "nb_correct":  total_correct,
-        "nb_examples": total_examples,
-        "accuracy":    round(accuracy, 4),
-    }
+    return {"nb_correct": total_correct, "nb_examples": total_examples,
+            "accuracy": round(accuracy, 4)}
 
 
 # ---------------------------------------------------------------------------
-# Main evaluation loop
+# Main
 # ---------------------------------------------------------------------------
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--backbone",   required=True)
-    parser.add_argument("--dataset",    required=True)
-    parser.add_argument("--loss",       required=True)
-    parser.add_argument("--seed",       type=int, default=1)
-    parser.add_argument("--project",    required=True,
-                        help="Project name where trained model is saved")
-    parser.add_argument("--hpo_source_project", default=None,
-                        help="Project name to load HPO yaml from. Defaults to --project if not set.")
-    parser.add_argument("--batch_size", type=int, default=64)
+    parser.add_argument("--backbone",             required=True)
+    parser.add_argument("--dataset",              required=True)
+    parser.add_argument("--loss",                 required=True)
+    parser.add_argument("--seed",                 type=int, default=1)
+    parser.add_argument("--project",              required=True)
+    parser.add_argument("--hpo_source_project",   default=None)
+    parser.add_argument("--batch_size",           type=int, default=64)
     parser.add_argument("--configs_path",
                         default=os.environ.get("CONFIGS_PATH", "./configs"))
     parser.add_argument("--trained_statedicts_path",
                         default=os.environ.get("TRAINED_STATEDICTS_PATH",
-                                               "$SCRATCH/trained_statedicts"))
+                                               "~/scratch/trained_state_dicts"))
     parser.add_argument("--results_path",
                         default=os.environ.get("ROBUSTGENBENCH_RESULTS_PATH",
                                                "./robustgenbench_eval"))
     args = parser.parse_args()
 
-    # Resolve env vars in paths
-    args.trained_statedicts_path = os.path.expandvars(
-        os.path.expanduser(args.trained_statedicts_path))
-    args.results_path = os.path.expandvars(
-        os.path.expanduser(args.results_path))
-    args.configs_path = os.path.expandvars(
-        os.path.expanduser(args.configs_path))
+    # Resolve paths
+    args.trained_statedicts_path = os.path.expandvars(os.path.expanduser(args.trained_statedicts_path))
+    args.results_path            = os.path.expandvars(os.path.expanduser(args.results_path))
+    args.configs_path            = os.path.expandvars(os.path.expanduser(args.configs_path))
 
-    # exp_id follows the same convention as distributed_experiment_final.py
-    args.exp_id = f"{args.backbone}_{args.dataset}_{args.loss}"
+    # exp_id uses __ separator to match yaml filenames
+    args.exp_id = f"{args.backbone}__{args.dataset}__{args.loss}"
 
     print("=" * 60)
     print(f"  RobustGenBench Evaluation")
-    print(f"  Backbone  : {args.backbone}")
-    print(f"  Dataset   : {args.dataset}")
-    print(f"  Loss      : {args.loss}")
-    print(f"  Project   : {args.project}")
-    print(f"  exp_id    : {args.exp_id}")
-    print(f"  GPUs      : {torch.cuda.device_count()}")
+    print(f"  Backbone         : {args.backbone}")
+    print(f"  Dataset          : {args.dataset}")
+    print(f"  Loss             : {args.loss}")
+    print(f"  Project          : {args.project}")
+    print(f"  HPO source       : {args.hpo_source_project or args.project}")
+    print(f"  exp_id           : {args.exp_id}")
+    print(f"  GPUs             : {torch.cuda.device_count()}")
     print("=" * 60)
 
-    # Number of classes — load from the HPO config
-    from omegaconf import OmegaConf
-    hpo_source  = args.hpo_source_project or args.project
-    config_path = Path(args.configs_path) / "HPO_results" / hpo_source / f"{args.exp_id}.yaml"
-    config      = OmegaConf.load(config_path)
-    N           = config.get("num_classes", None)
-    if N is None:
-        # Fallback: infer from class_names file on HF
-        print("  WARNING: num_classes not in config, defaulting to None — "
-              "load_architecture must handle this.")
+    # Get num_classes from HF class_names json
+    from huggingface_hub import hf_hub_download
+    import json
+    class_names_file = hf_hub_download(
+        repo_id=HF_REPO, repo_type="dataset",
+        filename=f"class_names/{args.dataset}.json",
+        local_dir=str(WORK_DIR / "class_names"),
+        cache_dir=str(HF_CACHE_DIR),
+    )
+    with open(class_names_file) as f:
+        N = len(json.load(f))
+    print(f"  num_classes={N}")
 
-    # Output CSV
+    # Output CSV — always overwrite for fresh results
     results_dir = Path(args.results_path) / args.project
     results_dir.mkdir(parents=True, exist_ok=True)
     csv_path = results_dir / f"{args.exp_id}__robustgenbench_results.csv"
-
-    # Always overwrite CSV — delete existing results for fresh run
     if csv_path.exists():
         csv_path.unlink()
         print(f"  Deleted existing CSV for fresh evaluation.")
-    completed_labels = set()
 
     # Local cache dirs
-    adv_archives_base = Path(os.path.expandvars(os.environ.get("ADV_ARCHIVES_PATH", str(WORK_DIR / "adv_archives"))))
+    adv_archives_base = Path(os.path.expandvars(
+        os.environ.get("ADV_ARCHIVES_PATH", str(WORK_DIR / "adv_archives"))))
     archives_dir  = adv_archives_base / args.dataset
     extracted_dir = WORK_DIR / "extracted" / args.dataset
     archives_dir.mkdir(parents=True, exist_ok=True)
     extracted_dir.mkdir(parents=True, exist_ok=True)
 
-    eval_matrix = build_eval_matrix()
-
-    # Write CSV header if new file
-    write_header = not csv_path.exists()
-    csv_file = open(csv_path, "a", newline="")
     fieldnames = ["dataset", "project", "backbone", "loss", "surrogate",
                   "threat_model", "label", "nb_correct", "nb_examples", "accuracy"]
-    writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-    if write_header:
-        writer.writeheader()
-        csv_file.flush()
+    csv_file = open(csv_path, "w", newline="")
+    writer   = csv.DictWriter(csv_file, fieldnames=fieldnames)
+    writer.writeheader()
+    csv_file.flush()
 
     torch.multiprocessing.set_start_method("spawn", force=True)
 
-    # --- Clean accuracy evaluation ---
+    # --- Clean accuracy ---
     print(f"\n{'='*60}")
-    print(f"  Evaluating: CLEAN (no adversarial perturbation)")
-    clean_items = load_clean_test_items(args, N)
+    print(f"  Evaluating: CLEAN")
+    clean_items = load_clean_test_items(args)
     if clean_items is not None:
-        print(f"  Loaded {len(clean_items)} clean test images.")
-        # Image sanity check: print pixel stats of first image
-        img, lbl = clean_items[0]
-        import numpy as np
-        arr = np.array(Image.open(img).convert("RGB")) / 255.0
-        print(f"  Clean img[0] pixel stats: min={arr.min():.3f} max={arr.max():.3f} mean={arr.mean():.3f}")
-        clean_stats = run_distributed_inference(clean_items, args, N)
-        print(f"  Clean accuracy: {clean_stats['nb_correct']}/{clean_stats['nb_examples']} = {clean_stats['accuracy']:.4f}")
-        writer.writerow({
-            "dataset": args.dataset, "project": args.project,
-            "backbone": args.backbone, "loss": args.loss,
-            "surrogate": "none", "threat_model": "clean",
-            "label": "clean", "nb_correct": clean_stats["nb_correct"],
-            "nb_examples": clean_stats["nb_examples"], "accuracy": clean_stats["accuracy"],
-        })
+        print(f"  Loaded {len(clean_items)} clean images.")
+        # Pixel sanity check
+        arr = np.array(Image.open(clean_items[0][0]).convert("RGB")) / 255.0
+        print(f"  Clean img[0]: min={arr.min():.3f} max={arr.max():.3f} mean={arr.mean():.3f}")
+        stats = run_distributed_inference(clean_items, args, N)
+        print(f"  Clean accuracy: {stats['nb_correct']}/{stats['nb_examples']} = {stats['accuracy']:.4f}")
+        writer.writerow({"dataset": args.dataset, "project": args.project,
+                         "backbone": args.backbone, "loss": args.loss,
+                         "surrogate": "none", "threat_model": "clean",
+                         "label": "clean", "nb_correct": stats["nb_correct"],
+                         "nb_examples": stats["nb_examples"], "accuracy": stats["accuracy"]})
         csv_file.flush()
-    else:
-        print(f"  WARNING: Could not load clean test set, skipping clean accuracy.")
 
-    for job in eval_matrix:
-        label = job["label"]
-
+    # --- Adversarial evaluations ---
+    for job in build_eval_matrix():
         print(f"\n{'='*60}")
-        print(f"  Evaluating: {label}")
-        print(f"  HF dir    : {job['hf_dir']}")
+        print(f"  Evaluating: {job['label']}")
 
-        # 1. Find archive name
         archive_name = find_archive_name(job["hf_dir"], args.dataset)
         if archive_name is None:
-            print(f"  WARNING: No archive found for dataset={args.dataset} "
-                  f"in {job['hf_dir']}. Skipping.")
+            print(f"  WARNING: No archive found. Skipping.")
             continue
 
-        # 2. Download archive
         archive_path = download_archive(job["hf_dir"], archive_name, archives_dir)
         if archive_path is None:
-            print(f"  WARNING: Download failed for {archive_name}. Skipping.")
+            print(f"  WARNING: Download failed. Skipping.")
             continue
 
-        # 3. Extract
         extract_dir = load_archive_to_tmpdir(archive_path, extracted_dir)
         if extract_dir is None:
-            print(f"  WARNING: Extraction failed for {archive_name}. Skipping.")
+            print(f"  WARNING: Extraction failed. Skipping.")
             continue
 
-        # 4. Load items
         items = read_labels_csv(extract_dir)
-        print(f"  Loaded {len(items)} test images.")
+        print(f"  Loaded {len(items)} images.")
 
-        # Image sanity check: verify adversarial images differ from clean
-        import numpy as np
-        adv_img_path, _ = items[0]
-        adv_arr = np.array(Image.open(adv_img_path).convert("RGB")) / 255.0
-        print(f"  Adv img[0] pixel stats: min={adv_arr.min():.3f} max={adv_arr.max():.3f} mean={adv_arr.mean():.3f}")
+        # Pixel sanity check
+        arr = np.array(Image.open(items[0][0]).convert("RGB")) / 255.0
+        print(f"  Adv img[0]: min={arr.min():.3f} max={arr.max():.3f} mean={arr.mean():.3f}")
 
-        # 5. Run distributed inference
-        print(f"  Running inference on {torch.cuda.device_count()} GPUs...")
         stats = run_distributed_inference(items, args, N)
+        print(f"  Result: {stats['nb_correct']}/{stats['nb_examples']} = {stats['accuracy']:.4f}")
 
-        print(f"  Result: {stats['nb_correct']}/{stats['nb_examples']} "
-              f"= {stats['accuracy']:.4f}")
-
-        # 6. Write result row
-        writer.writerow({
-            "dataset":      args.dataset,
-            "project":      args.project,
-            "backbone":     args.backbone,
-            "loss":         args.loss,
-            "surrogate":    job["surrogate"],
-            "threat_model": job["threat_model"],
-            "label":        label,
-            "nb_correct":   stats["nb_correct"],
-            "nb_examples":  stats["nb_examples"],
-            "accuracy":     stats["accuracy"],
-        })
+        writer.writerow({"dataset": args.dataset, "project": args.project,
+                         "backbone": args.backbone, "loss": args.loss,
+                         "surrogate": job["surrogate"], "threat_model": job["threat_model"],
+                         "label": job["label"], "nb_correct": stats["nb_correct"],
+                         "nb_examples": stats["nb_examples"], "accuracy": stats["accuracy"]})
         csv_file.flush()
-        completed_labels.add(label)
 
     csv_file.close()
     print(f"\nAll done. Results saved to: {csv_path}")
