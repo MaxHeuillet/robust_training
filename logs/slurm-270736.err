@@ -1,0 +1,2 @@
+  Running command git clone --filter=blob:none --quiet https://github.com/fra31/auto-attack /tmp/pip-req-build-osnep92n
+slurmstepd: error: *** JOB 270736 ON tg10807 CANCELLED AT 2026-05-02T16:15:34 ***

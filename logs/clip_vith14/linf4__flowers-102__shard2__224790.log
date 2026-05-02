@@ -1,0 +1,42 @@
+  Using: NVIDIA H100 80GB HBM3
+
+============================================================
+  Dataset   : flowers-102  [shard 3/4]
+  Surrogate : clip_vith14
+  Norm      : Linf  eps=4.0  (AA: 0.01569)
+  Device    : cuda
+============================================================
+  [shard] Waiting for download lock...
+Data already present at /home/m/mheuill/links/scratch/robustgenbench/data_processed.
+  Shard indices: 500–749  (250 samples of 1000 total)
+
+Loading CLIP ViT-H/14 surrogate: ViT-H-14 / laion2b_s32b_b79k
+  Encoding 102 class prompts...
+setting parameters for standard version
+shard2:   0%|          | 0/4 [00:00<?, ?it/s]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 81.25%
+apgd-ce - 1/1 - 52 out of 52 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 91.3 s)
+max Linf perturbation: 0.01569, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard2:  25%|██▌       | 1/4 [01:37<04:53, 97.90s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 85.94%
+apgd-ce - 1/1 - 55 out of 55 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 99.7 s)
+max Linf perturbation: 0.01569, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard2:  50%|█████     | 2/4 [03:23<03:24, 102.18s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 78.12%
+apgd-ce - 1/1 - 50 out of 50 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 89.3 s)
+max Linf perturbation: 0.01569, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard2:  75%|███████▌  | 3/4 [04:57<01:38, 98.80s/it] using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 79.31%
+apgd-ce - 1/1 - 46 out of 46 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 84.9 s)
+max Linf perturbation: 0.01569, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard2: 100%|██████████| 4/4 [06:27<00:00, 95.31s/it]shard2: 100%|██████████| 4/4 [06:27<00:00, 96.96s/it]
+
+  Shard 2 done: 250 images | clean=0.8120 | adv=0.0000

@@ -1,0 +1,123 @@
+============================================================
+  RobustGenBench Evaluation
+  Backbone  : convnext_base.fb_in22k
+  Dataset   : uc-merced-land-use-dataset
+  Loss      : TRADES_v2
+  Project   : convnext_base_fb_in22k_TRADES_v2
+  exp_id    : convnext_base.fb_in22k__uc-merced-land-use-dataset__TRADES_v2
+  GPUs      : 4
+============================================================
+  num_classes=21 (from class_names/uc-merced-land-use-dataset.json)
+
+============================================================
+  Evaluating: zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard
+  HF dir    : adversarial/zeroshot_clip_vitb16_laion2b/linf_eps4_autoattack_standard
+  Downloading: adversarial/zeroshot_clip_vitb16_laion2b/linf_eps4_autoattack_standard/uc-merced-land-use-dataset__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/work/archives/uc-merced-land-use-dataset/uc-merced-land-use-dataset__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard_processed.tar.zst
+  Extracting uc-merced-land-use-dataset__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard_processed.tar.zst → uc-merced-land-use-dataset__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard/
+  Loaded 420 test images.
+  Running inference on 4 GPUs...
+  Copied backbone weights to /tmp  Copied backbone weights to /tmp  Copied backbone weights to /tmp  Copied backbone weights to /tmp
+
+
+
+BACKBONE NAME BACKBONE NAMEconvnext_base.fb_in22k 
+BACKBONE NAMEconvnext_base.fb_in22k 
+convnext_base.fb_in22k
+BACKBONE NAME convnext_base.fb_in22k
+Loading timm model: convnext_base.fb_in22kLoading timm model:
+ convnext_base.fb_in22k
+Loading timm model: convnext_base.fb_in22k
+Loading timm model: convnext_base.fb_in22k
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/convnext_base_fb_in22k_TRADES_v2/convnext_base.fb_in22k_uc-merced-land-use-dataset_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/convnext_base_fb_in22k_TRADES_v2/convnext_base.fb_in22k_uc-merced-land-use-dataset_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/convnext_base_fb_in22k_TRADES_v2/convnext_base.fb_in22k_uc-merced-land-use-dataset_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/convnext_base_fb_in22k_TRADES_v2/convnext_base.fb_in22k_uc-merced-land-use-dataset_TRADES_v2.pt
+  Result: 404/420 = 0.9619
+
+============================================================
+  Evaluating: zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard
+  HF dir    : adversarial/zeroshot_clip_vitb16_laion2b/l2_eps2_autoattack_standard
+  Downloading: adversarial/zeroshot_clip_vitb16_laion2b/l2_eps2_autoattack_standard/uc-merced-land-use-dataset__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/work/archives/uc-merced-land-use-dataset/uc-merced-land-use-dataset__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard_processed.tar.zst
+  Extracting uc-merced-land-use-dataset__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard_processed.tar.zst → uc-merced-land-use-dataset__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard/
+  Loaded 420 test images.
+  Running inference on 4 GPUs...
+  Copied backbone weights to /tmp  Copied backbone weights to /tmp  Copied backbone weights to /tmp
+
+
+BACKBONE NAMEBACKBONE NAME  convnext_base.fb_in22kconvnext_base.fb_in22k
+
+BACKBONE NAME convnext_base.fb_in22k
+Loading timm model:Loading timm model:  convnext_base.fb_in22kconvnext_base.fb_in22k
+
+Loading timm model: convnext_base.fb_in22k
+  Copied backbone weights to /tmp
+BACKBONE NAME convnext_base.fb_in22k
+Loading timm model: convnext_base.fb_in22k
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/convnext_base_fb_in22k_TRADES_v2/convnext_base.fb_in22k_uc-merced-land-use-dataset_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/convnext_base_fb_in22k_TRADES_v2/convnext_base.fb_in22k_uc-merced-land-use-dataset_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/convnext_base_fb_in22k_TRADES_v2/convnext_base.fb_in22k_uc-merced-land-use-dataset_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/convnext_base_fb_in22k_TRADES_v2/convnext_base.fb_in22k_uc-merced-land-use-dataset_TRADES_v2.pt
+  Result: 404/420 = 0.9619
+
+============================================================
+  Evaluating: zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard
+  HF dir    : adversarial/zeroshot_clip_vitb16_laion2b/l1_eps75_autoattack_standard
+  Downloading: adversarial/zeroshot_clip_vitb16_laion2b/l1_eps75_autoattack_standard/uc-merced-land-use-dataset__zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/work/archives/uc-merced-land-use-dataset/uc-merced-land-use-dataset__zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard_processed.tar.zst
+  Extracting uc-merced-land-use-dataset__zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard_processed.tar.zst → uc-merced-land-use-dataset__zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard/
+  Loaded 420 test images.
+  Running inference on 4 GPUs...
+  Copied backbone weights to /tmp
+  Copied backbone weights to /tmp
+BACKBONE NAME convnext_base.fb_in22k
+BACKBONE NAME convnext_base.fb_in22k
+Loading timm model: convnext_base.fb_in22k
+Loading timm model: convnext_base.fb_in22k
+  Copied backbone weights to /tmp
+  Copied backbone weights to /tmp
+BACKBONE NAME convnext_base.fb_in22k
+BACKBONE NAME convnext_base.fb_in22k
+Loading timm model: convnext_base.fb_in22k
+Loading timm model: convnext_base.fb_in22k
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/convnext_base_fb_in22k_TRADES_v2/convnext_base.fb_in22k_uc-merced-land-use-dataset_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/convnext_base_fb_in22k_TRADES_v2/convnext_base.fb_in22k_uc-merced-land-use-dataset_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/convnext_base_fb_in22k_TRADES_v2/convnext_base.fb_in22k_uc-merced-land-use-dataset_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/convnext_base_fb_in22k_TRADES_v2/convnext_base.fb_in22k_uc-merced-land-use-dataset_TRADES_v2.pt
+  Result: 404/420 = 0.9619
+
+============================================================
+  Evaluating: zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard
+  HF dir    : adversarial/zeroshot_clip_vith14_laion2b/linf_eps4_autoattack_standard
+  Downloading: adversarial/zeroshot_clip_vith14_laion2b/linf_eps4_autoattack_standard/uc-merced-land-use-dataset__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/work/archives/uc-merced-land-use-dataset/uc-merced-land-use-dataset__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard_processed.tar.zst
+  Extracting uc-merced-land-use-dataset__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard_processed.tar.zst → uc-merced-land-use-dataset__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard/
+  Loaded 420 test images.
+  Running inference on 4 GPUs...
+  Copied backbone weights to /tmp
+BACKBONE NAME convnext_base.fb_in22k
+Loading timm model: convnext_base.fb_in22k
+  Copied backbone weights to /tmp
+BACKBONE NAME convnext_base.fb_in22k
+  Copied backbone weights to /tmp
+Loading timm model: convnext_base.fb_in22k
+BACKBONE NAME convnext_base.fb_in22k
+Loading timm model: convnext_base.fb_in22k
+  Copied backbone weights to /tmp
+BACKBONE NAME convnext_base.fb_in22k
+Loading timm model: convnext_base.fb_in22k
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/convnext_base_fb_in22k_TRADES_v2/convnext_base.fb_in22k_uc-merced-land-use-dataset_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/convnext_base_fb_in22k_TRADES_v2/convnext_base.fb_in22k_uc-merced-land-use-dataset_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/convnext_base_fb_in22k_TRADES_v2/convnext_base.fb_in22k_uc-merced-land-use-dataset_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/convnext_base_fb_in22k_TRADES_v2/convnext_base.fb_in22k_uc-merced-land-use-dataset_TRADES_v2.pt
+  Result: 405/420 = 0.9643
+
+============================================================
+  Evaluating: zeroshot_clip_vith14_laion2b__l2_eps2_autoattack_standard
+  HF dir    : adversarial/zeroshot_clip_vith14_laion2b/l2_eps2_autoattack_standard
+  Downloading: adversarial/zeroshot_clip_vith14_laion2b/l2_eps2_autoattack_standard/uc-merced-land-use-dataset__zeroshot_clip_vith14_laion2b__l2_eps2_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/work/archives/uc-merced-land-use-dataset/uc-merced-land-use-dataset__zeroshot_clip_vith14_laion2b__l2_eps2_autoattack_standard_processed.tar.zst
+  Extracting uc-merced-land-use-dataset__zeroshot_clip_vith14_laion2b__l2_eps2_autoattack_standard_processed.tar.zst → uc-merced-land-use-dataset__zeroshot_clip_vith14_laion2b__l2_eps2_autoattack_standard/
+  Loaded 420 test images.
+  Running inference on 4 GPUs...

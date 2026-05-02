@@ -1,0 +1,132 @@
+  Using: NVIDIA H100 80GB HBM3
+
+============================================================
+  Dataset   : uc-merced-land-use-dataset  [shard 1/4]
+  Surrogate : siglip2_so400m_384
+  Norm      : L1  eps=75.0  (AA: 75.00000)
+  Device    : cuda
+============================================================
+  [shard] Waiting for download lock...
+Data already present at /home/m/mheuill/links/scratch/robustgenbench/data_processed.
+  Shard indices: 0–104  (105 samples of 420 total)
+
+Loading SigLIP2-SO400M-384 surrogate: google/siglip2-so400m-patch14-384
+Loading weights:   0%|          | 0/448 [00:00<?, ?it/s]Loading weights: 100%|██████████| 448/448 [00:00<00:00, 5436.93it/s]
+[1mSiglipVisionModel LOAD REPORT[0m from: google/siglip2-so400m-patch14-384
+Key                                                          | Status     |  | 
+-------------------------------------------------------------+------------+--+-
+text_model.encoder.layers.{0...26}.layer_norm1.weight        | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.mlp.fc1.bias              | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.self_attn.k_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.self_attn.v_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.layer_norm1.bias          | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.mlp.fc2.weight            | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.self_attn.q_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.self_attn.out_proj.bias   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.layer_norm2.bias          | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.self_attn.k_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.mlp.fc2.bias              | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.layer_norm2.weight        | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.self_attn.out_proj.weight | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.mlp.fc1.weight            | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.self_attn.v_proj.bias     | UNEXPECTED |  | 
+text_model.embeddings.token_embedding.weight                 | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.self_attn.q_proj.weight   | UNEXPECTED |  | 
+logit_scale                                                  | UNEXPECTED |  | 
+text_model.final_layer_norm.bias                             | UNEXPECTED |  | 
+text_model.embeddings.position_embedding.weight              | UNEXPECTED |  | 
+text_model.final_layer_norm.weight                           | UNEXPECTED |  | 
+text_model.head.weight                                       | UNEXPECTED |  | 
+logit_bias                                                   | UNEXPECTED |  | 
+text_model.head.bias                                         | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+Loading weights:   0%|          | 0/438 [00:00<?, ?it/s]Loading weights: 100%|██████████| 438/438 [00:00<00:00, 4899.48it/s]
+[1mSiglipTextModel LOAD REPORT[0m from: google/siglip2-so400m-patch14-384
+Key                                                            | Status     |  | 
+---------------------------------------------------------------+------------+--+-
+vision_model.encoder.layers.{0...26}.mlp.fc1.bias              | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.layer_norm1.weight        | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.self_attn.k_proj.weight   | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.self_attn.k_proj.bias     | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.layer_norm2.weight        | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.self_attn.v_proj.bias     | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.mlp.fc1.weight            | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.self_attn.out_proj.bias   | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.mlp.fc2.bias              | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.self_attn.v_proj.weight   | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.layer_norm2.bias          | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.self_attn.q_proj.weight   | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.self_attn.out_proj.weight | UNEXPECTED |  | 
+vision_model.head.mlp.fc1.bias                                 | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.layer_norm1.bias          | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.self_attn.q_proj.bias     | UNEXPECTED |  | 
+vision_model.head.attention.in_proj_weight                     | UNEXPECTED |  | 
+vision_model.head.mlp.fc2.weight                               | UNEXPECTED |  | 
+vision_model.head.probe                                        | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.mlp.fc2.weight            | UNEXPECTED |  | 
+vision_model.post_layernorm.bias                               | UNEXPECTED |  | 
+vision_model.head.layernorm.bias                               | UNEXPECTED |  | 
+vision_model.post_layernorm.weight                             | UNEXPECTED |  | 
+logit_scale                                                    | UNEXPECTED |  | 
+vision_model.head.attention.out_proj.weight                    | UNEXPECTED |  | 
+vision_model.head.attention.out_proj.bias                      | UNEXPECTED |  | 
+vision_model.embeddings.patch_embedding.weight                 | UNEXPECTED |  | 
+vision_model.head.mlp.fc1.weight                               | UNEXPECTED |  | 
+vision_model.head.mlp.fc2.bias                                 | UNEXPECTED |  | 
+vision_model.embeddings.patch_embedding.bias                   | UNEXPECTED |  | 
+vision_model.head.layernorm.weight                             | UNEXPECTED |  | 
+vision_model.head.attention.in_proj_bias                       | UNEXPECTED |  | 
+vision_model.embeddings.position_embedding.weight              | UNEXPECTED |  | 
+logit_bias                                                     | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+  Encoding 21 class prompts...
+setting parameters for standard version
+shard0:   0%|          | 0/7 [00:00<?, ?it/s]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 100.00%
+apgd-ce - 1/1 - 16 out of 16 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 68.9 s)
+max L1 perturbation: 75.00044, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard0:  14%|█▍        | 1/7 [01:12<07:15, 72.51s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 100.00%
+apgd-ce - 1/1 - 16 out of 16 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 68.8 s)
+max L1 perturbation: 75.00085, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard0:  29%|██▊       | 2/7 [02:24<06:01, 72.21s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 50.00%
+apgd-ce - 1/1 - 8 out of 8 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 34.6 s)
+max L1 perturbation: 75.00062, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard0:  43%|████▎     | 3/7 [03:02<03:45, 56.47s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 15 out of 15 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 65.5 s)
+max L1 perturbation: 75.00047, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard0:  57%|█████▋    | 4/7 [04:10<03:03, 61.26s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 87.50%
+apgd-ce - 1/1 - 14 out of 14 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 57.0 s)
+max L1 perturbation: 75.00141, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard0:  71%|███████▏  | 5/7 [05:10<02:01, 60.86s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 87.50%
+apgd-ce - 1/1 - 14 out of 14 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 69.6 s)
+max L1 perturbation: 75.00105, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard0:  86%|████████▌ | 6/7 [06:23<01:04, 64.91s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 77.78%
+apgd-ce - 1/1 - 7 out of 7 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 37.8 s)
+max L1 perturbation: 75.00112, nan in tensor: 0, max: 0.99608, min: 0.00280
+robust accuracy: 0.00%
+shard0: 100%|██████████| 7/7 [07:03<00:00, 56.59s/it]shard0: 100%|██████████| 7/7 [07:03<00:00, 60.47s/it]
+
+  Shard 0 done: 105 images | clean=0.8571 | adv=0.0000

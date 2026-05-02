@@ -1,0 +1,32 @@
+============================================================
+  RobustGenBench Evaluation
+  Backbone  : convnext_base.fb_in22k
+  Dataset   : oxford-iiit-pet
+  Loss      : TRADES_v2
+  Project   : convnext_base_fb_in22k_TRADES_v2
+  exp_id    : convnext_base.fb_in22k__oxford-iiit-pet__TRADES_v2
+  GPUs      : 4
+============================================================
+  num_classes=37 (from class_names/oxford-iiit-pet.json)
+  Resuming: 0 evaluations already done.
+
+============================================================
+  Evaluating: zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard
+  HF dir    : adversarial/zeroshot_clip_vitb16_laion2b/linf_eps4_autoattack_standard
+  Downloading: adversarial/zeroshot_clip_vitb16_laion2b/linf_eps4_autoattack_standard/oxford-iiit-pet__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/work/archives/oxford-iiit-pet/oxford-iiit-pet__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard_processed.tar.zst
+  Extracting oxford-iiit-pet__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard_processed.tar.zst → oxford-iiit-pet__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard/
+  Loaded 1000 test images.
+  Running inference on 4 GPUs...
+  Copied backbone weights to /tmp
+  Copied backbone weights to /tmpBACKBONE NAME
+ convnext_base.fb_in22k
+  Copied backbone weights to /tmp
+  Copied backbone weights to /tmp
+Loading timm model: BACKBONE NAMEconvnext_base.fb_in22k 
+convnext_base.fb_in22k
+BACKBONE NAME convnext_base.fb_in22k
+BACKBONE NAME convnext_base.fb_in22k
+Loading timm model: convnext_base.fb_in22k
+Loading timm model: convnext_base.fb_in22k
+Loading timm model: convnext_base.fb_in22k

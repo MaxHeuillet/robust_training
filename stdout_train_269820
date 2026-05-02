@@ -1,0 +1,77 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values convnext_base.fb_in22k__oxford-iiit-pet__TRADES_v2
+📦 Extracting /tmp/datasets/oxford-iiit-pet_processed.tar.zst into /tmp/data/oxford-iiit-pet using Python zstd + tarfile...
+✅ Extraction of oxford-iiit-pet completed successfully at 2026-05-01 16:03:07
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/convnext_base.fb_in22k.pt to /tmp
+Training step
+Loading HPO config from: ./configs/HPO_results/full_fine_tuning50/convnext_base.fb_in22k__oxford-iiit-pet__TRADES_v2.yaml
+we are launching training
+torch 2.11.0
+cuda 12.9
+we are launching training
+torch 2.11.0
+cuda 12.9
+we are launching training
+torch 2.11.0
+cuda 12.9
+we are launching training
+torch 2.11.0
+cuda 12.9
+cudnn 91301
+set up the master adress and port
+cudnn 91301
+set up the master adress and port
+cudnn 91301
+set up the master adress and port
+init process group ok
+### load model
+cudnn 91301
+set up the master adress and port
+init process group ok
+### load model
+initialize dataoader 3
+### load model
+BACKBONE NAME convnext_base.fb_in22k
+Loading timm model: convnext_base.fb_in22k
+initialize dataoader 1
+### load model
+BACKBONE NAME convnext_base.fb_in22k
+Loading timm model: convnext_base.fb_in22k
+init process group ok
+### load model
+init process group ok
+### load model
+initialize dataoader 2
+### load model
+BACKBONE NAME convnext_base.fb_in22k
+Loading timm model: convnext_base.fb_in22k
+initialize dataoader 0
+### load model
+BACKBONE NAME convnext_base.fb_in22k
+Loading timm model: convnext_base.fb_in22k
+152 188 1 3
+152 188 1 3
+effective batch size 1024 per_gpu_batch_size 1 accumulation steps 256
+effective batch size 1024 per_gpu_batch_size 1 accumulation steps 256
+152 188 1 3
+epochs 50
+effective batch size 1024 per_gpu_batch_size 1 accumulation steps 256
+epochs 50
+152 188 1 3
+epochs 50
+effective batch size 1024 per_gpu_batch_size 1 accumulation steps 256
+epochs 50
+Rank 2, Iteration 1,
+Rank 1, Iteration 1,
+Rank 3, Iteration 1,
+Rank 0, Iteration 1,
+Model saved by rank 0
+processes ended
+processes ended
+processes ended
+we are done training
+we are done training
+we are done training

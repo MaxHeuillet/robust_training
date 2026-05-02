@@ -1,0 +1,71 @@
+  Merging 4 shards → oxford-iiit-pet__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard
+  Merged 1000 images | clean=0.9440 | adv=0.0000
+  Packaging 1000 images → oxford-iiit-pet__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard_processed.tar.zst
+  Compressing:   0%|          | 0/1000 [00:00<?, ?it/s]  Compressing:  38%|███▊      | 379/1000 [00:00<00:00, 3783.26it/s]  Compressing:  76%|███████▌  | 758/1000 [00:00<00:00, 3771.14it/s]                                                                     ✓ oxford-iiit-pet__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard_processed.tar.zst (94.1 MB)
+  Uploading → MaxHeuillet/RobustGenBench/adversarial/zeroshot_clip_vith14_laion2b/linf_eps4_autoattack_standard/oxford-iiit-pet__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard_processed.tar.zst
+Processing Files (0 / 0)      : |          |  0.00B /  0.00B            
+New Data Upload               : |          |  0.00B /  0.00B            [A
+
+  ...tandard_processed.tar.zst:   0%|          |  209kB / 94.1MB            [A[A
+
+  ...tandard_processed.tar.zst:   0%|          |  209kB / 94.1MB            [A[AProcessing Files (0 / 1)      :   0%|          |  209kB / 94.1MB, 1.05MB/s  
+
+  ...tandard_processed.tar.zst:   0%|          |  252kB / 94.1MB            [A[AProcessing Files (0 / 1)      :   0%|          |  252kB / 94.1MB,  631kB/s  
+
+  ...tandard_processed.tar.zst:  10%|█         | 9.74MB / 94.1MB            [A[AProcessing Files (0 / 1)      :  10%|█         | 9.74MB / 94.1MB, 16.2MB/s  
+New Data Upload               :  10%|█         | 9.49MB / 93.8MB, 15.8MB/s  [A
+
+  ...tandard_processed.tar.zst:  32%|███▏      | 29.8MB / 94.1MB            [A[AProcessing Files (0 / 1)      :  32%|███▏      | 29.8MB / 94.1MB, 37.2MB/s  
+New Data Upload               :  31%|███▏      | 29.5MB / 93.8MB, 36.9MB/s  [A
+
+  ...tandard_processed.tar.zst:  45%|████▌     | 42.4MB / 94.1MB            [A[AProcessing Files (0 / 1)      :  45%|████▌     | 42.4MB / 94.1MB, 42.4MB/s  
+New Data Upload               :  45%|████▍     | 42.2MB / 93.8MB, 42.2MB/s  [A
+
+  ...tandard_processed.tar.zst:  55%|█████▍    | 51.4MB / 94.1MB            [A[AProcessing Files (0 / 1)      :  55%|█████▍    | 51.4MB / 94.1MB, 42.8MB/s  
+New Data Upload               :  54%|█████▍    | 51.1MB / 93.8MB, 42.6MB/s  [A
+
+  ...tandard_processed.tar.zst:  64%|██████▎   | 59.8MB / 94.1MB            [A[AProcessing Files (0 / 1)      :  64%|██████▎   | 59.8MB / 94.1MB, 42.7MB/s  
+New Data Upload               :  63%|██████▎   | 59.6MB / 93.8MB, 42.6MB/s  [A
+
+  ...tandard_processed.tar.zst:  71%|███████▏  | 67.2MB / 94.1MB            [A[AProcessing Files (0 / 1)      :  71%|███████▏  | 67.2MB / 94.1MB, 42.0MB/s  
+New Data Upload               :  71%|███████▏  | 66.9MB / 93.8MB, 41.8MB/s  [A
+
+  ...tandard_processed.tar.zst:  71%|███████▏  | 67.2MB / 94.1MB            [A[A
+
+  ...tandard_processed.tar.zst:  71%|███████▏  | 67.2MB / 94.1MB            [A[A
+
+  ...tandard_processed.tar.zst:  71%|███████▏  | 67.2MB / 94.1MB            [A[A
+
+  ...tandard_processed.tar.zst:  71%|███████▏  | 67.2MB / 94.1MB            [A[A
+
+  ...tandard_processed.tar.zst:  77%|███████▋  | 72.0MB / 94.1MB            [A[AProcessing Files (0 / 1)      :  77%|███████▋  | 72.0MB / 94.1MB, 27.7MB/s  
+New Data Upload               :  76%|███████▋  | 71.8MB / 93.8MB, 27.6MB/s  [A
+
+  ...tandard_processed.tar.zst:  89%|████████▉ | 84.2MB / 94.1MB            [A[AProcessing Files (0 / 1)      :  89%|████████▉ | 84.2MB / 94.1MB, 30.1MB/s  
+New Data Upload               :  89%|████████▉ | 83.9MB / 93.8MB, 30.0MB/s  [A
+
+  ...tandard_processed.tar.zst:  99%|█████████▉| 93.1MB / 94.1MB            [A[AProcessing Files (0 / 1)      :  99%|█████████▉| 93.1MB / 94.1MB, 31.1MB/s  
+New Data Upload               :  99%|█████████▉| 92.9MB / 93.8MB, 31.0MB/s  [A
+
+  ...tandard_processed.tar.zst: 100%|█████████▉| 93.7MB / 94.1MB            [A[AProcessing Files (0 / 1)      : 100%|█████████▉| 93.7MB / 94.1MB, 29.3MB/s  
+New Data Upload               : 100%|█████████▉| 93.4MB / 93.8MB, 29.2MB/s  [A
+
+  ...tandard_processed.tar.zst: 100%|█████████▉| 93.7MB / 94.1MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|█████████▉| 93.7MB / 94.1MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|█████████▉| 93.7MB / 94.1MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|█████████▉| 93.7MB / 94.1MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|██████████| 94.1MB / 94.1MB            [A[AProcessing Files (1 / 1)      : 100%|██████████| 94.1MB / 94.1MB, 22.4MB/s  
+New Data Upload               : 100%|██████████| 93.8MB / 93.8MB, 22.3MB/s  [A
+
+  ...tandard_processed.tar.zst: 100%|██████████| 94.1MB / 94.1MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|██████████| 94.1MB / 94.1MB            [A[A
+
+  ...tandard_processed.tar.zst: 100%|██████████| 94.1MB / 94.1MB            [A[AProcessing Files (1 / 1)      : 100%|██████████| 94.1MB / 94.1MB, 20.5MB/s  
+New Data Upload               : 100%|██████████| 93.8MB / 93.8MB, 20.4MB/s  
+  ...tandard_processed.tar.zst: 100%|██████████| 94.1MB / 94.1MB            
+  ✓ Upload complete: oxford-iiit-pet__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard_processed.tar.zst

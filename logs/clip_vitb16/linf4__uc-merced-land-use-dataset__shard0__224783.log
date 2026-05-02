@@ -1,0 +1,30 @@
+  Using: NVIDIA H100 80GB HBM3
+
+============================================================
+  Dataset   : uc-merced-land-use-dataset  [shard 1/4]
+  Surrogate : clip
+  Norm      : Linf  eps=4.0  (AA: 0.01569)
+  Device    : cuda
+============================================================
+  [shard] Waiting for download lock...
+Data already present at /home/m/mheuill/links/scratch/robustgenbench/data_processed.
+  Shard indices: 0–104  (105 samples of 420 total)
+
+Loading CLIP ViT-B/16 surrogate: ViT-B-16 / laion2b_s34b_b88k
+  Encoding 21 class prompts...
+setting parameters for standard version
+shard0:   0%|          | 0/2 [00:00<?, ?it/s]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 73.44%
+apgd-ce - 1/1 - 47 out of 47 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 10.2 s)
+max Linf perturbation: 0.01569, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard0:  50%|█████     | 1/2 [00:12<00:12, 12.21s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 70.73%
+apgd-ce - 1/1 - 29 out of 29 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 7.0 s)
+max Linf perturbation: 0.01569, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard0: 100%|██████████| 2/2 [00:20<00:00,  9.64s/it]shard0: 100%|██████████| 2/2 [00:20<00:00, 10.04s/it]
+
+  Shard 0 done: 105 images | clean=0.7238 | adv=0.0000

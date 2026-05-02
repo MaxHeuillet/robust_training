@@ -1,0 +1,43 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+/tmp/myenv_reprod/lib/python3.11/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+  return func(*args, **kwargs)
+/tmp/myenv_reprod/lib/python3.11/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+  return func(*args, **kwargs)
+/tmp/myenv_reprod/lib/python3.11/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+  return func(*args, **kwargs)
+/tmp/myenv_reprod/lib/python3.11/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+  return func(*args, **kwargs)
+[rank0]:[W502 12:48:32.420643951 ProcessGroupNCCL.cpp:1575] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+W0502 12:48:33.340000 1620819 torch/multiprocessing/spawn.py:165] Terminating process 1622260 via signal SIGTERM
+W0502 12:48:33.341000 1620819 torch/multiprocessing/spawn.py:165] Terminating process 1622261 via signal SIGTERM
+Traceback (most recent call last):
+  File "/project/6102313/mheuill/robust_training/./evaluate_robustgenbench.py", line 547, in <module>
+    # 5. Run distributed inference
+^^^^^^
+  File "/project/6102313/mheuill/robust_training/./evaluate_robustgenbench.py", line 521, in main
+    print(f"  WARNING: No archive found for dataset={args.dataset} "
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/project/6102313/mheuill/robust_training/./evaluate_robustgenbench.py", line 364, in run_distributed_inference
+    nb_examples += labels.size(0)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/multiprocessing/spawn.py", line 340, in spawn
+    return start_processes(fn, args, nprocs, join, daemon, start_method="spawn")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/multiprocessing/spawn.py", line 296, in start_processes
+    while not context.join():
+              ^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/multiprocessing/spawn.py", line 211, in join
+    raise ProcessRaisedException(msg, error_index, failed_process.pid)
+torch.multiprocessing.spawn.ProcessRaisedException: 
+
+-- Process 3 terminated with the following error:
+Traceback (most recent call last):
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/multiprocessing/spawn.py", line 87, in _wrap
+    fn(i, *args)
+  File "/project/6102313/mheuill/robust_training/evaluate_robustgenbench.py", line 340, in inference_worker
+    model = load_trained_model(args, N, rank)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/project/6102313/mheuill/robust_training/evaluate_robustgenbench.py", line 304, in load_trained_model
+    raise FileNotFoundError(
+FileNotFoundError: HPO config not found at /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/configs/HPO_results/convnext_base_fb_in22k_TRADES_v2/convnext_base.fb_in22k__uc-merced-land-use-dataset__TRADES_v2.yaml. Make sure training completed successfully.
+

@@ -1,0 +1,39 @@
+============================================================
+  RobustGenBench Evaluation
+  Backbone  : convnext_base.fb_in22k
+  Dataset   : flowers-102
+  Loss      : TRADES_v2
+  Project   : convnext_base_fb_in22k_TRADES_v2
+  exp_id    : convnext_base.fb_in22k__flowers-102__TRADES_v2
+  GPUs      : 4
+============================================================
+  num_classes=102 (from class_names/flowers-102.json)
+  Resuming: 13 evaluations already done.
+
+  [SKIP] zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard (already evaluated)
+
+  [SKIP] zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard (already evaluated)
+
+  [SKIP] zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard (already evaluated)
+
+  [SKIP] zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard (already evaluated)
+
+  [SKIP] zeroshot_clip_vith14_laion2b__l2_eps2_autoattack_standard (already evaluated)
+
+  [SKIP] zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard (already evaluated)
+
+  [SKIP] zeroshot_metaclip_vith14_fullcc2_5b__linf_eps4_autoattack_standard (already evaluated)
+
+  [SKIP] zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard (already evaluated)
+
+  [SKIP] zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard (already evaluated)
+
+  [SKIP] zeroshot_siglip2_so400m_patch14_384__linf_eps4_autoattack_standard (already evaluated)
+
+  [SKIP] zeroshot_siglip2_so400m_patch14_384__l2_eps2_autoattack_standard (already evaluated)
+
+  [SKIP] zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard (already evaluated)
+
+  [SKIP] common__common_severity3 (already evaluated)
+
+All done. Results saved to: /scratch/m/mheuill/results/convnext_base_fb_in22k_TRADES_v2/convnext_base.fb_in22k__flowers-102__TRADES_v2__robustgenbench_results.csv

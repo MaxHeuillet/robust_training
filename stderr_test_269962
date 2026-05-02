@@ -1,0 +1,67 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[rank0]:[W501 19:21:07.360711796 ProcessGroupNCCL.cpp:1575] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+[rank1]:[W501 19:21:07.644618990 TCPStore.cpp:125] [c10d] recvValue failed on SocketImpl(fd=5, addr=[localhost]:50126, remote=[localhost]:29500): Failed to recv, got 0 bytes. Connection was likely closed. Did the remote server shutdown or crash?
+Exception raised from recvBytes at /tmp/build_wheels_tmp.5682/python-3.11/torch/torch/csrc/distributed/c10d/Utils.hpp:682 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x97 (0x7740fc79cf17 in /tmp/myenv_reprod/lib/python3.11/site-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0x678a81d (0x7740f158a81d in /tmp/myenv_reprod/lib/python3.11/site-packages/torch/lib/libtorch_cpu.so)
+frame #2: c10d::TCPStore::check(std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&) + 0x1eb (0x7740f15864cb in /tmp/myenv_reprod/lib/python3.11/site-packages/torch/lib/libtorch_cpu.so)
+frame #3: c10d::ProcessGroupNCCL::HeartbeatMonitor::runLoop() + 0x3f7 (0x7740b4d749b7 in /tmp/myenv_reprod/lib/python3.11/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0xe07f0 (0x7740fcae07f0 in /cvmfs/soft.computecanada.ca/gentoo/2023/x86-64-v3/usr/lib/gcc/x86_64-pc-linux-gnu/14/libstdc++.so.6)
+frame #5: <unknown function> + 0x84a9d (0x7740fe8afa9d in /cvmfs/soft.computecanada.ca/gentoo/2023/x86-64-v3/usr/lib64/libc.so.6)
+frame #6: <unknown function> + 0x10509c (0x7740fe93009c in /cvmfs/soft.computecanada.ca/gentoo/2023/x86-64-v3/usr/lib64/libc.so.6)
+
+[rank1]:[W501 19:21:07.646647038 ProcessGroupNCCL.cpp:1826] [PG ID 0 PG GUID 0 Rank 1] Failed to check the "should dump" flag on TCPStore, (maybe TCPStore server has shut down too early), with error: Failed to recv, got 0 bytes. Connection was likely closed. Did the remote server shutdown or crash?
+[rank3]:[W501 19:21:07.678852641 TCPStore.cpp:125] [c10d] recvValue failed on SocketImpl(fd=5, addr=[localhost]:50160, remote=[localhost]:29500): Failed to recv, got 0 bytes. Connection was likely closed. Did the remote server shutdown or crash?
+Exception raised from recvBytes at /tmp/build_wheels_tmp.5682/python-3.11/torch/torch/csrc/distributed/c10d/Utils.hpp:682 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x97 (0x7183d7d87f17 in /tmp/myenv_reprod/lib/python3.11/site-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0x678a81d (0x7183d018a81d in /tmp/myenv_reprod/lib/python3.11/site-packages/torch/lib/libtorch_cpu.so)
+frame #2: c10d::TCPStore::check(std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&) + 0x1eb (0x7183d01864cb in /tmp/myenv_reprod/lib/python3.11/site-packages/torch/lib/libtorch_cpu.so)
+frame #3: c10d::ProcessGroupNCCL::HeartbeatMonitor::runLoop() + 0x3f7 (0x7183939749b7 in /tmp/myenv_reprod/lib/python3.11/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0xe07f0 (0x7183db6e07f0 in /cvmfs/soft.computecanada.ca/gentoo/2023/x86-64-v3/usr/lib/gcc/x86_64-pc-linux-gnu/14/libstdc++.so.6)
+frame #5: <unknown function> + 0x84a9d (0x7183dd3d7a9d in /cvmfs/soft.computecanada.ca/gentoo/2023/x86-64-v3/usr/lib64/libc.so.6)
+frame #6: <unknown function> + 0x10509c (0x7183dd45809c in /cvmfs/soft.computecanada.ca/gentoo/2023/x86-64-v3/usr/lib64/libc.so.6)
+
+[rank3]:[W501 19:21:07.681206689 ProcessGroupNCCL.cpp:1826] [PG ID 0 PG GUID 0 Rank 3] Failed to check the "should dump" flag on TCPStore, (maybe TCPStore server has shut down too early), with error: Failed to recv, got 0 bytes. Connection was likely closed. Did the remote server shutdown or crash?
+[rank2]:[W501 19:21:07.676597156 TCPStore.cpp:125] [c10d] recvValue failed on SocketImpl(fd=5, addr=[localhost]:50144, remote=[localhost]:29500): Failed to recv, got 0 bytes. Connection was likely closed. Did the remote server shutdown or crash?
+Exception raised from recvBytes at /tmp/build_wheels_tmp.5682/python-3.11/torch/torch/csrc/distributed/c10d/Utils.hpp:682 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x97 (0x769c79f9cf17 in /tmp/myenv_reprod/lib/python3.11/site-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0x678a81d (0x769c6ed8a81d in /tmp/myenv_reprod/lib/python3.11/site-packages/torch/lib/libtorch_cpu.so)
+frame #2: c10d::TCPStore::check(std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&) + 0x1eb (0x769c6ed864cb in /tmp/myenv_reprod/lib/python3.11/site-packages/torch/lib/libtorch_cpu.so)
+frame #3: c10d::ProcessGroupNCCL::HeartbeatMonitor::runLoop() + 0x3f7 (0x769c325749b7 in /tmp/myenv_reprod/lib/python3.11/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0xe07f0 (0x769c7a2e07f0 in /cvmfs/soft.computecanada.ca/gentoo/2023/x86-64-v3/usr/lib/gcc/x86_64-pc-linux-gnu/14/libstdc++.so.6)
+frame #5: <unknown function> + 0x84a9d (0x769c7c0afa9d in /cvmfs/soft.computecanada.ca/gentoo/2023/x86-64-v3/usr/lib64/libc.so.6)
+frame #6: <unknown function> + 0x10509c (0x769c7c13009c in /cvmfs/soft.computecanada.ca/gentoo/2023/x86-64-v3/usr/lib64/libc.so.6)
+
+[rank2]:[W501 19:21:07.683059882 ProcessGroupNCCL.cpp:1826] [PG ID 0 PG GUID 0 Rank 2] Failed to check the "should dump" flag on TCPStore, (maybe TCPStore server has shut down too early), with error: Failed to recv, got 0 bytes. Connection was likely closed. Did the remote server shutdown or crash?
+W0501 19:21:07.641000 1920855 torch/multiprocessing/spawn.py:165] Terminating process 1920913 via signal SIGTERM
+W0501 19:21:07.642000 1920855 torch/multiprocessing/spawn.py:165] Terminating process 1920914 via signal SIGTERM
+W0501 19:21:07.642000 1920855 torch/multiprocessing/spawn.py:165] Terminating process 1920915 via signal SIGTERM
+Traceback (most recent call last):
+  File "/project/6102313/mheuill/robust_training/./evaluate_robustgenbench.py", line 547, in <module>
+    main()
+  File "/project/6102313/mheuill/robust_training/./evaluate_robustgenbench.py", line 521, in main
+    stats = run_distributed_inference(items, args, N)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/project/6102313/mheuill/robust_training/./evaluate_robustgenbench.py", line 364, in run_distributed_inference
+    mp.spawn(
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/multiprocessing/spawn.py", line 340, in spawn
+    return start_processes(fn, args, nprocs, join, daemon, start_method="spawn")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/multiprocessing/spawn.py", line 296, in start_processes
+    while not context.join():
+              ^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/multiprocessing/spawn.py", line 211, in join
+    raise ProcessRaisedException(msg, error_index, failed_process.pid)
+torch.multiprocessing.spawn.ProcessRaisedException: 
+
+-- Process 0 terminated with the following error:
+Traceback (most recent call last):
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/multiprocessing/spawn.py", line 87, in _wrap
+    fn(i, *args)
+  File "/project/6102313/mheuill/robust_training/evaluate_robustgenbench.py", line 325, in inference_worker
+    model = load_trained_model(args, N, rank)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/project/6102313/mheuill/robust_training/evaluate_robustgenbench.py", line 301, in load_trained_model
+    raise FileNotFoundError(f"State dict not found at {state_dict_path}")
+FileNotFoundError: State dict not found at /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_base_fb_in22k_TRADES_v2/convnext_base.fb_in22k_oxford-iiit-pet_TRADES_v2.pt
+

@@ -1,0 +1,4 @@
+  Running command git clone --filter=blob:none --quiet https://github.com/fra31/auto-attack /tmp/pip-req-build-p7l723f5
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+torchaudio 2.3.1+computecanada requires torch~=2.3.0, but you have torch 2.11.0+computecanada which is incompatible.
+sbatch: error: Unable to open file ./job3_test_robustgenbench.sh

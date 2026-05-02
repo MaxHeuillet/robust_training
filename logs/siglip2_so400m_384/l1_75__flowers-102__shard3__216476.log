@@ -1,0 +1,228 @@
+  Using: NVIDIA H100 80GB HBM3
+
+============================================================
+  Dataset   : flowers-102  [shard 4/4]
+  Surrogate : siglip2_so400m_384
+  Norm      : L1  eps=75.0  (AA: 75.00000)
+  Device    : cuda
+============================================================
+  [shard] Waiting for download lock...
+Data already present at /home/m/mheuill/links/scratch/robustgenbench/data_processed.
+  Shard indices: 750–999  (250 samples of 1000 total)
+
+Loading SigLIP2-SO400M-384 surrogate: google/siglip2-so400m-patch14-384
+Loading weights:   0%|          | 0/448 [00:00<?, ?it/s]Loading weights:  51%|█████     | 228/448 [00:00<00:00, 2146.17it/s]Loading weights:  99%|█████████▉| 443/448 [00:00<00:00, 1910.85it/s]Loading weights: 100%|██████████| 448/448 [00:00<00:00, 1958.63it/s]
+[1mSiglipVisionModel LOAD REPORT[0m from: google/siglip2-so400m-patch14-384
+Key                                                          | Status     |  | 
+-------------------------------------------------------------+------------+--+-
+text_model.encoder.layers.{0...26}.layer_norm1.bias          | UNEXPECTED |  | 
+text_model.final_layer_norm.bias                             | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.mlp.fc1.weight            | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.self_attn.out_proj.weight | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.layer_norm2.bias          | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.mlp.fc1.bias              | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.self_attn.k_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.self_attn.out_proj.bias   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.mlp.fc2.weight            | UNEXPECTED |  | 
+text_model.final_layer_norm.weight                           | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.self_attn.q_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.self_attn.v_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.self_attn.k_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.layer_norm1.weight        | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.mlp.fc2.bias              | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.self_attn.q_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.layer_norm2.weight        | UNEXPECTED |  | 
+text_model.encoder.layers.{0...26}.self_attn.v_proj.weight   | UNEXPECTED |  | 
+logit_scale                                                  | UNEXPECTED |  | 
+text_model.head.weight                                       | UNEXPECTED |  | 
+logit_bias                                                   | UNEXPECTED |  | 
+text_model.embeddings.token_embedding.weight                 | UNEXPECTED |  | 
+text_model.embeddings.position_embedding.weight              | UNEXPECTED |  | 
+text_model.head.bias                                         | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+Loading weights:   0%|          | 0/438 [00:00<?, ?it/s]Loading weights:  84%|████████▍ | 370/438 [00:00<00:00, 3617.63it/s]Loading weights: 100%|██████████| 438/438 [00:00<00:00, 3626.72it/s]
+[1mSiglipTextModel LOAD REPORT[0m from: google/siglip2-so400m-patch14-384
+Key                                                            | Status     |  | 
+---------------------------------------------------------------+------------+--+-
+vision_model.encoder.layers.{0...26}.mlp.fc1.bias              | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.mlp.fc2.weight            | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.self_attn.out_proj.bias   | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.self_attn.k_proj.weight   | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.self_attn.q_proj.weight   | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.self_attn.v_proj.weight   | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.self_attn.k_proj.bias     | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.layer_norm2.bias          | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.mlp.fc1.weight            | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.layer_norm1.weight        | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.mlp.fc2.bias              | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.layer_norm1.bias          | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.layer_norm2.weight        | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.self_attn.out_proj.weight | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.self_attn.q_proj.bias     | UNEXPECTED |  | 
+vision_model.post_layernorm.weight                             | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...26}.self_attn.v_proj.bias     | UNEXPECTED |  | 
+vision_model.head.mlp.fc1.bias                                 | UNEXPECTED |  | 
+logit_scale                                                    | UNEXPECTED |  | 
+vision_model.head.attention.in_proj_weight                     | UNEXPECTED |  | 
+vision_model.head.mlp.fc1.weight                               | UNEXPECTED |  | 
+vision_model.head.attention.out_proj.weight                    | UNEXPECTED |  | 
+vision_model.embeddings.patch_embedding.bias                   | UNEXPECTED |  | 
+vision_model.head.mlp.fc2.weight                               | UNEXPECTED |  | 
+vision_model.head.attention.in_proj_bias                       | UNEXPECTED |  | 
+vision_model.head.probe                                        | UNEXPECTED |  | 
+vision_model.post_layernorm.bias                               | UNEXPECTED |  | 
+vision_model.embeddings.position_embedding.weight              | UNEXPECTED |  | 
+logit_bias                                                     | UNEXPECTED |  | 
+vision_model.head.attention.out_proj.bias                      | UNEXPECTED |  | 
+vision_model.head.mlp.fc2.bias                                 | UNEXPECTED |  | 
+vision_model.head.layernorm.weight                             | UNEXPECTED |  | 
+vision_model.head.layernorm.bias                               | UNEXPECTED |  | 
+vision_model.embeddings.patch_embedding.weight                 | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+  Encoding 102 class prompts...
+setting parameters for standard version
+shard3:   0%|          | 0/16 [00:00<?, ?it/s]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 100.00%
+apgd-ce - 1/1 - 13 out of 16 successfully perturbed
+robust accuracy after APGD-CE: 18.75% (total time 140.6 s)
+apgd-t - 1/1 - 2 out of 3 successfully perturbed
+robust accuracy after APGD-T: 6.25% (total time 186.1 s)
+fab-t - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after FAB-T: 6.25% (total time 283.7 s)
+square - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after SQUARE: 6.25% (total time 440.8 s)
+max L1 perturbation: 75.00025, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 6.25%
+shard3:   6%|▋         | 1/16 [07:24<1:51:06, 444.43s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 100.00%
+apgd-ce - 1/1 - 15 out of 16 successfully perturbed
+robust accuracy after APGD-CE: 6.25% (total time 133.0 s)
+apgd-t - 1/1 - 1 out of 1 successfully perturbed
+robust accuracy after APGD-T: 0.00% (total time 139.7 s)
+max L1 perturbation: 75.00024, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard3:  12%|█▎        | 2/16 [09:47<1:02:18, 267.01s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 100.00%
+apgd-ce - 1/1 - 16 out of 16 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 91.1 s)
+max L1 perturbation: 75.00034, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard3:  19%|█▉        | 3/16 [11:21<40:45, 188.14s/it]  using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 87.50%
+apgd-ce - 1/1 - 13 out of 14 successfully perturbed
+robust accuracy after APGD-CE: 6.25% (total time 105.5 s)
+apgd-t - 1/1 - 1 out of 1 successfully perturbed
+robust accuracy after APGD-T: 0.00% (total time 112.1 s)
+max L1 perturbation: 75.00062, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard3:  25%|██▌       | 4/16 [13:16<31:52, 159.38s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 87.50%
+apgd-ce - 1/1 - 12 out of 14 successfully perturbed
+robust accuracy after APGD-CE: 12.50% (total time 95.4 s)
+apgd-t - 1/1 - 2 out of 2 successfully perturbed
+robust accuracy after APGD-T: 0.00% (total time 128.9 s)
+max L1 perturbation: 75.00014, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard3:  31%|███▏      | 5/16 [15:28<27:24, 149.52s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 13 out of 15 successfully perturbed
+robust accuracy after APGD-CE: 12.50% (total time 102.5 s)
+apgd-t - 1/1 - 2 out of 2 successfully perturbed
+robust accuracy after APGD-T: 0.00% (total time 112.7 s)
+max L1 perturbation: 75.00066, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard3:  38%|███▊      | 6/16 [17:24<23:00, 138.06s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 81.25%
+apgd-ce - 1/1 - 13 out of 13 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 79.0 s)
+max L1 perturbation: 75.00029, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard3:  44%|████▍     | 7/16 [18:46<17:58, 119.81s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 14 out of 15 successfully perturbed
+robust accuracy after APGD-CE: 6.25% (total time 108.3 s)
+apgd-t - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after APGD-T: 6.25% (total time 141.5 s)
+fab-t - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after FAB-T: 6.25% (total time 239.1 s)
+square - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after SQUARE: 6.25% (total time 396.1 s)
+max L1 perturbation: 75.00041, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 6.25%
+shard3:  50%|█████     | 8/16 [25:26<27:50, 208.77s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 75.00%
+apgd-ce - 1/1 - 12 out of 12 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 74.2 s)
+max L1 perturbation: 75.00028, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard3:  56%|█████▋    | 9/16 [26:43<19:33, 167.69s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 14 out of 15 successfully perturbed
+robust accuracy after APGD-CE: 6.25% (total time 99.1 s)
+apgd-t - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after APGD-T: 6.25% (total time 132.3 s)
+fab-t - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after FAB-T: 6.25% (total time 229.7 s)
+square - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after SQUARE: 6.25% (total time 387.4 s)
+max L1 perturbation: 75.00021, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 6.25%
+shard3:  62%|██████▎   | 10/16 [33:14<23:38, 236.49s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 100.00%
+apgd-ce - 1/1 - 15 out of 16 successfully perturbed
+robust accuracy after APGD-CE: 6.25% (total time 109.2 s)
+apgd-t - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after APGD-T: 6.25% (total time 142.4 s)
+fab-t - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after FAB-T: 6.25% (total time 239.9 s)
+square - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after SQUARE: 6.25% (total time 396.9 s)
+max L1 perturbation: 75.00060, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 6.25%
+shard3:  69%|██████▉   | 11/16 [39:54<23:52, 286.56s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 13 out of 15 successfully perturbed
+robust accuracy after APGD-CE: 12.50% (total time 119.4 s)
+apgd-t - 1/1 - 2 out of 2 successfully perturbed
+robust accuracy after APGD-T: 0.00% (total time 149.4 s)
+max L1 perturbation: 75.00039, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard3:  75%|███████▌  | 12/16 [42:26<16:23, 245.78s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 87.50%
+apgd-ce - 1/1 - 13 out of 14 successfully perturbed
+robust accuracy after APGD-CE: 6.25% (total time 93.6 s)
+apgd-t - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after APGD-T: 6.25% (total time 126.8 s)
+fab-t - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after FAB-T: 6.25% (total time 224.3 s)
+square - 1/1 - 0 out of 1 successfully perturbed
+robust accuracy after SQUARE: 6.25% (total time 382.2 s)
+max L1 perturbation: 75.00020, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 6.25%
+shard3:  81%|████████▏ | 13/16 [48:51<14:24, 288.05s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 93.75%
+apgd-ce - 1/1 - 15 out of 15 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 88.0 s)
+max L1 perturbation: 75.00019, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard3:  88%|████████▊ | 14/16 [50:23<07:37, 228.57s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 81.25%
+apgd-ce - 1/1 - 13 out of 13 successfully perturbed
+robust accuracy after APGD-CE: 0.00% (total time 79.8 s)
+max L1 perturbation: 75.00038, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard3:  94%|█████████▍| 15/16 [51:46<03:04, 184.68s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
+initial accuracy: 100.00%
+apgd-ce - 1/1 - 9 out of 10 successfully perturbed
+robust accuracy after APGD-CE: 10.00% (total time 65.0 s)
+apgd-t - 1/1 - 1 out of 1 successfully perturbed
+robust accuracy after APGD-T: 0.00% (total time 84.9 s)
+max L1 perturbation: 75.00018, nan in tensor: 0, max: 1.00000, min: 0.00000
+robust accuracy: 0.00%
+shard3: 100%|██████████| 16/16 [53:12<00:00, 155.18s/it]shard3: 100%|██████████| 16/16 [53:12<00:00, 199.55s/it]
+
+  Shard 3 done: 250 images | clean=0.9160 | adv=0.0200

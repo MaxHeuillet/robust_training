@@ -1,0 +1,32 @@
+============================================================
+  RobustGenBench Evaluation
+  Backbone  : convnext_base.fb_in22k
+  Dataset   : stanford_cars
+  Loss      : TRADES_v2
+  Project   : convnext_base_fb_in22k_TRADES_v2
+  exp_id    : convnext_base.fb_in22k__stanford_cars__TRADES_v2
+  GPUs      : 4
+============================================================
+  num_classes=196 (from class_names/stanford_cars.json)
+  Resuming: 0 evaluations already done.
+
+============================================================
+  Evaluating: zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard
+  HF dir    : adversarial/zeroshot_clip_vitb16_laion2b/linf_eps4_autoattack_standard
+  Downloading: adversarial/zeroshot_clip_vitb16_laion2b/linf_eps4_autoattack_standard/stanford_cars__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/work/archives/stanford_cars/stanford_cars__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard_processed.tar.zst
+  Extracting stanford_cars__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard_processed.tar.zst → stanford_cars__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard/
+  Loaded 1000 test images.
+  Running inference on 4 GPUs...
+  Copied backbone weights to /tmp
+  Copied backbone weights to /tmp
+  Copied backbone weights to /tmp
+BACKBONE NAME convnext_base.fb_in22k
+BACKBONE NAME convnext_base.fb_in22k
+BACKBONE NAME convnext_base.fb_in22k
+Loading timm model: convnext_base.fb_in22kLoading timm model:
+ convnext_base.fb_in22k
+Loading timm model: convnext_base.fb_in22k
+  Copied backbone weights to /tmp
+BACKBONE NAME convnext_base.fb_in22k
+Loading timm model: convnext_base.fb_in22k
