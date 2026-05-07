@@ -1,56 +1,0 @@
-  Merging 4 shards → fgvc-aircraft-2013b__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard
-  Merged 1000 images | clean=0.5350 | adv=0.0460
-  Packaging 1000 images → fgvc-aircraft-2013b__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard_processed.tar.zst
-  Compressing:   0%|          | 0/1000 [00:00<?, ?it/s]  Compressing:  43%|████▎     | 434/1000 [00:00<00:00, 4328.78it/s]  Compressing:  87%|████████▋ | 870/1000 [00:00<00:00, 4339.48it/s]                                                                     ✓ fgvc-aircraft-2013b__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard_processed.tar.zst (66.7 MB)
-  Uploading → MaxHeuillet/RobustGenBench/adversarial/zeroshot_metaclip_vith14_fullcc2_5b/l1_eps75_autoattack_standard/fgvc-aircraft-2013b__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard_processed.tar.zst
-Processing Files (0 / 0)      : |          |  0.00B /  0.00B            
-New Data Upload               : |          |  0.00B /  0.00B            [A
-
-  ...tandard_processed.tar.zst:   1%|          |  562kB / 66.7MB            [A[A
-
-  ...tandard_processed.tar.zst:   1%|          |  562kB / 66.7MB            [A[AProcessing Files (0 / 1)      :   1%|          |  562kB / 66.7MB, 4.42MB/s  
-
-  ...tandard_processed.tar.zst:   2%|▏         | 1.65MB / 66.7MB            [A[AProcessing Files (0 / 1)      :   2%|▏         | 1.65MB / 66.7MB, 5.04MB/s  
-
-  ...tandard_processed.tar.zst:  13%|█▎        | 8.48MB / 66.7MB            [A[AProcessing Files (0 / 1)      :  13%|█▎        | 8.48MB / 66.7MB, 16.1MB/s  
-New Data Upload               :  10%|█         | 6.83MB / 65.1MB, 13.0MB/s  [A
-
-  ...tandard_processed.tar.zst:  39%|███▉      | 26.3MB / 66.7MB            [A[AProcessing Files (0 / 1)      :  39%|███▉      | 26.3MB / 66.7MB, 36.2MB/s  
-New Data Upload               :  38%|███▊      | 24.7MB / 65.1MB, 34.0MB/s  [A
-
-  ...tandard_processed.tar.zst:  64%|██████▍   | 42.6MB / 66.7MB            [A[AProcessing Files (0 / 1)      :  64%|██████▍   | 42.6MB / 66.7MB, 45.9MB/s  
-New Data Upload               :  63%|██████▎   | 41.0MB / 65.1MB, 44.2MB/s  [A
-
-  ...tandard_processed.tar.zst:  87%|████████▋ | 57.8MB / 66.7MB            [A[AProcessing Files (0 / 1)      :  87%|████████▋ | 57.8MB / 66.7MB, 51.3MB/s  
-New Data Upload               :  86%|████████▋ | 56.2MB / 65.1MB, 49.9MB/s  [A
-
-  ...tandard_processed.tar.zst:  99%|█████████▉| 66.2MB / 66.7MB            [A[AProcessing Files (0 / 1)      :  99%|█████████▉| 66.2MB / 66.7MB, 49.9MB/s  
-New Data Upload               :  99%|█████████▉| 64.6MB / 65.1MB, 48.7MB/s  [A
-
-  ...tandard_processed.tar.zst:  99%|█████████▉| 66.2MB / 66.7MB            [A[A
-
-  ...tandard_processed.tar.zst:  99%|█████████▉| 66.2MB / 66.7MB            [A[A
-
-  ...tandard_processed.tar.zst:  99%|█████████▉| 66.2MB / 66.7MB            [A[A
-
-  ...tandard_processed.tar.zst:  99%|█████████▉| 66.2MB / 66.7MB            [A[A
-
-  ...tandard_processed.tar.zst:  99%|█████████▉| 66.2MB / 66.7MB            [A[A
-
-  ...tandard_processed.tar.zst:  99%|█████████▉| 66.2MB / 66.7MB            [A[A
-
-  ...tandard_processed.tar.zst:  99%|█████████▉| 66.2MB / 66.7MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 66.7MB / 66.7MB            [A[AProcessing Files (1 / 1)      : 100%|██████████| 66.7MB / 66.7MB, 22.8MB/s  
-New Data Upload               : 100%|██████████| 65.1MB / 65.1MB, 22.2MB/s  [A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 66.7MB / 66.7MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 66.7MB / 66.7MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 66.7MB / 66.7MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 66.7MB / 66.7MB            [A[AProcessing Files (1 / 1)      : 100%|██████████| 66.7MB / 66.7MB, 18.9MB/s  
-New Data Upload               : 100%|██████████| 65.1MB / 65.1MB, 18.4MB/s  
-  ...tandard_processed.tar.zst: 100%|██████████| 66.7MB / 66.7MB            
-  ✓ Upload complete: fgvc-aircraft-2013b__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard_processed.tar.zst

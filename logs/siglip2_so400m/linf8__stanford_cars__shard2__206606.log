@@ -1,41 +1,0 @@
-  Using: NVIDIA H100 80GB HBM3
-
-============================================================
-  Dataset   : stanford_cars  [shard 3/4]
-  Surrogate : siglip2_so400m
-  Norm      : Linf  eps=8.0  (AA: 0.03137)
-  Device    : cuda
-============================================================
-  [shard] Waiting for download lock...
-Data already present at /home/m/mheuill/links/scratch/robustgenbench/data_processed.
-  Shard indices: 500–749  (250 samples of 1000 total)
-
-Loading SigLIP2-SO400M-NaFlex surrogate: google/siglip2-so400m-patch16-naflex
-Loading weights:   0%|          | 0/888 [00:00<?, ?it/s]Loading weights: 100%|██████████| 888/888 [00:00<00:00, 10523.00it/s]
-  Encoding 196 class prompts...
-setting parameters for standard version
-shard2:   0%|          | 0/4 [00:00<?, ?it/s]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 0.00%
-max Linf perturbation: 0.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-shard2:  25%|██▌       | 1/4 [00:04<00:12,  4.23s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 1.56%
-apgd-ce - 1/1 - 1 out of 1 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 4.4 s)
-max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-shard2:  50%|█████     | 2/4 [00:12<00:12,  6.44s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 1.56%
-apgd-ce - 1/1 - 1 out of 1 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 4.5 s)
-max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-shard2:  75%|███████▌  | 3/4 [00:20<00:07,  7.21s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 1.72%
-apgd-ce - 1/1 - 1 out of 1 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 4.7 s)
-max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-shard2: 100%|██████████| 4/4 [00:28<00:00,  7.58s/it]shard2: 100%|██████████| 4/4 [00:28<00:00,  7.14s/it]
-
-  Shard 2 done: 250 images | clean=0.0120 | adv=0.0000

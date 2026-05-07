@@ -1,17 +1,0 @@
-  Using: NVIDIA H100 80GB HBM3
-
-============================================================
-  Dataset   : stanford_cars  [shard 1/4]
-  Surrogate : siglip2_so400m
-  Norm      : L1  eps=300.0  (AA: 300.00000)
-  Device    : cuda
-============================================================
-  [shard] Waiting for download lock...
-Data already present at /home/m/mheuill/links/scratch/robustgenbench/data_processed.
-  Shard indices: 0–249  (250 samples of 1000 total)
-
-Loading SigLIP2-SO400M-NaFlex surrogate: google/siglip2-so400m-patch16-naflex
-Loading weights:   0%|          | 0/888 [00:00<?, ?it/s]Loading weights: 100%|██████████| 888/888 [00:00<00:00, 10700.62it/s]
-  Encoding 196 class prompts...
-setting parameters for standard version
-shard0:   0%|          | 0/4 [00:00<?, ?it/s]

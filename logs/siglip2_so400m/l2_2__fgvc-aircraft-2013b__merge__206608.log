@@ -1,52 +1,0 @@
-  Merging 4 shards → fgvc-aircraft-2013b__zeroshot_siglip2_so400m_patch16_naflex__l2_eps2_autoattack_standard
-  Merged 1000 images | clean=0.0090 | adv=0.0000
-  Packaging 1000 images → fgvc-aircraft-2013b__zeroshot_siglip2_so400m_patch16_naflex__l2_eps2_autoattack_standard_processed.tar.zst
-  Compressing:   0%|          | 0/1000 [00:00<?, ?it/s]  Compressing:  43%|████▎     | 433/1000 [00:00<00:00, 4317.93it/s]  Compressing:  87%|████████▋ | 868/1000 [00:00<00:00, 4334.89it/s]                                                                     ✓ fgvc-aircraft-2013b__zeroshot_siglip2_so400m_patch16_naflex__l2_eps2_autoattack_standard_processed.tar.zst (64.4 MB)
-  Uploading → MaxHeuillet/RobustGenBench/adversarial/zeroshot_siglip2_so400m_patch16_naflex/l2_eps2_autoattack_standard/fgvc-aircraft-2013b__zeroshot_siglip2_so400m_patch16_naflex__l2_eps2_autoattack_standard_processed.tar.zst
-Processing Files (0 / 0)      : |          |  0.00B /  0.00B            
-New Data Upload               : |          |  0.00B /  0.00B            [A
-
-  ...tandard_processed.tar.zst:   3%|▎         | 1.65MB / 64.4MB            [A[A
-
-  ...tandard_processed.tar.zst:   3%|▎         | 1.65MB / 64.4MB            [A[AProcessing Files (0 / 1)      :   3%|▎         | 1.65MB / 64.4MB, 12.4MB/s  
-
-  ...tandard_processed.tar.zst:   3%|▎         | 1.65MB / 64.4MB            [A[A
-
-  ...tandard_processed.tar.zst:  13%|█▎        | 8.47MB / 64.4MB            [A[AProcessing Files (0 / 1)      :  13%|█▎        | 8.47MB / 64.4MB, 15.9MB/s  
-New Data Upload               :  11%|█         | 6.83MB / 62.8MB, 12.8MB/s  [A
-
-  ...tandard_processed.tar.zst:  37%|███▋      | 23.7MB / 64.4MB            [A[AProcessing Files (0 / 1)      :  37%|███▋      | 23.7MB / 64.4MB, 32.3MB/s  
-New Data Upload               :  35%|███▌      | 22.1MB / 62.8MB, 30.1MB/s  [A
-
-  ...tandard_processed.tar.zst:  64%|██████▎   | 41.0MB / 64.4MB            [A[AProcessing Files (0 / 1)      :  64%|██████▎   | 41.0MB / 64.4MB, 44.0MB/s  
-New Data Upload               :  63%|██████▎   | 39.4MB / 62.8MB, 42.2MB/s  [A
-
-  ...tandard_processed.tar.zst:  87%|████████▋ | 56.3MB / 64.4MB            [A[AProcessing Files (0 / 1)      :  87%|████████▋ | 56.3MB / 64.4MB, 49.7MB/s  
-New Data Upload               :  87%|████████▋ | 54.6MB / 62.8MB, 48.2MB/s  [A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 64.1MB / 64.4MB            [A[AProcessing Files (0 / 1)      : 100%|█████████▉| 64.1MB / 64.4MB, 48.1MB/s  
-New Data Upload               : 100%|█████████▉| 62.5MB / 62.8MB, 46.9MB/s  [A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 64.1MB / 64.4MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 64.1MB / 64.4MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 64.1MB / 64.4MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 64.1MB / 64.4MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 64.1MB / 64.4MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 64.1MB / 64.4MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 64.4MB / 64.4MB            [A[AProcessing Files (1 / 1)      : 100%|██████████| 64.4MB / 64.4MB, 23.6MB/s  
-New Data Upload               : 100%|██████████| 62.8MB / 62.8MB, 23.0MB/s  [A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 64.4MB / 64.4MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 64.4MB / 64.4MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 64.4MB / 64.4MB            [A[AProcessing Files (1 / 1)      : 100%|██████████| 64.4MB / 64.4MB, 20.6MB/s  
-New Data Upload               : 100%|██████████| 62.8MB / 62.8MB, 20.0MB/s  
-  ...tandard_processed.tar.zst: 100%|██████████| 64.4MB / 64.4MB            
-  ✓ Upload complete: fgvc-aircraft-2013b__zeroshot_siglip2_so400m_patch16_naflex__l2_eps2_autoattack_standard_processed.tar.zst

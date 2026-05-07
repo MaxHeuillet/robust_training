@@ -1,45 +1,0 @@
-  Using: NVIDIA H100 80GB HBM3
-
-============================================================
-  Dataset   : flowers-102  [shard 3/4]
-  Surrogate : siglip2_so400m
-  Norm      : L2  eps=2.0  (AA: 2.00000)
-  Device    : cuda
-============================================================
-  [shard] Waiting for download lock...
-Data already present at /home/m/mheuill/links/scratch/robustgenbench/data_processed.
-  Shard indices: 500–749  (250 samples of 1000 total)
-
-Loading SigLIP2-SO400M-NaFlex surrogate: google/siglip2-so400m-patch16-naflex
-Loading weights:   0%|          | 0/888 [00:00<?, ?it/s]Loading weights:  56%|█████▌    | 496/888 [00:00<00:00, 4955.46it/s]Loading weights: 100%|██████████| 888/888 [00:00<00:00, 4491.97it/s]
-  Encoding 102 class prompts...
-  Fixed meta keys: ['pixel_attention_mask', 'spatial_shapes']
-  NaFlex: N=256 patches, patch_dim=768
-setting parameters for standard version
-shard2:   0%|          | 0/4 [00:00<?, ?it/s]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 96.88%
-apgd-ce - 1/1 - 62 out of 62 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 69.5 s)
-max L2 perturbation: 2.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-shard2:  25%|██▌       | 1/4 [01:14<03:43, 74.56s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 90.62%
-apgd-ce - 1/1 - 58 out of 58 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 62.0 s)
-max L2 perturbation: 2.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-shard2:  50%|█████     | 2/4 [02:21<02:19, 69.79s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 89.06%
-apgd-ce - 1/1 - 57 out of 57 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 61.6 s)
-max L2 perturbation: 2.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-shard2:  75%|███████▌  | 3/4 [03:26<01:08, 68.03s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 89.66%
-apgd-ce - 1/1 - 52 out of 52 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 59.4 s)
-max L2 perturbation: 2.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-shard2: 100%|██████████| 4/4 [04:30<00:00, 66.14s/it]shard2: 100%|██████████| 4/4 [04:30<00:00, 67.57s/it]
-
-  Shard 2 done: 250 images | clean=0.9160 | adv=0.0000

@@ -1,58 +1,0 @@
-  Merging 4 shards → caltech101__zeroshot_siglip2_so400m_patch14_384__l2_eps2_autoattack_standard
-  Merged 1000 images | clean=0.9210 | adv=0.0000
-  Packaging 1000 images → caltech101__zeroshot_siglip2_so400m_patch14_384__l2_eps2_autoattack_standard_processed.tar.zst
-  Compressing:   0%|          | 0/1000 [00:00<?, ?it/s]  Compressing:  36%|███▌      | 359/1000 [00:00<00:00, 3582.89it/s]  Compressing:  73%|███████▎  | 734/1000 [00:00<00:00, 3674.59it/s]                                                                     ✓ caltech101__zeroshot_siglip2_so400m_patch14_384__l2_eps2_autoattack_standard_processed.tar.zst (84.0 MB)
-  Uploading → MaxHeuillet/RobustGenBench/adversarial/zeroshot_siglip2_so400m_patch14_384/l2_eps2_autoattack_standard/caltech101__zeroshot_siglip2_so400m_patch14_384__l2_eps2_autoattack_standard_processed.tar.zst
-Processing Files (0 / 0)      : |          |  0.00B /  0.00B            
-New Data Upload               : |          |  0.00B /  0.00B            [A
-
-  ...tandard_processed.tar.zst:   1%|          |  442kB / 84.0MB            [A[A
-
-  ...tandard_processed.tar.zst:   1%|          |  442kB / 84.0MB            [A[AProcessing Files (0 / 1)      :   1%|          |  442kB / 84.0MB, 1.10MB/s  
-
-  ...tandard_processed.tar.zst:   1%|          |  502kB / 84.0MB            [A[AProcessing Files (0 / 1)      :   1%|          |  502kB / 84.0MB,  837kB/s  
-
-  ...tandard_processed.tar.zst:  14%|█▍        | 12.1MB / 84.0MB            [A[AProcessing Files (0 / 1)      :  14%|█▍        | 12.1MB / 84.0MB, 15.1MB/s  
-New Data Upload               :  14%|█▍        | 11.6MB / 83.5MB, 14.5MB/s  [A
-
-  ...tandard_processed.tar.zst:  34%|███▍      | 28.9MB / 84.0MB            [A[AProcessing Files (0 / 1)      :  34%|███▍      | 28.9MB / 84.0MB, 29.0MB/s  
-New Data Upload               :  34%|███▍      | 28.4MB / 83.5MB, 28.5MB/s  [A
-
-  ...tandard_processed.tar.zst:  53%|█████▎    | 44.2MB / 84.0MB            [A[AProcessing Files (0 / 1)      :  53%|█████▎    | 44.2MB / 84.0MB, 36.9MB/s  
-New Data Upload               :  52%|█████▏    | 43.7MB / 83.5MB, 36.4MB/s  [A
-
-  ...tandard_processed.tar.zst:  71%|███████   | 59.5MB / 84.0MB            [A[AProcessing Files (0 / 1)      :  71%|███████   | 59.5MB / 84.0MB, 42.5MB/s  
-New Data Upload               :  71%|███████   | 59.0MB / 83.5MB, 42.1MB/s  [A
-
-  ...tandard_processed.tar.zst:  80%|████████  | 67.4MB / 84.0MB            [A[AProcessing Files (0 / 1)      :  80%|████████  | 67.4MB / 84.0MB, 42.1MB/s  
-New Data Upload               :  80%|████████  | 66.9MB / 83.5MB, 41.8MB/s  [A
-
-  ...tandard_processed.tar.zst:  80%|████████  | 67.4MB / 84.0MB            [A[A
-
-  ...tandard_processed.tar.zst:  80%|████████  | 67.4MB / 84.0MB            [A[A
-
-  ...tandard_processed.tar.zst:  80%|████████  | 67.4MB / 84.0MB            [A[A
-
-  ...tandard_processed.tar.zst:  80%|████████  | 67.4MB / 84.0MB            [A[A
-
-  ...tandard_processed.tar.zst:  81%|████████  | 68.1MB / 84.0MB            [A[AProcessing Files (0 / 1)      :  81%|████████  | 68.1MB / 84.0MB, 26.2MB/s  
-New Data Upload               :  81%|████████  | 67.6MB / 83.5MB, 26.0MB/s  [A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 83.9MB / 84.0MB            [A[AProcessing Files (0 / 1)      : 100%|█████████▉| 83.9MB / 84.0MB, 30.0MB/s  
-New Data Upload               : 100%|█████████▉| 83.4MB / 83.5MB, 29.8MB/s  [A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 83.9MB / 84.0MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 83.9MB / 84.0MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 84.0MB / 84.0MB            [A[AProcessing Files (1 / 1)      : 100%|██████████| 84.0MB / 84.0MB, 24.7MB/s  
-New Data Upload               : 100%|██████████| 83.5MB / 83.5MB, 24.6MB/s  [A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 84.0MB / 84.0MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 84.0MB / 84.0MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 84.0MB / 84.0MB            [A[AProcessing Files (1 / 1)      : 100%|██████████| 84.0MB / 84.0MB, 22.1MB/s  
-New Data Upload               : 100%|██████████| 83.5MB / 83.5MB, 22.0MB/s  
-  ...tandard_processed.tar.zst: 100%|██████████| 84.0MB / 84.0MB            
-  ✓ Upload complete: caltech101__zeroshot_siglip2_so400m_patch14_384__l2_eps2_autoattack_standard_processed.tar.zst

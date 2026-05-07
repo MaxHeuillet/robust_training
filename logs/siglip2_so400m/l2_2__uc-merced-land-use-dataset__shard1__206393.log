@@ -1,33 +1,0 @@
-  Using: NVIDIA H100 80GB HBM3
-
-============================================================
-  Dataset   : uc-merced-land-use-dataset  [shard 2/4]
-  Surrogate : siglip2_so400m
-  Norm      : L2  eps=2.0  (AA: 2.00000)
-  Device    : cuda
-============================================================
-  [shard] Waiting for download lock...
-Data already present at /home/m/mheuill/links/scratch/robustgenbench/data_processed.
-  Shard indices: 105–209  (105 samples of 420 total)
-
-Loading SigLIP2-SO400M-NaFlex surrogate: google/siglip2-so400m-patch16-naflex
-Loading weights:   0%|          | 0/888 [00:00<?, ?it/s]Loading weights:  64%|██████▍   | 572/888 [00:00<00:00, 5715.14it/s]Loading weights: 100%|██████████| 888/888 [00:00<00:00, 5038.32it/s]
-  Encoding 21 class prompts...
-Traceback (most recent call last):
-  File "/project/6102313/mheuill/robust_training/craft_shard.py", line 253, in <module>
-    main()
-  File "/project/6102313/mheuill/robust_training/craft_shard.py", line 246, in main
-    run_shard(args)
-  File "/project/6102313/mheuill/robust_training/craft_shard.py", line 103, in run_shard
-    model     = load_surrogate(args.surrogate, label_to_name, device, dataset=dataset)
-                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/project/6102313/mheuill/robust_training/craft_adversarial.py", line 508, in load_surrogate
-    return load_siglip2_so400m_surrogate(label_to_name, device, dataset=dataset)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/project/6102313/mheuill/robust_training/craft_adversarial.py", line 472, in load_siglip2_so400m_surrogate
-    text_features = F.normalize(
-                    ^^^^^^^^^^^^
-  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/nn/functional.py", line 5707, in normalize
-    denom = input.norm(p, dim, keepdim=True).clamp_min(eps).expand_as(input)
-            ^^^^^^^^^^
-AttributeError: 'BaseModelOutputWithPooling' object has no attribute 'norm'

@@ -1,7 +1,7 @@
 import pickle
 import warnings
 import math
-from typing import Mapping, Tuple
+from pathlib import Path
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
@@ -12,7 +12,7 @@ datas = (
     'fgvc-aircraft-2013b',
     'flowers-102',
     'oxford-iiit-pet',
-)  # 'dtd',
+)
 
 losses = ('TRADES_v2', 'CLASSIC_AT')
 
@@ -63,12 +63,6 @@ model_type = {
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Backbone shortcut names
-#
-# FIXES APPLIED vs. previous version:
-#   1. `ink22k`  -> `in22k`           (5 entries: vit_b, vit_s, eva02_*, swin_b)
-#   2. eva02_tiny was mislabeled as `eva02_b` -> now `eva02_t`
-#   3. vit_small_patch16_224.dino was mislabeled as `vit_b` -> now `vit_s`
-#   4. `edgenetx_s` -> `edgenext_s`   (matches HF naming convention)
 # ─────────────────────────────────────────────────────────────────────────────
 backbone_name = {
     'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K':   'convnext_b,clip,laiona',
@@ -80,7 +74,7 @@ backbone_name = {
     'resnet50.a1_in1k':                                 'resnet50,sup,in1k',
     'robust_vit_base_patch16_224':                      'vit_b,rob-sup,in1k',
     'vit_base_patch16_224.mae':                         'vit_b,mae,in1k',
-    'vit_small_patch16_224.dino':                       'vit_s,dino,in1k',          # FIX: was vit_b
+    'vit_small_patch16_224.dino':                       'vit_s,dino,in1k',
     'convnext_base.fb_in22k':                           'convnext_b,sup,in22k',
 
     'robust_convnext_base':                             'convnext_b,rob-sup,in1k',
@@ -92,13 +86,13 @@ backbone_name = {
     'robust_deit_small_patch16_224':                    'deit_s,rob-sup,in1k',
     'vit_small_patch16_224.augreg_in1k':                'vit_s,sup,in1k',
     'convnext_tiny.fb_in22k':                           'convnext_t,sup,in22k',
-    'vit_base_patch16_clip_224.laion2b_ft_in1k':        'vit_b,clip,laion2b-in1k',  # FIX: disambiguate from CLIP-only variant
-    'vit_base_patch16_224.augreg_in21k_ft_in1k':        'vit_b,sup,in22k-in1k',     # FIX: ink22k -> in22k
+    'vit_base_patch16_clip_224.laion2b_ft_in1k':        'vit_b,clip,laion2b-in1k',
+    'vit_base_patch16_224.augreg_in21k_ft_in1k':        'vit_b,sup,in22k-in1k',
 
-    'vit_small_patch16_224.augreg_in21k_ft_in1k':       'vit_s,sup,in22k-in1k',     # FIX: ink22k -> in22k
-    'eva02_base_patch14_224.mim_in22k':                 'eva02_b,mim,in22k',        # FIX: ink22k -> in22k
-    'eva02_tiny_patch14_224.mim_in22k':                 'eva02_t,mim,in22k',        # FIX: was eva02_b + ink22k
-    'swin_base_patch4_window7_224.ms_in22k_ft_in1k':    'swin_b,sup,in22k-in1k',    # FIX: ink22k -> in22k
+    'vit_small_patch16_224.augreg_in21k_ft_in1k':       'vit_s,sup,in22k-in1k',
+    'eva02_base_patch14_224.mim_in22k':                 'eva02_b,mim,in22k',
+    'eva02_tiny_patch14_224.mim_in22k':                 'eva02_t,mim,in22k',
+    'swin_base_patch4_window7_224.ms_in22k_ft_in1k':    'swin_b,sup,in22k-in1k',
     'swin_tiny_patch4_window7_224.ms_in1k':             'swin_t,sup,in1k',
     'convnext_base.clip_laion2b_augreg_ft_in12k_in1k':  'convnext_b,hybrid,laion2b-in12k-in1k',
     'convnext_base.fb_in22k_ft_in1k':                   'convnext_b,sup,in22k-in1k',
@@ -112,13 +106,12 @@ backbone_name = {
     'deit_tiny_patch16_224.fb_in1k':                    'deit_t,sup,in1k',
     'mobilevit-small':                                  'mobilevit_s,sup,in1k',
     'mobilenetv3_large_100.ra_in1k':                    'mobilenet_v3,sup,in1k',
-    'edgenext_small.usi_in1k':                          'edgenext_s,sup,in1k',      # FIX: edgenetx -> edgenext
+    'edgenext_small.usi_in1k':                          'edgenext_s,sup,in1k',
     'coat_tiny.in1k':                                   'coat_t,sup,in1k',
 }
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Validation: every HF ID must produce a unique shortcut.
-# This assert would have caught the eva02_tiny/eva02_base collision immediately.
 # ─────────────────────────────────────────────────────────────────────────────
 _seen = {}
 for hf_id, shortcut in backbone_name.items():
@@ -154,9 +147,6 @@ volume_pre_training_data = {
     "in12k":                    9_000_000,
 }
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Pre-training dataset (cleaned: removed duplicate trailing entries)
-# ─────────────────────────────────────────────────────────────────────────────
 pre_training_dataset = {
     'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K':   "laion_aesthetic",
     'CLIP-convnext_base_w-laion2B-s13B-b82K':           "laion2B",
@@ -200,9 +190,6 @@ pre_training_dataset = {
     'coat_tiny.in1k':                                   "in1k",
 }
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Pre-training strategy (cleaned: removed duplicate trailing entries)
-# ─────────────────────────────────────────────────────────────────────────────
 pre_training_strategy = {
     'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K':   'self-supervised (multimodal)',
     'CLIP-convnext_base_w-laion2B-s13B-b82K':           'self-supervised (multimodal)',
@@ -248,7 +235,7 @@ pre_training_strategy = {
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Validation: every HF ID in `backbones` must have an entry in every metadata
-# dict, and vice versa. Catches typos and missing entries early.
+# dict, and vice versa.
 # ─────────────────────────────────────────────────────────────────────────────
 _required_keys = set(backbones)
 for _name, _d in [
@@ -276,381 +263,353 @@ def sums_from_dict(scores):
     return arith_sum, geom_sum
 
 
-def load_result_dataset(pn1, pn2, pn3):
+# ─────────────────────────────────────────────────────────────────────────────
+# Helpers for feature extraction (factored out so the main loop stays clean)
+# ─────────────────────────────────────────────────────────────────────────────
+def _model_size(backbone):
+    for key, value in sorted(model_parameters.items(), key=lambda kv: -len(kv[0])):
+        if key in backbone:
+            if value < 20:
+                return 'Tiny'
+            if value < 50:
+                return 'Small'
+            return 'Base'
+    return None
+
+
+def _model_type(backbone):
+    for key, mtype in sorted(model_type.items(), key=lambda kv: -len(kv[0])):
+        if key in backbone:
+            return mtype
+    return "unknown"
+
+
+def _empty_result():
+    return {
+        'clean_acc': math.nan, 'Linf_acc': math.nan,
+        'L2_acc': math.nan, 'L1_acc': math.nan,
+        'common_acc': math.nan,
+        'sum': math.nan, 'geom': math.nan,
+    }
+
+
+def load_result_dataset(results_dir):
+    """
+    Load all (backbone, dataset, loss) result pickles from a single folder.
+
+    Parameters
+    ----------
+    results_dir : str | Path
+        Folder containing files named '{backbone}_{dataset}_{loss}.pkl'.
+    """
+    results_dir = Path(results_dir)
     final_data = []
 
     for loss in losses:
         for data in datas:
             for backbone in backbones:
+                # name = f'{backbone}_{data}_{loss}'
+                name = f'{backbone}__{data}__{loss}'
+
+                path = results_dir / f'{name}.pkl'
 
                 try:
-                    project_name = pn3
-                    name = '{}_{}_{}'.format(backbone, data, loss)
-                    print('../results/{}/{}.pkl'.format(project_name, name))
-                    with open('../results/{}/{}.pkl'.format(project_name, name), 'rb') as f:
+                    with path.open('rb') as f:
                         result = pickle.load(f)
-
                     arith_sum, geom_sum = sums_from_dict(result)
                     result['sum'] = arith_sum
                     result['geom'] = geom_sum
+                except FileNotFoundError:
+                    print(f"file not found: {path}")
+                    result = _empty_result()
+                except Exception as e:
+                    print(f"failed to load {path}: {e}")
+                    result = _empty_result()
 
-                except:
-                    print("HEY")
-
-                    try:
-                        project_name = pn2
-                        name = '{}_{}_{}'.format(backbone, data, loss)
-                        print('../results/{}/{}.pkl'.format(project_name, name))
-                        with open('../results/{}/{}.pkl'.format(project_name, name), 'rb') as f:
-                            result = pickle.load(f)
-
-                        arith_sum, geom_sum = sums_from_dict(result)
-                        result['sum'] = arith_sum
-                        result['geom'] = geom_sum
-
-                    except:
-
-                        try:
-                            project_name = pn1
-                            name = '{}_{}_{}'.format(backbone, data, loss)
-                            print('../results/{}/{}.pkl'.format(project_name, name))
-                            with open('../results/{}/{}.pkl'.format(project_name, name), 'rb') as f:
-                                result = pickle.load(f)
-
-                            arith_sum, geom_sum = sums_from_dict(result)
-                            result['sum'] = arith_sum
-                            result['geom'] = geom_sum
-
-                        except:
-                            print("file not found")
-
-                            result = {
-                                'clean_acc': math.nan, 'Linf_acc': math.nan,
-                                'L2_acc': math.nan, 'L1_acc': math.nan,
-                                'common_acc': math.nan,
-                                'sum': math.nan, 'geom': math.nan,
-                            }
-
-                # ─────────── FEATURES PROCESSING STEP ───────────
-
-                # ── set model_size ───────────────────────────────────────
-                # Iterate from longest key first so that 'convnext_base' matches
-                # before the substring 'convnext_tiny' check (no collision risk
-                # here, but this is a safer pattern in general).
-                for key, value in sorted(model_parameters.items(), key=lambda kv: -len(kv[0])):
-                    if key in backbone:
-                        if value < 20:
-                            result['model_size'] = 'Tiny'
-                        elif value < 50:
-                            result['model_size'] = 'Small'
-                        else:
-                            result['model_size'] = 'Base'
-                        break
-
-                result['backbone'] = backbone
-                result['dataset'] = data
-                result['loss_function'] = "Classic AT" if loss == 'CLASSIC_AT' else "TRADES"
-                result['pre_training_dataset'] = pre_training_dataset[backbone]
-                result['pre_training_strategy'] = pre_training_strategy[backbone]
+                # ─────────── feature processing ───────────
+                result['model_size']             = _model_size(backbone)
+                result['backbone']               = backbone
+                result['dataset']                = data
+                result['loss_function']          = "Classic AT" if loss == 'CLASSIC_AT' else "TRADES"
+                result['pre_training_dataset']   = pre_training_dataset[backbone]
+                result['pre_training_strategy']  = pre_training_strategy[backbone]
                 result['volume_pre_training_data'] = volume_pre_training_data[
                     pre_training_dataset[backbone]
                 ]
-                result["backbone_name"] = backbone_name[backbone]
-
-                # ── set model_type ──────────────────────────────────────
-                for key, mtype in sorted(model_type.items(), key=lambda kv: -len(kv[0])):
-                    if key in backbone:
-                        result['model_type'] = mtype
-                        break
-                else:
-                    result['model_type'] = "unknown"
+                result['backbone_name']          = backbone_name[backbone]
+                result['model_type']             = _model_type(backbone)
 
                 final_data.append(result)
 
     return final_data
 
-
 # import pickle
-# # import omegaconf
 # import warnings
-# import pickle
-# import numpy as np
 # import math
 # from typing import Mapping, Tuple
+
 # warnings.filterwarnings("ignore", category=DeprecationWarning)
 
-# datas=( 'uc-merced-land-use-dataset',
-#         'stanford_cars', 
-#         'caltech101', 
-#         'fgvc-aircraft-2013b', 
-#         'flowers-102',
-#             'oxford-iiit-pet'  ) #'dtd',
+# datas = (
+#     'uc-merced-land-use-dataset',
+#     'stanford_cars',
+#     'caltech101',
+#     'fgvc-aircraft-2013b',
+#     'flowers-102',
+#     'oxford-iiit-pet',
+# )  # 'dtd',
 
-# losses=( 'TRADES_v2', 'CLASSIC_AT' ) # 
+# losses = ('TRADES_v2', 'CLASSIC_AT')
 
 # model_parameters = {
-#         'convnext_base': 86.0,
-#         'convnext_tiny': 28.0,
-#         'deit_small': 22.0,
-#         'vit_base': 86.0,
-#         'vit_small': 22.0,
-#         'resnet50': 25.0,
-#         'eva02_base': 78.0,
-#         'eva02_tiny': 24.0,
-#         'swin_base': 88.0,
-#         'swin_tiny': 28.0,
-#         'coatnet_0': 33.0,
-#         'coatnet_2': 77.0,
-#         'regnetx_004': 8.0,
-#         'efficientnet-b0': 5.3, 
-#         'deit_tiny': 5.0,
-#         'mobilevit-small': 7.0,
-#         'mobilenetv3': 5.4,  
-#         'edgenext_small': 8.0,  
-#         'coat_tiny': 12.0, }
+#     'convnext_base':    86.0,
+#     'convnext_tiny':    28.0,
+#     'deit_small':       22.0,
+#     'vit_base':         86.0,
+#     'vit_small':        22.0,
+#     'resnet50':         25.0,
+#     'eva02_base':       78.0,
+#     'eva02_tiny':       24.0,
+#     'swin_base':        88.0,
+#     'swin_tiny':        28.0,
+#     'coatnet_0':        33.0,
+#     'coatnet_2':        77.0,
+#     'regnetx_004':       8.0,
+#     'efficientnet-b0':   5.3,
+#     'deit_tiny':         5.0,
+#     'mobilevit-small':   7.0,
+#     'mobilenetv3':       5.4,
+#     'edgenext_small':    8.0,
+#     'coat_tiny':        12.0,
+# }
 
 # model_type = {
-#         'convnext_base': "fully convolutional",
-#         'convnext_tiny': "fully convolutional",
-#         'deit_small': "fully attention",
-#         'vit_base': "fully attention",
-#         'vit_small': "fully attention",
-#         'resnet50': "fully convolutional",
-#         'eva02_base': "fully attention",
-#         'eva02_tiny': "fully attention",
-#         'swin_base': "fully attention",
-#         'swin_tiny': "fully attention",
-#         'coatnet_0': "hybrid",
-#         'coatnet_2': "hybrid",
-#         'regnetx_004': "fully convolutional",
-#         'efficientnet-b0': "fully convolutional", 
-#         'deit_tiny': "fully attention",
-#         'mobilevit-small': "hybrid",
-#         'mobilenetv3': "fully convolutional",
-#         'edgenext_small': "hybrid",
-#         'coat_tiny': "hybrid", }
+#     'convnext_base':    "fully convolutional",
+#     'convnext_tiny':    "fully convolutional",
+#     'deit_small':       "fully attention",
+#     'vit_base':         "fully attention",
+#     'vit_small':        "fully attention",
+#     'resnet50':         "fully convolutional",
+#     'eva02_base':       "fully attention",
+#     'eva02_tiny':       "fully attention",
+#     'swin_base':        "fully attention",
+#     'swin_tiny':        "fully attention",
+#     'coatnet_0':        "hybrid",
+#     'coatnet_2':        "hybrid",
+#     'regnetx_004':      "fully convolutional",
+#     'efficientnet-b0':  "fully convolutional",
+#     'deit_tiny':        "fully attention",
+#     'mobilevit-small':  "hybrid",
+#     'mobilenetv3':      "fully convolutional",
+#     'edgenext_small':   "hybrid",
+#     'coat_tiny':        "hybrid",
+# }
 
 
+# # ─────────────────────────────────────────────────────────────────────────────
+# # Backbone shortcut names
+# #
+# # FIXES APPLIED vs. previous version:
+# #   1. `ink22k`  -> `in22k`           (5 entries: vit_b, vit_s, eva02_*, swin_b)
+# #   2. eva02_tiny was mislabeled as `eva02_b` -> now `eva02_t`
+# #   3. vit_small_patch16_224.dino was mislabeled as `vit_b` -> now `vit_s`
+# #   4. `edgenetx_s` -> `edgenext_s`   (matches HF naming convention)
+# # ─────────────────────────────────────────────────────────────────────────────
+# backbone_name = {
+#     'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K':   'convnext_b,clip,laiona',
+#     'CLIP-convnext_base_w-laion2B-s13B-b82K':           'convnext_b,clip,laion2b',
+#     'deit_small_patch16_224.fb_in1k':                   'deit_s,sup,in1k',
+#     'robust_resnet50':                                  'resnet50,rob-sup,in1k',
+#     'vit_small_patch16_224.augreg_in21k':               'vit_s,sup,in22k',
+#     'convnext_base.fb_in1k':                            'convnext_b,sup,in1k',
+#     'resnet50.a1_in1k':                                 'resnet50,sup,in1k',
+#     'robust_vit_base_patch16_224':                      'vit_b,rob-sup,in1k',
+#     'vit_base_patch16_224.mae':                         'vit_b,mae,in1k',
+#     'vit_small_patch16_224.dino':                       'vit_s,dino,in1k',          # FIX: was vit_b
+#     'convnext_base.fb_in22k':                           'convnext_b,sup,in22k',
 
-# backbone_name={
-#     'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K':'convnext_b,clip,laiona',
-#     'CLIP-convnext_base_w-laion2B-s13B-b82K':'convnext_b,clip,laion2b',
-#     'deit_small_patch16_224.fb_in1k':'deit_s,sup,in1k',
-#     'robust_resnet50':'resnet50,rob-sup,in1k',
-#     'vit_small_patch16_224.augreg_in21k':'vit_s,sup,in22k',
-#     'convnext_base.fb_in1k':'convnext_b,sup,in1k',
-#     'resnet50.a1_in1k':'resnet50,sup,in1k',
-#     'robust_vit_base_patch16_224':'vit_b,rob-sup,in1k',
-#     'vit_base_patch16_224.mae':'vit_b,mae,in1k',
-#     'vit_small_patch16_224.dino':'vit_b,dino,in1k',
-#     'convnext_base.fb_in22k':'convnext_b,sup,in22k',
+#     'robust_convnext_base':                             'convnext_b,rob-sup,in1k',
+#     'vit_base_patch16_224.augreg_in1k':                 'vit_b,sup,in1k',
+#     'vit_base_patch16_224.augreg_in21k':                'vit_b,sup,in22k',
+#     'vit_base_patch16_clip_224.laion2b':                'vit_b,clip,laion2b',
+#     'convnext_tiny.fb_in1k':                            'convnext_t,sup,in1k',
+#     'robust_convnext_tiny':                             'convnext_t,rob-sup,in1k',
+#     'robust_deit_small_patch16_224':                    'deit_s,rob-sup,in1k',
+#     'vit_small_patch16_224.augreg_in1k':                'vit_s,sup,in1k',
+#     'convnext_tiny.fb_in22k':                           'convnext_t,sup,in22k',
+#     'vit_base_patch16_clip_224.laion2b_ft_in1k':        'vit_b,clip,laion2b-in1k',  # FIX: disambiguate from CLIP-only variant
+#     'vit_base_patch16_224.augreg_in21k_ft_in1k':        'vit_b,sup,in22k-in1k',     # FIX: ink22k -> in22k
 
-#     'robust_convnext_base':'convnext_b,rob-sup,in1k',
-#     'vit_base_patch16_224.augreg_in1k':'vit_b,sup,in1k',
-#     'vit_base_patch16_224.augreg_in21k':'vit_b,sup,in22k',
-#     'vit_base_patch16_clip_224.laion2b':'vit_b,clip,laion2b',
-#     'convnext_tiny.fb_in1k':'convnext_t,sup,in1k',
-#     'robust_convnext_tiny':'convnext_t,rob-sup,in1k',
-#     'robust_deit_small_patch16_224':'deit_s,rob-sup,in1k',
-#     'vit_small_patch16_224.augreg_in1k':'vit_s,sup,in1k',
-#     'convnext_tiny.fb_in22k':'convnext_t,sup,in22k',
-#     'vit_base_patch16_clip_224.laion2b_ft_in1k':'vit_b,clip,laion2b',
-#     'vit_base_patch16_224.augreg_in21k_ft_in1k':'vit_b,sup,ink22k-in1k',
+#     'vit_small_patch16_224.augreg_in21k_ft_in1k':       'vit_s,sup,in22k-in1k',     # FIX: ink22k -> in22k
+#     'eva02_base_patch14_224.mim_in22k':                 'eva02_b,mim,in22k',        # FIX: ink22k -> in22k
+#     'eva02_tiny_patch14_224.mim_in22k':                 'eva02_t,mim,in22k',        # FIX: was eva02_b + ink22k
+#     'swin_base_patch4_window7_224.ms_in22k_ft_in1k':    'swin_b,sup,in22k-in1k',    # FIX: ink22k -> in22k
+#     'swin_tiny_patch4_window7_224.ms_in1k':             'swin_t,sup,in1k',
+#     'convnext_base.clip_laion2b_augreg_ft_in12k_in1k':  'convnext_b,hybrid,laion2b-in12k-in1k',
+#     'convnext_base.fb_in22k_ft_in1k':                   'convnext_b,sup,in22k-in1k',
+#     'convnext_tiny.fb_in22k_ft_in1k':                   'convnext_t,sup,in22k-in1k',
+#     'coatnet_0_rw_224.sw_in1k':                         'coatnet_0,sup,in1k',
+#     'coatnet_2_rw_224.sw_in12k_ft_in1k':                'coatnet_2,sup,in12k-in1k',
+#     'coatnet_2_rw_224.sw_in12k':                        'coatnet_2,sup,in12k',
 
-#     'vit_small_patch16_224.augreg_in21k_ft_in1k':'vit_s,sup,ink22k-in1k',
-#     'eva02_base_patch14_224.mim_in22k':'eva02_b,mim,ink22k',
-#     'eva02_tiny_patch14_224.mim_in22k':'eva02_b,mim,ink22k',
-#     'swin_base_patch4_window7_224.ms_in22k_ft_in1k':'swin_b,sup,ink22k-in1k',
-#     'swin_tiny_patch4_window7_224.ms_in1k':'swin_t,sup,in1k',
-#     'convnext_base.clip_laion2b_augreg_ft_in12k_in1k':'convnext_b,hybrid,laion2b-in12k-in1k',
-#     'convnext_base.fb_in22k_ft_in1k':'convnext_b,sup,in22k-in1k',
-#     'convnext_tiny.fb_in22k_ft_in1k':'convnext_t,sup,in22k-in1k',
-#     'coatnet_0_rw_224.sw_in1k':'coatnet_0,sup,in1k',
-#     'coatnet_2_rw_224.sw_in12k_ft_in1k':'coatnet_2,sup,in12k-in1k',
-#     'coatnet_2_rw_224.sw_in12k':'coatnet_2,sup,in12k',
+#     "regnetx_004.pycls_in1k":                           'regnetx_004,sup,in1k',
+#     'efficientnet-b0':                                  'efficientnet_b0,sup,in1k',
+#     'deit_tiny_patch16_224.fb_in1k':                    'deit_t,sup,in1k',
+#     'mobilevit-small':                                  'mobilevit_s,sup,in1k',
+#     'mobilenetv3_large_100.ra_in1k':                    'mobilenet_v3,sup,in1k',
+#     'edgenext_small.usi_in1k':                          'edgenext_s,sup,in1k',      # FIX: edgenetx -> edgenext
+#     'coat_tiny.in1k':                                   'coat_t,sup,in1k',
+# }
 
-#     "regnetx_004.pycls_in1k":'regnetx_004,sup,in1k',
-#     'efficientnet-b0':'efficientnet_b0,sup,in1k',
-#     'deit_tiny_patch16_224.fb_in1k':'deit_t,sup,in1k',
-#     'mobilevit-small':'mobilevit_s,sup,in1k',
-#     'mobilenetv3_large_100.ra_in1k':'mobilenet_v3,sup,in1k',
-#     'edgenext_small.usi_in1k':'edgenetx_s,sup,in1k',
-#     'coat_tiny.in1k':'coat_t,sup,in1k', }
+# # ─────────────────────────────────────────────────────────────────────────────
+# # Validation: every HF ID must produce a unique shortcut.
+# # This assert would have caught the eva02_tiny/eva02_base collision immediately.
+# # ─────────────────────────────────────────────────────────────────────────────
+# _seen = {}
+# for hf_id, shortcut in backbone_name.items():
+#     if shortcut in _seen:
+#         raise AssertionError(
+#             f"Shortcut collision: '{shortcut}' is used by both "
+#             f"'{_seen[shortcut]}' and '{hf_id}'"
+#         )
+#     _seen[shortcut] = hf_id
 
 
-# backbones=(
-#     'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K',
-#     'CLIP-convnext_base_w-laion2B-s13B-b82K',
-#     'deit_small_patch16_224.fb_in1k',
-#     'robust_resnet50',
-#     'vit_small_patch16_224.augreg_in21k',
-#     'convnext_base.fb_in1k',
-#     'resnet50.a1_in1k',
-#     'robust_vit_base_patch16_224',
-#     'vit_base_patch16_224.mae',
-#     'vit_small_patch16_224.dino',
-#     'convnext_base.fb_in22k',
-
-#     'robust_convnext_base',
-#     'vit_base_patch16_224.augreg_in1k',
-#     'vit_base_patch16_224.augreg_in21k',
-#     'vit_base_patch16_clip_224.laion2b',
-#     'convnext_tiny.fb_in1k',
-#     'robust_convnext_tiny',
-#     'robust_deit_small_patch16_224',
-#     'vit_small_patch16_224.augreg_in1k',
-#     'convnext_tiny.fb_in22k',
-#     'vit_base_patch16_clip_224.laion2b_ft_in1k',
-#     'vit_base_patch16_224.augreg_in21k_ft_in1k',
-
-#     'vit_small_patch16_224.augreg_in21k_ft_in1k',
-#     'eva02_base_patch14_224.mim_in22k',
-#     'eva02_tiny_patch14_224.mim_in22k',
-#     'swin_base_patch4_window7_224.ms_in22k_ft_in1k',
-#     'swin_tiny_patch4_window7_224.ms_in1k',
-#     'convnext_base.clip_laion2b_augreg_ft_in12k_in1k',
-#     'convnext_base.fb_in22k_ft_in1k',
-#     'convnext_tiny.fb_in22k_ft_in1k',
-#     'coatnet_0_rw_224.sw_in1k',
-#     'coatnet_2_rw_224.sw_in12k_ft_in1k',
-#     'coatnet_2_rw_224.sw_in12k',
-
-#     "regnetx_004.pycls_in1k",
-#     'efficientnet-b0', 
-#     'deit_tiny_patch16_224.fb_in1k',
-#     'mobilevit-small',
-#     'mobilenetv3_large_100.ra_in1k',
-#     'edgenext_small.usi_in1k',
-#     'coat_tiny.in1k', )
-
+# backbones = tuple(backbone_name.keys())
 
 # yann_backbones = (
 #     "regnetx_004.pycls_in1k",
-#     'efficientnet-b0', 
+#     'efficientnet-b0',
 #     'deit_tiny_patch16_224.fb_in1k',
 #     'mobilevit-small',
 #     'mobilenetv3_large_100.ra_in1k',
 #     'edgenext_small.usi_in1k',
-#     'coat_tiny.in1k', )
+#     'coat_tiny.in1k',
+# )
 
 # volume_pre_training_data = {
-#     "laion_aesthetic":900_000_000 ,
-#     "laion2B":2_320_000_000,
-#     "in1k":1_281_167,
-#     "in22k":14_197_122,
-#     "laion2b+in1k":2_320_000_000+1_281_167,
-#     "in22k+in1k":14_197_122+1_281_167,
-#     "laion2b+in12k+in1k":2_320_000_000+9_000_000+1_281_167,
-#     "in12k+in1k":9_000_000+1_281_167,
-#     "in12k":9_000_000,
+#     "laion_aesthetic":      900_000_000,
+#     "laion2B":             2_320_000_000,
+#     "in1k":                    1_281_167,
+#     "in22k":                  14_197_122,
+#     "laion2b+in1k":         2_320_000_000 + 1_281_167,
+#     "in22k+in1k":              14_197_122 + 1_281_167,
+#     "laion2b+in12k+in1k":   2_320_000_000 + 9_000_000 + 1_281_167,
+#     "in12k+in1k":               9_000_000 + 1_281_167,
+#     "in12k":                    9_000_000,
 # }
 
+# # ─────────────────────────────────────────────────────────────────────────────
+# # Pre-training dataset (cleaned: removed duplicate trailing entries)
+# # ─────────────────────────────────────────────────────────────────────────────
 # pre_training_dataset = {
-#     'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K': "laion_aesthetic",
-#     'CLIP-convnext_base_w-laion2B-s13B-b82K':"laion2B",
-#     'deit_small_patch16_224.fb_in1k':"in1k",
-#     'robust_resnet50':"in1k",
-#     'vit_small_patch16_224.augreg_in21k':"in22k",
-#     'convnext_base.fb_in1k':"in1k",
-#     'resnet50.a1_in1k':"in1k",
-#     'robust_vit_base_patch16_224':"in1k",
-#     'vit_base_patch16_224.mae':"in1k",
-#     'vit_small_patch16_224.dino':"in1k",
-#     'convnext_base.fb_in22k':"in22k",
-#     'robust_convnext_base': "in1k",
-#     'vit_base_patch16_224.augreg_in1k':"in1k",
-#     'vit_base_patch16_224.augreg_in21k':"in22k",
-#     'vit_base_patch16_clip_224.laion2b':"laion2B",
-#     'convnext_tiny.fb_in1k':"in1k",
-#     'robust_convnext_tiny':"in1k",
-#     'robust_deit_small_patch16_224':"in1k",
-#     'vit_small_patch16_224.augreg_in1k':"in1k",
-#     'convnext_tiny.fb_in22k':"in22k",
-#     'vit_base_patch16_clip_224.laion2b_ft_in1k':"laion2b+in1k",
-#     'vit_base_patch16_224.augreg_in21k_ft_in1k':"in22k+in1k",
-#     'vit_small_patch16_224.augreg_in21k_ft_in1k':"in22k+in1k",
-#     'eva02_base_patch14_224.mim_in22k':"in22k",
-#     'eva02_tiny_patch14_224.mim_in22k':"in22k",
-#     'swin_base_patch4_window7_224.ms_in22k_ft_in1k':"in22k+in1k",
-#     'swin_tiny_patch4_window7_224.ms_in1k':"in1k",
-#     'convnext_base.clip_laion2b_augreg_ft_in12k_in1k':"laion2b+in12k+in1k",
-#     'convnext_base.fb_in22k_ft_in1k':'in22k+in1k',
-#     'convnext_tiny.fb_in22k_ft_in1k':'in22k+in1k',
-#     'coatnet_0_rw_224.sw_in1k':"in1k",
-#     'coatnet_2_rw_224.sw_in12k_ft_in1k':"in12k+in1k",
-#     'coatnet_2_rw_224.sw_in12k':"in12k",
-#     "regnetx_004.pycls_in1k":"in1k",
-#     'efficientnet-b0':"in1k", 
-#     'deit_tiny_patch16_224.fb_in1k':"in1k",
-#     'mobilevit-small':"in1k",
-#     'mobilenetv3_large_100.ra_in1k':"in1k",
-#     'edgenext_small.usi_in1k':"in1k",
-#     'coat_tiny.in1k':"in1k", 
-#     "regnetx_004.pycls_in1k":"in1k",
-#     'efficientnet-b0':"in1k", 
-#     'deit_tiny_patch16_224.fb_in1k':"in1k",
-#     'mobilevit-small':"in1k",
-#     'mobilenetv3_large_100.ra_in1k':"in1k",
-#     'edgenext_small.usi_in1k':"in1k",
-#     'coat_tiny.in1k':"in1k", 
+#     'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K':   "laion_aesthetic",
+#     'CLIP-convnext_base_w-laion2B-s13B-b82K':           "laion2B",
+#     'deit_small_patch16_224.fb_in1k':                   "in1k",
+#     'robust_resnet50':                                  "in1k",
+#     'vit_small_patch16_224.augreg_in21k':               "in22k",
+#     'convnext_base.fb_in1k':                            "in1k",
+#     'resnet50.a1_in1k':                                 "in1k",
+#     'robust_vit_base_patch16_224':                      "in1k",
+#     'vit_base_patch16_224.mae':                         "in1k",
+#     'vit_small_patch16_224.dino':                       "in1k",
+#     'convnext_base.fb_in22k':                           "in22k",
+#     'robust_convnext_base':                             "in1k",
+#     'vit_base_patch16_224.augreg_in1k':                 "in1k",
+#     'vit_base_patch16_224.augreg_in21k':                "in22k",
+#     'vit_base_patch16_clip_224.laion2b':                "laion2B",
+#     'convnext_tiny.fb_in1k':                            "in1k",
+#     'robust_convnext_tiny':                             "in1k",
+#     'robust_deit_small_patch16_224':                    "in1k",
+#     'vit_small_patch16_224.augreg_in1k':                "in1k",
+#     'convnext_tiny.fb_in22k':                           "in22k",
+#     'vit_base_patch16_clip_224.laion2b_ft_in1k':        "laion2b+in1k",
+#     'vit_base_patch16_224.augreg_in21k_ft_in1k':        "in22k+in1k",
+#     'vit_small_patch16_224.augreg_in21k_ft_in1k':       "in22k+in1k",
+#     'eva02_base_patch14_224.mim_in22k':                 "in22k",
+#     'eva02_tiny_patch14_224.mim_in22k':                 "in22k",
+#     'swin_base_patch4_window7_224.ms_in22k_ft_in1k':    "in22k+in1k",
+#     'swin_tiny_patch4_window7_224.ms_in1k':             "in1k",
+#     'convnext_base.clip_laion2b_augreg_ft_in12k_in1k':  "laion2b+in12k+in1k",
+#     'convnext_base.fb_in22k_ft_in1k':                   "in22k+in1k",
+#     'convnext_tiny.fb_in22k_ft_in1k':                   "in22k+in1k",
+#     'coatnet_0_rw_224.sw_in1k':                         "in1k",
+#     'coatnet_2_rw_224.sw_in12k_ft_in1k':                "in12k+in1k",
+#     'coatnet_2_rw_224.sw_in12k':                        "in12k",
+#     "regnetx_004.pycls_in1k":                           "in1k",
+#     'efficientnet-b0':                                  "in1k",
+#     'deit_tiny_patch16_224.fb_in1k':                    "in1k",
+#     'mobilevit-small':                                  "in1k",
+#     'mobilenetv3_large_100.ra_in1k':                    "in1k",
+#     'edgenext_small.usi_in1k':                          "in1k",
+#     'coat_tiny.in1k':                                   "in1k",
 # }
 
-
+# # ─────────────────────────────────────────────────────────────────────────────
+# # Pre-training strategy (cleaned: removed duplicate trailing entries)
+# # ─────────────────────────────────────────────────────────────────────────────
 # pre_training_strategy = {
-#     'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K': 'self-supervised (multimodal)',
-#     'CLIP-convnext_base_w-laion2B-s13B-b82K':'self-supervised (multimodal)',
-#     'deit_small_patch16_224.fb_in1k':'supervised',
-#     'robust_resnet50':'supervised (robust)',
-#     'vit_small_patch16_224.augreg_in21k':'supervised',
-#     'convnext_base.fb_in1k':'supervised',
-#     'resnet50.a1_in1k':'supervised',
-#     'robust_vit_base_patch16_224':'supervised (robust)',
-#     'vit_base_patch16_224.mae':'self-supervised',
-#     'vit_small_patch16_224.dino':'self-supervised',
-#     'convnext_base.fb_in22k':'supervised',
-#     'robust_convnext_base': 'supervised (robust)',
-#     'vit_base_patch16_224.augreg_in1k':'supervised',
-#     'vit_base_patch16_224.augreg_in21k':'supervised',
-#     'vit_base_patch16_clip_224.laion2b':'self-supervised (multimodal)',
-#     'convnext_tiny.fb_in1k':'supervised',
-#     'robust_convnext_tiny':'supervised (robust)',
-#     'robust_deit_small_patch16_224':'supervised (robust)',
-#     'vit_small_patch16_224.augreg_in1k':'supervised',
-#     'convnext_tiny.fb_in22k':'supervised',
-#     'vit_base_patch16_clip_224.laion2b_ft_in1k':'fusion',
-#     'vit_base_patch16_224.augreg_in21k_ft_in1k':'supervised (multistep)',
-#     'vit_small_patch16_224.augreg_in21k_ft_in1k':'supervised (multistep)',
-#     'eva02_base_patch14_224.mim_in22k':'self-supervised',
-#     'eva02_tiny_patch14_224.mim_in22k':'self-supervised',
-#     'swin_base_patch4_window7_224.ms_in22k_ft_in1k':'supervised (multistep)',
-#     'swin_tiny_patch4_window7_224.ms_in1k':'supervised',
-#     'convnext_base.clip_laion2b_augreg_ft_in12k_in1k':'fusion',
-#     'convnext_base.fb_in22k_ft_in1k':'supervised (multistep)',
-#     'convnext_tiny.fb_in22k_ft_in1k':'supervised (multistep)',
-#     'coatnet_0_rw_224.sw_in1k':'supervised',
-#     'coatnet_2_rw_224.sw_in12k_ft_in1k':'supervised (multistep)',
-#     'coatnet_2_rw_224.sw_in12k':'supervised',
-#     "regnetx_004.pycls_in1k":'supervised',
-#     'efficientnet-b0':'supervised',
-#     'deit_tiny_patch16_224.fb_in1k':'supervised',
-#     'mobilevit-small':'supervised',
-#     'mobilenetv3_large_100.ra_in1k':'supervised',
-#     'edgenext_small.usi_in1k':'supervised',
-#     'coat_tiny.in1k':'supervised',
-#     "regnetx_004.pycls_in1k":'supervised',
-#     'efficientnet-b0':'supervised',
-#     'deit_tiny_patch16_224.fb_in1k':'supervised',
-#     'mobilevit-small':'supervised',
-#     'mobilenetv3_large_100.ra_in1k':'supervised',
-#     'edgenext_small.usi_in1k':'supervised',
-#     'coat_tiny.in1k':'supervised',
+#     'CLIP-convnext_base_w-laion_aesthetic-s13B-b82K':   'self-supervised (multimodal)',
+#     'CLIP-convnext_base_w-laion2B-s13B-b82K':           'self-supervised (multimodal)',
+#     'deit_small_patch16_224.fb_in1k':                   'supervised',
+#     'robust_resnet50':                                  'supervised (robust)',
+#     'vit_small_patch16_224.augreg_in21k':               'supervised',
+#     'convnext_base.fb_in1k':                            'supervised',
+#     'resnet50.a1_in1k':                                 'supervised',
+#     'robust_vit_base_patch16_224':                      'supervised (robust)',
+#     'vit_base_patch16_224.mae':                         'self-supervised',
+#     'vit_small_patch16_224.dino':                       'self-supervised',
+#     'convnext_base.fb_in22k':                           'supervised',
+#     'robust_convnext_base':                             'supervised (robust)',
+#     'vit_base_patch16_224.augreg_in1k':                 'supervised',
+#     'vit_base_patch16_224.augreg_in21k':                'supervised',
+#     'vit_base_patch16_clip_224.laion2b':                'self-supervised (multimodal)',
+#     'convnext_tiny.fb_in1k':                            'supervised',
+#     'robust_convnext_tiny':                             'supervised (robust)',
+#     'robust_deit_small_patch16_224':                    'supervised (robust)',
+#     'vit_small_patch16_224.augreg_in1k':                'supervised',
+#     'convnext_tiny.fb_in22k':                           'supervised',
+#     'vit_base_patch16_clip_224.laion2b_ft_in1k':        'fusion',
+#     'vit_base_patch16_224.augreg_in21k_ft_in1k':        'supervised (multistep)',
+#     'vit_small_patch16_224.augreg_in21k_ft_in1k':       'supervised (multistep)',
+#     'eva02_base_patch14_224.mim_in22k':                 'self-supervised',
+#     'eva02_tiny_patch14_224.mim_in22k':                 'self-supervised',
+#     'swin_base_patch4_window7_224.ms_in22k_ft_in1k':    'supervised (multistep)',
+#     'swin_tiny_patch4_window7_224.ms_in1k':             'supervised',
+#     'convnext_base.clip_laion2b_augreg_ft_in12k_in1k':  'fusion',
+#     'convnext_base.fb_in22k_ft_in1k':                   'supervised (multistep)',
+#     'convnext_tiny.fb_in22k_ft_in1k':                   'supervised (multistep)',
+#     'coatnet_0_rw_224.sw_in1k':                         'supervised',
+#     'coatnet_2_rw_224.sw_in12k_ft_in1k':                'supervised (multistep)',
+#     'coatnet_2_rw_224.sw_in12k':                        'supervised',
+#     "regnetx_004.pycls_in1k":                           'supervised',
+#     'efficientnet-b0':                                  'supervised',
+#     'deit_tiny_patch16_224.fb_in1k':                    'supervised',
+#     'mobilevit-small':                                  'supervised',
+#     'mobilenetv3_large_100.ra_in1k':                    'supervised',
+#     'edgenext_small.usi_in1k':                          'supervised',
+#     'coat_tiny.in1k':                                   'supervised',
 # }
 
-
+# # ─────────────────────────────────────────────────────────────────────────────
+# # Validation: every HF ID in `backbones` must have an entry in every metadata
+# # dict, and vice versa. Catches typos and missing entries early.
+# # ─────────────────────────────────────────────────────────────────────────────
+# _required_keys = set(backbones)
+# for _name, _d in [
+#     ('backbone_name', backbone_name),
+#     ('pre_training_dataset', pre_training_dataset),
+#     ('pre_training_strategy', pre_training_strategy),
+# ]:
+#     _missing = _required_keys - set(_d.keys())
+#     _extra   = set(_d.keys()) - _required_keys
+#     if _missing:
+#         raise AssertionError(f"{_name} is missing keys: {_missing}")
+#     if _extra:
+#         raise AssertionError(f"{_name} has unexpected keys: {_extra}")
 
 
 # def sums_from_dict(scores):
-
 #     values = []
 #     for v in scores.values():
 #         if v is None or (isinstance(v, float) and math.isnan(v)):
@@ -658,11 +617,11 @@ def load_result_dataset(pn1, pn2, pn3):
 #         values.append(float(v))
 
 #     arith_sum = sum(values)
-#     geom_sum  = math.prod(values)
+#     geom_sum = math.prod(values)
 #     return arith_sum, geom_sum
 
-# def load_result_dataset(pn1, pn2, pn3):
 
+# def load_result_dataset(pn1, pn2, pn3):
 #     final_data = []
 
 #     for loss in losses:
@@ -670,12 +629,11 @@ def load_result_dataset(pn1, pn2, pn3):
 #             for backbone in backbones:
 
 #                 try:
-
 #                     project_name = pn3
-#                     name ='{}_{}_{}'.format(backbone, data, loss)
-#                     print( '../results/{}/{}.pkl'.format(project_name, name) )
+#                     name = '{}_{}_{}'.format(backbone, data, loss)
+#                     print('../results/{}/{}.pkl'.format(project_name, name))
 #                     with open('../results/{}/{}.pkl'.format(project_name, name), 'rb') as f:
-#                             result = pickle.load(f)
+#                         result = pickle.load(f)
 
 #                     arith_sum, geom_sum = sums_from_dict(result)
 #                     result['sum'] = arith_sum
@@ -686,11 +644,10 @@ def load_result_dataset(pn1, pn2, pn3):
 
 #                     try:
 #                         project_name = pn2
-#                         name ='{}_{}_{}'.format(backbone, data, loss)
-#                         print( '../results/{}/{}.pkl'.format(project_name, name) )
+#                         name = '{}_{}_{}'.format(backbone, data, loss)
+#                         print('../results/{}/{}.pkl'.format(project_name, name))
 #                         with open('../results/{}/{}.pkl'.format(project_name, name), 'rb') as f:
 #                             result = pickle.load(f)
-#                                             # result = saved_data[name]["statistics"]
 
 #                         arith_sum, geom_sum = sums_from_dict(result)
 #                         result['sum'] = arith_sum
@@ -700,8 +657,8 @@ def load_result_dataset(pn1, pn2, pn3):
 
 #                         try:
 #                             project_name = pn1
-#                             name ='{}_{}_{}'.format(backbone, data, loss)
-#                             print( '../results/{}/{}.pkl'.format(project_name, name) )
+#                             name = '{}_{}_{}'.format(backbone, data, loss)
+#                             print('../results/{}/{}.pkl'.format(project_name, name))
 #                             with open('../results/{}/{}.pkl'.format(project_name, name), 'rb') as f:
 #                                 result = pickle.load(f)
 
@@ -711,38 +668,46 @@ def load_result_dataset(pn1, pn2, pn3):
 
 #                         except:
 #                             print("file not found")
-                                        
-#                             result = {'clean_acc': math.nan, 'Linf_acc': math.nan, 'L2_acc': math.nan, 'L1_acc': math.nan, 'common_acc': math.nan, 
-#                                     'sum':math.nan, 'geom':math.nan, }
-                        
-#                 ########### FEATURES PROCESSING STEP:
-                    
-#                 for key, value in model_parameters.items():
-#                     if key in backbone:  # Match the model name in the backbone string
+
+#                             result = {
+#                                 'clean_acc': math.nan, 'Linf_acc': math.nan,
+#                                 'L2_acc': math.nan, 'L1_acc': math.nan,
+#                                 'common_acc': math.nan,
+#                                 'sum': math.nan, 'geom': math.nan,
+#                             }
+
+#                 # ─────────── FEATURES PROCESSING STEP ───────────
+
+#                 # ── set model_size ───────────────────────────────────────
+#                 # Iterate from longest key first so that 'convnext_base' matches
+#                 # before the substring 'convnext_tiny' check (no collision risk
+#                 # here, but this is a safer pattern in general).
+#                 for key, value in sorted(model_parameters.items(), key=lambda kv: -len(kv[0])):
+#                     if key in backbone:
 #                         if value < 20:
 #                             result['model_size'] = 'Tiny'
 #                         elif value < 50:
 #                             result['model_size'] = 'Small'
 #                         else:
 #                             result['model_size'] = 'Base'
-
 #                         break
 
 #                 result['backbone'] = backbone
 #                 result['dataset'] = data
-#                 result['loss_function'] = "Classic AT" if loss=='CLASSIC_AT' else "TRADES"
+#                 result['loss_function'] = "Classic AT" if loss == 'CLASSIC_AT' else "TRADES"
 #                 result['pre_training_dataset'] = pre_training_dataset[backbone]
 #                 result['pre_training_strategy'] = pre_training_strategy[backbone]
-#                 result['volume_pre_training_data'] = volume_pre_training_data[ pre_training_dataset[backbone] ]
+#                 result['volume_pre_training_data'] = volume_pre_training_data[
+#                     pre_training_dataset[backbone]
+#                 ]
 #                 result["backbone_name"] = backbone_name[backbone]
-                
-#                 # ── set model_type ────────────────────────────────────────────────────────────
-#                 for key, mtype in model_type.items():
-#                     if key in backbone:         # e.g. "convnext_base" in "convnext_base.fb_in22k"
+
+#                 # ── set model_type ──────────────────────────────────────
+#                 for key, mtype in sorted(model_type.items(), key=lambda kv: -len(kv[0])):
+#                     if key in backbone:
 #                         result['model_type'] = mtype
 #                         break
 #                 else:
-#                     # executed only if the loop ends without 'break'
 #                     result['model_type'] = "unknown"
 
 #                 final_data.append(result)

@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "/project/6102313/mheuill/robust_training/./evaluate_robustgenbench.py", line 551, in <module>
-    main()
-  File "/project/6102313/mheuill/robust_training/./evaluate_robustgenbench.py", line 452, in main
-    raise ValueError(f"Cannot determine num_classes for dataset {args.dataset}. "
-ValueError: Cannot determine num_classes for dataset caltech101. Please ensure class_names/caltech101.json is accessible.

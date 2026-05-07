@@ -1,39 +1,0 @@
-  Using: NVIDIA H100 80GB HBM3
-
-============================================================
-  Dataset   : fgvc-aircraft-2013b  [shard 1/4]
-  Surrogate : siglip2_so400m
-  Norm      : L2  eps=2.0  (AA: 2.00000)
-  Device    : cuda
-============================================================
-  [shard] Waiting for download lock...
-Data already present at /home/m/mheuill/links/scratch/robustgenbench/data_processed.
-  Shard indices: 0–249  (250 samples of 1000 total)
-
-Loading SigLIP2-SO400M-NaFlex surrogate: google/siglip2-so400m-patch16-naflex
-Loading weights:   0%|          | 0/888 [00:00<?, ?it/s]Loading weights:  58%|█████▊    | 511/888 [00:00<00:00, 5040.86it/s]Loading weights: 100%|██████████| 888/888 [00:00<00:00, 4669.46it/s]
-  Encoding 100 class prompts...
-setting parameters for standard version
-shard0:   0%|          | 0/4 [00:00<?, ?it/s]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 1.56%
-apgd-ce - 1/1 - 1 out of 1 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 4.5 s)
-max L2 perturbation: 2.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-shard0:  25%|██▌       | 1/4 [00:09<00:27,  9.13s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 0.00%
-max L2 perturbation: 0.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-shard0:  50%|█████     | 2/4 [00:13<00:12,  6.11s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 1.56%
-apgd-ce - 1/1 - 1 out of 1 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 4.6 s)
-max L2 perturbation: 2.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-shard0:  75%|███████▌  | 3/4 [00:21<00:07,  7.25s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 0.00%
-max L2 perturbation: 0.00000, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-shard0: 100%|██████████| 4/4 [00:25<00:00,  5.87s/it]shard0: 100%|██████████| 4/4 [00:25<00:00,  6.39s/it]
-
-  Shard 0 done: 250 images | clean=0.0080 | adv=0.0000

@@ -1,33 +1,0 @@
-  Using: NVIDIA H100 80GB HBM3
-
-============================================================
-  Dataset   : uc-merced-land-use-dataset  [shard 2/4]
-  Surrogate : siglip2_so400m
-  Norm      : Linf  eps=8.0  (AA: 0.03137)
-  Device    : cuda
-============================================================
-  [shard] Waiting for download lock...
-Data already present at /home/m/mheuill/links/scratch/robustgenbench/data_processed.
-  Shard indices: 105–209  (105 samples of 420 total)
-
-Loading SigLIP2-SO400M-NaFlex surrogate: google/siglip2-so400m-patch16-naflex
-Loading weights:   0%|          | 0/888 [00:00<?, ?it/s]Loading weights:  66%|██████▌   | 582/888 [00:00<00:00, 5819.01it/s]Loading weights: 100%|██████████| 888/888 [00:00<00:00, 5190.41it/s]
-  Encoding 21 class prompts...
-  Fixed meta keys: ['pixel_attention_mask', 'spatial_shapes']
-  NaFlex: N=256 patches, patch_dim=768
-setting parameters for standard version
-shard1:   0%|          | 0/2 [00:00<?, ?it/s]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 78.12%
-apgd-ce - 1/1 - 50 out of 50 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 56.1 s)
-max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-shard1:  50%|█████     | 1/2 [01:00<01:00, 60.60s/it]using standard version including apgd-ce, apgd-t, fab-t, square.
-initial accuracy: 80.49%
-apgd-ce - 1/1 - 33 out of 33 successfully perturbed
-robust accuracy after APGD-CE: 0.00% (total time 39.0 s)
-max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
-robust accuracy: 0.00%
-shard1: 100%|██████████| 2/2 [01:42<00:00, 49.31s/it]shard1: 100%|██████████| 2/2 [01:42<00:00, 51.03s/it]
-
-  Shard 1 done: 105 images | clean=0.7905 | adv=0.0000

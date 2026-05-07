@@ -1,57 +1,0 @@
-  Merging 4 shards → stanford_cars__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard
-  Merged 1000 images | clean=0.8790 | adv=0.1110
-  Packaging 1000 images → stanford_cars__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard_processed.tar.zst
-  Compressing:   0%|          | 0/1000 [00:00<?, ?it/s]  Compressing:  37%|███▋      | 367/1000 [00:00<00:00, 3665.99it/s]  Compressing:  73%|███████▎  | 734/1000 [00:00<00:00, 3635.38it/s]                                                                     ✓ stanford_cars__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard_processed.tar.zst (77.3 MB)
-  Uploading → MaxHeuillet/RobustGenBench/adversarial/zeroshot_metaclip_vith14_fullcc2_5b/l1_eps75_autoattack_standard/stanford_cars__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard_processed.tar.zst
-Processing Files (0 / 0)      : |          |  0.00B /  0.00B            
-New Data Upload               : |          |  0.00B /  0.00B            [A
-
-  ...tandard_processed.tar.zst:   1%|          |  540kB / 77.3MB            [A[A
-
-  ...tandard_processed.tar.zst:   1%|          |  540kB / 77.3MB            [A[AProcessing Files (0 / 1)      :   1%|          |  540kB / 77.3MB, 3.98MB/s  
-
-  ...tandard_processed.tar.zst:   1%|          |  840kB / 77.3MB            [A[AProcessing Files (0 / 1)      :   1%|          |  840kB / 77.3MB, 2.50MB/s  
-
-  ...tandard_processed.tar.zst:   4%|▍         | 3.15MB / 77.3MB            [A[AProcessing Files (0 / 1)      :   4%|▍         | 3.15MB / 77.3MB, 5.86MB/s  
-New Data Upload               :   3%|▎         | 2.10MB / 76.3MB, 3.92MB/s  [A
-
-  ...tandard_processed.tar.zst:  25%|██▌       | 19.5MB / 77.3MB            [A[AProcessing Files (0 / 1)      :  25%|██▌       | 19.5MB / 77.3MB, 26.4MB/s  
-New Data Upload               :  24%|██▍       | 18.4MB / 76.3MB, 25.0MB/s  [A
-
-  ...tandard_processed.tar.zst:  49%|████▉     | 37.9MB / 77.3MB            [A[AProcessing Files (0 / 1)      :  49%|████▉     | 37.9MB / 77.3MB, 40.4MB/s  
-New Data Upload               :  48%|████▊     | 36.8MB / 76.3MB, 39.3MB/s  [A
-
-  ...tandard_processed.tar.zst:  65%|██████▌   | 50.5MB / 77.3MB            [A[AProcessing Files (0 / 1)      :  65%|██████▌   | 50.5MB / 77.3MB, 44.4MB/s  
-New Data Upload               :  65%|██████▍   | 49.5MB / 76.3MB, 43.5MB/s  [A
-
-  ...tandard_processed.tar.zst:  78%|███████▊  | 60.5MB / 77.3MB            [A[AProcessing Files (0 / 1)      :  78%|███████▊  | 60.5MB / 77.3MB, 45.3MB/s  
-New Data Upload               :  78%|███████▊  | 59.4MB / 76.3MB, 44.5MB/s  [A
-
-  ...tandard_processed.tar.zst:  88%|████████▊ | 67.9MB / 77.3MB            [A[AProcessing Files (0 / 1)      :  88%|████████▊ | 67.9MB / 77.3MB, 44.2MB/s  
-New Data Upload               :  88%|████████▊ | 66.8MB / 76.3MB, 43.5MB/s  [A
-
-  ...tandard_processed.tar.zst:  88%|████████▊ | 67.9MB / 77.3MB            [A[A
-
-  ...tandard_processed.tar.zst:  88%|████████▊ | 67.9MB / 77.3MB            [A[A
-
-  ...tandard_processed.tar.zst:  88%|████████▊ | 67.9MB / 77.3MB            [A[A
-
-  ...tandard_processed.tar.zst:  88%|████████▊ | 67.9MB / 77.3MB            [A[A
-
-  ...tandard_processed.tar.zst:  98%|█████████▊| 75.5MB / 77.3MB            [A[AProcessing Files (0 / 1)      :  98%|█████████▊| 75.5MB / 77.3MB, 29.8MB/s  
-New Data Upload               :  98%|█████████▊| 74.4MB / 76.3MB, 29.3MB/s  [A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 77.1MB / 77.3MB            [A[AProcessing Files (0 / 1)      : 100%|█████████▉| 77.1MB / 77.3MB, 28.2MB/s  
-New Data Upload               : 100%|█████████▉| 76.0MB / 76.3MB, 27.8MB/s  [A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 77.3MB / 77.3MB            [A[AProcessing Files (1 / 1)      : 100%|██████████| 77.3MB / 77.3MB, 26.3MB/s  
-New Data Upload               : 100%|██████████| 76.3MB / 76.3MB, 26.0MB/s  [A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 77.3MB / 77.3MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 77.3MB / 77.3MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 77.3MB / 77.3MB            [A[AProcessing Files (1 / 1)      : 100%|██████████| 77.3MB / 77.3MB, 23.2MB/s  
-New Data Upload               : 100%|██████████| 76.3MB / 76.3MB, 22.9MB/s  
-  ...tandard_processed.tar.zst: 100%|██████████| 77.3MB / 77.3MB            
-  ✓ Upload complete: stanford_cars__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard_processed.tar.zst

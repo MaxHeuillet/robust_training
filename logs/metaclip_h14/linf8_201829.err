@@ -1,7 +1,0 @@
-  Running command git clone --filter=blob:none --quiet https://github.com/fra31/auto-attack /tmp/pip-req-build-4l9fwb4l
-ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
-torchaudio 2.3.1+computecanada requires torch~=2.3.0, but you have torch 2.11.0+computecanada which is incompatible.
-./execute_setup.sh: line 14: !/bin/bash: No such file or directory
-./execute_setup.sh: line 15: syntax error near unexpected token `('
-./execute_setup.sh: line 15: `execute_setup.sh — Run on compute node (no internet required).'
-mkdir: cannot create directory ‘/var/spool/slurmd/job201829/logs’: Permission denied

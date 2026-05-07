@@ -157,9 +157,9 @@ def make_figure(dest: Path, out: Path):
             ax_bar.set_yticks([])
             ax_bar.tick_params(axis="x", bottom=False, labelbottom=False)
             # max-count annotation top-left
-            ax_bar.text(0.02, 0.95, str(max(sorted_counts)),
-                        transform=ax_bar.transAxes, fontsize=FS_TICK,
-                        color=TEXT_MUTED, va="top", ha="left")
+            # ax_bar.text(0.02, 0.95, str(max(sorted_counts)),
+            #             transform=ax_bar.transAxes, fontsize=FS_TICK,
+            #             color=TEXT_MUTED, va="top", ha="left")
         else:
             ax_bar.text(0.5, 0.5, "archive not found",
                         transform=ax_bar.transAxes, fontsize=FS_TICK,
@@ -181,7 +181,7 @@ def make_figure(dest: Path, out: Path):
 
     # ── column headers (placed in figure coords above the grid) ───────────────
     headers = ["Dataset", "Task", "Domain", "Classes", "Size",
-               "Class distrib. (test)"]
+               "Class sizes (sorted)"]
     has     = ["left", "left", "left", "center", "center", "left"]
     x_offs  = [0.04,   0.04,   0.06,   0.5,      0.5,      0.02]
     for ci, (hdr, ha, xoff) in enumerate(zip(headers, has, x_offs)):

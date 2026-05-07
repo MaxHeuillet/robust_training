@@ -8,12 +8,12 @@ datasets = ["Caltech-101", "FGVC\nAircraft", "Flowers-102",
 
 models = {
     "Gemini Flash\n(no think)": [93.0, 80.9, 95.7, 96.5, 93.9, 90.7],
-    "GPT-4o":                   [90.6, 45.8, 73.7, 87.4, 72.2, 77.6],
+    "GPT-4o mini":              [90.6, 45.8, 73.7, 87.4, 72.2, 77.6],
 }
 
 colors = {
-    "Gemini Flash\n(no think)": "#3DBD8A",   # teal-green
-    "GPT-4o":                   "#5B9BD5",   # steel blue
+    "Gemini Flash\n(no think)": "#3DBD8A",
+    "GPT-4o mini":              "#5B9BD5",
 }
 
 # ── NeurIPS sizing (25 % of linewidth = 0.5 \columnwidth) ────────────────────

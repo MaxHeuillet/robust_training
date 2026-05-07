@@ -1,2 +1,0 @@
-  Running command git clone --filter=blob:none --quiet https://github.com/fra31/auto-attack /tmp/pip-req-build-8mf6ukbn
-slurmstepd: error: *** JOB 269939 ON tg11302 CANCELLED AT 2026-05-01T22:58:25 ***

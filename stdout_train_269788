@@ -1,6 +1,0 @@
-CUDA_VISIBLE_DEVICES: 0,1,2,3
-CUDA available: True
-CUDA device count: 4
-Device name: NVIDIA H100 80GB HBM3
-serialized_values convnext_base.fb_in22k__uc-merced-land-use-dataset__TRADES_v2
-📦 Extracting /home/m/mheuill/data/uc-merced-land-use-dataset_processed.tar.zst into /home/m/mheuill/work_dir/data/uc-merced-land-use-dataset using Python zstd + tarfile...

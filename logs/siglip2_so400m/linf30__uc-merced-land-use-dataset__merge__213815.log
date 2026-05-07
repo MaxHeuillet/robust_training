@@ -1,81 +1,0 @@
-  Merging 4 shards → uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard
-  Merged 420 images | clean=0.8262 | adv=0.0000
-  Packaging 420 images → uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard_processed.tar.zst
-  Compressing:   0%|          | 0/420 [00:00<?, ?it/s]  Compressing:  82%|████████▏ | 343/420 [00:00<00:00, 3421.27it/s]                                                                    ✓ uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard_processed.tar.zst (50.9 MB)
-  Uploading → MaxHeuillet/RobustGenBench/adversarial/zeroshot_siglip2_so400m_patch16_naflex/linf_eps30_autoattack_standard/uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard_processed.tar.zst
-Processing Files (0 / 0)      : |          |  0.00B /  0.00B            
-New Data Upload               : |          |  0.00B /  0.00B            [A
-
-  ...tandard_processed.tar.zst:   1%|▏         |  657kB / 50.9MB            [A[A
-
-  ...tandard_processed.tar.zst:   1%|▏         |  657kB / 50.9MB            [A[AProcessing Files (0 / 1)      :   1%|▏         |  657kB / 50.9MB, 3.29MB/s  
-
-  ...tandard_processed.tar.zst:  12%|█▏        | 5.94MB / 50.9MB            [A[AProcessing Files (0 / 1)      :  12%|█▏        | 5.94MB / 50.9MB, 14.9MB/s  
-New Data Upload               :  11%|█         | 5.28MB / 50.2MB, 13.2MB/s  [A
-
-  ...tandard_processed.tar.zst:  29%|██▉       | 14.9MB / 50.9MB            [A[AProcessing Files (0 / 1)      :  29%|██▉       | 14.9MB / 50.9MB, 24.9MB/s  
-New Data Upload               :  28%|██▊       | 14.3MB / 50.2MB, 23.8MB/s  [A
-
-  ...tandard_processed.tar.zst:  45%|████▍     | 22.8MB / 50.9MB            [A[AProcessing Files (0 / 1)      :  45%|████▍     | 22.8MB / 50.9MB, 28.6MB/s  
-New Data Upload               :  44%|████▍     | 22.2MB / 50.2MB, 27.7MB/s  [A
-
-  ...tandard_processed.tar.zst:  63%|██████▎   | 31.8MB / 50.9MB            [A[AProcessing Files (0 / 1)      :  63%|██████▎   | 31.8MB / 50.9MB, 31.8MB/s  
-New Data Upload               :  62%|██████▏   | 31.1MB / 50.2MB, 31.1MB/s  [A
-
-  ...tandard_processed.tar.zst:  81%|████████  | 41.3MB / 50.9MB            [A[AProcessing Files (0 / 1)      :  81%|████████  | 41.3MB / 50.9MB, 34.4MB/s  
-New Data Upload               :  81%|████████  | 40.7MB / 50.2MB, 33.9MB/s  [A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 50.8MB / 50.9MB            [A[AProcessing Files (0 / 1)      : 100%|█████████▉| 50.8MB / 50.9MB, 36.3MB/s  
-New Data Upload               : 100%|█████████▉| 50.2MB / 50.2MB, 35.8MB/s  [A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 50.8MB / 50.9MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 50.8MB / 50.9MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 50.8MB / 50.9MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 50.8MB / 50.9MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 50.8MB / 50.9MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 50.8MB / 50.9MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 50.8MB / 50.9MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 50.8MB / 50.9MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 50.8MB / 50.9MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 50.8MB / 50.9MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 50.8MB / 50.9MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 50.8MB / 50.9MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 50.8MB / 50.9MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 50.8MB / 50.9MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 50.8MB / 50.9MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 50.8MB / 50.9MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 50.8MB / 50.9MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 50.8MB / 50.9MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|█████████▉| 50.8MB / 50.9MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 50.9MB / 50.9MB            [A[AProcessing Files (1 / 1)      : 100%|██████████| 50.9MB / 50.9MB, 9.42MB/s  
-New Data Upload               : 100%|██████████| 50.2MB / 50.2MB, 9.30MB/s  [A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 50.9MB / 50.9MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 50.9MB / 50.9MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 50.9MB / 50.9MB            [A[A
-
-  ...tandard_processed.tar.zst: 100%|██████████| 50.9MB / 50.9MB            [A[AProcessing Files (1 / 1)      : 100%|██████████| 50.9MB / 50.9MB, 8.48MB/s  
-New Data Upload               : 100%|██████████| 50.2MB / 50.2MB, 8.37MB/s  
-  ...tandard_processed.tar.zst: 100%|██████████| 50.9MB / 50.9MB            
-  ✓ Upload complete: uc-merced-land-use-dataset__zeroshot_siglip2_so400m_patch16_naflex__linf_eps30_autoattack_standard_processed.tar.zst

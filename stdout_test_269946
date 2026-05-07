@@ -1,9 +1,0 @@
-============================================================
-  RobustGenBench Evaluation
-  Backbone  : convnext_base.fb_in22k
-  Dataset   : caltech101
-  Loss      : TRADES_v2
-  Project   : convnext_base_fb_in22k_TRADES_v2
-  exp_id    : convnext_base.fb_in22k__caltech101__TRADES_v2
-  GPUs      : 4
-============================================================

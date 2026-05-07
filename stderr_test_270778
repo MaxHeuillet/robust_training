@@ -1,7 +1,0 @@
-usage: evaluate_robustgenbench.py [-h] --backbone BACKBONE --dataset DATASET
-                                  --loss LOSS [--seed SEED] --project PROJECT
-                                  [--batch_size BATCH_SIZE]
-                                  [--configs_path CONFIGS_PATH]
-                                  [--trained_statedicts_path TRAINED_STATEDICTS_PATH]
-                                  [--results_path RESULTS_PATH]
-evaluate_robustgenbench.py: error: unrecognized arguments: --hpo_source_project full_fine_tuning50
