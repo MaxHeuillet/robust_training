@@ -22,19 +22,22 @@ Dependencies:
     pip install git+https://github.com/fra31/auto-attack
 
 Usage:
-    # Single GPU (default)
-    python evaluate_quickstart.py --dataset flowers-102
+    # Evaluate on all datasets (discovered automatically from the HF repo)
+    python evaluate_quickstart.py
+
+    # Evaluate on a specific subset of datasets
+    python evaluate_quickstart.py --dataset flowers-102 stanford-cars
 
     # Multi-GPU
-    python evaluate_quickstart.py --dataset flowers-102 --multi-gpu
+    python evaluate_quickstart.py --multi-gpu
 
     # Subset of threat models
-    python evaluate_quickstart.py --dataset flowers-102 --threat linf l2
+    python evaluate_quickstart.py --threat linf l2
 
-    # Print training data location + DataLoader snippet after eval
-    python evaluate_quickstart.py --dataset flowers-102 --show-train-data
+    # Print training data location + DataLoader snippet after each dataset
+    python evaluate_quickstart.py --show-train-data
 
-    # List available threat models and exit
+    # List all available datasets and threat models, then exit
     python evaluate_quickstart.py --list
 """
 
@@ -353,6 +356,26 @@ def get_num_classes(dataset: str) -> int:
         return len(json.load(f))
 
 
+def list_datasets() -> list[str]:
+    """
+    Discover all available datasets by listing the class_names/ folder
+    on the HF repo. Each file is named <dataset>.json, so the dataset
+    name is just the stem. This means the list stays current automatically
+    when new datasets are added to the benchmark.
+    """
+    from huggingface_hub import list_repo_tree
+    datasets = []
+    try:
+        for entry in list_repo_tree(repo_id=HF_REPO, repo_type="dataset",
+                                    path_in_repo="class_names"):
+            name = Path(entry.path).name
+            if name.endswith(".json"):
+                datasets.append(name[:-5])   # strip .json
+    except Exception as e:
+        print(f"  WARNING: could not list datasets from HF repo: {e}")
+    return sorted(datasets)
+
+
 def download_archive(hf_dir: str, archive_name: str,
                      local_dir: Path) -> Path | None:
     from huggingface_hub import hf_hub_download
@@ -539,27 +562,35 @@ def main():
     parser = argparse.ArgumentParser(
         description="White-box adversarial evaluation on RobustGenBench."
     )
-    parser.add_argument("--dataset",    default="flowers-102",
-                        help="Dataset name on RobustGenBench (e.g. flowers-102)")
-    parser.add_argument("--threat",     nargs="+",
+    parser.add_argument("--dataset",     nargs="+", default=None,
+                        help="Dataset(s) to evaluate. Defaults to all datasets "
+                             "discovered on the HF repo.")
+    parser.add_argument("--threat",      nargs="+",
                         default=["linf", "l2", "l1"],
                         choices=list(THREAT_MODELS.keys()),
                         help="Threat models to evaluate (default: all three)")
-    parser.add_argument("--model-path", default=None,
+    parser.add_argument("--model-path",  default=None,
                         help="Optional path to a .pt state dict for ToyModel")
-    parser.add_argument("--batch-size", type=int, default=64)
-    parser.add_argument("--device",     default=None,
+    parser.add_argument("--batch-size",  type=int, default=64)
+    parser.add_argument("--device",      default=None,
                         help="cuda / cpu (auto-detected if omitted)")
-    parser.add_argument("--multi-gpu",  action="store_true",
+    parser.add_argument("--multi-gpu",   action="store_true",
                         help="Distribute evaluation across all available GPUs")
     parser.add_argument("--results-dir", default="./quickstart_results")
     parser.add_argument("--show-train-data", action="store_true",
-                        help="Print training data location + DataLoader snippet")
-    parser.add_argument("--list",       action="store_true",
-                        help="Print threat model options and exit")
+                        help="Print training data location + DataLoader snippet "
+                             "for each dataset after its eval")
+    parser.add_argument("--list",        action="store_true",
+                        help="Print all available datasets and threat models, "
+                             "then exit")
     args = parser.parse_args()
 
     if args.list:
+        print("\nDiscovering datasets from HF repo ...")
+        datasets = list_datasets()
+        print(f"\nAvailable datasets ({len(datasets)}):")
+        for d in datasets:
+            print(f"  {d}")
         print("\nAvailable threat models:")
         for k, v in THREAT_MODELS.items():
             print(f"  --threat {k:<6}  norm={v['norm']}  eps={v['eps']}")
@@ -580,42 +611,66 @@ def main():
     print(f"\n  Device     : {device}")
     print(f"  Multi-GPU  : {args.multi_gpu}  ({n_gpus} GPU(s))")
 
-    # ---- num_classes -------------------------------------------------------
-    print(f"  Fetching class list for '{args.dataset}' ...")
-    N = get_num_classes(args.dataset)
-    print(f"  num_classes = {N}")
-
-    # ---- model -------------------------------------------------------------
-    plain_model = load_model(N, args.model_path)
-    model       = WhiteBoxWrapper(plain_model).to(device)
-    total_params = sum(p.numel() for p in plain_model.parameters())
-    print(f"  Model      : {plain_model.__class__.__name__}  ({total_params:,} params)")
-    print()
-    print("  NOTE: ToyModel is randomly initialised — accuracy will be near chance.")
-    print("  Replace load_model() with your own model to get real numbers.")
+    # ---- discover datasets -------------------------------------------------
+    if args.dataset:
+        datasets = args.dataset
+    else:
+        print("  Discovering datasets from HF repo ...")
+        datasets = list_datasets()
+        print(f"  Found {len(datasets)} dataset(s): {', '.join(datasets)}")
     print()
 
-    # For multi-GPU we pass the state dict to each worker
-    model_state = plain_model.state_dict() if args.multi_gpu else None
-
-    # ---- output CSV --------------------------------------------------------
     results_dir = Path(args.results_dir)
     results_dir.mkdir(parents=True, exist_ok=True)
-    csv_path    = results_dir / f"{args.dataset}__whitebox__results.csv"
-    fieldnames  = ["split", "norm", "eps",
-                   "nb_correct_nat", "nb_correct_adv", "nb_examples",
-                   "accuracy_nat", "accuracy_adv"]
-    rows = []
 
-    # ---- clean eval --------------------------------------------------------
-    print(f"{'='*60}")
-    print("  Split: CLEAN")
-    clean_items = load_clean_items(args.dataset)
-    if clean_items:
+    fieldnames = ["dataset", "split", "norm", "eps",
+                  "nb_correct_nat", "nb_correct_adv", "nb_examples",
+                  "accuracy_nat", "accuracy_adv"]
+
+    # ---- loop over datasets ------------------------------------------------
+    for dataset in datasets:
+        print(f"\n{'#'*60}")
+        print(f"  Dataset: {dataset}")
+        print(f"{'#'*60}")
+
+        # num_classes
+        try:
+            N = get_num_classes(dataset)
+        except Exception as e:
+            print(f"  WARNING: could not get num_classes for {dataset}: {e}. Skipping.")
+            continue
+        print(f"  num_classes = {N}")
+
+        # model — reinstantiated per dataset so the head size matches
+        plain_model = load_model(N, args.model_path)
+        model       = WhiteBoxWrapper(plain_model).to(device)
+        if dataset == datasets[0]:
+            total_params = sum(p.numel() for p in plain_model.parameters())
+            print(f"  Model      : {plain_model.__class__.__name__}  "
+                  f"({total_params:,} params)")
+            print()
+            print("  NOTE: ToyModel is randomly initialised — accuracy will be "
+                  "near chance.")
+            print("  Replace load_model() with your own model to get real numbers.")
+        model_state = plain_model.state_dict() if args.multi_gpu else None
+
+        # per-dataset CSV
+        csv_path = results_dir / f"{dataset}__whitebox__results.csv"
+        rows     = []
+
+        # ---- clean eval ----------------------------------------------------
+        print(f"\n{'='*60}")
+        print("  Split: CLEAN")
+        clean_items = load_clean_items(dataset)
+        if clean_items is None:
+            print("  WARNING: clean items could not be loaded, skipping dataset.")
+            continue
+
         print(f"  {len(clean_items)} images")
         arr = np.array(Image.open(clean_items[0][0]).convert("RGB")) / 255.0
         print(f"  Pixel range — min={arr.min():.3f}  max={arr.max():.3f}  "
               f"mean={arr.mean():.3f}")
+
         if args.multi_gpu:
             stats = run_multi_gpu(clean_items, model_state, N,
                                   args.model_path, "clean", args.batch_size)
@@ -625,62 +680,62 @@ def main():
         print(f"  Clean accuracy: "
               f"{stats['nb_correct']}/{stats['nb_examples']} "
               f"= {stats['accuracy_nat']:.4f}")
-        rows.append({"split": "clean", "norm": "—", "eps": "—",
+        rows.append({"dataset": dataset, "split": "clean", "norm": "—", "eps": "—",
                      "nb_correct_nat": stats["nb_correct"],
                      "nb_correct_adv": "—",
                      "nb_examples":    stats["nb_examples"],
                      "accuracy_nat":   stats["accuracy_nat"],
                      "accuracy_adv":   "—"})
-    else:
-        print("  WARNING: clean items could not be loaded, skipping.")
 
-    # ---- adversarial evals -------------------------------------------------
-    for threat_key in args.threat:
-        cfg = THREAT_MODELS[threat_key]
-        print(f"\n{'='*60}")
-        print(f"  Split: {threat_key.upper()}  "
-              f"norm={cfg['norm']}  eps={cfg['eps']}")
+        # ---- adversarial evals ---------------------------------------------
+        for threat_key in args.threat:
+            cfg = THREAT_MODELS[threat_key]
+            print(f"\n{'='*60}")
+            print(f"  Split: {threat_key.upper()}  "
+                  f"norm={cfg['norm']}  eps={cfg['eps']}")
 
-        if args.multi_gpu:
-            stats = run_multi_gpu(clean_items, model_state, N,
-                                  args.model_path, threat_key, args.batch_size)
-        else:
-            stats = run_single_gpu(clean_items, model, device,
-                                   threat_key, args.batch_size)
+            if args.multi_gpu:
+                stats = run_multi_gpu(clean_items, model_state, N,
+                                      args.model_path, threat_key, args.batch_size)
+            else:
+                stats = run_single_gpu(clean_items, model, device,
+                                       threat_key, args.batch_size)
 
-        print(f"  Clean  accuracy (on this split's images): "
-              f"{stats['nb_correct_nat']}/{stats['nb_examples']} "
-              f"= {stats['accuracy_nat']:.4f}")
-        print(f"  Robust accuracy: "
-              f"{stats['nb_correct_adv']}/{stats['nb_examples']} "
-              f"= {stats['accuracy_adv']:.4f}")
-        rows.append({"split": threat_key, "norm": cfg["norm"], "eps": cfg["eps"],
-                     "nb_correct_nat": stats["nb_correct_nat"],
-                     "nb_correct_adv": stats["nb_correct_adv"],
-                     "nb_examples":    stats["nb_examples"],
-                     "accuracy_nat":   stats["accuracy_nat"],
-                     "accuracy_adv":   stats["accuracy_adv"]})
+            print(f"  Clean  accuracy: "
+                  f"{stats['nb_correct_nat']}/{stats['nb_examples']} "
+                  f"= {stats['accuracy_nat']:.4f}")
+            print(f"  Robust accuracy: "
+                  f"{stats['nb_correct_adv']}/{stats['nb_examples']} "
+                  f"= {stats['accuracy_adv']:.4f}")
+            rows.append({"dataset": dataset,
+                         "split": threat_key, "norm": cfg["norm"], "eps": cfg["eps"],
+                         "nb_correct_nat": stats["nb_correct_nat"],
+                         "nb_correct_adv": stats["nb_correct_adv"],
+                         "nb_examples":    stats["nb_examples"],
+                         "accuracy_nat":   stats["accuracy_nat"],
+                         "accuracy_adv":   stats["accuracy_adv"]})
 
-    # ---- write CSV ---------------------------------------------------------
-    with open(csv_path, "w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(rows)
+        # ---- write per-dataset CSV -----------------------------------------
+        with open(csv_path, "w", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(rows)
+        print(f"\n  Results saved to: {csv_path}")
 
-    print(f"\n{'='*60}")
-    print(f"  Results saved to: {csv_path}")
+        # ---- summary table -------------------------------------------------
+        print(f"\n  {'Split':<8} {'Norm':<6} {'eps':<10} "
+              f"{'Acc (nat)':>10} {'Acc (adv)':>10}")
+        print(f"  {'-'*52}")
+        for row in rows:
+            print(f"  {row['split']:<8} {str(row['norm']):<6} {str(row['eps']):<10} "
+                  f"{str(row['accuracy_nat']):>10} {str(row['accuracy_adv']):>10}")
 
-    # ---- summary table -----------------------------------------------------
-    print(f"\n  {'Split':<8} {'Norm':<6} {'eps':<10} "
-          f"{'Acc (nat)':>10} {'Acc (adv)':>10}")
-    print(f"  {'-'*52}")
-    for row in rows:
-        print(f"  {row['split']:<8} {str(row['norm']):<6} {str(row['eps']):<10} "
-              f"{str(row['accuracy_nat']):>10} {str(row['accuracy_adv']):>10}")
-    print()
+        if args.show_train_data:
+            show_training_data_info(dataset)
 
-    if args.show_train_data:
-        show_training_data_info(args.dataset)
+    print(f"\n{'#'*60}")
+    print(f"  All done. Results written to: {results_dir}")
+    print(f"{'#'*60}\n")
 
 
 if __name__ == "__main__":
