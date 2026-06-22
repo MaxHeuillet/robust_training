@@ -1,42 +1,86 @@
-## 📚 Using RobustGenBench benchmark
+## 📚 Using the RobustGenBench Benchmark
 
-### 📦 Download the RobustGenBench data
+### Create the Python environment
 
-```python 
-from huggingface_hub import snapshot_download
-
-snapshot_download(
-    repo_id="MaxHeuillet/RobustGenBench",
-    repo_type="dataset",
-    local_dir="~/data/",
-)
-```
-
-The scripts that were used to download and prepare the benchmark are the following:
-
-```python ./databases/download_data.py --save_path ~/data```
-```python ./databases/save_final_dataset.py --datasets_path ~/data```
-
-### 📦 Evaluate a model using the RobustGenBench
-
-A quickstart script to evaluate a model on RobustGenBench:
-
-```/Users/maximeheuillet/Desktop/robust_training/evaluate_quickstart.py```
-
-## 📚 Reproducing Paper Results – robust_training
-
-This project provides a pipeline for reproducing the training and evaluation of various models under different pre-training and fine-tuning strategies, including adversarial robustness and transfer learning.
-
-## Create environment
-
-```
+```bash
 python3.11 -m venv ~/myenv_reprod
 source ~/myenv_reprod/bin/activate
 cd ./robust_training
 pip install -r ./requirements.txt
-``` 
+```
 
-## Reproduce paper results
+> **Note (Slurm clusters):** the environment can be built automatically by
+> running `source ./execute_setup.sh`, which handles module loading and dependency
+> installation for Slurm-managed HPC environments.
+
+### 📦 Download the RobustGenBench data
+
+The benchmark is hosted on HuggingFace at
+[`legolasflagstaff/RobustGenBench`](https://huggingface.co/datasets/legolasflagstaff/RobustGenBench).
+
+To download only the clean archives (training, validation, and test splits)
+without the pre-crafted adversarial perturbations — which are large and not
+required for white-box evaluation — use the `ignore_patterns` filter:
+
+```python
+from huggingface_hub import snapshot_download
+
+snapshot_download(
+    repo_id="legolasflagstaff/RobustGenBench",
+    repo_type="dataset",
+    local_dir="~/data/",
+    ignore_patterns="adversarial/*",
+)
+```
+
+If you also want to prepare the data from scratch, the relevant scripts are:
+
+```bash
+python ./databases/download_data.py --save_path ~/data
+python ./databases/save_final_dataset.py --datasets_path ~/data
+```
+
+### 🧪 Evaluate a model (white-box) on RobustGenBench
+
+We provide a self-contained quickstart script for white-box adversarial
+evaluation of any PyTorch model on RobustGenBench:
+
+```
+evaluate_quickstart.py
+```
+
+The script assumes **white-box access** to the model — adversarial examples
+are crafted on-the-fly using [AutoAttack](https://github.com/fra31/auto-attack)
+directly against the user's model, rather than relying on pre-crafted
+perturbations. It covers:
+
+- **Clean accuracy** — standard forward pass on the original test images
+- **Adversarial accuracy** — under L-inf (ε=4/255), L2 (ε=2.0), and L1
+  (ε=75.0) threat models, using AutoAttack's standard version
+
+The only interface requirement is:
+
+```python
+model(images: Tensor[B, 3, H, W]) -> logits: Tensor[B, N]
+```
+
+Any `timm`, `torchvision`, or custom PyTorch model satisfies this. A toy CNN
+is included so the script runs out of the box with no additional downloads.
+
+**Basic usage:**
+
+```bash
+# Evaluate on all benchmark datasets
+python evaluate_quickstart.py
+```
+Results are written as one CSV per dataset under `./quickstart_results/`.
+
+
+## 📚 Reproducing Paper Results 
+
+This project provides a pipeline for reproducing the training and evaluation of various models under different pre-training and fine-tuning strategies, including adversarial robustness and transfer learning.
+
+### 
 
 The database with all the measurements is ```results_dataset.csv```
 
@@ -80,4 +124,3 @@ For LP-50: ```bash ./execute_experiment.sh 'linearprobe_50epochs_reproduce'```
 python ./unit_tests/architecture_loader_test.py
 ```
 
-Other tests are available but are not maintained.
