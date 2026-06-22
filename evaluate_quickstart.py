@@ -201,19 +201,29 @@ def eval_clean(model: WhiteBoxWrapper, loader: DataLoader,
 
 def eval_adversarial(model: WhiteBoxWrapper, loader: DataLoader,
                      device: torch.device, norm: str,
-                     eps: float, batch_size: int) -> tuple[int, int, int, int]:
+                     eps: float, batch_size: int) -> tuple[int, int, int]:
     """
-    Craft adversarial examples with AutoAttack (white-box) then evaluate.
-    Returns (nb_correct_nat, nb_correct_adv, nb_correct_nat, nb_examples).
-    Mirrors the Linf/L2/L1 branch of test_loop() in distributed_experiment_final.py.
+    Mirrors the Linf / L2 / L1 branch of test_loop() in
+    distributed_experiment_final.py.
+
+    For each batch:
+      1. WhiteBoxWrapper(x) -> logits is passed to AutoAttack as the
+         forward callable (single-argument form), matching the
+         `forward_pass = lambda x: model(x)` pattern in test_loop().
+      2. AutoAttack crafts x_adv via run_standard_evaluation(), same call
+         as in test_loop().
+      3. Both x_nat and x_adv are forwarded in one call to get
+         (logits_nat, logits_adv), matching
+         `logits_nat, logits_adv = model(x_nat, x_adv)` in test_loop().
+      4. Top-1 accuracy is accumulated for both, same as test_loop().
     """
     from autoattack import AutoAttack
 
     nb_correct_nat, nb_correct_adv, nb_examples = 0, 0, 0
     model.eval()
 
-    # AutoAttack expects a callable model(x) -> logits; WhiteBoxWrapper
-    # satisfies this when called with a single argument.
+    # WhiteBoxWrapper satisfies AutoAttack's expected callable model(x) -> logits
+    # when called with a single argument (x_adv=None path).
     adversary = AutoAttack(model, norm=norm, eps=eps,
                            version="standard", verbose=False, device=device)
 
