@@ -1,3 +1,28 @@
+## 📚 Using RobustGenBench benchmark
+
+### 📦 Download the RobustGenBench data
+
+```python 
+from huggingface_hub import snapshot_download
+
+snapshot_download(
+    repo_id="MaxHeuillet/RobustGenBench",
+    repo_type="dataset",
+    local_dir="~/data/",
+)
+```
+
+The scripts that were used to download and prepare the benchmark are the following:
+
+```python ./databases/download_data.py --save_path ~/data```
+```python ./databases/save_final_dataset.py --datasets_path ~/data```
+
+### 📦 Evaluate a model using the RobustGenBench
+
+A quickstart script to evaluate a model on RobustGenBench:
+
+```/Users/maximeheuillet/Desktop/robust_training/evaluate_quickstart.py```
+
 ## 📚 Reproducing Paper Results – robust_training
 
 This project provides a pipeline for reproducing the training and evaluation of various models under different pre-training and fine-tuning strategies, including adversarial robustness and transfer learning.
@@ -23,26 +48,6 @@ All the Figures of the paper can be reproducing with scripts in ```./results_ana
 
 The argument mode in ```utils/arguments.py``` specifies which step of the code to execute. At the end of ```mode='hpo'```, the code stores the results of HPO optimization in a separate folder of ```configs```. At the beginning of ```mode='train'```, the config is loaded to train the model with optimized HPO. Then the model is saved. At testing, the model is loaded and the results are saved in a folder named after project name in ```results``` folder.
 
-### 📦 Download and process datasets
-
-
-
-```python 
-from huggingface_hub import snapshot_download
-
-snapshot_download(
-    repo_id="MaxHeuillet/RobustGenBench",
-    repo_type="dataset",
-    local_dir="~/data/",
-)
-```
-
-The scripts that were used to download and prepare the dataset repository are the following:
-
-```python ./databases/download_data.py --save_path ~/data```
-```python ./databases/save_final_dataset.py --datasets_path ~/data```
-
-⚠️ For LandUse and StanfordCard, use Kaggle.  Click for info on Caltech101 download: [Caltech101 info](https://data.caltech.edu/records/mzrjq-6wc02)
 
 ### 🧠 Download and process backbones
 
