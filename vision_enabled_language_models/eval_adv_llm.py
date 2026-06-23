@@ -14,7 +14,7 @@ import asyncio
 from pathlib import Path
 
 # Reuse everything from llm_classify.py
-from llm_classify import (
+from vision_enabled_language_models.llm_classify import (
     run_batch_openai,
     retrieve_batch_results_openai,
     build_classification_prompt,

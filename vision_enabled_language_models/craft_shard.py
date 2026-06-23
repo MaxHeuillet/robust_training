@@ -24,7 +24,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from craft_adversarial import (
+from vision_enabled_language_models.craft_adversarial import (
     OUTPUT_ROOT, PACKAGED_ROOT, DATA_ROOT, WORK_DIR, HF_CACHE_DIR,
     TMP_ROOT, CLASS_NAMES_DIR,
     run_dir_name, surrogate_slug, threat_model_slug, hf_archive_path,

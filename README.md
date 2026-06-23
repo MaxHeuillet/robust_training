@@ -75,16 +75,19 @@ python evaluate_quickstart.py
 ```
 Results are written as one CSV per dataset under `./quickstart_results/`.
 
+## 📚 Accessing the open-source artifacts from the paper
+
+In `./robust_training/configs/HPO_results` you will find the hyper-parameters optimized for all the fine-tuned configurations of the study.
+
+In `./robust_training/results/results_dataset.csv` you will find the full measurement table for the robust fine-tuning experiments.
+
+In `./robust_training/results/llm_classification_results` you will find the Ve-LLMs measurement results.
+
+All the Figures of the paper can be reproducing with scripts in ```./results_analysis```
 
 ## 📚 Reproducing Paper Results 
 
 This project provides a pipeline for reproducing the training and evaluation of various models under different pre-training and fine-tuning strategies, including adversarial robustness and transfer learning.
-
-### 
-
-The database with all the measurements is ```results_dataset.csv```
-
-All the Figures of the paper can be reproducing with scripts in ```./results_analysis```
 
 ## Reproduce training
 
@@ -92,8 +95,7 @@ All the Figures of the paper can be reproducing with scripts in ```./results_ana
 
 The argument mode in ```utils/arguments.py``` specifies which step of the code to execute. At the end of ```mode='hpo'```, the code stores the results of HPO optimization in a separate folder of ```configs```. At the beginning of ```mode='train'```, the config is loaded to train the model with optimized HPO. Then the model is saved. At testing, the model is loaded and the results are saved in a folder named after project name in ```results``` folder.
 
-
-### 🧠 Download and process backbones
+### 🧠 Download the models
 
 ```python ./architectures/download_architectures.py --save_path ~/my_backbones```
 

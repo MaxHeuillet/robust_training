@@ -643,7 +643,7 @@ def retrieve_batch_results_google(
     run_id: str,
 ):
     from google import genai
-    from llm_classify import load_class_names, parse_prediction, normalize
+    from vision_enabled_language_models.llm_classify import load_class_names, parse_prediction, normalize
 
     client = genai.Client()
     job = client.batches.get(name=batch_name)
