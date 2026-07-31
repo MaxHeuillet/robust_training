@@ -173,7 +173,8 @@ class BaseExperiment:
 
         if not self.setup.hp_opt and rank == 0:
 
-            src = Path(os.path.expandvars(config.work_path)).expanduser().resolve()
+            src = Path(os.path.expandvars(config.work_path)).expanduser().resolve() / os.environ.get("SLURM_JOB_ID", "local")
+            os.makedirs(src, exist_ok=True)
             model_name = src / f"{config.exp_id}.pt"
             model_to_save = model.module
             model_to_save = model_to_save.cpu()

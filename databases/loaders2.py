@@ -43,7 +43,8 @@ def load_data2(config):
     train_transform, transform = load_data_transforms()
 
     tmpdir = Path(os.path.expandvars(config.work_path)).expanduser().resolve()
-    dataset_path = tmpdir / "data" / config.dataset
+    job_id = os.environ.get("SLURM_JOB_ID", "local")
+    dataset_path = tmpdir / "data" / job_id / config.dataset
 
     train_dataset = CSVDataset(dataset_path / "train", train_transform)
     val_dataset = CSVDataset(dataset_path / "val", transform)

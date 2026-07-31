@@ -40,7 +40,7 @@ class HFModelWrapper(nn.Module):
 def load_architecture(config, N):
     backbone = config.backbone
     print('BACKBONE NAME', backbone)
-    statedict_dir =  Path(os.path.expandvars(config.work_path)).expanduser().resolve()
+    statedict_dir =  Path(os.path.expandvars(config.work_path)).expanduser().resolve() / os.environ.get("SLURM_JOB_ID", "local")
     
     # Determine if it's an OpenCLIP model
     openclip_models = {
