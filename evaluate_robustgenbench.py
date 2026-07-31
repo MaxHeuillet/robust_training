@@ -274,7 +274,10 @@ def load_trained_model(args, N: int, rank: int):
 
 def inference_worker(rank, world_size, items, args, result_queue, N):
     os.environ["MASTER_ADDR"] = "localhost"
-    os.environ["MASTER_PORT"] = os.environ.get("MASTER_PORT", "29500")
+    # Derived from SLURM_JOB_ID rather than a fixed default: concurrent eval
+    # jobs on the same node would otherwise all rendezvous on the same port.
+    job_id = os.environ.get("SLURM_JOB_ID", "0")
+    os.environ["MASTER_PORT"] = os.environ.get("MASTER_PORT", str(20000 + (int(job_id) % 20000)))
     dist.init_process_group("nccl", rank=rank, world_size=world_size)
 
     model = load_trained_model(args, N, rank)

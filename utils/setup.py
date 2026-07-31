@@ -31,7 +31,12 @@ class Setup:
         #Initialize the distributed environment.
         print('set up the master adress and port')
         os.environ['MASTER_ADDR'] = 'localhost'
-        os.environ['MASTER_PORT'] = '12345'
+        # Derived from SLURM_JOB_ID (not a fixed constant): concurrent jobs can
+        # land on the same physical node and would otherwise all try to bind
+        # their DDP rendezvous to the same localhost:port, letting processes
+        # from different jobs cross-connect into the wrong process group.
+        job_id = os.environ.get('SLURM_JOB_ID', '0')
+        os.environ['MASTER_PORT'] = str(20000 + (int(job_id) % 20000))
 
         #Set environment variables for offline usage of Hugging Face libraries
         os.environ['HF_DATASETS_OFFLINE'] = '1'
