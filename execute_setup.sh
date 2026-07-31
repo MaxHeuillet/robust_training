@@ -5,7 +5,7 @@ python3.11 -m venv $SLURM_TMPDIR/myenv_reprod
 source $SLURM_TMPDIR/myenv_reprod/bin/activate
 pip install -r ./requirements.txt
 
-pip install "torch>=2.4" "torchvision>=0.20" --upgrade
+pip install "torch==2.3.1" "torchvision==0.18.1" "torchaudio==2.3.1"
 pip install "transformers>=4.49" "tokenizers>=0.21" "safetensors>=0.4.3" --upgrade
 
 export PYTHONUNBUFFERED=1
