@@ -44,6 +44,7 @@ python ./evaluate_robustgenbench.py \
     --seed     "${SEED}" \
     --project  "${PRNM}" \
     --hpo_source_project "full_fine_tuning50" \
+    --batch_size 256 \
     --save_predictions \
     > stdout_test_"${SLURM_JOB_ID}" 2> stderr_test_"${SLURM_JOB_ID}"
 

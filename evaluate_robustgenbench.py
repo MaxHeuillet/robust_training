@@ -359,7 +359,7 @@ def main():
     parser.add_argument("--seed",                 type=int, default=1)
     parser.add_argument("--project",              required=True)
     parser.add_argument("--hpo_source_project",   default=None)
-    parser.add_argument("--batch_size",           type=int, default=64)
+    parser.add_argument("--batch_size",           type=int, default=256)
     parser.add_argument("--save_predictions",     action="store_true",
                         help="Also save per-observation predictions CSV for bootstrap analysis.")
     parser.add_argument("--configs_path",

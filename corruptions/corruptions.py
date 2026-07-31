@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 import numpy as np
 import math
 from PIL import Image
@@ -6,9 +7,14 @@ import skimage as sk
 from skimage.filters import gaussian
 from io import BytesIO
 from scipy.ndimage import zoom as scizoom, convolve, distance_transform_edt, uniform_filter, map_coordinates
-from pkg_resources import resource_filename
 from numba import njit
 from skimage import color, exposure, feature
+
+
+def resource_filename(_package, relative_path):
+    """Resolve a path relative to this module's directory (avoids the
+    setuptools/pkg_resources dependency for a plain on-disk asset lookup)."""
+    return os.path.join(os.path.dirname(os.path.abspath(__file__)), relative_path)
 
 # /////////////// Corruption Helpers ///////////////
 
