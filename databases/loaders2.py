@@ -49,7 +49,13 @@ def load_data2(config):
     train_dataset = CSVDataset(dataset_path / "train", train_transform)
     val_dataset = CSVDataset(dataset_path / "val", transform)
     test_dataset = CSVDataset(dataset_path / "test", transform)
-    test_common_dataset = CSVDataset(dataset_path / "test_common", transform)
+    # test_common/ was intentionally stripped from the RobustGenBench archives
+    # (see git history: clean_archives_remove_test_common.py) once common-
+    # corruption evaluation moved to a separate eval-time download. Not read
+    # during training (discarded by initialize_loaders), so tolerate absence.
+    test_common_path = dataset_path / "test_common"
+    test_common_dataset = (CSVDataset(test_common_path, transform)
+                            if (test_common_path / "labels.csv").exists() else None)
 
     # Load metadata.json
     metadata_path = dataset_path / "metadata.json"
