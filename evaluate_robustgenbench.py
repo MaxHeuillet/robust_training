@@ -242,9 +242,11 @@ def load_trained_model(args, N: int, rank: int):
         raise FileNotFoundError(f"HPO config not found at {config_path}")
     config = OmegaConf.load(config_path)
 
-    # Copy backbone .pt to work_path so load_architecture can find it
+    # Copy backbone .pt to work_path/SLURM_JOB_ID so load_architecture can find
+    # it (must match the job-scoped statedict_dir it reads from — see
+    # architectures/loaders.py — to avoid concurrent-job path collisions).
     backbone_src = Path(os.path.expanduser("~/links/scratch/mheuill/my_backbones")) / f"{config.backbone}.pt"
-    backbone_dst = Path(os.path.expandvars(config.work_path)).expanduser().resolve()
+    backbone_dst = Path(os.path.expandvars(config.work_path)).expanduser().resolve() / os.environ.get("SLURM_JOB_ID", "local")
     backbone_dst.mkdir(parents=True, exist_ok=True)
     if backbone_src.exists():
         shutil.copy2(str(backbone_src), str(backbone_dst))
@@ -254,7 +256,12 @@ def load_trained_model(args, N: int, rank: int):
     model = load_architecture(config, N)
     model = CustomModel(config, model)
 
-    # Load trained weights — saved with single _ separator
+    # Load trained weights. distributed_experiment_final.py's training() saves
+    # to f"{config.exp_id}.pt" where config is config_optimal (loaded fresh from
+    # the HPO yaml) — only config_optimal.project_name gets overridden there,
+    # never .exp_id, so the filename actually used is the yaml's OWN stored
+    # exp_id field (single "_" separator, stale from HPO-save time), NOT
+    # args.exp_id (double "__", only used to locate the yaml file itself).
     state_dict_filename = f"{args.backbone}_{args.dataset}_{args.loss}.pt"
     state_dict_path = Path(os.path.expanduser(args.trained_statedicts_path)) / args.project / state_dict_filename
     if not state_dict_path.exists():
