@@ -1,0 +1,143 @@
+INSTRUCTIONS FOR THE CLAUDE CODE SESSION ON RORQUAL
+=====================================================
+
+CONTEXT
+-------
+We are running a large adversarial-robustness training/eval pipeline for a
+paper rebuttal, split across two clusters because TAMIA (our usual cluster)
+has heavy queue congestion right now and a hard-ish deadline is close.
+
+TAMIA already trained 8 attention-based backbones x 6 datasets (48 combos)
+with TRADES beta=6, using a genuine per-combo HPO search (not reused beta=1
+hyperparameters -- that was a fairness fix). Training is done for 41/48 of
+those combos; the checkpoints for those 41 have been packaged and are meant
+to be evaluated here on rorqual instead of waiting in TAMIA's white-box-eval
+queue. TAMIA is separately still working through its own eval backlog and
+finishing the last 7 trainings -- do not worry about those, they are not
+your job.
+
+Your job: get the checkpoints for the 40 (backbone, dataset) combos listed
+in rorqual_ready_combos.csv, run white-box AutoAttack evaluation on them
+(Linf, L2, L1, common-corruption + clean accuracy -- this repo's "test-all"
+mode does all of these in one job per combo), and produce the same .pkl
+result format the rest of this project uses, so results can be merged back
+with TAMIA's later.
+
+ACCOUNT
+-------
+Use account: rrg-adurand   (NOT aip-adurand -- that's the TAMIA one)
+
+STEP 1 -- Get the code (if not already present)
+-------------------------------------------------
+If this repo isn't already cloned/pushed here, get it from GitHub:
+    git clone https://github.com/MaxHeuillet/robust_training.git
+
+STEP 2 -- Get the checkpoint tarball
+-----------------------------------------
+rorqual_setup.sh and rorqual_ready_combos.csv are tracked in git, so a
+normal git pull already gets them (the user pushes/pulls those directly --
+no rsync needed for these two files). The checkpoint tarball itself is a
+7.2GB binary and is NOT in git; that one still needs to come via rsync
+straight from TAMIA. From inside the repo root on rorqual:
+    bash rorqual_setup.sh mheuill
+
+This pulls the 7.2GB tarball (checksum b0f6e620a68c2ce698810547a1774e44),
+verifies it, and extracts it into ./trained_statedicts/. It contains
+checkpoints for these 7 backbones (NOT deit_tiny -- that one's still
+training on TAMIA and isn't ready yet):
+    deit_small_patch16_224.fb_in1k
+    eva02_base_patch14_224.mim_in22k
+    swin_tiny_patch4_window7_224.ms_in1k
+    vit_base_patch16_224.augreg_in1k
+    vit_small_patch16_224.augreg_in1k
+    eva02_tiny_patch14_224.mim_in22k
+    swin_base_patch4_window7_224.ms_in22k_ft_in1k
+
+STEP 3 -- Get the HPO config yamls (should already be here via git clone)
+----------------------------------------------------------------------------
+These live in configs/HPO_results/full_fine_tuning_{backbone}_TRADES_beta6_hpo/
+and are small text files already committed to git, so a normal git clone/pull
+gets them for free. Verify they exist for the 7 backbones above before
+proceeding -- if missing, something went wrong with the clone/push.
+
+STEP 4 -- Python environment
+--------------------------------
+    pip install -r requirements.txt
+Watch for CUDA/PyTorch version issues against rorqual's H100 setup. Same GPU
+model as TAMIA (H100), so batch sizes tuned in utils/setup.py's
+whitebox_eval_batch_size() SHOULD be fine, but keep an eye out for OOM in
+case rorqual's node memory config differs -- reduce batch size for that
+specific backbone if you see an OOM and rerun just that combo.
+
+STEP 5 -- Discover rorqual's SLURM specifics
+------------------------------------------------
+Run these and note the partition name(s) and gres syntax for H100 nodes
+under account rrg-adurand:
+    sacctmgr show assoc user=$USER account=rrg-adurand format=Account,User,QOS -p
+    sinfo -o "%P %D %c %m %G"
+
+TAMIA's job3_test_whitebox_multiseed.sh (in this repo, use it as the
+reference template) uses:
+    #SBATCH --account=aip-adurand
+    #SBATCH --nodes=1
+    #SBATCH --ntasks-per-node=1
+    #SBATCH --cpus-per-task=48
+    #SBATCH --gres=gpu:h100:4
+    #SBATCH --mem=480G
+    #SBATCH --time=02:59:00
+You'll need to swap --account for rrg-adurand and adjust cpus-per-task/mem
+to whatever a single H100 node on rorqual actually has (check via the sinfo
+command above -- don't just copy TAMIA's numbers blindly, rorqual's node
+shape may differ). Keep --gres=gpu:h100:4 if rorqual's H100 nodes are also
+4-GPU; adjust if not (and if so, you'll also need to adjust cpus-per-task
+proportionally -- the code assumes world_size == number of GPUs requested).
+
+STEP 6 -- Adapt and launch
+-------------------------------
+Copy job3_test_whitebox_multiseed.sh to job3_test_whitebox_multiseed_rorqual.sh,
+apply the #SBATCH changes from step 5, then loop over rorqual_ready_combos.csv
+(columns: backbone,dataset,seed,loss,project_name,hpo_source_project).
+
+IMPORTANT: process the list BOTTOM-TO-TOP (reverse order), not top-to-bottom.
+Use `tac` (or `tail -r` if tac isn't available) to reverse it before looping:
+
+    tac rorqual_ready_combos.csv | while IFS=',' read -r bb ds seed loss prnm hpo_src; do
+        sbatch --account=rrg-adurand \
+            --export=ALL,ACCOUNT=rrg-adurand,BCKBN="$bb",DATA="$ds",SEED="$seed",LOSS="$loss",PRNM="$prnm",HPO_SOURCE_PRNM="$hpo_src" \
+            ./job3_test_whitebox_multiseed_rorqual.sh
+    done
+
+This runs, per combo:
+    python ./distributed_experiment_final.py \
+        --mode "test-all" \
+        --loss_function "$LOSS" \
+        --dataset "$DATA" \
+        --seed "$SEED" \
+        --backbone "$BCKBN" \
+        --project_name "$PRNM" \
+        --hpo_source_project "$HPO_SOURCE_PRNM"
+
+IMPORTANT SAFETY NOTES
+--------------------------
+- Do NOT modify or delete anything under the "aip-adurand"-prefixed paths --
+  those belong to the TAMIA side of this pipeline and are actively in use.
+- PRNM values already end in "_TRADES_beta6_hpo" -- do not change this
+  naming, it must match exactly what TAMIA used so results can be merged
+  later by (backbone, dataset, project_name).
+- Each eval job took ~24 minutes on TAMIA's H100s for a similar workload;
+  expect something in that ballpark here, possibly faster if rorqual is
+  less congested (that's the whole point of doing this here).
+- Results land in results/{PRNM}/{backbone}__{dataset}__{loss}.pkl -- same
+  format as everywhere else in this repo (keys: clean_acc, Linf_acc, L2_acc,
+  L1_acc, common_acc, each a float in [0,1]).
+- If something fails or looks wrong, don't guess -- ask the user rather than
+  silently retrying with different settings, given the deadline pressure and
+  the fact this feeds directly into a paper rebuttal.
+
+WHEN DONE
+-------------
+Report back (to the user, who will relay to the TAMIA-side session if
+needed) how many of the 40 combos completed successfully, and flag any
+failures with the specific backbone/dataset. Results can be rsynced back to
+TAMIA afterward if needed for final analysis -- ask before doing that
+transfer since it writes into TAMIA's results/ directory.

@@ -1,0 +1,42 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values deit_small_patch16_224.fb_in1k__stanford_cars__TRADES_v2
+📦 Extracting /tmp/datasets/stanford_cars_processed.tar.zst into /tmp/data/393854/stanford_cars using Python zstd + tarfile...
+✅ Extraction of stanford_cars completed successfully at 2026-08-03 22:35:56
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/deit_small_patch16_224.fb_in1k.pt to /tmp/393854
+Testing step: all
+Loading HPO config from: ./configs/HPO_results/full_fine_tuning_deit_small_patch16_224_fb_in1k_TRADES_beta6_hpo/deit_small_patch16_224.fb_in1k__stanford_cars__TRADES_v2.yaml
+dataloader
+BACKBONE NAME deit_small_patch16_224.fb_in1k
+Loading timm model: deit_small_patch16_224.fb_in1k
+dataloader
+BACKBONE NAME deit_small_patch16_224.fb_in1k
+Loading timm model: deit_small_patch16_224.fb_in1k
+dataloader
+BACKBONE NAME deit_small_patch16_224.fb_in1k
+Loading timm model: deit_small_patch16_224.fb_in1k
+dataloader
+BACKBONE NAME deit_small_patch16_224.fb_in1k
+Loading timm model: deit_small_patch16_224.fb_in1k
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 2 0 80 4
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 3 0 80 4
+start batch iterations 1 0 80 4
+start batch iterations 0 0 80 4
