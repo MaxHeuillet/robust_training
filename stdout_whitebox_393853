@@ -1,0 +1,99 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values deit_small_patch16_224.fb_in1k__flowers-102__TRADES_v2
+📦 Extracting /tmp/datasets/flowers-102_processed.tar.zst into /tmp/data/393853/flowers-102 using Python zstd + tarfile...
+✅ Extraction of flowers-102 completed successfully at 2026-08-03 21:51:50
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/deit_small_patch16_224.fb_in1k.pt to /tmp/393853
+Testing step: all
+Loading HPO config from: ./configs/HPO_results/full_fine_tuning_deit_small_patch16_224_fb_in1k_TRADES_beta6_hpo/deit_small_patch16_224.fb_in1k__flowers-102__TRADES_v2.yaml
+dataloader
+BACKBONE NAME deit_small_patch16_224.fb_in1k
+Loading timm model: deit_small_patch16_224.fb_in1k
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+dataloader
+BACKBONE NAME deit_small_patch16_224.fb_in1k
+Loading timm model: deit_small_patch16_224.fb_in1k
+dataloader
+BACKBONE NAME deit_small_patch16_224.fb_in1k
+Loading timm model: deit_small_patch16_224.fb_in1k
+dataloader
+BACKBONE NAME deit_small_patch16_224.fb_in1k
+Loading timm model: deit_small_patch16_224.fb_in1k
+start batch iterations 0 0 80 4
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 1 0 80 4
+start batch iterations 2 0 80 4
+start batch iterations 3 0 80 4
+start batch iterations 0 1 80 4
+start batch iterations 1 1 80 4
+start batch iterations 2 1 80 4
+start batch iterations 3 1 80 4
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 0 0 80 4
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 1 0 80 4
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 3 0 80 4
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 2 0 80 4
+start batch iterations 0 1 80 4
+start batch iterations 1 1 80 4
+start batch iterations 3 1 80 4
+start batch iterations 2 1 80 4
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 1 0 80 4
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 0 0 80 4
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 3 0 80 4
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 2 0 80 4
+start batch iterations 1 1 80 4
+start batch iterations 0 1 80 4
+start batch iterations 3 1 80 4
+start batch iterations 2 1 80 4
+--- test-all: common ---
+end test loop (combined)
+Rank 1: Results sent to queue
+--- test-all: common ---
+--- test-all: common ---
+end test loop (combined)
+Rank 0: Results sent to queue
+end test loop (combined)
+Rank 3: Results sent to queue
+--- test-all: common ---
+end test loop (combined)
+Rank 2: Results sent to queue
+result statistics (combined) {'Linf': {1: {'nb_correct': 101, 'nb_examples': 160}, 0: {'nb_correct': 99, 'nb_examples': 160}, 3: {'nb_correct': 103, 'nb_examples': 160}, 2: {'nb_correct': 108, 'nb_examples': 160}}, 'L2': {1: {'nb_correct': 101, 'nb_examples': 160}, 0: {'nb_correct': 99, 'nb_examples': 160}, 3: {'nb_correct': 103, 'nb_examples': 160}, 2: {'nb_correct': 108, 'nb_examples': 160}}, 'L1': {1: {'nb_correct': 101, 'nb_examples': 160}, 0: {'nb_correct': 99, 'nb_examples': 160}, 3: {'nb_correct': 103, 'nb_examples': 160}, 2: {'nb_correct': 108, 'nb_examples': 160}}, 'common': {1: {'nb_correct': None, 'nb_examples': None}, 0: {'nb_correct': None, 'nb_examples': None}, 3: {'nb_correct': None, 'nb_examples': None}, 2: {'nb_correct': None, 'nb_examples': None}}} {'Linf': {1: {'nb_correct': 49, 'nb_examples': 160}, 0: {'nb_correct': 63, 'nb_examples': 160}, 3: {'nb_correct': 53, 'nb_examples': 160}, 2: {'nb_correct': 62, 'nb_examples': 160}}, 'L2': {1: {'nb_correct': 64, 'nb_examples': 160}, 0: {'nb_correct': 75, 'nb_examples': 160}, 3: {'nb_correct': 71, 'nb_examples': 160}, 2: {'nb_correct': 78, 'nb_examples': 160}}, 'L1': {1: {'nb_correct': 42, 'nb_examples': 160}, 0: {'nb_correct': 50, 'nb_examples': 160}, 3: {'nb_correct': 43, 'nb_examples': 160}, 2: {'nb_correct': 56, 'nb_examples': 160}}, 'common': {1: {'nb_correct': 76, 'nb_examples': 160}, 0: {'nb_correct': 85, 'nb_examples': 160}, 3: {'nb_correct': 62, 'nb_examples': 160}, 2: {'nb_correct': 81, 'nb_examples': 160}}}
