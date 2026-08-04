@@ -1,0 +1,23 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values vit_base_patch16_224.augreg_in1k__fgvc-aircraft-2013b__TRADES_v2
+✅ fgvc-aircraft-2013b already extracted at /tmp/data/392433/fgvc-aircraft-2013b, skipping.
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/vit_base_patch16_224.augreg_in1k.pt to /tmp/392433
+Testing step: common-only
+Loading HPO config from: ./configs/HPO_results/reviewer_TRADES_beta6/vit_base_patch16_224.augreg_in1k__fgvc-aircraft-2013b__TRADES_v2.yaml
+BACKBONE NAME vit_base_patch16_224.augreg_in1k
+Loading timm model: vit_base_patch16_224.augreg_in1k
+BACKBONE NAME vit_base_patch16_224.augreg_in1k
+Loading timm model: vit_base_patch16_224.augreg_in1k
+BACKBONE NAME vit_base_patch16_224.augreg_in1k
+Loading timm model: vit_base_patch16_224.augreg_in1k
+BACKBONE NAME vit_base_patch16_224.augreg_in1k
+Loading timm model: vit_base_patch16_224.augreg_in1k
+Rank 0: common-only results sent to queue
+Rank 1: common-only results sent to queue
+Rank 3: common-only results sent to queue
+Rank 2: common-only results sent to queue
+--- test-common-only: logged common_acc={'common_acc': 0.3098958333333333} for vit_base_patch16_224.augreg_in1k_fgvc-aircraft-2013b_TRADES_v2 ---
+  Predictions saved to: results/vit_base_patch16_224_augreg_in1k_TRADES_beta6/predictions/vit_base_patch16_224.augreg_in1k_fgvc-aircraft-2013b_TRADES_v2__common__predictions.csv (384 rows)

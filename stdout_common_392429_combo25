@@ -1,0 +1,23 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values edgenext_small.usi_in1k__flowers-102__CLASSIC_AT
+✅ flowers-102 already extracted at /tmp/data/392429/flowers-102, skipping.
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/edgenext_small.usi_in1k.pt to /tmp/392429
+Testing step: common-only
+Loading HPO config from: ./configs/HPO_results/full_fine_tuning50/edgenext_small.usi_in1k__flowers-102__CLASSIC_AT.yaml
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+Rank 2: common-only results sent to queue
+Rank 0: common-only results sent to queue
+Rank 3: common-only results sent to queue
+Rank 1: common-only results sent to queue
+--- test-common-only: logged common_acc={'common_acc': 0.3046875} for edgenext_small.usi_in1k_flowers-102_CLASSIC_AT ---
+  Predictions saved to: results/edgenext_small_usi_in1k_CLASSIC_AT_seed1/predictions/edgenext_small.usi_in1k_flowers-102_CLASSIC_AT__common__predictions.csv (512 rows)

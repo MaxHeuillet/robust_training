@@ -1,0 +1,23 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values edgenext_small.usi_in1k__uc-merced-land-use-dataset__CLASSIC_AT
+✅ uc-merced-land-use-dataset already extracted at /tmp/data/392434/uc-merced-land-use-dataset, skipping.
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/edgenext_small.usi_in1k.pt to /tmp/392434
+Testing step: common-only
+Loading HPO config from: ./configs/HPO_results/full_fine_tuning50/edgenext_small.usi_in1k__uc-merced-land-use-dataset__CLASSIC_AT.yaml
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+Rank 0: common-only results sent to queue
+Rank 1: common-only results sent to queue
+Rank 2: common-only results sent to queue
+Rank 3: common-only results sent to queue
+--- test-common-only: logged common_acc={'common_acc': 0.7285714285714285} for edgenext_small.usi_in1k_uc-merced-land-use-dataset_CLASSIC_AT ---
+  Predictions saved to: results/edgenext_small_usi_in1k_CLASSIC_AT_seed2/predictions/edgenext_small.usi_in1k_uc-merced-land-use-dataset_CLASSIC_AT__common__predictions.csv (420 rows)

@@ -1,0 +1,23 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values convnext_tiny.fb_in22k__uc-merced-land-use-dataset__TRADES_v2
+✅ uc-merced-land-use-dataset already extracted at /tmp/data/392434/uc-merced-land-use-dataset, skipping.
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/convnext_tiny.fb_in22k.pt to /tmp/392434
+Testing step: common-only
+Loading HPO config from: ./configs/HPO_results/full_fine_tuning50/convnext_tiny.fb_in22k__uc-merced-land-use-dataset__TRADES_v2.yaml
+BACKBONE NAME convnext_tiny.fb_in22k
+Loading timm model: convnext_tiny.fb_in22k
+BACKBONE NAME convnext_tiny.fb_in22k
+Loading timm model: convnext_tiny.fb_in22k
+BACKBONE NAME convnext_tiny.fb_in22k
+Loading timm model: convnext_tiny.fb_in22k
+BACKBONE NAME convnext_tiny.fb_in22k
+Loading timm model: convnext_tiny.fb_in22k
+Rank 3: common-only results sent to queue
+Rank 2: common-only results sent to queue
+Rank 1: common-only results sent to queue
+Rank 0: common-only results sent to queue
+--- test-common-only: logged common_acc={'common_acc': 0.7666666666666667} for convnext_tiny.fb_in22k_uc-merced-land-use-dataset_TRADES_v2 ---
+  Predictions saved to: results/convnext_tiny_fb_in22k_TRADES_v2_seed1/predictions/convnext_tiny.fb_in22k_uc-merced-land-use-dataset_TRADES_v2__common__predictions.csv (420 rows)

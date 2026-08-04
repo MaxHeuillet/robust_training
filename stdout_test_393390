@@ -1,0 +1,26 @@
+============================================================
+  RobustGenBench Evaluation
+  Backbone         : eva02_base_patch14_224.mim_in22k
+  Dataset          : flowers-102
+  Loss             : TRADES_v2
+  Project          : full_fine_tuning_eva02_base_patch14_224_mim_in22k_TRADES_beta6_hpo
+  HPO source       : full_fine_tuning50
+  exp_id           : eva02_base_patch14_224.mim_in22k__flowers-102__TRADES_v2
+  GPUs             : 4
+============================================================
+  num_classes=102
+
+============================================================
+  Evaluating: CLEAN
+  Downloading clean test archive: flowers-102_processed.tar.zst
+  Extracting flowers-102_processed.tar.zst → flowers-102/
+  Loaded 1000 clean images.
+  Clean img[0]: min=0.000 max=1.000 mean=0.379
+BACKBONE NAME eva02_base_patch14_224.mim_in22k
+BACKBONE NAME eva02_base_patch14_224.mim_in22k
+BACKBONE NAME eva02_base_patch14_224.mim_in22k
+BACKBONE NAME Loading timm model:eva02_base_patch14_224.mim_in22k 
+eva02_base_patch14_224.mim_in22k
+Loading timm model: eva02_base_patch14_224.mim_in22k
+Loading timm model: eva02_base_patch14_224.mim_in22k
+Loading timm model: eva02_base_patch14_224.mim_in22k

@@ -1,0 +1,30 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: False
+CUDA device count: 4
+Device name: No GPU
+serialized_values convnext_base.fb_in22k__stanford_cars__TRADES_v2
+📦 Extracting /tmp/datasets/stanford_cars_processed.tar.zst into /tmp/data/389486/stanford_cars using Python zstd + tarfile...
+✅ Extraction of stanford_cars completed successfully at 2026-07-31 00:09:21
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/convnext_base.fb_in22k.pt to /tmp/389486
+Training step
+Loading HPO config from: ./configs/HPO_results/full_fine_tuning50/convnext_base.fb_in22k__stanford_cars__TRADES_v2.yaml
+we are launching training
+torch 2.3.1
+cuda 12.2
+we are launching training
+torch 2.3.1
+cuda 12.2
+we are launching training
+torch 2.3.1
+cuda 12.2
+we are launching training
+torch 2.3.1
+cuda 12.2
+cudnncudnncudnncudnn    90201902019020190201
+
+
+set up the master adress and port
+set up the master adress and portset up the master adress and port
+set up the master adress and port
+
+

@@ -1,0 +1,2 @@
+  Running command git clone --filter=blob:none --quiet https://github.com/fra31/auto-attack /tmp/pip-req-build-b_xbbn93
+[2026-07-31T03:03:19.899] error: *** JOB 389216 ON tg10606 CANCELLED AT 2026-07-31T03:03:19 DUE to SIGNAL Terminated ***

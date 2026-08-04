@@ -25,6 +25,16 @@ def move_dataset_to_tmpdir(config):
     # same directory.
     job_id = os.environ.get("SLURM_JOB_ID", "local")
     dest_dir = tmpdir / "data" / job_id / dataset_name
+
+    # metadata.json is written last by the archive, so its presence means a
+    # prior extraction in this same job already completed successfully.
+    # Skipping re-extraction matters when one job evaluates many (backbone,
+    # dataset, seed) combos in a loop -- most combos share a dataset with an
+    # earlier iteration.
+    if (dest_dir / "metadata.json").exists():
+        print(f"✅ {dataset_name} already extracted at {dest_dir}, skipping.", flush=True)
+        return
+
     if dest_dir.exists():
         shutil.rmtree(dest_dir)
     os.makedirs(dest_dir, exist_ok=True)

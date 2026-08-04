@@ -1,0 +1,10 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values coat_tiny.in1k__uc-merced-land-use-dataset__TRADES_v2
+📦 Extracting /tmp/datasets/uc-merced-land-use-dataset_processed.tar.zst into /tmp/data/391090/uc-merced-land-use-dataset using Python zstd + tarfile...
+✅ Extraction of uc-merced-land-use-dataset completed successfully at 2026-07-31 23:37:53
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/coat_tiny.in1k.pt to /tmp/391090
+Training step
+Loading HPO config from: ./configs/HPO_results/full_fine_tuning50/coat_tiny.in1k__uc-merced-land-use-dataset__TRADES_v2.yaml

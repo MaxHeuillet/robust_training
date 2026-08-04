@@ -1,0 +1,10 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values edgenext_small.usi_in1k__uc-merced-land-use-dataset__CLASSIC_AT
+📦 Extracting /tmp/datasets/uc-merced-land-use-dataset_processed.tar.zst into /tmp/data/391183/uc-merced-land-use-dataset using Python zstd + tarfile...
+✅ Extraction of uc-merced-land-use-dataset completed successfully at 2026-08-01 00:06:27
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/edgenext_small.usi_in1k.pt to /tmp/391183
+Training step
+Loading HPO config from: ./configs/HPO_results/full_fine_tuning50/edgenext_small.usi_in1k__uc-merced-land-use-dataset__CLASSIC_AT.yaml

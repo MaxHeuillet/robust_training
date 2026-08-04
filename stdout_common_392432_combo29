@@ -1,0 +1,23 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values eva02_base_patch14_224.mim_in22k__caltech101__TRADES_v2
+✅ caltech101 already extracted at /tmp/data/392432/caltech101, skipping.
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/eva02_base_patch14_224.mim_in22k.pt to /tmp/392432
+Testing step: common-only
+Loading HPO config from: ./configs/HPO_results/reviewer_TRADES_beta6/eva02_base_patch14_224.mim_in22k__caltech101__TRADES_v2.yaml
+BACKBONE NAME eva02_base_patch14_224.mim_in22k
+Loading timm model: eva02_base_patch14_224.mim_in22k
+BACKBONE NAME eva02_base_patch14_224.mim_in22k
+Loading timm model: eva02_base_patch14_224.mim_in22k
+BACKBONE NAME eva02_base_patch14_224.mim_in22k
+Loading timm model: eva02_base_patch14_224.mim_in22k
+BACKBONE NAME eva02_base_patch14_224.mim_in22k
+Loading timm model: eva02_base_patch14_224.mim_in22k
+Rank 2: common-only results sent to queue
+Rank 0: common-only results sent to queue
+Rank 3: common-only results sent to queue
+Rank 1: common-only results sent to queue
+--- test-common-only: logged common_acc={'common_acc': 0.6979166666666666} for eva02_base_patch14_224.mim_in22k_caltech101_TRADES_v2 ---
+  Predictions saved to: results/eva02_base_patch14_224_mim_in22k_TRADES_beta6/predictions/eva02_base_patch14_224.mim_in22k_caltech101_TRADES_v2__common__predictions.csv (384 rows)

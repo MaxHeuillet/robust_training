@@ -1,0 +1,103 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values deit_tiny_patch16_224.fb_in1k__oxford-iiit-pet__TRADES_v2
+📦 Extracting /tmp/datasets/oxford-iiit-pet_processed.tar.zst into /tmp/data/393054/oxford-iiit-pet using Python zstd + tarfile...
+✅ Extraction of oxford-iiit-pet completed successfully at 2026-08-02 17:28:13
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/deit_tiny_patch16_224.fb_in1k.pt to /tmp/393054
+Testing step: all
+Loading HPO config from: ./configs/HPO_results/reviewer_TRADES_beta6/deit_tiny_patch16_224.fb_in1k__oxford-iiit-pet__TRADES_v2.yaml
+WARNING: unrecognized backbone 'deit_tiny_patch16_224.fb_in1k' for whitebox_eval_batch_size, using fallback=40.
+WARNING: unrecognized backbone 'deit_tiny_patch16_224.fb_in1k' for whitebox_eval_batch_size, using fallback=40.
+WARNING: unrecognized backbone 'deit_tiny_patch16_224.fb_in1k' for whitebox_eval_batch_size, using fallback=40.
+WARNING: unrecognized backbone 'deit_tiny_patch16_224.fb_in1k' for whitebox_eval_batch_size, using fallback=40.
+dataloader
+BACKBONE NAME deit_tiny_patch16_224.fb_in1k
+Loading timm model: deit_tiny_patch16_224.fb_in1k
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 0 0 40 7
+dataloader
+BACKBONE NAME deit_tiny_patch16_224.fb_in1k
+Loading timm model: deit_tiny_patch16_224.fb_in1k
+dataloader
+BACKBONE NAME deit_tiny_patch16_224.fb_in1k
+Loading timm model: deit_tiny_patch16_224.fb_in1k
+dataloader
+BACKBONE NAME deit_tiny_patch16_224.fb_in1k
+Loading timm model: deit_tiny_patch16_224.fb_in1k
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 1 0 40 7
+start batch iterations 3 0 40 7
+start batch iterations 2 0 40 7
+start batch iterations 0 1 40 7
+start batch iterations 2 1 40 7
+start batch iterations 1 1 40 7
+start batch iterations 3 1 40 7
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 0 0 40 7
+start batch iterations 0 1 40 7
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 1 0 40 7
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 2 0 40 7
+start batch iterations 3 0 40 7
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 0 0 40 7
+start batch iterations 3 1 40 7
+start batch iterations 2 1 40 7
+start batch iterations 1 1 40 7
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 3 0 40 7
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 2 0 40 7
+start batch iterations 1 0 40 7
+start batch iterations 0 1 40 7
+start batch iterations 3 1 40 7
+start batch iterations 1 1 40 7
+--- test-all: common ---
+start batch iterations 2 1 40 7
+--- test-all: common ---
+end test loop (combined)
+Rank 3: Results sent to queue
+end test loop (combined)
+Rank 0: Results sent to queue
+--- test-all: common ---
+--- test-all: common ---
+end test loop (combined)
+Rank 1: Results sent to queue
+end test loop (combined)
+Rank 2: Results sent to queue
+result statistics (combined) {'Linf': {3: {'nb_correct': 40, 'nb_examples': 80}, 0: {'nb_correct': 48, 'nb_examples': 80}, 1: {'nb_correct': 46, 'nb_examples': 80}, 2: {'nb_correct': 46, 'nb_examples': 80}}, 'L2': {3: {'nb_correct': 40, 'nb_examples': 80}, 0: {'nb_correct': 48, 'nb_examples': 80}, 1: {'nb_correct': 46, 'nb_examples': 80}, 2: {'nb_correct': 46, 'nb_examples': 80}}, 'L1': {3: {'nb_correct': 40, 'nb_examples': 80}, 0: {'nb_correct': 48, 'nb_examples': 80}, 1: {'nb_correct': 46, 'nb_examples': 80}, 2: {'nb_correct': 46, 'nb_examples': 80}}, 'common': {3: {'nb_correct': None, 'nb_examples': None}, 0: {'nb_correct': None, 'nb_examples': None}, 1: {'nb_correct': None, 'nb_examples': None}, 2: {'nb_correct': None, 'nb_examples': None}}} {'Linf': {3: {'nb_correct': 3, 'nb_examples': 80}, 0: {'nb_correct': 11, 'nb_examples': 80}, 1: {'nb_correct': 8, 'nb_examples': 80}, 2: {'nb_correct': 12, 'nb_examples': 80}}, 'L2': {3: {'nb_correct': 6, 'nb_examples': 80}, 0: {'nb_correct': 20, 'nb_examples': 80}, 1: {'nb_correct': 14, 'nb_examples': 80}, 2: {'nb_correct': 13, 'nb_examples': 80}}, 'L1': {3: {'nb_correct': 1, 'nb_examples': 80}, 0: {'nb_correct': 9, 'nb_examples': 80}, 1: {'nb_correct': 3, 'nb_examples': 80}, 2: {'nb_correct': 4, 'nb_examples': 80}}, 'common': {3: {'nb_correct': 25, 'nb_examples': 80}, 0: {'nb_correct': 30, 'nb_examples': 80}, 1: {'nb_correct': 24, 'nb_examples': 80}, 2: {'nb_correct': 22, 'nb_examples': 80}}}

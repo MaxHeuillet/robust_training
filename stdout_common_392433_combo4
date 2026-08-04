@@ -1,0 +1,23 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values coatnet_2_rw_224.sw_in12k_ft_in1k__fgvc-aircraft-2013b__TRADES_v2
+✅ fgvc-aircraft-2013b already extracted at /tmp/data/392433/fgvc-aircraft-2013b, skipping.
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/coatnet_2_rw_224.sw_in12k_ft_in1k.pt to /tmp/392433
+Testing step: common-only
+Loading HPO config from: ./configs/HPO_results/full_fine_tuning50/coatnet_2_rw_224.sw_in12k_ft_in1k__fgvc-aircraft-2013b__TRADES_v2.yaml
+BACKBONE NAME coatnet_2_rw_224.sw_in12k_ft_in1k
+Loading timm model: coatnet_2_rw_224.sw_in12k_ft_in1k
+BACKBONE NAME coatnet_2_rw_224.sw_in12k_ft_in1k
+Loading timm model: coatnet_2_rw_224.sw_in12k_ft_in1k
+BACKBONE NAME coatnet_2_rw_224.sw_in12k_ft_in1k
+Loading timm model: coatnet_2_rw_224.sw_in12k_ft_in1k
+BACKBONE NAME coatnet_2_rw_224.sw_in12k_ft_in1k
+Loading timm model: coatnet_2_rw_224.sw_in12k_ft_in1k
+Rank 3: common-only results sent to queue
+Rank 1: common-only results sent to queue
+Rank 0: common-only results sent to queue
+Rank 2: common-only results sent to queue
+--- test-common-only: logged common_acc={'common_acc': 0.4609375} for coatnet_2_rw_224.sw_in12k_ft_in1k_fgvc-aircraft-2013b_TRADES_v2 ---
+  Predictions saved to: results/coatnet_2_rw_224_sw_in12k_ft_in1k_TRADES_v2_seed1/predictions/coatnet_2_rw_224.sw_in12k_ft_in1k_fgvc-aircraft-2013b_TRADES_v2__common__predictions.csv (128 rows)

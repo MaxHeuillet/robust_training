@@ -1,0 +1,38 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values convnext_base.fb_in22k__uc-merced-land-use-dataset__TRADES_v2
+📦 Extracting /tmp/datasets/uc-merced-land-use-dataset_processed.tar.zst into /tmp/data/uc-merced-land-use-dataset using Python zstd + tarfile...
+✅ Extraction of uc-merced-land-use-dataset completed successfully at 2026-07-30 23:15:03
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/convnext_base.fb_in22k.pt to /tmp
+Training step
+Loading HPO config from: ./configs/HPO_results/full_fine_tuning50/convnext_base.fb_in22k__uc-merced-land-use-dataset__TRADES_v2.yaml
+we are launching training
+torch 2.13.0
+cuda 13.2
+we are launching training
+torch 2.13.0
+we are launching trainingcuda
+ 13.2
+torch 2.13.0
+cuda 13.2
+we are launching training
+torch 2.13.0
+cuda 13.2
+cudnn 92101
+set up the master adress and port
+cudnn 92101
+set up the master adress and port
+cudnn 92101
+set up the master adress and port
+cudnn 92101
+set up the master adress and port
+init process group ok
+### load model
+init process group ok
+### load model
+init process group ok
+### load model
+init process group ok
+### load model

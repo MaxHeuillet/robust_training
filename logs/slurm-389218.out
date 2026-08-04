@@ -1,0 +1,113 @@
+Looking in links: /cvmfs/soft.computecanada.ca/custom/python/wheelhouse/gentoo2023/x86-64-v4, /cvmfs/soft.computecanada.ca/custom/python/wheelhouse/gentoo2023/x86-64-v3, /cvmfs/soft.computecanada.ca/custom/python/wheelhouse/gentoo2023/generic, /cvmfs/soft.computecanada.ca/custom/python/wheelhouse/generic
+Collecting git+https://github.com/fra31/auto-attack (from -r ./requirements.txt (line 21))
+  Cloning https://github.com/fra31/auto-attack to /tmp/pip-req-build-iscr5ygy
+  Resolved https://github.com/fra31/auto-attack to commit a39220048b3c9f2cca9a4d3a54604793c68eca7e
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Processing /cvmfs/soft.computecanada.ca/custom/python/wheelhouse/gentoo2023/x86-64-v3/torch-2.3.1+computecanada-cp311-cp311-linux_x86_64.whl (from -r ./requirements.txt (line 1))
+Processing /cvmfs/soft.computecanada.ca/custom/python/wheelhouse/gentoo2023/generic/torchvision-0.18.1+torch23.computecanada-cp311-cp311-linux_x86_64.whl (from -r ./requirements.txt (line 2))
+Processing /cvmfs/soft.computecanada.ca/custom/python/wheelhouse/gentoo2023/x86-64-v3/torchaudio-2.3.1+computecanada-cp311-cp311-linux_x86_64.whl (from -r ./requirements.txt (line 3))
+Collecting open_clip_torch==2.31.0 (from -r ./requirements.txt (line 4))
+  Obtaining dependency information for open_clip_torch==2.31.0 from https://files.pythonhosted.org/packages/02/91/8b1da3a397948edb8082f2838a24de7dda807adae6cbfcd56db475b9df16/open_clip_torch-2.31.0-py3-none-any.whl.metadata
+  Using cached open_clip_torch-2.31.0-py3-none-any.whl.metadata (31 kB)
+Processing /cvmfs/soft.computecanada.ca/custom/python/wheelhouse/generic/peft-0.11.1+computecanada-py3-none-any.whl (from -r ./requirements.txt (line 5))
+Processing /cvmfs/soft.computecanada.ca/custom/python/wheelhouse/generic/timm-1.0.3+computecanada-py3-none-any.whl (from -r ./requirements.txt (line 6))
+Processing /cvmfs/soft.computecanada.ca/custom/python/wheelhouse/generic/transformers-4.41.2+computecanada-py3-none-any.whl (from -r ./requirements.txt (line 7))
+Processing /cvmfs/soft.computecanada.ca/custom/python/wheelhouse/generic/huggingface_hub-0.23.4+computecanada-py3-none-any.whl (from -r ./requirements.txt (line 8))
+Requirement already satisfied: Pillow==10.3.0 in /cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/Compiler/gcccore/scipy-stack/2024a/lib/python3.11/site-packages (from -r ./requirements.txt (line 9)) (10.3.0+computecanada)
+Requirement already satisfied: numpy==1.26.4 in /cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/Compiler/gcccore/scipy-stack/2024a/lib/python3.11/site-packages (from -r ./requirements.txt (line 10)) (1.26.4+computecanada)
+Processing /cvmfs/soft.computecanada.ca/custom/python/wheelhouse/gentoo2023/x86-64-v3/scikit_image-0.22.0+computecanada-cp311-cp311-linux_x86_64.whl (from -r ./requirements.txt (line 11))
+Requirement already satisfied: scipy==1.13.1 in /cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/Compiler/gcccore/scipy-stack/2024a/lib/python3.11/site-packages (from -r ./requirements.txt (line 12)) (1.13.1+computecanada)
+Processing /cvmfs/soft.computecanada.ca/custom/python/wheelhouse/gentoo2023/generic/scikit_learn-1.4.2+computecanada-cp311-cp311-linux_x86_64.whl (from -r ./requirements.txt (line 13))
+Processing /cvmfs/soft.computecanada.ca/custom/python/wheelhouse/generic/kaggle-1.6.17-py3-none-any.whl (from -r ./requirements.txt (line 14))
+Processing /cvmfs/soft.computecanada.ca/custom/python/wheelhouse/generic/datasets-2.20.0+computecanada-py3-none-any.whl (from -r ./requirements.txt (line 15))
+Processing /cvmfs/soft.computecanada.ca/custom/python/wheelhouse/gentoo2023/generic/numba-0.60.0+computecanada-cp311-cp311-linux_x86_64.whl (from -r ./requirements.txt (line 16))
+Processing /cvmfs/soft.computecanada.ca/custom/python/wheelhouse/generic/omegaconf-2.3.0+computecanada-py3-none-any.whl (from -r ./requirements.txt (line 17))
+Collecting comet-ml==3.44.4 (from -r ./requirements.txt (line 18))
+  Obtaining dependency information for comet-ml==3.44.4 from https://files.pythonhosted.org/packages/78/20/e216cb8e1bda934d9b67bf4e375f8d5cef4e2c7e2633ebb8fd4bfe2a701a/comet_ml-3.44.4-py3-none-any.whl.metadata
+  Using cached comet_ml-3.44.4-py3-none-any.whl.metadata (3.9 kB)
+Processing /cvmfs/soft.computecanada.ca/custom/python/wheelhouse/generic/ray-2.41.0+computecanada-cp311-cp311-linux_x86_64.whl (from -r ./requirements.txt (line 19))
+Processing /cvmfs/soft.computecanada.ca/custom/python/wheelhouse/generic/hydra_core-1.3.2+computecanada-py3-none-any.whl (from -r ./requirements.txt (line 20))
+Processing /cvmfs/soft.computecanada.ca/custom/python/wheelhouse/gentoo2023/generic/zstandard-0.25.0+computecanada-cp311-cp311-linux_x86_64.whl (from -r ./requirements.txt (line 23))
+Processing /cvmfs/soft.computecanada.ca/custom/python/wheelhouse/generic/grpcio-1.82.1+computecanada-cp311-cp311-linux_x86_64.whl (from -r ./requirements.txt (line 24))
+Processing /cvmfs/soft.computecanada.ca/custom/python/wheelhouse/generic/aiohttp_cors-0.8.1+computecanada-py3-none-any.whl (from -r ./requirements.txt (line 25))
+Requirement already satisfied: matplotlib in /cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/Compiler/gcccore/scipy-stack/2024a/lib/python3.11/site-packages (from -r ./requirements.txt (line 28)) (3.9.0+computecanada)
+Processing /cvmfs/soft.computecanada.ca/custom/python/wheelhouse/generic/statsmodels-0.14.6+computecanada-cp311-cp311-linux_x86_64.whl (from -r ./requirements.txt (line 29))
+Collecting plotly (from -r ./requirements.txt (line 30))
+  Obtaining dependency information for plotly from https://files.pythonhosted.org/packages/24/18/d8544811ab076f876c4892b3714f5b0dad335e1dc33aef826df431b8325d/plotly-6.9.0-py3-none-any.whl.metadata
+  Using cached plotly-6.9.0-py3-none-any.whl.metadata (9.0 kB)
+Processing /cvmfs/soft.computecanada.ca/custom/python/wheelhouse/generic/nbformat-5.10.4+computecanada-py3-none-any.whl (from -r ./requirements.txt (line 31))
+Processing /cvmfs/soft.computecanada.ca/custom/python/wheelhouse/generic/seaborn-0.13.2+computecanada-py3-none-any.whl (from -r ./requirements.txt (line 32))
+Processing /cvmfs/soft.computecanada.ca/custom/python/wheelhouse/generic/kaleido-1.3.0+computecanada-py3-none-any.whl (from -r ./requirements.txt (line 33))
+Collecting anthropic (from -r ./requirements.txt (line 35))
+  Obtaining dependency information for anthropic from https://files.pythonhosted.org/packages/63/af/0f5db57b9397a0f3b7fc204cbef143401a7cadaf982330f97f1ce3d39f34/anthropic-0.120.2-py3-none-any.whl.metadata
+  Using cached anthropic-0.120.2-py3-none-any.whl.metadata (3.3 kB)
+
+======== GPU REPORT ========
+
+==============NVSMI LOG==============
+
+Timestamp                                              : Thu Jul 30 23:03:20 2026
+Driver Version                                         : 580.159.04
+CUDA Version                                           : 13.0
+
+Attached GPUs                                          : 4
+GPU 00000000:4E:00.0
+    Accounting Mode                                    : Enabled
+    Accounting Mode Buffer Size                        : 4000
+    Accounted Processes                                : None
+
+GPU 00000000:5F:00.0
+    Accounting Mode                                    : Enabled
+    Accounting Mode Buffer Size                        : 4000
+    Accounted Processes                                : None
+
+GPU 00000000:CB:00.0
+    Accounting Mode                                    : Enabled
+    Accounting Mode Buffer Size                        : 4000
+    Accounted Processes                                : None
+
+GPU 00000000:DB:00.0
+    Accounting Mode                                    : Enabled
+    Accounting Mode Buffer Size                        : 4000
+    Accounted Processes                                : None
+
+Collecting google-genai (from -r ./requirements.txt (line 36))
+  Obtaining dependency information for google-genai from https://files.pythonhosted.org/packages/3b/c6/f111056110030b1a5fb949687d7f93c2b4e8996f6494ae32efb049482796/google_genai-2.16.0-py3-none-any.whl.metadata
+  Using cached google_genai-2.16.0-py3-none-any.whl.metadata (56 kB)
+Thu Jul 30 23:03:20 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 580.159.04             Driver Version: 580.159.04     CUDA Version: 13.0     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA H100 80GB HBM3          On  |   00000000:4E:00.0 Off |                    0 |
+| N/A   37C    P0             72W /  700W |       0MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   1  NVIDIA H100 80GB HBM3          On  |   00000000:5F:00.0 Off |                    0 |
+| N/A   37C    P0             70W /  700W |       0MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   2  NVIDIA H100 80GB HBM3          On  |   00000000:CB:00.0 Off |                    0 |
+| N/A   37C    P0             71W /  700W |       0MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   3  NVIDIA H100 80GB HBM3          On  |   00000000:DB:00.0 Off |                    0 |
+| N/A   37C    P0             71W /  700W |       0MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+

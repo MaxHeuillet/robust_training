@@ -1,0 +1,20 @@
+[W802 22:10:49.093373612 CUDAAllocatorConfig.h:28] Warning: expandable_segments not supported on this platform (function operator())
+[W802 22:10:49.113958720 CUDAAllocatorConfig.h:28] Warning: expandable_segments not supported on this platform (function operator())
+[W802 22:10:51.590944994 CUDAAllocatorConfig.h:28] Warning: expandable_segments not supported on this platform (function operator())
+[W802 22:10:51.595080164 CUDAAllocatorConfig.h:28] Warning: expandable_segments not supported on this platform (function operator())
+/project/6102313/mheuill/robust_training/distributed_experiment_final.py:320: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = GradScaler()
+/project/6102313/mheuill/robust_training/distributed_experiment_final.py:320: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = GradScaler()
+/project/6102313/mheuill/robust_training/distributed_experiment_final.py:320: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = GradScaler()
+/project/6102313/mheuill/robust_training/distributed_experiment_final.py:320: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = GradScaler()
+/project/6102313/mheuill/robust_training/distributed_experiment_final.py:344: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with autocast():
+/project/6102313/mheuill/robust_training/distributed_experiment_final.py:344: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with autocast():
+/project/6102313/mheuill/robust_training/distributed_experiment_final.py:344: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with autocast():
+/project/6102313/mheuill/robust_training/distributed_experiment_final.py:344: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with autocast():

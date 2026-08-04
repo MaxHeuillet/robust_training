@@ -1,0 +1,320 @@
+============================================================
+  RobustGenBench Evaluation
+  Backbone         : coatnet_2_rw_224.sw_in12k
+  Dataset          : flowers-102
+  Loss             : TRADES_v2
+  Project          : coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3
+  HPO source       : full_fine_tuning50
+  exp_id           : coatnet_2_rw_224.sw_in12k__flowers-102__TRADES_v2
+  GPUs             : 4
+============================================================
+  num_classes=102
+
+============================================================
+  Evaluating: CLEAN
+  Downloading clean test archive: flowers-102_processed.tar.zst
+  Extracting flowers-102_processed.tar.zst → flowers-102/
+  Loaded 1000 clean images.
+  Clean img[0]: min=0.000 max=1.000 mean=0.379
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Clean accuracy: 898/1000 = 0.8980
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/predictions/coatnet_2_rw_224.sw_in12k__flowers-102__TRADES_v2__clean__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard
+  Downloading: adversarial/zeroshot_clip_vitb16_laion2b/linf_eps4_autoattack_standard/flowers-102__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/flowers-102/flowers-102__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard_processed.tar.zst
+  Extracting flowers-102__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard_processed.tar.zst → flowers-102__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.377
+BACKBONE NAMEBACKBONE NAMEBACKBONE NAME   coatnet_2_rw_224.sw_in12kcoatnet_2_rw_224.sw_in12kcoatnet_2_rw_224.sw_in12k
+
+
+Loading timm model: coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Result: 897/1000 = 0.8970
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/predictions/coatnet_2_rw_224.sw_in12k__flowers-102__TRADES_v2__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard
+  Downloading: adversarial/zeroshot_clip_vitb16_laion2b/l2_eps2_autoattack_standard/flowers-102__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/flowers-102/flowers-102__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard_processed.tar.zst
+  Extracting flowers-102__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard_processed.tar.zst → flowers-102__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.377
+BACKBONE NAMEBACKBONE NAME  coatnet_2_rw_224.sw_in12kcoatnet_2_rw_224.sw_in12k
+
+BACKBONE NAMELoading timm model:  Loading timm model:coatnet_2_rw_224.sw_in12kcoatnet_2_rw_224.sw_in12k 
+
+coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Result: 898/1000 = 0.8980
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/predictions/coatnet_2_rw_224.sw_in12k__flowers-102__TRADES_v2__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard
+  Downloading: adversarial/zeroshot_clip_vitb16_laion2b/l1_eps75_autoattack_standard/flowers-102__zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/flowers-102/flowers-102__zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard_processed.tar.zst
+  Extracting flowers-102__zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard_processed.tar.zst → flowers-102__zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.378
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+BACKBONE NAMEBACKBONE NAMELoading timm model:   coatnet_2_rw_224.sw_in12kcoatnet_2_rw_224.sw_in12kcoatnet_2_rw_224.sw_in12k
+
+
+Loading timm model: coatnet_2_rw_224.sw_in12k
+Loading timm model:Loading timm model:  coatnet_2_rw_224.sw_in12kcoatnet_2_rw_224.sw_in12k
+
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Result: 898/1000 = 0.8980
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/predictions/coatnet_2_rw_224.sw_in12k__flowers-102__TRADES_v2__zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard
+  Downloading: adversarial/zeroshot_clip_vith14_laion2b/linf_eps4_autoattack_standard/flowers-102__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/flowers-102/flowers-102__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard_processed.tar.zst
+  Extracting flowers-102__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard_processed.tar.zst → flowers-102__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.377
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+BACKBONE NAMELoading timm model:  coatnet_2_rw_224.sw_in12kcoatnet_2_rw_224.sw_in12k
+
+Loading timm model: coatnet_2_rw_224.sw_in12k
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Result: 896/1000 = 0.8960
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/predictions/coatnet_2_rw_224.sw_in12k__flowers-102__TRADES_v2__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_clip_vith14_laion2b__l2_eps2_autoattack_standard
+  Downloading: adversarial/zeroshot_clip_vith14_laion2b/l2_eps2_autoattack_standard/flowers-102__zeroshot_clip_vith14_laion2b__l2_eps2_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/flowers-102/flowers-102__zeroshot_clip_vith14_laion2b__l2_eps2_autoattack_standard_processed.tar.zst
+  Extracting flowers-102__zeroshot_clip_vith14_laion2b__l2_eps2_autoattack_standard_processed.tar.zst → flowers-102__zeroshot_clip_vith14_laion2b__l2_eps2_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.377
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Result: 897/1000 = 0.8970
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/predictions/coatnet_2_rw_224.sw_in12k__flowers-102__TRADES_v2__zeroshot_clip_vith14_laion2b__l2_eps2_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard
+  Downloading: adversarial/zeroshot_clip_vith14_laion2b/l1_eps75_autoattack_standard/flowers-102__zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/flowers-102/flowers-102__zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard_processed.tar.zst
+  Extracting flowers-102__zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard_processed.tar.zst → flowers-102__zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.378
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+BACKBONE NAMEBACKBONE NAME  coatnet_2_rw_224.sw_in12kcoatnet_2_rw_224.sw_in12k
+
+Loading timm model: coatnet_2_rw_224.sw_in12k
+Loading timm model:Loading timm model:  coatnet_2_rw_224.sw_in12kcoatnet_2_rw_224.sw_in12k
+
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Result: 898/1000 = 0.8980
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/predictions/coatnet_2_rw_224.sw_in12k__flowers-102__TRADES_v2__zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_metaclip_vith14_fullcc2_5b__linf_eps4_autoattack_standard
+  Downloading: adversarial/zeroshot_metaclip_vith14_fullcc2_5b/linf_eps4_autoattack_standard/flowers-102__zeroshot_metaclip_vith14_fullcc2_5b__linf_eps4_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/flowers-102/flowers-102__zeroshot_metaclip_vith14_fullcc2_5b__linf_eps4_autoattack_standard_processed.tar.zst
+  Extracting flowers-102__zeroshot_metaclip_vith14_fullcc2_5b__linf_eps4_autoattack_standard_processed.tar.zst → flowers-102__zeroshot_metaclip_vith14_fullcc2_5b__linf_eps4_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.377
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Result: 897/1000 = 0.8970
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/predictions/coatnet_2_rw_224.sw_in12k__flowers-102__TRADES_v2__zeroshot_metaclip_vith14_fullcc2_5b__linf_eps4_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard
+  Downloading: adversarial/zeroshot_metaclip_vith14_fullcc2_5b/l2_eps2_autoattack_standard/flowers-102__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/flowers-102/flowers-102__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard_processed.tar.zst
+  Extracting flowers-102__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard_processed.tar.zst → flowers-102__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.377
+BACKBONE NAMEBACKBONE NAME  coatnet_2_rw_224.sw_in12kcoatnet_2_rw_224.sw_in12k
+
+Loading timm model:Loading timm model:  coatnet_2_rw_224.sw_in12kcoatnet_2_rw_224.sw_in12k
+
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Result: 897/1000 = 0.8970
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/predictions/coatnet_2_rw_224.sw_in12k__flowers-102__TRADES_v2__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard
+  Downloading: adversarial/zeroshot_metaclip_vith14_fullcc2_5b/l1_eps75_autoattack_standard/flowers-102__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/flowers-102/flowers-102__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard_processed.tar.zst
+  Extracting flowers-102__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard_processed.tar.zst → flowers-102__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.378
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Result: 898/1000 = 0.8980
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/predictions/coatnet_2_rw_224.sw_in12k__flowers-102__TRADES_v2__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_siglip2_so400m_patch14_384__linf_eps4_autoattack_standard
+  Downloading: adversarial/zeroshot_siglip2_so400m_patch14_384/linf_eps4_autoattack_standard/flowers-102__zeroshot_siglip2_so400m_patch14_384__linf_eps4_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/flowers-102/flowers-102__zeroshot_siglip2_so400m_patch14_384__linf_eps4_autoattack_standard_processed.tar.zst
+  Extracting flowers-102__zeroshot_siglip2_so400m_patch14_384__linf_eps4_autoattack_standard_processed.tar.zst → flowers-102__zeroshot_siglip2_so400m_patch14_384__linf_eps4_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.377
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Result: 897/1000 = 0.8970
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/predictions/coatnet_2_rw_224.sw_in12k__flowers-102__TRADES_v2__zeroshot_siglip2_so400m_patch14_384__linf_eps4_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_siglip2_so400m_patch14_384__l2_eps2_autoattack_standard
+  Downloading: adversarial/zeroshot_siglip2_so400m_patch14_384/l2_eps2_autoattack_standard/flowers-102__zeroshot_siglip2_so400m_patch14_384__l2_eps2_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/flowers-102/flowers-102__zeroshot_siglip2_so400m_patch14_384__l2_eps2_autoattack_standard_processed.tar.zst
+  Extracting flowers-102__zeroshot_siglip2_so400m_patch14_384__l2_eps2_autoattack_standard_processed.tar.zst → flowers-102__zeroshot_siglip2_so400m_patch14_384__l2_eps2_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.377
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Result: 898/1000 = 0.8980
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/predictions/coatnet_2_rw_224.sw_in12k__flowers-102__TRADES_v2__zeroshot_siglip2_so400m_patch14_384__l2_eps2_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard
+  Downloading: adversarial/zeroshot_siglip2_so400m_patch14_384/l1_eps75_autoattack_standard/flowers-102__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/flowers-102/flowers-102__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard_processed.tar.zst
+  Extracting flowers-102__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard_processed.tar.zst → flowers-102__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.378
+BACKBONE NAMEBACKBONE NAME  coatnet_2_rw_224.sw_in12kcoatnet_2_rw_224.sw_in12k
+
+BACKBONE NAMEBACKBONE NAME  coatnet_2_rw_224.sw_in12kcoatnet_2_rw_224.sw_in12k
+
+Loading timm model:Loading timm model:  coatnet_2_rw_224.sw_in12kcoatnet_2_rw_224.sw_in12k
+
+Loading timm model: coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Result: 898/1000 = 0.8980
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/predictions/coatnet_2_rw_224.sw_in12k__flowers-102__TRADES_v2__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: common__common_severity3
+  Downloading: adversarial/common/common_severity3/flowers-102__common_severity3_processed.tar.zst
+  Saved to: /tmp/adv_archives/flowers-102/flowers-102__common_severity3_processed.tar.zst
+  Extracting flowers-102__common_severity3_processed.tar.zst → flowers-102__common_severity3/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.359
+BACKBONE NAMEBACKBONE NAME BACKBONE NAME coatnet_2_rw_224.sw_in12k coatnet_2_rw_224.sw_in12k
+coatnet_2_rw_224.sw_in12k
+
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+Loading timm model:Loading timm model:  coatnet_2_rw_224.sw_in12kLoading timm model:coatnet_2_rw_224.sw_in12k
+ 
+coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_flowers-102_TRADES_v2.pt
+  Result: 723/1000 = 0.7230
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/predictions/coatnet_2_rw_224.sw_in12k__flowers-102__TRADES_v2__common__common_severity3__predictions.csv (1000 rows)
+
+All done. Results saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k__flowers-102__TRADES_v2__robustgenbench_results.csv

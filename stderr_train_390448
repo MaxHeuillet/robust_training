@@ -1,0 +1,71 @@
+[W731 14:44:12.207291012 CUDAAllocatorConfig.h:28] Warning: expandable_segments not supported on this platform (function operator())
+[W731 14:44:13.692713968 CUDAAllocatorConfig.h:28] Warning: expandable_segments not supported on this platform (function operator())
+[W731 14:44:13.737052455 CUDAAllocatorConfig.h:28] Warning: expandable_segments not supported on this platform (function operator())
+[W731 14:44:13.769338565 CUDAAllocatorConfig.h:28] Warning: expandable_segments not supported on this platform (function operator())
+/project/6102313/mheuill/robust_training/distributed_experiment_final.py:206: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = GradScaler()
+/project/6102313/mheuill/robust_training/distributed_experiment_final.py:206: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = GradScaler()
+/project/6102313/mheuill/robust_training/distributed_experiment_final.py:206: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = GradScaler()
+/project/6102313/mheuill/robust_training/distributed_experiment_final.py:206: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = GradScaler()
+/project/6102313/mheuill/robust_training/distributed_experiment_final.py:230: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with autocast():
+/project/6102313/mheuill/robust_training/distributed_experiment_final.py:230: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with autocast():
+/project/6102313/mheuill/robust_training/distributed_experiment_final.py:230: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with autocast():
+/project/6102313/mheuill/robust_training/distributed_experiment_final.py:230: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with autocast():
+/tmp/myenv_reprod/lib/python3.11/site-packages/torch/autograd/graph.py:825: UserWarning: Grad strides do not match bucket view strides. This may indicate grad was not created according to the gradient layout contract, or that the param's strides changed since DDP was constructed.  This is not an error, but may impair performance.
+grad.sizes() = [1024, 4096, 1, 1], strides() = [4096, 1, 4096, 4096]
+bucket_view.sizes() = [1024, 4096, 1, 1], strides() = [4096, 1, 1, 1] (Triggered internally at /shared_tmp/build_wheels_tmp.337748/python-3.11/torch/torch/csrc/distributed/c10d/reducer.cpp:327.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+/tmp/myenv_reprod/lib/python3.11/site-packages/torch/autograd/graph.py:825: UserWarning: Grad strides do not match bucket view strides. This may indicate grad was not created according to the gradient layout contract, or that the param's strides changed since DDP was constructed.  This is not an error, but may impair performance.
+grad.sizes() = [1024, 4096, 1, 1], strides() = [4096, 1, 4096, 4096]
+bucket_view.sizes() = [1024, 4096, 1, 1], strides() = [4096, 1, 1, 1] (Triggered internally at /shared_tmp/build_wheels_tmp.337748/python-3.11/torch/torch/csrc/distributed/c10d/reducer.cpp:327.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+/tmp/myenv_reprod/lib/python3.11/site-packages/torch/autograd/graph.py:825: UserWarning: Grad strides do not match bucket view strides. This may indicate grad was not created according to the gradient layout contract, or that the param's strides changed since DDP was constructed.  This is not an error, but may impair performance.
+grad.sizes() = [1024, 4096, 1, 1], strides() = [4096, 1, 4096, 4096]
+bucket_view.sizes() = [1024, 4096, 1, 1], strides() = [4096, 1, 1, 1] (Triggered internally at /shared_tmp/build_wheels_tmp.337748/python-3.11/torch/torch/csrc/distributed/c10d/reducer.cpp:327.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+/tmp/myenv_reprod/lib/python3.11/site-packages/torch/autograd/graph.py:825: UserWarning: Grad strides do not match bucket view strides. This may indicate grad was not created according to the gradient layout contract, or that the param's strides changed since DDP was constructed.  This is not an error, but may impair performance.
+grad.sizes() = [1024, 4096, 1, 1], strides() = [4096, 1, 4096, 4096]
+bucket_view.sizes() = [1024, 4096, 1, 1], strides() = [4096, 1, 1, 1] (Triggered internally at /shared_tmp/build_wheels_tmp.337748/python-3.11/torch/torch/csrc/distributed/c10d/reducer.cpp:327.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+[rank0]:[W731 20:55:38.118970499 ProcessGroupNCCL.cpp:1250] Warning: WARNING: process group has NOT been destroyed before we destruct ProcessGroupNCCL. On normal program exit, the application should call destroy_process_group to ensure that any pending NCCL operations have finished in this process. In rare cases this process can exit before this point and block the progress of another member of the process group. This constraint has always been present,  but this warning has only been added since PyTorch 2.4 (function operator())
+Traceback (most recent call last):
+  File "/project/6102313/mheuill/robust_training/./distributed_experiment_final.py", line 659, in <module>
+    main()
+  File "/project/6102313/mheuill/robust_training/./distributed_experiment_final.py", line 629, in main
+    mp.spawn(training_wrapper, args=(experiment, config_optimal),
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/multiprocessing/spawn.py", line 328, in spawn
+    return start_processes(fn, args, nprocs, join, daemon, start_method="spawn")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/multiprocessing/spawn.py", line 284, in start_processes
+    while not context.join():
+              ^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/multiprocessing/spawn.py", line 203, in join
+    raise ProcessRaisedException(msg, error_index, failed_process.pid)
+torch.multiprocessing.spawn.ProcessRaisedException: 
+
+-- Process 0 terminated with the following error:
+Traceback (most recent call last):
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/multiprocessing/spawn.py", line 90, in _wrap
+    fn(i, *args)
+  File "/project/6102313/mheuill/robust_training/distributed_experiment_final.py", line 569, in training_wrapper
+    experiment.training(config, rank=rank)
+  File "/project/6102313/mheuill/robust_training/distributed_experiment_final.py", line 187, in training
+    shutil.copy2(str(model_name), str(dest))
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/Compiler/gcccore/python/3.11.5/lib/python3.11/shutil.py", line 436, in copy2
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/Compiler/gcccore/python/3.11.5/lib/python3.11/shutil.py", line 269, in copyfile
+    _fastcopy_sendfile(fsrc, fdst)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/Compiler/gcccore/python/3.11.5/lib/python3.11/shutil.py", line 164, in _fastcopy_sendfile
+    raise err
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/Compiler/gcccore/python/3.11.5/lib/python3.11/shutil.py", line 144, in _fastcopy_sendfile
+    sent = os.sendfile(outfd, infd, offset, blocksize)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: [Errno 122] Disk quota exceeded: '/tmp/390448/coatnet_2_rw_224.sw_in12k_caltech101_TRADES_v2.pt' -> '/home/m/mheuill/scratch/trained_state_dicts/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed3/coatnet_2_rw_224.sw_in12k_caltech101_TRADES_v2.pt'
+

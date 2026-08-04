@@ -1,0 +1,321 @@
+============================================================
+  RobustGenBench Evaluation
+  Backbone         : convnext_tiny.fb_in22k_ft_in1k
+  Dataset          : caltech101
+  Loss             : TRADES_v2
+  Project          : convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2
+  HPO source       : full_fine_tuning50
+  exp_id           : convnext_tiny.fb_in22k_ft_in1k__caltech101__TRADES_v2
+  GPUs             : 4
+============================================================
+  num_classes=101
+  Deleted existing CSV for fresh evaluation.
+
+============================================================
+  Evaluating: CLEAN
+  Downloading clean test archive: caltech101_processed.tar.zst
+  Extracting caltech101_processed.tar.zst → caltech101/
+  Loaded 1000 clean images.
+  Clean img[0]: min=0.000 max=1.000 mean=0.933
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME BACKBONE NAMEconvnext_tiny.fb_in22k_ft_in1k 
+convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Clean accuracy: 951/1000 = 0.9510
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/predictions/convnext_tiny.fb_in22k_ft_in1k__caltech101__TRADES_v2__clean__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard
+  Downloading: adversarial/zeroshot_clip_vitb16_laion2b/linf_eps4_autoattack_standard/caltech101__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/caltech101/caltech101__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard_processed.tar.zst
+  Extracting caltech101__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard_processed.tar.zst → caltech101__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.925
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Result: 951/1000 = 0.9510
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/predictions/convnext_tiny.fb_in22k_ft_in1k__caltech101__TRADES_v2__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard
+  Downloading: adversarial/zeroshot_clip_vitb16_laion2b/l2_eps2_autoattack_standard/caltech101__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/caltech101/caltech101__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard_processed.tar.zst
+  Extracting caltech101__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard_processed.tar.zst → caltech101__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.928
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Result: 951/1000 = 0.9510
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/predictions/convnext_tiny.fb_in22k_ft_in1k__caltech101__TRADES_v2__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard
+  Downloading: adversarial/zeroshot_clip_vitb16_laion2b/l1_eps75_autoattack_standard/caltech101__zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/caltech101/caltech101__zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard_processed.tar.zst
+  Extracting caltech101__zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard_processed.tar.zst → caltech101__zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.932
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Result: 951/1000 = 0.9510
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/predictions/convnext_tiny.fb_in22k_ft_in1k__caltech101__TRADES_v2__zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard
+  Downloading: adversarial/zeroshot_clip_vith14_laion2b/linf_eps4_autoattack_standard/caltech101__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/caltech101/caltech101__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard_processed.tar.zst
+  Extracting caltech101__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard_processed.tar.zst → caltech101__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.925
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Result: 950/1000 = 0.9500
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/predictions/convnext_tiny.fb_in22k_ft_in1k__caltech101__TRADES_v2__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_clip_vith14_laion2b__l2_eps2_autoattack_standard
+  Downloading: adversarial/zeroshot_clip_vith14_laion2b/l2_eps2_autoattack_standard/caltech101__zeroshot_clip_vith14_laion2b__l2_eps2_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/caltech101/caltech101__zeroshot_clip_vith14_laion2b__l2_eps2_autoattack_standard_processed.tar.zst
+  Extracting caltech101__zeroshot_clip_vith14_laion2b__l2_eps2_autoattack_standard_processed.tar.zst → caltech101__zeroshot_clip_vith14_laion2b__l2_eps2_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.928
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Result: 951/1000 = 0.9510
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/predictions/convnext_tiny.fb_in22k_ft_in1k__caltech101__TRADES_v2__zeroshot_clip_vith14_laion2b__l2_eps2_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard
+  Downloading: adversarial/zeroshot_clip_vith14_laion2b/l1_eps75_autoattack_standard/caltech101__zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/caltech101/caltech101__zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard_processed.tar.zst
+  Extracting caltech101__zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard_processed.tar.zst → caltech101__zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.932
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Result: 951/1000 = 0.9510
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/predictions/convnext_tiny.fb_in22k_ft_in1k__caltech101__TRADES_v2__zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_metaclip_vith14_fullcc2_5b__linf_eps4_autoattack_standard
+  Downloading: adversarial/zeroshot_metaclip_vith14_fullcc2_5b/linf_eps4_autoattack_standard/caltech101__zeroshot_metaclip_vith14_fullcc2_5b__linf_eps4_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/caltech101/caltech101__zeroshot_metaclip_vith14_fullcc2_5b__linf_eps4_autoattack_standard_processed.tar.zst
+  Extracting caltech101__zeroshot_metaclip_vith14_fullcc2_5b__linf_eps4_autoattack_standard_processed.tar.zst → caltech101__zeroshot_metaclip_vith14_fullcc2_5b__linf_eps4_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.925
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAMEBACKBONE NAME  convnext_tiny.fb_in22k_ft_in1kconvnext_tiny.fb_in22k_ft_in1k
+Loading timm model:
+ convnext_tiny.fb_in22k_ft_in1k
+Loading timm model:Loading timm model:  convnext_tiny.fb_in22k_ft_in1kconvnext_tiny.fb_in22k_ft_in1k
+
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Result: 949/1000 = 0.9490
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/predictions/convnext_tiny.fb_in22k_ft_in1k__caltech101__TRADES_v2__zeroshot_metaclip_vith14_fullcc2_5b__linf_eps4_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard
+  Downloading: adversarial/zeroshot_metaclip_vith14_fullcc2_5b/l2_eps2_autoattack_standard/caltech101__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/caltech101/caltech101__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard_processed.tar.zst
+  Extracting caltech101__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard_processed.tar.zst → caltech101__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.928
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Result: 951/1000 = 0.9510
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/predictions/convnext_tiny.fb_in22k_ft_in1k__caltech101__TRADES_v2__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard
+  Downloading: adversarial/zeroshot_metaclip_vith14_fullcc2_5b/l1_eps75_autoattack_standard/caltech101__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/caltech101/caltech101__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard_processed.tar.zst
+  Extracting caltech101__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard_processed.tar.zst → caltech101__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.933
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Result: 951/1000 = 0.9510
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/predictions/convnext_tiny.fb_in22k_ft_in1k__caltech101__TRADES_v2__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_siglip2_so400m_patch14_384__linf_eps4_autoattack_standard
+  Downloading: adversarial/zeroshot_siglip2_so400m_patch14_384/linf_eps4_autoattack_standard/caltech101__zeroshot_siglip2_so400m_patch14_384__linf_eps4_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/caltech101/caltech101__zeroshot_siglip2_so400m_patch14_384__linf_eps4_autoattack_standard_processed.tar.zst
+  Extracting caltech101__zeroshot_siglip2_so400m_patch14_384__linf_eps4_autoattack_standard_processed.tar.zst → caltech101__zeroshot_siglip2_so400m_patch14_384__linf_eps4_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.925
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Result: 951/1000 = 0.9510
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/predictions/convnext_tiny.fb_in22k_ft_in1k__caltech101__TRADES_v2__zeroshot_siglip2_so400m_patch14_384__linf_eps4_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_siglip2_so400m_patch14_384__l2_eps2_autoattack_standard
+  Downloading: adversarial/zeroshot_siglip2_so400m_patch14_384/l2_eps2_autoattack_standard/caltech101__zeroshot_siglip2_so400m_patch14_384__l2_eps2_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/caltech101/caltech101__zeroshot_siglip2_so400m_patch14_384__l2_eps2_autoattack_standard_processed.tar.zst
+  Extracting caltech101__zeroshot_siglip2_so400m_patch14_384__l2_eps2_autoattack_standard_processed.tar.zst → caltech101__zeroshot_siglip2_so400m_patch14_384__l2_eps2_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.928
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Result: 951/1000 = 0.9510
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/predictions/convnext_tiny.fb_in22k_ft_in1k__caltech101__TRADES_v2__zeroshot_siglip2_so400m_patch14_384__l2_eps2_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard
+  Downloading: adversarial/zeroshot_siglip2_so400m_patch14_384/l1_eps75_autoattack_standard/caltech101__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/caltech101/caltech101__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard_processed.tar.zst
+  Extracting caltech101__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard_processed.tar.zst → caltech101__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.932
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Result: 951/1000 = 0.9510
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/predictions/convnext_tiny.fb_in22k_ft_in1k__caltech101__TRADES_v2__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: common__common_severity3
+  Downloading: adversarial/common/common_severity3/caltech101__common_severity3_processed.tar.zst
+  Saved to: /tmp/adv_archives/caltech101/caltech101__common_severity3_processed.tar.zst
+  Extracting caltech101__common_severity3_processed.tar.zst → caltech101__common_severity3/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.835
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k_caltech101_TRADES_v2.pt
+  Result: 880/1000 = 0.8800
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/predictions/convnext_tiny.fb_in22k_ft_in1k__caltech101__TRADES_v2__common__common_severity3__predictions.csv (1000 rows)
+
+All done. Results saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2/convnext_tiny.fb_in22k_ft_in1k__caltech101__TRADES_v2__robustgenbench_results.csv

@@ -1,0 +1,32 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values coat_tiny.in1k__caltech101__TRADES_v2
+📦 Extracting /tmp/datasets/caltech101_processed.tar.zst into /tmp/data/392070/caltech101 using Python zstd + tarfile...
+✅ Extraction of caltech101 completed successfully at 2026-08-01 17:26:17
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/coat_tiny.in1k.pt to /tmp/392070
+Testing step: all
+Loading HPO config from: ./configs/HPO_results/full_fine_tuning50/coat_tiny.in1k__caltech101__TRADES_v2.yaml
+dataloader
+BACKBONE NAME coat_tiny.in1k
+Loading timm model: coat_tiny.in1k
+dataloader
+BACKBONE NAME coat_tiny.in1k
+dataloaderLoading timm model:
+ coat_tiny.in1k
+BACKBONE NAME coat_tiny.in1k
+Loading timm model: coat_tiny.in1k
+dataloader
+BACKBONE NAME coat_tiny.in1k
+Loading timm model: coat_tiny.in1k
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 3 0 32 8
+start batch iterations 2 0 32 8

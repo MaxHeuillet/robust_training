@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/project/6102313/mheuill/robust_training/./distributed_experiment_final.py", line 990, in <module>
+    main()
+  File "/project/6102313/mheuill/robust_training/./distributed_experiment_final.py", line 975, in main
+    experiment.launch_test_common_only(config_optimal)
+  File "/project/6102313/mheuill/robust_training/./distributed_experiment_final.py", line 873, in launch_test_common_only
+    if per_type_preds_nat['Linf']:
+       ^^^^^^^^^^^^^^^^^^
+NameError: name 'per_type_preds_nat' is not defined

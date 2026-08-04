@@ -1,0 +1,52 @@
+Process Process-1:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/Compiler/gcccore/python/3.11.5/lib/python3.11/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/Compiler/gcccore/python/3.11.5/lib/python3.11/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/project/6102313/mheuill/robust_training/distributed_experiment_final.py", line 665, in test_all
+    testloader, commonloader, _, N = self.initialize_loaders_test_whitebox(config, rank)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: too many values to unpack (expected 4)
+Process Process-3:
+Process Process-2:
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/Compiler/gcccore/python/3.11.5/lib/python3.11/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/Compiler/gcccore/python/3.11.5/lib/python3.11/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/project/6102313/mheuill/robust_training/distributed_experiment_final.py", line 665, in test_all
+    testloader, commonloader, _, N = self.initialize_loaders_test_whitebox(config, rank)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: too many values to unpack (expected 4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/Compiler/gcccore/python/3.11.5/lib/python3.11/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/Compiler/gcccore/python/3.11.5/lib/python3.11/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/project/6102313/mheuill/robust_training/distributed_experiment_final.py", line 665, in test_all
+    testloader, commonloader, _, N = self.initialize_loaders_test_whitebox(config, rank)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: too many values to unpack (expected 4)
+Process Process-4:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/Compiler/gcccore/python/3.11.5/lib/python3.11/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/Compiler/gcccore/python/3.11.5/lib/python3.11/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/project/6102313/mheuill/robust_training/distributed_experiment_final.py", line 665, in test_all
+    testloader, commonloader, _, N = self.initialize_loaders_test_whitebox(config, rank)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: too many values to unpack (expected 4)
+Traceback (most recent call last):
+  File "/project/6102313/mheuill/robust_training/./distributed_experiment_final.py", line 866, in <module>
+    main()
+  File "/project/6102313/mheuill/robust_training/./distributed_experiment_final.py", line 851, in main
+    experiment.launch_test_all(config_optimal)
+  File "/project/6102313/mheuill/robust_training/./distributed_experiment_final.py", line 732, in launch_test_all
+    statistic = self.setup.aggregate_results(per_type_nat['Linf'], 'clean')
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/project/6102313/mheuill/robust_training/utils/setup.py", line 220, in aggregate_results
+    accuracy = total_correct / total_examples
+               ~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~
+ZeroDivisionError: division by zero

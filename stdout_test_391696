@@ -1,0 +1,26 @@
+============================================================
+  RobustGenBench Evaluation
+  Backbone         : deit_small_patch16_224.fb_in1k
+  Dataset          : uc-merced-land-use-dataset
+  Loss             : TRADES_v2
+  Project          : deit_small_patch16_224_fb_in1k_TRADES_beta6
+  HPO source       : full_fine_tuning50
+  exp_id           : deit_small_patch16_224.fb_in1k__uc-merced-land-use-dataset__TRADES_v2
+  GPUs             : 4
+============================================================
+  num_classes=21
+
+============================================================
+  Evaluating: CLEAN
+  Downloading clean test archive: uc-merced-land-use-dataset_processed.tar.zst
+  Extracting uc-merced-land-use-dataset_processed.tar.zst → uc-merced-land-use-dataset/
+  Loaded 420 clean images.
+  Clean img[0]: min=0.106 max=0.996 mean=0.498
+BACKBONE NAME deit_small_patch16_224.fb_in1k
+Loading timm model: deit_small_patch16_224.fb_in1k
+BACKBONE NAME deit_small_patch16_224.fb_in1k
+Loading timm model: deit_small_patch16_224.fb_in1k
+BACKBONE NAME deit_small_patch16_224.fb_in1k
+Loading timm model: deit_small_patch16_224.fb_in1k
+BACKBONE NAME deit_small_patch16_224.fb_in1k
+Loading timm model: deit_small_patch16_224.fb_in1k

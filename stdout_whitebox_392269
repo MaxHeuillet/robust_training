@@ -1,0 +1,104 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values swin_tiny_patch4_window7_224.ms_in1k__flowers-102__TRADES_v2
+📦 Extracting /tmp/datasets/flowers-102_processed.tar.zst into /tmp/data/392269/flowers-102 using Python zstd + tarfile...
+✅ Extraction of flowers-102 completed successfully at 2026-08-02 01:02:30
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/swin_tiny_patch4_window7_224.ms_in1k.pt to /tmp/392269
+Testing step: all
+Loading HPO config from: ./configs/HPO_results/reviewer_TRADES_beta6/swin_tiny_patch4_window7_224.ms_in1k__flowers-102__TRADES_v2.yaml
+dataloader
+BACKBONE NAME swin_tiny_patch4_window7_224.ms_in1k
+Loading timm model: swin_tiny_patch4_window7_224.ms_in1k
+dataloader
+dataloader
+BACKBONE NAME swin_tiny_patch4_window7_224.ms_in1k
+BACKBONE NAME swin_tiny_patch4_window7_224.ms_in1k
+Loading timm model: swin_tiny_patch4_window7_224.ms_in1k
+Loading timm model: swin_tiny_patch4_window7_224.ms_in1k
+dataloader
+BACKBONE NAME swin_tiny_patch4_window7_224.ms_in1k
+Loading timm model: swin_tiny_patch4_window7_224.ms_in1k
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 3 0 80 4
+start batch iterations 1 0 80 4
+start batch iterations 0 0 80 4
+start batch iterations 2 0 80 4
+start batch iterations 2 1 80 4
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 2 0 80 4
+start batch iterations 2 1 80 4
+start batch iterations 1 1 80 4
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 2 0 80 4
+start batch iterations 2 1 80 4
+start batch iterations 1 0 80 4
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 2: Results sent to queue
+start batch iterations 1 1 80 4
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 1 0 80 4
+start batch iterations 1 1 80 4
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 1: Results sent to queue
+start batch iterations 0 1 80 4
+start batch iterations 3 1 80 4
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 3 0 80 4
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 0 0 80 4
+start batch iterations 3 1 80 4
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 3 0 80 4
+start batch iterations 3 1 80 4
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 3: Results sent to queue
+start batch iterations 0 1 80 4
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 0 0 80 4
+start batch iterations 0 1 80 4
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 0: Results sent to queue
+result statistics (combined) {'Linf': {2: {'nb_correct': 2, 'nb_examples': 160}, 1: {'nb_correct': 6, 'nb_examples': 160}, 3: {'nb_correct': 3, 'nb_examples': 160}, 0: {'nb_correct': 6, 'nb_examples': 160}}, 'L2': {2: {'nb_correct': 2, 'nb_examples': 160}, 1: {'nb_correct': 6, 'nb_examples': 160}, 3: {'nb_correct': 3, 'nb_examples': 160}, 0: {'nb_correct': 6, 'nb_examples': 160}}, 'L1': {2: {'nb_correct': 2, 'nb_examples': 160}, 1: {'nb_correct': 6, 'nb_examples': 160}, 3: {'nb_correct': 3, 'nb_examples': 160}, 0: {'nb_correct': 6, 'nb_examples': 160}}, 'common': {}} {'Linf': {2: {'nb_correct': 0, 'nb_examples': 160}, 1: {'nb_correct': 0, 'nb_examples': 160}, 3: {'nb_correct': 1, 'nb_examples': 160}, 0: {'nb_correct': 4, 'nb_examples': 160}}, 'L2': {2: {'nb_correct': 0, 'nb_examples': 160}, 1: {'nb_correct': 0, 'nb_examples': 160}, 3: {'nb_correct': 1, 'nb_examples': 160}, 0: {'nb_correct': 2, 'nb_examples': 160}}, 'L1': {2: {'nb_correct': 0, 'nb_examples': 160}, 1: {'nb_correct': 0, 'nb_examples': 160}, 3: {'nb_correct': 0, 'nb_examples': 160}, 0: {'nb_correct': 1, 'nb_examples': 160}}, 'common': {}}
+--- test-all: no results for common, skipping log_results ---
+  Predictions saved to: results/swin_tiny_patch4_window7_224_ms_in1k_TRADES_beta6/predictions/swin_tiny_patch4_window7_224.ms_in1k_flowers-102_TRADES_v2__clean__predictions.csv (640 rows)
+  Predictions saved to: results/swin_tiny_patch4_window7_224_ms_in1k_TRADES_beta6/predictions/swin_tiny_patch4_window7_224.ms_in1k_flowers-102_TRADES_v2__Linf__predictions.csv (640 rows)
+  Predictions saved to: results/swin_tiny_patch4_window7_224_ms_in1k_TRADES_beta6/predictions/swin_tiny_patch4_window7_224.ms_in1k_flowers-102_TRADES_v2__L2__predictions.csv (640 rows)
+  Predictions saved to: results/swin_tiny_patch4_window7_224_ms_in1k_TRADES_beta6/predictions/swin_tiny_patch4_window7_224.ms_in1k_flowers-102_TRADES_v2__L1__predictions.csv (640 rows)

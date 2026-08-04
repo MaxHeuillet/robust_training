@@ -1,0 +1,30 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: False
+CUDA device count: 4
+Device name: No GPU
+serialized_values coatnet_2_rw_224.sw_in12k__flowers-102__TRADES_v2
+📦 Extracting /tmp/datasets/flowers-102_processed.tar.zst into /tmp/data/389715/flowers-102 using Python zstd + tarfile...
+✅ Extraction of flowers-102 completed successfully at 2026-07-31 05:07:58
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/coatnet_2_rw_224.sw_in12k.pt to /tmp/389715
+Training step
+Loading HPO config from: ./configs/HPO_results/full_fine_tuning50/coatnet_2_rw_224.sw_in12k__flowers-102__TRADES_v2.yaml
+we are launching training
+torch 2.5.1
+cuda 12.2
+we are launching training
+torch 2.5.1
+cuda 12.2
+we are launching training
+torch 2.5.1
+cuda 12.2
+we are launching training
+torch 2.5.1
+cuda 12.2
+cudnncudnncudnn  90201 90201
+90201
+set up the master adress and port
+set up the master adress and port
+
+set up the master adress and port
+cudnn 90201
+set up the master adress and port

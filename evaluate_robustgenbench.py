@@ -376,7 +376,7 @@ def main():
                         default=os.environ.get("CONFIGS_PATH", "./configs"))
     parser.add_argument("--trained_statedicts_path",
                         default=os.environ.get("TRAINED_STATEDICTS_PATH",
-                                               "~/scratch/trained_state_dicts"))
+                                               "~/links/scratch/mheuill/robust_training/trained_statedicts"))
     parser.add_argument("--results_path",
                         default=os.environ.get("ROBUSTGENBENCH_RESULTS_PATH",
                                                "./robustgenbench_eval"))

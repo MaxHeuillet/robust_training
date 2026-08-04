@@ -18,10 +18,10 @@ distance: Linf
 beta: 1.0
 project_name: full_fine_tuning_50epochs_edge_paper_final2
 exp_id: mobilenetv3_large_100.ra_in1k_fgvc-aircraft-2013b_CLASSIC_AT
-statedicts_path: ~/scratch/state_dicts_share/
-trained_statedicts_path: ~/scratch/trained_state_dicts/
-datasets_path: ~/scratch/data/
-hpo_path: ~/scratch/hpo_results/
+statedicts_path: ~/links/scratch/mheuill/robust_training/state_dicts_share/
+trained_statedicts_path: ~/links/scratch/mheuill/robust_training/trained_statedicts/
+datasets_path: ~/links/scratch/mheuill/robust_training/data/
+hpo_path: ~/links/scratch/mheuill/robust_training/hpo_results/
 work_path: $SLURM_TMPDIR/
 configs_path: ./configs/
 results_path: ./results/

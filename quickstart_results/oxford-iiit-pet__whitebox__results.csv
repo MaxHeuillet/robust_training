@@ -1,0 +1,5 @@
+dataset,split,norm,eps,nb_correct_nat,nb_correct_adv,nb_examples,accuracy_nat,accuracy_adv
+oxford-iiit-pet,clean,—,—,25,—,1000,0.025,—
+oxford-iiit-pet,linf,Linf,0.01568627450980392,25,0,1000,0.025,0.0
+oxford-iiit-pet,l2,L2,2.0,25,1,1000,0.025,0.001
+oxford-iiit-pet,l1,L1,75.0,25,2,1000,0.025,0.002

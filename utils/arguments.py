@@ -10,12 +10,15 @@ def get_args2():
     parser.add_argument("--loss_function", default="TRADES_v2", type=str, help="the loss function")
     parser.add_argument('--seed', default=0, type=int, help="random seed")
     parser.add_argument("--project_name", default = 'full_fine_tuning_reproduce', type=str, help="task")
-    parser.add_argument("--mode", default='test-common', type=str, choices=['hpo', 'train', 'test-Linf', 'test-L1', 'test-L2', 'test-common'], 
-                        help="Choose among: hpo, train, test-L1, test-L2, test-common" )
+    parser.add_argument("--mode", default='test-common', type=str, choices=['hpo', 'train', 'test-Linf', 'test-L1', 'test-L2', 'test-common', 'test-all', 'test-common-only'],
+                        help="Choose among: hpo, train, test-L1, test-L2, test-common, test-all, test-common-only" )
     parser.add_argument("--hpo_source_project", type=str, default=None, help="Project name to load HPO yaml from. Defaults to --project_name if not set.")
-        
+    parser.add_argument("--beta", type=float, default=None, help="TRADES beta override for HPO mode (search lr/weight_decay under this fixed beta). Leave unset to use the config file's own beta.")
+
     args, unknown = parser.parse_known_args()
     args_dict = vars(args)
+    if args_dict.get("beta") is None:
+        args_dict.pop("beta", None)
 
     #args.device = "cuda" if torch.cuda.is_available() else "cpu"
     

@@ -13,7 +13,7 @@ SCRATCH_DIR="$HOME/links/scratch/mheuill/robust_training"
 export CONFIGS_PATH="${CODE_DIR}/configs"
 
 # Trained model state dicts (.pt files) — scratch, persists across jobs
-export TRAINED_STATEDICTS_PATH="$HOME/scratch/trained_state_dicts"
+export TRAINED_STATEDICTS_PATH="${SCRATCH_DIR}/trained_statedicts"
 
 # Evaluation outputs (CSV results from RobustGenBench) — projects folder
 export ROBUSTGENBENCH_RESULTS_PATH="${CODE_DIR}/robustgenbench_eval"

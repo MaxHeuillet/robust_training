@@ -1,0 +1,6 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values swin_tiny_patch4_window7_224.ms_in1k__fgvc-aircraft-2013b__TRADES_v2
+📦 Extracting /tmp/datasets/fgvc-aircraft-2013b_processed.tar.zst into /tmp/data/393091/fgvc-aircraft-2013b using Python zstd + tarfile...

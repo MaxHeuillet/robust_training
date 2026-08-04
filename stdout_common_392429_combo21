@@ -1,0 +1,23 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values coat_tiny.in1k__flowers-102__TRADES_v2
+✅ flowers-102 already extracted at /tmp/data/392429/flowers-102, skipping.
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/coat_tiny.in1k.pt to /tmp/392429
+Testing step: common-only
+Loading HPO config from: ./configs/HPO_results/full_fine_tuning50/coat_tiny.in1k__flowers-102__TRADES_v2.yaml
+BACKBONE NAME coat_tiny.in1k
+Loading timm model: coat_tiny.in1k
+BACKBONE NAME coat_tiny.in1k
+Loading timm model: coat_tiny.in1k
+BACKBONE NAME coat_tiny.in1k
+Loading timm model: coat_tiny.in1k
+BACKBONE NAME coat_tiny.in1k
+Loading timm model: coat_tiny.in1k
+Rank 1: common-only results sent to queue
+Rank 0: common-only results sent to queue
+Rank 2: common-only results sent to queue
+Rank 3: common-only results sent to queue
+--- test-common-only: logged common_acc={'common_acc': 0.546875} for coat_tiny.in1k_flowers-102_TRADES_v2 ---
+  Predictions saved to: results/coat_tiny_in1k_TRADES_v2_seed3/predictions/coat_tiny.in1k_flowers-102_TRADES_v2__common__predictions.csv (256 rows)

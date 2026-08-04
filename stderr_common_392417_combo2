@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/project/6102313/mheuill/robust_training/./distributed_experiment_final.py", line 990, in <module>
+  File "/project/6102313/mheuill/robust_training/./distributed_experiment_final.py", line 975, in main
+  File "/project/6102313/mheuill/robust_training/./distributed_experiment_final.py", line 873, in launch_test_common_only
+    
+NameError: name 'per_type_preds_nat' is not defined

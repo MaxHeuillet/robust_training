@@ -1,0 +1,23 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values convnext_tiny.fb_in22k__oxford-iiit-pet__TRADES_v2
+✅ oxford-iiit-pet already extracted at /tmp/data/392431/oxford-iiit-pet, skipping.
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/convnext_tiny.fb_in22k.pt to /tmp/392431
+Testing step: common-only
+Loading HPO config from: ./configs/HPO_results/full_fine_tuning50/convnext_tiny.fb_in22k__oxford-iiit-pet__TRADES_v2.yaml
+BACKBONE NAME convnext_tiny.fb_in22k
+Loading timm model: convnext_tiny.fb_in22k
+BACKBONE NAME convnext_tiny.fb_in22k
+Loading timm model: convnext_tiny.fb_in22k
+BACKBONE NAME convnext_tiny.fb_in22k
+Loading timm model: convnext_tiny.fb_in22k
+BACKBONE NAME convnext_tiny.fb_in22k
+Loading timm model: convnext_tiny.fb_in22k
+Rank 3: common-only results sent to queue
+Rank 1: common-only results sent to queue
+Rank 0: common-only results sent to queue
+Rank 2: common-only results sent to queue
+--- test-common-only: logged common_acc={'common_acc': 0.5703125} for convnext_tiny.fb_in22k_oxford-iiit-pet_TRADES_v2 ---
+  Predictions saved to: results/convnext_tiny_fb_in22k_TRADES_v2_seed1/predictions/convnext_tiny.fb_in22k_oxford-iiit-pet_TRADES_v2__common__predictions.csv (512 rows)

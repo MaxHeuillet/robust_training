@@ -18,10 +18,10 @@ distance: Linf
 beta: 1.0
 project_name: full_fine_tuning_5epochs_article1
 exp_id: convnext_base.fb_in22k_uc-merced-land-use-dataset_TRADES_v2
-statedicts_path: ~/scratch/state_dicts_share/
-trained_statedicts_path: ~/scratch/trained_state_dicts/
-datasets_path: ~/scratch/data/
-hpo_path: ~/scratch/hpo_results/
+statedicts_path: ~/links/scratch/mheuill/robust_training/state_dicts_share/
+trained_statedicts_path: ~/links/scratch/mheuill/robust_training/trained_statedicts/
+datasets_path: ~/links/scratch/mheuill/robust_training/data/
+hpo_path: ~/links/scratch/mheuill/robust_training/hpo_results/
 work_path: $SLURM_TMPDIR/
 configs_path: ./configs/
 results_path: ./results/

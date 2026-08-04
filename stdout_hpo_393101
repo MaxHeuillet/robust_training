@@ -1,0 +1,6 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values vit_small_patch16_224.augreg_in1k__oxford-iiit-pet__TRADES_v2
+📦 Extracting /tmp/datasets/oxford-iiit-pet_processed.tar.zst into /tmp/data/393101/oxford-iiit-pet using Python zstd + tarfile...

@@ -1,0 +1,16 @@
+2026-08-02 18:48:49,223	INFO worker.py:1841 -- Started a local Ray instance.
+Traceback (most recent call last):
+  File "/project/6102313/mheuill/robust_training/./distributed_experiment_final.py", line 968, in <module>
+    main()
+  File "/project/6102313/mheuill/robust_training/./distributed_experiment_final.py", line 914, in main
+    experiment.hyperparameter_optimization(config_base)
+  File "/project/6102313/mheuill/robust_training/./distributed_experiment_final.py", line 430, in hyperparameter_optimization
+    tuner = hp_search.get_tuner( self.training )
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/project/6102313/mheuill/robust_training/utils/hp_opt.py", line 87, in get_tuner
+    update_config = self.get_config()
+                    ^^^^^^^^^^^^^^^^^
+  File "/project/6102313/mheuill/robust_training/utils/hp_opt.py", line 59, in get_config
+    return tune_config
+           ^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'tune_config' where it is not associated with a value

@@ -1,0 +1,38 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values convnext_base.fb_in22k__fgvc-aircraft-2013b__TRADES_v2
+📦 Extracting /tmp/datasets/fgvc-aircraft-2013b_processed.tar.zst into /tmp/data/fgvc-aircraft-2013b using Python zstd + tarfile...
+✅ Extraction of fgvc-aircraft-2013b completed successfully at 2026-07-30 23:09:21
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/convnext_base.fb_in22k.pt to /tmp
+Training step
+Loading HPO config from: ./configs/HPO_results/full_fine_tuning50/convnext_base.fb_in22k__fgvc-aircraft-2013b__TRADES_v2.yaml
+we are launching training
+torch 2.13.0
+cuda 13.2
+we are launching training
+torch 2.13.0
+cuda 13.2
+we are launching training
+torch 2.13.0
+cuda 13.2
+we are launching training
+torch 2.13.0
+cuda 13.2
+cudnn 92101
+set up the master adress and port
+cudnn 92101
+set up the master adress and port
+cudnn 92101
+set up the master adress and port
+cudnn 92101
+set up the master adress and port
+init process group ok
+### load model
+init process group ok
+### load model
+init process group ok
+### load model
+init process group ok
+### load model

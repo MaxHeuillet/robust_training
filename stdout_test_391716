@@ -1,0 +1,26 @@
+============================================================
+  RobustGenBench Evaluation
+  Backbone         : edgenext_small.usi_in1k
+  Dataset          : flowers-102
+  Loss             : TRADES_v2
+  Project          : edgenext_small_usi_in1k_TRADES_v2_seed2
+  HPO source       : full_fine_tuning50
+  exp_id           : edgenext_small.usi_in1k__flowers-102__TRADES_v2
+  GPUs             : 4
+============================================================
+  num_classes=102
+
+============================================================
+  Evaluating: CLEAN
+  Downloading clean test archive: flowers-102_processed.tar.zst
+  Extracting flowers-102_processed.tar.zst → flowers-102/
+  Loaded 1000 clean images.
+  Clean img[0]: min=0.000 max=1.000 mean=0.379
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME Loading timm model:edgenext_small.usi_in1k 
+edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k

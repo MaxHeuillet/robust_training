@@ -18,12 +18,19 @@ class Hp_opt:
     def __init__(self, config, ):
         self.config = config
 
-        cluster_keywords = ["calculquebec", "calcul.quebec", "computecanada.ca"]
+        cluster_keywords = ["calculquebec", "calcul.quebec", "computecanada.ca", "tamia", "ecpia.ca"]
         nodename = os.uname().nodename.lower()
-        # Check if the node is part of the Calcul Québec cluster
+        # Check if the node is part of a real Alliance Canada cluster (vs local dev)
         if any(keyword in nodename for keyword in cluster_keywords):
-            self.trials = 3
-            self.minutes = 680
+            # Paper protocol: fixed compute budget of 140 minutes per
+            # configuration (strategy b -- equal compute, not equal trial
+            # count, since model sizes span a 20x range), exploring "as many
+            # configurations as possible" within that budget. num_samples is
+            # set high enough to be non-binding (an original beta=1 HPO run
+            # logged nb_completed_trials=235), so the 140-minute time budget
+            # -- not this trial count -- is what actually bounds the search.
+            self.trials = 1000
+            self.minutes = 140
         else:
             self.trials = 1
             self.minutes = 5

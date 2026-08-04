@@ -1,0 +1,26 @@
+============================================================
+  RobustGenBench Evaluation
+  Backbone         : convnext_tiny.fb_in22k_ft_in1k
+  Dataset          : fgvc-aircraft-2013b
+  Loss             : TRADES_v2
+  Project          : convnext_tiny_fb_in22k_ft_in1k_TRADES_v2_seed2
+  HPO source       : full_fine_tuning50
+  exp_id           : convnext_tiny.fb_in22k_ft_in1k__fgvc-aircraft-2013b__TRADES_v2
+  GPUs             : 4
+============================================================
+  num_classes=100
+
+============================================================
+  Evaluating: CLEAN
+  Downloading clean test archive: fgvc-aircraft-2013b_processed.tar.zst
+  Extracting fgvc-aircraft-2013b_processed.tar.zst → fgvc-aircraft-2013b/
+  Loaded 1000 clean images.
+  Clean img[0]: min=0.000 max=0.996 mean=0.353
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+BACKBONE NAMELoading timm model:  convnext_tiny.fb_in22k_ft_in1kconvnext_tiny.fb_in22k_ft_in1k
+
+BACKBONE NAME convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k
+Loading timm model: convnext_tiny.fb_in22k_ft_in1k

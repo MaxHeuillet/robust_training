@@ -1,0 +1,104 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values coat_tiny.in1k__uc-merced-land-use-dataset__TRADES_v2
+📦 Extracting /tmp/datasets/uc-merced-land-use-dataset_processed.tar.zst into /tmp/data/392215/uc-merced-land-use-dataset using Python zstd + tarfile...
+✅ Extraction of uc-merced-land-use-dataset completed successfully at 2026-08-01 23:35:12
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/coat_tiny.in1k.pt to /tmp/392215
+Testing step: all
+Loading HPO config from: ./configs/HPO_results/full_fine_tuning50/coat_tiny.in1k__uc-merced-land-use-dataset__TRADES_v2.yaml
+dataloader
+BACKBONE NAME coat_tiny.in1k
+Loading timm model: coat_tiny.in1k
+dataloader
+BACKBONE NAME coat_tiny.in1k
+Loading timm model: coat_tiny.in1k
+dataloader
+BACKBONE NAME coat_tiny.in1k
+Loading timm model: coat_tiny.in1k
+dataloader
+BACKBONE NAME coat_tiny.in1k
+Loading timm model: coat_tiny.in1k
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 2 0 32 4
+start batch iterations 3 0 32 4
+start batch iterations 0 0 32 4
+start batch iterations 1 0 32 4
+start batch iterations 2 1 32 4
+start batch iterations 0 1 32 4
+start batch iterations 1 1 32 4
+start batch iterations 3 1 32 4
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 2 0 32 4
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 0 0 32 4
+start batch iterations 1 0 32 4
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 3 0 32 4
+start batch iterations 2 1 32 4
+start batch iterations 1 1 32 4
+start batch iterations 0 1 32 4
+start batch iterations 3 1 32 4
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 2 0 32 4
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 1 0 32 4
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 0 0 32 4
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 3 0 32 4
+start batch iterations 2 1 32 4
+start batch iterations 1 1 32 4
+start batch iterations 0 1 32 4
+start batch iterations 3 1 32 4
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 2: Results sent to queue
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 1: Results sent to queue
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 0: Results sent to queue
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 3: Results sent to queue
+result statistics (combined) {'Linf': {2: {'nb_correct': 60, 'nb_examples': 64}, 1: {'nb_correct': 56, 'nb_examples': 64}, 0: {'nb_correct': 62, 'nb_examples': 64}, 3: {'nb_correct': 61, 'nb_examples': 64}}, 'L2': {2: {'nb_correct': 60, 'nb_examples': 64}, 1: {'nb_correct': 56, 'nb_examples': 64}, 0: {'nb_correct': 62, 'nb_examples': 64}, 3: {'nb_correct': 61, 'nb_examples': 64}}, 'L1': {2: {'nb_correct': 60, 'nb_examples': 64}, 1: {'nb_correct': 56, 'nb_examples': 64}, 0: {'nb_correct': 62, 'nb_examples': 64}, 3: {'nb_correct': 61, 'nb_examples': 64}}, 'common': {}} {'Linf': {2: {'nb_correct': 31, 'nb_examples': 64}, 1: {'nb_correct': 31, 'nb_examples': 64}, 0: {'nb_correct': 31, 'nb_examples': 64}, 3: {'nb_correct': 39, 'nb_examples': 64}}, 'L2': {2: {'nb_correct': 41, 'nb_examples': 64}, 1: {'nb_correct': 40, 'nb_examples': 64}, 0: {'nb_correct': 48, 'nb_examples': 64}, 3: {'nb_correct': 56, 'nb_examples': 64}}, 'L1': {2: {'nb_correct': 40, 'nb_examples': 64}, 1: {'nb_correct': 36, 'nb_examples': 64}, 0: {'nb_correct': 44, 'nb_examples': 64}, 3: {'nb_correct': 52, 'nb_examples': 64}}, 'common': {}}
+--- test-all: no results for common, skipping log_results ---
+  Predictions saved to: results/coat_tiny_in1k_TRADES_v2_seed2/predictions/coat_tiny.in1k_uc-merced-land-use-dataset_TRADES_v2__clean__predictions.csv (256 rows)
+  Predictions saved to: results/coat_tiny_in1k_TRADES_v2_seed2/predictions/coat_tiny.in1k_uc-merced-land-use-dataset_TRADES_v2__Linf__predictions.csv (256 rows)
+  Predictions saved to: results/coat_tiny_in1k_TRADES_v2_seed2/predictions/coat_tiny.in1k_uc-merced-land-use-dataset_TRADES_v2__L2__predictions.csv (256 rows)
+  Predictions saved to: results/coat_tiny_in1k_TRADES_v2_seed2/predictions/coat_tiny.in1k_uc-merced-land-use-dataset_TRADES_v2__L1__predictions.csv (256 rows)

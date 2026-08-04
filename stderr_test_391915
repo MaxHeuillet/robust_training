@@ -1,0 +1,17 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[E801 14:24:39.266656951 ProcessGroupNCCL.cpp:542] [Rank 1] Collective WorkNCCL(SeqNum=8, OpType=ALLREDUCE, NumelIn=1, NumelOut=1, Timeout(ms)=600000) raised the following async exception: NCCL error: unhandled system error (run with NCCL_DEBUG=INFO for details), NCCL version 2.26.2
+ncclSystemError: System call (e.g. socket, malloc) or external library call failed or device error. 
+Last error:
+
+Exception raised from checkForNCCLErrorsInternal at /shared_tmp/build_wheels_tmp.337748/python-3.11/torch/torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:2027 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x97 (0x7033867901a7 in /tmp/myenv_reprod/lib/python3.11/site-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0x102f951 (0x70334ca2f951 in /tmp/myenv_reprod/lib/python3.11/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::checkForNCCLErrorsInternal(std::shared_ptr<c10d::NCCLComm>&) + 0x273 (0x70334ca4e393 in /tmp/myenv_reprod/lib/python3.11/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::WorkNCCL::checkAndSetException() + 0x7f (0x70334ca4e51f in /tmp/myenv_reprod/lib/python3.11/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: c10d::ProcessGroupNCCL::WorkNCCL::isCompleted() + 0x78 (0x70334ca4e728 in /tmp/myenv_reprod/lib/python3.11/site-packages/torch/lib/libtorch_cuda.so)
+frame #5: c10d::ProcessGroupNCCL::watchdogHandler() + 0x1d2 (0x70334ca4f0d2 in /tmp/myenv_reprod/lib/python3.11/site-packages/torch/lib/libtorch_cuda.so)
+frame #6: c10d::ProcessGroupNCCL::ncclCommWatchdog() + 0x140 (0x70334ca50870 in /tmp/myenv_reprod/lib/python3.11/site-packages/torch/lib/libtorch_cuda.so)
+frame #7: <unknown function> + 0xe07f0 (0x703388ae07f0 in /cvmfs/soft.computecanada.ca/gentoo/2023/x86-64-v3/usr/lib/gcc/x86_64-pc-linux-gnu/14/libstdc++.so.6)
+frame #8: <unknown function> + 0x84a9d (0x7033995d7a9d in /cvmfs/soft.computecanada.ca/gentoo/2023/x86-64-v3/usr/lib64/libc.so.6)
+frame #9: <unknown function> + 0x10509c (0x70339965809c in /cvmfs/soft.computecanada.ca/gentoo/2023/x86-64-v3/usr/lib64/libc.so.6)
+

@@ -1,0 +1,104 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values convnext_tiny.fb_in1k__uc-merced-land-use-dataset__TRADES_v2
+📦 Extracting /tmp/datasets/uc-merced-land-use-dataset_processed.tar.zst into /tmp/data/392179/uc-merced-land-use-dataset using Python zstd + tarfile...
+✅ Extraction of uc-merced-land-use-dataset completed successfully at 2026-08-01 22:37:23
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/convnext_tiny.fb_in1k.pt to /tmp/392179
+Testing step: all
+Loading HPO config from: ./configs/HPO_results/full_fine_tuning50/convnext_tiny.fb_in1k__uc-merced-land-use-dataset__TRADES_v2.yaml
+dataloader
+BACKBONE NAME convnext_tiny.fb_in1k
+dataloader
+BACKBONE NAME convnext_tiny.fb_in1k
+Loading timm model: convnext_tiny.fb_in1k
+Loading timm model: convnext_tiny.fb_in1k
+dataloader
+BACKBONE NAME convnext_tiny.fb_in1k
+Loading timm model: convnext_tiny.fb_in1k
+dataloader
+BACKBONE NAME convnext_tiny.fb_in1k
+Loading timm model: convnext_tiny.fb_in1k
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 3 0 64 2
+start batch iterations 1 0 64 2
+start batch iterations 2 0 64 2
+start batch iterations 0 0 64 2
+start batch iterations 1 1 41 2
+start batch iterations 2 1 41 2
+start batch iterations 0 1 41 2
+start batch iterations 3 1 41 2
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 1 0 64 2
+start batch iterations 2 0 64 2
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 3 0 64 2
+start batch iterations 0 0 64 2
+start batch iterations 1 1 41 2
+start batch iterations 2 1 41 2
+start batch iterations 3 1 41 2
+start batch iterations 0 1 41 2
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 1 0 64 2
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 2 0 64 2
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 3 0 64 2
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 0 0 64 2
+start batch iterations 1 1 41 2
+start batch iterations 2 1 41 2
+start batch iterations 3 1 41 2
+start batch iterations 0 1 41 2
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 1: Results sent to queue
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 2: Results sent to queue
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 3: Results sent to queue
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 0: Results sent to queue
+result statistics (combined) {'Linf': {1: {'nb_correct': 99, 'nb_examples': 105}, 2: {'nb_correct': 99, 'nb_examples': 105}, 3: {'nb_correct': 100, 'nb_examples': 105}, 0: {'nb_correct': 104, 'nb_examples': 105}}, 'L2': {1: {'nb_correct': 99, 'nb_examples': 105}, 2: {'nb_correct': 99, 'nb_examples': 105}, 3: {'nb_correct': 100, 'nb_examples': 105}, 0: {'nb_correct': 104, 'nb_examples': 105}}, 'L1': {1: {'nb_correct': 99, 'nb_examples': 105}, 2: {'nb_correct': 99, 'nb_examples': 105}, 3: {'nb_correct': 100, 'nb_examples': 105}, 0: {'nb_correct': 104, 'nb_examples': 105}}, 'common': {}} {'Linf': {1: {'nb_correct': 79, 'nb_examples': 105}, 2: {'nb_correct': 80, 'nb_examples': 105}, 3: {'nb_correct': 86, 'nb_examples': 105}, 0: {'nb_correct': 83, 'nb_examples': 105}}, 'L2': {1: {'nb_correct': 90, 'nb_examples': 105}, 2: {'nb_correct': 91, 'nb_examples': 105}, 3: {'nb_correct': 93, 'nb_examples': 105}, 0: {'nb_correct': 95, 'nb_examples': 105}}, 'L1': {1: {'nb_correct': 82, 'nb_examples': 105}, 2: {'nb_correct': 82, 'nb_examples': 105}, 3: {'nb_correct': 92, 'nb_examples': 105}, 0: {'nb_correct': 87, 'nb_examples': 105}}, 'common': {}}
+--- test-all: no results for common, skipping log_results ---
+  Predictions saved to: results/convnext_tiny_fb_in1k_TRADES_v2_seed2/predictions/convnext_tiny.fb_in1k_uc-merced-land-use-dataset_TRADES_v2__clean__predictions.csv (420 rows)
+  Predictions saved to: results/convnext_tiny_fb_in1k_TRADES_v2_seed2/predictions/convnext_tiny.fb_in1k_uc-merced-land-use-dataset_TRADES_v2__Linf__predictions.csv (420 rows)
+  Predictions saved to: results/convnext_tiny_fb_in1k_TRADES_v2_seed2/predictions/convnext_tiny.fb_in1k_uc-merced-land-use-dataset_TRADES_v2__L2__predictions.csv (420 rows)
+  Predictions saved to: results/convnext_tiny_fb_in1k_TRADES_v2_seed2/predictions/convnext_tiny.fb_in1k_uc-merced-land-use-dataset_TRADES_v2__L1__predictions.csv (420 rows)

@@ -1,0 +1,266 @@
+============================================================
+  RobustGenBench Evaluation
+  Backbone         : edgenext_small.usi_in1k
+  Dataset          : oxford-iiit-pet
+  Loss             : CLASSIC_AT
+  Project          : edgenext_small_usi_in1k_CLASSIC_AT_seed2
+  HPO source       : full_fine_tuning50
+  exp_id           : edgenext_small.usi_in1k__oxford-iiit-pet__CLASSIC_AT
+  GPUs             : 4
+============================================================
+  num_classes=37
+
+============================================================
+  Evaluating: CLEAN
+  Downloading clean test archive: oxford-iiit-pet_processed.tar.zst
+  Extracting oxford-iiit-pet_processed.tar.zst → oxford-iiit-pet/
+  Loaded 1000 clean images.
+  Clean img[0]: min=0.000 max=1.000 mean=0.386
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Clean accuracy: 693/1000 = 0.6930
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/edgenext_small_usi_in1k_CLASSIC_AT_seed2/predictions/edgenext_small.usi_in1k__oxford-iiit-pet__CLASSIC_AT__clean__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard
+  Downloading: adversarial/zeroshot_clip_vitb16_laion2b/linf_eps4_autoattack_standard/oxford-iiit-pet__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/oxford-iiit-pet/oxford-iiit-pet__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard_processed.tar.zst
+  Extracting oxford-iiit-pet__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard_processed.tar.zst → oxford-iiit-pet__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.384
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAMEBACKBONE NAME  edgenext_small.usi_in1kedgenext_small.usi_in1k
+
+Loading timm model: edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Result: 692/1000 = 0.6920
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/edgenext_small_usi_in1k_CLASSIC_AT_seed2/predictions/edgenext_small.usi_in1k__oxford-iiit-pet__CLASSIC_AT__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard
+  Downloading: adversarial/zeroshot_clip_vitb16_laion2b/l2_eps2_autoattack_standard/oxford-iiit-pet__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/oxford-iiit-pet/oxford-iiit-pet__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard_processed.tar.zst
+  Extracting oxford-iiit-pet__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard_processed.tar.zst → oxford-iiit-pet__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.384
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Result: 694/1000 = 0.6940
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/edgenext_small_usi_in1k_CLASSIC_AT_seed2/predictions/edgenext_small.usi_in1k__oxford-iiit-pet__CLASSIC_AT__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard
+  Downloading: adversarial/zeroshot_clip_vitb16_laion2b/l1_eps75_autoattack_standard/oxford-iiit-pet__zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/oxford-iiit-pet/oxford-iiit-pet__zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard_processed.tar.zst
+  Extracting oxford-iiit-pet__zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard_processed.tar.zst → oxford-iiit-pet__zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.386
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAMEBACKBONE NAMEBACKBONE NAME   edgenext_small.usi_in1kedgenext_small.usi_in1kedgenext_small.usi_in1k
+
+
+Loading timm model: Loading timm model:edgenext_small.usi_in1kLoading timm model: 
+ edgenext_small.usi_in1kedgenext_small.usi_in1k
+
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Result: 691/1000 = 0.6910
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/edgenext_small_usi_in1k_CLASSIC_AT_seed2/predictions/edgenext_small.usi_in1k__oxford-iiit-pet__CLASSIC_AT__zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard
+  Downloading: adversarial/zeroshot_clip_vith14_laion2b/linf_eps4_autoattack_standard/oxford-iiit-pet__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/oxford-iiit-pet/oxford-iiit-pet__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard_processed.tar.zst
+  Extracting oxford-iiit-pet__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard_processed.tar.zst → oxford-iiit-pet__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.384
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Result: 691/1000 = 0.6910
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/edgenext_small_usi_in1k_CLASSIC_AT_seed2/predictions/edgenext_small.usi_in1k__oxford-iiit-pet__CLASSIC_AT__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_clip_vith14_laion2b__l2_eps2_autoattack_standard
+  Downloading: adversarial/zeroshot_clip_vith14_laion2b/l2_eps2_autoattack_standard/oxford-iiit-pet__zeroshot_clip_vith14_laion2b__l2_eps2_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/oxford-iiit-pet/oxford-iiit-pet__zeroshot_clip_vith14_laion2b__l2_eps2_autoattack_standard_processed.tar.zst
+  Extracting oxford-iiit-pet__zeroshot_clip_vith14_laion2b__l2_eps2_autoattack_standard_processed.tar.zst → oxford-iiit-pet__zeroshot_clip_vith14_laion2b__l2_eps2_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.384
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Result: 691/1000 = 0.6910
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/edgenext_small_usi_in1k_CLASSIC_AT_seed2/predictions/edgenext_small.usi_in1k__oxford-iiit-pet__CLASSIC_AT__zeroshot_clip_vith14_laion2b__l2_eps2_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard
+  Downloading: adversarial/zeroshot_clip_vith14_laion2b/l1_eps75_autoattack_standard/oxford-iiit-pet__zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/oxford-iiit-pet/oxford-iiit-pet__zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard_processed.tar.zst
+  Extracting oxford-iiit-pet__zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard_processed.tar.zst → oxford-iiit-pet__zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.385
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Result: 692/1000 = 0.6920
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/edgenext_small_usi_in1k_CLASSIC_AT_seed2/predictions/edgenext_small.usi_in1k__oxford-iiit-pet__CLASSIC_AT__zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_metaclip_vith14_fullcc2_5b__linf_eps4_autoattack_standard
+  Downloading: adversarial/zeroshot_metaclip_vith14_fullcc2_5b/linf_eps4_autoattack_standard/oxford-iiit-pet__zeroshot_metaclip_vith14_fullcc2_5b__linf_eps4_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/oxford-iiit-pet/oxford-iiit-pet__zeroshot_metaclip_vith14_fullcc2_5b__linf_eps4_autoattack_standard_processed.tar.zst
+  Extracting oxford-iiit-pet__zeroshot_metaclip_vith14_fullcc2_5b__linf_eps4_autoattack_standard_processed.tar.zst → oxford-iiit-pet__zeroshot_metaclip_vith14_fullcc2_5b__linf_eps4_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.384
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Result: 691/1000 = 0.6910
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/edgenext_small_usi_in1k_CLASSIC_AT_seed2/predictions/edgenext_small.usi_in1k__oxford-iiit-pet__CLASSIC_AT__zeroshot_metaclip_vith14_fullcc2_5b__linf_eps4_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard
+  Downloading: adversarial/zeroshot_metaclip_vith14_fullcc2_5b/l2_eps2_autoattack_standard/oxford-iiit-pet__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/oxford-iiit-pet/oxford-iiit-pet__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard_processed.tar.zst
+  Extracting oxford-iiit-pet__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard_processed.tar.zst → oxford-iiit-pet__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.384
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Result: 693/1000 = 0.6930
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/edgenext_small_usi_in1k_CLASSIC_AT_seed2/predictions/edgenext_small.usi_in1k__oxford-iiit-pet__CLASSIC_AT__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard
+  Downloading: adversarial/zeroshot_metaclip_vith14_fullcc2_5b/l1_eps75_autoattack_standard/oxford-iiit-pet__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/oxford-iiit-pet/oxford-iiit-pet__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard_processed.tar.zst
+  Extracting oxford-iiit-pet__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard_processed.tar.zst → oxford-iiit-pet__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.385
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Result: 694/1000 = 0.6940
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/edgenext_small_usi_in1k_CLASSIC_AT_seed2/predictions/edgenext_small.usi_in1k__oxford-iiit-pet__CLASSIC_AT__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_siglip2_so400m_patch14_384__linf_eps4_autoattack_standard
+  WARNING: No archive found. Skipping.
+
+============================================================
+  Evaluating: zeroshot_siglip2_so400m_patch14_384__l2_eps2_autoattack_standard
+  WARNING: No archive found. Skipping.
+
+============================================================
+  Evaluating: zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard
+  WARNING: No archive found. Skipping.
+
+============================================================
+  Evaluating: common__common_severity3
+  Downloading: adversarial/common/common_severity3/oxford-iiit-pet__common_severity3_processed.tar.zst
+  Saved to: /tmp/adv_archives/oxford-iiit-pet/oxford-iiit-pet__common_severity3_processed.tar.zst
+  Extracting oxford-iiit-pet__common_severity3_processed.tar.zst → oxford-iiit-pet__common_severity3/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.375
+BACKBONE NAMEBACKBONE NAMEBACKBONE NAME   edgenext_small.usi_in1kedgenext_small.usi_in1kedgenext_small.usi_in1k
+
+
+Loading timm model:Loading timm model:  edgenext_small.usi_in1kedgenext_small.usi_in1k
+Loading timm model:
+ edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k_oxford-iiit-pet_CLASSIC_AT.pt
+  Result: 482/1000 = 0.4820
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/edgenext_small_usi_in1k_CLASSIC_AT_seed2/predictions/edgenext_small.usi_in1k__oxford-iiit-pet__CLASSIC_AT__common__common_severity3__predictions.csv (1000 rows)
+
+All done. Results saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/edgenext_small_usi_in1k_CLASSIC_AT_seed2/edgenext_small.usi_in1k__oxford-iiit-pet__CLASSIC_AT__robustgenbench_results.csv

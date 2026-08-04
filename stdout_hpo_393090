@@ -1,0 +1,6 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values swin_tiny_patch4_window7_224.ms_in1k__caltech101__TRADES_v2
+📦 Extracting /tmp/datasets/caltech101_processed.tar.zst into /tmp/data/393090/caltech101 using Python zstd + tarfile...

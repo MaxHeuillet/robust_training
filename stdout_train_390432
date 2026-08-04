@@ -1,0 +1,276 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values coatnet_2_rw_224.sw_in12k_ft_in1k__fgvc-aircraft-2013b__TRADES_v2
+📦 Extracting /tmp/datasets/fgvc-aircraft-2013b_processed.tar.zst into /tmp/data/390432/fgvc-aircraft-2013b using Python zstd + tarfile...
+✅ Extraction of fgvc-aircraft-2013b completed successfully at 2026-07-31 12:48:25
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/coatnet_2_rw_224.sw_in12k_ft_in1k.pt to /tmp/390432
+Training step
+Loading HPO config from: ./configs/HPO_results/full_fine_tuning50/coatnet_2_rw_224.sw_in12k_ft_in1k__fgvc-aircraft-2013b__TRADES_v2.yaml
+we are launching trainingwe are launching training
+
+torchtorch  2.5.12.5.1
+
+cudacuda  12.212.2
+
+cudnn 90201
+set up the master adress and port
+cudnn 90201
+set up the master adress and port
+we are launching training
+torch 2.5.1
+cuda 12.2
+cudnn 90201
+set up the master adress and port
+we are launching training
+torch 2.5.1
+cuda 12.2
+cudnn 90201
+set up the master adress and port
+init process group ok
+### load model
+initialize dataoader 2
+### load model
+BACKBONE NAME coatnet_2_rw_224.sw_in12k_ft_in1k
+Loading timm model: coatnet_2_rw_224.sw_in12k_ft_in1k
+init process group ok
+### load model
+init process group ok
+### load model
+init process group ok
+### load model
+initialize dataoader 3
+### load model
+BACKBONE NAME coatnet_2_rw_224.sw_in12k_ft_in1k
+Loading timm model: coatnet_2_rw_224.sw_in12k_ft_in1k
+initialize dataoader 1
+### load model
+BACKBONE NAME coatnet_2_rw_224.sw_in12k_ft_in1k
+Loading timm model: coatnet_2_rw_224.sw_in12k_ft_in1k
+initialize dataoader 0
+### load model
+BACKBONE NAME coatnet_2_rw_224.sw_in12k_ft_in1k
+Loading timm model: coatnet_2_rw_224.sw_in12k_ft_in1k
+109 214 1 1
+effective batch size 1024 per_gpu_batch_size 1 accumulation steps 256
+109 214 1 1
+epochs 50
+effective batch size 1024 per_gpu_batch_size 1 accumulation steps 256
+109 214 1 1
+effective batch size 1024 per_gpu_batch_size 1 accumulation steps 256
+epochs 50
+109 214 1 1
+effective batch size 1024 per_gpu_batch_size 1 accumulation steps 256
+epochs 50
+epochs 50
+Rank 3, Iteration 1,
+Rank 2, Iteration 1,
+Rank 1, Iteration 1,
+Rank 0, Iteration 1,
+Rank 3, Iteration 2,Rank 1, Iteration 2,
+
+Rank 2, Iteration 2,
+Rank 0, Iteration 2,
+Rank 3, Iteration 3,
+Rank 1, Iteration 3,
+Rank 2, Iteration 3,
+Rank 0, Iteration 3,
+Rank 3, Iteration 4,Rank 1, Iteration 4,
+
+Rank 2, Iteration 4,
+Rank 0, Iteration 4,
+Rank 3, Iteration 5,
+Rank 1, Iteration 5,
+Rank 2, Iteration 5,
+Rank 0, Iteration 5,
+Rank 2, Iteration 6,Rank 3, Iteration 6,
+
+Rank 1, Iteration 6,
+Rank 0, Iteration 6,
+Rank 1, Iteration 7,
+Rank 2, Iteration 7,
+Rank 3, Iteration 7,
+Rank 0, Iteration 7,
+Rank 1, Iteration 8,
+Rank 3, Iteration 8,
+Rank 2, Iteration 8,
+Rank 0, Iteration 8,
+Rank 3, Iteration 9,Rank 1, Iteration 9,
+
+Rank 2, Iteration 9,
+Rank 0, Iteration 9,
+Rank 2, Iteration 10,
+Rank 1, Iteration 10,
+Rank 3, Iteration 10,
+Rank 0, Iteration 10,
+Rank 3, Iteration 11,
+Rank 1, Iteration 11,
+Rank 2, Iteration 11,
+Rank 0, Iteration 11,
+Rank 3, Iteration 12,
+Rank 2, Iteration 12,
+Rank 1, Iteration 12,
+Rank 0, Iteration 12,
+Rank 1, Iteration 13,Rank 2, Iteration 13,Rank 3, Iteration 13,
+
+
+Rank 0, Iteration 13,
+Rank 2, Iteration 14,
+Rank 1, Iteration 14,
+Rank 3, Iteration 14,
+Rank 0, Iteration 14,
+Rank 2, Iteration 15,
+Rank 1, Iteration 15,
+Rank 3, Iteration 15,
+Rank 0, Iteration 15,
+Rank 3, Iteration 16,
+Rank 1, Iteration 16,
+Rank 2, Iteration 16,
+Rank 0, Iteration 16,
+Rank 1, Iteration 17,
+Rank 2, Iteration 17,
+Rank 3, Iteration 17,
+Rank 0, Iteration 17,
+Rank 1, Iteration 18,
+Rank 2, Iteration 18,
+Rank 3, Iteration 18,
+Rank 0, Iteration 18,
+Rank 1, Iteration 19,
+Rank 2, Iteration 19,
+Rank 3, Iteration 19,
+Rank 0, Iteration 19,
+Rank 2, Iteration 20,Rank 3, Iteration 20,
+
+Rank 1, Iteration 20,
+Rank 0, Iteration 20,
+Rank 2, Iteration 21,
+Rank 1, Iteration 21,
+Rank 3, Iteration 21,
+Rank 0, Iteration 21,
+Rank 3, Iteration 22,Rank 1, Iteration 22,
+
+Rank 2, Iteration 22,
+Rank 0, Iteration 22,
+Rank 3, Iteration 23,Rank 1, Iteration 23,
+
+Rank 2, Iteration 23,
+Rank 0, Iteration 23,
+Rank 2, Iteration 24,
+Rank 3, Iteration 24,
+Rank 1, Iteration 24,
+Rank 0, Iteration 24,
+Rank 3, Iteration 25,Rank 1, Iteration 25,
+
+Rank 2, Iteration 25,
+Rank 0, Iteration 25,
+Rank 2, Iteration 26,Rank 1, Iteration 26,Rank 3, Iteration 26,
+
+
+Rank 0, Iteration 26,
+Rank 1, Iteration 27,
+Rank 2, Iteration 27,
+Rank 3, Iteration 27,
+Rank 0, Iteration 27,
+Rank 1, Iteration 28,
+Rank 3, Iteration 28,
+Rank 2, Iteration 28,
+Rank 0, Iteration 28,
+Rank 1, Iteration 29,Rank 3, Iteration 29,
+
+Rank 2, Iteration 29,
+Rank 0, Iteration 29,
+Rank 2, Iteration 30,
+Rank 1, Iteration 30,
+Rank 3, Iteration 30,
+Rank 0, Iteration 30,
+Rank 3, Iteration 31,
+Rank 1, Iteration 31,
+Rank 2, Iteration 31,
+Rank 0, Iteration 31,
+Rank 2, Iteration 32,
+Rank 3, Iteration 32,
+Rank 1, Iteration 32,
+Rank 0, Iteration 32,
+Rank 3, Iteration 33,Rank 1, Iteration 33,
+
+Rank 2, Iteration 33,
+Rank 0, Iteration 33,
+Rank 1, Iteration 34,
+Rank 3, Iteration 34,
+Rank 2, Iteration 34,
+Rank 0, Iteration 34,
+Rank 1, Iteration 35,
+Rank 3, Iteration 35,
+Rank 2, Iteration 35,
+Rank 0, Iteration 35,
+Rank 1, Iteration 36,
+Rank 3, Iteration 36,
+Rank 2, Iteration 36,
+Rank 0, Iteration 36,
+Rank 1, Iteration 37,
+Rank 3, Iteration 37,
+Rank 2, Iteration 37,
+Rank 0, Iteration 37,
+Rank 3, Iteration 38,
+Rank 1, Iteration 38,
+Rank 2, Iteration 38,
+Rank 0, Iteration 38,
+Rank 2, Iteration 39,
+Rank 3, Iteration 39,
+Rank 1, Iteration 39,
+Rank 0, Iteration 39,
+Rank 3, Iteration 40,
+Rank 1, Iteration 40,
+Rank 2, Iteration 40,
+Rank 0, Iteration 40,
+Rank 2, Iteration 41,Rank 3, Iteration 41,
+
+Rank 1, Iteration 41,
+Rank 0, Iteration 41,
+Rank 2, Iteration 42,
+Rank 1, Iteration 42,
+Rank 3, Iteration 42,
+Rank 0, Iteration 42,
+Rank 1, Iteration 43,
+Rank 3, Iteration 43,
+Rank 2, Iteration 43,
+Rank 0, Iteration 43,
+Rank 3, Iteration 44,
+Rank 1, Iteration 44,
+Rank 2, Iteration 44,
+Rank 0, Iteration 44,
+Rank 1, Iteration 45,
+Rank 2, Iteration 45,
+Rank 3, Iteration 45,
+Rank 0, Iteration 45,
+Rank 1, Iteration 46,
+Rank 2, Iteration 46,
+Rank 3, Iteration 46,
+Rank 0, Iteration 46,
+Rank 2, Iteration 47,Rank 1, Iteration 47,
+
+Rank 3, Iteration 47,
+Rank 0, Iteration 47,
+Rank 1, Iteration 48,
+Rank 3, Iteration 48,
+Rank 2, Iteration 48,
+Rank 0, Iteration 48,
+Rank 1, Iteration 49,
+Rank 2, Iteration 49,
+Rank 3, Iteration 49,
+Rank 0, Iteration 49,
+Rank 2, Iteration 50,Rank 1, Iteration 50,
+
+Rank 3, Iteration 50,
+Rank 0, Iteration 50,
+processes ended
+we are done training
+processes ended
+we are done training
+Model saved by rank 0
+processes ended
+we are done training
+✅ Moved successfully.
+processes ended
+we are done training

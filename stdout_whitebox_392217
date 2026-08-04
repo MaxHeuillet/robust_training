@@ -1,0 +1,104 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values coat_tiny.in1k__stanford_cars__TRADES_v2
+📦 Extracting /tmp/datasets/stanford_cars_processed.tar.zst into /tmp/data/392217/stanford_cars using Python zstd + tarfile...
+✅ Extraction of stanford_cars completed successfully at 2026-08-01 23:44:17
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/coat_tiny.in1k.pt to /tmp/392217
+Testing step: all
+Loading HPO config from: ./configs/HPO_results/full_fine_tuning50/coat_tiny.in1k__stanford_cars__TRADES_v2.yaml
+dataloader
+BACKBONE NAME coat_tiny.in1k
+Loading timm model: coat_tiny.in1k
+dataloader
+BACKBONE NAME coat_tiny.in1k
+Loading timm model: coat_tiny.in1k
+dataloader
+BACKBONE NAME coat_tiny.in1k
+Loading timm model: coat_tiny.in1k
+dataloader
+BACKBONE NAME coat_tiny.in1k
+Loading timm model: coat_tiny.in1k
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 3 0 32 8
+start batch iterations 0 0 32 8
+start batch iterations 2 0 32 8
+start batch iterations 1 0 32 8
+start batch iterations 3 1 32 8
+start batch iterations 0 1 32 8
+start batch iterations 2 1 32 8
+start batch iterations 1 1 32 8
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 3 0 32 8
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 0 0 32 8
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 1 0 32 8
+start batch iterations 2 0 32 8
+start batch iterations 3 1 32 8
+start batch iterations 0 1 32 8
+start batch iterations 1 1 32 8
+start batch iterations 2 1 32 8
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 3 0 32 8
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 0 0 32 8
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 1 0 32 8
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 2 0 32 8
+start batch iterations 0 1 32 8
+start batch iterations 3 1 32 8
+start batch iterations 1 1 32 8
+start batch iterations 2 1 32 8
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 1: Results sent to queue
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 0: Results sent to queue
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 3: Results sent to queue
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 2: Results sent to queue
+result statistics (combined) {'Linf': {1: {'nb_correct': 49, 'nb_examples': 64}, 0: {'nb_correct': 43, 'nb_examples': 64}, 3: {'nb_correct': 42, 'nb_examples': 64}, 2: {'nb_correct': 48, 'nb_examples': 64}}, 'L2': {1: {'nb_correct': 49, 'nb_examples': 64}, 0: {'nb_correct': 43, 'nb_examples': 64}, 3: {'nb_correct': 42, 'nb_examples': 64}, 2: {'nb_correct': 48, 'nb_examples': 64}}, 'L1': {1: {'nb_correct': 49, 'nb_examples': 64}, 0: {'nb_correct': 43, 'nb_examples': 64}, 3: {'nb_correct': 42, 'nb_examples': 64}, 2: {'nb_correct': 48, 'nb_examples': 64}}, 'common': {}} {'Linf': {1: {'nb_correct': 23, 'nb_examples': 64}, 0: {'nb_correct': 17, 'nb_examples': 64}, 3: {'nb_correct': 15, 'nb_examples': 64}, 2: {'nb_correct': 27, 'nb_examples': 64}}, 'L2': {1: {'nb_correct': 22, 'nb_examples': 64}, 0: {'nb_correct': 17, 'nb_examples': 64}, 3: {'nb_correct': 16, 'nb_examples': 64}, 2: {'nb_correct': 25, 'nb_examples': 64}}, 'L1': {1: {'nb_correct': 1, 'nb_examples': 64}, 0: {'nb_correct': 2, 'nb_examples': 64}, 3: {'nb_correct': 6, 'nb_examples': 64}, 2: {'nb_correct': 5, 'nb_examples': 64}}, 'common': {}}
+--- test-all: no results for common, skipping log_results ---
+  Predictions saved to: results/coat_tiny_in1k_TRADES_v2_seed3/predictions/coat_tiny.in1k_stanford_cars_TRADES_v2__clean__predictions.csv (256 rows)
+  Predictions saved to: results/coat_tiny_in1k_TRADES_v2_seed3/predictions/coat_tiny.in1k_stanford_cars_TRADES_v2__Linf__predictions.csv (256 rows)
+  Predictions saved to: results/coat_tiny_in1k_TRADES_v2_seed3/predictions/coat_tiny.in1k_stanford_cars_TRADES_v2__L2__predictions.csv (256 rows)
+  Predictions saved to: results/coat_tiny_in1k_TRADES_v2_seed3/predictions/coat_tiny.in1k_stanford_cars_TRADES_v2__L1__predictions.csv (256 rows)

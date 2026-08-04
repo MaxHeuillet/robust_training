@@ -1,0 +1,104 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values eva02_base_patch14_224.mim_in22k__caltech101__TRADES_v2
+📦 Extracting /tmp/datasets/caltech101_processed.tar.zst into /tmp/data/392266/caltech101 using Python zstd + tarfile...
+✅ Extraction of caltech101 completed successfully at 2026-08-02 01:00:44
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/eva02_base_patch14_224.mim_in22k.pt to /tmp/392266
+Testing step: all
+Loading HPO config from: ./configs/HPO_results/reviewer_TRADES_beta6/eva02_base_patch14_224.mim_in22k__caltech101__TRADES_v2.yaml
+dataloader
+BACKBONE NAME eva02_base_patch14_224.mim_in22k
+Loading timm model: eva02_base_patch14_224.mim_in22k
+dataloader
+BACKBONE NAME eva02_base_patch14_224.mim_in22k
+Loading timm model: eva02_base_patch14_224.mim_in22k
+dataloader
+BACKBONE NAME eva02_base_patch14_224.mim_in22k
+Loading timm model: eva02_base_patch14_224.mim_in22k
+dataloader
+BACKBONE NAME eva02_base_patch14_224.mim_in22k
+Loading timm model: eva02_base_patch14_224.mim_in22k
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 3 0 48 6
+start batch iterations 1 0 48 6
+start batch iterations 0 0 48 6
+start batch iterations 2 0 48 6
+start batch iterations 1 1 48 6
+start batch iterations 3 1 48 6
+start batch iterations 2 1 48 6
+start batch iterations 0 1 48 6
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 1 0 48 6
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 0 0 48 6
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 3 0 48 6
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 2 0 48 6
+start batch iterations 1 1 48 6
+start batch iterations 0 1 48 6
+start batch iterations 3 1 48 6
+start batch iterations 2 1 48 6
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 0 0 48 6
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 1 0 48 6
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 3 0 48 6
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 2 0 48 6
+start batch iterations 0 1 48 6
+start batch iterations 1 1 48 6
+start batch iterations 3 1 48 6
+start batch iterations 2 1 48 6
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 0: Results sent to queue
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 1: Results sent to queue
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 3: Results sent to queue
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 2: Results sent to queue
+result statistics (combined) {'Linf': {0: {'nb_correct': 77, 'nb_examples': 96}, 1: {'nb_correct': 77, 'nb_examples': 96}, 3: {'nb_correct': 75, 'nb_examples': 96}, 2: {'nb_correct': 84, 'nb_examples': 96}}, 'L2': {0: {'nb_correct': 77, 'nb_examples': 96}, 1: {'nb_correct': 77, 'nb_examples': 96}, 3: {'nb_correct': 75, 'nb_examples': 96}, 2: {'nb_correct': 84, 'nb_examples': 96}}, 'L1': {0: {'nb_correct': 77, 'nb_examples': 96}, 1: {'nb_correct': 77, 'nb_examples': 96}, 3: {'nb_correct': 75, 'nb_examples': 96}, 2: {'nb_correct': 84, 'nb_examples': 96}}, 'common': {}} {'Linf': {0: {'nb_correct': 64, 'nb_examples': 96}, 1: {'nb_correct': 64, 'nb_examples': 96}, 3: {'nb_correct': 67, 'nb_examples': 96}, 2: {'nb_correct': 71, 'nb_examples': 96}}, 'L2': {0: {'nb_correct': 66, 'nb_examples': 96}, 1: {'nb_correct': 69, 'nb_examples': 96}, 3: {'nb_correct': 70, 'nb_examples': 96}, 2: {'nb_correct': 76, 'nb_examples': 96}}, 'L1': {0: {'nb_correct': 65, 'nb_examples': 96}, 1: {'nb_correct': 67, 'nb_examples': 96}, 3: {'nb_correct': 69, 'nb_examples': 96}, 2: {'nb_correct': 73, 'nb_examples': 96}}, 'common': {}}
+--- test-all: no results for common, skipping log_results ---
+  Predictions saved to: results/eva02_base_patch14_224_mim_in22k_TRADES_beta6/predictions/eva02_base_patch14_224.mim_in22k_caltech101_TRADES_v2__clean__predictions.csv (384 rows)
+  Predictions saved to: results/eva02_base_patch14_224_mim_in22k_TRADES_beta6/predictions/eva02_base_patch14_224.mim_in22k_caltech101_TRADES_v2__Linf__predictions.csv (384 rows)
+  Predictions saved to: results/eva02_base_patch14_224_mim_in22k_TRADES_beta6/predictions/eva02_base_patch14_224.mim_in22k_caltech101_TRADES_v2__L2__predictions.csv (384 rows)
+  Predictions saved to: results/eva02_base_patch14_224_mim_in22k_TRADES_beta6/predictions/eva02_base_patch14_224.mim_in22k_caltech101_TRADES_v2__L1__predictions.csv (384 rows)

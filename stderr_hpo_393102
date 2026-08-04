@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "/project/6102313/mheuill/robust_training/utils/movers.py", line 45, in move_dataset_to_tmpdir
+    with open(archive_path, "rb") as compressed:
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/datasets/caltech101_processed.tar.zst'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/project/6102313/mheuill/robust_training/./distributed_experiment_final.py", line 968, in <module>
+    main()
+  File "/project/6102313/mheuill/robust_training/./distributed_experiment_final.py", line 904, in main
+    move_dataset_to_tmpdir(config_base)
+  File "/project/6102313/mheuill/robust_training/utils/movers.py", line 51, in move_dataset_to_tmpdir
+    raise RuntimeError(f"❌ Failed to extract archive: {archive_path}") from e
+RuntimeError: ❌ Failed to extract archive: /tmp/datasets/caltech101_processed.tar.zst

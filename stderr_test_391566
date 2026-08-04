@@ -1,0 +1,33 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+W0801 08:36:25.645000 305515 torch/multiprocessing/spawn.py:160] Terminating process 305561 via signal SIGTERM
+W0801 08:36:25.646000 305515 torch/multiprocessing/spawn.py:160] Terminating process 305562 via signal SIGTERM
+W0801 08:36:25.646000 305515 torch/multiprocessing/spawn.py:160] Terminating process 305564 via signal SIGTERM
+Traceback (most recent call last):
+  File "/project/6102313/mheuill/robust_training/./evaluate_robustgenbench.py", line 506, in <module>
+    main()
+  File "/project/6102313/mheuill/robust_training/./evaluate_robustgenbench.py", line 451, in main
+    stats, preds = run_distributed_inference(clean_items, args, N)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/project/6102313/mheuill/robust_training/./evaluate_robustgenbench.py", line 324, in run_distributed_inference
+    mp.spawn(inference_worker, args=(world_size, items, args, result_queue, N),
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/multiprocessing/spawn.py", line 328, in spawn
+    return start_processes(fn, args, nprocs, join, daemon, start_method="spawn")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/multiprocessing/spawn.py", line 284, in start_processes
+    while not context.join():
+              ^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/multiprocessing/spawn.py", line 203, in join
+    raise ProcessRaisedException(msg, error_index, failed_process.pid)
+torch.multiprocessing.spawn.ProcessRaisedException: 
+
+-- Process 2 terminated with the following error:
+Traceback (most recent call last):
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/multiprocessing/spawn.py", line 90, in _wrap
+    fn(i, *args)
+  File "/project/6102313/mheuill/robust_training/evaluate_robustgenbench.py", line 290, in inference_worker
+    model = load_trained_model(args, N, rank)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/project/6102313/mheuill/robust_training/evaluate_robustgenbench.py", line 268, in load_trained_model
+    raise FileNotFoundError(f"State dict not found at {state_dict_path}")
+FileNotFoundError: State dict not found at /home/m/mheuill/scratch/trained_state_dicts/convnext_tiny_fb_in1k_TRADES_v2_seed2/convnext_tiny.fb_in1k_uc-merced-land-use-dataset_TRADES_v2.pt
+

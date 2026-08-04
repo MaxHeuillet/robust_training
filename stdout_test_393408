@@ -1,0 +1,26 @@
+============================================================
+  RobustGenBench Evaluation
+  Backbone         : eva02_base_patch14_224.mim_in22k
+  Dataset          : uc-merced-land-use-dataset
+  Loss             : TRADES_v2
+  Project          : full_fine_tuning_eva02_base_patch14_224_mim_in22k_TRADES_beta6_hpo
+  HPO source       : full_fine_tuning50
+  exp_id           : eva02_base_patch14_224.mim_in22k__uc-merced-land-use-dataset__TRADES_v2
+  GPUs             : 4
+============================================================
+  num_classes=21
+
+============================================================
+  Evaluating: CLEAN
+  Downloading clean test archive: uc-merced-land-use-dataset_processed.tar.zst
+  Extracting uc-merced-land-use-dataset_processed.tar.zst → uc-merced-land-use-dataset/
+  Loaded 420 clean images.
+  Clean img[0]: min=0.106 max=0.996 mean=0.498
+BACKBONE NAME eva02_base_patch14_224.mim_in22k
+BACKBONE NAMELoading timm model:  eva02_base_patch14_224.mim_in22keva02_base_patch14_224.mim_in22k
+
+BACKBONE NAMEBACKBONE NAMELoading timm model:   eva02_base_patch14_224.mim_in22keva02_base_patch14_224.mim_in22keva02_base_patch14_224.mim_in22k
+
+
+Loading timm model:Loading timm model:  eva02_base_patch14_224.mim_in22keva02_base_patch14_224.mim_in22k
+

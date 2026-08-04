@@ -1,0 +1,10 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values coat_tiny.in1k__oxford-iiit-pet__TRADES_v2
+📦 Extracting /tmp/datasets/oxford-iiit-pet_processed.tar.zst into /tmp/data/391085/oxford-iiit-pet using Python zstd + tarfile...
+✅ Extraction of oxford-iiit-pet completed successfully at 2026-07-31 23:36:09
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/coat_tiny.in1k.pt to /tmp/391085
+Training step
+Loading HPO config from: ./configs/HPO_results/full_fine_tuning50/coat_tiny.in1k__oxford-iiit-pet__TRADES_v2.yaml

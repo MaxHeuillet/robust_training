@@ -1,0 +1,5 @@
+split,surrogate,threat_model,nb_correct,nb_examples,accuracy
+clean,none,clean,4,1000,0.004
+linf,zeroshot_clip_vitb16_laion2b,linf_eps4_autoattack_standard,4,1000,0.004
+l2,zeroshot_clip_vitb16_laion2b,l2_eps2_autoattack_standard,4,1000,0.004
+l1,zeroshot_clip_vitb16_laion2b,l1_eps75_autoattack_standard,4,1000,0.004

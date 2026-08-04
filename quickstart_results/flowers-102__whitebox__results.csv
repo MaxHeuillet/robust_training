@@ -1,0 +1,5 @@
+dataset,split,norm,eps,nb_correct_nat,nb_correct_adv,nb_examples,accuracy_nat,accuracy_adv
+flowers-102,clean,—,—,11,—,1000,0.011,—
+flowers-102,linf,Linf,0.01568627450980392,11,0,1000,0.011,0.0
+flowers-102,l2,L2,2.0,11,0,1000,0.011,0.0
+flowers-102,l1,L1,75.0,11,0,1000,0.011,0.0

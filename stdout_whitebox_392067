@@ -1,0 +1,11 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values coat_tiny.in1k__caltech101__TRADES_v2
+📦 Extracting /tmp/datasets/caltech101_processed.tar.zst into /tmp/data/392067/caltech101 using Python zstd + tarfile...
+✅ Extraction of caltech101 completed successfully at 2026-08-01 17:03:31
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/coat_tiny.in1k.pt to /tmp/392067
+Testing step: all
+Loading HPO config from: ./configs/HPO_results/full_fine_tuning50/coat_tiny.in1k__caltech101__TRADES_v2.yaml
+result statistics (combined) {'Linf': {}, 'L2': {}, 'L1': {}, 'common': {}} {'Linf': {}, 'L2': {}, 'L1': {}, 'common': {}}

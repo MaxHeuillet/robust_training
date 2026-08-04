@@ -1,10 +1,11 @@
 import os
+import csv
 os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
 # from comet_ml import Experiment
 
 import torch
 import torch.distributed as dist
-from torch.utils.data import DataLoader, DistributedSampler
+from torch.utils.data import DataLoader, DistributedSampler, Dataset
 from torch.optim.lr_scheduler import CosineAnnealingLR
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.cuda.amp import GradScaler, autocast
@@ -18,6 +19,8 @@ from ray.air import session
 
 from utils import Setup, Hp_opt, move_dataset_to_tmpdir, move_architecture_to_tmpdir
 from databases import load_data2
+from corruptions import apply_portfolio_of_corruptions
+import torchvision.transforms as T
 from architectures import load_architecture, CustomModel
 from losses import get_loss, get_eval_loss
 from utils import get_args2, set_seeds, load_optimizer
@@ -56,6 +59,76 @@ def get_config_id(cfg) -> str:
     serialized_values = cfg.backbone + '__' + cfg.dataset + '__' + cfg.loss_function
     print('serialized_values', serialized_values)
     return serialized_values
+
+
+class IndexedDataset(Dataset):
+    # Wraps a CSVDataset to also return the sample's index, without changing
+    # CSVDataset's 2-tuple (image, label) contract used elsewhere (training,
+    # the old single-stage test loaders). Needed for per-observation
+    # predictions CSVs (bootstrap analysis) in the white-box test-all mode.
+    def __init__(self, base_dataset):
+        self.base = base_dataset
+
+    def __len__(self):
+        return len(self.base)
+
+    def __getitem__(self, idx):
+        image, label = self.base[idx]
+        return image, label, idx
+
+    def filename(self, idx):
+        return self.base.samples[idx][0].name
+
+
+def write_whitebox_predictions_csv(records, filename_lookup, results_dir, exp_id: str, label: str):
+    # records: iterable of (idx, true_label, pred_label). filename_lookup: idx -> filename string.
+    preds_dir = Path(results_dir) / "predictions"
+    preds_dir.mkdir(parents=True, exist_ok=True)
+    out_path = preds_dir / f"{exp_id}__{label}__predictions.csv"
+    # Dedupe by idx: DistributedSampler(drop_last=True) doesn't repeat indices
+    # across ranks, but the 2-batch-per-rank cap means a given idx is only
+    # ever seen once anyway; dedupe defensively for a stable one-row-per-item file.
+    by_idx = {}
+    for idx, true_label, pred_label in records:
+        by_idx[idx] = (true_label, pred_label)
+    with open(out_path, "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["idx", "filename", "true_label", "pred_label", "correct"])
+        for idx in sorted(by_idx):
+            true_label, pred_label = by_idx[idx]
+            writer.writerow([idx, filename_lookup(idx), true_label, pred_label,
+                              int(true_label == pred_label)])
+    print(f"  Predictions saved to: {out_path} ({len(by_idx)} rows)", flush=True)
+
+
+class CorruptionToTensor(Dataset):
+    # apply_portfolio_of_corruptions() (corruptions/common.py) returns PIL-image
+    # samples; convert back to [0,1] tensors to match CSVDataset's output format.
+    def __init__(self, corrupted_dataset):
+        self.base = corrupted_dataset
+        self.to_tensor = T.ToTensor()
+
+    def __len__(self):
+        return len(self.base)
+
+    def __getitem__(self, idx):
+        img, label = self.base[idx]
+        return self.to_tensor(img), label
+
+
+def generate_common_corruption_dataset(test_dataset, severity=3):
+    # test_common/ is no longer shipped in the current RobustGenBench dataset
+    # archives (see comment in databases/loaders2.py) -- generate the same
+    # ImageNet-C-style common-corruption portfolio locally instead, from the
+    # already-downloaded clean test set, matching the exact procedure the
+    # original (pre-archive-change) evaluation used
+    # (databases/loaders.py's load_data(common_corruption=True) ->
+    # apply_portfolio_of_corruptions). test_dataset yields [0,1] tensors
+    # (CSVDataset's transform is Resize+ToTensor only, no normalization), which
+    # apply_corruption() accepts directly (converts internally).
+    corrupted = apply_portfolio_of_corruptions(test_dataset, severity=severity)
+    return CorruptionToTensor(corrupted)
+
 
 class BaseExperiment:
 
@@ -132,6 +205,47 @@ class BaseExperiment:
                                     pin_memory=True)
         
         return testloader, commonloader, test_sampler, common_sampler, N
+
+    def initialize_loaders_test_whitebox(self, config, rank,):
+        # Same as initialize_loaders_test but with the larger H100-tuned batch size
+        # used by the combined white-box test-all mode.
+        _, _, test_dataset, common_dataset, N = load_data2(config)
+        nb_workers = 3
+
+        test_dataset = IndexedDataset(test_dataset)
+
+        world_size = self.setup.world_size if not self.setup.hp_opt else 4
+
+        test_sampler = DistributedSampler(test_dataset, num_replicas=world_size, rank=rank, shuffle=True, drop_last=True)
+
+        bs = self.setup.whitebox_eval_batch_size(config)
+
+        testloader = DataLoader(test_dataset,
+                                    batch_size=bs,
+                                    sampler=test_sampler,
+                                    num_workers=nb_workers,
+                                    pin_memory=True)
+
+        # test_common/ is no longer shipped in the current dataset archives
+        # (see comment in databases/loaders2.py); generate it locally instead
+        # of skipping common-corruption evaluation. test_dataset is already
+        # wrapped in IndexedDataset above -- reuse its underlying CSVDataset
+        # rather than re-parsing labels.csv.
+        if common_dataset is None:
+            common_dataset = generate_common_corruption_dataset(test_dataset.base, severity=3)
+
+        if common_dataset is None:
+            commonloader = None
+        else:
+            common_dataset = IndexedDataset(common_dataset)
+            common_sampler = DistributedSampler(common_dataset, num_replicas=world_size, rank=rank, shuffle=True, drop_last=True)
+            commonloader = DataLoader(common_dataset,
+                                        batch_size=bs,
+                                        sampler=common_sampler,
+                                        num_workers=nb_workers,
+                                        pin_memory=True)
+
+        return testloader, commonloader, test_dataset, common_dataset, N
 
     def training(self, config, rank=None ):
 
@@ -421,7 +535,12 @@ class BaseExperiment:
 
         path = os.path.expanduser(config.trained_statedicts_path)
         src =  os.path.join(path, config.project_name, f"{config.exp_id}.pt")
-        dest = Path(os.path.expandvars(config.work_path)).expanduser().resolve()
+        # Rank-specific destination: 4 ranks run as separate processes and all
+        # call this concurrently, so a shared destination path races a copy
+        # from one rank against a read from another (PytorchStreamReader
+        # "file read failed" from reading a partially-overwritten file).
+        dest = Path(os.path.expandvars(config.work_path)).expanduser().resolve() / f"rank{rank}"
+        dest.mkdir(parents=True, exist_ok=True)
         shutil.copy2(str(src), str(dest))
         load_path = os.path.join(dest, f"{config.exp_id}.pt")
 
@@ -438,12 +557,15 @@ class BaseExperiment:
         result_queue.put( (rank, stats_nat, stats_adv) )
         print(f"Rank {rank}: Results sent to queue", flush=True)
         
-    def test_loop(self, testloader, config, model, N, rank, corruption_type):
+    def test_loop(self, testloader, config, model, N, rank, corruption_type, collect_predictions=False):
 
         def forward_pass(x):
             return model(x)
-        
+
         device = torch.device(f"cuda:{rank}")
+
+        preds_nat_records = []  # (idx, true_label, pred_label), only populated if collect_predictions
+        preds_adv_records = []
 
         if corruption_type in ['Linf' , 'L2' , 'L1']:
 
@@ -453,7 +575,7 @@ class BaseExperiment:
             print('stats', nb_correct_nat, nb_correct_adv, nb_examples, flush=True)
             if corruption_type == 'Linf':
                 distance = config.epsilon
-            elif corruption_type == 'L2':    
+            elif corruption_type == 'L2':
                 distance = 2.0
             elif corruption_type == 'L1':
                 distance = 75.0
@@ -462,17 +584,20 @@ class BaseExperiment:
                 print('not implemented error in the distance', flush=True)
 
             adversary = AutoAttack(forward_pass, norm=corruption_type, eps=distance, version='standard', verbose = False, device = device)
-            print('adversary instanciated', flush=True) 
-            
+            print('adversary instanciated', flush=True)
+
             for _, batch in enumerate( testloader ):
 
-                x_nat, target = batch
+                if collect_predictions:
+                    x_nat, target, idxs = batch
+                else:
+                    x_nat, target = batch
 
-                x_nat, target = x_nat.to(rank), target.to(rank) 
+                x_nat, target = x_nat.to(rank), target.to(rank)
 
                 batch_size = x_nat.size(0)
 
-                print('start batch iterations', rank, _,batch_size, len(testloader), flush=True) 
+                print('start batch iterations', rank, _,batch_size, len(testloader), flush=True)
 
                 x_adv = adversary.run_standard_evaluation(x_nat, target, bs = batch_size )
 
@@ -485,6 +610,10 @@ class BaseExperiment:
                 nb_correct_adv += (preds_adv == target).sum().item()
                 nb_examples += target.size(0)
 
+                if collect_predictions:
+                    preds_nat_records.extend(zip(idxs.tolist(), target.tolist(), preds_nat.tolist()))
+                    preds_adv_records.extend(zip(idxs.tolist(), target.tolist(), preds_adv.tolist()))
+
                 if _ == 1:
                     break
 
@@ -495,12 +624,15 @@ class BaseExperiment:
 
             nb_correct_adv = 0
             nb_examples = 0
-            
+
             for _, batch in enumerate( testloader ):
 
-                x_adv, target = batch
+                if collect_predictions:
+                    x_adv, target, idxs = batch
+                else:
+                    x_adv, target = batch
 
-                x_adv, target = x_adv.to(rank), target.to(rank) 
+                x_adv, target = x_adv.to(rank), target.to(rank)
 
                 batch_size = x_adv.size(0)
 
@@ -511,15 +643,20 @@ class BaseExperiment:
                 nb_correct_adv += (preds_adv == target).sum().item()
                 nb_examples += target.size(0)
 
+                if collect_predictions:
+                    preds_adv_records.extend(zip(idxs.tolist(), target.tolist(), preds_adv.tolist()))
+
                 if _ == 1:
                     break
-            
+
             stats_nat = { 'nb_correct':None, 'nb_examples':None }
             stats_adv = { 'nb_correct':nb_correct_adv, 'nb_examples':nb_examples }
 
         else:
             print("not implemented error")
-        
+
+        if collect_predictions:
+            return stats_nat, stats_adv, preds_nat_records, preds_adv_records
         return stats_nat, stats_adv
     
     def launch_test(self, corruption_type, config):
@@ -562,7 +699,166 @@ class BaseExperiment:
         else:
             statistic = self.setup.aggregate_results(statistics_adv, corruption_type)
             self.setup.log_results(config, statistic)
-        
+
+    def test_all(self, rank, result_queue, config):
+        # Combined white-box eval: loads the model and checkpoint once, then runs
+        # Linf, L2, L1 and common sequentially, instead of 4 separate chained jobs
+        # each paying setup + model-load + checkpoint-copy cost on their own.
+        testloader, commonloader, _, _, N = self.initialize_loaders_test_whitebox(config, rank)
+
+        print('dataloader', flush=True)
+
+        model = load_architecture(config, N, )
+        model = CustomModel(config, model, )
+
+        path = os.path.expanduser(config.trained_statedicts_path)
+        src = os.path.join(path, config.project_name, f"{config.exp_id}.pt")
+        # Rank-specific destination: 4 ranks run as separate processes and all
+        # call this concurrently, so a shared destination path races a copy
+        # from one rank against a read from another (PytorchStreamReader
+        # "file read failed" from reading a partially-overwritten file).
+        dest = Path(os.path.expandvars(config.work_path)).expanduser().resolve() / f"rank{rank}"
+        dest.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(str(src), str(dest))
+        load_path = os.path.join(dest, f"{config.exp_id}.pt")
+
+        trained_state_dict = torch.load(load_path, weights_only=True, map_location='cpu')
+        model.load_state_dict(trained_state_dict)
+        model.to(rank)
+        model.eval()
+
+        print('start test loop (combined)', flush=True)
+
+        results = {}
+        for corruption_type in ['Linf', 'L2', 'L1']:
+            print(f'--- test-all: {corruption_type} ---', flush=True)
+            stats_nat, stats_adv, preds_nat, preds_adv = self.test_loop(
+                testloader, config, model, N, rank, corruption_type, collect_predictions=True)
+            results[corruption_type] = (stats_nat, stats_adv, preds_nat, preds_adv)
+
+        if commonloader is None:
+            print('--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---', flush=True)
+        else:
+            print('--- test-all: common ---', flush=True)
+            stats_nat_common, stats_adv_common, preds_nat_common, preds_adv_common = self.test_loop(
+                commonloader, config, model, N, rank, 'common', collect_predictions=True)
+            results['common'] = (stats_nat_common, stats_adv_common, preds_nat_common, preds_adv_common)
+
+        print('end test loop (combined)', flush=True)
+
+        result_queue.put((rank, results))
+        print(f"Rank {rank}: Results sent to queue", flush=True)
+
+    def launch_test_all(self, config):
+        result_queue = Queue()
+        processes = []
+
+        for rank in range(self.setup.world_size):
+            p = mp.Process(target=self.test_all, args=(rank, result_queue, config))
+            p.start()
+            processes.append(p)
+
+        for p in processes:
+            p.join()
+
+        per_type_nat = {ct: {} for ct in ['Linf', 'L2', 'L1', 'common']}
+        per_type_adv = {ct: {} for ct in ['Linf', 'L2', 'L1', 'common']}
+        per_type_preds_nat = {ct: [] for ct in ['Linf', 'L2', 'L1', 'common']}
+        per_type_preds_adv = {ct: [] for ct in ['Linf', 'L2', 'L1', 'common']}
+        while not result_queue.empty():
+            rank, results = result_queue.get()
+            for ct, (stats_nat, stats_adv, preds_nat, preds_adv) in results.items():
+                per_type_nat[ct][rank] = stats_nat
+                per_type_adv[ct][rank] = stats_adv
+                per_type_preds_nat[ct].extend(preds_nat)
+                per_type_preds_adv[ct].extend(preds_adv)
+
+        print('result statistics (combined)', per_type_nat, per_type_adv, flush=True)
+
+        # clean accuracy comes from the Linf pass's natural-accuracy stats
+        if not per_type_nat['Linf']:
+            print('--- test-all: no results for Linf (clean), skipping log_results ---', flush=True)
+        else:
+            statistic = self.setup.aggregate_results(per_type_nat['Linf'], 'clean')
+            self.setup.log_results(config, statistic)
+
+        for ct in ['Linf', 'L2', 'L1', 'common']:
+            if not per_type_adv[ct]:
+                print(f'--- test-all: no results for {ct}, skipping log_results ---', flush=True)
+                continue
+            statistic = self.setup.aggregate_results(per_type_adv[ct], ct)
+            self.setup.log_results(config, statistic)
+
+    def test_common_only(self, rank, result_queue, config):
+        # Lean variant of test_all: only evaluates common-corruption accuracy
+        # (fills in the missing common_acc for existing pkls without redoing
+        # the expensive Linf/L2/L1 AutoAttack passes). Meant to be called for
+        # many (backbone, dataset, seed, loss) combos in a single SLURM job's
+        # for-loop, so it skips building the clean testloader entirely.
+        _, _, test_dataset, common_dataset, N = load_data2(config)
+        if common_dataset is None:
+            common_dataset = generate_common_corruption_dataset(test_dataset, severity=3)
+        common_dataset = IndexedDataset(common_dataset)
+
+        world_size = self.setup.world_size if not self.setup.hp_opt else 4
+        common_sampler = DistributedSampler(common_dataset, num_replicas=world_size, rank=rank, shuffle=True, drop_last=True)
+        bs = self.setup.whitebox_eval_batch_size(config)
+        commonloader = DataLoader(common_dataset, batch_size=bs, sampler=common_sampler,
+                                   num_workers=3, pin_memory=True)
+
+        model = load_architecture(config, N, )
+        model = CustomModel(config, model, )
+
+        path = os.path.expanduser(config.trained_statedicts_path)
+        src = os.path.join(path, config.project_name, f"{config.exp_id}.pt")
+        dest = Path(os.path.expandvars(config.work_path)).expanduser().resolve() / f"rank{rank}"
+        dest.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(str(src), str(dest))
+        load_path = os.path.join(dest, f"{config.exp_id}.pt")
+
+        trained_state_dict = torch.load(load_path, weights_only=True, map_location='cpu')
+        model.load_state_dict(trained_state_dict)
+        model.to(rank)
+        model.eval()
+
+        _, stats_adv, _, preds_adv = self.test_loop(
+            commonloader, config, model, N, rank, 'common', collect_predictions=True)
+
+        result_queue.put((rank, stats_adv, preds_adv))
+        print(f"Rank {rank}: common-only results sent to queue", flush=True)
+
+    def launch_test_common_only(self, config):
+        result_queue = Queue()
+        processes = []
+        for rank in range(self.setup.world_size):
+            p = mp.Process(target=self.test_common_only, args=(rank, result_queue, config))
+            p.start()
+            processes.append(p)
+        for p in processes:
+            p.join()
+
+        per_rank_adv = {}
+        all_preds_adv = []
+        while not result_queue.empty():
+            rank, stats_adv, preds_adv = result_queue.get()
+            per_rank_adv[rank] = stats_adv
+            all_preds_adv.extend(preds_adv)
+
+        if not per_rank_adv:
+            print('--- test-common-only: no results, skipping log_results ---', flush=True)
+            return
+
+        statistic = self.setup.aggregate_results(per_rank_adv, 'common')
+        self.setup.log_results(config, statistic)
+        print(f"--- test-common-only: logged common_acc={statistic} for {config.exp_id} ---", flush=True)
+
+        if all_preds_adv:
+            _, _, test_dataset_plain, _, _ = load_data2(config)
+            results_dir = os.path.join(config.results_path, config.project_name)
+            write_whitebox_predictions_csv(
+                all_preds_adv, lambda idx: test_dataset_plain.samples[idx][0].name,
+                results_dir, config.exp_id, 'common')
+
 
 def training_wrapper(rank, experiment, config ):
     print('we are launching training')
@@ -592,8 +888,9 @@ def main():
     elif 'coatnet_2_rw_224_sw_in12k' in args_dict['project_name']:
         local_config = compose(config_name="default_config_fullfinetuning50")
     else:
-        print('error in the experiment name', flush=True)
-        sys.exit(1)
+        # All other full-fine-tuning-50 project names (e.g. new backbones/experiments)
+        # resolve to the same base config as every branch above.
+        local_config = compose(config_name="default_config_fullfinetuning50")
 
     mode = args_dict['mode']
     args_dict.pop("mode")
@@ -630,20 +927,32 @@ def main():
                nprocs=world_size, join=True)
 
     elif mode.startswith("test"):
-        # e.g. test-linf, test-l1, test-l2, test-common
+        # e.g. test-Linf, test-L1, test-L2, test-common, test-all, test-common-only
         torch.multiprocessing.set_start_method("spawn", force=True)
 
-        test_type = mode.split("-")[1]  # "linf", "l1", "l2", "common"
+        # test-common-only doesn't fit the generic "test-<Type>" split (it has
+        # an extra "-only" segment), so check it explicitly.
+        test_type = "common-only" if mode == "test-common-only" else mode.split("-")[1]
 
         print(f"Testing step: {test_type}", flush=True)
+        # Load HPO yaml from hpo_source_project (may differ from project_name),
+        # same convention as "train" mode above.
+        hpo_source = hpo_source_project or config_base.project_name
         path = os.path.join(config_base.configs_path, "HPO_results",
-                            config_base.project_name, f"{config_base.exp_id}.yaml")
+                            hpo_source, f"{config_base.exp_id}.yaml")
+        print(f"Loading HPO config from: {path}", flush=True)
         config_optimal = OmegaConf.load(path)
+        config_optimal.project_name = config_base.project_name
 
         os.makedirs(os.path.join(config_base.results_path, config_base.project_name),
                     exist_ok=True)
 
-        experiment.launch_test(test_type, config_optimal)
+        if test_type == "all":
+            experiment.launch_test_all(config_optimal)
+        elif test_type == "common-only":
+            experiment.launch_test_common_only(config_optimal)
+        else:
+            experiment.launch_test(test_type, config_optimal)
 
     else:
         print(f"Unknown mode {mode}", flush=True)

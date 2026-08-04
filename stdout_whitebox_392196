@@ -1,0 +1,105 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values convnext_tiny.fb_in22k__fgvc-aircraft-2013b__TRADES_v2
+📦 Extracting /tmp/datasets/fgvc-aircraft-2013b_processed.tar.zst into /tmp/data/392196/fgvc-aircraft-2013b using Python zstd + tarfile...
+✅ Extraction of fgvc-aircraft-2013b completed successfully at 2026-08-01 23:10:04
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/convnext_tiny.fb_in22k.pt to /tmp/392196
+Testing step: all
+Loading HPO config from: ./configs/HPO_results/full_fine_tuning50/convnext_tiny.fb_in22k__fgvc-aircraft-2013b__TRADES_v2.yaml
+dataloader
+BACKBONE NAME convnext_tiny.fb_in22k
+Loading timm model: convnext_tiny.fb_in22k
+dataloader
+BACKBONE NAME convnext_tiny.fb_in22k
+Loading timm model: convnext_tiny.fb_in22k
+dataloader
+BACKBONE NAME convnext_tiny.fb_in22k
+Loading timm model: convnext_tiny.fb_in22k
+dataloader
+BACKBONE NAME convnext_tiny.fb_in22k
+Loading timm model: convnext_tiny.fb_in22k
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 0 0 64 4
+start batch iterations 2 0 64 4
+start batch iterations 1 0 64 4
+start batch iterations 3 0 64 4
+start batch iterations 2 1 64 4
+start batch iterations 3 1 64 4
+start batch iterations 1 1 64 4
+start batch iterations 0 1 64 4
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 2 0 64 4
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 1 0 64 4
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 3 0 64 4
+start batch iterations 0 0 64 4
+start batch iterations 2 1 64 4
+start batch iterations 3 1 64 4
+start batch iterations 1 1 64 4
+start batch iterations 0 1 64 4
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 2 0 64 4
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 0 0 64 4
+start batch iterations 3 0 64 4
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 1 0 64 4
+start batch iterations 2 1 64 4
+Warning: Square Attack has decreased the robust accuracy of 1.56%. This might indicate that the robustness evaluation using AutoAttack is unreliable. Consider running Square Attack with more iterations and restarts or an adaptive attack. See flags_doc.md for details.
+start batch iterations 3 1 64 4
+start batch iterations 0 1 64 4
+start batch iterations 1 1 64 4
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 2: Results sent to queue
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 0: Results sent to queue
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 3: Results sent to queue
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 1: Results sent to queue
+result statistics (combined) {'Linf': {2: {'nb_correct': 88, 'nb_examples': 128}, 0: {'nb_correct': 91, 'nb_examples': 128}, 3: {'nb_correct': 89, 'nb_examples': 128}, 1: {'nb_correct': 80, 'nb_examples': 128}}, 'L2': {2: {'nb_correct': 88, 'nb_examples': 128}, 0: {'nb_correct': 91, 'nb_examples': 128}, 3: {'nb_correct': 89, 'nb_examples': 128}, 1: {'nb_correct': 80, 'nb_examples': 128}}, 'L1': {2: {'nb_correct': 88, 'nb_examples': 128}, 0: {'nb_correct': 91, 'nb_examples': 128}, 3: {'nb_correct': 89, 'nb_examples': 128}, 1: {'nb_correct': 80, 'nb_examples': 128}}, 'common': {}} {'Linf': {2: {'nb_correct': 40, 'nb_examples': 128}, 0: {'nb_correct': 46, 'nb_examples': 128}, 3: {'nb_correct': 45, 'nb_examples': 128}, 1: {'nb_correct': 44, 'nb_examples': 128}}, 'L2': {2: {'nb_correct': 42, 'nb_examples': 128}, 0: {'nb_correct': 42, 'nb_examples': 128}, 3: {'nb_correct': 44, 'nb_examples': 128}, 1: {'nb_correct': 45, 'nb_examples': 128}}, 'L1': {2: {'nb_correct': 12, 'nb_examples': 128}, 0: {'nb_correct': 12, 'nb_examples': 128}, 3: {'nb_correct': 16, 'nb_examples': 128}, 1: {'nb_correct': 18, 'nb_examples': 128}}, 'common': {}}
+--- test-all: no results for common, skipping log_results ---
+  Predictions saved to: results/convnext_tiny_fb_in22k_TRADES_v2_seed2/predictions/convnext_tiny.fb_in22k_fgvc-aircraft-2013b_TRADES_v2__clean__predictions.csv (512 rows)
+  Predictions saved to: results/convnext_tiny_fb_in22k_TRADES_v2_seed2/predictions/convnext_tiny.fb_in22k_fgvc-aircraft-2013b_TRADES_v2__Linf__predictions.csv (512 rows)
+  Predictions saved to: results/convnext_tiny_fb_in22k_TRADES_v2_seed2/predictions/convnext_tiny.fb_in22k_fgvc-aircraft-2013b_TRADES_v2__L2__predictions.csv (512 rows)
+  Predictions saved to: results/convnext_tiny_fb_in22k_TRADES_v2_seed2/predictions/convnext_tiny.fb_in22k_fgvc-aircraft-2013b_TRADES_v2__L1__predictions.csv (512 rows)

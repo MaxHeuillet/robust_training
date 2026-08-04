@@ -1,0 +1,99 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values swin_base_patch4_window7_224.ms_in22k_ft_in1k__flowers-102__TRADES_v2
+📦 Extracting /tmp/datasets/flowers-102_processed.tar.zst into /tmp/data/393024/flowers-102 using Python zstd + tarfile...
+✅ Extraction of flowers-102 completed successfully at 2026-08-02 17:01:04
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/swin_base_patch4_window7_224.ms_in22k_ft_in1k.pt to /tmp/393024
+Testing step: all
+Loading HPO config from: ./configs/HPO_results/reviewer_TRADES_beta6/swin_base_patch4_window7_224.ms_in22k_ft_in1k__flowers-102__TRADES_v2.yaml
+dataloader
+BACKBONE NAME swin_base_patch4_window7_224.ms_in22k_ft_in1k
+Loading timm model: swin_base_patch4_window7_224.ms_in22k_ft_in1k
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+dataloader
+BACKBONE NAME swin_base_patch4_window7_224.ms_in22k_ft_in1k
+Loading timm model: swin_base_patch4_window7_224.ms_in22k_ft_in1k
+dataloader
+BACKBONE NAME swin_base_patch4_window7_224.ms_in22k_ft_in1k
+Loading timm model: swin_base_patch4_window7_224.ms_in22k_ft_in1k
+start batch iterations 3 0 48 6
+dataloader
+BACKBONE NAME swin_base_patch4_window7_224.ms_in22k_ft_in1k
+Loading timm model: swin_base_patch4_window7_224.ms_in22k_ft_in1k
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 2 0 48 6
+start batch iterations 1 0 48 6
+start batch iterations 0 0 48 6
+start batch iterations 0 1 48 6
+start batch iterations 1 1 48 6
+start batch iterations 3 1 48 6
+start batch iterations 2 1 48 6
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 0 0 48 6
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 1 0 48 6
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 2 0 48 6
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 3 0 48 6
+start batch iterations 0 1 48 6
+start batch iterations 1 1 48 6
+start batch iterations 2 1 48 6
+start batch iterations 3 1 48 6
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 0 0 48 6
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 2 0 48 6
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 1 0 48 6
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 3 0 48 6
+start batch iterations 0 1 48 6
+start batch iterations 2 1 48 6
+start batch iterations 1 1 48 6
+start batch iterations 3 1 48 6
+--- test-all: common ---
+end test loop (combined)
+Rank 0: Results sent to queue
+--- test-all: common ---
+end test loop (combined)
+Rank 2: Results sent to queue
+--- test-all: common ---
+end test loop (combined)
+Rank 1: Results sent to queue
+--- test-all: common ---
+end test loop (combined)
+Rank 3: Results sent to queue
+result statistics (combined) {'Linf': {0: {'nb_correct': 77, 'nb_examples': 96}, 2: {'nb_correct': 81, 'nb_examples': 96}, 1: {'nb_correct': 77, 'nb_examples': 96}, 3: {'nb_correct': 81, 'nb_examples': 96}}, 'L2': {0: {'nb_correct': 77, 'nb_examples': 96}, 2: {'nb_correct': 81, 'nb_examples': 96}, 1: {'nb_correct': 77, 'nb_examples': 96}, 3: {'nb_correct': 81, 'nb_examples': 96}}, 'L1': {0: {'nb_correct': 77, 'nb_examples': 96}, 2: {'nb_correct': 81, 'nb_examples': 96}, 1: {'nb_correct': 77, 'nb_examples': 96}, 3: {'nb_correct': 81, 'nb_examples': 96}}, 'common': {0: {'nb_correct': None, 'nb_examples': None}, 2: {'nb_correct': None, 'nb_examples': None}, 1: {'nb_correct': None, 'nb_examples': None}, 3: {'nb_correct': None, 'nb_examples': None}}} {'Linf': {0: {'nb_correct': 48, 'nb_examples': 96}, 2: {'nb_correct': 53, 'nb_examples': 96}, 1: {'nb_correct': 51, 'nb_examples': 96}, 3: {'nb_correct': 57, 'nb_examples': 96}}, 'L2': {0: {'nb_correct': 58, 'nb_examples': 96}, 2: {'nb_correct': 60, 'nb_examples': 96}, 1: {'nb_correct': 62, 'nb_examples': 96}, 3: {'nb_correct': 66, 'nb_examples': 96}}, 'L1': {0: {'nb_correct': 47, 'nb_examples': 96}, 2: {'nb_correct': 48, 'nb_examples': 96}, 1: {'nb_correct': 57, 'nb_examples': 96}, 3: {'nb_correct': 56, 'nb_examples': 96}}, 'common': {0: {'nb_correct': 62, 'nb_examples': 96}, 2: {'nb_correct': 69, 'nb_examples': 96}, 1: {'nb_correct': 62, 'nb_examples': 96}, 3: {'nb_correct': 62, 'nb_examples': 96}}}

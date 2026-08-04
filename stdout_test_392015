@@ -1,0 +1,320 @@
+============================================================
+  RobustGenBench Evaluation
+  Backbone         : edgenext_small.usi_in1k
+  Dataset          : flowers-102
+  Loss             : TRADES_v2
+  Project          : edgenext_small_usi_in1k_TRADES_v2_seed1
+  HPO source       : full_fine_tuning50
+  exp_id           : edgenext_small.usi_in1k__flowers-102__TRADES_v2
+  GPUs             : 4
+============================================================
+  num_classes=102
+
+============================================================
+  Evaluating: CLEAN
+  Downloading clean test archive: flowers-102_processed.tar.zst
+  Extracting flowers-102_processed.tar.zst → flowers-102/
+  Loaded 1000 clean images.
+  Clean img[0]: min=0.000 max=1.000 mean=0.379
+BACKBONE NAME edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Clean accuracy: 763/1000 = 0.7630
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/edgenext_small_usi_in1k_TRADES_v2_seed1/predictions/edgenext_small.usi_in1k__flowers-102__TRADES_v2__clean__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard
+  Downloading: adversarial/zeroshot_clip_vitb16_laion2b/linf_eps4_autoattack_standard/flowers-102__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/flowers-102/flowers-102__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard_processed.tar.zst
+  Extracting flowers-102__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard_processed.tar.zst → flowers-102__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.377
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Result: 758/1000 = 0.7580
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/edgenext_small_usi_in1k_TRADES_v2_seed1/predictions/edgenext_small.usi_in1k__flowers-102__TRADES_v2__zeroshot_clip_vitb16_laion2b__linf_eps4_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard
+  Downloading: adversarial/zeroshot_clip_vitb16_laion2b/l2_eps2_autoattack_standard/flowers-102__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/flowers-102/flowers-102__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard_processed.tar.zst
+  Extracting flowers-102__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard_processed.tar.zst → flowers-102__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.377
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAMEBACKBONE NAME  edgenext_small.usi_in1kedgenext_small.usi_in1k
+
+Loading timm model:Loading timm model:  edgenext_small.usi_in1kedgenext_small.usi_in1k
+
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Result: 762/1000 = 0.7620
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/edgenext_small_usi_in1k_TRADES_v2_seed1/predictions/edgenext_small.usi_in1k__flowers-102__TRADES_v2__zeroshot_clip_vitb16_laion2b__l2_eps2_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard
+  Downloading: adversarial/zeroshot_clip_vitb16_laion2b/l1_eps75_autoattack_standard/flowers-102__zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/flowers-102/flowers-102__zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard_processed.tar.zst
+  Extracting flowers-102__zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard_processed.tar.zst → flowers-102__zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.378
+BACKBONE NAMEBACKBONE NAME  edgenext_small.usi_in1kedgenext_small.usi_in1k
+
+Loading timm model: edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Result: 762/1000 = 0.7620
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/edgenext_small_usi_in1k_TRADES_v2_seed1/predictions/edgenext_small.usi_in1k__flowers-102__TRADES_v2__zeroshot_clip_vitb16_laion2b__l1_eps75_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard
+  Downloading: adversarial/zeroshot_clip_vith14_laion2b/linf_eps4_autoattack_standard/flowers-102__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/flowers-102/flowers-102__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard_processed.tar.zst
+  Extracting flowers-102__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard_processed.tar.zst → flowers-102__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.377
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Result: 758/1000 = 0.7580
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/edgenext_small_usi_in1k_TRADES_v2_seed1/predictions/edgenext_small.usi_in1k__flowers-102__TRADES_v2__zeroshot_clip_vith14_laion2b__linf_eps4_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_clip_vith14_laion2b__l2_eps2_autoattack_standard
+  Downloading: adversarial/zeroshot_clip_vith14_laion2b/l2_eps2_autoattack_standard/flowers-102__zeroshot_clip_vith14_laion2b__l2_eps2_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/flowers-102/flowers-102__zeroshot_clip_vith14_laion2b__l2_eps2_autoattack_standard_processed.tar.zst
+  Extracting flowers-102__zeroshot_clip_vith14_laion2b__l2_eps2_autoattack_standard_processed.tar.zst → flowers-102__zeroshot_clip_vith14_laion2b__l2_eps2_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.377
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Result: 762/1000 = 0.7620
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/edgenext_small_usi_in1k_TRADES_v2_seed1/predictions/edgenext_small.usi_in1k__flowers-102__TRADES_v2__zeroshot_clip_vith14_laion2b__l2_eps2_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard
+  Downloading: adversarial/zeroshot_clip_vith14_laion2b/l1_eps75_autoattack_standard/flowers-102__zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/flowers-102/flowers-102__zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard_processed.tar.zst
+  Extracting flowers-102__zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard_processed.tar.zst → flowers-102__zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.378
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Result: 763/1000 = 0.7630
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/edgenext_small_usi_in1k_TRADES_v2_seed1/predictions/edgenext_small.usi_in1k__flowers-102__TRADES_v2__zeroshot_clip_vith14_laion2b__l1_eps75_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_metaclip_vith14_fullcc2_5b__linf_eps4_autoattack_standard
+  Downloading: adversarial/zeroshot_metaclip_vith14_fullcc2_5b/linf_eps4_autoattack_standard/flowers-102__zeroshot_metaclip_vith14_fullcc2_5b__linf_eps4_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/flowers-102/flowers-102__zeroshot_metaclip_vith14_fullcc2_5b__linf_eps4_autoattack_standard_processed.tar.zst
+  Extracting flowers-102__zeroshot_metaclip_vith14_fullcc2_5b__linf_eps4_autoattack_standard_processed.tar.zst → flowers-102__zeroshot_metaclip_vith14_fullcc2_5b__linf_eps4_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.377
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Result: 759/1000 = 0.7590
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/edgenext_small_usi_in1k_TRADES_v2_seed1/predictions/edgenext_small.usi_in1k__flowers-102__TRADES_v2__zeroshot_metaclip_vith14_fullcc2_5b__linf_eps4_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard
+  Downloading: adversarial/zeroshot_metaclip_vith14_fullcc2_5b/l2_eps2_autoattack_standard/flowers-102__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/flowers-102/flowers-102__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard_processed.tar.zst
+  Extracting flowers-102__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard_processed.tar.zst → flowers-102__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.377
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Result: 763/1000 = 0.7630
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/edgenext_small_usi_in1k_TRADES_v2_seed1/predictions/edgenext_small.usi_in1k__flowers-102__TRADES_v2__zeroshot_metaclip_vith14_fullcc2_5b__l2_eps2_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard
+  Downloading: adversarial/zeroshot_metaclip_vith14_fullcc2_5b/l1_eps75_autoattack_standard/flowers-102__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/flowers-102/flowers-102__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard_processed.tar.zst
+  Extracting flowers-102__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard_processed.tar.zst → flowers-102__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.378
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Result: 762/1000 = 0.7620
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/edgenext_small_usi_in1k_TRADES_v2_seed1/predictions/edgenext_small.usi_in1k__flowers-102__TRADES_v2__zeroshot_metaclip_vith14_fullcc2_5b__l1_eps75_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_siglip2_so400m_patch14_384__linf_eps4_autoattack_standard
+  Downloading: adversarial/zeroshot_siglip2_so400m_patch14_384/linf_eps4_autoattack_standard/flowers-102__zeroshot_siglip2_so400m_patch14_384__linf_eps4_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/flowers-102/flowers-102__zeroshot_siglip2_so400m_patch14_384__linf_eps4_autoattack_standard_processed.tar.zst
+  Extracting flowers-102__zeroshot_siglip2_so400m_patch14_384__linf_eps4_autoattack_standard_processed.tar.zst → flowers-102__zeroshot_siglip2_so400m_patch14_384__linf_eps4_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.377
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Result: 761/1000 = 0.7610
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/edgenext_small_usi_in1k_TRADES_v2_seed1/predictions/edgenext_small.usi_in1k__flowers-102__TRADES_v2__zeroshot_siglip2_so400m_patch14_384__linf_eps4_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_siglip2_so400m_patch14_384__l2_eps2_autoattack_standard
+  Downloading: adversarial/zeroshot_siglip2_so400m_patch14_384/l2_eps2_autoattack_standard/flowers-102__zeroshot_siglip2_so400m_patch14_384__l2_eps2_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/flowers-102/flowers-102__zeroshot_siglip2_so400m_patch14_384__l2_eps2_autoattack_standard_processed.tar.zst
+  Extracting flowers-102__zeroshot_siglip2_so400m_patch14_384__l2_eps2_autoattack_standard_processed.tar.zst → flowers-102__zeroshot_siglip2_so400m_patch14_384__l2_eps2_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.377
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Result: 761/1000 = 0.7610
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/edgenext_small_usi_in1k_TRADES_v2_seed1/predictions/edgenext_small.usi_in1k__flowers-102__TRADES_v2__zeroshot_siglip2_so400m_patch14_384__l2_eps2_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard
+  Downloading: adversarial/zeroshot_siglip2_so400m_patch14_384/l1_eps75_autoattack_standard/flowers-102__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard_processed.tar.zst
+  Saved to: /tmp/adv_archives/flowers-102/flowers-102__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard_processed.tar.zst
+  Extracting flowers-102__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard_processed.tar.zst → flowers-102__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.378
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Result: 762/1000 = 0.7620
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/edgenext_small_usi_in1k_TRADES_v2_seed1/predictions/edgenext_small.usi_in1k__flowers-102__TRADES_v2__zeroshot_siglip2_so400m_patch14_384__l1_eps75_autoattack_standard__predictions.csv (1000 rows)
+
+============================================================
+  Evaluating: common__common_severity3
+  Downloading: adversarial/common/common_severity3/flowers-102__common_severity3_processed.tar.zst
+  Saved to: /tmp/adv_archives/flowers-102/flowers-102__common_severity3_processed.tar.zst
+  Extracting flowers-102__common_severity3_processed.tar.zst → flowers-102__common_severity3/
+  Loaded 1000 images.
+  Adv img[0]: min=0.000 max=1.000 mean=0.359
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+BACKBONE NAME edgenext_small.usi_in1k
+Loading timm model: edgenext_small.usi_in1k
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Loading weights from /home/m/mheuill/links/scratch/mheuill/robust_training/trained_statedicts/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k_flowers-102_TRADES_v2.pt
+  Result: 523/1000 = 0.5230
+  Predictions saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/edgenext_small_usi_in1k_TRADES_v2_seed1/predictions/edgenext_small.usi_in1k__flowers-102__TRADES_v2__common__common_severity3__predictions.csv (1000 rows)
+
+All done. Results saved to: /home/m/mheuill/links/projects/aip-adurand/mheuill/robust_training/robustgenbench_eval/edgenext_small_usi_in1k_TRADES_v2_seed1/edgenext_small.usi_in1k__flowers-102__TRADES_v2__robustgenbench_results.csv

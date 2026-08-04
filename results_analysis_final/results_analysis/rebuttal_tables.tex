@@ -1,0 +1,117 @@
+% Rebuttal tables — requires \usepackage{booktabs} in the preamble.
+% Generated from ranking_seed_stability.py, ranking_bootstrap_stability.py,
+% and attention_trades_beta_analysis.py (results_analysis_final/results_analysis/).
+
+% =============================================================================
+% Table 1: Seed stability of the Gold/Silver/Bronze ranking
+% =============================================================================
+\begin{table}[t]
+\centering
+\caption{\textbf{Ranking stability across independent training seeds.} For
+each of the 3 newly-trained, independent seeds, the sum-score (accuracy
+summed across 6 RobustGenBench datasets $\times$ 5 metrics: clean,
+$L_\infty$, $L_2$, $L_1$, common corruptions) is computed separately for the
+pre-assigned Gold/Silver/Bronze configuration in each size tier; the table
+reports the mean $\pm$ sample standard deviation of these 3 per-seed
+sum-scores. In all three tiers the ranking reproduces the original
+Gold~$>$~Silver~$>$~Bronze order.}
+\label{tab:seed-stability}
+\begin{tabular}{lccc}
+\toprule
+Tier & Gold & Silver & Bronze \\
+\midrule
+Base  & 19.342 $\pm$ 0.098 & 17.758 $\pm$ 0.315 & 17.500 $\pm$ 0.160 \\
+Small & 16.287 $\pm$ 0.150 & 15.808 $\pm$ 0.051 & 14.777 $\pm$ 0.029 \\
+Tiny  & 15.831 $\pm$ 0.070 & 14.519 $\pm$ 0.109 & 12.632 $\pm$ 0.095 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+% =============================================================================
+% Table 2: Bootstrap (test-set resampling) stability of the ranking
+% =============================================================================
+\begin{table}[t]
+\centering
+\caption{\textbf{Ranking stability under test-set resampling.} Nonparametric
+bootstrap (1{,}000 resamples with replacement, seed~1 checkpoints, training
+seed held fixed) applied independently to each medal's per-observation
+predictions, isolating finite test-set sampling noise from training-seed
+variance. ``\% order held'' is the fraction of bootstrap iterations in which
+the resampled sum-score reproduces Gold~$>$~Silver~$>$~Bronze exactly; the
+95\% CI is the percentile interval of each medal's bootstrapped total score.}
+\label{tab:bootstrap-stability}
+\begin{tabular}{lccccc}
+\toprule
+Tier & \% order held & Gold (95\% CI) & Silver (95\% CI) & Bronze (95\% CI) \\
+\midrule
+Base  & 60.3\% & 19.25 [18.91, 19.56] & 17.41 [16.99, 17.82] & 17.35 [16.95, 17.73] \\
+Small & 100.0\% & 16.29 [16.09, 16.49] & 15.79 [15.59, 15.97] & 14.81 [14.64, 15.00] \\
+Tiny  & 100.0\% & 15.89 [15.60, 16.18] & 14.40 [14.21, 14.60] & 12.54 [12.36, 12.71] \\
+\bottomrule
+\end{tabular}
+
+\vspace{2pt}
+\footnotesize
+Note: for Base, Gold ranks first in 100\% of bootstrap iterations; only the
+Silver/Bronze order is unstable (Gold~$>$~Bronze~$>$~Silver in the remaining
+39.7\% of resamples), consistent with the small, seed-sensitive gap between
+those two configurations observed under training-seed resampling as well
+(Table~\ref{tab:seed-stability}).
+\end{table}
+
+
+% =============================================================================
+% Table 3: TRADES vs. Classic AT for attention-based architectures,
+%          augmented with TRADES beta=6 (matched backbones, sum-score)
+% =============================================================================
+\begin{table}[t]
+\centering
+\caption{\textbf{TRADES vs.\ Classic AT for attention-based architectures, matched
+and augmented with TRADES ($\beta=6$).} Sum-score (clean, $L_\infty$, $L_2$,
+$L_1$, common corruptions -- all 5 metrics now present for every condition --
+summed, not averaged, over all 6 RobustGenBench datasets; higher is better),
+reported per backbone rather than as a pool-dependent Borda score. All three
+loss conditions are evaluated on the \emph{same matched set} of 5 ``fully
+attention'' backbones (the only 5 of the 8 attention-type backbones in the
+original pool that were retrained at $\beta=6$) over the \emph{same matched
+set} of $n{=}30$ (dataset, metric) values per cell, so columns are directly
+comparable.}
+\label{tab:attention-beta6}
+\begin{tabular}{lccc}
+\toprule
+Backbone & TRADES ($\beta=1$) & Classic AT & TRADES ($\beta=6$) \\
+\midrule
+deit\_small\_patch16\_224.fb\_in1k        &  6.8581 & \textbf{8.4049} &  5.3882 \\
+eva02\_base\_patch14\_224.mim\_in22k      & \textbf{17.5995} & 13.1634 & 13.9792 \\
+swin\_tiny\_patch4\_window7\_224.ms\_in1k &  9.9935 & \textbf{10.3060} &  9.0655 \\
+vit\_base\_patch16\_224.augreg\_in1k      & \textbf{12.4978} & 11.3069 & 10.9271 \\
+vit\_small\_patch16\_224.augreg\_in1k     &  \textbf{9.1447} &  2.7429 &  4.1469 \\
+\midrule
+Total (matched, $n{=}5$ backbones) & \textbf{56.0937} & 45.9240 & 43.5068 \\
+\bottomrule
+\end{tabular}
+
+\vspace{2pt}
+\footnotesize
+Note: TRADES ($\beta=6$) is never the best-performing loss for any of the 5
+backbones (0/5 wins) -- it underperforms both TRADES ($\beta=1$) and Classic AT
+uniformly, so the mean is not an average-only artifact. TRADES ($\beta=1$) and
+Classic AT are closer, but not equivalent, and the direction is
+backbone-dependent: TRADES ($\beta=1$) wins for 3/5 backbones (eva02\_base,
+vit\_base, vit\_small), while Classic AT wins for 2/5 (deit\_small, swin\_tiny) --
+evidence against a single homogeneous ``TRADES $\approx$ Classic AT for
+attention architectures'' story at the individual-backbone level, even though
+it may hold approximately on average.
+
+\vspace{4pt}
+\emph{Limitation:} the $\beta=6$ runs reuse the hyperparameters (learning
+rates, weight decay) selected by the $\beta=1$ HPO search rather than an
+independent search at $\beta=6$, consistent with this benchmark's
+fixed-HPO-per-configuration evaluation protocol throughout. Since TRADES loss
+is CE $+ \beta \cdot$KL(robust, natural), a 6$\times$ larger $\beta$
+substantially changes the loss landscape, so part of the $\beta=6$
+underperformance could reflect a hyperparameter mismatch rather than a pure
+effect of $\beta$ alone. We report this as a directional finding, not a
+fully isolated causal claim about $\beta$.
+\end{table}

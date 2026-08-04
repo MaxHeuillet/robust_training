@@ -1,0 +1,10 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values vit_small_patch16_224.augreg_in1k__caltech101__TRADES_v2
+📦 Extracting /tmp/datasets/caltech101_processed.tar.zst into /tmp/data/391207/caltech101 using Python zstd + tarfile...
+✅ Extraction of caltech101 completed successfully at 2026-08-01 00:13:53
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/vit_small_patch16_224.augreg_in1k.pt to /tmp/391207
+Training step
+Loading HPO config from: ./configs/HPO_results/reviewer_TRADES_beta6/vit_small_patch16_224.augreg_in1k__caltech101__TRADES_v2.yaml

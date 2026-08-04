@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/project/6102313/mheuill/robust_training/./distributed_experiment_final.py", line 20, in <module>
+    from databases import load_data2
+  File "/project/6102313/mheuill/robust_training/databases/__init__.py", line 1, in <module>
+    from .loaders import load_data
+  File "/project/6102313/mheuill/robust_training/databases/loaders.py", line 5, in <module>
+    from corruptions import apply_portfolio_of_corruptions
+  File "/project/6102313/mheuill/robust_training/corruptions/__init__.py", line 2, in <module>
+    from corruptions.common import apply_portfolio_of_corruptions
+  File "/project/6102313/mheuill/robust_training/corruptions/common.py", line 8, in <module>
+    from .corruptions import *
+  File "/project/6102313/mheuill/robust_training/corruptions/corruptions.py", line 9, in <module>
+    from pkg_resources import resource_filename
+ModuleNotFoundError: No module named 'pkg_resources'

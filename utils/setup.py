@@ -169,11 +169,43 @@ class Setup:
 
         
     def test_batch_size(self, config):
-        
+
         batch_size = self.train_batch_size(config) / 2
-        
+
         return int(batch_size)
-    
+
+    def whitebox_eval_batch_size(self, config):
+        # Dedicated batch size for white-box AutoAttack evaluation (test-Linf/L1/L2/common).
+        # train_batch_size()'s cluster detection only matches "calculquebec"-style
+        # hostnames; on TAMIA (H100 80GB) it silently falls through to a batch_size=2
+        # placeholder, so this is a separate, explicitly-tuned path rather than reusing
+        # that function (avoids touching training, which is unaffected by this change).
+        arch_lower = config.backbone.lower()
+        per_gpu_bs = 40  # default fallback
+
+        if 'coatnet_2' in arch_lower:
+            per_gpu_bs = 16
+        elif 'convnext_base' in arch_lower:
+            per_gpu_bs = 24
+        elif 'coat_tiny' in arch_lower:
+            per_gpu_bs = 32
+        elif any(x in arch_lower for x in ['vit_base', 'swin_base', 'eva02_base']):
+            per_gpu_bs = 48
+        elif 'convnext_tiny' in arch_lower:
+            per_gpu_bs = 64
+        elif 'edgenext_small' in arch_lower:
+            per_gpu_bs = 64
+        elif any(x in arch_lower for x in ['deit_small', 'eva02_tiny', 'swin_tiny', 'vit_small']):
+            per_gpu_bs = 80
+        elif 'resnet50' in arch_lower:
+            per_gpu_bs = 64
+        elif 'coatnet_0' in arch_lower:
+            per_gpu_bs = 40
+        else:
+            print(f"WARNING: unrecognized backbone '{config.backbone}' for whitebox_eval_batch_size, using fallback={per_gpu_bs}.")
+
+        return per_gpu_bs
+
     def aggregate_results(self, results, corruption_type):
 
         total_correct = 0

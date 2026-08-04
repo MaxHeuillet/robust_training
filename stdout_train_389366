@@ -1,0 +1,30 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: False
+CUDA device count: 4
+Device name: No GPU
+serialized_values convnext_base.fb_in22k__oxford-iiit-pet__TRADES_v2
+📦 Extracting /tmp/datasets/oxford-iiit-pet_processed.tar.zst into /tmp/data/389366/oxford-iiit-pet using Python zstd + tarfile...
+✅ Extraction of oxford-iiit-pet completed successfully at 2026-07-30 23:40:23
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/convnext_base.fb_in22k.pt to /tmp/389366
+Training step
+Loading HPO config from: ./configs/HPO_results/full_fine_tuning50/convnext_base.fb_in22k__oxford-iiit-pet__TRADES_v2.yaml
+we are launching training
+torch 2.13.0
+cuda 13.2
+we are launching training
+torch 2.13.0
+cuda 13.2
+we are launching training
+torch 2.13.0
+cuda 13.2
+we are launching training
+torch 2.13.0
+cuda 13.2
+cudnn 92101
+set up the master adress and port
+cudnn 92101
+set up the master adress and port
+cudnn 92101
+set up the master adress and port
+cudnn 92101
+set up the master adress and port

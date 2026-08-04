@@ -1,0 +1,104 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values vit_small_patch16_224.augreg_in1k__caltech101__TRADES_v2
+📦 Extracting /tmp/datasets/caltech101_processed.tar.zst into /tmp/data/392283/caltech101 using Python zstd + tarfile...
+✅ Extraction of caltech101 completed successfully at 2026-08-02 01:16:01
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/vit_small_patch16_224.augreg_in1k.pt to /tmp/392283
+Testing step: all
+Loading HPO config from: ./configs/HPO_results/reviewer_TRADES_beta6/vit_small_patch16_224.augreg_in1k__caltech101__TRADES_v2.yaml
+dataloader
+BACKBONE NAME vit_small_patch16_224.augreg_in1k
+Loading timm model: vit_small_patch16_224.augreg_in1k
+dataloader
+BACKBONE NAME vit_small_patch16_224.augreg_in1k
+Loading timm model: vit_small_patch16_224.augreg_in1k
+dataloader
+BACKBONE NAME vit_small_patch16_224.augreg_in1k
+Loading timm model: vit_small_patch16_224.augreg_in1k
+dataloader
+BACKBONE NAME vit_small_patch16_224.augreg_in1k
+Loading timm model: vit_small_patch16_224.augreg_in1k
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 2 0 80 4
+start batch iterations 0 0 80 4
+start batch iterations 3 0 80 4
+start batch iterations 1 0 80 4
+start batch iterations 3 1 80 4
+start batch iterations 2 1 80 4
+start batch iterations 1 1 80 4
+start batch iterations 0 1 80 4
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 3 0 80 4
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 2 0 80 4
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 1 0 80 4
+start batch iterations 0 0 80 4
+start batch iterations 3 1 80 4
+start batch iterations 2 1 80 4
+start batch iterations 0 1 80 4
+start batch iterations 1 1 80 4
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 3 0 80 4
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 2 0 80 4
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 0 0 80 4
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 1 0 80 4
+start batch iterations 3 1 80 4
+start batch iterations 2 1 80 4
+start batch iterations 0 1 80 4
+start batch iterations 1 1 80 4
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 2: Results sent to queue
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 3: Results sent to queue
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 0: Results sent to queue
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 1: Results sent to queue
+result statistics (combined) {'Linf': {2: {'nb_correct': 84, 'nb_examples': 160}, 3: {'nb_correct': 87, 'nb_examples': 160}, 0: {'nb_correct': 99, 'nb_examples': 160}, 1: {'nb_correct': 99, 'nb_examples': 160}}, 'L2': {2: {'nb_correct': 84, 'nb_examples': 160}, 3: {'nb_correct': 87, 'nb_examples': 160}, 0: {'nb_correct': 99, 'nb_examples': 160}, 1: {'nb_correct': 99, 'nb_examples': 160}}, 'L1': {2: {'nb_correct': 84, 'nb_examples': 160}, 3: {'nb_correct': 87, 'nb_examples': 160}, 0: {'nb_correct': 99, 'nb_examples': 160}, 1: {'nb_correct': 99, 'nb_examples': 160}}, 'common': {}} {'Linf': {2: {'nb_correct': 45, 'nb_examples': 160}, 3: {'nb_correct': 48, 'nb_examples': 160}, 0: {'nb_correct': 61, 'nb_examples': 160}, 1: {'nb_correct': 65, 'nb_examples': 160}}, 'L2': {2: {'nb_correct': 56, 'nb_examples': 160}, 3: {'nb_correct': 61, 'nb_examples': 160}, 0: {'nb_correct': 76, 'nb_examples': 160}, 1: {'nb_correct': 74, 'nb_examples': 160}}, 'L1': {2: {'nb_correct': 56, 'nb_examples': 160}, 3: {'nb_correct': 62, 'nb_examples': 160}, 0: {'nb_correct': 75, 'nb_examples': 160}, 1: {'nb_correct': 73, 'nb_examples': 160}}, 'common': {}}
+--- test-all: no results for common, skipping log_results ---
+  Predictions saved to: results/vit_small_patch16_224_augreg_in1k_TRADES_beta6/predictions/vit_small_patch16_224.augreg_in1k_caltech101_TRADES_v2__clean__predictions.csv (640 rows)
+  Predictions saved to: results/vit_small_patch16_224_augreg_in1k_TRADES_beta6/predictions/vit_small_patch16_224.augreg_in1k_caltech101_TRADES_v2__Linf__predictions.csv (640 rows)
+  Predictions saved to: results/vit_small_patch16_224_augreg_in1k_TRADES_beta6/predictions/vit_small_patch16_224.augreg_in1k_caltech101_TRADES_v2__L2__predictions.csv (640 rows)
+  Predictions saved to: results/vit_small_patch16_224_augreg_in1k_TRADES_beta6/predictions/vit_small_patch16_224.augreg_in1k_caltech101_TRADES_v2__L1__predictions.csv (640 rows)

@@ -1,0 +1,48 @@
+Process Process-2:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/Compiler/gcccore/python/3.11.5/lib/python3.11/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/Compiler/gcccore/python/3.11.5/lib/python3.11/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/project/6102313/mheuill/robust_training/distributed_experiment_final.py", line 678, in test_all
+    trained_state_dict = torch.load(load_path, weights_only=True, map_location='cpu')
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/serialization.py", line 1351, in load
+    return _load(
+           ^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/serialization.py", line 1848, in _load
+    result = unpickler.load()
+             ^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/_weights_only_unpickler.py", line 385, in load
+    self.append(self.persistent_load(pid))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/serialization.py", line 1812, in persistent_load
+    typed_storage = load_tensor(
+                    ^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/serialization.py", line 1772, in load_tensor
+    zip_file.get_storage_from_record(name, numel, torch.UntypedStorage)
+RuntimeError: PytorchStreamReader failed reading file data/57: file read failed
+Process Process-1:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/Compiler/gcccore/python/3.11.5/lib/python3.11/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/Compiler/gcccore/python/3.11.5/lib/python3.11/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/project/6102313/mheuill/robust_training/distributed_experiment_final.py", line 678, in test_all
+    trained_state_dict = torch.load(load_path, weights_only=True, map_location='cpu')
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/serialization.py", line 1351, in load
+    return _load(
+           ^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/serialization.py", line 1848, in _load
+    result = unpickler.load()
+             ^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/_weights_only_unpickler.py", line 385, in load
+    self.append(self.persistent_load(pid))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/serialization.py", line 1812, in persistent_load
+    typed_storage = load_tensor(
+                    ^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/serialization.py", line 1772, in load_tensor
+    zip_file.get_storage_from_record(name, numel, torch.UntypedStorage)
+RuntimeError: PytorchStreamReader failed reading file data/140: file read failed

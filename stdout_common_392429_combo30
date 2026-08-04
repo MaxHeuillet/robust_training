@@ -1,0 +1,23 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values swin_tiny_patch4_window7_224.ms_in1k__flowers-102__TRADES_v2
+✅ flowers-102 already extracted at /tmp/data/392429/flowers-102, skipping.
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/swin_tiny_patch4_window7_224.ms_in1k.pt to /tmp/392429
+Testing step: common-only
+Loading HPO config from: ./configs/HPO_results/reviewer_TRADES_beta6/swin_tiny_patch4_window7_224.ms_in1k__flowers-102__TRADES_v2.yaml
+BACKBONE NAME swin_tiny_patch4_window7_224.ms_in1k
+Loading timm model: swin_tiny_patch4_window7_224.ms_in1k
+BACKBONE NAME swin_tiny_patch4_window7_224.ms_in1k
+Loading timm model: swin_tiny_patch4_window7_224.ms_in1k
+BACKBONE NAME swin_tiny_patch4_window7_224.ms_in1k
+Loading timm model: swin_tiny_patch4_window7_224.ms_in1k
+BACKBONE NAME swin_tiny_patch4_window7_224.ms_in1k
+Loading timm model: swin_tiny_patch4_window7_224.ms_in1k
+Rank 0: common-only results sent to queue
+Rank 2: common-only results sent to queue
+Rank 3: common-only results sent to queue
+Rank 1: common-only results sent to queue
+--- test-common-only: logged common_acc={'common_acc': 0.021875} for swin_tiny_patch4_window7_224.ms_in1k_flowers-102_TRADES_v2 ---
+  Predictions saved to: results/swin_tiny_patch4_window7_224_ms_in1k_TRADES_beta6/predictions/swin_tiny_patch4_window7_224.ms_in1k_flowers-102_TRADES_v2__common__predictions.csv (640 rows)

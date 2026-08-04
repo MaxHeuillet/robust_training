@@ -1,0 +1,6 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values eva02_tiny_patch14_224.mim_in22k__stanford_cars__TRADES_v2
+📦 Extracting /tmp/datasets/stanford_cars_processed.tar.zst into /tmp/data/393106/stanford_cars using Python zstd + tarfile...

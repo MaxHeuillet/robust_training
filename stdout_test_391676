@@ -1,0 +1,26 @@
+============================================================
+  RobustGenBench Evaluation
+  Backbone         : convnext_tiny.fb_in1k
+  Dataset          : stanford_cars
+  Loss             : TRADES_v2
+  Project          : convnext_tiny_fb_in1k_TRADES_v2_seed3
+  HPO source       : full_fine_tuning50
+  exp_id           : convnext_tiny.fb_in1k__stanford_cars__TRADES_v2
+  GPUs             : 4
+============================================================
+  num_classes=196
+
+============================================================
+  Evaluating: CLEAN
+  Downloading clean test archive: stanford_cars_processed.tar.zst
+  Extracting stanford_cars_processed.tar.zst → stanford_cars/
+  Loaded 1000 clean images.
+  Clean img[0]: min=0.000 max=1.000 mean=0.445
+BACKBONE NAME convnext_tiny.fb_in1k
+BACKBONE NAME convnext_tiny.fb_in1k
+Loading timm model: convnext_tiny.fb_in1k
+BACKBONE NAME convnext_tiny.fb_in1k
+Loading timm model: convnext_tiny.fb_in1k
+Loading timm model: convnext_tiny.fb_in1k
+BACKBONE NAME convnext_tiny.fb_in1k
+Loading timm model: convnext_tiny.fb_in1k

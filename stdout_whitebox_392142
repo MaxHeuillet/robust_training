@@ -1,0 +1,104 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values coatnet_2_rw_224.sw_in12k__fgvc-aircraft-2013b__TRADES_v2
+📦 Extracting /tmp/datasets/fgvc-aircraft-2013b_processed.tar.zst into /tmp/data/392142/fgvc-aircraft-2013b using Python zstd + tarfile...
+✅ Extraction of fgvc-aircraft-2013b completed successfully at 2026-08-01 21:23:40
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/coatnet_2_rw_224.sw_in12k.pt to /tmp/392142
+Testing step: all
+Loading HPO config from: ./configs/HPO_results/full_fine_tuning50/coatnet_2_rw_224.sw_in12k__fgvc-aircraft-2013b__TRADES_v2.yaml
+dataloader
+dataloaderBACKBONE NAME
+ coatnet_2_rw_224.sw_in12k
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+dataloader
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+dataloader
+BACKBONE NAME coatnet_2_rw_224.sw_in12k
+Loading timm model: coatnet_2_rw_224.sw_in12k
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start test loop (combined)
+--- test-all: Linf ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 2 0 16 16
+start batch iterations 3 0 16 16
+start batch iterations 1 0 16 16
+start batch iterations 0 0 16 16
+start batch iterations 0 1 16 16
+start batch iterations 3 1 16 16
+start batch iterations 1 1 16 16
+start batch iterations 2 1 16 16
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 0 0 16 16
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 3 0 16 16
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+--- test-all: L2 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 1 0 16 16
+start batch iterations 2 0 16 16
+start batch iterations 0 1 16 16
+start batch iterations 3 1 16 16
+start batch iterations 1 1 16 16
+start batch iterations 2 1 16 16
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 0 0 16 16
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 1 0 16 16
+start batch iterations 3 0 16 16
+--- test-all: L1 ---
+stats 0 0 0
+adversary instanciated
+start batch iterations 2 0 16 16
+start batch iterations 3 1 16 16
+start batch iterations 0 1 16 16
+start batch iterations 1 1 16 16
+start batch iterations 2 1 16 16
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 0: Results sent to queue
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 1: Results sent to queue
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 2: Results sent to queue
+--- test-all: common SKIPPED (test_common/ not present in this dataset archive) ---
+end test loop (combined)
+Rank 3: Results sent to queue
+result statistics (combined) {'Linf': {0: {'nb_correct': 22, 'nb_examples': 32}, 1: {'nb_correct': 17, 'nb_examples': 32}, 2: {'nb_correct': 24, 'nb_examples': 32}, 3: {'nb_correct': 23, 'nb_examples': 32}}, 'L2': {0: {'nb_correct': 22, 'nb_examples': 32}, 1: {'nb_correct': 17, 'nb_examples': 32}, 2: {'nb_correct': 24, 'nb_examples': 32}, 3: {'nb_correct': 23, 'nb_examples': 32}}, 'L1': {0: {'nb_correct': 22, 'nb_examples': 32}, 1: {'nb_correct': 17, 'nb_examples': 32}, 2: {'nb_correct': 24, 'nb_examples': 32}, 3: {'nb_correct': 23, 'nb_examples': 32}}, 'common': {}} {'Linf': {0: {'nb_correct': 12, 'nb_examples': 32}, 1: {'nb_correct': 9, 'nb_examples': 32}, 2: {'nb_correct': 13, 'nb_examples': 32}, 3: {'nb_correct': 11, 'nb_examples': 32}}, 'L2': {0: {'nb_correct': 9, 'nb_examples': 32}, 1: {'nb_correct': 6, 'nb_examples': 32}, 2: {'nb_correct': 11, 'nb_examples': 32}, 3: {'nb_correct': 7, 'nb_examples': 32}}, 'L1': {0: {'nb_correct': 1, 'nb_examples': 32}, 1: {'nb_correct': 1, 'nb_examples': 32}, 2: {'nb_correct': 1, 'nb_examples': 32}, 3: {'nb_correct': 1, 'nb_examples': 32}}, 'common': {}}
+--- test-all: no results for common, skipping log_results ---
+  Predictions saved to: results/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed2/predictions/coatnet_2_rw_224.sw_in12k_fgvc-aircraft-2013b_TRADES_v2__clean__predictions.csv (128 rows)
+  Predictions saved to: results/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed2/predictions/coatnet_2_rw_224.sw_in12k_fgvc-aircraft-2013b_TRADES_v2__Linf__predictions.csv (128 rows)
+  Predictions saved to: results/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed2/predictions/coatnet_2_rw_224.sw_in12k_fgvc-aircraft-2013b_TRADES_v2__L2__predictions.csv (128 rows)
+  Predictions saved to: results/coatnet_2_rw_224_sw_in12k_TRADES_v2_seed2/predictions/coatnet_2_rw_224.sw_in12k_fgvc-aircraft-2013b_TRADES_v2__L1__predictions.csv (128 rows)

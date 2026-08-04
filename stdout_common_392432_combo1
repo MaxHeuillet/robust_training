@@ -1,0 +1,24 @@
+CUDA_VISIBLE_DEVICES: 0,1,2,3
+CUDA available: True
+CUDA device count: 4
+Device name: NVIDIA H100 80GB HBM3
+serialized_values convnext_base.fb_in22k__caltech101__TRADES_v2
+📦 Extracting /tmp/datasets/caltech101_processed.tar.zst into /tmp/data/392432/caltech101 using Python zstd + tarfile...
+✅ Extraction of caltech101 completed successfully at 2026-08-02 05:57:58
+✅ Moved /scratch/m/mheuill/mheuill/my_backbones/convnext_base.fb_in22k.pt to /tmp/392432
+Testing step: common-only
+Loading HPO config from: ./configs/HPO_results/full_fine_tuning50/convnext_base.fb_in22k__caltech101__TRADES_v2.yaml
+BACKBONE NAME convnext_base.fb_in22k
+Loading timm model: convnext_base.fb_in22k
+BACKBONE NAME convnext_base.fb_in22k
+Loading timm model: convnext_base.fb_in22k
+BACKBONE NAME convnext_base.fb_in22k
+Loading timm model: convnext_base.fb_in22k
+BACKBONE NAME convnext_base.fb_in22k
+Loading timm model: convnext_base.fb_in22k
+Rank 0: common-only results sent to queue
+Rank 3: common-only results sent to queue
+Rank 2: common-only results sent to queue
+Rank 1: common-only results sent to queue
+--- test-common-only: logged common_acc={'common_acc': 0.875} for convnext_base.fb_in22k_caltech101_TRADES_v2 ---
+  Predictions saved to: results/convnext_base_fb_in22k_TRADES_v2_seed1/predictions/convnext_base.fb_in22k_caltech101_TRADES_v2__common__predictions.csv (192 rows)

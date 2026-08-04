@@ -1,0 +1,42 @@
+W0730 23:40:28.693000 46223 torch/multiprocessing/spawn.py:165] Terminating process 46231 via signal SIGTERM
+W0730 23:40:28.694000 46223 torch/multiprocessing/spawn.py:165] Terminating process 46232 via signal SIGTERM
+W0730 23:40:28.694000 46223 torch/multiprocessing/spawn.py:165] Terminating process 46233 via signal SIGTERM
+Traceback (most recent call last):
+  File "/project/6102313/mheuill/robust_training/./distributed_experiment_final.py", line 655, in <module>
+    main()
+  File "/project/6102313/mheuill/robust_training/./distributed_experiment_final.py", line 625, in main
+    mp.spawn(training_wrapper, args=(experiment, config_optimal),
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/multiprocessing/spawn.py", line 340, in spawn
+    return start_processes(fn, args, nprocs, join, daemon, start_method="spawn")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/multiprocessing/spawn.py", line 296, in start_processes
+    while not context.join():
+              ^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/multiprocessing/spawn.py", line 211, in join
+    raise ProcessRaisedException(msg, error_index, failed_process.pid)
+torch.multiprocessing.spawn.ProcessRaisedException: 
+
+-- Process 0 terminated with the following error:
+Traceback (most recent call last):
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/multiprocessing/spawn.py", line 87, in _wrap
+    fn(i, *args)
+  File "/project/6102313/mheuill/robust_training/distributed_experiment_final.py", line 569, in training_wrapper
+    experiment.training(config, rank=rank)
+  File "/project/6102313/mheuill/robust_training/distributed_experiment_final.py", line 147, in training
+    self.setup.distributed_setup(rank)
+  File "/project/6102313/mheuill/robust_training/utils/setup.py", line 46, in distributed_setup
+    dist.init_process_group("nccl", rank=rank, world_size=self.world_size)
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/distributed/c10d_logger.py", line 83, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/distributed/c10d_logger.py", line 97, in wrapper
+    func_return = func(*args, **kwargs)
+                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/distributed/distributed_c10d.py", line 1899, in init_process_group
+    default_pg, _ = _new_process_group_helper(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/distributed/distributed_c10d.py", line 2207, in _new_process_group_helper
+    backend_class = ProcessGroupNCCL(
+                    ^^^^^^^^^^^^^^^^^
+ValueError: ProcessGroupNCCL is only supported with GPUs, no GPUs found!
+

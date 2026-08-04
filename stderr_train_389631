@@ -1,0 +1,47 @@
+[transformers] Disabling PyTorch because PyTorch >= 2.4 is required but found 2.3.1+computecanada
+[transformers] PyTorch was not found. Models won't be available and only tokenizers, configuration and file/data utilities can be used.
+[transformers] Disabling PyTorch because PyTorch >= 2.4 is required but found 2.3.1+computecanada
+[transformers] Disabling PyTorch because PyTorch >= 2.4 is required but found 2.3.1+computecanada
+[transformers] Disabling PyTorch because PyTorch >= 2.4 is required but found 2.3.1+computecanada
+[transformers] Disabling PyTorch because PyTorch >= 2.4 is required but found 2.3.1+computecanada
+[transformers] PyTorch was not found. Models won't be available and only tokenizers, configuration and file/data utilities can be used.
+[transformers] PyTorch was not found. Models won't be available and only tokenizers, configuration and file/data utilities can be used.
+[transformers] PyTorch was not found. Models won't be available and only tokenizers, configuration and file/data utilities can be used.
+[transformers] PyTorch was not found. Models won't be available and only tokenizers, configuration and file/data utilities can be used.
+W0731 01:08:10.170000 127199233499200 torch/multiprocessing/spawn.py:145] Terminating process 20777 via signal SIGTERM
+W0731 01:08:10.171000 127199233499200 torch/multiprocessing/spawn.py:145] Terminating process 20778 via signal SIGTERM
+W0731 01:08:10.171000 127199233499200 torch/multiprocessing/spawn.py:145] Terminating process 20779 via signal SIGTERM
+Traceback (most recent call last):
+  File "/project/6102313/mheuill/robust_training/./distributed_experiment_final.py", line 659, in <module>
+    main()
+  File "/project/6102313/mheuill/robust_training/./distributed_experiment_final.py", line 629, in main
+    mp.spawn(training_wrapper, args=(experiment, config_optimal),
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/multiprocessing/spawn.py", line 281, in spawn
+    return start_processes(fn, args, nprocs, join, daemon, start_method="spawn")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/multiprocessing/spawn.py", line 237, in start_processes
+    while not context.join():
+              ^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/multiprocessing/spawn.py", line 188, in join
+    raise ProcessRaisedException(msg, error_index, failed_process.pid)
+torch.multiprocessing.spawn.ProcessRaisedException: 
+
+-- Process 3 terminated with the following error:
+Traceback (most recent call last):
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/multiprocessing/spawn.py", line 75, in _wrap
+    fn(i, *args)
+  File "/project/6102313/mheuill/robust_training/distributed_experiment_final.py", line 569, in training_wrapper
+    experiment.training(config, rank=rank)
+  File "/project/6102313/mheuill/robust_training/distributed_experiment_final.py", line 161, in training
+    model = DDP(model, device_ids=[rank])
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/nn/parallel/distributed.py", line 798, in __init__
+    _verify_param_shape_across_processes(self.process_group, parameters)
+  File "/tmp/myenv_reprod/lib/python3.11/site-packages/torch/distributed/utils.py", line 269, in _verify_param_shape_across_processes
+    return dist._verify_params_across_processes(process_group, tensors, logger)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+torch.distributed.DistBackendError: NCCL error in: /home/coulombc/wheels_builder/tmp.12722/python-3.11/torch/torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:1970, unhandled cuda error (run with NCCL_DEBUG=INFO for details), NCCL version 2.18.3
+ncclUnhandledCudaError: Call to CUDA function failed.
+Last error:
+Cuda failure 'named symbol not found'
+
